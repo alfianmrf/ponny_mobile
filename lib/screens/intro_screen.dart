@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intro_slider/intro_slider.dart';
 import 'package:intro_slider/slide_object.dart';
+import 'package:ponny/screens/home_screen.dart';
 
 class IntroScreen extends StatefulWidget {
   static const String id = "intro_screen";
@@ -87,6 +88,7 @@ class _IntroScreenState extends State<IntroScreen> {
   }
 
   void onDonePress(){
+    Navigator.of(context).pushReplacementNamed(HomeScreen.id);
   }
 
   @override
