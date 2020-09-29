@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ponny/screens/splash_screen.dart';
 import 'package:ponny/screens/intro_screen.dart';
+import 'package:ponny/screens/home_screen.dart';
 
 void main() {
   runApp(MyApp());
@@ -19,6 +20,7 @@ class MyApp extends StatelessWidget {
       routes: {
         SplashScreen.id: (context) => SplashScreen(),
         IntroScreen.id: (context) => IntroScreen(),
+        HomeScreen.id: (context) => HomeScreen(),
       },
     );
   }
