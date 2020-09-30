@@ -88,11 +88,6 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       body: Stack(
         children: <Widget>[
-          Container(
-            child: Center(
-              child: _widgetOptions.elementAt(_selectedIndex),
-            ),
-          ),
           Positioned(
             child: AppBar(
               title: Image.asset('assets/images/PonnyBeaute.png', fit: BoxFit.contain, height: 46,),
@@ -115,6 +110,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   onPressed: () {},
                 ),
               ],
+            ),
+          ),
+          Container(
+            child: Center(
+              child: _widgetOptions.elementAt(_selectedIndex),
             ),
           )
         ]
