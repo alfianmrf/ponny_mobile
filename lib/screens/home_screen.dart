@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ponny/screens/login.dart';
+import 'package:flutter_swiper/flutter_swiper.dart';
 
 class HomeScreen extends StatefulWidget {
   static const String id = "home_screen";
@@ -15,28 +16,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   int _selectedIndex = 0;
   static const TextStyle optionStyle = TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-  static const List<Widget> _widgetOptions = <Widget>[
-    Text(
-      'Index 0: Home',
-      style: optionStyle,
-    ),
-    Text(
-      'Index 1: Browse',
-      style: optionStyle,
-    ),
-    Text(
-      'Index 2: Consultation',
-      style: optionStyle,
-    ),
-    Text(
-      'Index 3: Forums',
-      style: optionStyle,
-    ),
-    Text(
-      'Index 4: Account',
-      style: optionStyle,
-    ),
-  ];
+
 
   void _onItemTapped(int index) {
     setState(() {
@@ -46,6 +26,55 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    List<Widget> _widgetOptions = <Widget>[
+      Text(
+        'Index 0: Home',
+        style: optionStyle,
+      ),
+      Text(
+        'Index 1: Browse',
+        style: optionStyle,
+      ),
+      Text(
+        'Index 2: Consultation',
+        style: optionStyle,
+      ),
+      Text(
+        'Index 3: Forums',
+        style: optionStyle,
+      ),
+      Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          const Text('Hello World!', style: TextStyle(fontSize: 28, color: Colors.black)),
+          RaisedButton(
+            onPressed: (){
+              Navigator.push(context,
+                MaterialPageRoute(builder: (context) =>
+                    LoginScreen()),
+              );
+            },
+            textColor: Colors.deepOrange,
+            padding: const EdgeInsets.all(0.0),
+            child: Container(
+                decoration: const BoxDecoration(
+                  gradient: LinearGradient(
+                      colors: <Color>[
+                        Color(0xFF0D474A1),
+                        Color(0xFF1976D2),
+                        Color(0xFF42A5F5)
+                      ]
+                  ),
+                ),
+                padding: const EdgeInsets.all(10.0),
+                child: const Text('Login!', style: TextStyle(fontSize: 31),)
+            ),
+
+
+          )
+        ],
+      ),
+    ];
     Row flatButton = Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
