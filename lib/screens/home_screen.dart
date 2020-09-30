@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ponny/screens/login.dart';
 
 class HomeScreen extends StatefulWidget {
   static const String id = "home_screen";
@@ -45,6 +46,16 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Row flatButton = Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        FlatButton(
+          child: Text('Saya FlatButton'),
+          onPressed: () => debugPrint('FlatButton di tekan'),
+        )
+      ],
+    );
+
     return Scaffold(
       body: Stack(
         children: <Widget>[
@@ -147,6 +158,26 @@ class _HomeScreenState extends State<HomeScreen> {
           type: BottomNavigationBarType.fixed,
         ),
       ),
+
     );
   }
 }
+class SecondRoute extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Second Route"),
+      ),
+      body: Center(
+        child: RaisedButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          child: Text('Go back!'),
+        ),
+      ),
+    );
+  }
+}
+
