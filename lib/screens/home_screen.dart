@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:ponny/screens/login.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
+import 'package:ponny/widgets/PonnyBottomNavbar.dart';
+import 'package:ponny/widgets/PonnyAppBar.dart';
 
 class HomeScreen extends StatefulWidget {
   static const String id = "home_screen";
@@ -14,23 +16,12 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
   }
 
-  int _selectedIndex = 0;
   static const TextStyle optionStyle = TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
     List<Widget> _widgetOptions = <Widget>[
-      Text(
-        'Index 0: Home',
-        style: optionStyle,
-      ),
+
       Text(
         'Index 1: Browse',
         style: optionStyle,
@@ -69,8 +60,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 padding: const EdgeInsets.all(10.0),
                 child: const Text('Login!', style: TextStyle(fontSize: 31),)
             ),
-
-
           )
         ],
       ),
@@ -88,106 +77,26 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       body: Stack(
         children: <Widget>[
-          Positioned(
-            child: AppBar(
-              title: Image.asset('assets/images/PonnyBeaute.png', fit: BoxFit.contain, height: 46,),
-              centerTitle: true,
-              backgroundColor: Colors.transparent,
-              elevation: 0,
-              leading: Icon(
-                Icons.search,
+          Scaffold(
+            extendBodyBehindAppBar: true,
+            appBar: new PonnyAppBar(),
+            body: new Container(
+              child: new Swiper(
+                itemBuilder: (BuildContext context, int index) {
+                  return new Image.network(
+                    "http://via.placeholder.com/288x188",
+                    fit: BoxFit.fill,
+                  );
+                },
+                itemCount: 3,
+                pagination: new SwiperPagination(),
+                control: new SwiperControl(),
               ),
-              iconTheme: IconThemeData(
-                color: Color(0xffF48262),
-              ),
-              actions: <Widget>[
-                IconButton(
-                  icon: Icon(Icons.favorite_border),
-                  onPressed: () {},
-                ),
-                IconButton(
-                  icon: Icon(Icons.shopping_cart),
-                  onPressed: () {},
-                ),
-              ],
             ),
           ),
-          Container(
-            child: Center(
-              child: _widgetOptions.elementAt(_selectedIndex),
-            ),
-          )
         ]
       ),
-      bottomNavigationBar: new Theme(
-        data: Theme.of(context).copyWith(
-          canvasColor: Color(0xffF48262),
-          primaryColor: Colors.white,
-          textTheme: Theme
-            .of(context)
-            .textTheme
-            .copyWith(caption: new TextStyle(color: Colors.white))
-        ),
-        child: new BottomNavigationBar(
-          items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              title: Text(
-                'Home',
-                style: TextStyle(
-                    fontSize: 12.0,
-                    fontFamily: 'Brandon'
-                ),
-              ),
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.search),
-              title: Text(
-                'Browse',
-                style: TextStyle(
-                    fontSize: 12.0,
-                    fontFamily: 'Brandon'
-                ),
-              ),
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.headset_mic),
-              title: Text(
-                'Consultation',
-                style: TextStyle(
-                    fontSize: 12.0,
-                    fontFamily: 'Brandon'
-                ),
-              ),
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.forum),
-              title: Text(
-                'Forums',
-                style: TextStyle(
-                    fontSize: 12.0,
-                    fontFamily: 'Brandon'
-                ),
-              ),
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.account_circle),
-              title: Text(
-                'Account',
-                style: TextStyle(
-                    fontSize: 12.0,
-                    fontFamily: 'Brandon'
-                ),
-              ),
-            ),
-          ],
-          currentIndex: _selectedIndex,
-          selectedItemColor: Colors.white,
-          onTap: _onItemTapped,
-          type: BottomNavigationBarType.fixed,
-        ),
-      ),
-
+      bottomNavigationBar: new PonnyBottomNavbar(selectedIndex: 0),
     );
   }
 }
