@@ -251,13 +251,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                               itemCount: 5,
                                               itemSize: 14.0,
                                               itemPadding: EdgeInsets.symmetric(horizontal: 1.0),
-                                              itemBuilder: (context, _) => Icon(
+                                              itemBuilder: (context, index) => Icon(
                                                 Icons.favorite,
                                                 color: Color(0xffF48262),
                                               ),
-                                              onRatingUpdate: (rating) {
-                                                print(rating);
-                                              },
+                                              unratedColor: Color(0xffFBD2CD),
                                             ),
                                           ),
                                           TextSpan(
@@ -392,13 +390,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   itemCount: 5,
                                                   itemSize: 14.0,
                                                   itemPadding: EdgeInsets.symmetric(horizontal: 1.0),
-                                                  itemBuilder: (context, _) => Icon(
+                                                  itemBuilder: (context, index) => Icon(
                                                     Icons.favorite,
                                                     color: Color(0xffF48262),
                                                   ),
-                                                  onRatingUpdate: (rating) {
-                                                    print(rating);
-                                                  },
+                                                  unratedColor: Color(0xffFBD2CD),
                                                 ),
                                               ),
                                               TextSpan(
@@ -533,13 +529,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   itemCount: 5,
                                                   itemSize: 14.0,
                                                   itemPadding: EdgeInsets.symmetric(horizontal: 1.0),
-                                                  itemBuilder: (context, _) => Icon(
+                                                  itemBuilder: (context, index) => Icon(
                                                     Icons.favorite,
                                                     color: Color(0xffF48262),
                                                   ),
-                                                  onRatingUpdate: (rating) {
-                                                    print(rating);
-                                                  },
+                                                  unratedColor: Color(0xffFBD2CD),
                                                 ),
                                               ),
                                               TextSpan(
