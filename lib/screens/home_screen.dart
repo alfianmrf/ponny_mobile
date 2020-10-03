@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ponny/screens/login.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
 import 'package:ponny/widgets/PonnyAppBar.dart';
 
@@ -76,13 +77,14 @@ class _HomeScreenState extends State<HomeScreen> {
     );
 
     return Scaffold(
+      backgroundColor: Theme.of(context).primaryColor,
       body: Stack(
         children: <Widget>[
           Scaffold(
+            backgroundColor: Color(0xffFDF8F0),
             extendBodyBehindAppBar: true,
             appBar: new PonnyAppBar(),
             body: new Container(
-              color: Theme.of(context).primaryColor,
               child: SingleChildScrollView(
                   child: Column(
                     children: <Widget>[
@@ -116,95 +118,201 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ),
                       Container(
-                        height: 135,
-                        color: Colors.blue,
+                        height: 280,
                         child: new Swiper(
                           itemBuilder: (BuildContext context, int index) {
                             return GridView.count(
+                              shrinkWrap: true,
                               primary: false,
-                              padding: const EdgeInsets.symmetric(horizontal: 10),
+                              padding: const EdgeInsets.symmetric(horizontal: 5),
                               crossAxisSpacing: 10,
                               mainAxisSpacing: 10,
-                              childAspectRatio: 0.8,
+                              childAspectRatio: 0.4,
                               crossAxisCount: 3,
                               children: <Widget>[
-                                Stack(
+                                Column(
                                   children: <Widget>[
                                     Container(
-                                      width: MediaQuery.of(context).size.width,
-                                      child: Image.asset(
-                                        "assets/images/produk.png",
-                                        fit: BoxFit.contain,
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsets.only(top: 10.0),
-                                      child: Align(
-                                          alignment: Alignment.topLeft,
-                                          child: Container(
-                                            child: Padding(
-                                              padding: EdgeInsets.symmetric(horizontal: 5.0),
-                                              child: const Text(
-                                                '35%',
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontFamily: 'Brandon'
-                                                ),
+                                      child: Stack(
+                                        children: <Widget>[
+                                          Image.asset(
+                                            "assets/images/produk.png",
+                                            height: 150,
+                                            fit: BoxFit.cover,
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.only(top: 10.0),
+                                            child: Align(
+                                                alignment: Alignment.topLeft,
+                                                child: Container(
+                                                  child: Padding(
+                                                    padding: EdgeInsets.symmetric(horizontal: 5.0),
+                                                    child: const Text(
+                                                      '35%',
+                                                      style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontFamily: 'Brandon'
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  color: Color(0xffF48262),
+                                                )
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.all(5.0),
+                                            child: Align(
+                                              alignment: Alignment.topRight,
+                                              child: Icon(
+                                                Icons.favorite_border,
+                                                color: Color(0xffF48262),
+                                                size: 20,
                                               ),
                                             ),
-                                            color: Color(0xffF48262),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Container(
+                                      alignment: Alignment.bottomCenter,
+                                      child: Container(
+                                        width: MediaQuery.of(context).size.width,
+                                        child: const Text(
+                                          'ADD TO BAG',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontFamily: 'Brandon'
+                                          ),
+                                        ),
+                                        color: Color(0xffF3C1B5),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.only(top: 7.0),
+                                      child: Text(
+                                        'Skin Game',
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          fontFamily: 'Yeseva',
+                                          fontSize: 16,
+                                        ),
+                                      ),
+                                    ),
+                                    Text(
+                                      'Acne Warrior',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        fontFamily: 'Brandon',
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                    Text(
+                                      'Rp. 125.000',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        fontFamily: 'Brandon',
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                    Center(
+                                      child: RichText(
+                                        text: TextSpan(
+                                          text: 'Rp. 125.000',
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                            fontFamily: 'Brandon',
+                                            fontSize: 12,
+                                            decoration: TextDecoration.lineThrough,
+                                          ),
+                                          children: [
+                                            TextSpan(
+                                              text: '(35%)',
+                                              style: TextStyle(
+                                                color: Color(0xffF48262),
+                                                fontFamily: 'Brandon',
+                                                fontSize: 12,
+                                                decoration: TextDecoration.none,
+                                              ),
+                                            ),
+                                          ]
+                                        ),
+                                      ),
+                                    ),
+                                    Text.rich(
+                                      TextSpan(
+                                        children: <InlineSpan>[
+                                          WidgetSpan(
+                                            child: RatingBar(
+                                              initialRating: 4,
+                                              minRating: 1,
+                                              direction: Axis.horizontal,
+                                              allowHalfRating: true,
+                                              itemCount: 5,
+                                              itemSize: 14.0,
+                                              itemPadding: EdgeInsets.symmetric(horizontal: 1.0),
+                                              itemBuilder: (context, index) => Icon(
+                                                Icons.favorite,
+                                                color: Color(0xffF48262),
+                                              ),
+                                              unratedColor: Color(0xffFBD2CD),
+                                            ),
+                                          ),
+                                          TextSpan(
+                                            text: '(5)',
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                            )
                                           )
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsets.all(5.0),
-                                      child: Align(
-                                        alignment: Alignment.topRight,
-                                        child: Icon(
-                                          Icons.favorite_border,
-                                          color: Color(0xffF48262),
-                                          size: 20,
-                                        ),
-                                      ),
-                                    ),
-                                    Align(
-                                      alignment: Alignment.bottomCenter,
-                                      child: Container(
-                                        width: MediaQuery.of(context).size.width,
-                                        child: const Text(
-                                          'ADD TO BAG',
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontFamily: 'Brandon'
-                                          ),
-                                        ),
-                                        color: Color(0xffF3C1B5),
-                                      ),
+                                        ]
+                                      )
                                     ),
                                   ],
                                 ),
-                                Stack(
+                                Column(
                                   children: <Widget>[
                                     Container(
-                                      width: MediaQuery.of(context).size.width,
-                                      child: Image.asset(
-                                        "assets/images/produk.png",
-                                        fit: BoxFit.contain,
+                                      child: Stack(
+                                        children: <Widget>[
+                                          Image.asset(
+                                            "assets/images/produk.png",
+                                            height: 150,
+                                            fit: BoxFit.cover,
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.only(top: 10.0),
+                                            child: Align(
+                                                alignment: Alignment.topLeft,
+                                                child: Container(
+                                                  child: Padding(
+                                                    padding: EdgeInsets.symmetric(horizontal: 5.0),
+                                                    child: const Text(
+                                                      '35%',
+                                                      style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontFamily: 'Brandon'
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  color: Color(0xffF48262),
+                                                )
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.all(5.0),
+                                            child: Align(
+                                              alignment: Alignment.topRight,
+                                              child: Icon(
+                                                Icons.favorite_border,
+                                                color: Color(0xffF48262),
+                                                size: 20,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ),
-                                    Padding(
-                                      padding: EdgeInsets.all(5.0),
-                                      child: Align(
-                                        alignment: Alignment.topRight,
-                                        child: Icon(
-                                          Icons.favorite_border,
-                                          color: Color(0xffF48262),
-                                          size: 20,
-                                        ),
-                                      ),
-                                    ),
-                                    Align(
+                                    Container(
                                       alignment: Alignment.bottomCenter,
                                       child: Container(
                                         width: MediaQuery.of(context).size.width,
@@ -218,30 +326,132 @@ class _HomeScreenState extends State<HomeScreen> {
                                         ),
                                         color: Color(0xffF3C1B5),
                                       ),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.only(top: 7.0),
+                                      child: Text(
+                                        'Skin Game',
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          fontFamily: 'Yeseva',
+                                          fontSize: 16,
+                                        ),
+                                      ),
+                                    ),
+                                    Text(
+                                      'Acne Warrior',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        fontFamily: 'Brandon',
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                    Text(
+                                      'Rp. 125.000',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        fontFamily: 'Brandon',
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                    Center(
+                                      child: RichText(
+                                        text: TextSpan(
+                                            text: 'Rp. 125.000',
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                              fontFamily: 'Brandon',
+                                              fontSize: 12,
+                                              decoration: TextDecoration.lineThrough,
+                                            ),
+                                            children: [
+                                              TextSpan(
+                                                text: '(35%)',
+                                                style: TextStyle(
+                                                  color: Color(0xffF48262),
+                                                  fontFamily: 'Brandon',
+                                                  fontSize: 12,
+                                                  decoration: TextDecoration.none,
+                                                ),
+                                              ),
+                                            ]
+                                        ),
+                                      ),
+                                    ),
+                                    Text.rich(
+                                        TextSpan(
+                                            children: <InlineSpan>[
+                                              WidgetSpan(
+                                                child: RatingBar(
+                                                  initialRating: 4,
+                                                  minRating: 1,
+                                                  direction: Axis.horizontal,
+                                                  allowHalfRating: true,
+                                                  itemCount: 5,
+                                                  itemSize: 14.0,
+                                                  itemPadding: EdgeInsets.symmetric(horizontal: 1.0),
+                                                  itemBuilder: (context, index) => Icon(
+                                                    Icons.favorite,
+                                                    color: Color(0xffF48262),
+                                                  ),
+                                                  unratedColor: Color(0xffFBD2CD),
+                                                ),
+                                              ),
+                                              TextSpan(
+                                                  text: '(5)',
+                                                  style: TextStyle(
+                                                    fontSize: 12,
+                                                  )
+                                              )
+                                            ]
+                                        )
                                     ),
                                   ],
                                 ),
-                                Stack(
+                                Column(
                                   children: <Widget>[
                                     Container(
-                                      width: MediaQuery.of(context).size.width,
-                                      child: Image.asset(
-                                        "assets/images/produk.png",
-                                        fit: BoxFit.contain,
+                                      child: Stack(
+                                        children: <Widget>[
+                                          Image.asset(
+                                            "assets/images/produk.png",
+                                            height: 150,
+                                            fit: BoxFit.cover,
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.only(top: 10.0),
+                                            child: Align(
+                                                alignment: Alignment.topLeft,
+                                                child: Container(
+                                                  child: Padding(
+                                                    padding: EdgeInsets.symmetric(horizontal: 5.0),
+                                                    child: const Text(
+                                                      '35%',
+                                                      style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontFamily: 'Brandon'
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  color: Color(0xffF48262),
+                                                )
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.all(5.0),
+                                            child: Align(
+                                              alignment: Alignment.topRight,
+                                              child: Icon(
+                                                Icons.favorite_border,
+                                                color: Color(0xffF48262),
+                                                size: 20,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ),
-                                    Padding(
-                                      padding: EdgeInsets.all(5.0),
-                                      child: Align(
-                                        alignment: Alignment.topRight,
-                                        child: Icon(
-                                          Icons.favorite_border,
-                                          color: Color(0xffF48262),
-                                          size: 20,
-                                        ),
-                                      ),
-                                    ),
-                                    Align(
+                                    Container(
                                       alignment: Alignment.bottomCenter,
                                       child: Container(
                                         width: MediaQuery.of(context).size.width,
@@ -255,6 +465,85 @@ class _HomeScreenState extends State<HomeScreen> {
                                         ),
                                         color: Color(0xffF3C1B5),
                                       ),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.only(top: 7.0),
+                                      child: Text(
+                                        'Skin Game',
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          fontFamily: 'Yeseva',
+                                          fontSize: 16,
+                                        ),
+                                      ),
+                                    ),
+                                    Text(
+                                      'Acne Warrior',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        fontFamily: 'Brandon',
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                    Text(
+                                      'Rp. 125.000',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        fontFamily: 'Brandon',
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                    Center(
+                                      child: RichText(
+                                        text: TextSpan(
+                                            text: 'Rp. 125.000',
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                              fontFamily: 'Brandon',
+                                              fontSize: 12,
+                                              decoration: TextDecoration.lineThrough,
+                                            ),
+                                            children: [
+                                              TextSpan(
+                                                text: '(35%)',
+                                                style: TextStyle(
+                                                  color: Color(0xffF48262),
+                                                  fontFamily: 'Brandon',
+                                                  fontSize: 12,
+                                                  decoration: TextDecoration.none,
+                                                ),
+                                              ),
+                                            ]
+                                        ),
+                                      ),
+                                    ),
+                                    Text.rich(
+                                        TextSpan(
+                                            children: <InlineSpan>[
+                                              WidgetSpan(
+                                                child: RatingBar(
+                                                  initialRating: 4,
+                                                  minRating: 1,
+                                                  direction: Axis.horizontal,
+                                                  allowHalfRating: true,
+                                                  itemCount: 5,
+                                                  itemSize: 14.0,
+                                                  itemPadding: EdgeInsets.symmetric(horizontal: 1.0),
+                                                  itemBuilder: (context, index) => Icon(
+                                                    Icons.favorite,
+                                                    color: Color(0xffF48262),
+                                                  ),
+                                                  unratedColor: Color(0xffFBD2CD),
+                                                ),
+                                              ),
+                                              TextSpan(
+                                                  text: '(5)',
+                                                  style: TextStyle(
+                                                    fontSize: 12,
+                                                  )
+                                              )
+                                            ]
+                                        )
                                     ),
                                   ],
                                 ),
