@@ -1,7 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:percent_indicator/percent_indicator.dart';
+import 'package:ponny/screens/pra_daftar.dart';
 import 'package:ponny/screens/login.dart';
+import 'package:ponny/screens/menunggu_pembayaran_screen.dart';
+import 'package:ponny/screens/pembayaran_diterima_screen.dart';
+import 'package:ponny/screens/dalam_perjalanan_screen.dart';
+import 'package:ponny/screens/terkirim_screen.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
 
 class AccountScreen extends StatefulWidget {
@@ -15,6 +21,14 @@ class _AccountScreenState extends State<AccountScreen> {
   void initState() {
     super.initState();
   }
+
+  List<String> judul = [
+    "Dalam Perjalanan",
+    "Pesanan Selesai",
+    "Ulasan Produk",
+    "Daftar Keinginan",
+    "Detail Akun",
+  ];
 
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
@@ -96,7 +110,7 @@ class _AccountScreenState extends State<AccountScreen> {
                         fontSize: 30,
                         fontWeight: FontWeight.w500,
                         fontFamily: 'Yeseva',
-                        color: Hexcolor('#F48262'),
+                        color: Hexcolor("#F59379"),
                       ),
                     ),
                   ),
@@ -105,7 +119,7 @@ class _AccountScreenState extends State<AccountScreen> {
                       "Logout",
                       textAlign: TextAlign.right,
                       style: TextStyle(
-                        color: Hexcolor('#F48262'),
+                        color: Hexcolor("#F59379"),
                         fontFamily: 'Yeseva',
                         fontSize: 18,
                       ),
@@ -119,8 +133,8 @@ class _AccountScreenState extends State<AccountScreen> {
             ),
             Container(
               width: MediaQuery.of(context).size.width,
-              height: 300,
-              color: Hexcolor('#F48262'),
+              height: 330,
+              color: Hexcolor("#F59379"),
               child: Column(
                 children: <Widget>[
                   Container(
@@ -139,7 +153,7 @@ class _AccountScreenState extends State<AccountScreen> {
                           child: Text(
                             "DEWY",
                             style: TextStyle(
-                              color: Hexcolor('#F48262'),
+                              color: Hexcolor("#F59379"),
                               fontFamily: "Brandon",
                               fontSize: 45,
                               fontWeight: FontWeight.w900,
@@ -152,7 +166,7 @@ class _AccountScreenState extends State<AccountScreen> {
                             "SKIN",
                             style: TextStyle(
                               fontSize: 20,
-                              color: Hexcolor('#F48262'),
+                              color: Hexcolor("#F59379"),
                               fontFamily: "Yeseva",
                               fontWeight: FontWeight.w300,
                               letterSpacing: 1,
@@ -167,7 +181,7 @@ class _AccountScreenState extends State<AccountScreen> {
                             style: TextStyle(
                               fontFamily: "Yeseva",
                               fontSize: 12,
-                              color: Hexcolor('#F48262'),
+                              color: Hexcolor("#F59379"),
                               fontWeight: FontWeight.w600,
                             ),
                           ),
@@ -177,7 +191,7 @@ class _AccountScreenState extends State<AccountScreen> {
                             top: 6,
                           ),
                           height: 1,
-                          color: Hexcolor('#F48262'),
+                          color: Hexcolor("#F59379"),
                         ),
                         Container(
                           // margin: EdgeInsets.only(top: 10),
@@ -191,7 +205,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                     fontSize: 18,
                                     fontWeight: FontWeight.w700,
                                     fontFamily: 'Brandon',
-                                    color: Hexcolor('#F48262'),
+                                    color: Hexcolor("#F59379"),
                                   ),
                                 ),
                               ),
@@ -208,7 +222,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                               style: TextStyle(
                                                 fontFamily: "Brandon",
                                                 fontSize: 11,
-                                                color: Hexcolor('#F48262'),
+                                                color: Hexcolor("#F59379"),
                                               ),
                                             ),
                                           ),
@@ -218,7 +232,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                               style: TextStyle(
                                                 fontFamily: "Brandon",
                                                 fontSize: 11,
-                                                color: Hexcolor('#F48262'),
+                                                color: Hexcolor("#F59379"),
                                               ),
                                             ),
                                           ),
@@ -235,7 +249,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                               style: TextStyle(
                                                 fontFamily: "Brandon",
                                                 fontSize: 11,
-                                                color: Hexcolor('#F48262'),
+                                                color: Hexcolor("#F59379"),
                                                 fontWeight: FontWeight.w600,
                                               ),
                                             ),
@@ -261,6 +275,1099 @@ class _AccountScreenState extends State<AccountScreen> {
                             ],
                           ),
                         ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    height: 20,
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(left: 45, right: 45),
+                    height: 50,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: <Widget>[
+                        Container(
+                          child: Column(
+                            children: <Widget>[
+                              Container(
+                                child: Text(
+                                  "DEWY",
+                                  style: TextStyle(
+                                    fontFamily: "Brandon",
+                                    fontWeight: FontWeight.w700,
+                                    color: Colors.white,
+                                    fontSize: 12,
+                                    letterSpacing: 1,
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                child: Text(
+                                  "SKIN",
+                                  style: TextStyle(
+                                    fontFamily: "Yeseva",
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.white,
+                                    fontSize: 12,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          child: LinearPercentIndicator(
+                            width: 210.0,
+                            lineHeight: 8.0,
+                            percent: 0.4,
+                            progressColor: Colors.white,
+                          ),
+                        ),
+                        Container(
+                          child: Column(
+                            children: <Widget>[
+                              Container(
+                                child: Text(
+                                  "HEALTHY",
+                                  style: TextStyle(
+                                    fontFamily: "Brandon",
+                                    fontWeight: FontWeight.w700,
+                                    color: Colors.white,
+                                    fontSize: 12,
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                child: Text(
+                                  "SKIN",
+                                  style: TextStyle(
+                                    fontFamily: "Yeseva",
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.white,
+                                    fontSize: 12,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    child: Column(
+                      children: <Widget>[
+                        Container(
+                          child: Text(
+                            "Belanja 1.750.000 lagi untuk naik tingkat",
+                            style: TextStyle(
+                              fontSize: 10,
+                              color: Colors.white,
+                              fontWeight: FontWeight.w800,
+                              fontFamily: "Brandon",
+                            ),
+                          ),
+                        ),
+                        Container(
+                          child: Text("ke Healthy Skin",
+                              style: TextStyle(
+                                fontSize: 10,
+                                color: Colors.white,
+                                fontWeight: FontWeight.w800,
+                                fontFamily: "Brandon",
+                              )),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.only(
+                top: 0,
+                left: 30,
+                right: 30,
+                bottom: 20,
+              ),
+              height: 560,
+              child: ListView(
+                physics: NeverScrollableScrollPhysics(),
+                primary: false,
+                children: <Widget>[
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => MenungguPembayaranScreen()),
+                      );
+                    },
+                    child: Container(
+                      decoration: new BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(
+                            width: 2,
+                            color: Hexcolor("#F59379"),
+                          ),
+                        ),
+                      ),
+                      child: Row(
+                        children: [
+                          Container(
+                            margin:
+                                EdgeInsets.only(bottom: 5, left: 15, right: 15),
+                            child: Icon(
+                              Icons.watch_later,
+                              size: 35,
+                              color: Hexcolor("#F59379"),
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(bottom: 5),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  margin: EdgeInsets.only(left: 0),
+                                  child: Text(
+                                    "Menunggu Pembayaran",
+                                    style: TextStyle(
+                                      fontFamily: "Brandon",
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 20,
+                                    ),
+                                  ),
+                                ),
+                                Container(
+                                  // width: 150,
+                                  child: Text(
+                                    "Purchased Items",
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(
+                                      fontFamily: "Brandon",
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.grey,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => PembayaranDiterimaScreen()),
+                      );
+                    },
+                    child: Container(
+                      decoration: new BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(
+                            width: 2,
+                            color: Hexcolor("#F59379"),
+                          ),
+                        ),
+                      ),
+                      child: Row(
+                        children: [
+                          Container(
+                            margin:
+                                EdgeInsets.only(bottom: 5, left: 15, right: 15),
+                            child: Icon(
+                              Icons.shopping_cart,
+                              size: 35,
+                              color: Hexcolor("#F59379"),
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(top: 5, bottom: 5),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  margin: EdgeInsets.only(left: 0),
+                                  child: Text(
+                                    "Pembayaran Diterima",
+                                    style: TextStyle(
+                                      fontFamily: "Brandon",
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 20,
+                                    ),
+                                  ),
+                                ),
+                                Container(
+                                  // width: 150,
+                                  child: Text(
+                                    "Purchased Items",
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(
+                                      fontFamily: "Brandon",
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.grey,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => DalamPerjalananScreen()),
+                      );
+                    },
+                    child: Container(
+                      decoration: new BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(
+                            width: 2,
+                            color: Hexcolor("#F59379"),
+                          ),
+                        ),
+                      ),
+                      child: Row(
+                        children: [
+                          Container(
+                            margin:
+                                EdgeInsets.only(bottom: 5, left: 15, right: 15),
+                            child: Image.asset(
+                              'assets/images/Asset 7.png',
+                              width: 30,
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(top: 5, bottom: 5),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  margin: EdgeInsets.only(left: 0),
+                                  child: Text(
+                                    "Dalam Perjalanan",
+                                    style: TextStyle(
+                                      fontFamily: "Brandon",
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 20,
+                                    ),
+                                  ),
+                                ),
+                                Container(
+                                  // width: 150,
+                                  child: Text(
+                                    "Purchased Items",
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(
+                                      fontFamily: "Brandon",
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.grey,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => TerkirimScreen()),
+                      );
+                    },
+                    child: Container(
+                      decoration: new BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(
+                            width: 2,
+                            color: Hexcolor("#F59379"),
+                          ),
+                        ),
+                      ),
+                      child: Row(
+                        children: [
+                          Container(
+                            margin:
+                                EdgeInsets.only(bottom: 5, left: 15, right: 15),
+                            child: Icon(
+                              Icons.directions_car,
+                              size: 35,
+                              color: Hexcolor("#F59379"),
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(top: 5, bottom: 5),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  margin: EdgeInsets.only(left: 0),
+                                  child: Text(
+                                    "Terkirim",
+                                    style: TextStyle(
+                                      fontFamily: "Brandon",
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 20,
+                                    ),
+                                  ),
+                                ),
+                                Container(
+                                  // width: 150,
+                                  child: Text(
+                                    "Purchased Items",
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(
+                                      fontFamily: "Brandon",
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.grey,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => DalamPerjalananScreen()),
+                      );
+                    },
+                    child: Container(
+                      decoration: new BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(
+                            width: 2,
+                            color: Hexcolor("#F59379"),
+                          ),
+                        ),
+                      ),
+                      child: Row(
+                        children: [
+                          Container(
+                            margin: EdgeInsets.only(
+                                bottom: 10, left: 15, right: 15, top: 10),
+                            child: Image.asset(
+                              'assets/images/Asset 8.png',
+                              width: 32,
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(bottom: 5, top: 5),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  margin: EdgeInsets.only(top: 0),
+                                  child: Text(
+                                    "Pesanan Selesai",
+                                    style: TextStyle(
+                                      fontFamily: "Brandon",
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 20,
+                                    ),
+                                  ),
+                                ),
+                                Container(
+                                  // width: 150,
+                                  child: Text(
+                                    "Purchased Items",
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(
+                                      fontFamily: "Brandon",
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.grey,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => PraDaftarScreen()),
+                      );
+                    },
+                    child: Container(
+                      decoration: new BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(
+                            width: 2,
+                            color: Hexcolor("#F59379"),
+                          ),
+                        ),
+                      ),
+                      child: Row(
+                        children: [
+                          Container(
+                            margin: EdgeInsets.only(
+                                bottom: 10, left: 15, right: 15, top: 10),
+                            child: Image.asset(
+                              'assets/images/Asset 9.png',
+                              width: 34,
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(bottom: 5, top: 5),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  margin: EdgeInsets.only(left: 0),
+                                  child: Text(
+                                    "Ulasan Produk",
+                                    style: TextStyle(
+                                      fontFamily: "Brandon",
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 20,
+                                    ),
+                                  ),
+                                ),
+                                Container(
+                                  // width: 150,
+                                  child: Text(
+                                    "Purchased Items",
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(
+                                      fontFamily: "Brandon",
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.grey,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => PraDaftarScreen()),
+                      );
+                    },
+                    child: Container(
+                      decoration: new BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(
+                            width: 2,
+                            color: Hexcolor("#F59379"),
+                          ),
+                        ),
+                      ),
+                      child: Row(
+                        children: [
+                          Container(
+                            margin: EdgeInsets.only(
+                                bottom: 10, left: 15, right: 15, top: 10),
+                            child: Image.asset(
+                              'assets/images/Asset 10.png',
+                              width: 30,
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(bottom: 5, top: 5),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  margin: EdgeInsets.only(left: 0),
+                                  child: Text(
+                                    "Daftar Keinginan",
+                                    style: TextStyle(
+                                      fontFamily: "Brandon",
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 20,
+                                    ),
+                                  ),
+                                ),
+                                Container(
+                                  // width: 150,
+                                  child: Text(
+                                    "Purchased Items",
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(
+                                      fontFamily: "Brandon",
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.grey,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => PraDaftarScreen()),
+                      );
+                    },
+                    child: Container(
+                      child: Row(
+                        children: [
+                          Container(
+                            margin: EdgeInsets.only(
+                                bottom: 10, left: 15, right: 15, top: 10),
+                            child: Image.asset(
+                              'assets/images/Asset 11.png',
+                              width: 30,
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(bottom: 5, top: 5),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  margin: EdgeInsets.only(left: 0),
+                                  child: Text(
+                                    "Detail Akun",
+                                    style: TextStyle(
+                                      fontFamily: "Brandon",
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 20,
+                                    ),
+                                  ),
+                                ),
+                                Container(
+                                  // width: 150,
+                                  child: Text(
+                                    "Purchased Items",
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(
+                                      fontFamily: "Brandon",
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.grey,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              height: 20,
+              color: Colors.white,
+              width: MediaQuery.of(context).size.width,
+            ),
+            Container(
+              margin: EdgeInsets.only(
+                top: 0,
+                left: 30,
+                right: 30,
+                bottom: 10,
+              ),
+              height: 300,
+              child: ListView(
+                physics: NeverScrollableScrollPhysics(),
+                primary: false,
+                children: <Widget>[
+                  Container(
+                    decoration: new BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(
+                          width: 2,
+                          color: Hexcolor("#F59379"),
+                        ),
+                      ),
+                    ),
+                    child: Row(
+                      children: [
+                        Container(
+                          margin:
+                              EdgeInsets.only(bottom: 5, left: 15, right: 15),
+                          child: Image.asset(
+                            'assets/images/Asset 12.png',
+                            width: 30,
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(bottom: 5),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                margin: EdgeInsets.only(left: 0),
+                                child: Text(
+                                  "Beauty Profile",
+                                  style: TextStyle(
+                                    fontFamily: "Brandon",
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 20,
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                // width: 150,
+                                child: Text(
+                                  "Purchased Items",
+                                  textAlign: TextAlign.left,
+                                  style: TextStyle(
+                                    fontFamily: "Brandon",
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.grey,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    decoration: new BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(
+                          width: 2,
+                          color: Hexcolor("#F59379"),
+                        ),
+                      ),
+                    ),
+                    child: Row(
+                      children: [
+                        Container(
+                          margin: EdgeInsets.only(
+                              bottom: 10, left: 15, right: 15, top: 10),
+                          child: Image.asset(
+                            'assets/images/Asset 13.png',
+                            width: 30,
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(bottom: 5, top: 5),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                margin: EdgeInsets.only(top: 0),
+                                child: Text(
+                                  "Happy Skin Reward",
+                                  style: TextStyle(
+                                    fontFamily: "Brandon",
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 20,
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                // width: 150,
+                                child: Text(
+                                  "Purchased Items",
+                                  textAlign: TextAlign.left,
+                                  style: TextStyle(
+                                    fontFamily: "Brandon",
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.grey,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    decoration: new BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(
+                          width: 2,
+                          color: Hexcolor("#F59379"),
+                        ),
+                      ),
+                    ),
+                    child: Row(
+                      children: [
+                        Container(
+                          margin: EdgeInsets.only(
+                              bottom: 10, left: 15, right: 15, top: 10),
+                          child: Image.asset(
+                            'assets/images/Asset 14.png',
+                            width: 30,
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(bottom: 5, top: 5),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                margin: EdgeInsets.only(left: 0),
+                                child: Text(
+                                  "Keuntungan Happy Skin Reward",
+                                  style: TextStyle(
+                                    fontFamily: "Brandon",
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 17,
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                // width: 150,
+                                child: Text(
+                                  "Purchased Items",
+                                  textAlign: TextAlign.left,
+                                  style: TextStyle(
+                                    fontFamily: "Brandon",
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.grey,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    child: Row(
+                      children: [
+                        Container(
+                          margin: EdgeInsets.only(
+                              bottom: 10, left: 15, right: 15, top: 10),
+                          child: Image.asset(
+                            'assets/images/Asset 15.png',
+                            width: 30,
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(bottom: 5, top: 5),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                margin: EdgeInsets.only(left: 0),
+                                child: Text(
+                                  "Rincian Point",
+                                  style: TextStyle(
+                                    fontFamily: "Brandon",
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 20,
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                // width: 150,
+                                child: Text(
+                                  "Purchased Items",
+                                  textAlign: TextAlign.left,
+                                  style: TextStyle(
+                                    fontFamily: "Brandon",
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.grey,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              height: 20,
+              color: Colors.white,
+              width: MediaQuery.of(context).size.width,
+            ),
+            Container(
+              margin: EdgeInsets.only(
+                top: 0,
+                left: 30,
+                right: 30,
+                bottom: 0,
+              ),
+              height: 510,
+              child: ListView(
+                physics: NeverScrollableScrollPhysics(),
+                primary: false,
+                children: <Widget>[
+                  Container(
+                    padding: EdgeInsets.only(bottom: 10),
+                    decoration: new BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(
+                          width: 2,
+                          color: Hexcolor("#F59379"),
+                        ),
+                      ),
+                    ),
+                    child: Text(
+                      "BUTUH BANTUAN ?",
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w700,
+                        fontFamily: "Brandon",
+                      ),
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.only(bottom: 15, top: 15),
+                    decoration: new BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(
+                          width: 2,
+                          color: Hexcolor("#F59379"),
+                        ),
+                      ),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          child: Text(
+                            "Tentang Ponny Beaute",
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w200,
+                              fontFamily: "Brandon",
+                            ),
+                          ),
+                        ),
+                        Container(
+                          child: Icon(
+                            Icons.arrow_forward_ios,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.only(bottom: 15, top: 15),
+                    decoration: new BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(
+                          width: 2,
+                          color: Hexcolor("#F59379"),
+                        ),
+                      ),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          child: Text(
+                            "Pengiriman",
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w200,
+                              fontFamily: "Brandon",
+                            ),
+                          ),
+                        ),
+                        Container(
+                          child: Icon(
+                            Icons.arrow_forward_ios,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.only(bottom: 15, top: 15),
+                    decoration: new BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(
+                          width: 2,
+                          color: Hexcolor("#F59379"),
+                        ),
+                      ),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          child: Text(
+                            "FAQ",
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w200,
+                              fontFamily: "Brandon",
+                            ),
+                          ),
+                        ),
+                        Container(
+                          child: Icon(
+                            Icons.arrow_forward_ios,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.only(bottom: 15, top: 15),
+                    decoration: new BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(
+                          width: 2,
+                          color: Hexcolor("#F59379"),
+                        ),
+                      ),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          child: Text(
+                            "Hubungi Kami",
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w200,
+                              fontFamily: "Brandon",
+                            ),
+                          ),
+                        ),
+                        Container(
+                          child: Icon(
+                            Icons.arrow_forward_ios,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.only(bottom: 15, top: 15),
+                    decoration: new BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(
+                          width: 2,
+                          color: Hexcolor("#F59379"),
+                        ),
+                      ),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          child: Text(
+                            "Konsultasi",
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w200,
+                              fontFamily: "Brandon",
+                            ),
+                          ),
+                        ),
+                        Container(
+                          child: Icon(
+                            Icons.arrow_forward_ios,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.only(bottom: 15, top: 15),
+                    decoration: new BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(
+                          width: 2,
+                          color: Hexcolor("#F59379"),
+                        ),
+                      ),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          child: Text(
+                            "Syarat dan Ketentuan",
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w200,
+                              fontFamily: "Brandon",
+                            ),
+                          ),
+                        ),
+                        Container(
+                          child: Icon(
+                            Icons.arrow_forward_ios,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.only(bottom: 15, top: 15),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          child: Text(
+                            "Kebijakan Privasi",
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w200,
+                              fontFamily: "Brandon",
+                            ),
+                          ),
+                        ),
+                        Container(
+                          child: Icon(
+                            Icons.arrow_forward_ios,
+                          ),
+                        )
                       ],
                     ),
                   ),

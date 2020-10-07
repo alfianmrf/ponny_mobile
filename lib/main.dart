@@ -4,6 +4,14 @@ import 'package:ponny/screens/intro_screen.dart';
 import 'package:ponny/screens/home_screen.dart';
 import 'package:ponny/screens/forums_screen.dart';
 import 'package:ponny/screens/account_screen.dart';
+import 'package:ponny/screens/menunggu_pembayaran_screen.dart';
+import 'package:ponny/screens/menunggu_pembayaran_sukses_screen.dart';
+import 'package:ponny/screens/komplain_menunggu_pembayaran_screen.dart';
+import 'package:ponny/screens/pembayaran_diterima_screen.dart';
+import 'package:ponny/screens/dalam_perjalanan_screen.dart';
+import 'package:ponny/screens/dalam_perjalanan_sukses_screen.dart';
+import 'package:ponny/screens/komplain_dalam_perjalanan_screen.dart';
+import 'package:ponny/screens/terkirim_screen.dart';
 import 'package:ponny/screens/splash_screen.dart';
 import 'package:ponny/screens/login.dart';
 import 'package:ponny/screens/pra_daftar.dart';
@@ -31,6 +39,18 @@ class MyApp extends StatelessWidget {
         HomeScreen.id: (context) => HomeScreen(),
         ForumsScreen.id: (context) => ForumsScreen(),
         AccountScreen.id: (context) => AccountScreen(),
+        MenungguPembayaranScreen.id: (context) => MenungguPembayaranScreen(),
+        MenungguPembayaranSuksesScreen.id: (context) =>
+            MenungguPembayaranSuksesScreen(),
+        KomplainMenungguPembayaranScreen.id: (context) =>
+            KomplainMenungguPembayaranScreen(),
+        PembayaranDiterimaScreen.id: (context) => PembayaranDiterimaScreen(),
+        DalamPerjalananScreen.id: (context) => DalamPerjalananScreen(),
+        DalamPerjalananSuksesScreen.id: (context) =>
+            DalamPerjalananSuksesScreen(),
+        KomplainDalamPerjalananScreen.id: (context) =>
+            KomplainDalamPerjalananScreen(),
+        TerkirimScreen.id: (context) => TerkirimScreen(),
         LoginScreen.id: (context) => LoginScreen(),
         PraDaftarScreen.id: (context) => PraDaftarScreen(),
         RegisterScreen.id: (context) => RegisterScreen(),
