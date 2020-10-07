@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ponny/screens/login.dart';
+import 'package:ponny/screens/product_details_screen.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
@@ -38,10 +39,15 @@ class _HomeScreenState extends State<HomeScreen> {
         Container(
           child: Stack(
             children: <Widget>[
-              Image.asset(
-                "assets/images/produk.png",
-                height: 150,
-                fit: BoxFit.cover,
+              GestureDetector(
+                onTap: (){
+                  Navigator.of(context).pushReplacementNamed(ProductDetailsScreen.id);
+                },
+                child: Image.asset(
+                  "assets/images/produk.png",
+                  width: MediaQuery.of(context).size.width,
+                  fit: BoxFit.cover,
+                ),
               ),
               Padding(
                 padding: EdgeInsets.only(top: 10.0),
@@ -433,7 +439,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: Column(
             children: <Widget>[
               Container(
-                height: 300,
+                height: MediaQuery.of(context).size.width * 0.65,
                 child: new Swiper(
                   itemBuilder: (BuildContext context, int index) {
                     return new Image.network(
@@ -449,6 +455,21 @@ class _HomeScreenState extends State<HomeScreen> {
                           activeColor: Color(0xffF48262))),
                   control: null,
                   autoplay: true,
+                ),
+              ),
+              Container(
+                width: MediaQuery.of(context).size.width,
+                padding: EdgeInsets.symmetric(vertical: 5),
+                color: Color(0xffF48262),
+                child: Center(
+                  child: Text(
+                    'GRATIS ONGKIR DENGAN PEMBELANJAAN RP 250.000',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontFamily: 'Brandon',
+                      fontSize: 12,
+                    ),
+                  ),
                 ),
               ),
               title("Best Seller"),

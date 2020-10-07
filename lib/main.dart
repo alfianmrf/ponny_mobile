@@ -8,6 +8,7 @@ import 'package:ponny/screens/splash_screen.dart';
 import 'package:ponny/screens/login.dart';
 import 'package:ponny/screens/pra_daftar.dart';
 import 'package:ponny/screens/register.dart';
+import 'package:ponny/screens/product_details_screen.dart';
 
 void main() {
   runApp(MyApp());
@@ -32,7 +33,8 @@ class MyApp extends StatelessWidget {
         AccountScreen.id: (context) => AccountScreen(),
         LoginScreen.id: (context) => LoginScreen(),
         PraDaftarScreen.id: (context) => PraDaftarScreen(),
-        RegisterScreen.id: (context) => RegisterScreen()
+        RegisterScreen.id: (context) => RegisterScreen(),
+        ProductDetailsScreen.id: (context) => ProductDetailsScreen()
       },
     );
   }
