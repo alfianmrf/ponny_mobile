@@ -3,16 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:ponny/screens/home_screen.dart';
 import 'package:ponny/screens/account_screen.dart';
-import 'package:ponny/screens/dalam_perjalanan_sukses_screen.dart';
+import 'package:ponny/screens/ulasan_produk_sukses_screen.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
 
-class DalamPerjalananScreen extends StatefulWidget {
-  static const String id = "login_Screen";
+class UlasanProdukScreen extends StatefulWidget {
+  static const String id = "ulasan_produk_Screen";
   @override
-  _DalamPerjalananStateScreen createState() => _DalamPerjalananStateScreen();
+  _UlasanProdukStateScreen createState() => _UlasanProdukStateScreen();
 }
 
-class _DalamPerjalananStateScreen extends State<DalamPerjalananScreen> {
+class _UlasanProdukStateScreen extends State<UlasanProdukScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,7 +43,7 @@ class _DalamPerjalananStateScreen extends State<DalamPerjalananScreen> {
                   ),
                   Container(
                     child: Text(
-                      "Dalam Perjalanan",
+                      "Ulasan Produk",
                       style: TextStyle(
                         fontSize: 24,
                         fontFamily: "Yeseva",
@@ -77,26 +77,47 @@ class _DalamPerjalananStateScreen extends State<DalamPerjalananScreen> {
                   children: [
                     Container(
                       child: Image.asset(
-                        "assets/images/Asset 7.png",
-                        fit: BoxFit.cover,
+                        'assets/images/Asset 9.png',
+                        width: 38,
                       ),
                     ),
                     Container(
                       margin: EdgeInsets.only(top: 10),
                       child: Text(
-                        "You have no orders.",
+                        "UPS !",
                         style: TextStyle(
                           fontFamily: "Brandon",
-                          fontSize: 14,
+                          fontSize: 12,
                         ),
                       ),
                     ),
                     Container(
+                      height: 18,
                       child: Text(
-                        "Shop top brands and cult favorites now.",
+                        "Beauties, kamu belum menulis review produk ini.",
                         style: TextStyle(
                           fontFamily: "Brandon",
-                          fontSize: 14,
+                          fontSize: 12,
+                        ),
+                      ),
+                    ),
+                    Container(
+                      height: 18,
+                      child: Text(
+                        "Yuk, bagikan pengalaman mu menggunakan produk ini",
+                        style: TextStyle(
+                          fontFamily: "Brandon",
+                          fontSize: 12,
+                        ),
+                      ),
+                    ),
+                    Container(
+                      height: 18,
+                      child: Text(
+                        "untuk pengguna yang lain.",
+                        style: TextStyle(
+                          fontFamily: "Brandon",
+                          fontSize: 12,
                         ),
                       ),
                     ),
@@ -644,7 +665,7 @@ class _DalamPerjalananStateScreen extends State<DalamPerjalananScreen> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => DalamPerjalananSuksesScreen(),
+                      builder: (context) => UlasanProdukSuksesScreen(),
                     ),
                   );
                 },

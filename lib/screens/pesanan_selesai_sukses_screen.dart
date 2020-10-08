@@ -1,19 +1,19 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:ponny/screens/home_screen.dart';
 import 'package:ponny/screens/account_screen.dart';
-import 'package:ponny/screens/komplain_menunggu_pembayaran_screen.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
 
-class MenungguPembayaranSuksesScreen extends StatefulWidget {
-  static const String id = "Menunggu_Pembayaran_Screen";
+class PesananSelesaiSuksesScreen extends StatefulWidget {
+  static const String id = "pesanan_selesai_Screen";
   @override
-  _MenungguPembayaranSuksesStateScreen createState() =>
-      _MenungguPembayaranSuksesStateScreen();
+  _PesananSelesaiSuksesStateScreen createState() =>
+      _PesananSelesaiSuksesStateScreen();
 }
 
-class _MenungguPembayaranSuksesStateScreen
-    extends State<MenungguPembayaranSuksesScreen> {
+class _PesananSelesaiSuksesStateScreen
+    extends State<PesananSelesaiSuksesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,9 +44,9 @@ class _MenungguPembayaranSuksesStateScreen
                   ),
                   Container(
                     child: Text(
-                      "Menunggu Pembayaran",
+                      "Pesanan Selesai",
                       style: TextStyle(
-                        fontSize: 22,
+                        fontSize: 24,
                         fontFamily: "Yeseva",
                         fontWeight: FontWeight.w500,
                         color: Color(0xffF48262),
@@ -457,6 +457,169 @@ class _MenungguPembayaranSuksesStateScreen
                   ),
                 ],
               ),
+            ),
+            Container(
+              margin: EdgeInsets.only(top: 30, left: 15, right: 15, bottom: 15),
+              padding: EdgeInsets.only(left: 15, right: 15),
+              width: MediaQuery.of(context).size.width,
+              height: 50,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Color(0xffF48262),
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(5),
+                      ),
+                    ),
+                    width: 160,
+                    height: 35,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          child: Text(
+                            "REVIEW",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontFamily: "Brandon",
+                              color: Colors.white,
+                              fontSize: 15,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.only(top: 10, left: 15, right: 15, bottom: 15),
+              width: MediaQuery.of(context).size.width,
+              height: 2,
+              color: Color(0xffF3C1B5),
+            ),
+            Container(
+              margin: EdgeInsets.only(left: 15, right: 15),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    child: Text(
+                      "#70212",
+                      style: TextStyle(
+                        fontSize: 13,
+                        fontFamily: "Brandon",
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                  Container(
+                    child: Text(
+                      "29/04/2020",
+                      style: TextStyle(
+                        fontSize: 13,
+                        fontFamily: "Brandon",
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                  Container(
+                    child: Text(
+                      "Complete",
+                      style: TextStyle(
+                        fontSize: 13,
+                        fontFamily: "Brandon",
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                  Container(
+                    child: Text(
+                      "Rp 329.000",
+                      style: TextStyle(
+                        fontSize: 13,
+                        fontFamily: "Brandon",
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                  Container(
+                    child: Icon(
+                      Icons.keyboard_arrow_down,
+                      color: Color(0xffF3C1B5),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.only(top: 15, left: 15, right: 15, bottom: 15),
+              width: MediaQuery.of(context).size.width,
+              height: 2,
+              color: Color(0xffF3C1B5),
+            ),
+            Container(
+              margin: EdgeInsets.only(left: 15, right: 15),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    child: Text(
+                      "#70212",
+                      style: TextStyle(
+                        fontSize: 13,
+                        fontFamily: "Brandon",
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                  Container(
+                    child: Text(
+                      "29/04/2020",
+                      style: TextStyle(
+                        fontSize: 13,
+                        fontFamily: "Brandon",
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                  Container(
+                    child: Text(
+                      "Complete",
+                      style: TextStyle(
+                        fontSize: 13,
+                        fontFamily: "Brandon",
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                  Container(
+                    child: Text(
+                      "Rp 329.000",
+                      style: TextStyle(
+                        fontSize: 13,
+                        fontFamily: "Brandon",
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                  Container(
+                    child: Icon(
+                      Icons.keyboard_arrow_down,
+                      color: Color(0xffF3C1B5),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.only(top: 15, left: 15, right: 15, bottom: 15),
+              width: MediaQuery.of(context).size.width,
+              height: 2,
+              color: Color(0xffF3C1B5),
             ),
           ],
         ),

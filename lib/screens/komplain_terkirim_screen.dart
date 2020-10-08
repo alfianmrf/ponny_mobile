@@ -4,15 +4,13 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:ponny/screens/account_screen.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
 
-class KomplainDalamPerjalananScreen extends StatefulWidget {
-  static const String id = "Komplain_Dalam_Perjalanan_Screen";
+class KomplainTerkirimScreen extends StatefulWidget {
+  static const String id = "Komplain_Terkirim_Screen";
   @override
-  _KomplainDalamPerjalananStateScreen createState() =>
-      _KomplainDalamPerjalananStateScreen();
+  _KomplainTerkirimStateScreen createState() => _KomplainTerkirimStateScreen();
 }
 
-class _KomplainDalamPerjalananStateScreen
-    extends State<KomplainDalamPerjalananScreen> {
+class _KomplainTerkirimStateScreen extends State<KomplainTerkirimScreen> {
   bool _value1 = false;
   bool _value2 = false;
 
@@ -50,7 +48,7 @@ class _KomplainDalamPerjalananStateScreen
                   ),
                   Container(
                     child: Text(
-                      "Komplain",
+                      "Komplain Terkirim",
                       style: TextStyle(
                         fontSize: 22,
                         fontFamily: "Yeseva",

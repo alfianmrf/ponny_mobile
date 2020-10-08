@@ -84,7 +84,6 @@ class _KomplainMenungguPembayaranStateScreen
             ),
             Container(
               margin: EdgeInsets.only(left: 25, right: 25, top: 30),
-              color: Colors.greenAccent,
               width: MediaQuery.of(context).size.width,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -106,7 +105,6 @@ class _KomplainMenungguPembayaranStateScreen
                       children: [
                         Container(
                           width: 30,
-                          color: Colors.blueAccent,
                           margin: EdgeInsets.only(top: 0),
                           child: Checkbox(
                             onChanged: (bool value) {
@@ -136,7 +134,6 @@ class _KomplainMenungguPembayaranStateScreen
                       children: [
                         Container(
                           width: 30,
-                          color: Colors.blueAccent,
                           margin: EdgeInsets.only(top: 0),
                           child: Checkbox(
                             onChanged: (bool value) {
@@ -166,7 +163,6 @@ class _KomplainMenungguPembayaranStateScreen
                       children: [
                         Container(
                           width: 30,
-                          color: Colors.blueAccent,
                           margin: EdgeInsets.only(top: 0),
                           child: Checkbox(
                             onChanged: (bool value) {
@@ -196,7 +192,6 @@ class _KomplainMenungguPembayaranStateScreen
                       children: [
                         Container(
                           width: 30,
-                          color: Colors.blueAccent,
                           margin: EdgeInsets.only(top: 0),
                           child: Checkbox(
                             onChanged: (bool value) {
@@ -226,7 +221,6 @@ class _KomplainMenungguPembayaranStateScreen
                       children: [
                         Container(
                           width: 30,
-                          color: Colors.blueAccent,
                           margin: EdgeInsets.only(top: 0),
                           child: Checkbox(
                             onChanged: (bool value) {
@@ -252,7 +246,7 @@ class _KomplainMenungguPembayaranStateScreen
                   Container(
                     margin: EdgeInsets.only(
                       top: 35,
-                      bottom: 15,
+                      bottom: 10,
                     ),
                     child: Text(
                       "Foto barang komplain",
@@ -320,6 +314,128 @@ class _KomplainMenungguPembayaranStateScreen
                                       ),
                                     ),
                                   ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(
+                      top: 15,
+                      bottom: 10,
+                    ),
+                    child: Text(
+                      "Solusi Komplain",
+                      style: TextStyle(
+                        fontFamily: "Brandon",
+                        fontSize: 15,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                  Container(
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 30,
+                          height: 25,
+                          child: Checkbox(
+                            onChanged: (bool value) {
+                              setState(() => this._value1 = value);
+                            },
+                            value: this._value1,
+                            checkColor: Hexcolor("#F59379"),
+                            activeColor: Hexcolor('#FCF8F0'),
+                          ),
+                        ),
+                        Container(
+                          child: Text(
+                            "Pengembalian Dana",
+                            style: TextStyle(
+                              fontFamily: "Brandon",
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 30,
+                          height: 25,
+                          child: Checkbox(
+                            onChanged: (bool value) {
+                              setState(() => this._value1 = value);
+                            },
+                            value: this._value1,
+                            checkColor: Hexcolor("#F59379"),
+                            activeColor: Hexcolor('#FCF8F0'),
+                          ),
+                        ),
+                        Container(
+                          child: Text(
+                            "Penggantian Barang",
+                            style: TextStyle(
+                              fontFamily: "Brandon",
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(
+                      top: 25,
+                      bottom: 25,
+                    ),
+                    height: 1,
+                    color: Hexcolor("#F59379"),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(
+                      bottom: 25,
+                    ),
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 30,
+                          height: 25,
+                          child: Checkbox(
+                            onChanged: (bool value) {
+                              setState(() => this._value1 = value);
+                            },
+                            value: this._value1,
+                            checkColor: Hexcolor("#F59379"),
+                            activeColor: Hexcolor('#FCF8F0'),
+                          ),
+                        ),
+                        Container(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                child: Text(
+                                  "Saya setuju dan menanggung ongkos kirim",
+                                  style: TextStyle(
+                                    fontFamily: "Brandon",
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                child: Text(
+                                  "jika harus mengembalikan barang",
+                                  style: TextStyle(
+                                    fontFamily: "Brandon",
+                                    fontWeight: FontWeight.w400,
+                                  ),
                                 ),
                               ),
                             ],

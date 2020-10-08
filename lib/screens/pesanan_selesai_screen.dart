@@ -3,16 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:ponny/screens/home_screen.dart';
 import 'package:ponny/screens/account_screen.dart';
-import 'package:ponny/screens/dalam_perjalanan_sukses_screen.dart';
+import 'package:ponny/screens/pesanan_selesai_sukses_screen.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
 
-class DalamPerjalananScreen extends StatefulWidget {
-  static const String id = "login_Screen";
+class PesananSelesaiScreen extends StatefulWidget {
+  static const String id = "pesanan_selesai_Screen";
   @override
-  _DalamPerjalananStateScreen createState() => _DalamPerjalananStateScreen();
+  _PesananSelesaiStateScreen createState() => _PesananSelesaiStateScreen();
 }
 
-class _DalamPerjalananStateScreen extends State<DalamPerjalananScreen> {
+class _PesananSelesaiStateScreen extends State<PesananSelesaiScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,7 +43,7 @@ class _DalamPerjalananStateScreen extends State<DalamPerjalananScreen> {
                   ),
                   Container(
                     child: Text(
-                      "Dalam Perjalanan",
+                      "Pesanan Selesai",
                       style: TextStyle(
                         fontSize: 24,
                         fontFamily: "Yeseva",
@@ -77,26 +77,26 @@ class _DalamPerjalananStateScreen extends State<DalamPerjalananScreen> {
                   children: [
                     Container(
                       child: Image.asset(
-                        "assets/images/Asset 7.png",
-                        fit: BoxFit.cover,
+                        'assets/images/Asset 8.png',
+                        width: 38,
                       ),
                     ),
                     Container(
                       margin: EdgeInsets.only(top: 10),
                       child: Text(
-                        "You have no orders.",
+                        "Ups, kamu belum ,melakukan pembelian di Ponny Beaute",
                         style: TextStyle(
                           fontFamily: "Brandon",
-                          fontSize: 14,
+                          fontSize: 12,
                         ),
                       ),
                     ),
                     Container(
                       child: Text(
-                        "Shop top brands and cult favorites now.",
+                        "yuk mulai berbelanja.",
                         style: TextStyle(
                           fontFamily: "Brandon",
-                          fontSize: 14,
+                          fontSize: 12,
                         ),
                       ),
                     ),
@@ -644,7 +644,7 @@ class _DalamPerjalananStateScreen extends State<DalamPerjalananScreen> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => DalamPerjalananSuksesScreen(),
+                      builder: (context) => PesananSelesaiSuksesScreen(),
                     ),
                   );
                 },

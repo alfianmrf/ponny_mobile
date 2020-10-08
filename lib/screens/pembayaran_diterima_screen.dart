@@ -1,11 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:ponny/screens/home_screen.dart';
 import 'package:ponny/screens/account_screen.dart';
+import 'package:ponny/screens/pembayaran_diterima_sukses_screen.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
 
 class PembayaranDiterimaScreen extends StatefulWidget {
-  static const String id = "Pembayaran_Diterima_Screen";
+  static const String id = "pembayaran_diterima_Screen";
   @override
   _PembayaranDiterimaStateScreen createState() =>
       _PembayaranDiterimaStateScreen();
@@ -44,7 +46,7 @@ class _PembayaranDiterimaStateScreen extends State<PembayaranDiterimaScreen> {
                     child: Text(
                       "Pembayaran Diterima",
                       style: TextStyle(
-                        fontSize: 22,
+                        fontSize: 24,
                         fontFamily: "Yeseva",
                         fontWeight: FontWeight.w500,
                         color: Color(0xffF48262),
@@ -59,122 +61,159 @@ class _PembayaranDiterimaStateScreen extends State<PembayaranDiterimaScreen> {
               color: Color(0xffF3C1B5),
             ),
             Container(
-              margin: EdgeInsets.only(
-                top: 20,
-                left: 15,
-                right: 15,
+              padding: EdgeInsets.only(top: 20, left: 15, right: 15),
+              child: Container(
+                decoration: new BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                  border: Border.all(
+                    width: 1,
+                    color: Color(0xffF3C1B5),
+                  ),
+                ),
+                height: 280,
+                width: MediaQuery.of(context).size.width,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      child: Icon(
+                        Icons.shopping_cart,
+                        size: 60,
+                        color: Hexcolor("#F59379"),
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(top: 10),
+                      child: Text(
+                        "Ups, kamu belum ,melakukan pembelian di Ponny Beaute",
+                        style: TextStyle(
+                          fontFamily: "Brandon",
+                          fontSize: 12,
+                        ),
+                      ),
+                    ),
+                    Container(
+                      child: Text(
+                        "yuk mulai berbelanja.",
+                        style: TextStyle(
+                          fontFamily: "Brandon",
+                          fontSize: 12,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-
-              // height: 50,
+            ),
+            Container(
+              margin: EdgeInsets.only(top: 38, left: 15, right: 15),
+              height: 30,
+              // color: Colors.green,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Container(
-                    padding: EdgeInsets.only(
-                      top: 5,
-                      bottom: 5,
-                    ),
                     child: Text(
-                      "#70212",
+                      "NEW ARRIVALS",
                       style: TextStyle(
+                        fontSize: 20,
                         fontFamily: "Brandon",
-                        fontWeight: FontWeight.w500,
-                        fontSize: 15,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
                   ),
                   Container(
-                    padding: EdgeInsets.only(
-                      top: 5,
-                      left: 25,
-                      bottom: 5,
-                    ),
                     child: Text(
-                      "29/04/2020",
+                      "view more",
                       style: TextStyle(
                         fontFamily: "Brandon",
-                        fontWeight: FontWeight.w500,
-                        fontSize: 15,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w200,
+                        color: Colors.blueGrey,
+                        decoration: TextDecoration.underline,
                       ),
-                    ),
-                  ),
-                  Container(
-                    padding: EdgeInsets.only(top: 5, bottom: 5, right: 15),
-                    child: Text(
-                      "Proses",
-                      style: TextStyle(
-                        fontFamily: "Brandon",
-                        fontWeight: FontWeight.w500,
-                        fontSize: 15,
-                      ),
-                    ),
-                  ),
-                  Container(
-                    padding: EdgeInsets.only(
-                      top: 5,
-                      bottom: 5,
-                    ),
-                    child: Text(
-                      "Rp 329.000",
-                      style: TextStyle(
-                        fontFamily: "Brandon",
-                        fontWeight: FontWeight.w500,
-                        fontSize: 15,
-                      ),
-                    ),
-                  ),
-                  Container(
-                    padding: EdgeInsets.only(
-                      top: 5,
-                      bottom: 5,
-                    ),
-                    child: Icon(
-                      Icons.keyboard_arrow_up,
-                      size: 26,
-                      color: Color(0xffF48262),
                     ),
                   ),
                 ],
               ),
             ),
             Container(
-              margin: EdgeInsets.only(
-                top: 10,
-                left: 15,
-                right: 15,
-              ),
-              height: 1,
-              color: Color(0xffF3C1B5),
-            ),
-            Container(
-              margin: EdgeInsets.only(
-                top: 20,
-                left: 15,
-                right: 15,
-              ),
-              // color: Colors.greenAccent,
+              margin: EdgeInsets.only(top: 10, left: 15, right: 15),
+              height: 320,
+              // color: Colors.green,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
+                children: [
                   Container(
-                    child: Image.asset(
-                      "assets/images/produk.png",
-                      width: 85,
-                    ),
-                  ),
-                  Container(
-                    alignment: Alignment.topCenter,
-                    height: 105,
-                    // color: Colors.yellowAccent,
                     child: Column(
                       children: [
                         Container(
-                          margin: EdgeInsets.only(top: 0),
-                          // color: Colors.redAccent,
-                          width: 93,
+                          height: 150,
+                          width: 120,
+                          child: Stack(
+                            overflow: Overflow.visible,
+                            children: <Widget>[
+                              Container(
+                                width: MediaQuery.of(context).size.width,
+                                child: Image.asset(
+                                  "assets/images/produk.png",
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                              Container(
+                                margin: EdgeInsets.only(top: 10, right: 5),
+                                alignment: Alignment.topRight,
+                                child: Icon(
+                                  Icons.favorite_border,
+                                  size: 20,
+                                  color: Color(0xffF3C1B5),
+                                ),
+                              ),
+                              Container(
+                                margin: EdgeInsets.only(top: 15),
+                                width: 50,
+                                height: 30,
+                                color: Color(0xffF48262),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      "35%",
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        fontFamily: "Brandon",
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          padding: EdgeInsets.only(top: 7, bottom: 7),
+                          width: 120,
+                          color: Color(0xffF3C1B5),
+                          child: Text(
+                            "ADD TO BAG",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontFamily: "Brandon",
+                              fontSize: 13,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(top: 10),
+                          width: 120,
                           child: Text(
                             "Skin Game",
-                            textAlign: TextAlign.left,
+                            textAlign: TextAlign.center,
                             style: TextStyle(
                               fontFamily: "Yeseva",
                               fontSize: 14,
@@ -182,123 +221,417 @@ class _PembayaranDiterimaStateScreen extends State<PembayaranDiterimaScreen> {
                           ),
                         ),
                         Container(
-                          margin: EdgeInsets.only(top: 1),
-                          width: 93,
+                          margin: EdgeInsets.only(top: 0),
+                          width: 120,
                           child: Text(
                             "Acne Warrior",
-                            textAlign: TextAlign.left,
+                            textAlign: TextAlign.center,
                             style: TextStyle(
                               fontFamily: "Brandon",
                               fontWeight: FontWeight.w200,
-                              fontSize: 13,
                             ),
                           ),
                         ),
                         Container(
-                          margin: EdgeInsets.only(top: 1),
-                          width: 93,
+                          margin: EdgeInsets.only(top: 0),
+                          width: 120,
                           child: Text(
-                            "Rp. 125.000",
-                            textAlign: TextAlign.left,
+                            "Rp 100.000",
+                            textAlign: TextAlign.center,
                             style: TextStyle(
                               fontFamily: "Brandon",
                               fontWeight: FontWeight.w600,
-                              fontSize: 13,
+                              fontSize: 15,
                             ),
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(top: 2),
+                          child: Row(
+                            children: [
+                              Container(
+                                child: Text(
+                                  "Rp 125.000",
+                                  style: TextStyle(
+                                    decoration: TextDecoration.lineThrough,
+                                    fontFamily: "Brandon",
+                                    fontSize: 12,
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                margin: EdgeInsets.only(left: 3),
+                                child: Text(
+                                  "(35%)",
+                                  style: TextStyle(
+                                    color: Color(0xffF48262),
+                                    fontSize: 12,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(top: 4),
+                          child: Row(
+                            children: [
+                              Container(
+                                child: Icon(
+                                  Icons.favorite,
+                                  size: 15,
+                                  color: Color(0xffF48262),
+                                ),
+                              ),
+                              Container(
+                                child: Icon(
+                                  Icons.favorite,
+                                  size: 15,
+                                  color: Color(0xffF48262),
+                                ),
+                              ),
+                              Container(
+                                child: Icon(
+                                  Icons.favorite,
+                                  size: 15,
+                                  color: Color(0xffF48262),
+                                ),
+                              ),
+                              Container(
+                                child: Icon(
+                                  Icons.favorite,
+                                  size: 15,
+                                  color: Color(0xffF48262),
+                                ),
+                              ),
+                              Container(
+                                child: Icon(
+                                  Icons.favorite,
+                                  size: 15,
+                                  color: Color(0xffF3C1B5),
+                                ),
+                              ),
+                              Container(
+                                margin: EdgeInsets.only(left: 4),
+                                child: Text(
+                                  "(5)",
+                                  style: TextStyle(
+                                    fontFamily: "Brandon",
+                                    fontSize: 14,
+                                  ),
+                                ),
+                              )
+                            ],
                           ),
                         ),
                       ],
                     ),
                   ),
                   Container(
-                    // color: Colors.yellowAccent,
-                    height: 100,
                     child: Column(
                       children: [
                         Container(
-                          width: 80,
+                          height: 150,
+                          width: 120,
+                          child: Stack(
+                            overflow: Overflow.visible,
+                            children: <Widget>[
+                              Container(
+                                width: MediaQuery.of(context).size.width,
+                                child: Image.asset(
+                                  "assets/images/produk.png",
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                              Container(
+                                margin: EdgeInsets.only(top: 10, right: 5),
+                                alignment: Alignment.topRight,
+                                child: Icon(
+                                  Icons.favorite_border,
+                                  size: 20,
+                                  color: Color(0xffF3C1B5),
+                                ),
+                              ),
+                              // Container(
+                              //   margin: EdgeInsets.only(top: 15),
+                              //   width: 50,
+                              //   height: 30,
+                              //   color: Color(0xffF48262),
+                              //   child: Row(
+                              //     mainAxisAlignment: MainAxisAlignment.center,
+                              //     children: [
+                              //       Text(
+                              //         "35%",
+                              //         style: TextStyle(
+                              //           fontSize: 12,
+                              //           fontFamily: "Brandon",
+                              //           color: Colors.white,
+                              //           fontWeight: FontWeight.w700,
+                              //         ),
+                              //       ),
+                              //     ],
+                              //   ),
+                              // ),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          padding: EdgeInsets.only(top: 7, bottom: 7),
+                          width: 120,
+                          color: Color(0xffF3C1B5),
                           child: Text(
-                            "TOTAL",
-                            textAlign: TextAlign.left,
+                            "ADD TO BAG",
+                            textAlign: TextAlign.center,
                             style: TextStyle(
+                              color: Colors.white,
                               fontFamily: "Brandon",
-                              fontWeight: FontWeight.w500,
                               fontSize: 13,
+                              fontWeight: FontWeight.w700,
                             ),
                           ),
                         ),
                         Container(
-                          width: 80,
-                          child: Text(
-                            "Rp. 329.000",
-                            style: TextStyle(
-                              fontFamily: "Brandon",
-                              fontWeight: FontWeight.w300,
-                              fontSize: 13,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    // color: Colors.yellowAccent,
-                    child: Column(
-                      children: [
-                        Container(
-                          width: 100,
-                          child: Text(
-                            "Payment Method",
-                            style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w600,
-                              fontFamily: "Brandon",
-                            ),
-                          ),
-                        ),
-                        Container(
-                          width: 100,
-                          child: Text(
-                            "BCA Virtual",
-                            style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w400,
-                              fontFamily: "Brandon",
-                            ),
-                          ),
-                        ),
-                        Container(
-                          width: 100,
                           margin: EdgeInsets.only(top: 10),
+                          width: 120,
                           child: Text(
-                            "Payment Method",
+                            "Skin Game",
+                            textAlign: TextAlign.center,
                             style: TextStyle(
-                              fontSize: 12,
+                              fontFamily: "Yeseva",
+                              fontSize: 14,
+                            ),
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(top: 0),
+                          width: 120,
+                          child: Text(
+                            "Acne Warrior",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontFamily: "Brandon",
+                              fontWeight: FontWeight.w200,
+                            ),
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(top: 0),
+                          width: 120,
+                          child: Text(
+                            "Rp 125.000",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontFamily: "Brandon",
                               fontWeight: FontWeight.w600,
-                              fontFamily: "Brandon",
+                              fontSize: 15,
                             ),
                           ),
                         ),
                         Container(
-                          width: 100,
+                          margin: EdgeInsets.only(top: 4),
+                          child: Row(
+                            children: [
+                              Container(
+                                child: Icon(
+                                  Icons.favorite,
+                                  size: 15,
+                                  color: Color(0xffF48262),
+                                ),
+                              ),
+                              Container(
+                                child: Icon(
+                                  Icons.favorite,
+                                  size: 15,
+                                  color: Color(0xffF48262),
+                                ),
+                              ),
+                              Container(
+                                child: Icon(
+                                  Icons.favorite,
+                                  size: 15,
+                                  color: Color(0xffF48262),
+                                ),
+                              ),
+                              Container(
+                                child: Icon(
+                                  Icons.favorite,
+                                  size: 15,
+                                  color: Color(0xffF48262),
+                                ),
+                              ),
+                              Container(
+                                child: Icon(
+                                  Icons.favorite,
+                                  size: 15,
+                                  color: Color(0xffF3C1B5),
+                                ),
+                              ),
+                              Container(
+                                margin: EdgeInsets.only(left: 4),
+                                child: Text(
+                                  "(5)",
+                                  style: TextStyle(
+                                    fontFamily: "Brandon",
+                                    fontSize: 14,
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    child: Column(
+                      children: [
+                        Container(
+                          height: 150,
+                          width: 120,
+                          child: Stack(
+                            overflow: Overflow.visible,
+                            children: <Widget>[
+                              Container(
+                                width: MediaQuery.of(context).size.width,
+                                child: Image.asset(
+                                  "assets/images/produk.png",
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                              Container(
+                                margin: EdgeInsets.only(top: 10, right: 5),
+                                alignment: Alignment.topRight,
+                                child: Icon(
+                                  Icons.favorite_border,
+                                  size: 20,
+                                  color: Color(0xffF3C1B5),
+                                ),
+                              ),
+                              // Container(
+                              //   margin: EdgeInsets.only(top: 15),
+                              //   width: 50,
+                              //   height: 30,
+                              //   color: Color(0xffF48262),
+                              //   child: Row(
+                              //     mainAxisAlignment: MainAxisAlignment.center,
+                              //     children: [
+                              //       Text(
+                              //         "35%",
+                              //         style: TextStyle(
+                              //           fontSize: 12,
+                              //           fontFamily: "Brandon",
+                              //           color: Colors.white,
+                              //           fontWeight: FontWeight.w700,
+                              //         ),
+                              //       ),
+                              //     ],
+                              //   ),
+                              // ),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          padding: EdgeInsets.only(top: 7, bottom: 7),
+                          width: 120,
+                          color: Color(0xffF3C1B5),
                           child: Text(
-                            "Cikini,",
+                            "ADD TO BAG",
+                            textAlign: TextAlign.center,
                             style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w400,
+                              color: Colors.white,
                               fontFamily: "Brandon",
+                              fontSize: 13,
+                              fontWeight: FontWeight.w700,
                             ),
                           ),
                         ),
                         Container(
-                          width: 100,
+                          margin: EdgeInsets.only(top: 10),
+                          width: 120,
                           child: Text(
-                            "Jakarta Pusat",
+                            "Skin Game",
+                            textAlign: TextAlign.center,
                             style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w400,
-                              fontFamily: "Brandon",
+                              fontFamily: "Yeseva",
+                              fontSize: 14,
                             ),
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(top: 0),
+                          width: 120,
+                          child: Text(
+                            "Acne Warrior",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontFamily: "Brandon",
+                              fontWeight: FontWeight.w200,
+                            ),
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(top: 0),
+                          width: 120,
+                          child: Text(
+                            "Rp 125.000",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontFamily: "Brandon",
+                              fontWeight: FontWeight.w600,
+                              fontSize: 15,
+                            ),
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(top: 4),
+                          child: Row(
+                            children: [
+                              Container(
+                                child: Icon(
+                                  Icons.favorite,
+                                  size: 15,
+                                  color: Color(0xffF48262),
+                                ),
+                              ),
+                              Container(
+                                child: Icon(
+                                  Icons.favorite,
+                                  size: 15,
+                                  color: Color(0xffF48262),
+                                ),
+                              ),
+                              Container(
+                                child: Icon(
+                                  Icons.favorite,
+                                  size: 15,
+                                  color: Color(0xffF48262),
+                                ),
+                              ),
+                              Container(
+                                child: Icon(
+                                  Icons.favorite,
+                                  size: 15,
+                                  color: Color(0xffF48262),
+                                ),
+                              ),
+                              Container(
+                                child: Icon(
+                                  Icons.favorite,
+                                  size: 15,
+                                  color: Color(0xffF3C1B5),
+                                ),
+                              ),
+                              Container(
+                                margin: EdgeInsets.only(left: 4),
+                                child: Text(
+                                  "(5)",
+                                  style: TextStyle(
+                                    fontFamily: "Brandon",
+                                    fontSize: 14,
+                                  ),
+                                ),
+                              )
+                            ],
                           ),
                         ),
                       ],
@@ -308,71 +641,21 @@ class _PembayaranDiterimaStateScreen extends State<PembayaranDiterimaScreen> {
               ),
             ),
             Container(
-              margin: EdgeInsets.only(top: 30, left: 15, right: 15),
-              padding: EdgeInsets.only(left: 15, right: 15),
-              width: MediaQuery.of(context).size.width,
-              height: 50,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      // border: Border.all(
-                      //   color: Colors.red[500],
-                      // ),
-                      color: Color(0xffF3C1B5),
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(5),
-                      ),
+              child: RaisedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => PembayaranDiterimaSuksesScreen(),
                     ),
-                    width: 160,
-                    height: 35,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                          child: Text(
-                            "Lacak Pesanan",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontFamily: "Brandon",
-                              color: Colors.white,
-                              fontSize: 15,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                  );
+                },
+                child: Text(
+                  "Selanjutnya",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
                   ),
-                  Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: Color(0xffF3C1B5),
-                      ),
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(5),
-                      ),
-                    ),
-                    width: 160,
-                    height: 35,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                          child: Text(
-                            "Komplain",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontFamily: "Brandon",
-                              color: Colors.black,
-                              fontSize: 15,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  )
-                ],
+                ),
               ),
             ),
           ],

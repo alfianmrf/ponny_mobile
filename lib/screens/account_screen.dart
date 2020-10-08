@@ -8,6 +8,10 @@ import 'package:ponny/screens/menunggu_pembayaran_screen.dart';
 import 'package:ponny/screens/pembayaran_diterima_screen.dart';
 import 'package:ponny/screens/dalam_perjalanan_screen.dart';
 import 'package:ponny/screens/terkirim_screen.dart';
+import 'package:ponny/screens/pesanan_selesai_screen.dart';
+import 'package:ponny/screens/ulasan_produk_screen.dart';
+import 'package:ponny/screens/daftar_keinginan_screen.dart';
+import 'package:ponny/screens/detail_akun_screen.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
 
 class AccountScreen extends StatefulWidget {
@@ -656,7 +660,7 @@ class _AccountScreenState extends State<AccountScreen> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => DalamPerjalananScreen()),
+                            builder: (context) => PesananSelesaiScreen()),
                       );
                     },
                     child: Container(
@@ -719,7 +723,7 @@ class _AccountScreenState extends State<AccountScreen> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => PraDaftarScreen()),
+                            builder: (context) => UlasanProdukScreen()),
                       );
                     },
                     child: Container(
@@ -782,7 +786,7 @@ class _AccountScreenState extends State<AccountScreen> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => PraDaftarScreen()),
+                            builder: (context) => DaftarKeinginanScreen()),
                       );
                     },
                     child: Container(
@@ -845,7 +849,7 @@ class _AccountScreenState extends State<AccountScreen> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => PraDaftarScreen()),
+                            builder: (context) => DetailAkunScreen()),
                       );
                     },
                     child: Container(

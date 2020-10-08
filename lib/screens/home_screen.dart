@@ -40,8 +40,9 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Stack(
             children: <Widget>[
               GestureDetector(
-                onTap: (){
-                  Navigator.of(context).pushReplacementNamed(ProductDetailsScreen.id);
+                onTap: () {
+                  Navigator.of(context)
+                      .pushReplacementNamed(ProductDetailsScreen.id);
                 },
                 child: Image.asset(
                   "assets/images/produk.png",

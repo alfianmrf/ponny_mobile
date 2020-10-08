@@ -149,6 +149,7 @@ class _DalamPerjalananSuksesStateScreen
               color: Color(0xffF3C1B5),
             ),
             Container(
+              // color: Colors.greenAccent,
               margin: EdgeInsets.only(
                 top: 20,
                 left: 15,
@@ -159,21 +160,30 @@ class _DalamPerjalananSuksesStateScreen
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Container(
-                    child: Image.asset(
-                      "assets/images/produk.png",
-                      width: 85,
+                    width: 85,
+                    height: 230,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Container(
+                          child: Image.asset(
+                            "assets/images/produk.png",
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                   Container(
                     alignment: Alignment.topCenter,
-                    height: 105,
+                    // color: Colors.yellowAccent,
+                    height: 230,
                     // color: Colors.yellowAccent,
                     child: Column(
                       children: [
                         Container(
                           margin: EdgeInsets.only(top: 0),
                           // color: Colors.redAccent,
-                          width: 93,
+                          width: 90,
                           child: Text(
                             "Skin Game",
                             textAlign: TextAlign.left,
@@ -185,7 +195,7 @@ class _DalamPerjalananSuksesStateScreen
                         ),
                         Container(
                           margin: EdgeInsets.only(top: 1),
-                          width: 93,
+                          width: 90,
                           child: Text(
                             "Acne Warrior",
                             textAlign: TextAlign.left,
@@ -198,7 +208,7 @@ class _DalamPerjalananSuksesStateScreen
                         ),
                         Container(
                           margin: EdgeInsets.only(top: 1),
-                          width: 93,
+                          width: 90,
                           child: Text(
                             "Rp. 125.000",
                             textAlign: TextAlign.left,
@@ -214,10 +224,114 @@ class _DalamPerjalananSuksesStateScreen
                   ),
                   Container(
                     // color: Colors.yellowAccent,
-                    height: 100,
+                    height: 230,
                     child: Column(
                       children: [
                         Container(
+                          width: 80,
+                          child: Text(
+                            "Subtotal",
+                            textAlign: TextAlign.left,
+                            style: TextStyle(
+                              fontFamily: "Brandon",
+                              fontWeight: FontWeight.w500,
+                              fontSize: 13,
+                            ),
+                          ),
+                        ),
+                        Container(
+                          width: 80,
+                          child: Text(
+                            "Rp. 200.000",
+                            style: TextStyle(
+                              fontFamily: "Brandon",
+                              fontWeight: FontWeight.w300,
+                              fontSize: 13,
+                            ),
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(
+                            top: 5,
+                          ),
+                          width: 80,
+                          child: Text(
+                            "Voucher",
+                            textAlign: TextAlign.left,
+                            style: TextStyle(
+                              fontFamily: "Brandon",
+                              fontWeight: FontWeight.w500,
+                              fontSize: 13,
+                            ),
+                          ),
+                        ),
+                        Container(
+                          width: 80,
+                          child: Text(
+                            "Rp. 0",
+                            style: TextStyle(
+                              fontFamily: "Brandon",
+                              fontWeight: FontWeight.w300,
+                              fontSize: 13,
+                            ),
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(
+                            top: 5,
+                          ),
+                          width: 80,
+                          child: Text(
+                            "Shipping",
+                            textAlign: TextAlign.left,
+                            style: TextStyle(
+                              fontFamily: "Brandon",
+                              fontWeight: FontWeight.w500,
+                              fontSize: 13,
+                            ),
+                          ),
+                        ),
+                        Container(
+                          width: 80,
+                          child: Text(
+                            "Rp. 50.000",
+                            style: TextStyle(
+                              fontFamily: "Brandon",
+                              fontWeight: FontWeight.w300,
+                              fontSize: 13,
+                            ),
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(
+                            top: 5,
+                          ),
+                          width: 80,
+                          child: Text(
+                            "Free Shiping",
+                            textAlign: TextAlign.left,
+                            style: TextStyle(
+                              fontFamily: "Brandon",
+                              fontWeight: FontWeight.w500,
+                              fontSize: 13,
+                            ),
+                          ),
+                        ),
+                        Container(
+                          width: 80,
+                          child: Text(
+                            "Rp. 0",
+                            style: TextStyle(
+                              fontFamily: "Brandon",
+                              fontWeight: FontWeight.w300,
+                              fontSize: 13,
+                            ),
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(
+                            top: 5,
+                          ),
                           width: 80,
                           child: Text(
                             "TOTAL",
@@ -245,6 +359,7 @@ class _DalamPerjalananSuksesStateScreen
                   ),
                   Container(
                     // color: Colors.yellowAccent,
+                    height: 230,
                     child: Column(
                       children: [
                         Container(
@@ -271,12 +386,46 @@ class _DalamPerjalananSuksesStateScreen
                         ),
                         Container(
                           width: 100,
+                          child: Text(
+                            "Code: 913831450890",
+                            style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w400,
+                              fontFamily: "Brandon",
+                            ),
+                          ),
+                        ),
+                        Container(
+                          width: 100,
                           margin: EdgeInsets.only(top: 10),
                           child: Text(
                             "Payment Method",
                             style: TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.w600,
+                              fontFamily: "Brandon",
+                            ),
+                          ),
+                        ),
+                        Container(
+                          width: 100,
+                          child: Text(
+                            "dita ken,",
+                            style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w400,
+                              fontFamily: "Brandon",
+                              decoration: TextDecoration.underline,
+                            ),
+                          ),
+                        ),
+                        Container(
+                          width: 100,
+                          child: Text(
+                            "+6281358150928",
+                            style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w400,
                               fontFamily: "Brandon",
                             ),
                           ),

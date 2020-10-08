@@ -2,18 +2,17 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:ponny/screens/account_screen.dart';
-import 'package:ponny/screens/komplain_menunggu_pembayaran_screen.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
 
-class MenungguPembayaranSuksesScreen extends StatefulWidget {
-  static const String id = "Menunggu_Pembayaran_Screen";
+class PembayaranDiterimaSuksesScreen extends StatefulWidget {
+  static const String id = "Pembayaran_Diterima_Sukses_Screen";
   @override
-  _MenungguPembayaranSuksesStateScreen createState() =>
-      _MenungguPembayaranSuksesStateScreen();
+  _PembayaranDiterimaSuksesStateScreen createState() =>
+      _PembayaranDiterimaSuksesStateScreen();
 }
 
-class _MenungguPembayaranSuksesStateScreen
-    extends State<MenungguPembayaranSuksesScreen> {
+class _PembayaranDiterimaSuksesStateScreen
+    extends State<PembayaranDiterimaSuksesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,7 +43,7 @@ class _MenungguPembayaranSuksesStateScreen
                   ),
                   Container(
                     child: Text(
-                      "Menunggu Pembayaran",
+                      "Pembayaran Diterima",
                       style: TextStyle(
                         fontSize: 22,
                         fontFamily: "Yeseva",

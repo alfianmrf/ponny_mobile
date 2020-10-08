@@ -76,10 +76,12 @@ class _MenungguPembayaranStateScreen extends State<MenungguPembayaranScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Container(
-                        child: Image.asset(
-                      "assets/images/Asset 7.png",
-                      fit: BoxFit.cover,
-                    )),
+                      child: Icon(
+                        Icons.watch_later,
+                        size: 60,
+                        color: Hexcolor("#F59379"),
+                      ),
+                    ),
                     Container(
                       margin: EdgeInsets.only(top: 10),
                       child: Text(
