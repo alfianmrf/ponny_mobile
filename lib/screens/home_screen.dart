@@ -433,8 +433,32 @@ class _HomeScreenState extends State<HomeScreen> {
         Scaffold(
           backgroundColor: Color(0xffFDF8F0),
           extendBodyBehindAppBar: true,
-          appBar: new PonnyAppBar(),
+          appBar: PreferredSize(
+            preferredSize: Size.fromHeight(100.0),
+            child: Column(
+              children: [
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  padding: EdgeInsets.symmetric(vertical: 5),
+                  margin: MediaQuery.of(context).padding,
+                  color: Color(0xffF48262),
+                  child: Center(
+                    child: Text(
+                      'GRATIS ONGKIR DENGAN PEMBELANJAAN RP 250.000',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontFamily: 'Brandon',
+                        fontSize: 12,
+                      ),
+                    ),
+                  ),
+                ),
+                new PonnyAppBar(),
+              ],
+            ),
+          ),
           body: new Container(
+              margin: MediaQuery.of(context).padding,
               child: SingleChildScrollView(
                   child: Column(
             children: <Widget>[
@@ -455,21 +479,6 @@ class _HomeScreenState extends State<HomeScreen> {
                           activeColor: Color(0xffF48262))),
                   control: null,
                   autoplay: true,
-                ),
-              ),
-              Container(
-                width: MediaQuery.of(context).size.width,
-                padding: EdgeInsets.symmetric(vertical: 5),
-                color: Color(0xffF48262),
-                child: Center(
-                  child: Text(
-                    'GRATIS ONGKIR DENGAN PEMBELANJAAN RP 250.000',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontFamily: 'Brandon',
-                      fontSize: 12,
-                    ),
-                  ),
                 ),
               ),
               title("Best Seller"),
