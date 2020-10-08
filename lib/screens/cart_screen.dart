@@ -54,11 +54,11 @@ class _CartScreenState extends State<CartScreen> {
         Scaffold(
           backgroundColor: Color(0xffFDF8F0),
           body: Container(
+            margin: MediaQuery.of(context).padding,
             child: SingleChildScrollView(
               child: Column(
                 children: <Widget>[
                   Container(
-                    margin: MediaQuery.of(context).padding,
                     width: MediaQuery.of(context).size.width,
                     padding: EdgeInsets.symmetric(horizontal: 20, vertical: 30),
                     decoration: BoxDecoration(
