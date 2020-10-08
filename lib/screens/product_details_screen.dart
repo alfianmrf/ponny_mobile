@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:ponny/screens/cart_screen.dart';
 
 class ProductDetailsScreen extends StatefulWidget {
   static const String id = "product_details_screen";
@@ -151,6 +152,87 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     );
   }
 
+  void showAlertDialog(BuildContext context) {
+    // set up the AlertDialog
+    SimpleDialog alert = SimpleDialog(
+      backgroundColor: Color(0xfffdf8f0),
+      contentPadding: EdgeInsets.all(5.0),
+      children: <Widget>[
+        Container(
+          padding: EdgeInsets.only(top: 30),
+          child: Icon(
+            Icons.shopping_cart,
+            color: Color(0xffF48262),
+            size: 40,
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: 10),
+          child: Center(
+              child: Text(
+                'DITAMBAHKAN KE KERANJANG',
+                style: TextStyle(
+                  fontFamily: 'Brandon',
+                  fontWeight: FontWeight.w600,
+                  fontSize: 16,
+                  color: Color(0xffF48262),
+                ),
+              )),
+        ),
+        Padding(
+          padding: EdgeInsets.only(top: 15, bottom: 30),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 5),
+                child: Image.asset(
+                  'assets/images/produk_1.png',
+                  width: MediaQuery.of(context).size.width*0.2,
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 5),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      'Skin Game',
+                      style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontFamily: 'Brandon'
+                      ),
+                    ),
+                    Text(
+                      'Acne Warrior',
+                      style: TextStyle(
+                          fontFamily: 'Brandon'
+                      ),
+                    ),
+                    Text(
+                      '120ml',
+                      style: TextStyle(
+                          fontFamily: 'Brandon'
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -160,7 +242,30 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
           Scaffold(
             backgroundColor: Color(0xffFDF8F0),
             extendBodyBehindAppBar: true,
-            body: new Container(
+            appBar: AppBar(
+              backgroundColor: Colors.transparent,
+              elevation: 0.0,
+              leading: Icon(
+                Icons.arrow_back_ios,
+              ),
+              iconTheme: IconThemeData(
+                color: Color(0xffF48262),
+              ),
+              actions: <Widget>[
+                IconButton(
+                  icon: Icon(Icons.favorite_border),
+                  onPressed: () {},
+                ),
+                IconButton(
+                  icon: Icon(Icons.shopping_cart),
+                  onPressed: () {
+                    Navigator.of(context).pushReplacementNamed(CartScreen.id);
+                  },
+                ),
+              ],
+            ),
+            body: Container(
+              margin: MediaQuery.of(context).padding,
               child: SingleChildScrollView(
                 child: Column(
                   children: <Widget>[
@@ -808,6 +913,55 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                     ),
                   ],
                 ),
+              ),
+            ),
+            bottomNavigationBar: Container(
+              width: MediaQuery.of(context).size.width,
+              height: 58,
+              decoration: BoxDecoration(
+                color: Color(0xfffdf8f0),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.5),
+                    spreadRadius: 5,
+                    blurRadius: 7,
+                    offset: Offset(0, 3),
+                  ),
+                ],
+              ),
+              child: ButtonBar(
+                alignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  FlatButton(
+                    child: Icon(
+                      Icons.favorite_border,
+                      color: Colors.white,
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(7.0),
+                    ),
+                    color: Color(0xffF48262),
+                    onPressed: () {/** */},
+                  ),
+                  FlatButton(
+                    padding: EdgeInsets.symmetric(horizontal: 30),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(7.0),
+                    ),
+                    child: Text(
+                      'MASUKKAN KERANJANG',
+                      style: TextStyle(
+                        fontFamily: 'Brandon',
+                        fontWeight: FontWeight.w700,
+                        color: Colors.white,
+                      ),
+                    ),
+                    color: Color(0xffF48262),
+                    onPressed: () {
+                      showAlertDialog(context);
+                    },
+                  ),
+                ],
               ),
             ),
           )

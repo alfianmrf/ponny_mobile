@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ponny/screens/cart_screen.dart';
 
 class PonnyAppBar extends StatelessWidget implements PreferredSizeWidget{
   PonnyAppBar();
@@ -7,6 +8,7 @@ class PonnyAppBar extends StatelessWidget implements PreferredSizeWidget{
   @override
   Widget build(BuildContext context) {
     return new AppBar(
+      primary: false,
       title: Image.asset('assets/images/PonnyBeaute.png', fit: BoxFit.contain, height: 46),
       centerTitle: true,
       backgroundColor: Colors.transparent,
@@ -24,7 +26,9 @@ class PonnyAppBar extends StatelessWidget implements PreferredSizeWidget{
         ),
         IconButton(
           icon: Icon(Icons.shopping_cart),
-          onPressed: () {},
+          onPressed: () {
+            Navigator.of(context).pushReplacementNamed(CartScreen.id);
+          },
         ),
       ],
     );
