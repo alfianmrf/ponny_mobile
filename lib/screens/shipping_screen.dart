@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
-import 'package:ponny/screens/shipping_screen.dart';
 
-class CartScreen extends StatefulWidget {
-  static const String id = "cart_screen";
+class ShippingScreen extends StatefulWidget {
+  static const String id = "shipping_screen";
 
   @override
-  _CartScreenState createState() => _CartScreenState();
+  _ShippingScreenState createState() => _ShippingScreenState();
 }
 
-class _CartScreenState extends State<CartScreen> {
+class _ShippingScreenState extends State<ShippingScreen> {
   @override
   void initState() {
     super.initState();
@@ -69,13 +68,24 @@ class _CartScreenState extends State<CartScreen> {
                         ),
                       ),
                     ),
-                    child: Text(
-                      'Keranjang Belanja',
-                      style: TextStyle(
-                        fontFamily: 'Yeseva',
-                        fontSize: 26,
-                        color: Color(0xffF48262),
-                      ),
+                    child: Row(
+                      children: <Widget>[
+                        Container(
+                          margin: EdgeInsets.only(right: 10),
+                          child: Icon(
+                            Icons.arrow_back_ios,
+                            color: Color(0xffF48262),
+                          ),
+                        ),
+                        Text(
+                          'Detail Pengiriman',
+                          style: TextStyle(
+                            fontFamily: 'Yeseva',
+                            fontSize: 26,
+                            color: Color(0xffF48262),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                   Container(
@@ -395,265 +405,140 @@ class _CartScreenState extends State<CartScreen> {
                     ),
                   ),
                   Container(
-                    width: MediaQuery.of(context).size.width,
-                    padding: EdgeInsets.all(15),
-                    child: IntrinsicHeight(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(
-                            margin: EdgeInsets.symmetric(horizontal: 10),
-                            padding: EdgeInsets.symmetric(horizontal: 8, vertical: 5),
-                            width: MediaQuery.of(context).size.width*0.4,
-                            decoration: BoxDecoration(
-                              color: Color(0xffF48262),
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                Image.asset("assets/images/pilih_sample.png"),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Text(
-                                      'PILIH SAMPLE',
-                                      style: TextStyle(
-                                          fontFamily: 'Brandon',
-                                          fontSize: 12,
-                                          color: Colors.white
-                                      ),
-                                    ),
-                                    Text(
-                                      'YANG KAMU',
-                                      style: TextStyle(
-                                          fontFamily: 'Brandon',
-                                          fontSize: 12,
-                                          color: Colors.white
-                                      ),
-                                    ),
-                                    Text(
-                                      'INGINKAN: 2/2',
-                                      style: TextStyle(
-                                          fontFamily: 'Brandon',
-                                          fontSize: 12,
-                                          color: Colors.white
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                          Container(
-                            margin: EdgeInsets.symmetric(horizontal: 10),
-                            padding: EdgeInsets.symmetric(horizontal: 8, vertical: 5),
-                            width: MediaQuery.of(context).size.width*0.4,
-                            decoration: BoxDecoration(
-                              color: Color(0xffF48262),
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                Image.asset("assets/images/tukar_poin.png"),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: <Widget>[
-                                    Text(
-                                      'TUKAR POIN MU',
-                                      style: TextStyle(
-                                          fontFamily: 'Brandon',
-                                          fontSize: 12,
-                                          color: Colors.white
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Container(
-                    width: MediaQuery.of(context).size.width * 0.95,
-                    padding: EdgeInsets.symmetric(horizontal: 15, vertical: 7),
+                    margin: EdgeInsets.only(top: 15, bottom: 25),
+                    width: MediaQuery.of(context).size.width*0.9,
                     decoration: BoxDecoration(
-                      border: Border(
-                        bottom: BorderSide(
-                          color: Color(0xffF48262),
-                          width: 1.0,
-                        ),
-                      ),
+                      border: Border.all(color: Color(0xffF48262)),
+                      borderRadius: BorderRadius.circular(5),
                     ),
-                    child: IntrinsicHeight(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Text(
-                                  'KODE PROMO',
-                                  style: TextStyle(
-                                    fontFamily: 'Brandon',
-                                    fontSize: 14,
-                                  ),
-                                ),
-                                Text(
-                                  'HBDPHOEBE',
-                                  style: TextStyle(
-                                    fontFamily: 'Brandon',
-                                    fontSize: 16,
-                                  ),
-                                ),
-                              ]
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: <Widget>[
-                              Expanded(
-                                child: Align(
-                                  alignment: Alignment.bottomRight,
-                                  child: Text(
-                                    'PAKAI',
+                    child: Container(
+                      padding: EdgeInsets.symmetric(vertical: 7),
+                      child: IntrinsicHeight(
+                        child: Column(
+                          children: <Widget>[
+                            Container(
+                              padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  Text(
+                                    'SUB TOTAL',
                                     style: TextStyle(
                                       fontFamily: 'Brandon',
                                       fontSize: 14,
-                                      color: Color(0xffF48262),
                                     ),
+                                  ),
+                                  Text(
+                                    'Rp 400.000',
+                                    style: TextStyle(
+                                      fontFamily: 'Brandon',
+                                      fontSize: 14,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Container(
+                              padding: EdgeInsets.only(left: 15, right: 15, top: 5, bottom: 12),
+                              decoration: BoxDecoration(
+                                border: Border(
+                                  bottom: BorderSide(
+                                    color: Color(0xffF48262),
+                                    width: 1.0,
                                   ),
                                 ),
                               ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Container(
-                    width: MediaQuery.of(context).size.width * 0.95,
-                    padding: EdgeInsets.symmetric(horizontal: 15, vertical: 7),
-                    child: IntrinsicHeight(
-                      child: Column(
-                        children: <Widget>[
-                          Padding(
-                            padding: EdgeInsets.symmetric(vertical: 5),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                Text(
-                                  'SUB TOTAL',
-                                  style: TextStyle(
-                                    fontFamily: 'Brandon',
-                                    fontSize: 14,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  Text(
+                                    'BIAYA PENGIRIMAN',
+                                    style: TextStyle(
+                                      fontFamily: 'Brandon',
+                                      fontSize: 14,
+                                    ),
                                   ),
-                                ),
-                                Text(
-                                  'Rp 400.000',
-                                  style: TextStyle(
-                                    fontFamily: 'Brandon',
-                                    fontSize: 14,
+                                  Text(
+                                    'Rp 10.000',
+                                    style: TextStyle(
+                                      fontFamily: 'Brandon',
+                                      fontSize: 14,
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.symmetric(vertical: 5),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                Text(
-                                  'POTONGAN DISKON',
-                                  style: TextStyle(
-                                    fontFamily: 'Brandon',
-                                    fontSize: 14,
+                            Container(
+                              padding: EdgeInsets.only(left: 15, right: 15, top: 12, bottom: 5),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  Text(
+                                    'TOTAL PESANAN',
+                                    style: TextStyle(
+                                      fontFamily: 'Brandon',
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w700,
+                                    ),
                                   ),
-                                ),
-                                Text(
-                                  'Rp 50.000',
-                                  style: TextStyle(
-                                    fontFamily: 'Brandon',
-                                    fontSize: 14,
+                                  Text(
+                                    'Rp 360.000',
+                                    style: TextStyle(
+                                      fontFamily: 'Brandon',
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w700,
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.symmetric(vertical: 5),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                Text(
-                                  'TOTAL',
-                                  style: TextStyle(
-                                    fontFamily: 'Brandon',
-                                    fontSize: 14,
+                            Container(
+                              padding: EdgeInsets.only(left: 15, right: 15, top: 5, bottom: 12),
+                              decoration: BoxDecoration(
+                                border: Border(
+                                  bottom: BorderSide(
+                                    color: Color(0xffF48262),
+                                    width: 1.0,
                                   ),
                                 ),
-                                Text(
-                                  'Rp 350.000',
-                                  style: TextStyle(
-                                    fontFamily: 'Brandon',
-                                    fontSize: 14,
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  Text(
+                                    'Poin yang didapat',
+                                    style: TextStyle(
+                                      fontFamily: 'Brandon',
+                                      fontSize: 14,
+                                    ),
                                   ),
-                                ),
-                              ],
+                                  Text(
+                                    '+ 50',
+                                    style: TextStyle(
+                                      fontFamily: 'Brandon',
+                                      fontSize: 14,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.symmetric(vertical: 5),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                Text(
-                                  'Poin yang didapat',
+                            Padding(
+                              padding: EdgeInsets.only(left: 15, right: 15, top: 12, bottom: 5),
+                              child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  'Gratis ongkir dengan pembelian minimal Rp 250.000',
                                   style: TextStyle(
                                     fontFamily: 'Brandon',
-                                    fontSize: 14,
+                                    fontSize: 12,
                                     color: Color(0xffF48262),
                                   ),
                                 ),
-                                Text(
-                                  '+ 2000',
-                                  style: TextStyle(
-                                    fontFamily: 'Brandon',
-                                    fontSize: 14,
-                                    color: Color(0xffF48262),
-                                  ),
-                                ),
-                              ],
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Container(
-                    width: MediaQuery.of(context).size.width * 0.95,
-                    padding: EdgeInsets.symmetric(horizontal: 15, vertical: 7),
-                    child: FlatButton(
-                      color: Color(0xffF48262),
-                      child: Text(
-                        'LANJUT PEMBAYARAN',
-                        style: TextStyle(
-                          fontFamily: 'Brandon',
-                          fontSize: 16,
-                          color: Colors.white,
+                          ],
                         ),
                       ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(7.0),
-                      ),
-                      onPressed: (){
-                        Navigator.of(context)
-                            .pushReplacementNamed(ShippingScreen.id);
-                      },
                     ),
                   ),
                 ],
@@ -662,7 +547,78 @@ class _CartScreenState extends State<CartScreen> {
           ),
         )
       ]),
-      bottomNavigationBar: new PonnyBottomNavbar(selectedIndex: 1),
+      bottomNavigationBar: Wrap(
+        children: <Widget>[
+          Container(
+            width: MediaQuery.of(context).size.width,
+            padding: EdgeInsets.symmetric(vertical: 10),
+            decoration: BoxDecoration(
+              color: Color(0xfffdf8f0),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.5),
+                  spreadRadius: 5,
+                  blurRadius: 7,
+                  offset: Offset(0, 3),
+                ),
+              ],
+            ),
+            child: Center(
+              child: Container(
+                width: MediaQuery.of(context).size.width*0.95,
+                padding: EdgeInsets.symmetric(horizontal: 15),
+                child: Column(
+                  children: <Widget>[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Text(
+                          'TOTAL PESANAN',
+                          style: TextStyle(
+                            fontFamily: 'Brandon',
+                            fontSize: 14,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                        Text(
+                          'Rp 360.000',
+                          style: TextStyle(
+                            fontFamily: 'Brandon',
+                            fontSize: 14,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Center(
+                      child: Container(
+                        width: MediaQuery.of(context).size.width,
+                        padding: EdgeInsets.symmetric(vertical: 10),
+                        child: FlatButton(
+                          color: Color(0xffF48262),
+                          child: Text(
+                            'LANJUT PEMBAYARAN',
+                            style: TextStyle(
+                              fontFamily: 'Brandon',
+                              fontSize: 16,
+                              color: Colors.white,
+                            ),
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(7.0),
+                          ),
+                          onPressed: (){},
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          new PonnyBottomNavbar(selectedIndex: 1),
+        ],
+      ),
     );
   }
 }
