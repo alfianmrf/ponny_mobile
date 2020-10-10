@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
+import 'dart:math' as math;
 
 class ShippingScreen extends StatefulWidget {
   static const String id = "shipping_screen";
@@ -89,318 +91,490 @@ class _ShippingScreenState extends State<ShippingScreen> {
                     ),
                   ),
                   Container(
-                    width: MediaQuery.of(context).size.width * 0.95,
-                    padding: EdgeInsets.all(15),
+                    margin: EdgeInsets.only(top: 25),
+                    width: MediaQuery.of(context).size.width*0.9,
                     decoration: BoxDecoration(
-                      border: Border(
-                        bottom: BorderSide(
-                          color: Color(0xffF48262),
-                          width: 1.0,
-                        ),
-                      ),
+                      border: Border.all(color: Color(0xffF48262)),
+                      borderRadius: BorderRadius.circular(5),
                     ),
-                    child: IntrinsicHeight(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Container(
-                            width: MediaQuery.of(context).size.width * 0.25,
-                            padding: EdgeInsets.only(right: 7),
-                            child: Image.asset(
-                              'assets/images/produk_1.png',
-                              width: MediaQuery.of(context).size.width,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                          Container(
-                            width: MediaQuery.of(context).size.width * 0.35,
-                            padding: EdgeInsets.only(right: 7),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Text(
-                                  'Skin Game',
-                                  style: TextStyle(
-                                    fontFamily: 'Yeseva',
-                                    fontSize: 16,
+                    child: Container(
+                      padding: EdgeInsets.only(top: 7),
+                      child: IntrinsicHeight(
+                        child: Column(
+                          children: <Widget>[
+                            Container(
+                              padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Container(
+                                    margin: EdgeInsets.only(bottom: 7),
+                                    child: Row(
+                                      children: <Widget>[
+                                        Icon(
+                                          Icons.place,
+                                          color: Color(0xffF48262),
+                                          size: 16,
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.only(left: 5),
+                                          child: Text(
+                                            'Alamat Pengiriman',
+                                            style: TextStyle(
+                                              fontFamily: 'Brandon',
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                ),
-                                Text(
-                                  'Acne Warrior',
-                                  style: TextStyle(
-                                    fontFamily: 'Brandon',
-                                    fontSize: 14,
-                                  ),
-                                ),
-                                Text(
-                                  'Rp. 125.000',
-                                  style: TextStyle(
-                                    fontFamily: 'Brandon',
-                                    fontSize: 15,
-                                    color: Color(0xffF48262),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.only(top: 10),
-                                  child: Text(
-                                    'JUMLAH',
+                                  Text(
+                                    'Aninda Anita',
                                     style: TextStyle(
-                                        fontFamily: 'Brandon', fontSize: 12),
+                                      fontFamily: 'Brandon',
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w600,
+                                    ),
                                   ),
-                                ),
-                                Container(
-                                  decoration: BoxDecoration(
-                                    border: Border.all(color: Color(0xffF48262)),
-                                    borderRadius: BorderRadius.circular(5),
+                                  Text(
+                                    'Jl. Jakarta utara no.123, kecamatan Penjaringan',
+                                    style: TextStyle(
+                                      fontFamily: 'Brandon',
+                                      fontSize: 14,
+                                    ),
                                   ),
-                                  child: Wrap(
-                                    crossAxisAlignment: WrapCrossAlignment.center,
+                                  Text(
+                                    'Jakarta Utara, DKI Jakarta,1440',
+                                    style: TextStyle(
+                                      fontFamily: 'Brandon',
+                                      fontSize: 14,
+                                    ),
+                                  ),
+                                  Text(
+                                    '08123456789',
+                                    style: TextStyle(
+                                      fontFamily: 'Brandon',
+                                      fontSize: 14,
+                                    ),
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
                                     children: <Widget>[
-                                      SizedBox(
-                                          width: 25,
-                                          height: 25,
-                                          child: FloatingActionButton(
-                                            backgroundColor: Color(0xffFDF8F0),
-                                            elevation: 0.0,
-                                            highlightElevation: 0.0,
-                                            heroTag: "btnmin1",
-                                            child: Text(
-                                              '-',
-                                              style: TextStyle(
-                                                color: Color(0xffF48262),
-                                                fontFamily: 'Brandon',
-                                                fontWeight: FontWeight.w700,
-                                              ),
-                                            ),
-                                            onPressed: minus1,
-                                          )
+                                      Icon(
+                                        Icons.edit,
+                                        color: Color(0xffF48262),
                                       ),
-                                      Container(
-                                        padding: EdgeInsets.symmetric(horizontal: 10),
-                                        child: Text('$_n1'),
+                                      Padding(
+                                        padding: EdgeInsets.symmetric(horizontal: 5),
                                       ),
-                                      SizedBox(
-                                          width: 25,
-                                          height: 25,
-                                          child: FloatingActionButton(
-                                            backgroundColor: Color(0xffFDF8F0),
-                                            elevation: 0.0,
-                                            highlightElevation: 0.0,
-                                            heroTag: "btnplus1",
-                                            child: Text(
-                                              '+',
-                                              style: TextStyle(
-                                                color: Color(0xffF48262),
-                                                fontFamily: 'Brandon',
-                                                fontWeight: FontWeight.w700,
-                                              ),
-                                            ),
-                                            onPressed: add1,
-                                          )
+                                      Icon(
+                                        Icons.delete_outline,
+                                        color: Color(0xffF48262),
                                       ),
                                     ],
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
-                          ),
-                          Container(
-                            width: MediaQuery.of(context).size.width * 0.25,
-                            child: Column(
+                            Container(
+                              padding: EdgeInsets.only(top: 5),
+                              decoration: BoxDecoration(
+                                border: Border(
+                                  bottom: BorderSide(
+                                    color: Color(0xffF48262),
+                                    width: 1.0,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Row(
                               children: <Widget>[
-                                Container(
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      Text(
-                                        'TOTAL',
-                                        style: TextStyle(
-                                            fontFamily: 'Brandon',
-                                            fontSize: 12
+                                Expanded(
+                                  flex: 1,
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(vertical: 10),
+                                    decoration: BoxDecoration(
+                                      border: Border(
+                                        right: BorderSide(
+                                          color: Color(0xffF48262),
+                                          width: 1.0,
                                         ),
                                       ),
-                                      Text(
-                                        'Rp 200.000',
-                                        style: TextStyle(
-                                            fontFamily: 'Brandon',
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w600
-                                        ),
+                                    ),
+                                    child: Text(
+                                      'Pilih Alamat Lain',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        fontFamily: 'Brandon',
                                       ),
-                                    ],
+                                    ),
                                   ),
                                 ),
                                 Expanded(
-                                  child: Align(
-                                    alignment: Alignment.bottomRight,
-                                    child: Icon(
-                                      Icons.delete_outline,
-                                      color: Color(0xffF48262),
+                                  flex: 1,
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(vertical: 10),
+                                    child: Text(
+                                      'Tambah Alamat Baru',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        fontFamily: 'Brandon',
+                                      ),
                                     ),
                                   ),
                                 ),
                               ],
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   ),
                   Container(
-                    width: MediaQuery.of(context).size.width * 0.95,
-                    padding: EdgeInsets.all(15),
+                    margin: EdgeInsets.only(top: 15),
+                    width: MediaQuery.of(context).size.width*0.9,
                     decoration: BoxDecoration(
-                      border: Border(
-                        bottom: BorderSide(
-                          color: Color(0xffF48262),
-                          width: 1.0,
-                        ),
-                      ),
+                      border: Border.all(color: Color(0xffF48262)),
+                      borderRadius: BorderRadius.circular(5),
                     ),
-                    child: IntrinsicHeight(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Container(
-                            width: MediaQuery.of(context).size.width * 0.25,
-                            padding: EdgeInsets.only(right: 7),
-                            child: Image.asset(
-                              'assets/images/produk_1.png',
-                              width: MediaQuery.of(context).size.width,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                          Container(
-                            width: MediaQuery.of(context).size.width * 0.35,
-                            padding: EdgeInsets.only(right: 7),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Text(
-                                  'Skin Game',
-                                  style: TextStyle(
-                                    fontFamily: 'Yeseva',
-                                    fontSize: 16,
-                                  ),
-                                ),
-                                Text(
-                                  'Acne Warrior',
-                                  style: TextStyle(
-                                    fontFamily: 'Brandon',
-                                    fontSize: 14,
-                                  ),
-                                ),
-                                Text(
-                                  'Rp. 125.000',
-                                  style: TextStyle(
-                                    fontFamily: 'Brandon',
-                                    fontSize: 15,
-                                    color: Color(0xffF48262),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.only(top: 10),
-                                  child: Text(
-                                    'JUMLAH',
-                                    style: TextStyle(
-                                        fontFamily: 'Brandon', fontSize: 12),
-                                  ),
-                                ),
-                                Container(
-                                  decoration: BoxDecoration(
-                                    border: Border.all(color: Color(0xffF48262)),
-                                    borderRadius: BorderRadius.circular(5),
-                                  ),
-                                  child: Wrap(
-                                    crossAxisAlignment: WrapCrossAlignment.center,
-                                    children: <Widget>[
-                                      SizedBox(
-                                          width: 25,
-                                          height: 25,
-                                          child: FloatingActionButton(
-                                            backgroundColor: Color(0xffFDF8F0),
-                                            elevation: 0.0,
-                                            highlightElevation: 0.0,
-                                            heroTag: "btnmin2",
-                                            child: Text(
-                                              '-',
-                                              style: TextStyle(
-                                                color: Color(0xffF48262),
-                                                fontFamily: 'Brandon',
-                                                fontWeight: FontWeight.w700,
+                    child: Container(
+                      padding: EdgeInsets.only(top: 7),
+                      child: IntrinsicHeight(
+                        child: Column(
+                          children: <Widget>[
+                            Container(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Container(
+                                    margin: EdgeInsets.only(bottom: 7),
+                                    child: Theme(
+                                      data: Theme.of(context).copyWith(
+                                        dividerColor: Colors.transparent,
+                                        accentColor: Colors.black,
+                                        unselectedWidgetColor: Colors.black,
+                                      ),
+                                      child: ListTileTheme(
+                                        contentPadding: EdgeInsets.symmetric(horizontal: 15),
+                                        child: ExpansionTile(
+                                          title: Text(
+                                            'Pengiriman',
+                                            style: TextStyle(
+                                              fontFamily: 'Brandon',
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                          trailing: Transform.rotate(
+                                            angle: 90 * math.pi / 180,
+                                            child: Icon(
+                                              Icons.chevron_right,
+                                              color: Color(0xffF48262),
+                                            ),
+                                          ),
+                                          children: [
+                                            Container(
+                                              padding: EdgeInsets.symmetric(horizontal: 15),
+                                              decoration: BoxDecoration(
+                                                border: Border(
+                                                  bottom: BorderSide(
+                                                    color: Color(0xffF48262),
+                                                    width: 1.0,
+                                                  ),
+                                                ),
+                                              ),
+                                              child: IntrinsicHeight(
+                                                child: Row(
+                                                  children: <Widget>[
+                                                    Expanded(
+                                                      flex: 4,
+                                                      child: Container(
+                                                        padding: EdgeInsets.symmetric(vertical: 10),
+                                                        child: Column(
+                                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                                          children: [
+                                                            Text(
+                                                              'J&T Express',
+                                                              style: TextStyle(
+                                                                fontFamily: 'Brandon',
+                                                                fontWeight: FontWeight.w600,
+                                                              ),
+                                                            ),
+                                                            Text(
+                                                              'Receive by 28 Jun - 4 Jul',
+                                                              style: TextStyle(
+                                                                fontFamily: 'Brandon',
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Expanded(
+                                                      flex: 3,
+                                                      child: Container(
+                                                        padding: EdgeInsets.symmetric(vertical: 10),
+                                                        child: Column(
+                                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                                          children: [
+                                                            Text(
+                                                              'Rp 10.000',
+                                                              style: TextStyle(
+                                                                fontFamily: 'Brandon',
+                                                              ),
+                                                            ),
+                                                          ]
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
                                               ),
                                             ),
-                                            onPressed: minus2,
-                                          )
-                                      ),
-                                      Container(
-                                        padding: EdgeInsets.symmetric(horizontal: 10),
-                                        child: Text('$_n2'),
-                                      ),
-                                      SizedBox(
-                                          width: 25,
-                                          height: 25,
-                                          child: FloatingActionButton(
-                                            backgroundColor: Color(0xffFDF8F0),
-                                            elevation: 0.0,
-                                            highlightElevation: 0.0,
-                                            heroTag: "btnplus2",
-                                            child: Text(
-                                              '+',
-                                              style: TextStyle(
-                                                color: Color(0xffF48262),
-                                                fontFamily: 'Brandon',
-                                                fontWeight: FontWeight.w700,
+                                            Container(
+                                              padding: EdgeInsets.symmetric(horizontal: 15),
+                                              decoration: BoxDecoration(
+                                                border: Border(
+                                                  bottom: BorderSide(
+                                                    color: Color(0xffF48262),
+                                                    width: 1.0,
+                                                  ),
+                                                ),
+                                              ),
+                                              child: IntrinsicHeight(
+                                                child: Row(
+                                                  children: <Widget>[
+                                                    Expanded(
+                                                      flex: 4,
+                                                      child: Container(
+                                                        padding: EdgeInsets.symmetric(vertical: 10),
+                                                        child: Column(
+                                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                                          children: [
+                                                            Text(
+                                                              'J&T Express',
+                                                              style: TextStyle(
+                                                                fontFamily: 'Brandon',
+                                                                fontWeight: FontWeight.w600,
+                                                              ),
+                                                            ),
+                                                            Text(
+                                                              'Receive by 28 Jun - 4 Jul',
+                                                              style: TextStyle(
+                                                                fontFamily: 'Brandon',
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Expanded(
+                                                      flex: 3,
+                                                      child: Container(
+                                                        padding: EdgeInsets.symmetric(vertical: 10),
+                                                        child: Column(
+                                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                                            children: [
+                                                              Text(
+                                                                'Rp 10.000',
+                                                                style: TextStyle(
+                                                                  fontFamily: 'Brandon',
+                                                                ),
+                                                              ),
+                                                            ]
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
                                               ),
                                             ),
-                                            onPressed: add2,
-                                          )
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Container(
-                            width: MediaQuery.of(context).size.width * 0.25,
-                            child: Column(
-                              children: <Widget>[
-                                Container(
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      Text(
-                                        'TOTAL',
-                                        style: TextStyle(
-                                            fontFamily: 'Brandon',
-                                            fontSize: 12
+                                            Container(
+                                              padding: EdgeInsets.symmetric(horizontal: 15),
+                                              decoration: BoxDecoration(
+                                                border: Border(
+                                                  bottom: BorderSide(
+                                                    color: Color(0xffF48262),
+                                                    width: 1.0,
+                                                  ),
+                                                ),
+                                              ),
+                                              child: IntrinsicHeight(
+                                                child: Row(
+                                                  children: <Widget>[
+                                                    Expanded(
+                                                      flex: 4,
+                                                      child: Container(
+                                                        padding: EdgeInsets.symmetric(vertical: 10),
+                                                        child: Column(
+                                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                                          children: [
+                                                            Text(
+                                                              'J&T Express',
+                                                              style: TextStyle(
+                                                                fontFamily: 'Brandon',
+                                                                fontWeight: FontWeight.w600,
+                                                              ),
+                                                            ),
+                                                            Text(
+                                                              'Receive by 28 Jun - 4 Jul',
+                                                              style: TextStyle(
+                                                                fontFamily: 'Brandon',
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Expanded(
+                                                      flex: 3,
+                                                      child: Container(
+                                                        padding: EdgeInsets.symmetric(vertical: 10),
+                                                        child: Column(
+                                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                                            children: [
+                                                              Text(
+                                                                'Rp 10.000',
+                                                                style: TextStyle(
+                                                                  fontFamily: 'Brandon',
+                                                                ),
+                                                              ),
+                                                            ]
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                            Container(
+                                              padding: EdgeInsets.symmetric(horizontal: 15),
+                                              decoration: BoxDecoration(
+                                                border: Border(
+                                                  bottom: BorderSide(
+                                                    color: Color(0xffF48262),
+                                                    width: 1.0,
+                                                  ),
+                                                ),
+                                              ),
+                                              child: IntrinsicHeight(
+                                                child: Row(
+                                                  children: <Widget>[
+                                                    Expanded(
+                                                      flex: 4,
+                                                      child: Container(
+                                                        padding: EdgeInsets.symmetric(vertical: 10),
+                                                        child: Column(
+                                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                                          children: [
+                                                            Text(
+                                                              'J&T Express',
+                                                              style: TextStyle(
+                                                                fontFamily: 'Brandon',
+                                                                fontWeight: FontWeight.w600,
+                                                              ),
+                                                            ),
+                                                            Text(
+                                                              'Receive by 28 Jun - 4 Jul',
+                                                              style: TextStyle(
+                                                                fontFamily: 'Brandon',
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Expanded(
+                                                      flex: 3,
+                                                      child: Container(
+                                                        padding: EdgeInsets.symmetric(vertical: 10),
+                                                        child: Column(
+                                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                                            children: [
+                                                              Text(
+                                                                'Rp 10.000',
+                                                                style: TextStyle(
+                                                                  fontFamily: 'Brandon',
+                                                                ),
+                                                              ),
+                                                            ]
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                            Container(
+                                              padding: EdgeInsets.symmetric(horizontal: 15),
+                                              decoration: BoxDecoration(
+                                                border: Border(
+                                                  bottom: BorderSide(
+                                                    color: Color(0xffF48262),
+                                                    width: 1.0,
+                                                  ),
+                                                ),
+                                              ),
+                                              child: IntrinsicHeight(
+                                                child: Row(
+                                                  children: <Widget>[
+                                                    Expanded(
+                                                      flex: 4,
+                                                      child: Container(
+                                                        padding: EdgeInsets.symmetric(vertical: 10),
+                                                        child: Column(
+                                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                                          children: [
+                                                            Text(
+                                                              'J&T Express',
+                                                              style: TextStyle(
+                                                                fontFamily: 'Brandon',
+                                                                fontWeight: FontWeight.w600,
+                                                              ),
+                                                            ),
+                                                            Text(
+                                                              'Receive by 28 Jun - 4 Jul',
+                                                              style: TextStyle(
+                                                                fontFamily: 'Brandon',
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Expanded(
+                                                      flex: 3,
+                                                      child: Container(
+                                                        padding: EdgeInsets.symmetric(vertical: 10),
+                                                        child: Column(
+                                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                                            children: [
+                                                              Text(
+                                                                'Rp 10.000',
+                                                                style: TextStyle(
+                                                                  fontFamily: 'Brandon',
+                                                                ),
+                                                              ),
+                                                            ]
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          ],
                                         ),
-                                      ),
-                                      Text(
-                                        'Rp 200.000',
-                                        style: TextStyle(
-                                            fontFamily: 'Brandon',
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w600
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Align(
-                                    alignment: Alignment.bottomRight,
-                                    child: Icon(
-                                      Icons.delete_outline,
-                                      color: Color(0xffF48262),
+                                      )
                                     ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   ),
