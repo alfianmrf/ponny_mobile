@@ -45,6 +45,7 @@ import 'package:ponny/screens/register.dart';
 import 'package:ponny/screens/product_details_screen.dart';
 import 'package:ponny/screens/cart_screen.dart';
 import 'package:ponny/screens/shipping_screen.dart';
+import 'package:ponny/screens/payment_screen.dart';
 
 void main() {
   runApp(MyApp());
@@ -93,7 +94,8 @@ class MyApp extends StatelessWidget {
         RegisterScreen.id: (context) => RegisterScreen(),
         ProductDetailsScreen.id: (context) => ProductDetailsScreen(),
         CartScreen.id: (context) => CartScreen(),
-        ShippingScreen.id: (context) => ShippingScreen()
+        ShippingScreen.id: (context) => ShippingScreen(),
+        PaymentScreen.id: (context) => PaymentScreen()
       },
     );
   }

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:ponny/screens/payment_screen.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
 import 'dart:math' as math;
 
@@ -15,37 +16,6 @@ class _ShippingScreenState extends State<ShippingScreen> {
   void initState() {
     super.initState();
   }
-
-  int _n1 = 1;
-  int _n2 = 1;
-
-  void add1() {
-    setState(() {
-      _n1++;
-    });
-  }
-
-  void add2() {
-    setState(() {
-      _n2++;
-    });
-  }
-
-  void minus1() {
-    setState(() {
-      if (_n1 != 1)
-        _n1--;
-    });
-  }
-
-  void minus2() {
-    setState(() {
-      if (_n2 != 1)
-        _n2--;
-    });
-  }
-
-  String dropdownValue = 'One';
 
   @override
   Widget build(BuildContext context) {
@@ -781,7 +751,10 @@ class _ShippingScreenState extends State<ShippingScreen> {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(7.0),
                           ),
-                          onPressed: (){},
+                          onPressed: (){
+                            Navigator.of(context)
+                                .pushReplacementNamed(PaymentScreen.id);
+                          },
                         ),
                       ),
                     ),
