@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:ponny/screens/terkirim_screen.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
+import 'package:ponny/screens/shipping_screen.dart';
 
 class CartScreen extends StatefulWidget {
   static const String id = "cart_screen";
@@ -650,7 +650,10 @@ class _CartScreenState extends State<CartScreen> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(7.0),
                       ),
-                      onPressed: (){},
+                      onPressed: (){
+                        Navigator.of(context)
+                            .pushReplacementNamed(ShippingScreen.id);
+                      },
                     ),
                   ),
                 ],
