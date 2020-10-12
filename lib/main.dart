@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ponny/screens/bank_transfer_screen.dart';
+import 'package:ponny/screens/bank_transfer_detail_screen.dart';
 
 /* Navbar Bottom Bar */
 import 'package:ponny/screens/forums_screen.dart';
@@ -101,7 +102,8 @@ class MyApp extends StatelessWidget {
         CartScreen.id: (context) => CartScreen(),
         ShippingScreen.id: (context) => ShippingScreen(),
         PaymentScreen.id: (context) => PaymentScreen(),
-        BankTransferScreen.id: (context) => BankTransferScreen()
+        BankTransferScreen.id: (context) => BankTransferScreen(),
+        BankTransferDetailScreen.id: (context) => BankTransferDetailScreen()
       },
     );
   }

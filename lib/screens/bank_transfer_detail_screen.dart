@@ -1,16 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
-import 'package:ponny/screens/bank_transfer_detail_screen.dart';
 
-class BankTransferScreen extends StatefulWidget {
-  static const String id = "bank_transfer_screen";
+class BankTransferDetailScreen extends StatefulWidget {
+  static const String id = "bank_transfer_detail_screen";
 
   @override
-  _BankTransferScreenState createState() => _BankTransferScreenState();
+  _BankTransferDetailScreenState createState() => _BankTransferDetailScreenState();
 }
 
-class _BankTransferScreenState extends State<BankTransferScreen> {
+class _BankTransferDetailScreenState extends State<BankTransferDetailScreen> {
   @override
   void initState() {
     super.initState();
@@ -60,31 +59,114 @@ class _BankTransferScreenState extends State<BankTransferScreen> {
                     ),
                   ),
                   Container(
-                    width: MediaQuery.of(context).size.width,
-                    padding: EdgeInsets.symmetric(vertical: 20),
-                    color: Color(0xffF48262),
-                    child: Center(
-                      child: Column(
-                        children: [
-                          Text(
-                            'TOTAL PESANAN',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontFamily: 'Brandon',
-                              fontSize: 16,
-                            ),
-                          ),
-                          Text(
-                            'Rp 469.000',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontFamily: 'Brandon',
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ],
+                    padding: EdgeInsets.symmetric(vertical: 15),
+                    child: Text(
+                      'SELESAIKAN PEMBAYARAN',
+                      style: TextStyle(
+                        fontFamily: 'Yeseva',
                       ),
+                    ),
+                  ),
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    color: Color(0xffF48262),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: Container(
+                            padding: EdgeInsets.symmetric(vertical: 20),
+                            decoration: BoxDecoration(
+                              border: Border(
+                                right: BorderSide( //                   <--- left side
+                                  color: Colors.white,
+                                  width: 3.0,
+                                ),
+                              ),
+                            ),
+                            child: Column(
+                              children: [
+                                Text(
+                                  'NOMOR PESANAN',
+                                  style: TextStyle(
+                                    fontFamily: 'Brandon',
+                                    color: Colors.white,
+                                    fontSize: 12,
+                                  ),
+                                ),
+                                Text(
+                                  'WKSKDKAL',
+                                  style: TextStyle(
+                                    fontFamily: 'Brandon',
+                                    color: Colors.white,
+                                    fontSize: 14,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: Container(
+                            padding: EdgeInsets.symmetric(vertical: 20),
+                            child: Column(
+                              children: [
+                                Text(
+                                  'TOTAL PESANAN',
+                                  style: TextStyle(
+                                    fontFamily: 'Brandon',
+                                    color: Colors.white,
+                                    fontSize: 12,
+                                  ),
+                                ),
+                                Text(
+                                  'Rp 469.000',
+                                  style: TextStyle(
+                                    fontFamily: 'Brandon',
+                                    color: Colors.white,
+                                    fontSize: 14,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: Container(
+                            padding: EdgeInsets.symmetric(vertical: 20),
+                            decoration: BoxDecoration(
+                              border: Border(
+                                left: BorderSide( //                   <--- left side
+                                  color: Colors.white,
+                                  width: 3.0,
+                                ),
+                              ),
+                            ),
+                            child: Column(
+                              children: [
+                                Text(
+                                  'KODE UNIK',
+                                  style: TextStyle(
+                                    fontFamily: 'Brandon',
+                                    color: Colors.white,
+                                    fontSize: 12,
+                                  ),
+                                ),
+                                Text(
+                                  'Rp 21',
+                                  style: TextStyle(
+                                    fontFamily: 'Brandon',
+                                    color: Colors.white,
+                                    fontSize: 14,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                   Container(
@@ -197,7 +279,7 @@ class _BankTransferScreenState extends State<BankTransferScreen> {
                     child: FlatButton(
                       color: Color(0xffF48262),
                       child: Text(
-                        'LANJUT PEMBAYARAN',
+                        'KONFIRMASI PEMBAYARAN',
                         style: TextStyle(
                           fontFamily: 'Brandon',
                           fontSize: 16,
@@ -207,10 +289,7 @@ class _BankTransferScreenState extends State<BankTransferScreen> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(7.0),
                       ),
-                      onPressed: (){
-                        Navigator.of(context)
-                            .pushReplacementNamed(BankTransferDetailScreen.id);
-                      },
+                      onPressed: (){},
                     ),
                   ),
                 ],
