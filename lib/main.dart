@@ -36,6 +36,9 @@ import 'package:ponny/screens/edit_akun_screen.dart';
 import 'package:ponny/screens/ubah_password_screen.dart';
 import 'package:ponny/screens/edit_alamat_screen.dart';
 
+/* Account ==> Beauty Profile */
+import 'package:ponny/screens/beauty_profile_screen.dart';
+
 import 'package:ponny/screens/ulasan_produk_screen.dart';
 import 'package:ponny/screens/daftar_keinginan_screen.dart';
 import 'package:ponny/screens/splash_screen.dart';
@@ -87,6 +90,7 @@ class MyApp extends StatelessWidget {
         DetailAkunScreen.id: (context) => DetailAkunScreen(),
         EditAkunScreen.id: (context) => EditAkunScreen(),
         EditAlamatScreen.id: (context) => EditAlamatScreen(),
+        BeautyProfileScreen.id: (context) => BeautyProfileScreen(),
         LoginScreen.id: (context) => LoginScreen(),
         PraDaftarScreen.id: (context) => PraDaftarScreen(),
         RegisterScreen.id: (context) => RegisterScreen(),

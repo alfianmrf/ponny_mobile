@@ -6,6 +6,7 @@ import 'package:ponny/screens/account_screen.dart';
 import 'package:ponny/screens/edit_akun_screen.dart';
 import 'package:ponny/screens/edit_alamat_screen.dart';
 import 'package:ponny/screens/ubah_password_screen.dart';
+import 'package:ponny/screens/tambah_alamat_screen.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
 
 class DetailAkunScreen extends StatefulWidget {
@@ -614,7 +615,14 @@ class _DetailAkunStateScreen extends State<DetailAkunScreen> {
                   Container(
                     margin: EdgeInsets.only(top: 15, bottom: 5),
                     child: GestureDetector(
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => TambahAlamatScreen(),
+                          ),
+                        );
+                      },
                       child: Text(
                         "+ Tambah Alamat Baru",
                         style: TextStyle(
