@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intro_slider/intro_slider.dart';
 import 'package:intro_slider/slide_object.dart';
 import 'package:ponny/screens/home_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class IntroScreen extends StatefulWidget {
   static const String id = "intro_screen";
@@ -87,7 +88,9 @@ class _IntroScreenState extends State<IntroScreen> {
     );
   }
 
-  void onDonePress(){
+  Future<void> onDonePress() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    preferences.setBool('is_intro', true);
     Navigator.of(context).pushReplacementNamed(HomeScreen.id);
   }
 
