@@ -170,112 +170,115 @@ class _BankTransferDetailScreenState extends State<BankTransferDetailScreen> {
                     ),
                   ),
                   Container(
-                    margin: EdgeInsets.only(top: 25, bottom: 25),
-                    width: MediaQuery.of(context).size.width*0.9,
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Color(0xffF48262)),
-                      borderRadius: BorderRadius.circular(5),
+                    padding: EdgeInsets.only(top: 15),
+                    child: Text(
+                      'TRANSFER KE',
+                      style: TextStyle(
+                        fontFamily: 'Brandon',
+                      ),
                     ),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(5),
-                      child: Container(
-                        padding: EdgeInsets.symmetric(vertical: 10),
-                        child: IntrinsicHeight(
-                          child: Column(
-                            children: <Widget>[
-                              Container(
-                                width: MediaQuery.of(context).size.width,
-                                padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      'Nama Bank',
-                                      style: TextStyle(
-                                        fontFamily: 'Brandon',
-                                      ),
-                                    ),
-                                    Text(
-                                      'Bank BCA',
-                                      style: TextStyle(
-                                        fontFamily: 'Brandon',
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Container(
-                                width: MediaQuery.of(context).size.width,
-                                padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      'Nomor Rekening',
-                                      style: TextStyle(
-                                        fontFamily: 'Brandon',
-                                      ),
-                                    ),
-                                    Text(
-                                      '12334567890',
-                                      style: TextStyle(
-                                        fontFamily: 'Brandon',
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Container(
-                                width: MediaQuery.of(context).size.width,
-                                padding: EdgeInsets.only(left: 15, right: 15, top: 5, bottom: 15),
-                                decoration: BoxDecoration(
-                                  border: Border(
-                                    bottom: BorderSide(
-                                      color: Color(0xffF48262),
-                                      width: 1.0,
-                                    ),
-                                  ),
-                                ),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      'Nama Pemilik Rekening',
-                                      style: TextStyle(
-                                        fontFamily: 'Brandon',
-                                      ),
-                                    ),
-                                    Text(
-                                      'Aninda Anita',
-                                      style: TextStyle(
-                                        fontFamily: 'Brandon',
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Container(
-                                width: MediaQuery.of(context).size.width,
-                                padding: EdgeInsets.only(left: 15, right: 15, top: 10, bottom: 0),
-                                child: Center(
-                                  child: Text(
-                                    'UBAH',
-                                    style: TextStyle(
-                                      fontFamily: 'Brandon',
-                                      color: Color(0xffF48262),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
+                  ),
+                  Image.asset(
+                    'assets/images/payment/bca-02.png',
+                    height: 40,
+                  ),
+                  Text(
+                    'a/n PT.Ponny Beaute Indonesia',
+                    style: TextStyle(
+                      fontFamily: 'Brandon',
+                    ),
+                  ),
+                  Text(
+                    '1234567899',
+                    style: TextStyle(
+                      fontFamily: 'Brandon',
+                      fontSize: 18,
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.only(top: 10),
+                    child: SizedBox(
+                      height: 20,
+                      width: 70,
+                      child: OutlineButton(
+                        color: Color(0xffF48262),
+                        child: Text(
+                          'Salin',
+                          style: TextStyle(
+                            fontFamily: 'Brandon',
+                            fontSize: 12,
                           ),
                         ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                        ),
+                        borderSide: BorderSide(
+                          color: Color(0xffF48262),
+                          style: BorderStyle.solid,
+                          width: 1,
+                        ),
+                        highlightedBorderColor: Color(0xffF48262),
+                        onPressed: (){},
                       ),
                     ),
                   ),
                   Container(
+                    padding: EdgeInsets.only(top: 15),
+                    child: Text(
+                      'JUMLAH YANG HARUS DIBAYAR',
+                      style: TextStyle(
+                        fontFamily: 'Brandon',
+                      ),
+                    ),
+                  ),
+                  Text(
+                    'Rp 469.021',
+                    style: TextStyle(
+                      fontFamily: 'Brandon',
+                      fontSize: 18,
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.only(top: 10),
+                    child: SizedBox(
+                      height: 20,
+                      width: 70,
+                      child: OutlineButton(
+                        color: Color(0xffF48262),
+                        child: Text(
+                          'Salin',
+                          style: TextStyle(
+                            fontFamily: 'Brandon',
+                            fontSize: 12,
+                          ),
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                        ),
+                        borderSide: BorderSide(
+                          color: Color(0xffF48262),
+                          style: BorderStyle.solid,
+                          width: 1,
+                        ),
+                        highlightedBorderColor: Color(0xffF48262),
+                        onPressed: (){},
+                      ),
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.only(top: 15),
+                    child: Text(
+                      'Pastikan kamu melakukan pembayaran dalam waktu 24 jam\nsetelah pesanan dibuat untuk menghindari pembatalan otomatis\ndan silahkan lakukan konfirmasi pembayaran jika kamu sudah\nmelakukan pembayaran di halaman my account.',
+                      style: TextStyle(
+                        fontFamily: 'Brandon',
+                        fontSize: 12,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  Container(
                     width: MediaQuery.of(context).size.width * 0.95,
-                    padding: EdgeInsets.symmetric(horizontal: 15, vertical: 7),
+                    padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
                     child: FlatButton(
                       color: Color(0xffF48262),
                       child: Text(
