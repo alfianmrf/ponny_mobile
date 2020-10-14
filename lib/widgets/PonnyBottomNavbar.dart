@@ -12,7 +12,7 @@ class PonnyBottomNavbar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _user = Provider.of(context).
+    final _user = Provider.of(context);
     void _onItemTapped(int index) {
       switch (index) {
         case 0:
