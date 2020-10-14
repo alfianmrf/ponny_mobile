@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -8,11 +10,11 @@ class UserModel with ChangeNotifier{
   bool loading = false;
 
   UserModel(){
-    
+    getUser();
   }
 
-  Future<void> saveUser(User user) async {
-    final LocalStorage storage = LocalStorage("fstore");
+  Future<void> saveUser(Map<String, dynamic> user) async {
+    final LocalStorage storage = LocalStorage("ponnystore");
     try {
       // save to Preference
       SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -29,12 +31,12 @@ class UserModel with ChangeNotifier{
   }
 
   Future<void> getUser() async {
-    final LocalStorage storage = LocalStorage("fstore");
+    final LocalStorage storage = LocalStorage("ponnystore");
     try {
       final ready = await storage.ready;
 
       if (ready) {
-        final json = storage.getItem(kLocalKey["userInfo"]);
+        final json = storage.getItem("userInfo");
         if (json != null) {
           user = User.fromLocalJson(json);
           loggedIn = true;
@@ -87,4 +89,31 @@ class User{
       this.completed_profile,
       this.tier,
       this.point);
+
+   User.fromLocalJson(Map<String, dynamic> json) {
+     print(json);
+     try {
+       id = json['id'];
+       provider_id = json['provider_id'];
+       user_type = json['user_type'];
+       name = json['name'];
+       last_name = json['last_name'];
+       email = json['email'];
+       email_verified_at= json['email_verified_at'];
+       avatar_original = json['avatar_original'];
+       phone = json['phone'];
+       gender = json['gender'];
+       tgl_lahir = json['tgl_lahir'];
+       jenis_kulit= json['jenis_kulit'];
+       warna_kulit= json['warna_kulit'];
+       kondisi_kulit = json['kondisi_kulit'];
+       kondisi_rambut = json['kondisi_rambut'];
+       preferensi_product = json['preferensi_product'];
+       completed_profile = json['completed_profile'];
+       tier = json['tier'];
+       point = json['point'];
+     } catch (e) {
+       print(e.toString());
+     }
+   }
 }

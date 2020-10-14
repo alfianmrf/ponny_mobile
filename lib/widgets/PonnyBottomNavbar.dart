@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:ponny/main.dart';
 import 'package:ponny/screens/home_screen.dart';
 import 'package:ponny/screens/account_screen.dart';
 import 'package:ponny/screens/forums_screen.dart';
 import 'package:ponny/screens/login.dart';
+import 'package:provider/provider.dart';
 
 class PonnyBottomNavbar extends StatelessWidget {
   PonnyBottomNavbar({this.selectedIndex});
@@ -10,6 +12,7 @@ class PonnyBottomNavbar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final _user = Provider.of(context).
     void _onItemTapped(int index) {
       switch (index) {
         case 0:
