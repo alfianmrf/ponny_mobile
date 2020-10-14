@@ -56,10 +56,14 @@ import 'package:provider/provider.dart';
 
 void main() {
 
-  runApp(ChangeNotifierProvider(
-    create: (context) => UserModel(),
-    child: MyApp(),
-  ));
+  runApp(
+      MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (context) => UserModel()),
+        ],
+        child: MyApp(),
+      ),
+  );
 }
 
 class MyApp extends StatelessWidget {
