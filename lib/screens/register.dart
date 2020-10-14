@@ -1,8 +1,16 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:intl/intl.dart';
+import 'package:ponny/common/constant.dart';
 import 'package:ponny/screens/home_screen.dart';
 import 'package:ponny/screens/login.dart';
+import 'package:ponny/util/globalUrl.dart';
+import 'package:uiblock/uiblock.dart';
+import 'package:http/http.dart' as http;
 
 class RegisterScreen extends StatefulWidget {
   static const String id = "register_Screen";
@@ -21,11 +29,12 @@ class _RegisterScreen extends State<RegisterScreen> {
         context: context,
         initialDate: this.date,
         firstDate: DateTime(1980),
-        lastDate: DateTime(2021));
+        lastDate: DateTime.now());
 
     if (selected != null && selected != this.date) {
       setState(() {
         this.date = selected;
+        TglLahir=DateFormat("yyyy-MM-dd").format(selected);
       });
     }
   }
@@ -36,20 +45,71 @@ class _RegisterScreen extends State<RegisterScreen> {
   final password = TextEditingController();
   final konfirmasi_password = TextEditingController();
   final no_telepon = TextEditingController();
+  String JenisKelamin;
+  String TglLahir;
 
   void validateInput() {
     FormState form = this.formKey.currentState;
     ScaffoldState scaffold = this.scaffoldKey.currentState;
 
-    if (form.validate()) {
+    if (form.validate() && JenisKelamin != null && TglLahir != null) {
+      _fetchRegister();
+
+    }else if(JenisKelamin == null || TglLahir == null){
       showDialog(
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              content: Text("Terkonfirmasi"),
+              content: Text("Jenis Kelamin dan Tanggal lahir harus diisi."),
             );
           });
     }
+  }
+
+  _fetchRegister() async {
+      FocusScope.of(context).requestFocus(new FocusNode());
+      UIBlock.block(context,customLoaderChild: LoadingWidget(context));
+      var param ={
+          "name":nama_depan.value.text,
+          "last_name":nama_belakang.value.text,
+          "email":email.value.text,
+          "password": password.value.text,
+          "phone":no_telepon.value.text,
+          "gender":JenisKelamin,
+          "tgl_lahir":TglLahir
+      };
+      final res = await http.post(register,headers: { HttpHeaders.contentTypeHeader: 'application/json' },body: json.encode(param));
+      UIBlock.unblock(context);
+      if(res.statusCode == 201){
+        final pesan = json.decode(res.body);
+        showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                content: Text(pesan['message']),
+                actions:<Widget> [
+                  FlatButton (
+                    child: Text('Login Now'),
+                    onPressed: () {
+
+                      Navigator.pushReplacement(context,new MaterialPageRoute(
+                        builder: (BuildContext context) =>  new LoginScreen(),
+                      ));
+                    },
+                  ),
+                ],
+              );
+            });
+      }else{
+        final snackBar = SnackBar(
+          content: Text('Terjadi kesalahan pada serve!',style: TextStyle(color: Colors.white)),
+          backgroundColor: Colors.redAccent,
+        );
+        scaffoldKey.currentState.showSnackBar(snackBar);
+      }
+
+
+
   }
 
   @override
@@ -310,7 +370,12 @@ class _RegisterScreen extends State<RegisterScreen> {
                                   minWidth: 180.0,
                                   height: 45.0,
                                   child: RaisedButton(
-                                    onPressed: () {},
+
+                                    onPressed: () {
+                                        setState(() {
+                                          JenisKelamin="P";
+                                        });
+                                    },
                                     child: Text(
                                       "Perempuan",
                                       style: TextStyle(
@@ -320,6 +385,8 @@ class _RegisterScreen extends State<RegisterScreen> {
                                           letterSpacing: 1,
                                           color: Hexcolor('#F48262')),
                                     ),
+
+                                    color: JenisKelamin == "P" ? Colors.white70 : null,
                                   ),
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(5.0),
@@ -332,7 +399,11 @@ class _RegisterScreen extends State<RegisterScreen> {
                                   minWidth: 180.0,
                                   height: 45.0,
                                   child: RaisedButton(
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      setState(() {
+                                        JenisKelamin="L";
+                                      });
+                                    },
                                     child: Text(
                                       "Laki-laki",
                                       style: TextStyle(
@@ -342,6 +413,7 @@ class _RegisterScreen extends State<RegisterScreen> {
                                           letterSpacing: 1,
                                           color: Hexcolor('#F48262')),
                                     ),
+                                    color: JenisKelamin == "L" ? Colors.white70 : null,
                                   ),
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(5.0),
@@ -377,7 +449,7 @@ class _RegisterScreen extends State<RegisterScreen> {
                                     selectDate(context);
                                   },
                                   child: Text(
-                                    "Pilih Tanggal Lahir",
+                                    TglLahir != null ? TglLahir :"Pilih Tanggal Lahir",
                                     style: TextStyle(
                                         fontSize: 14,
                                         fontFamily: 'Brandon',
