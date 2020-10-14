@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ponny/model/User.dart';
 import 'package:ponny/screens/bank_transfer_screen.dart';
 import 'package:ponny/screens/bank_transfer_detail_screen.dart';
 import 'package:ponny/screens/konfirmasi_pembayaran_screen.dart';
@@ -52,9 +53,14 @@ import 'package:ponny/screens/product_details_screen.dart';
 import 'package:ponny/screens/cart_screen.dart';
 import 'package:ponny/screens/shipping_screen.dart';
 import 'package:ponny/screens/payment_screen.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(MyApp());
+
+  runApp(ChangeNotifierProvider(
+    create: (context) => UserModel(),
+    child: MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {

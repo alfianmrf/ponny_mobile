@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:ponny/common/constant.dart';
+import 'package:ponny/model/User.dart';
 import 'package:ponny/screens/pra_daftar.dart';
 import 'package:ponny/screens/home_screen.dart';
 import 'package:keyboard_attachable/keyboard_attachable.dart';
@@ -49,15 +50,21 @@ class _LoginStateScreen extends State<LoginScreen> {
         "password":mypass.text
       };
       final res = await http.post(loginUrl,headers: { HttpHeaders.contentTypeHeader: 'application/json' },body: json.encode(param));
+      final _user = UserModel();
+      
       UIBlock.unblock(context);
       if(res.statusCode == 200){
         var result = json.decode(res.body);
         SharedPreferences preferences = await SharedPreferences.getInstance();
         preferences.setBool('loginIn', true);
         preferences.setString("access_token", result['access_token']);
+        final us = User.fromLocalJson(result['user']);
+        _user.saveUser(result['user']);
+        
         Navigator.pushReplacement(context,new MaterialPageRoute(
           builder: (BuildContext context) =>  new HomeScreen(),
         ));
+        
 
       }else{
         final snackBar = SnackBar(

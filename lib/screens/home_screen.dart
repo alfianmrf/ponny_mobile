@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:ponny/model/User.dart';
 import 'package:ponny/screens/login.dart';
 import 'package:ponny/screens/product_details_screen.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
@@ -23,6 +24,8 @@ class _HomeScreenState extends State<HomeScreen> {
       showAlertDialog(context);
     });
   }
+
+
 
   @override
   void initState() {
@@ -428,6 +431,10 @@ class _HomeScreenState extends State<HomeScreen> {
         )
       ],
     );
+    var myuser = UserModel();
+    myuser.addListener(() {
+      print(myuser.user.email);
+    });
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
       body: Stack(children: <Widget>[
@@ -468,7 +475,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: new Swiper(
                   itemBuilder: (BuildContext context, int index) {
                     return new Image.network(
-                      "http://via.placeholder.com/288x188",
+                      "https://via.placeholder.com/288x188",
                       fit: BoxFit.cover,
                     );
                   },
