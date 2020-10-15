@@ -3,16 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:ponny/screens/home_screen.dart';
 import 'package:ponny/screens/account_screen.dart';
-import 'package:ponny/screens/daftar_keinginan_sukses_screen.dart';
+import 'package:ponny/screens/account/daftar_keinginan_sukses_screen.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
 
-class TambahAlamatScreen extends StatefulWidget {
-  static const String id = "tambah_alamat_Screen";
+class EditAlamatScreen extends StatefulWidget {
+  static const String id = "edit_alamat_Screen";
   @override
-  _TambahAlamatStateScreen createState() => _TambahAlamatStateScreen();
+  _EditAlamatStateScreen createState() => _EditAlamatStateScreen();
 }
 
-class _TambahAlamatStateScreen extends State<TambahAlamatScreen> {
+class _EditAlamatStateScreen extends State<EditAlamatScreen> {
   List<String> province = [
     "Jawa Timur",
     "Jawa Barat",
@@ -85,7 +85,7 @@ class _TambahAlamatStateScreen extends State<TambahAlamatScreen> {
                   ),
                   Container(
                     child: Text(
-                      "Tambah Alamat Baru",
+                      "Edit Address",
                       style: TextStyle(
                         fontSize: 24,
                         fontFamily: "Yeseva",
@@ -129,6 +129,7 @@ class _TambahAlamatStateScreen extends State<TambahAlamatScreen> {
                       ),
                     ),
                     child: TextFormField(
+                      initialValue: "Carla Starla",
                       style: TextStyle(
                         fontFamily: "Brandon",
                         fontSize: 17,
@@ -157,6 +158,7 @@ class _TambahAlamatStateScreen extends State<TambahAlamatScreen> {
                       ),
                     ),
                     child: TextFormField(
+                      initialValue: "jl. dimana aja bebas no.123",
                       style: TextStyle(
                         fontFamily: "Brandon",
                         fontSize: 17,
@@ -186,21 +188,13 @@ class _TambahAlamatStateScreen extends State<TambahAlamatScreen> {
                             ),
                           ),
                           isExpanded: true,
-                          // value: prov,
+                          value: prov,
                           icon: Icon(
                             Icons.arrow_forward_ios,
                           ),
                           iconSize: 20,
                           iconEnabledColor: Color(0xffF48262),
                           iconDisabledColor: Color(0xffF48262),
-                          hint: Text(
-                            "Province",
-                            style: TextStyle(
-                              fontFamily: "Brandon",
-                              fontSize: 15,
-                              fontWeight: FontWeight.w300,
-                            ),
-                          ),
                           items: province.map((String val) {
                             return DropdownMenuItem(
                               value: val,
@@ -235,19 +229,11 @@ class _TambahAlamatStateScreen extends State<TambahAlamatScreen> {
                             ),
                           ),
                           isExpanded: true,
-                          // value: kota,
+                          value: kota,
                           icon: Icon(Icons.arrow_forward_ios),
                           iconSize: 20,
                           iconEnabledColor: Color(0xffF48262),
                           iconDisabledColor: Color(0xffF48262),
-                          hint: Text(
-                            "City",
-                            style: TextStyle(
-                              fontFamily: "Brandon",
-                              fontSize: 15,
-                              fontWeight: FontWeight.w300,
-                            ),
-                          ),
                           items: city.map((String val) {
                             return DropdownMenuItem(
                               value: val,
@@ -282,19 +268,11 @@ class _TambahAlamatStateScreen extends State<TambahAlamatScreen> {
                             ),
                           ),
                           isExpanded: true,
-                          // value: distrik,
+                          value: distrik,
                           icon: Icon(Icons.arrow_forward_ios),
                           iconSize: 20,
                           iconEnabledColor: Color(0xffF48262),
                           iconDisabledColor: Color(0xffF48262),
-                          hint: Text(
-                            "District",
-                            style: TextStyle(
-                              fontFamily: "Brandon",
-                              fontSize: 15,
-                              fontWeight: FontWeight.w300,
-                            ),
-                          ),
                           items: district.map((String val) {
                             return DropdownMenuItem(
                               value: val,
@@ -328,6 +306,7 @@ class _TambahAlamatStateScreen extends State<TambahAlamatScreen> {
                       ),
                     ),
                     child: TextFormField(
+                      initialValue: "12345",
                       style: TextStyle(
                         fontFamily: "Brandon",
                         fontSize: 17,
@@ -356,6 +335,7 @@ class _TambahAlamatStateScreen extends State<TambahAlamatScreen> {
                       ),
                     ),
                     child: TextFormField(
+                      initialValue: "+62 8123456910",
                       style: TextStyle(
                         fontFamily: "Brandon",
                         fontSize: 17,

@@ -3,16 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:ponny/screens/home_screen.dart';
 import 'package:ponny/screens/account_screen.dart';
-import 'package:ponny/screens/daftar_keinginan_sukses_screen.dart';
+import 'package:ponny/screens/account/dalam_perjalanan_sukses_screen.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
 
-class DaftarKeinginanScreen extends StatefulWidget {
-  static const String id = "daftar_keinginan_Screen";
+class DalamPerjalananScreen extends StatefulWidget {
+  static const String id = "login_Screen";
   @override
-  _DaftarKeinginanStateScreen createState() => _DaftarKeinginanStateScreen();
+  _DalamPerjalananStateScreen createState() => _DalamPerjalananStateScreen();
 }
 
-class _DaftarKeinginanStateScreen extends State<DaftarKeinginanScreen> {
+class _DalamPerjalananStateScreen extends State<DalamPerjalananScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,7 +43,7 @@ class _DaftarKeinginanStateScreen extends State<DaftarKeinginanScreen> {
                   ),
                   Container(
                     child: Text(
-                      "Wishlist",
+                      "Dalam Perjalanan",
                       style: TextStyle(
                         fontSize: 24,
                         fontFamily: "Yeseva",
@@ -77,14 +77,14 @@ class _DaftarKeinginanStateScreen extends State<DaftarKeinginanScreen> {
                   children: [
                     Container(
                       child: Image.asset(
-                        "assets/images/Asset 10.png",
+                        "assets/images/Asset 7.png",
                         fit: BoxFit.cover,
                       ),
                     ),
                     Container(
                       margin: EdgeInsets.only(top: 10),
                       child: Text(
-                        "Wishlist-mu masih kosong, nih.",
+                        "You have no orders.",
                         style: TextStyle(
                           fontFamily: "Brandon",
                           fontSize: 14,
@@ -93,7 +93,7 @@ class _DaftarKeinginanStateScreen extends State<DaftarKeinginanScreen> {
                     ),
                     Container(
                       child: Text(
-                        "Yuk, lihat-lihat produk menarik di Ponny Beaute!",
+                        "Shop top brands and cult favorites now.",
                         style: TextStyle(
                           fontFamily: "Brandon",
                           fontSize: 14,
@@ -505,6 +505,26 @@ class _DaftarKeinginanStateScreen extends State<DaftarKeinginanScreen> {
                                   color: Color(0xffF3C1B5),
                                 ),
                               ),
+                              // Container(
+                              //   margin: EdgeInsets.only(top: 15),
+                              //   width: 50,
+                              //   height: 30,
+                              //   color: Color(0xffF48262),
+                              //   child: Row(
+                              //     mainAxisAlignment: MainAxisAlignment.center,
+                              //     children: [
+                              //       Text(
+                              //         "35%",
+                              //         style: TextStyle(
+                              //           fontSize: 12,
+                              //           fontFamily: "Brandon",
+                              //           color: Colors.white,
+                              //           fontWeight: FontWeight.w700,
+                              //         ),
+                              //       ),
+                              //     ],
+                              //   ),
+                              // ),
                             ],
                           ),
                         ),
@@ -624,7 +644,7 @@ class _DaftarKeinginanStateScreen extends State<DaftarKeinginanScreen> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => DaftarKeinginanSuksesScreen(),
+                      builder: (context) => DalamPerjalananSuksesScreen(),
                     ),
                   );
                 },

@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:ponny/screens/home_screen.dart';
 import 'package:ponny/screens/account_screen.dart';
-import 'package:ponny/screens/edit_akun_screen.dart';
-import 'package:ponny/screens/edit_alamat_screen.dart';
+import 'package:ponny/screens/account/edit_akun_screen.dart';
+import 'package:ponny/screens/account/edit_alamat_screen.dart';
 import 'package:ponny/screens/ubah_password_screen.dart';
-import 'package:ponny/screens/tambah_alamat_screen.dart';
+import 'package:ponny/screens/account/tambah_alamat_screen.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
 
 class DetailAkunScreen extends StatefulWidget {

@@ -5,15 +5,17 @@ import 'package:percent_indicator/percent_indicator.dart';
 import 'package:ponny/model/User.dart';
 import 'package:ponny/screens/pra_daftar.dart';
 import 'package:ponny/screens/login.dart';
-import 'package:ponny/screens/menunggu_pembayaran_screen.dart';
-import 'package:ponny/screens/pembayaran_diterima_screen.dart';
-import 'package:ponny/screens/dalam_perjalanan_screen.dart';
-import 'package:ponny/screens/terkirim_screen.dart';
-import 'package:ponny/screens/pesanan_selesai_screen.dart';
-import 'package:ponny/screens/ulasan_produk_screen.dart';
-import 'package:ponny/screens/daftar_keinginan_screen.dart';
-import 'package:ponny/screens/detail_akun_screen.dart';
-import 'package:ponny/screens/beauty_profile_screen.dart';
+import 'package:ponny/screens/account/menunggu_pembayaran_screen.dart';
+import 'package:ponny/screens/account/pembayaran_diterima_screen.dart';
+import 'package:ponny/screens/account/dalam_perjalanan_screen.dart';
+import 'package:ponny/screens/account/terkirim_screen.dart';
+import 'package:ponny/screens/account/pesanan_selesai_screen.dart';
+import 'package:ponny/screens/account/ulasan_produk_screen.dart';
+import 'package:ponny/screens/account/daftar_keinginan_screen.dart';
+import 'package:ponny/screens/account/detail_akun_screen.dart';
+import 'package:ponny/screens/account/beauty_profile_screen.dart';
+import 'package:ponny/screens/account/happy_skin_reward_screen.dart';
+import 'package:ponny/screens/account/affiliate_us_screen.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
 import 'package:provider/provider.dart';
 
@@ -987,58 +989,67 @@ class _AccountScreenState extends State<AccountScreen> {
                       ),
                     ),
                   ),
-                  Container(
-                    decoration: new BoxDecoration(
-                      border: Border(
-                        bottom: BorderSide(
-                          width: 2,
-                          color: Hexcolor("#F59379"),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => HappySkinRewardScreen()),
+                      );
+                    },
+                    child: Container(
+                      decoration: new BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(
+                            width: 2,
+                            color: Hexcolor("#F59379"),
+                          ),
                         ),
                       ),
-                    ),
-                    child: Row(
-                      children: [
-                        Container(
-                          margin: EdgeInsets.only(
-                              bottom: 10, left: 15, right: 15, top: 10),
-                          child: Image.asset(
-                            'assets/images/Asset 13.png',
-                            width: 30,
+                      child: Row(
+                        children: [
+                          Container(
+                            margin: EdgeInsets.only(
+                                bottom: 10, left: 15, right: 15, top: 10),
+                            child: Image.asset(
+                              'assets/images/Asset 13.png',
+                              width: 30,
+                            ),
                           ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(bottom: 5, top: 5),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                margin: EdgeInsets.only(top: 0),
-                                child: Text(
-                                  "Happy Skin Reward",
-                                  style: TextStyle(
-                                    fontFamily: "Brandon",
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: 20,
+                          Container(
+                            margin: EdgeInsets.only(bottom: 5, top: 5),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  margin: EdgeInsets.only(top: 0),
+                                  child: Text(
+                                    "Happy Skin Reward",
+                                    style: TextStyle(
+                                      fontFamily: "Brandon",
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 20,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              Container(
-                                // width: 150,
-                                child: Text(
-                                  "Purchased Items",
-                                  textAlign: TextAlign.left,
-                                  style: TextStyle(
-                                    fontFamily: "Brandon",
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.grey,
-                                    fontSize: 16,
+                                Container(
+                                  // width: 150,
+                                  child: Text(
+                                    "Purchased Items",
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(
+                                      fontFamily: "Brandon",
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.grey,
+                                      fontSize: 16,
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                   Container(
@@ -1156,7 +1167,7 @@ class _AccountScreenState extends State<AccountScreen> {
                 right: 30,
                 bottom: 0,
               ),
-              height: 510,
+              height: 570,
               child: ListView(
                 physics: NeverScrollableScrollPhysics(),
                 primary: false,
@@ -1368,6 +1379,14 @@ class _AccountScreenState extends State<AccountScreen> {
                   ),
                   Container(
                     padding: EdgeInsets.only(bottom: 15, top: 15),
+                    decoration: new BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(
+                          width: 2,
+                          color: Hexcolor("#F59379"),
+                        ),
+                      ),
+                    ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -1387,6 +1406,38 @@ class _AccountScreenState extends State<AccountScreen> {
                           ),
                         )
                       ],
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => AffiliateUsScreen()),
+                      );
+                    },
+                    child: Container(
+                      padding: EdgeInsets.only(bottom: 15, top: 15),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            child: Text(
+                              "Affiliate with us",
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w200,
+                                fontFamily: "Brandon",
+                              ),
+                            ),
+                          ),
+                          Container(
+                            child: Icon(
+                              Icons.arrow_forward_ios,
+                            ),
+                          )
+                        ],
+                      ),
                     ),
                   ),
                 ],

@@ -2,18 +2,18 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:ponny/screens/account_screen.dart';
-import 'package:ponny/screens/komplain_menunggu_pembayaran_screen.dart';
+import 'package:ponny/screens/account/komplain_dalam_perjalanan_screen.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
 
-class MenungguPembayaranSuksesScreen extends StatefulWidget {
-  static const String id = "Menunggu_Pembayaran_Screen";
+class DalamPerjalananSuksesScreen extends StatefulWidget {
+  static const String id = "Dalam_Perjalanan_Sukses_Screen";
   @override
-  _MenungguPembayaranSuksesStateScreen createState() =>
-      _MenungguPembayaranSuksesStateScreen();
+  _DalamPerjalananSuksesStateScreen createState() =>
+      _DalamPerjalananSuksesStateScreen();
 }
 
-class _MenungguPembayaranSuksesStateScreen
-    extends State<MenungguPembayaranSuksesScreen> {
+class _DalamPerjalananSuksesStateScreen
+    extends State<DalamPerjalananSuksesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,9 +44,9 @@ class _MenungguPembayaranSuksesStateScreen
                   ),
                   Container(
                     child: Text(
-                      "Menunggu Pembayaran",
+                      "Dalam Perjalanan",
                       style: TextStyle(
-                        fontSize: 22,
+                        fontSize: 24,
                         fontFamily: "Yeseva",
                         fontWeight: FontWeight.w500,
                         color: Color(0xffF48262),
@@ -453,6 +453,84 @@ class _MenungguPembayaranSuksesStateScreen
                           ),
                         ),
                       ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.only(top: 30, left: 15, right: 15),
+              padding: EdgeInsets.only(left: 15, right: 15),
+              width: MediaQuery.of(context).size.width,
+              height: 50,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      // border: Border.all(
+                      //   color: Colors.red[500],
+                      // ),
+                      color: Color(0xffF3C1B5),
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(5),
+                      ),
+                    ),
+                    width: 160,
+                    height: 35,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          child: Text(
+                            "Lacak Pesanan",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontFamily: "Brandon",
+                              color: Colors.white,
+                              fontSize: 15,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                KomplainDalamPerjalananScreen()),
+                      );
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Color(0xffF3C1B5),
+                        ),
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(5),
+                        ),
+                      ),
+                      width: 160,
+                      height: 35,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            child: Text(
+                              "Komplain",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontFamily: "Brandon",
+                                color: Colors.black,
+                                fontSize: 15,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ],
