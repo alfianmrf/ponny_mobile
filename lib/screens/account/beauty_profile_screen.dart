@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:ponny/screens/home_screen.dart';
 import 'package:ponny/screens/account_screen.dart';
-import 'package:ponny/screens/edit_beauty_profile_screen.dart';
+import 'package:ponny/screens/account/edit_beauty_profile_screen.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
 
 class BeautyProfileScreen extends StatefulWidget {

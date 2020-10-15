@@ -8,39 +8,42 @@ import 'package:ponny/screens/forums_screen.dart';
 import 'package:ponny/screens/account_screen.dart';
 
 /* Account ==> Menunggu Pembayaran */
-import 'package:ponny/screens/menunggu_pembayaran_screen.dart';
-import 'package:ponny/screens/menunggu_pembayaran_sukses_screen.dart';
-import 'package:ponny/screens/komplain_menunggu_pembayaran_screen.dart';
+import 'package:ponny/screens/account/menunggu_pembayaran_screen.dart';
+import 'package:ponny/screens/account/menunggu_pembayaran_sukses_screen.dart';
+import 'package:ponny/screens/account/komplain_menunggu_pembayaran_screen.dart';
 
 /* Account ==> Pembayaran Diterima */
-import 'package:ponny/screens/pembayaran_diterima_screen.dart';
-import 'package:ponny/screens/pembayaran_diterima_sukses_screen.dart';
+import 'package:ponny/screens/account/pembayaran_diterima_screen.dart';
+import 'package:ponny/screens/account/pembayaran_diterima_sukses_screen.dart';
 
 /* Account ==> Dalam Perjalanan */
-import 'package:ponny/screens/dalam_perjalanan_screen.dart';
-import 'package:ponny/screens/dalam_perjalanan_sukses_screen.dart';
-import 'package:ponny/screens/komplain_dalam_perjalanan_screen.dart';
+import 'package:ponny/screens/account/dalam_perjalanan_screen.dart';
+import 'package:ponny/screens/account/dalam_perjalanan_sukses_screen.dart';
+import 'package:ponny/screens/account/komplain_dalam_perjalanan_screen.dart';
 
 /* Account ==> Terkirim */
-import 'package:ponny/screens/terkirim_screen.dart';
-import 'package:ponny/screens/terkirim_sukses_screen.dart';
-import 'package:ponny/screens/komplain_terkirim_screen.dart';
+import 'package:ponny/screens/account/terkirim_screen.dart';
+import 'package:ponny/screens/account/terkirim_sukses_screen.dart';
+import 'package:ponny/screens/account/komplain_terkirim_screen.dart';
 
 /* Account ==> Pesanan Selesai */
-import 'package:ponny/screens/pesanan_selesai_screen.dart';
-import 'package:ponny/screens/pesanan_selesai_sukses_screen.dart';
+import 'package:ponny/screens/account/pesanan_selesai_screen.dart';
+import 'package:ponny/screens/account/pesanan_selesai_sukses_screen.dart';
 
 /* Account ==> Detail Akun */
-import 'package:ponny/screens/detail_akun_screen.dart';
-import 'package:ponny/screens/edit_akun_screen.dart';
+import 'package:ponny/screens/account/detail_akun_screen.dart';
+import 'package:ponny/screens/account/edit_akun_screen.dart';
 import 'package:ponny/screens/ubah_password_screen.dart';
-import 'package:ponny/screens/edit_alamat_screen.dart';
+import 'package:ponny/screens/account/edit_alamat_screen.dart';
 
 /* Account ==> Beauty Profile */
-import 'package:ponny/screens/beauty_profile_screen.dart';
+import 'package:ponny/screens/account/beauty_profile_screen.dart';
 
-import 'package:ponny/screens/ulasan_produk_screen.dart';
-import 'package:ponny/screens/daftar_keinginan_screen.dart';
+/* Account ==> Happy Skin Reward */
+import 'package:ponny/screens/account/happy_skin_reward_screen.dart';
+
+import 'package:ponny/screens/account/ulasan_produk_screen.dart';
+import 'package:ponny/screens/account/daftar_keinginan_screen.dart';
 import 'package:ponny/screens/splash_screen.dart';
 import 'package:ponny/screens/login.dart';
 import 'package:ponny/screens/pra_daftar.dart';
@@ -93,6 +96,7 @@ class MyApp extends StatelessWidget {
         EditAkunScreen.id: (context) => EditAkunScreen(),
         EditAlamatScreen.id: (context) => EditAlamatScreen(),
         BeautyProfileScreen.id: (context) => BeautyProfileScreen(),
+        HappySkinRewardScreen.id: (context) => HappySkinRewardScreen(),
         LoginScreen.id: (context) => LoginScreen(),
         PraDaftarScreen.id: (context) => PraDaftarScreen(),
         RegisterScreen.id: (context) => RegisterScreen(),
