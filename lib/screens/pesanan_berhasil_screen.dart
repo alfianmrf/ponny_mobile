@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
+import 'package:ponny/screens/home_screen.dart';
 
 class PesananBerhasilScreen extends StatefulWidget {
   static const String id = "pesanan_berhasil_screen";
@@ -119,7 +120,10 @@ class _PesananBerhasilScreenState extends State<PesananBerhasilScreen> {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(7.0),
                         ),
-                        onPressed: (){},
+                        onPressed: (){
+                          Navigator.of(context)
+                              .pushReplacementNamed(HomeScreen.id);
+                        },
                       ),
                     ),
                   ),
