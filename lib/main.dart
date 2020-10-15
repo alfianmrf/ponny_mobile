@@ -8,6 +8,7 @@ import 'package:ponny/screens/pembayaran_ovo_screen.dart';
 
 /* Navbar Bottom Bar */
 import 'package:ponny/screens/forums_screen.dart';
+import 'package:ponny/screens/Browse_Screen.dart';
 import 'package:ponny/screens/intro_screen.dart';
 import 'package:ponny/screens/home_screen.dart';
 import 'package:ponny/screens/forums_screen.dart';
@@ -123,7 +124,8 @@ class MyApp extends StatelessWidget {
         BankTransferDetailScreen.id: (context) => BankTransferDetailScreen(),
         KonfirmasiPembayaranScreen.id: (context) => KonfirmasiPembayaranScreen(),
         PesananBerhasilScreen.id: (context) => PesananBerhasilScreen(),
-        PembayaranOvoScreen.id: (context) => PembayaranOvoScreen()
+        PembayaranOvoScreen.id: (context) => PembayaranOvoScreen(),
+        Browse.id: (context) => Browse() 
       },
     );
   }

@@ -6,6 +6,7 @@ import 'package:ponny/screens/account_screen.dart';
 import 'package:ponny/screens/forums_screen.dart';
 import 'package:ponny/screens/login.dart';
 import 'package:provider/provider.dart';
+import 'package:ponny/screens/Browse_Screen.dart';
 
 class PonnyBottomNavbar extends StatelessWidget {
   PonnyBottomNavbar({this.selectedIndex});
@@ -20,18 +21,16 @@ class PonnyBottomNavbar extends StatelessWidget {
           if (index != selectedIndex)
             Navigator.of(context).pushReplacementNamed(HomeScreen.id);
           break;
+        case 1:
+          if (index != selectedIndex)
+            Navigator.of(context).pushReplacementNamed(Browse.id);
+          break;
         case 3:
           if (index != selectedIndex)
             Navigator.of(context).pushReplacementNamed(ForumsScreen.id);
           break;
         case 4:
-
-          if (index != selectedIndex)
-            _user.email != null ?
-            Navigator.of(context).pushReplacementNamed(AccountScreen.id) :  Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => LoginScreen()),
-            );
+          Navigator.of(context).pushReplacementNamed(AccountScreen.id);
 
           break;
         default:
