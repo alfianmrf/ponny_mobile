@@ -19,11 +19,14 @@ class UserModel with ChangeNotifier{
       // save to Preference
       SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.setBool('loggedIn', true);
+      loggedIn = true;
 
       // save the user Info as local storage
       final ready = await storage.ready;
       if (ready) {
+
         await storage.setItem("userInfo", user);
+        notifyListeners();
       }
     } catch (err) {
       print(err);
@@ -46,6 +49,23 @@ class UserModel with ChangeNotifier{
     } catch (err) {
       print(err);
     }
+  }
+
+  Future<void> logout() async {
+    user = null;
+    loggedIn = false;
+    final LocalStorage storage = LocalStorage("fstore");
+    try {
+      final ready = await storage.ready;
+      if (ready) {
+        await storage.deleteItem("userInfo");
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setBool('loggedIn', false);
+      }
+    } catch (err) {
+      print(err);
+    }
+    notifyListeners();
   }
 }
 class User{

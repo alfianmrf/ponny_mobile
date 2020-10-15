@@ -431,10 +431,6 @@ class _HomeScreenState extends State<HomeScreen> {
         )
       ],
     );
-    var myuser = UserModel();
-    myuser.addListener(() {
-      print(myuser.user.email);
-    });
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
       body: Stack(children: <Widget>[
