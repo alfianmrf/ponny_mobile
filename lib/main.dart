@@ -3,6 +3,7 @@ import 'package:ponny/model/User.dart';
 import 'package:ponny/screens/bank_transfer_screen.dart';
 import 'package:ponny/screens/bank_transfer_detail_screen.dart';
 import 'package:ponny/screens/konfirmasi_pembayaran_screen.dart';
+import 'package:ponny/screens/pesanan_berhasil_screen.dart';
 
 /* Navbar Bottom Bar */
 import 'package:ponny/screens/forums_screen.dart';
@@ -115,7 +116,8 @@ class MyApp extends StatelessWidget {
         PaymentScreen.id: (context) => PaymentScreen(),
         BankTransferScreen.id: (context) => BankTransferScreen(),
         BankTransferDetailScreen.id: (context) => BankTransferDetailScreen(),
-        KonfirmasiPembayaranScreen.id: (context) => KonfirmasiPembayaranScreen()
+        KonfirmasiPembayaranScreen.id: (context) => KonfirmasiPembayaranScreen(),
+        PesananBerhasilScreen.id: (context) => PesananBerhasilScreen()
       },
     );
   }
