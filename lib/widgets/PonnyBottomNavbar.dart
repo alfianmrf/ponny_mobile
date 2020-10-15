@@ -6,6 +6,7 @@ import 'package:ponny/screens/account_screen.dart';
 import 'package:ponny/screens/forums_screen.dart';
 import 'package:ponny/screens/login.dart';
 import 'package:provider/provider.dart';
+import 'package:ponny/screens/Browse_Screen.dart';
 
 class PonnyBottomNavbar extends StatelessWidget {
   PonnyBottomNavbar({this.selectedIndex});
@@ -22,6 +23,10 @@ class PonnyBottomNavbar extends StatelessWidget {
         case 0:
           if (index != selectedIndex)
             Navigator.of(context).pushReplacementNamed(HomeScreen.id);
+          break;
+        case 1:
+          if (index != selectedIndex)
+            Navigator.of(context).pushReplacementNamed(Browse.id);
           break;
         case 3:
           if (index != selectedIndex)

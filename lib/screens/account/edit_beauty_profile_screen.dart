@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:ponny/screens/home_screen.dart';
 import 'package:ponny/screens/account_screen.dart';
-import 'package:ponny/screens/edit_beauty_profile_screen.dart';
+import 'package:ponny/screens/account/edit_beauty_profile_screen.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
 
 class EditBeautyProfileScreen extends StatefulWidget {
@@ -14,6 +14,452 @@ class EditBeautyProfileScreen extends StatefulWidget {
 }
 
 class _EditBeautyProfileStateScreen extends State<EditBeautyProfileScreen> {
+  void showAlertDialog(BuildContext context) {
+    // set up the AlertDialog
+    var container = Container(
+      alignment: Alignment.center,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(10.0),
+        child: Image.asset(
+          "assets/images/kulit-kering.png",
+          width: 60,
+        ),
+      ),
+    );
+    SimpleDialog alert = SimpleDialog(
+      backgroundColor: Color(0xfffdf8f0),
+      contentPadding: EdgeInsets.all(0.0),
+      children: <Widget>[
+        Container(
+          // color: Colors.greenAccent,
+          margin: EdgeInsets.only(top: 10, bottom: 0),
+          child: Column(
+            children: [
+              Container(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      // color: Colors.amberAccent,
+                      child: Text(
+                        "APA JENIS KULIT KAMU ?",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontFamily: "Brandon",
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.only(top: 20),
+                // color: Colors.amberAccent,
+                child: Row(
+                  children: [
+                    Container(
+                      child: Column(
+                        children: [
+                          Container(
+                            width: 80,
+                            height: 80,
+                            // color: Colors.blueAccent,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Container(
+                                  alignment: Alignment.center,
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    child: Image.asset(
+                                      "assets/images/kulit-berminyak.png",
+                                      width: 60,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Container(
+                            width: 80,
+                            height: 38,
+                            // color: Colors.redAccent,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Container(
+                                  child: Text(
+                                    "Kulit",
+                                    style: TextStyle(
+                                      fontSize: 11,
+                                      fontFamily: "Brandon",
+                                    ),
+                                  ),
+                                ),
+                                Container(
+                                  child: Text(
+                                    "Berminyak",
+                                    style: TextStyle(
+                                      fontSize: 11,
+                                      fontFamily: "Brandon",
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      height: 118,
+                      width: 240,
+                      // color: Colors.purpleAccent,
+                      child: Text(
+                        'Kulit berminyak ditandai dengan pori-pori besar yang mudah terlihat. Produksi sebum atau minyak pada wajahmu tergolong banyak sehingga kulit wajah akan terlihat berminyak hampir di seluruh bagian wajah.',
+                        style: TextStyle(
+                          fontFamily: "Brandon",
+                          fontSize: 11,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.only(top: 15),
+                // color: Colors.amberAccent,
+                child: Row(
+                  children: [
+                    Container(
+                      child: Column(
+                        children: [
+                          Container(
+                            width: 80,
+                            height: 80,
+                            // color: Colors.blueAccent,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Container(
+                                  alignment: Alignment.center,
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    child: Image.asset(
+                                      "assets/images/kulit-kombinasi.png",
+                                      width: 60,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Container(
+                            width: 80,
+                            height: 38,
+                            // color: Colors.redAccent,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Container(
+                                  child: Text(
+                                    "Kulit",
+                                    style: TextStyle(
+                                      fontSize: 11,
+                                      fontFamily: "Brandon",
+                                    ),
+                                  ),
+                                ),
+                                Container(
+                                  child: Text(
+                                    "Kombinasi",
+                                    style: TextStyle(
+                                      fontSize: 11,
+                                      fontFamily: "Brandon",
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      height: 118,
+                      width: 240,
+                      // color: Colors.purpleAccent,
+                      child: Text(
+                        'Kulit kombinasi ditandai dengan wajah yang berminyak di area dahi, batang hidung, dan dagu (T-Zone) sementara area pipi dan rahang (U-Zone) tergolong kering. Biasanya pori-pori terlihat jelas di area T-Zone.',
+                        style: TextStyle(
+                          fontFamily: "Brandon",
+                          fontSize: 11,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.only(top: 15),
+                // color: Colors.amberAccent,
+                child: Row(
+                  children: [
+                    Container(
+                      child: Column(
+                        children: [
+                          Container(
+                            width: 80,
+                            height: 80,
+                            // color: Colors.blueAccent,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Container(
+                                  alignment: Alignment.center,
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    child: Image.asset(
+                                      "assets/images/kulit-normal.png",
+                                      width: 60,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Container(
+                            width: 80,
+                            height: 38,
+                            // color: Colors.redAccent,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Container(
+                                  child: Text(
+                                    "Kulit",
+                                    style: TextStyle(
+                                      fontSize: 11,
+                                      fontFamily: "Brandon",
+                                    ),
+                                  ),
+                                ),
+                                Container(
+                                  child: Text(
+                                    "Normal",
+                                    style: TextStyle(
+                                      fontSize: 11,
+                                      fontFamily: "Brandon",
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      height: 118,
+                      width: 240,
+                      // color: Colors.purpleAccent,
+                      child: Text(
+                        'Kulit normal ditandai dengan pori-pori kecil. Jenis kulit normal punya produksi minyak yang imbang sehingga kulit wajahmu nggak terlalu berminyak maupun kering.',
+                        style: TextStyle(
+                          fontFamily: "Brandon",
+                          fontSize: 11,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.only(top: 15),
+                // color: Colors.amberAccent,
+                child: Row(
+                  children: [
+                    Container(
+                      child: Column(
+                        children: [
+                          Container(
+                            width: 80,
+                            height: 80,
+                            // color: Colors.blueAccent,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                container,
+                              ],
+                            ),
+                          ),
+                          Container(
+                            width: 80,
+                            height: 38,
+                            // color: Colors.redAccent,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Container(
+                                  child: Text(
+                                    "Kulit",
+                                    style: TextStyle(
+                                      fontSize: 11,
+                                      fontFamily: "Brandon",
+                                    ),
+                                  ),
+                                ),
+                                Container(
+                                  child: Text(
+                                    "Kering",
+                                    style: TextStyle(
+                                      fontSize: 11,
+                                      fontFamily: "Brandon",
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      height: 118,
+                      width: 240,
+                      // color: Colors.purpleAccent,
+                      child: Text(
+                        'Kulit kering ditandai dengan kulit yang bersisik, terasa kencang, gatal, dan kusam. Produksi sebum yang kurang membuat kulit tetap kering sehingga jarang terlihat berminyak.',
+                        style: TextStyle(
+                          fontFamily: "Brandon",
+                          fontSize: 11,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.only(top: 15),
+                // color: Colors.amberAccent,
+                child: Row(
+                  children: [
+                    Container(
+                      child: Column(
+                        children: [
+                          Container(
+                            width: 80,
+                            height: 80,
+                            // color: Colors.blueAccent,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Container(
+                                  alignment: Alignment.center,
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    child: Image.asset(
+                                      "assets/images/kulit-sensitif.png",
+                                      width: 60,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Container(
+                            width: 80,
+                            height: 38,
+                            // color: Colors.redAccent,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Container(
+                                  child: Text(
+                                    "Kulit",
+                                    style: TextStyle(
+                                      fontSize: 11,
+                                      fontFamily: "Brandon",
+                                    ),
+                                  ),
+                                ),
+                                Container(
+                                  child: Text(
+                                    "Sensitif",
+                                    style: TextStyle(
+                                      fontSize: 11,
+                                      fontFamily: "Brandon",
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      height: 118,
+                      width: 240,
+                      // color: Colors.purpleAccent,
+                      child: Text(
+                        'Kulit sensitif ditandai dengan kondisi kulit seperti rosacea, eczema, atau psoriasis. Umumnya kulit sensifitif akan menunjukkan reaksi iritasi seperti kemerahan atau sensasi terbakar setelah mencoba produk skincare baru dengan kandungan seperti fragrance.',
+                        style: TextStyle(
+                          fontFamily: "Brandon",
+                          fontSize: 11,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+        GestureDetector(
+          onTap: () {
+            Navigator.pop(context);
+          },
+          child: Container(
+            decoration: BoxDecoration(
+              color: Color(0xffF3C1B5),
+              borderRadius: BorderRadius.all(Radius.circular(0)),
+            ),
+            margin: EdgeInsets.only(top: 20),
+            height: 50,
+            width: MediaQuery.of(context).size.width,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  child: Text(
+                    "MENGERTI",
+                    style: TextStyle(
+                      fontFamily: "Brandon",
+                      fontWeight: FontWeight.w600,
+                      color: Colors.white,
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -326,13 +772,18 @@ class _EditBeautyProfileStateScreen extends State<EditBeautyProfileScreen> {
                         ),
                         Container(
                           margin: EdgeInsets.only(left: 5),
-                          child: Text(
-                            "Pelajari",
-                            style: TextStyle(
-                              color: Color(0xffF3C1B5),
-                              fontFamily: "Yeseva",
-                              fontSize: 10,
-                              fontWeight: FontWeight.w200,
+                          child: GestureDetector(
+                            onTap: () {
+                              showAlertDialog(context);
+                            },
+                            child: Text(
+                              "Pelajari",
+                              style: TextStyle(
+                                color: Color(0xffF3C1B5),
+                                fontFamily: "Yeseva",
+                                fontSize: 10,
+                                fontWeight: FontWeight.w200,
+                              ),
                             ),
                           ),
                         ),

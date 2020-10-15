@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
+import 'package:ponny/screens/konfirmasi_pembayaran_screen.dart';
 
 class BankTransferDetailScreen extends StatefulWidget {
   static const String id = "bank_transfer_detail_screen";
@@ -292,7 +293,10 @@ class _BankTransferDetailScreenState extends State<BankTransferDetailScreen> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(7.0),
                       ),
-                      onPressed: (){},
+                      onPressed: (){
+                        Navigator.of(context)
+                            .pushReplacementNamed(KonfirmasiPembayaranScreen.id);
+                      },
                     ),
                   ),
                 ],

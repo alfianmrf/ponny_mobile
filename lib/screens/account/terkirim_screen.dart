@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:ponny/screens/home_screen.dart';
 import 'package:ponny/screens/account_screen.dart';
-import 'package:ponny/screens/terkirim_sukses_screen.dart';
+import 'package:ponny/screens/account/terkirim_sukses_screen.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
 
 class TerkirimScreen extends StatefulWidget {

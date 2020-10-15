@@ -1,18 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:ponny/screens/home_screen.dart';
 import 'package:ponny/screens/account_screen.dart';
-import 'package:ponny/screens/menunggu_pembayaran_sukses_screen.dart';
+import 'package:ponny/screens/account/pesanan_selesai_sukses_screen.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
 
-class MenungguPembayaranScreen extends StatefulWidget {
-  static const String id = "Menunggu_Pembayaran_Screen";
+class PesananSelesaiScreen extends StatefulWidget {
+  static const String id = "pesanan_selesai_Screen";
   @override
-  _MenungguPembayaranStateScreen createState() =>
-      _MenungguPembayaranStateScreen();
+  _PesananSelesaiStateScreen createState() => _PesananSelesaiStateScreen();
 }
 
-class _MenungguPembayaranStateScreen extends State<MenungguPembayaranScreen> {
+class _PesananSelesaiStateScreen extends State<PesananSelesaiScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,7 +43,7 @@ class _MenungguPembayaranStateScreen extends State<MenungguPembayaranScreen> {
                   ),
                   Container(
                     child: Text(
-                      "Menunggu Pembayaran",
+                      "Pesanan Selesai",
                       style: TextStyle(
                         fontSize: 24,
                         fontFamily: "Yeseva",
@@ -76,28 +76,27 @@ class _MenungguPembayaranStateScreen extends State<MenungguPembayaranScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Container(
-                      child: Icon(
-                        Icons.watch_later,
-                        size: 60,
-                        color: Hexcolor("#F59379"),
+                      child: Image.asset(
+                        'assets/images/Asset 8.png',
+                        width: 38,
                       ),
                     ),
                     Container(
                       margin: EdgeInsets.only(top: 10),
                       child: Text(
-                        "You have no orders.",
+                        "Ups, kamu belum ,melakukan pembelian di Ponny Beaute",
                         style: TextStyle(
                           fontFamily: "Brandon",
-                          fontSize: 14,
+                          fontSize: 12,
                         ),
                       ),
                     ),
                     Container(
                       child: Text(
-                        "Shop top brands and cult favorites now.",
+                        "yuk mulai berbelanja.",
                         style: TextStyle(
                           fontFamily: "Brandon",
-                          fontSize: 14,
+                          fontSize: 12,
                         ),
                       ),
                     ),
@@ -645,7 +644,7 @@ class _MenungguPembayaranStateScreen extends State<MenungguPembayaranScreen> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => MenungguPembayaranSuksesScreen(),
+                      builder: (context) => PesananSelesaiSuksesScreen(),
                     ),
                   );
                 },

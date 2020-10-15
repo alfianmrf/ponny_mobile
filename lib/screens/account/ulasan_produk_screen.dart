@@ -3,16 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:ponny/screens/home_screen.dart';
 import 'package:ponny/screens/account_screen.dart';
-import 'package:ponny/screens/pesanan_selesai_sukses_screen.dart';
+import 'package:ponny/screens/account/ulasan_produk_sukses_screen.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
 
-class PesananSelesaiScreen extends StatefulWidget {
-  static const String id = "pesanan_selesai_Screen";
+class UlasanProdukScreen extends StatefulWidget {
+  static const String id = "ulasan_produk_Screen";
   @override
-  _PesananSelesaiStateScreen createState() => _PesananSelesaiStateScreen();
+  _UlasanProdukStateScreen createState() => _UlasanProdukStateScreen();
 }
 
-class _PesananSelesaiStateScreen extends State<PesananSelesaiScreen> {
+class _UlasanProdukStateScreen extends State<UlasanProdukScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,7 +43,7 @@ class _PesananSelesaiStateScreen extends State<PesananSelesaiScreen> {
                   ),
                   Container(
                     child: Text(
-                      "Pesanan Selesai",
+                      "Ulasan Produk",
                       style: TextStyle(
                         fontSize: 24,
                         fontFamily: "Yeseva",
@@ -77,14 +77,14 @@ class _PesananSelesaiStateScreen extends State<PesananSelesaiScreen> {
                   children: [
                     Container(
                       child: Image.asset(
-                        'assets/images/Asset 8.png',
+                        'assets/images/Asset 9.png',
                         width: 38,
                       ),
                     ),
                     Container(
                       margin: EdgeInsets.only(top: 10),
                       child: Text(
-                        "Ups, kamu belum ,melakukan pembelian di Ponny Beaute",
+                        "UPS !",
                         style: TextStyle(
                           fontFamily: "Brandon",
                           fontSize: 12,
@@ -92,8 +92,29 @@ class _PesananSelesaiStateScreen extends State<PesananSelesaiScreen> {
                       ),
                     ),
                     Container(
+                      height: 18,
                       child: Text(
-                        "yuk mulai berbelanja.",
+                        "Beauties, kamu belum menulis review produk ini.",
+                        style: TextStyle(
+                          fontFamily: "Brandon",
+                          fontSize: 12,
+                        ),
+                      ),
+                    ),
+                    Container(
+                      height: 18,
+                      child: Text(
+                        "Yuk, bagikan pengalaman mu menggunakan produk ini",
+                        style: TextStyle(
+                          fontFamily: "Brandon",
+                          fontSize: 12,
+                        ),
+                      ),
+                    ),
+                    Container(
+                      height: 18,
+                      child: Text(
+                        "untuk pengguna yang lain.",
                         style: TextStyle(
                           fontFamily: "Brandon",
                           fontSize: 12,
@@ -644,7 +665,7 @@ class _PesananSelesaiStateScreen extends State<PesananSelesaiScreen> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => PesananSelesaiSuksesScreen(),
+                      builder: (context) => UlasanProdukSuksesScreen(),
                     ),
                   );
                 },
