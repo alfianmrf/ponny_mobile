@@ -53,7 +53,7 @@ class _ShippingScreenState extends State<ShippingScreen> {
                           'Detail Pengiriman',
                           style: TextStyle(
                             fontFamily: 'Yeseva',
-                            fontSize: 26,
+                            fontSize: 22,
                             color: Color(0xffF48262),
                           ),
                         ),

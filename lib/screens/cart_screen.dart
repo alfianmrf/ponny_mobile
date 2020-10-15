@@ -73,7 +73,7 @@ class _CartScreenState extends State<CartScreen> {
                       'Keranjang Belanja',
                       style: TextStyle(
                         fontFamily: 'Yeseva',
-                        fontSize: 26,
+                        fontSize: 22,
                         color: Color(0xffF48262),
                       ),
                     ),

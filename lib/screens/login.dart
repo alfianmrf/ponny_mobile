@@ -1,9 +1,18 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:ponny/common/constant.dart';
+import 'package:ponny/model/User.dart';
 import 'package:ponny/screens/pra_daftar.dart';
 import 'package:ponny/screens/home_screen.dart';
 import 'package:keyboard_attachable/keyboard_attachable.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:uiblock/uiblock.dart';
+import 'package:ponny/util/globalUrl.dart';
 
 class LoginScreen extends StatefulWidget {
   static const String id = "login_Screen";
@@ -14,6 +23,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginStateScreen extends State<LoginScreen> {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+  bool _validate = false;
 
   final myemail = TextEditingController();
   final mypass = TextEditingController();
@@ -23,13 +33,48 @@ class _LoginStateScreen extends State<LoginScreen> {
     ScaffoldState scaffold = this.scaffoldKey.currentState;
 
     if (form.validate()) {
-      showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              content: Text("Terkonfirmasi"),
-            );
-          });
+      _fetchLogin();
+    }
+  }
+
+  _fetchLogin() async {
+    FocusScope.of(context).requestFocus(new FocusNode());
+    if(myemail.text.isEmpty||mypass.text.isEmpty){
+      setState(() {
+        _validate=false;
+      });
+    }else{
+      UIBlock.block(context,customLoaderChild: LoadingWidget(context));
+      var param ={
+        "email":myemail.text,
+        "password":mypass.text
+      };
+      final res = await http.post(loginUrl,headers: { HttpHeaders.contentTypeHeader: 'application/json' },body: json.encode(param));
+      final _user = UserModel();
+      
+      UIBlock.unblock(context);
+      if(res.statusCode == 200){
+        var result = json.decode(res.body);
+        SharedPreferences preferences = await SharedPreferences.getInstance();
+        preferences.setBool('loginIn', true);
+        preferences.setString("access_token", result['access_token']);
+        final us = User.fromLocalJson(result['user']);
+        _user.saveUser(result['user']);
+        
+        Navigator.pushReplacement(context,new MaterialPageRoute(
+          builder: (BuildContext context) =>  new HomeScreen(),
+        ));
+        
+
+      }else{
+        final snackBar = SnackBar(
+          content: Text('Email atau password salah!',style: TextStyle(color: Colors.white)),
+          backgroundColor: Colors.redAccent,
+        );
+        scaffoldKey.currentState.showSnackBar(snackBar);
+      }
+
+
     }
   }
 

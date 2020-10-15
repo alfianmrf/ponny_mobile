@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:percent_indicator/percent_indicator.dart';
+import 'package:ponny/model/User.dart';
 import 'package:ponny/screens/pra_daftar.dart';
 import 'package:ponny/screens/login.dart';
 import 'package:ponny/screens/account/menunggu_pembayaran_screen.dart';
@@ -16,6 +17,7 @@ import 'package:ponny/screens/account/beauty_profile_screen.dart';
 import 'package:ponny/screens/account/happy_skin_reward_screen.dart';
 import 'package:ponny/screens/account/affiliate_us_screen.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
+import 'package:provider/provider.dart';
 
 class AccountScreen extends StatefulWidget {
   static const String id = "account_screen";
@@ -96,6 +98,7 @@ class _AccountScreenState extends State<AccountScreen> {
       ],
     );
 
+    final _user = Provider.of<UserModel>(context).user;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Hexcolor('#FCF8F0'),
@@ -112,7 +115,8 @@ class _AccountScreenState extends State<AccountScreen> {
                 children: <Widget>[
                   Container(
                     child: Text(
-                      "Hi, Carla",
+                      _user.email != null ?
+                      "Hi, "+_user.name : "" ,
                       style: TextStyle(
                         fontSize: 30,
                         fontWeight: FontWeight.w500,

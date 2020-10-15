@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:ponny/model/User.dart';
+import 'package:ponny/screens/bank_transfer_screen.dart';
+import 'package:ponny/screens/bank_transfer_detail_screen.dart';
+import 'package:ponny/screens/konfirmasi_pembayaran_screen.dart';
 
 /* Navbar Bottom Bar */
 import 'package:ponny/screens/forums_screen.dart';
@@ -52,9 +56,18 @@ import 'package:ponny/screens/product_details_screen.dart';
 import 'package:ponny/screens/cart_screen.dart';
 import 'package:ponny/screens/shipping_screen.dart';
 import 'package:ponny/screens/payment_screen.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(MyApp());
+
+  runApp(
+      MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (context) => UserModel()),
+        ],
+        child: MyApp(),
+      ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -103,7 +116,10 @@ class MyApp extends StatelessWidget {
         ProductDetailsScreen.id: (context) => ProductDetailsScreen(),
         CartScreen.id: (context) => CartScreen(),
         ShippingScreen.id: (context) => ShippingScreen(),
-        PaymentScreen.id: (context) => PaymentScreen()
+        PaymentScreen.id: (context) => PaymentScreen(),
+        BankTransferScreen.id: (context) => BankTransferScreen(),
+        BankTransferDetailScreen.id: (context) => BankTransferDetailScreen(),
+        KonfirmasiPembayaranScreen.id: (context) => KonfirmasiPembayaranScreen()
       },
     );
   }
