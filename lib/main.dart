@@ -7,6 +7,7 @@ import 'package:ponny/screens/pesanan_berhasil_screen.dart';
 
 /* Navbar Bottom Bar */
 import 'package:ponny/screens/forums_screen.dart';
+import 'package:ponny/screens/Browse_Screen.dart';
 import 'package:ponny/screens/intro_screen.dart';
 import 'package:ponny/screens/home_screen.dart';
 import 'package:ponny/screens/forums_screen.dart';
@@ -121,7 +122,8 @@ class MyApp extends StatelessWidget {
         BankTransferScreen.id: (context) => BankTransferScreen(),
         BankTransferDetailScreen.id: (context) => BankTransferDetailScreen(),
         KonfirmasiPembayaranScreen.id: (context) => KonfirmasiPembayaranScreen(),
-        PesananBerhasilScreen.id: (context) => PesananBerhasilScreen()
+        PesananBerhasilScreen.id: (context) => PesananBerhasilScreen(),
+        Browse.id: (context) => Browse() 
       },
     );
   }

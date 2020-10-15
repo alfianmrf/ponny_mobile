@@ -116,7 +116,7 @@ class _AccountScreenState extends State<AccountScreen> {
                   Container(
                     child: Text(
                       _user.email != null ?
-                      "Hi, "+_user.name : "" ,
+                      "Hi, "+_user.name : "Guest" ,
                       style: TextStyle(
                         fontSize: 30,
                         fontWeight: FontWeight.w500,
