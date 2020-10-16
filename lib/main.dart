@@ -62,6 +62,17 @@ import 'package:ponny/screens/shipping_screen.dart';
 import 'package:ponny/screens/payment_screen.dart';
 import 'package:provider/provider.dart';
 
+/* FAQ*/
+import 'package:ponny/screens/FAQ_PengembalianBarang_screen.dart';
+import 'package:ponny/screens/FAQ_TopQuestion_screen.dart';
+import 'package:ponny/screens/FAQ_screen.dart';
+
+/* Account ==> Syarat dan Ketentuan */
+import 'package:ponny/screens/Syarat_Ketentuan_screen.dart';
+
+/* Account ==> Pengiriman */
+import 'package:ponny/screens/Pengiriman_screen.dart';
+
 void main() {
 
   runApp(
@@ -127,7 +138,12 @@ class MyApp extends StatelessWidget {
         PesananBerhasilScreen.id: (context) => PesananBerhasilScreen(),
         PembayaranOvoScreen.id: (context) => PembayaranOvoScreen(),
         PembayaranGopayScreen.id: (context) => PembayaranGopayScreen(),
-        Browse.id: (context) => Browse() 
+        Browse.id: (context) => Browse(),
+        PengembalianBarang.id: (context) => PengembalianBarang(),
+        TopQuestionScreen.id: (context) => TopQuestionScreen(),
+        FAQScreen.id: (context) => FAQScreen(),
+        SyaratKetentuanScreen.id: (context) => SyaratKetentuanScreen(),
+        PengirimanScreen.id: (context) => PengirimanScreen() 
       },
     );
   }
