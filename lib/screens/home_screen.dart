@@ -487,7 +487,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               title("Best Seller"),
               Container(
-                height: 280,
+                height: MediaQuery.of(context).size.width*0.77,
                 child: new Swiper(
                   itemBuilder: (BuildContext context, int index) {
                     return GridView.count(
@@ -518,7 +518,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               title("Phoebe's Choice"),
               Container(
-                height: 280,
+                height: MediaQuery.of(context).size.width*0.77,
                 child: new Swiper(
                   itemBuilder: (BuildContext context, int index) {
                     return GridView.count(
