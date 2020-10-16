@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
 import 'package:ponny/screens/bank_transfer_screen.dart';
 import 'package:ponny/screens/pembayaran_ovo_screen.dart';
+import 'package:ponny/screens/pembayaran_gopay_screen.dart';
 
 class PaymentScreen extends StatefulWidget {
   static const String id = "payment_screen";
@@ -340,35 +341,41 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                   ),
                                 ),
                               ),
-                              Container(
-                                width: MediaQuery.of(context).size.width,
-                                padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Image.asset(
-                                          'assets/images/payment/gopay-02.png',
-                                          height: 40,
-                                        ),
-                                        Padding(
-                                          padding: EdgeInsets.only(left: 10),
-                                          child: Text(
-                                            'GOPAY',
-                                            style: TextStyle(
-                                              fontFamily: 'Brandon',
-                                              fontSize: 14,
+                              InkWell(
+                                onTap: () {
+                                  Navigator.of(context)
+                                      .pushReplacementNamed(PembayaranGopayScreen.id);
+                                },
+                                child: Container(
+                                  width: MediaQuery.of(context).size.width,
+                                  padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Image.asset(
+                                            'assets/images/payment/gopay-02.png',
+                                            height: 40,
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.only(left: 10),
+                                            child: Text(
+                                              'GOPAY',
+                                              style: TextStyle(
+                                                fontFamily: 'Brandon',
+                                                fontSize: 14,
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                    Icon(
-                                      Icons.chevron_right,
-                                      color: Color(0xffF48262),
-                                    ),
-                                  ],
+                                        ],
+                                      ),
+                                      Icon(
+                                        Icons.chevron_right,
+                                        color: Color(0xffF48262),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                               Container(
