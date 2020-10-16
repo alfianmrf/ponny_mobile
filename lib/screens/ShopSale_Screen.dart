@@ -15,73 +15,75 @@ class ShopSale extends StatefulWidget {
 class _ShopSaleState extends State<ShopSale> {
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        backgroundColor: Hexcolor('#FCF8F0'),
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(10)),
-                    color: Colors.white),
-                padding: EdgeInsets.all(10),
-                margin: EdgeInsets.only(left: 10, top: 10, right: 10),
-                child: Row(children: [
-                  Icon(Icons.search, color: Color(0xffF48262)),
-                  Expanded(
-                      child: TextField(
-                    cursorColor: Colors.black,
-                    keyboardType: TextInputType.text,
-                    textInputAction: TextInputAction.go,
-                    decoration:
-                        new InputDecoration.collapsed(hintText: "Search..."),
-                  ))
-                ]),
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      backgroundColor: Hexcolor('#FCF8F0'),
+      body: Column(
+        children: [ Container(
+                height: 35,
               ),
-              Container(
-                margin: EdgeInsets.all(5),
-                child: Row(
-                  children: [
-                    Container(
-                      child: IconButton(
-                          onPressed: () {
-                            Navigator.of(context)
-                                .pushReplacementNamed(Browse.id);
-                          },
-                          icon: Icon(
-                            Icons.arrow_back_ios,
-                            color: Color(0xffF48262),
-                            size: 26,
-                          )),
-                    ),
-                    Container(
-                      child: Text(
-                        "Shop Sale",
-                        style: TextStyle(
-                          fontSize: 24,
-                          fontFamily: "Yeseva",
-                          fontWeight: FontWeight.w500,
-                          color: Color(0xffF48262),
-                        ),
-                      ),
-                    ),
-                  ],
+          Container(
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(10)),
+                color: Colors.white),
+            padding: EdgeInsets.all(10),
+            margin: EdgeInsets.only(left: 10, top: 10, right: 10),
+            child: Row(children: [
+              Icon(Icons.search, color: Color(0xffF48262)),
+              Expanded(
+                  child: TextField(
+                cursorColor: Colors.black,
+                keyboardType: TextInputType.text,
+                textInputAction: TextInputAction.go,
+                decoration:
+                    new InputDecoration.collapsed(hintText: "Search..."),
+              ))
+            ]),
+          ),
+          Container(
+            margin: EdgeInsets.all(5),
+            child: Row(
+              children: [
+                Container(
+                  child: IconButton(
+                      onPressed: () {
+                        Navigator.of(context)
+                            .pushReplacementNamed(Browse.id);
+                      },
+                      icon: Icon(
+                        Icons.arrow_back_ios,
+                        color: Color(0xffF48262),
+                        size: 26,
+                      )),
                 ),
-              ),
-              Container(
-                margin: EdgeInsets.only(bottom: 20),
-                height: 1,
-                color: Color(0xffF3C1B5),
-              ),
-              GridView.count(
+                Container(
+                  child: Text(
+                    "Shop Sale",
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontFamily: "Yeseva",
+                      fontWeight: FontWeight.w500,
+                      color: Color(0xffF48262),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Container(
+            margin: EdgeInsets.only(bottom: 20),
+            height: 1,
+            color: Color(0xffF3C1B5),
+          ),
+          Expanded(
+                        child: Container(
+              child: GridView.count(
                 shrinkWrap: true,
                 primary: false,
                 padding: const EdgeInsets.symmetric(horizontal: 5),
                 crossAxisSpacing: 10,
-           
-           
+       
+       
                 childAspectRatio: 0.4,
                 crossAxisCount: 2,
                 children: [
@@ -92,12 +94,12 @@ class _ShopSaleState extends State<ShopSale> {
                   product(context),
                   product(context)
                 ],
-              )
-            ],
-          ),
-        ),
-        bottomNavigationBar: new PonnyBottomNavbar(selectedIndex: 1),
+              ),
+            ),
+          )
+        ],
       ),
+      bottomNavigationBar: new PonnyBottomNavbar(selectedIndex: 1),
     );
   }
 }
