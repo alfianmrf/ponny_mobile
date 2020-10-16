@@ -166,10 +166,10 @@ class _Browse_CategoryState extends State<Browse_Category> {
                   minWidth: 150.0,
                   height: 150.0,
                   child: RaisedButton(
-                    onPressed: () { Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ShopSale()));},
+                    onPressed: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => ShopSale()));
+                    },
                     child: Text(
                       "SHOP SALE",
                       style: TextStyle(
