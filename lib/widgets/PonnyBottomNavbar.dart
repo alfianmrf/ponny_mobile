@@ -3,6 +3,7 @@ import 'package:ponny/main.dart';
 import 'package:ponny/model/User.dart';
 import 'package:ponny/screens/home_screen.dart';
 import 'package:ponny/screens/account_screen.dart';
+import 'package:ponny/screens/Browse_Screen.dart';
 import 'package:ponny/screens/forums_screen.dart';
 import 'package:ponny/screens/login.dart';
 import 'package:provider/provider.dart';
