@@ -10,8 +10,8 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label="ponny"
-        android:icon="@mipmap/ic_launcher">
+        android:label="Ponny Beaute"
+        android:icon="@mipmap/ic_launcher_ponny">
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

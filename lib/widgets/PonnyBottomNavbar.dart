@@ -14,7 +14,10 @@ class PonnyBottomNavbar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _user = Provider.of<UserModel>(context).user;
+    final _user = Provider.of<UserModel>(context,listen: true);
+    _user.addListener(() {
+      print(_user.loggedIn);
+    });
     void _onItemTapped(int index) {
       switch (index) {
         case 0:
@@ -30,7 +33,13 @@ class PonnyBottomNavbar extends StatelessWidget {
             Navigator.of(context).pushReplacementNamed(ForumsScreen.id);
           break;
         case 4:
-          Navigator.of(context).pushReplacementNamed(AccountScreen.id);
+          print(_user.loggedIn);
+          if (index != selectedIndex)
+            _user.loggedIn ?
+            Navigator.of(context).pushReplacementNamed(AccountScreen.id) :  Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => LoginScreen()),
+            );
 
           break;
         default:

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:percent_indicator/percent_indicator.dart';
+import 'package:ponny/common/constant.dart';
 import 'package:ponny/model/User.dart';
 import 'package:ponny/screens/pra_daftar.dart';
 import 'package:ponny/screens/login.dart';
@@ -18,6 +19,8 @@ import 'package:ponny/screens/account/happy_skin_reward_screen.dart';
 import 'package:ponny/screens/account/affiliate_us_screen.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
 import 'package:provider/provider.dart';
+
+import 'home_screen.dart';
 
 class AccountScreen extends StatefulWidget {
   static const String id = "account_screen";
@@ -98,7 +101,7 @@ class _AccountScreenState extends State<AccountScreen> {
       ],
     );
 
-    final _user = Provider.of<UserModel>(context).user;
+    final _user = Provider.of<UserModel>(context);
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Hexcolor('#FCF8F0'),
@@ -115,8 +118,8 @@ class _AccountScreenState extends State<AccountScreen> {
                 children: <Widget>[
                   Container(
                     child: Text(
-                      _user.email != null ?
-                      "Hi, "+_user.name : "Guest" ,
+                      _user.loggedIn ?? false  ?
+                      "Hi, "+_user.user.name : "" ,
                       style: TextStyle(
                         fontSize: 30,
                         fontWeight: FontWeight.w500,
@@ -125,23 +128,33 @@ class _AccountScreenState extends State<AccountScreen> {
                       ),
                     ),
                   ),
-                  Container(
-                    child: Text(
-                      "Logout",
-                      textAlign: TextAlign.right,
-                      style: TextStyle(
-                        color: Hexcolor("#F59379"),
-                        fontFamily: 'Yeseva',
-                        fontSize: 18,
+                  GestureDetector(
+                    child: Container(
+                      child: Text(
+                        "Logout",
+                        textAlign: TextAlign.right,
+                        style: TextStyle(
+                          color: Hexcolor("#F59379"),
+                          fontFamily: 'Yeseva',
+                          fontSize: 18,
+                        ),
                       ),
                     ),
-                  ),
+                    onTap: () async {
+                      await Provider.of<UserModel>(context).logout();
+                      Navigator.pushReplacement(context,new MaterialPageRoute(
+                        builder: (BuildContext context) =>  new HomeScreen(),
+                      ));
+                    },
+                  )
+
                 ],
               ),
             ),
             Container(
               height: 10,
             ),
+            _user.loggedIn ?? false  ?
             Container(
               width: MediaQuery.of(context).size.width,
               height: 330,
@@ -188,7 +201,7 @@ class _AccountScreenState extends State<AccountScreen> {
                           alignment: Alignment.centerLeft,
                           margin: EdgeInsets.only(top: 10),
                           child: Text(
-                            "Aninda Anita",
+                            _user.user.name,
                             style: TextStyle(
                               fontFamily: "Yeseva",
                               fontSize: 12,
@@ -394,6 +407,8 @@ class _AccountScreenState extends State<AccountScreen> {
                   ),
                 ],
               ),
+            ): Center(
+              child: LoadingWidget(context),
             ),
             Container(
               margin: EdgeInsets.only(
