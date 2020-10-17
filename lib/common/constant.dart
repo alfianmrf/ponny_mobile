@@ -9,7 +9,7 @@ import 'package:ponny/model/Product.dart';
 import 'package:ponny/screens/product_details_screen.dart';
 import 'package:ponny/util/globalUrl.dart';
 import 'package:lodash_dart/lodash_dart.dart' as _;
-
+import 'package:cached_network_image/cached_network_image.dart';
 
 
 Widget LoadingWidget(context) => Center(
@@ -27,6 +27,13 @@ Widget LoadingWidgetFadingcube(context) => Center(
   ),
 );
 
+Widget LoadingWidgetPulse(context) => Center(
+  child: SpinKitPulse(
+    color:  Color(0xffF48262),
+    size: 25.0,
+  ),
+);
+
 Widget getProduct(context,Product product) => Column(
     children: <Widget>[
       Container(
@@ -38,10 +45,16 @@ Widget getProduct(context,Product product) => Column(
                   builder: (BuildContext context) => new ProductDetailsScreen(product: product,),
                 ));
               },
-              child: Image.network(
-                img_url+product.thumbnail_image,
-                width: MediaQuery.of(context).size.width,
-                fit: BoxFit.cover,
+              child: Container(
+                color: Colors.white,
+                height: MediaQuery.of(context).size.width*0.35,
+                child: CachedNetworkImage(
+                  imageUrl: img_url+product.thumbnail_image,
+                  placeholder: (context, url) => LoadingWidgetPulse(context),
+                  errorWidget: (context, url, error) => Image.asset('assets/images/basic.jpg'),
+                  width: MediaQuery.of(context).size.width,
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
             if(product.is_flash_deal != null)
@@ -105,7 +118,7 @@ Widget getProduct(context,Product product) => Column(
         ),
       ),
       Text(
-        product.name,
+        product.name.length > 25 ? product.name.substring(0, 25)+'...' : product.name,
         textAlign: TextAlign.center,
         style: TextStyle(
           fontFamily: 'Brandon',
@@ -180,7 +193,7 @@ Widget getDetailColumnProduct(context,List<Product> products) {
       Expanded(
         flex: 1,
         child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 5),
+          padding: EdgeInsets.symmetric(horizontal: 7),
           child: getProduct(context,products[0]),
         ),
       ),
@@ -189,7 +202,7 @@ Widget getDetailColumnProduct(context,List<Product> products) {
       Expanded(
         flex: 1,
         child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 5),
+          padding: EdgeInsets.symmetric(horizontal: 7),
 
         ),
       ),
@@ -198,7 +211,7 @@ Widget getDetailColumnProduct(context,List<Product> products) {
       Expanded(
           flex: 1,
           child:Container(
-            padding: EdgeInsets.symmetric(horizontal: 5),
+            padding: EdgeInsets.symmetric(horizontal: 7),
           ),
       ),
     );
@@ -208,7 +221,7 @@ Widget getDetailColumnProduct(context,List<Product> products) {
       Expanded(
         flex: 1,
         child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 5),
+          padding: EdgeInsets.symmetric(horizontal: 7),
           child: getProduct(context,products[0]),
         ),
       ),
@@ -217,7 +230,7 @@ Widget getDetailColumnProduct(context,List<Product> products) {
       Expanded(
         flex: 1,
         child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 5),
+          padding: EdgeInsets.symmetric(horizontal: 7),
           child: getProduct(context,products[1]),
         ),
       ),
@@ -226,7 +239,7 @@ Widget getDetailColumnProduct(context,List<Product> products) {
       Expanded(
         flex: 1,
         child:Container(
-          padding: EdgeInsets.symmetric(horizontal: 5),
+          padding: EdgeInsets.symmetric(horizontal: 7),
         ),
       ),
     );
@@ -236,7 +249,7 @@ Widget getDetailColumnProduct(context,List<Product> products) {
         Expanded(
           flex: 1,
           child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 5),
+            padding: EdgeInsets.symmetric(horizontal: 7),
             child: getProduct(context,product),
           ),
         ),

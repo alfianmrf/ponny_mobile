@@ -498,7 +498,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                       'Os quiatur? Quidus dolore voluptia volecti omnis qui si blacea sequia sit ut reptatent atinis cus aut dunt delliquiae. Icias et iusdae rersp d igenis experio ssectus aut eatur? Nam dolu ptaerum neces id moloreperum et lab is volecepu dam etus molorporeium qui dolo bereperum volorep uditis mostiis eatur? Epelit, omniet ut que eos sit raerum faces lictat.',
                                       style: TextStyle(
                                         fontFamily: 'Brandon',
-                                        fontSize: 12,
+                                        fontSize: 13,
                                       ),
                                       textAlign: TextAlign.justify,
                                     ),
@@ -561,10 +561,6 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                                 ),
                                               ),
                                             ),
-                                            Icon(
-                                              Icons.keyboard_arrow_down,
-                                              color: Color(0xffF48262),
-                                            ),
                                           ],
                                         ),
                                         decoration: BoxDecoration(
@@ -579,27 +575,199 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                     ),
                                   ],
                                 ),
-                                Container(
-                                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 7),
+                                IntrinsicHeight(
                                   child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: <Widget>[
-                                      Align(
-                                        alignment: Alignment.centerLeft,
-                                        child: Text(
-                                          'CARA PENGGUNAAN',
-                                          style: TextStyle(
-                                            fontFamily: 'Brandon',
-                                            fontSize: 15,
-                                            height: 1.7,
+                                      Expanded(
+                                        flex: 4,
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            border: Border(
+                                              right: BorderSide( //                   <--- left side
+                                                color: Color(0xffF48262),
+                                                width: 5.0,
+                                              ),
+                                            ),
+                                          ),
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Container(
+                                                width: MediaQuery.of(context).size.width,
+                                                decoration: BoxDecoration(
+                                                  border: Border(
+                                                    bottom: BorderSide( //                   <--- left side
+                                                      color: Color(0xffF48262),
+                                                      width: 1.0,
+                                                    ),
+                                                  ),
+                                                ),
+                                                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 7),
+                                                child: Text(
+                                                  'Calamine',
+                                                  style: TextStyle(
+                                                    fontFamily: 'Brandon',
+                                                    fontSize: 13,
+                                                  ),
+                                                ),
+                                              ),
+                                              Container(
+                                                width: MediaQuery.of(context).size.width,
+                                                decoration: BoxDecoration(
+                                                  border: Border(
+                                                    bottom: BorderSide( //                   <--- left side
+                                                      color: Color(0xffF48262),
+                                                      width: 1.0,
+                                                    ),
+                                                  ),
+                                                ),
+                                                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 7),
+                                                child: Text(
+                                                  'ZnO',
+                                                  style: TextStyle(
+                                                    fontFamily: 'Brandon',
+                                                    fontSize: 13,
+                                                  ),
+                                                ),
+                                              ),
+                                              Container(
+                                                width: MediaQuery.of(context).size.width,
+                                                decoration: BoxDecoration(
+                                                  border: Border(
+                                                    bottom: BorderSide( //                   <--- left side
+                                                      color: Color(0xffF48262),
+                                                      width: 1.0,
+                                                    ),
+                                                  ),
+                                                ),
+                                                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 7),
+                                                child: Text(
+                                                  'Salicylic Acid',
+                                                  style: TextStyle(
+                                                    fontFamily: 'Brandon',
+                                                    fontSize: 13,
+                                                  ),
+                                                ),
+                                              ),
+                                              Container(
+                                                width: MediaQuery.of(context).size.width,
+                                                decoration: BoxDecoration(
+                                                  border: Border(
+                                                    bottom: BorderSide( //                   <--- left side
+                                                      color: Color(0xffF48262),
+                                                      width: 1.0,
+                                                    ),
+                                                  ),
+                                                ),
+                                                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 7),
+                                                child: Text(
+                                                  'Sulfur',
+                                                  style: TextStyle(
+                                                    fontFamily: 'Brandon',
+                                                    fontSize: 13,
+                                                  ),
+                                                ),
+                                              ),
+                                              Container(
+                                                width: MediaQuery.of(context).size.width,
+                                                decoration: BoxDecoration(
+                                                  border: Border(
+                                                    bottom: BorderSide( //                   <--- left side
+                                                      color: Color(0xffF48262),
+                                                      width: 1.0,
+                                                    ),
+                                                  ),
+                                                ),
+                                                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 7),
+                                                child: Text(
+                                                  'Kaolin',
+                                                  style: TextStyle(
+                                                    fontFamily: 'Brandon',
+                                                    fontSize: 13,
+                                                  ),
+                                                ),
+                                              ),
+                                              Container(
+                                                width: MediaQuery.of(context).size.width,
+                                                decoration: BoxDecoration(
+                                                  border: Border(
+                                                    bottom: BorderSide( //                   <--- left side
+                                                      color: Color(0xffF48262),
+                                                      width: 1.0,
+                                                    ),
+                                                  ),
+                                                ),
+                                                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 7),
+                                                child: Text(
+                                                  'Bentonite',
+                                                  style: TextStyle(
+                                                    fontFamily: 'Brandon',
+                                                    fontSize: 13,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                         ),
                                       ),
-                                      Icon(
-                                        Icons.keyboard_arrow_down,
-                                        color: Color(0xffF48262),
+                                      Expanded(
+                                        flex: 6,
+                                        child: Container(
+                                          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 7),
+                                          child: Align(
+                                            alignment: Alignment.topLeft,
+                                            child: Text(
+                                              'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat',
+                                              style: TextStyle(
+                                                fontFamily: 'Brandon',
+                                                fontSize: 13,
+                                              ),
+                                              textAlign: TextAlign.justify,
+                                            ),
+                                          ),
+                                        ),
                                       ),
                                     ],
+                                  ),
+                                ),
+                                Container(
+                                  decoration: BoxDecoration(
+                                    border: Border(
+                                      bottom: BorderSide(
+                                        color: Color(0xffF48262),
+                                        width: 5.0,
+                                      ),
+                                      top: BorderSide(
+                                        color: Color(0xffF48262),
+                                        width: 5.0,
+                                      ),
+                                    ),
+                                  ),
+                                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 7),
+                                  child: Container(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      'CARA PENGGUNAAN',
+                                      style: TextStyle(
+                                        fontFamily: 'Brandon',
+                                        fontSize: 15,
+                                        height: 1.7,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Container(
+                                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 7),
+                                  child: Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      'Ehent voluptusant atiati omnit audaecusam fugiant asse pernatq uissitaqui dellestio consed utem etur, sitioria onece stibus quis magnis duntur, est quid quis minvell uptat',
+                                      style: TextStyle(
+                                        fontFamily: 'Brandon',
+                                        fontSize: 13,
+                                      ),
+                                      textAlign: TextAlign.justify,
+                                    ),
                                   ),
                                 ),
                               ],
