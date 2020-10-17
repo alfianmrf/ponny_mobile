@@ -32,6 +32,140 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+  Widget products() {
+    return Column(
+      children: <Widget>[
+        Container(
+          child: Stack(
+            children: <Widget>[
+              GestureDetector(
+                onTap: (){
+                  Navigator.of(context).pushReplacementNamed(ProductDetailsScreen.id);
+                },
+                child: Image.asset(
+                  "assets/images/produk.png",
+                  width: MediaQuery.of(context).size.width,
+                  fit: BoxFit.cover,
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(top: 10.0),
+                child: Align(
+                    alignment: Alignment.topLeft,
+                    child: Container(
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 5.0),
+                        child: const Text(
+                          '35%',
+                          style: TextStyle(
+                              color: Colors.white, fontFamily: 'Brandon'),
+                        ),
+                      ),
+                      color: Color(0xffF48262),
+                    )),
+              ),
+              Padding(
+                padding: EdgeInsets.all(5.0),
+                child: Align(
+                  alignment: Alignment.topRight,
+                  child: Icon(
+                    Icons.favorite_border,
+                    color: Color(0xffF48262),
+                    size: 20,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        Container(
+          alignment: Alignment.bottomCenter,
+          child: Container(
+            width: MediaQuery.of(context).size.width,
+            child: const Text(
+              'ADD TO BAG',
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.white, fontFamily: 'Brandon'),
+            ),
+            color: Color(0xffF3C1B5),
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.only(top: 7.0),
+          child: Text(
+            'Skin Game',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontFamily: 'Yeseva',
+              fontSize: 16,
+            ),
+          ),
+        ),
+        Text(
+          'Acne Warrior',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontFamily: 'Brandon',
+            fontSize: 14,
+          ),
+        ),
+        Text(
+          'Rp. 125.000',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontFamily: 'Brandon',
+            fontSize: 14,
+          ),
+        ),
+        Center(
+          child: RichText(
+            text: TextSpan(
+                text: 'Rp. 125.000',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontFamily: 'Brandon',
+                  fontSize: 12,
+                  decoration: TextDecoration.lineThrough,
+                ),
+                children: [
+                  TextSpan(
+                    text: '(35%)',
+                    style: TextStyle(
+                      color: Color(0xffF48262),
+                      fontFamily: 'Brandon',
+                      fontSize: 12,
+                      decoration: TextDecoration.none,
+                    ),
+                  ),
+                ]),
+          ),
+        ),
+        Text.rich(TextSpan(children: <InlineSpan>[
+          WidgetSpan(
+            child: RatingBar(
+              initialRating: 4,
+              minRating: 1,
+              direction: Axis.horizontal,
+              allowHalfRating: true,
+              itemCount: 5,
+              itemSize: 14.0,
+              itemPadding: EdgeInsets.symmetric(horizontal: 1.0),
+              itemBuilder: (context, index) => Icon(
+                Icons.favorite,
+                color: Color(0xffF48262),
+              ),
+              unratedColor: Color(0xffFBD2CD),
+            ),
+          ),
+          TextSpan(
+              text: '(5)',
+              style: TextStyle(
+                fontSize: 12,
+              ))
+        ])),
+      ],
+    );
+  }
 
 
   @override
@@ -341,7 +475,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               title("Best Seller"),
               Container(
-                height: MediaQuery.of(context).size.height * .40,
+                height: MediaQuery.of(context).size.width * .8,
                 child: Consumer<ProductModel>(
                   builder: (context,value,child){
                     if(value.loadingBestSale){
@@ -349,6 +483,33 @@ class _HomeScreenState extends State<HomeScreen> {
                     }else{
                       return  new Swiper(
                         itemBuilder: (BuildContext context, int index) {
+                          return Container(
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  flex: 1,
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(horizontal: 5),
+                                    child: products(),
+                                  ),
+                                ),
+                                Expanded(
+                                  flex: 1,
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(horizontal: 5),
+                                    child: products(),
+                                  ),
+                                ),
+                                Expanded(
+                                  flex: 1,
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(horizontal: 5),
+                                    child: products(),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
                           return GridView.count(
                             shrinkWrap: true,
                             primary: false,
@@ -376,24 +537,59 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               title("Phoebe's Choice"),
               Container(
-                height: MediaQuery.of(context).size.height * .40,
-                child: new Swiper(
-                  itemBuilder: (BuildContext context, int index) {
-                    return GridView.count(
-                      shrinkWrap: true,
-                      primary: false,
-                      padding: const EdgeInsets.symmetric(horizontal: 5),
-                      crossAxisSpacing: 10,
-                      mainAxisSpacing: 10,
-                      childAspectRatio: 0.4,
-                      crossAxisCount: 3,
-                      children: getBestsale(bestsale),
-                    );
+                height: MediaQuery.of(context).size.width * .8,
+                child: Consumer<ProductModel>(
+                  builder: (context,value,child){
+                    if(value.loadingBestSale){
+                      return LoadingWidgetFadingcube(context);
+                    }else{
+                      return  new Swiper(
+                        itemBuilder: (BuildContext context, int index) {
+                          return Container(
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  flex: 1,
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(horizontal: 5),
+                                    child: products(),
+                                  ),
+                                ),
+                                Expanded(
+                                  flex: 1,
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(horizontal: 5),
+                                    child: products(),
+                                  ),
+                                ),
+                                Expanded(
+                                  flex: 1,
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(horizontal: 5),
+                                    child: products(),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                          return GridView.count(
+                            shrinkWrap: true,
+                            primary: false,
+                            padding: const EdgeInsets.symmetric(horizontal: 5),
+                            crossAxisSpacing: 10,
+                            mainAxisSpacing: 10,
+                            childAspectRatio: 0.4,
+                            crossAxisCount: 3,
+                            children: getBestsale(value.Best_sell),
+                          );
+                        },
+                        itemCount: 3,
+                        pagination: null,
+                        control: null,
+                        autoplay: false,
+                      );
+                    }
                   },
-                  itemCount: 3,
-                  pagination: null,
-                  control: null,
-                  autoplay: false,
                 ),
               ),
               Container(
