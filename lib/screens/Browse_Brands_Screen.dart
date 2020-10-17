@@ -9,6 +9,9 @@ class Browse_Brands extends StatefulWidget {
 }
 
 class _Browse_BrandsState extends State<Browse_Brands> {
+  final _controller = ScrollController();
+  final _height = 500.0;
+
   var alphabets = [
     'A',
     'B',
@@ -37,7 +40,8 @@ class _Browse_BrandsState extends State<Browse_Brands> {
     'Y',
     'Z'
   ];
-
+  _animateToIndex(i) => _controller.animateTo(_height * i,
+      duration: Duration(seconds: 2), curve: Curves.fastOutSlowIn);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,7 +56,9 @@ class _Browse_BrandsState extends State<Browse_Brands> {
               itemCount: alphabets.length,
               itemBuilder: (context, i) {
                 return new RawMaterialButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      return _animateToIndex(i);
+                    },
                     shape: new CircleBorder(),
                     elevation: 0.0,
                     child: Text(
@@ -66,6 +72,7 @@ class _Browse_BrandsState extends State<Browse_Brands> {
                     ));
               })),
       body: ListView.builder(
+          controller: _controller,
           itemCount: alphabets.length,
           itemBuilder: (context, i) {
             return Column(
@@ -94,7 +101,10 @@ class _Browse_BrandsState extends State<Browse_Brands> {
                     child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Container(child: Text("Aeris"),margin: EdgeInsets.fromLTRB(25,20,0,10),),
+                    Container(
+                      child: Text("Aeris"),
+                      margin: EdgeInsets.fromLTRB(25, 20, 0, 10),
+                    ),
                     Container(
                       color: Colors.black,
                       height: 1,

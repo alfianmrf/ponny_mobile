@@ -71,15 +71,17 @@ import 'package:ponny/screens/Syarat_Ketentuan_screen.dart';
 /* Account ==> Pengiriman */
 import 'package:ponny/screens/Pengiriman_screen.dart';
 
-void main() {
+/*Account ==> Affiliate*/
+import 'package:ponny/screens/Affiliate_Home_screen.dart';
 
+void main() {
   runApp(
-      MultiProvider(
-        providers: [
-          ChangeNotifierProvider(create: (context) => UserModel()),
-        ],
-        child: MyApp(),
-      ),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => UserModel()),
+      ],
+      child: MyApp(),
+    ),
   );
 }
 
@@ -132,15 +134,16 @@ class MyApp extends StatelessWidget {
         PaymentScreen.id: (context) => PaymentScreen(),
         BankTransferScreen.id: (context) => BankTransferScreen(),
         BankTransferDetailScreen.id: (context) => BankTransferDetailScreen(),
-        KonfirmasiPembayaranScreen.id: (context) => KonfirmasiPembayaranScreen(),
+        KonfirmasiPembayaranScreen.id: (context) =>
+            KonfirmasiPembayaranScreen(),
         PesananBerhasilScreen.id: (context) => PesananBerhasilScreen(),
         Browse.id: (context) => Browse(),
         PengembalianBarang.id: (context) => PengembalianBarang(),
         TopQuestionScreen.id: (context) => TopQuestionScreen(),
         FAQScreen.id: (context) => FAQScreen(),
         SyaratKetentuanScreen.id: (context) => SyaratKetentuanScreen(),
-        PengirimanScreen.id: (context) => PengirimanScreen()
-
+        PengirimanScreen.id: (context) => PengirimanScreen(),
+        AffiliateHomeScreen.id: (context) => AffiliateHomeScreen()
       },
     );
   }
