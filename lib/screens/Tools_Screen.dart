@@ -21,130 +21,133 @@ class _ToolsState extends State<Tools> {
     return Container(
       child: DefaultTabController(
         length: 3,
-        child: SafeArea(
-          child: Scaffold(
-              resizeToAvoidBottomInset: false,
-              backgroundColor: Hexcolor('#FCF8F0'),
-              body: Column(
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        color: Colors.white),
-                    padding: EdgeInsets.all(10),
-                    margin: EdgeInsets.only(left: 10, top: 10, right: 10),
-                    child: Row(children: [
-                      Icon(Icons.search, color: Color(0xffF48262)),
-                      Expanded(
-                          child: TextField(
-                        cursorColor: Colors.black,
-                        keyboardType: TextInputType.text,
-                        textInputAction: TextInputAction.go,
-                        decoration: new InputDecoration.collapsed(
-                            hintText: "Search..."),
-                      ))
-                    ]),
-                  ),
-                  Container(
-                    margin: EdgeInsets.all(5),
-                    child: Row(
-                      children: [
-                        Container(
-                          child: IconButton(
-                              onPressed: () {
-                                Navigator.of(context)
-                                    .pushReplacementNamed(Browse.id);
-                              },
-                              icon: Icon(
-                                Icons.arrow_back_ios,
-                                color: Color(0xffF48262),
-                                size: 26,
-                              )),
-                        ),
-                        Container(
-                          child: Text(
-                            "Tools",
-                            style: TextStyle(
-                              fontSize: 24,
-                              fontFamily: "Yeseva",
-                              fontWeight: FontWeight.w500,
+        child: Scaffold(
+            resizeToAvoidBottomInset: false,
+            backgroundColor: Hexcolor('#FCF8F0'),
+            body: Column(
+              children: [
+                Container(
+                  height: 35,
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                      color: Colors.white),
+                  padding: EdgeInsets.all(10),
+                  margin: EdgeInsets.only(left: 10, top: 10, right: 10),
+                  child: Row(children: [
+                    Icon(Icons.search, color: Color(0xffF48262)),
+                    Expanded(
+                        child: TextField(
+                      cursorColor: Colors.black,
+                      keyboardType: TextInputType.text,
+                      textInputAction: TextInputAction.go,
+                      decoration:
+                          new InputDecoration.collapsed(hintText: "Search..."),
+                    ))
+                  ]),
+                ),
+                Container(
+                  margin: EdgeInsets.all(5),
+                  child: Row(
+                    children: [
+                      Container(
+                        child: IconButton(
+                            onPressed: () {
+                              Navigator.of(context)
+                                  .pushReplacementNamed(Browse.id);
+                            },
+                            icon: Icon(
+                              Icons.arrow_back_ios,
                               color: Color(0xffF48262),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    height: 1,
-                    color: Color(0xffF3C1B5),
-                  ),
-                  Container(
-                    margin: EdgeInsets.all(10),
-                    height: 110,
-                    width: double.infinity,
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: 20,
-                      itemBuilder: (context, i) {
-                        return Container(
-                            margin: EdgeInsets.all(10),
-                            child: rectanglebutton(context, "Tools"));
-                      },
-                    ),
-                  ),
-                  Container(
-                    height: 1,
-                    color: Color(0xffF3C1B5),
-                  ),
-                  Container(
-                    margin: EdgeInsets.all(15),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          itemlength.toString() + " items",
+                              size: 26,
+                            )),
+                      ),
+                      Container(
+                        child: Text(
+                          "Tools",
                           style: TextStyle(
-                            fontSize: 18,
+                            fontSize: 24,
                             fontFamily: "Yeseva",
                             fontWeight: FontWeight.w500,
-                            color: Colors.black,
+                            color: Color(0xffF48262),
                           ),
                         ),
-                        RaisedButton(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                          color: Color(0xffF48262),
-                          onPressed: () {
-                            _settingModalBottomSheet(context);
-                          },
-                          child: Container(
-                            margin: EdgeInsets.all(10),
-                            child: Row(
-                              children: [
-                                Icon(
-                                  Icons.tune,
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  height: 1,
+                  color: Color(0xffF3C1B5),
+                ),
+                Container(
+                  margin: EdgeInsets.all(10),
+                  height: 110,
+                  width: double.infinity,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: 20,
+                    itemBuilder: (context, i) {
+                      return Container(
+                          margin: EdgeInsets.all(10),
+                          child: rectanglebutton(context, "Tools"));
+                    },
+                  ),
+                ),
+                Container(
+                  height: 1,
+                  color: Color(0xffF3C1B5),
+                ),
+                Container(
+                  margin: EdgeInsets.all(15),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        itemlength.toString() + " items",
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontFamily: "Yeseva",
+                          fontWeight: FontWeight.w500,
+                          color: Colors.black,
+                        ),
+                      ),
+                      RaisedButton(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        color: Color(0xffF48262),
+                        onPressed: () {
+                          _settingModalBottomSheet(context);
+                        },
+                        child: Container(
+                          margin: EdgeInsets.all(10),
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.tune,
+                                color: Colors.white,
+                              ),
+                              Container(width: 5),
+                              Text(
+                                "Filter",
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontFamily: "Yeseva",
+                                  fontWeight: FontWeight.w500,
                                   color: Colors.white,
                                 ),
-                                Container(width: 5),
-                                Text(
-                                  "Filter",
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    fontFamily: "Yeseva",
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
-                        )
-                      ],
-                    ),
+                        ),
+                      )
+                    ],
                   ),
-                  Container(
+                ),
+                Expanded(
+                  child: Container(
                       height: 300,
                       child: GridView.count(
                         shrinkWrap: true,
@@ -162,11 +165,11 @@ class _ToolsState extends State<Tools> {
                           product(context),
                           product(context)
                         ],
-                      ))
-                ],
-              ),
-              bottomNavigationBar: new PonnyBottomNavbar(selectedIndex: 1)),
-        ),
+                      )),
+                )
+              ],
+            ),
+            bottomNavigationBar: new PonnyBottomNavbar(selectedIndex: 1)),
       ),
     );
   }
@@ -455,7 +458,10 @@ void _settingModalBottomSheet(context) {
                           : Container(),
                     ),
                     Container(
-                      margin: EdgeInsets.only(top: 10,bottom: 10,),
+                      margin: EdgeInsets.only(
+                        top: 10,
+                        bottom: 10,
+                      ),
                       height: 1,
                       color: Color(0xffF3C1B5),
                     ),
@@ -470,8 +476,6 @@ void _settingModalBottomSheet(context) {
                         ),
                       ),
                     ),
-                   
-             
                     RangeSlider(
                       activeColor: Color(0xffF48262),
                       values: _currentSliderValue,

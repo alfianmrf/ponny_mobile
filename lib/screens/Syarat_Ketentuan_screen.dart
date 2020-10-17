@@ -3,7 +3,7 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
 
 class SyaratKetentuanScreen extends StatefulWidget {
-  SyaratKetentuanScreen({Key key}) : super(key: key);
+  static const String id = "Syarat_Ketentuan_screen";
 
   @override
   _SyaratKetentuanScreenState createState() => _SyaratKetentuanScreenState();
@@ -16,65 +16,67 @@ class _SyaratKetentuanScreenState extends State<SyaratKetentuanScreen> {
       child: Scaffold(
           resizeToAvoidBottomInset: false,
           backgroundColor: Hexcolor('#FCF8F0'),
-          body: SingleChildScrollView(
-            child: Column(
-              children: [
-                Container(
-                  margin: EdgeInsets.all(5),
-                  child: Row(
-                    children: [
-                      Container(
-                        child: IconButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            icon: Icon(
-                              Icons.arrow_back_ios,
-                              color: Color(0xffF48262),
-                              size: 26,
-                            )),
-                      ),
-                      Container(
-                        child: Text(
-                          "Syarat & Ketentuan",
-                          style: TextStyle(
-                            fontSize: 24,
-                            fontFamily: "Yeseva",
-                            fontWeight: FontWeight.w500,
+          body: Column(
+            children: [
+              Container(
+                margin: EdgeInsets.all(5),
+                child: Row(
+                  children: [
+                    Container(
+                      child: IconButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          icon: Icon(
+                            Icons.arrow_back_ios,
                             color: Color(0xffF48262),
-                          ),
+                            size: 26,
+                          )),
+                    ),
+                    Container(
+                      child: Text(
+                        "Syarat & Ketentuan",
+                        style: TextStyle(
+                          fontSize: 24,
+                          fontFamily: "Yeseva",
+                          fontWeight: FontWeight.w500,
+                          color: Color(0xffF48262),
                         ),
                       ),
-                    ],
-                  ),
-                ),
-                Container(
-                  height: 1,
-                  color: Color(0xffF48262),
-                ),
-                Container(
-                  width: double.infinity,
-                  margin: EdgeInsets.only(top: 30, right: 20, left: 20),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    border: Border.all(
-                      color: Color(0xffF48262),
                     ),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Container(
-                    margin: EdgeInsets.only(top: 10, bottom: 20),
-                    padding: EdgeInsets.all(10),
-                    child: Column(children: [
-                      syaratKetentuanText(),
-                      syaratKetentuanText(),
-                      syaratKetentuanText(),
-                      syaratKetentuanText(),
-                    ]),
+                  ],
+                ),
+              ),
+              Container(
+                height: 1,
+                color: Color(0xffF48262),
+              ),
+              Expanded(
+                              child: SingleChildScrollView(
+                                  child: Container(
+                    width: double.infinity,
+                    margin: EdgeInsets.only(top: 30, right: 20, left: 20,bottom:30),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      border: Border.all(
+                        color: Color(0xffF48262),
+                      ),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Container(
+                      margin: EdgeInsets.only(top: 10, bottom: 20),
+                      padding: EdgeInsets.all(10),
+                      child: Column(children: [
+                        syaratKetentuanText(),
+                        syaratKetentuanText(),
+                        syaratKetentuanText(),
+                        syaratKetentuanText(),
+                      ]),
+                    ),
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
           bottomNavigationBar: new PonnyBottomNavbar(selectedIndex: 4)),
     );

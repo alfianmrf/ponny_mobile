@@ -1,24 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
+import 'package:ponny/screens/FAQ_TopQuestion_screen.dart';
 
-class PengembailanBarang extends StatefulWidget {
-  PengembailanBarang({Key key}) : super(key: key);
+class PengembalianBarang extends StatefulWidget {
+  static const String id = "FAQ_PengembalianBarang_screen";
 
   @override
-  _PengembailanBarangState createState() => _PengembailanBarangState();
+  _PengembalianBarangState createState() => _PengembalianBarangState();
 }
 
-class _PengembailanBarangState extends State<PengembailanBarang> {
+class _PengembalianBarangState extends State<PengembalianBarang> {
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
+    return Scaffold(
         resizeToAvoidBottomInset: false,
         backgroundColor: Hexcolor('#FCF8F0'),
         body: SingleChildScrollView(
           child: Column(
             children: [
+              Container(
+                height: 35,
+              ),
               Container(
                 margin: EdgeInsets.all(5),
                 child: Row(
@@ -26,7 +29,8 @@ class _PengembailanBarangState extends State<PengembailanBarang> {
                     Container(
                       child: IconButton(
                           onPressed: () {
-                            Navigator.pop(context);
+                            Navigator.pushReplacementNamed(
+                                context, TopQuestionScreen.id);
                           },
                           icon: Icon(
                             Icons.arrow_back_ios,
@@ -104,8 +108,7 @@ class _PengembailanBarangState extends State<PengembailanBarang> {
               ),
             ],
           ),
-        ),bottomNavigationBar: new PonnyBottomNavbar(selectedIndex: 4)
-      ),
-    );
+        ),
+        bottomNavigationBar: new PonnyBottomNavbar(selectedIndex: 4));
   }
 }

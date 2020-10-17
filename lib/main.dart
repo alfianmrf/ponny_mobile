@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:ponny/model/Slider.dart';
 import 'package:ponny/model/User.dart';
+import 'package:ponny/screens/Skinklopedia_Screen.dart';
 import 'package:ponny/screens/bank_transfer_screen.dart';
 import 'package:ponny/screens/bank_transfer_detail_screen.dart';
 import 'package:ponny/screens/konfirmasi_pembayaran_screen.dart';
 import 'package:ponny/screens/pesanan_berhasil_screen.dart';
 import 'package:ponny/screens/pembayaran_ovo_screen.dart';
+import 'package:ponny/screens/pembayaran_gopay_screen.dart';
 
 /* Navbar Bottom Bar */
 import 'package:ponny/screens/forums_screen.dart';
@@ -14,6 +16,8 @@ import 'package:ponny/screens/intro_screen.dart';
 import 'package:ponny/screens/home_screen.dart';
 import 'package:ponny/screens/forums_screen.dart';
 import 'package:ponny/screens/account_screen.dart';
+
+import 'package:ponny/screens/Browse_Screen.dart';
 
 /* Account ==> Menunggu Pembayaran */
 import 'package:ponny/screens/account/menunggu_pembayaran_screen.dart';
@@ -62,10 +66,18 @@ import 'package:ponny/screens/shipping_screen.dart';
 import 'package:ponny/screens/payment_screen.dart';
 import 'package:provider/provider.dart';
 
-import 'model/Product.dart';
+/* FAQ*/
+import 'package:ponny/screens/FAQ_PengembalianBarang_screen.dart';
+import 'package:ponny/screens/FAQ_TopQuestion_screen.dart';
+import 'package:ponny/screens/FAQ_screen.dart';
+
+/* Account ==> Syarat dan Ketentuan */
+import 'package:ponny/screens/Syarat_Ketentuan_screen.dart';
+
+/* Account ==> Pengiriman */
+import 'package:ponny/screens/Pengiriman_screen.dart';
 
 void main() {
-
   runApp(
       MultiProvider(
         providers: [
@@ -96,6 +108,8 @@ class MyApp extends StatelessWidget {
         HomeScreen.id: (context) => HomeScreen(),
         ForumsScreen.id: (context) => ForumsScreen(),
         AccountScreen.id: (context) => AccountScreen(),
+        Browse.id: (context) => Browse(),
+        Skinklopedia.id: (context) => Skinklopedia(),
         MenungguPembayaranScreen.id: (context) => MenungguPembayaranScreen(),
         MenungguPembayaranSuksesScreen.id: (context) =>
             MenungguPembayaranSuksesScreen(),
@@ -131,7 +145,13 @@ class MyApp extends StatelessWidget {
         KonfirmasiPembayaranScreen.id: (context) => KonfirmasiPembayaranScreen(),
         PesananBerhasilScreen.id: (context) => PesananBerhasilScreen(),
         PembayaranOvoScreen.id: (context) => PembayaranOvoScreen(),
-        Browse.id: (context) => Browse() 
+        PembayaranGopayScreen.id: (context) => PembayaranGopayScreen(),
+        Browse.id: (context) => Browse(),
+        PengembalianBarang.id: (context) => PengembalianBarang(),
+        TopQuestionScreen.id: (context) => TopQuestionScreen(),
+        FAQScreen.id: (context) => FAQScreen(),
+        SyaratKetentuanScreen.id: (context) => SyaratKetentuanScreen(),
+        PengirimanScreen.id: (context) => PengirimanScreen() 
       },
     );
   }
