@@ -14,6 +14,8 @@ import 'package:ponny/util/globalUrl.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
 import 'package:ponny/widgets/PonnyAppBar.dart';
 import 'package:provider/provider.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:ponny/screens/cart_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   static const String id = "home_screen";
@@ -25,7 +27,11 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   Timer _timer;
 
-
+  final double targetElevation = 3;
+  final targetColor = Color(0xfffdf8f0);
+  var _color = Colors.transparent;
+  double _elevation = 0;
+  ScrollController _controller;
 
 
   showModal() {
@@ -174,6 +180,30 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     showModal();
+    _controller = ScrollController();
+    _controller.addListener(_scrollListener);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _controller?.removeListener(_scrollListener);
+    _controller?.dispose();
+  }
+
+  void _scrollListener() {
+    double newElevation = _controller.offset > 1 ? targetElevation : 0;
+    final newColor = _controller.offset > 1 ? targetColor : Colors.transparent;
+    if (_elevation != newElevation) {
+      setState(() {
+        _elevation = newElevation;
+      });
+    }
+    if (_color != newColor) {
+      setState(() {
+        _color = newColor;
+      });
+    }
   }
 
   static const TextStyle optionStyle =
@@ -442,32 +472,120 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                 ),
-                new PonnyAppBar(),
+                new AppBar(
+                  primary: false,
+                  title: Image.asset('assets/images/PonnyBeaute.png', fit: BoxFit.contain, height: 46),
+                  centerTitle: true,
+                  backgroundColor: _color,
+                  elevation: _elevation,
+                  leading: Icon(
+                    Icons.search,
+                  ),
+                  iconTheme: IconThemeData(
+                    color: Color(0xffF48262),
+                  ),
+                  actions: <Widget>[
+                    IconButton(
+                      icon: new Stack(
+                          children: <Widget>[
+                            new Container(
+                              padding: EdgeInsets.all(5),
+                              child: Icon(Icons.favorite_border),
+                            ),
+                            new Positioned(  // draw a red marble
+                              top: 0.0,
+                              right: 0.0,
+                              child: Container(
+                                width: 12,
+                                height: 12,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(40),
+                                    color: Colors.redAccent,
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    '10',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontFamily: 'Brandon',
+                                      fontSize: 8,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            )
+                          ]
+                      ),
+                      onPressed: () {},
+                    ),
+                    IconButton(
+                      icon: new Stack(
+                          children: <Widget>[
+                            new Container(
+                              padding: EdgeInsets.all(5),
+                              child: Icon(Icons.shopping_cart),
+                            ),
+                            new Positioned(  // draw a red marble
+                              top: 0.0,
+                              right: 0.0,
+                              child: Container(
+                                width: 12,
+                                height: 12,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(40),
+                                  color: Colors.redAccent,
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    '8',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontFamily: 'Brandon',
+                                      fontSize: 8,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            )
+                          ]
+                      ),
+                      onPressed: () {
+                        Navigator.of(context).pushReplacementNamed(CartScreen.id);
+                      },
+                    ),
+                  ],
+                ),
               ],
             ),
           ),
           body: new Container(
               margin: MediaQuery.of(context).padding,
               child: SingleChildScrollView(
+                  controller: _controller,
                   child: Column(
             children: <Widget>[
               Container(
                 height: MediaQuery.of(context).size.width * 0.65,
-                child: new Swiper(
-                  itemBuilder: (BuildContext context, int index) {
-                    return new Image.network(
-                      img_url+silder[index].photo,
-                      fit: BoxFit.cover,
-                    );
-                  },
-                  itemCount: silder.length,
-                  pagination: new SwiperPagination(
-                      margin: new EdgeInsets.all(5.0),
-                      builder: new DotSwiperPaginationBuilder(
-                          color: Color(0xffE6E7E9),
-                          activeColor: Color(0xffF48262))),
-                  control: null,
-                  autoplay: true,
+                color: Colors.white,
+                child: Center(
+                  child: new Swiper(
+                    itemBuilder: (BuildContext context, int index) {
+                      return new CachedNetworkImage(
+                        imageUrl: img_url+silder[index].photo,
+                        placeholder: (context, url) => LoadingWidgetPulse(context),
+                        errorWidget: (context, url, error) => Image.asset('assets/images/basic.jpg'),
+                        fit: BoxFit.cover,
+                      );
+                    },
+                    itemCount: silder.length,
+                    pagination: new SwiperPagination(
+                        margin: new EdgeInsets.all(5.0),
+                        builder: new DotSwiperPaginationBuilder(
+                            color: Color(0xffE6E7E9),
+                            activeColor: Color(0xffF48262))),
+                    control: null,
+                    autoplay: true,
+                  ),
                 ),
               ),
               title("Best Seller"),
