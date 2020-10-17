@@ -1,10 +1,14 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:intl/intl.dart';
+import 'package:lodash_dart/lodash_dart.dart';
 import 'package:ponny/model/Product.dart';
 import 'package:ponny/screens/product_details_screen.dart';
 import 'package:ponny/util/globalUrl.dart';
+import 'package:lodash_dart/lodash_dart.dart' as _;
 
 
 
@@ -166,3 +170,94 @@ Widget getProduct(context,Product product) => Column(
       ])),
     ],
   );
+
+
+Widget getDetailColumnProduct(context,List<Product> products) {
+  List<Widget> _tmp =[];
+  if(products.length ==1){
+
+    _tmp.add(
+      Expanded(
+        flex: 1,
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 5),
+          child: getProduct(context,products[0]),
+        ),
+      ),
+    );
+    _tmp.add(
+      Expanded(
+        flex: 1,
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 5),
+
+        ),
+      ),
+    );
+    _tmp.add(
+      Expanded(
+          flex: 1,
+          child:Container(
+            padding: EdgeInsets.symmetric(horizontal: 5),
+          ),
+      ),
+    );
+
+  }else if(products.length == 2){
+    _tmp.add(
+      Expanded(
+        flex: 1,
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 5),
+          child: getProduct(context,products[0]),
+        ),
+      ),
+    );
+    _tmp.add(
+      Expanded(
+        flex: 1,
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 5),
+          child: getProduct(context,products[1]),
+        ),
+      ),
+    );
+    _tmp.add(
+      Expanded(
+        flex: 1,
+        child:Container(
+          padding: EdgeInsets.symmetric(horizontal: 5),
+        ),
+      ),
+    );
+  }else{
+    for( Product product in products){
+      _tmp.add(
+        Expanded(
+          flex: 1,
+          child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 5),
+            child: getProduct(context,product),
+          ),
+        ),
+      );
+    }
+  }
+
+  return Container(
+    child: Row(
+      children: _tmp
+    ),
+  );
+}
+
+List<Widget> getColumProduct(context,List<Product> data,int sizes) {
+  final tmp = Lodash().chunk(array: data, size: sizes);
+  List<Widget> _result = [];
+
+  for(List<Product> products in tmp){
+    _result.add(getDetailColumnProduct(context,products));
+  }
+  return _result;
+}
+

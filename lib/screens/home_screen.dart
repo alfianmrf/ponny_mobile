@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:collection';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ponny/common/constant.dart';
@@ -23,6 +24,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   Timer _timer;
+
 
 
 
@@ -400,13 +402,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     )) ?? false;
   }
-  List<Widget> getBestsale(List<Product> data) {
-    List<Widget> _result =[];
-    for(Product product in data){
-      _result.add(getProduct(context,product));
-    }
-    return _result;
-  }
+
 
   // bool checkDialog = false;
 
@@ -415,6 +411,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     final bestsale =Provider.of<ProductModel>(context).Best_sell;
     final silder = Provider.of<SliderModel>(context).listSlider;
+    List<Widget> ListBestsale;
 
 
     return new WillPopScope(
@@ -481,47 +478,12 @@ class _HomeScreenState extends State<HomeScreen> {
                     if(value.loadingBestSale){
                       return LoadingWidgetFadingcube(context);
                     }else{
+                      ListBestsale = getColumProduct(context,value.Best_sell,3);
                       return  new Swiper(
                         itemBuilder: (BuildContext context, int index) {
-                          return Container(
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  flex: 1,
-                                  child: Container(
-                                    padding: EdgeInsets.symmetric(horizontal: 5),
-                                    child: products(),
-                                  ),
-                                ),
-                                Expanded(
-                                  flex: 1,
-                                  child: Container(
-                                    padding: EdgeInsets.symmetric(horizontal: 5),
-                                    child: products(),
-                                  ),
-                                ),
-                                Expanded(
-                                  flex: 1,
-                                  child: Container(
-                                    padding: EdgeInsets.symmetric(horizontal: 5),
-                                    child: products(),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          );
-                          return GridView.count(
-                            shrinkWrap: true,
-                            primary: false,
-                            padding: const EdgeInsets.symmetric(horizontal: 5),
-                            crossAxisSpacing: 10,
-                            mainAxisSpacing: 10,
-                            childAspectRatio: 0.4,
-                            crossAxisCount: 3,
-                            children: getBestsale(value.Best_sell),
-                          );
+                          return ListBestsale[index];
                         },
-                        itemCount: 3,
+                        itemCount: ListBestsale.length,
                         pagination: null,
                         control: null,
                         autoplay: false,
@@ -571,16 +533,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                               ],
                             ),
-                          );
-                          return GridView.count(
-                            shrinkWrap: true,
-                            primary: false,
-                            padding: const EdgeInsets.symmetric(horizontal: 5),
-                            crossAxisSpacing: 10,
-                            mainAxisSpacing: 10,
-                            childAspectRatio: 0.4,
-                            crossAxisCount: 3,
-                            children: getBestsale(value.Best_sell),
                           );
                         },
                         itemCount: 3,
