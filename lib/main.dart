@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ponny/model/Slider.dart';
 import 'package:ponny/model/User.dart';
 import 'package:ponny/screens/bank_transfer_screen.dart';
 import 'package:ponny/screens/bank_transfer_detail_screen.dart';
@@ -61,12 +62,16 @@ import 'package:ponny/screens/shipping_screen.dart';
 import 'package:ponny/screens/payment_screen.dart';
 import 'package:provider/provider.dart';
 
+import 'model/Product.dart';
+
 void main() {
 
   runApp(
       MultiProvider(
         providers: [
           ChangeNotifierProvider(create: (context) => UserModel()),
+          ChangeNotifierProvider(create: (context) => SliderModel()),
+          ChangeNotifierProvider(create: (contex)=> ProductModel() ),
         ],
         child: MyApp(),
       ),
@@ -82,6 +87,7 @@ class MyApp extends StatelessWidget {
       title: 'Ponny Beaute',
       theme: ThemeData(
         primaryColor: Color(0xFFFDF8F0),
+        accentColor: Colors.red,
       ),
       initialRoute: SplashScreen.id,
       routes: {

@@ -2,10 +2,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:intl/intl.dart';
+import 'package:ponny/model/Product.dart';
 import 'package:ponny/screens/cart_screen.dart';
+import 'package:ponny/util/globalUrl.dart';
 
 class ProductDetailsScreen extends StatefulWidget {
   static const String id = "product_details_screen";
+  Product product;
+  ProductDetailsScreen({Key key,this.product});
 
   @override
   _ProductDetailsScreenState createState() => _ProductDetailsScreenState();
@@ -245,8 +250,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
             appBar: AppBar(
               backgroundColor: Colors.transparent,
               elevation: 0.0,
-              leading: Icon(
-                Icons.arrow_back_ios,
+              leading:IconButton(
+                icon: Icon(Icons.arrow_back_ios),
+                onPressed: () =>Navigator.pop(context),
               ),
               iconTheme: IconThemeData(
                 color: Color(0xffF48262),
@@ -273,12 +279,12 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                       height: MediaQuery.of(context).size.width * 1.2,
                       child: new Swiper(
                         itemBuilder: (BuildContext context, int index) {
-                          return new Image.asset(
-                            "assets/images/produk_2.png",
+                          return new Image.network(
+                            img_url+widget.product.photos[index],
                             fit: BoxFit.cover,
                           );
                         },
-                        itemCount: 3,
+                        itemCount: widget.product.photos.length,
                         pagination: new SwiperPagination(
                             margin: new EdgeInsets.all(5.0),
                             builder: new DotSwiperPaginationBuilder(
@@ -293,7 +299,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              "AERIS",
+                              widget.product.brand.name,
                               style: TextStyle(
                                 fontFamily: 'Brandon',
                                 fontSize: 20,
@@ -326,7 +332,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                           Align(
                             alignment: Alignment.centerLeft,
                             child: Text(
-                              'Sister Blendie',
+                              widget.product.name,
                               style: TextStyle(
                                 fontFamily: 'Brandon',
                               ),
@@ -339,8 +345,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                 TextSpan(children: <InlineSpan>[
                                   WidgetSpan(
                                     child: RatingBar(
-                                      initialRating: 4,
-                                      minRating: 1,
+                                      initialRating: widget.product.rating,
+                                      minRating: 0,
                                       direction: Axis.horizontal,
                                       allowHalfRating: true,
                                       itemCount: 5,
@@ -354,7 +360,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                     ),
                                   ),
                                   TextSpan(
-                                      text: '(5)',
+                                      text: '('+widget.product.review_count.toString()+')',
                                       style: TextStyle(
                                         fontSize: 12,
                                       )
@@ -369,19 +375,21 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                               padding: EdgeInsets.symmetric(vertical: 7),
                               child: Row(
                                 children: <Widget>[
+
                                   Text(
-                                    'Rp. 125.000',
+                                    NumberFormat.simpleCurrency(locale: "id_ID",decimalDigits: 0 ).format(widget.product.base_price),
                                     style: TextStyle(
                                       color: Colors.black,
                                       fontFamily: 'Brandon',
                                       fontSize: 16,
-                                      decoration: TextDecoration.lineThrough,
+                                      decoration: widget.product.is_flash_deal != null ? TextDecoration.lineThrough :null,
                                     ),
                                   ),
+                                  if(widget.product.is_flash_deal != null)
                                   Padding(
                                     padding: EdgeInsets.symmetric(horizontal: 10),
                                     child: Text(
-                                      'Rp 85.000',
+                                      NumberFormat.simpleCurrency(locale: "id_ID",decimalDigits: 0 ).format(widget.product.base_discounted_price),
                                       style: TextStyle(
                                         color: Color(0xffF48262),
                                         fontFamily: 'Brandon',
@@ -390,10 +398,17 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                       ),
                                     ),
                                   ),
+                                  if(widget.product.is_flash_deal != null)
                                   Container(
                                     padding: EdgeInsets.symmetric(horizontal: 7),
-                                    child: Text(
-                                      '35%',
+                                    child:  widget.product.is_flash_deal.discount_type == "percent"? Text(
+                                      '('+widget.product.is_flash_deal.discount.toString()+'%)',
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontFamily: 'Brandon'
+                                      ),
+                                    ) : Text(
+                                      "- "+NumberFormat.simpleCurrency(locale: "id_ID",decimalDigits: 0 ).format(widget.product.is_flash_deal.discount),
                                       style: TextStyle(
                                           color: Colors.white,
                                           fontFamily: 'Brandon'
