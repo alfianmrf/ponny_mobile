@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ponny/model/Product.dart';
 import 'package:ponny/model/Slider.dart';
 import 'package:ponny/model/User.dart';
 import 'package:ponny/screens/Skinklopedia_Screen.dart';
@@ -83,7 +84,7 @@ void main() {
         providers: [
           ChangeNotifierProvider(create: (context) => UserModel()),
           ChangeNotifierProvider(create: (context) => SliderModel()),
-          ChangeNotifierProvider(create: (contex)=> ProductModel() ),
+          ChangeNotifierProvider(create: (context)=> ProductModel()),
         ],
         child: MyApp(),
       ),
