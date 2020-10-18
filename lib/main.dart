@@ -143,7 +143,8 @@ class MyApp extends StatelessWidget {
         PaymentScreen.id: (context) => PaymentScreen(),
         BankTransferScreen.id: (context) => BankTransferScreen(),
         BankTransferDetailScreen.id: (context) => BankTransferDetailScreen(),
-        KonfirmasiPembayaranScreen.id: (context) => KonfirmasiPembayaranScreen(),
+        KonfirmasiPembayaranScreen.id: (context) =>
+            KonfirmasiPembayaranScreen(),
         PesananBerhasilScreen.id: (context) => PesananBerhasilScreen(),
         PembayaranOvoScreen.id: (context) => PembayaranOvoScreen(),
         PembayaranGopayScreen.id: (context) => PembayaranGopayScreen(),
