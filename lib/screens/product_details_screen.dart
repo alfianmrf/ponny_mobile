@@ -310,7 +310,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                 Container(
                                   padding: EdgeInsets.symmetric(horizontal: 7, vertical: 3),
                                   margin: EdgeInsets.only(right: 10),
-                                  child: Text('BPOM NA18190125265', style: TextStyle(fontSize: 12),),
+                                  child: Text(widget.product.nomer_bpom, style: TextStyle(fontSize: 12),),
                                   decoration: BoxDecoration(
                                       border: Border.all(color: Colors.black),
                                       borderRadius: BorderRadius.circular(5),
@@ -377,7 +377,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                 children: <Widget>[
 
                                   Text(
-                                    NumberFormat.simpleCurrency(locale: "id_ID",decimalDigits: 0 ).format(widget.product.base_price),
+                                    widget.product.home_discounted_price,
                                     style: TextStyle(
                                       color: Colors.black,
                                       fontFamily: 'Brandon',
@@ -495,7 +495,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                   child: Align(
                                     alignment: Alignment.centerLeft,
                                     child: Text(
-                                      'Os quiatur? Quidus dolore voluptia volecti omnis qui si blacea sequia sit ut reptatent atinis cus aut dunt delliquiae. Icias et iusdae rersp d igenis experio ssectus aut eatur? Nam dolu ptaerum neces id moloreperum et lab is volecepu dam etus molorporeium qui dolo bereperum volorep uditis mostiis eatur? Epelit, omniet ut que eos sit raerum faces lictat.',
+                                       widget.product.description,
                                       style: TextStyle(
                                         fontFamily: 'Brandon',
                                         fontSize: 13,

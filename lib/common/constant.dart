@@ -126,7 +126,7 @@ Widget getProduct(context,Product product) => Column(
         ),
       ),
       Text(
-        NumberFormat.simpleCurrency(locale: "id_ID",decimalDigits: 0 ).format(product.base_discounted_price),
+        product.home_discounted_price,
         textAlign: TextAlign.center,
         style: TextStyle(
           fontFamily: 'Brandon',
