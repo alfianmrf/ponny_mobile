@@ -11,11 +11,15 @@ class ShippingScreen extends StatefulWidget {
   _ShippingScreenState createState() => _ShippingScreenState();
 }
 
+enum ShippingMethod { jne, jnt, sicepat, pos, gojek }
+
 class _ShippingScreenState extends State<ShippingScreen> {
   @override
   void initState() {
     super.initState();
   }
+
+  ShippingMethod _shipping = ShippingMethod.jne;
 
   @override
   Widget build(BuildContext context) {
@@ -259,14 +263,27 @@ class _ShippingScreenState extends State<ShippingScreen> {
                                                 child: Row(
                                                   children: <Widget>[
                                                     Expanded(
-                                                      flex: 4,
+                                                      flex: 1,
+                                                      child: Radio(
+                                                        value: ShippingMethod.jne,
+                                                        groupValue: _shipping,
+                                                        onChanged: (ShippingMethod value) {
+                                                          setState(() {
+                                                            _shipping = value;
+                                                          });
+                                                        },
+                                                        activeColor: Color(0xffF48262),
+                                                      ),
+                                                    ),
+                                                    Expanded(
+                                                      flex: 5,
                                                       child: Container(
                                                         padding: EdgeInsets.symmetric(vertical: 10),
                                                         child: Column(
                                                           crossAxisAlignment: CrossAxisAlignment.start,
                                                           children: [
                                                             Text(
-                                                              'J&T Express',
+                                                              'JNE Express',
                                                               style: TextStyle(
                                                                 fontFamily: 'Brandon',
                                                                 fontWeight: FontWeight.w600,
@@ -317,7 +334,20 @@ class _ShippingScreenState extends State<ShippingScreen> {
                                                 child: Row(
                                                   children: <Widget>[
                                                     Expanded(
-                                                      flex: 4,
+                                                      flex: 1,
+                                                      child: Radio(
+                                                        value: ShippingMethod.jnt,
+                                                        groupValue: _shipping,
+                                                        onChanged: (ShippingMethod value) {
+                                                          setState(() {
+                                                            _shipping = value;
+                                                          });
+                                                        },
+                                                        activeColor: Color(0xffF48262),
+                                                      ),
+                                                    ),
+                                                    Expanded(
+                                                      flex: 5,
                                                       child: Container(
                                                         padding: EdgeInsets.symmetric(vertical: 10),
                                                         child: Column(
@@ -375,14 +405,27 @@ class _ShippingScreenState extends State<ShippingScreen> {
                                                 child: Row(
                                                   children: <Widget>[
                                                     Expanded(
-                                                      flex: 4,
+                                                      flex: 1,
+                                                      child: Radio(
+                                                        value: ShippingMethod.sicepat,
+                                                        groupValue: _shipping,
+                                                        onChanged: (ShippingMethod value) {
+                                                          setState(() {
+                                                            _shipping = value;
+                                                          });
+                                                        },
+                                                        activeColor: Color(0xffF48262),
+                                                      ),
+                                                    ),
+                                                    Expanded(
+                                                      flex: 5,
                                                       child: Container(
                                                         padding: EdgeInsets.symmetric(vertical: 10),
                                                         child: Column(
                                                           crossAxisAlignment: CrossAxisAlignment.start,
                                                           children: [
                                                             Text(
-                                                              'J&T Express',
+                                                              'Sicepat Express',
                                                               style: TextStyle(
                                                                 fontFamily: 'Brandon',
                                                                 fontWeight: FontWeight.w600,
@@ -433,14 +476,27 @@ class _ShippingScreenState extends State<ShippingScreen> {
                                                 child: Row(
                                                   children: <Widget>[
                                                     Expanded(
-                                                      flex: 4,
+                                                      flex: 1,
+                                                      child: Radio(
+                                                        value: ShippingMethod.pos,
+                                                        groupValue: _shipping,
+                                                        onChanged: (ShippingMethod value) {
+                                                          setState(() {
+                                                            _shipping = value;
+                                                          });
+                                                        },
+                                                        activeColor: Color(0xffF48262),
+                                                      ),
+                                                    ),
+                                                    Expanded(
+                                                      flex: 5,
                                                       child: Container(
                                                         padding: EdgeInsets.symmetric(vertical: 10),
                                                         child: Column(
                                                           crossAxisAlignment: CrossAxisAlignment.start,
                                                           children: [
                                                             Text(
-                                                              'J&T Express',
+                                                              'POS Indonesia',
                                                               style: TextStyle(
                                                                 fontFamily: 'Brandon',
                                                                 fontWeight: FontWeight.w600,
@@ -491,14 +547,27 @@ class _ShippingScreenState extends State<ShippingScreen> {
                                                 child: Row(
                                                   children: <Widget>[
                                                     Expanded(
-                                                      flex: 4,
+                                                      flex: 1,
+                                                      child: Radio(
+                                                        value: ShippingMethod.gojek,
+                                                        groupValue: _shipping,
+                                                        onChanged: (ShippingMethod value) {
+                                                          setState(() {
+                                                            _shipping = value;
+                                                          });
+                                                        },
+                                                        activeColor: Color(0xffF48262),
+                                                      ),
+                                                    ),
+                                                    Expanded(
+                                                      flex: 5,
                                                       child: Container(
                                                         padding: EdgeInsets.symmetric(vertical: 10),
                                                         child: Column(
                                                           crossAxisAlignment: CrossAxisAlignment.start,
                                                           children: [
                                                             Text(
-                                                              'J&T Express',
+                                                              'GOJEK',
                                                               style: TextStyle(
                                                                 fontFamily: 'Brandon',
                                                                 fontWeight: FontWeight.w600,
