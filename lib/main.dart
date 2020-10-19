@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ponny/model/Cart.dart';
 import 'package:ponny/model/Product.dart';
 import 'package:ponny/model/Slider.dart';
 import 'package:ponny/model/User.dart';
@@ -78,13 +79,16 @@ import 'package:ponny/screens/Syarat_Ketentuan_screen.dart';
 /* Account ==> Pengiriman */
 import 'package:ponny/screens/Pengiriman_screen.dart';
 
+import 'model/App.dart';
+
 void main() {
   runApp(
       MultiProvider(
         providers: [
-          ChangeNotifierProvider(create: (context) => UserModel()),
+          ChangeNotifierProvider(create: (context) => AppModel()),
           ChangeNotifierProvider(create: (context) => SliderModel()),
           ChangeNotifierProvider(create: (context)=> ProductModel()),
+          ChangeNotifierProvider(create: (context)=> CartModel()),
         ],
         child: MyApp(),
       ),

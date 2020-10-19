@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ponny/main.dart';
+import 'package:ponny/model/App.dart';
 import 'package:ponny/model/User.dart';
 import 'package:ponny/screens/home_screen.dart';
 import 'package:ponny/screens/account_screen.dart';
@@ -15,10 +16,7 @@ class PonnyBottomNavbar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _user = Provider.of<UserModel>(context,listen: true);
-    _user.addListener(() {
-      print(_user.loggedIn);
-    });
+
     void _onItemTapped(int index) {
       switch (index) {
         case 0:
@@ -34,9 +32,8 @@ class PonnyBottomNavbar extends StatelessWidget {
             Navigator.of(context).pushReplacementNamed(ForumsScreen.id);
           break;
         case 4:
-          print(_user.loggedIn);
           if (index != selectedIndex)
-            _user.loggedIn ?
+            Provider.of<AppModel>(context).loggedIn ?
             Navigator.of(context).pushReplacementNamed(AccountScreen.id) :  Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => LoginScreen()),

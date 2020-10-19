@@ -3,9 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:intl/intl.dart';
+import 'package:ponny/common/constant.dart';
+import 'package:ponny/model/Cart.dart';
 import 'package:ponny/model/Product.dart';
 import 'package:ponny/screens/cart_screen.dart';
 import 'package:ponny/util/globalUrl.dart';
+import 'package:provider/provider.dart';
+import 'package:uiblock/uiblock.dart';
 
 class ProductDetailsScreen extends StatefulWidget {
   static const String id = "product_details_screen";
@@ -191,8 +195,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
             children: <Widget>[
               Container(
                 margin: EdgeInsets.symmetric(horizontal: 5),
-                child: Image.asset(
-                  'assets/images/produk_1.png',
+                child: Image.network(
+                  img_url+widget.product.thumbnail_image,
                   width: MediaQuery.of(context).size.width*0.2,
                 ),
               ),
@@ -202,18 +206,19 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      'Skin Game',
+                      widget.product.brand.name,
                       style: TextStyle(
                           fontWeight: FontWeight.w600,
                           fontFamily: 'Brandon'
                       ),
                     ),
                     Text(
-                      'Acne Warrior',
+                        widget.product.name.length > 20 ? widget.product.name.substring(0, 20)+'...' : widget.product.name,
                       style: TextStyle(
                           fontFamily: 'Brandon'
                       ),
                     ),
+                    if(widget.product.varian.isNotEmpty)
                     Text(
                       '120ml',
                       style: TextStyle(
@@ -240,6 +245,11 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    List<String> listBahanAktif = widget.product.bahan_aktif != null? widget.product.bahan_aktif.split(',') : [];
+    final cardData = Provider.of<CartModel>(context);
+    int  jmlCard= Provider.of<CartModel>(context).getCountOfquantity();
+
+    
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
       body: Stack(
@@ -263,7 +273,37 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   onPressed: () {},
                 ),
                 IconButton(
-                  icon: Icon(Icons.shopping_cart),
+                  icon: new Stack(
+                      children: <Widget>[
+                        new Container(
+                          padding: EdgeInsets.all(5),
+                          child: Icon(Icons.shopping_cart),
+                        ),
+                        if(jmlCard>0)
+                          new Positioned(  // draw a red marble
+                            top: 0.0,
+                            right: 0.0,
+                            child: Container(
+                              width: 12,
+                              height: 12,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(40),
+                                color: Colors.redAccent,
+                              ),
+                              child: Center(
+                                child: Text(
+                                  jmlCard.toString(),
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontFamily: 'Brandon',
+                                    fontSize: 8,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          )
+                      ]
+                  ),
                   onPressed: () {
                     Navigator.of(context).pushReplacementNamed(CartScreen.id);
                   },
@@ -310,7 +350,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                 Container(
                                   padding: EdgeInsets.symmetric(horizontal: 7, vertical: 3),
                                   margin: EdgeInsets.only(right: 10),
-                                  child: Text(widget.product.nomer_bpom, style: TextStyle(fontSize: 12),),
+                                  child: Text(widget.product.nomer_bpom != null ? widget.product.nomer_bpom :"", style: TextStyle(fontSize: 12),),
                                   decoration: BoxDecoration(
                                       border: Border.all(color: Colors.black),
                                       borderRadius: BorderRadius.circular(5),
@@ -423,41 +463,35 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                               ),
                             ),
                           ),
+                          for(Varian item in widget.product.varian)(
                           Align(
                             alignment: Alignment.centerLeft,
-                            child: Row(
-                              children: <Widget>[
-                                Container(
-                                  padding: EdgeInsets.symmetric(horizontal: 20),
-                                  child: Text(
-                                    '60 ml',
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontFamily: 'Brandon'
-                                    ),
-                                  ),
-                                  decoration: BoxDecoration(
-                                    border: Border.all(color: Color(0xffF48262)),
-                                    borderRadius: BorderRadius.circular(5),
-                                  ),
-                                ),
-                                Container(
-                                  margin: EdgeInsets.only(left: 20),
-                                  padding: EdgeInsets.symmetric(horizontal: 20),
-                                  child: Text(
-                                    '100 ml',
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontFamily: 'Brandon'
-                                    ),
-                                  ),
-                                  decoration: BoxDecoration(
-                                    border: Border.all(color: Color(0xffF48262)),
-                                    borderRadius: BorderRadius.circular(5),
-                                  ),
-                                ),
-                              ],
-                            ),
+                            child: Container(
+                              padding: EdgeInsets.only(top: 9.0),
+                              child: Row(
+                                children: <Widget>[
+                                  Text(item.atribut_name+" :"),
+                                  for(String xitem in item.values)(
+                                      Container(
+                                        margin: EdgeInsets.symmetric(horizontal: 7),
+                                        padding: EdgeInsets.symmetric(horizontal: 7),
+                                        child: Text(
+                                          xitem,
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontFamily: 'Brandon'
+                                          ),
+                                        ),
+                                        decoration: BoxDecoration(
+                                          border: Border.all(color: Color(0xffF48262)),
+                                          borderRadius: BorderRadius.circular(5),
+                                        ),
+                                      )
+                                  )
+                                ],
+                              ),
+                            )
+                          )
                           ),
                           Container(
                             margin: EdgeInsets.symmetric(vertical: 30),
@@ -591,8 +625,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                           ),
                                           child: Column(
                                             crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: [
-                                              Container(
+                                            children: List.generate(listBahanAktif.length, (index){
+                                              return Container(
                                                 width: MediaQuery.of(context).size.width,
                                                 decoration: BoxDecoration(
                                                   border: Border(
@@ -604,109 +638,14 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                                 ),
                                                 padding: EdgeInsets.symmetric(horizontal: 10, vertical: 7),
                                                 child: Text(
-                                                  'Calamine',
+                                                  listBahanAktif[index],
                                                   style: TextStyle(
                                                     fontFamily: 'Brandon',
                                                     fontSize: 13,
                                                   ),
                                                 ),
-                                              ),
-                                              Container(
-                                                width: MediaQuery.of(context).size.width,
-                                                decoration: BoxDecoration(
-                                                  border: Border(
-                                                    bottom: BorderSide( //                   <--- left side
-                                                      color: Color(0xffF48262),
-                                                      width: 1.0,
-                                                    ),
-                                                  ),
-                                                ),
-                                                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 7),
-                                                child: Text(
-                                                  'ZnO',
-                                                  style: TextStyle(
-                                                    fontFamily: 'Brandon',
-                                                    fontSize: 13,
-                                                  ),
-                                                ),
-                                              ),
-                                              Container(
-                                                width: MediaQuery.of(context).size.width,
-                                                decoration: BoxDecoration(
-                                                  border: Border(
-                                                    bottom: BorderSide( //                   <--- left side
-                                                      color: Color(0xffF48262),
-                                                      width: 1.0,
-                                                    ),
-                                                  ),
-                                                ),
-                                                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 7),
-                                                child: Text(
-                                                  'Salicylic Acid',
-                                                  style: TextStyle(
-                                                    fontFamily: 'Brandon',
-                                                    fontSize: 13,
-                                                  ),
-                                                ),
-                                              ),
-                                              Container(
-                                                width: MediaQuery.of(context).size.width,
-                                                decoration: BoxDecoration(
-                                                  border: Border(
-                                                    bottom: BorderSide( //                   <--- left side
-                                                      color: Color(0xffF48262),
-                                                      width: 1.0,
-                                                    ),
-                                                  ),
-                                                ),
-                                                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 7),
-                                                child: Text(
-                                                  'Sulfur',
-                                                  style: TextStyle(
-                                                    fontFamily: 'Brandon',
-                                                    fontSize: 13,
-                                                  ),
-                                                ),
-                                              ),
-                                              Container(
-                                                width: MediaQuery.of(context).size.width,
-                                                decoration: BoxDecoration(
-                                                  border: Border(
-                                                    bottom: BorderSide( //                   <--- left side
-                                                      color: Color(0xffF48262),
-                                                      width: 1.0,
-                                                    ),
-                                                  ),
-                                                ),
-                                                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 7),
-                                                child: Text(
-                                                  'Kaolin',
-                                                  style: TextStyle(
-                                                    fontFamily: 'Brandon',
-                                                    fontSize: 13,
-                                                  ),
-                                                ),
-                                              ),
-                                              Container(
-                                                width: MediaQuery.of(context).size.width,
-                                                decoration: BoxDecoration(
-                                                  border: Border(
-                                                    bottom: BorderSide( //                   <--- left side
-                                                      color: Color(0xffF48262),
-                                                      width: 1.0,
-                                                    ),
-                                                  ),
-                                                ),
-                                                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 7),
-                                                child: Text(
-                                                  'Bentonite',
-                                                  style: TextStyle(
-                                                    fontFamily: 'Brandon',
-                                                    fontSize: 13,
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
+                                              );
+                                            }),
                                           ),
                                         ),
                                       ),
@@ -717,7 +656,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                           child: Align(
                                             alignment: Alignment.topLeft,
                                             child: Text(
-                                              'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat',
+                                              widget.product.komposisi,
                                               style: TextStyle(
                                                 fontFamily: 'Brandon',
                                                 fontSize: 13,
@@ -761,7 +700,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                   child: Align(
                                     alignment: Alignment.centerLeft,
                                     child: Text(
-                                      'Ehent voluptusant atiati omnit audaecusam fugiant asse pernatq uissitaqui dellestio consed utem etur, sitioria onece stibus quis magnis duntur, est quid quis minvell uptat',
+                                      widget.product.penggunaan != null ? widget.product.penggunaan : "",
                                       style: TextStyle(
                                         fontFamily: 'Brandon',
                                         fontSize: 13,
@@ -1141,7 +1080,13 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                     ),
                     color: Color(0xffF48262),
                     onPressed: () {
-                      showAlertDialog(context);
+                      UIBlock.block(context,customLoaderChild: LoadingWidget(context));
+                      cardData.addProductToCart(widget.product).then((value){
+                        UIBlock.unblock(context);
+                        showAlertDialog(context);
+                      });
+
+
                     },
                   ),
                 ],

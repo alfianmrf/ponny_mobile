@@ -1,8 +1,12 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:ponny/common/constant.dart';
+import 'package:ponny/model/App.dart';
 import 'package:ponny/model/User.dart';
 import 'package:ponny/screens/pra_daftar.dart';
 import 'package:ponny/screens/login.dart';
@@ -17,9 +21,10 @@ import 'package:ponny/screens/account/detail_akun_screen.dart';
 import 'package:ponny/screens/account/beauty_profile_screen.dart';
 import 'package:ponny/screens/account/happy_skin_reward_screen.dart';
 import 'package:ponny/screens/account/affiliate_us_screen.dart';
+import 'package:ponny/util/globalUrl.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
 import 'package:provider/provider.dart';
-
+import 'package:http/http.dart' as http;
 import 'home_screen.dart';
 
 class AccountScreen extends StatefulWidget {
@@ -29,9 +34,36 @@ class AccountScreen extends StatefulWidget {
 }
 
 class _AccountScreenState extends State<AccountScreen> {
+  bool isLoading =true;
+  User user;
+
   @override
   void initState() {
     super.initState();
+    getUser();
+  }
+
+  Future<void> getUser() async {
+    final auth = Provider.of<AppModel>(context, listen: false);
+    String token  =  auth.auth.access_token;
+    print(token);
+    final response = await http.get(userprofile,headers: { HttpHeaders.contentTypeHeader: 'application/json',HttpHeaders.authorizationHeader: "Bearer $token" });
+    final responseJson = json.decode(response.body);
+    setState(() {
+      isLoading =false;
+    });
+    if(response.statusCode == 200){
+      setState(() {
+        user = User.fromLocalJson(responseJson);
+      });
+    }else{
+      await Provider.of<AppModel>(context).logout();
+      Navigator.pushReplacement(context,new MaterialPageRoute(
+        builder: (BuildContext context) =>  new LoginScreen(),
+      ));
+    }
+
+
   }
 
   List<String> judul = [
@@ -47,66 +79,18 @@ class _AccountScreenState extends State<AccountScreen> {
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> _widgetOptions = <Widget>[
-      Text(
-        'Index 1: Browse',
-        style: optionStyle,
-      ),
-      Text(
-        'Index 2: Consultation',
-        style: optionStyle,
-      ),
-      Text(
-        'Index 3: Forums',
-        style: optionStyle,
-      ),
-      Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          const Text('Hello World!',
-              style: TextStyle(fontSize: 28, color: Colors.black)),
-          RaisedButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => LoginScreen()),
-              );
-            },
-            textColor: Colors.deepOrange,
-            padding: const EdgeInsets.all(0.0),
-            child: Container(
-                decoration: const BoxDecoration(
-                  gradient: LinearGradient(colors: <Color>[
-                    Color(0xFF0D474A1),
-                    Color(0xFF1976D2),
-                    Color(0xFF42A5F5)
-                  ]),
-                ),
-                padding: const EdgeInsets.all(10.0),
-                child: const Text(
-                  'Login!',
-                  style: TextStyle(fontSize: 31),
-                )),
-          )
-        ],
-      ),
-    ];
-    Row flatButton = Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        FlatButton(
-          child: Text('Saya FlatButton'),
-          onPressed: () => debugPrint('FlatButton di tekan'),
-        )
-      ],
-    );
-
-    final _user = Provider.of<UserModel>(context);
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Hexcolor('#FCF8F0'),
       body: SingleChildScrollView(
-        child: Column(
+        child: isLoading ?
+        Container(
+          height: MediaQuery.of(context).size.height,
+          child: Center(
+          child: LoadingWidgetFadingcube(context),
+        ),)
+        :
+        Column(
           children: <Widget>[
             Container(
               height: 100,
@@ -118,8 +102,8 @@ class _AccountScreenState extends State<AccountScreen> {
                 children: <Widget>[
                   Container(
                     child: Text(
-                      _user.loggedIn ?? false  ?
-                      "Hi, "+_user.user.name : "" ,
+
+                      "Hi, "+user.name ,
                       style: TextStyle(
                         fontSize: 30,
                         fontWeight: FontWeight.w500,
@@ -141,7 +125,7 @@ class _AccountScreenState extends State<AccountScreen> {
                       ),
                     ),
                     onTap: () async {
-                      await Provider.of<UserModel>(context).logout();
+                      await Provider.of<AppModel>(context).logout();
                       Navigator.pushReplacement(context,new MaterialPageRoute(
                         builder: (BuildContext context) =>  new HomeScreen(),
                       ));
@@ -154,7 +138,6 @@ class _AccountScreenState extends State<AccountScreen> {
             Container(
               height: 10,
             ),
-            _user.loggedIn ?? false  ?
             Container(
               width: MediaQuery.of(context).size.width,
               height: 330,
@@ -201,7 +184,7 @@ class _AccountScreenState extends State<AccountScreen> {
                           alignment: Alignment.centerLeft,
                           margin: EdgeInsets.only(top: 10),
                           child: Text(
-                            _user.user.name,
+                            user.name+" "+user.last_name,
                             style: TextStyle(
                               fontFamily: "Yeseva",
                               fontSize: 12,
@@ -224,7 +207,7 @@ class _AccountScreenState extends State<AccountScreen> {
                             children: <Widget>[
                               Container(
                                 child: Text(
-                                  "170 POINTS",
+                                  user.point.toString()+" POINTS",
                                   style: TextStyle(
                                     fontSize: 18,
                                     fontWeight: FontWeight.w700,
@@ -407,8 +390,6 @@ class _AccountScreenState extends State<AccountScreen> {
                   ),
                 ],
               ),
-            ): Center(
-              child: LoadingWidget(context),
             ),
             Container(
               margin: EdgeInsets.only(
@@ -443,7 +424,7 @@ class _AccountScreenState extends State<AccountScreen> {
                         children: [
                           Container(
                             margin:
-                                EdgeInsets.only(bottom: 5, left: 15, right: 15),
+                            EdgeInsets.only(bottom: 5, left: 15, right: 15),
                             child: Icon(
                               Icons.watch_later,
                               size: 35,
@@ -507,7 +488,7 @@ class _AccountScreenState extends State<AccountScreen> {
                         children: [
                           Container(
                             margin:
-                                EdgeInsets.only(bottom: 5, left: 15, right: 15),
+                            EdgeInsets.only(bottom: 5, left: 15, right: 15),
                             child: Icon(
                               Icons.shopping_cart,
                               size: 35,
@@ -571,7 +552,7 @@ class _AccountScreenState extends State<AccountScreen> {
                         children: [
                           Container(
                             margin:
-                                EdgeInsets.only(bottom: 5, left: 15, right: 15),
+                            EdgeInsets.only(bottom: 5, left: 15, right: 15),
                             child: Image.asset(
                               'assets/images/Asset 7.png',
                               width: 30,
@@ -634,7 +615,7 @@ class _AccountScreenState extends State<AccountScreen> {
                         children: [
                           Container(
                             margin:
-                                EdgeInsets.only(bottom: 5, left: 15, right: 15),
+                            EdgeInsets.only(bottom: 5, left: 15, right: 15),
                             child: Icon(
                               Icons.directions_car,
                               size: 35,
@@ -962,7 +943,7 @@ class _AccountScreenState extends State<AccountScreen> {
                         children: [
                           Container(
                             margin:
-                                EdgeInsets.only(bottom: 5, left: 15, right: 15),
+                            EdgeInsets.only(bottom: 5, left: 15, right: 15),
                             child: Image.asset(
                               'assets/images/Asset 12.png',
                               width: 30,
@@ -1463,5 +1444,8 @@ class _AccountScreenState extends State<AccountScreen> {
       ),
       bottomNavigationBar: new PonnyBottomNavbar(selectedIndex: 4),
     );
+
+
+
   }
 }

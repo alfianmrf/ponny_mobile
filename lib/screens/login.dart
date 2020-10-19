@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:ponny/common/constant.dart';
+import 'package:ponny/model/App.dart';
 import 'package:ponny/model/User.dart';
 import 'package:ponny/screens/account_screen.dart';
 import 'package:ponny/screens/pra_daftar.dart';
@@ -51,29 +52,21 @@ class _LoginStateScreen extends State<LoginScreen> {
         "email":myemail.text,
         "password":mypass.text
       };
-      final res = await http.post(loginUrl,headers: { HttpHeaders.contentTypeHeader: 'application/json' },body: json.encode(param));
-      final _user = UserModel();
-      
-      UIBlock.unblock(context);
-      if(res.statusCode == 200){
-        var result = json.decode(res.body);
-        final us = User.fromLocalJson(result['user']);
-        await Provider.of<UserModel>(context).saveUser(result['user']);
 
-        Navigator.pushReplacement(context,new MaterialPageRoute(
-          builder: (BuildContext context) =>  new AccountScreen(),
-        ));
-        
-
-      }else{
-        final snackBar = SnackBar(
-          content: Text('Email atau password salah!',style: TextStyle(color: Colors.white)),
-          backgroundColor: Colors.redAccent,
-        );
-        scaffoldKey.currentState.showSnackBar(snackBar);
-      }
-
-
+      Provider.of<AppModel>(context).setAuth(param).then((value){
+        UIBlock.unblock(context);
+        if(value){
+          Navigator.pushReplacement(context,new MaterialPageRoute(
+            builder: (BuildContext context) =>  new AccountScreen(),
+          ));
+        }else{
+          final snackBar = SnackBar(
+            content: Text('Email atau password salah!',style: TextStyle(color: Colors.white)),
+            backgroundColor: Colors.redAccent,
+          );
+          scaffoldKey.currentState.showSnackBar(snackBar);
+        }
+      });
     }
   }
 

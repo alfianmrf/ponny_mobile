@@ -9,10 +9,13 @@ import 'package:ponny/util/globalUrl.dart';
 
 class ProductModel with ChangeNotifier{
   List<Product> Best_sell =[];
+  List<Product> PhoebeChoices=[];
   bool loadingBestSale =true;
+  bool loadingPhobe =true;
 
   ProductModel(){
     getBestSell();
+    getPhoebe();
   }
 
   Future<void> getBestSell() async {
@@ -32,10 +35,28 @@ class ProductModel with ChangeNotifier{
     }
   }
 
+  Future<void> getPhoebe() async {
+    try{
+      final result = await http.get(phobe);
+      if(result.statusCode == 200){
+        final responseJson = json.decode(result.body);
+        for (Map item in responseJson["data"]) {
+          PhoebeChoices.add(Product.fromJson(item));
+        }
+      }
+      loadingPhobe=false;
+      notifyListeners();
+    }catch(err){
+      print("error."+err.toString());
+      notifyListeners();
+    }
+  }
+
 
 
 }
 class Product{
+  int id;
   String name;
   List<String> photos;
   String thumbnail_image;
@@ -59,11 +80,13 @@ class Product{
   String bahan_aktif;
   String home_discounted_price;
   List<Varian> varian;
+  String komposisi;
 
 
 
 
   Product(
+      this.id,
       this.name,
       this.photos,
       this.thumbnail_image,
@@ -87,6 +110,7 @@ class Product{
       this.bahan_aktif,
       this.home_discounted_price,
       this.varian,
+      this.komposisi
       );
 
 
@@ -104,6 +128,7 @@ class Product{
     }
     print(parsedJson['varian']);
     return Product(
+        parsedJson["id"],
         parsedJson["name"],
         _tmp,
         parsedJson["thumbnail_image"],
@@ -127,6 +152,7 @@ class Product{
         parsedJson["bahan_aktif"],
         parsedJson["home_discounted_price"],
         _var,
+        parsedJson['komposisi']
     );
   }
 }
@@ -143,7 +169,7 @@ class Varian {
     for(String item in parsedJson['values']){
       _tmp.add(item);
     }
-    return Varian(parsedJson["attribute_id"], parsedJson["atribut_name"], null);
+    return Varian(parsedJson["attribute_id"], parsedJson["atribut_name"], _tmp);
   }
 
 }

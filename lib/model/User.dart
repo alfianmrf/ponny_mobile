@@ -80,8 +80,8 @@ class User{
    String phone;
    String gender;
    String tgl_lahir;
-   String jenis_kulit;
-   String warna_kulit;
+   int jenis_kulit;
+   int warna_kulit;
    String kondisi_kulit;
    String kondisi_rambut;
    String preferensi_product;
@@ -108,7 +108,8 @@ class User{
       this.preferensi_product,
       this.completed_profile,
       this.tier,
-      this.point);
+      this.point
+       );
 
    User.fromLocalJson(Map<String, dynamic> json) {
      print(json);

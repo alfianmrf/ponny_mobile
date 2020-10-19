@@ -3,6 +3,7 @@ import 'dart:collection';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ponny/common/constant.dart';
+import 'package:ponny/model/Cart.dart';
 import 'package:ponny/model/Product.dart';
 import 'package:ponny/model/Slider.dart';
 import 'package:ponny/model/User.dart';
@@ -32,7 +33,6 @@ class _HomeScreenState extends State<HomeScreen> {
   var _color = Colors.transparent;
   double _elevation = 0;
   ScrollController _controller;
-
 
   showModal() {
     return _timer = Timer(Duration(seconds: 2), () {
@@ -439,9 +439,12 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
 
-    final bestsale =Provider.of<ProductModel>(context).Best_sell;
     final silder = Provider.of<SliderModel>(context).listSlider;
     List<Widget> ListBestsale;
+    List<Widget> ListPhobe;
+    final jmlCard = Provider.of<CartModel>(context).getCountOfquantity();
+
+
 
 
     return new WillPopScope(
@@ -525,6 +528,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               padding: EdgeInsets.all(5),
                               child: Icon(Icons.shopping_cart),
                             ),
+                            if(jmlCard>0)
                             new Positioned(  // draw a red marble
                               top: 0.0,
                               right: 0.0,
@@ -537,7 +541,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                                 child: Center(
                                   child: Text(
-                                    '8',
+                                    jmlCard.toString(),
                                     style: TextStyle(
                                       color: Colors.white,
                                       fontFamily: 'Brandon',
@@ -550,7 +554,11 @@ class _HomeScreenState extends State<HomeScreen> {
                           ]
                       ),
                       onPressed: () {
-                        Navigator.of(context).pushReplacementNamed(CartScreen.id);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => CartScreen()),
+                        );
                       },
                     ),
                   ],
@@ -620,40 +628,15 @@ class _HomeScreenState extends State<HomeScreen> {
                 height: MediaQuery.of(context).size.width * .8,
                 child: Consumer<ProductModel>(
                   builder: (context,value,child){
-                    if(value.loadingBestSale){
+                    if(value.loadingPhobe){
                       return LoadingWidgetFadingcube(context);
                     }else{
+                      ListPhobe = getColumProduct(context,value.PhoebeChoices,3);
                       return  new Swiper(
                         itemBuilder: (BuildContext context, int index) {
-                          return Container(
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  flex: 1,
-                                  child: Container(
-                                    padding: EdgeInsets.symmetric(horizontal: 5),
-                                    child: products(),
-                                  ),
-                                ),
-                                Expanded(
-                                  flex: 1,
-                                  child: Container(
-                                    padding: EdgeInsets.symmetric(horizontal: 5),
-                                    child: products(),
-                                  ),
-                                ),
-                                Expanded(
-                                  flex: 1,
-                                  child: Container(
-                                    padding: EdgeInsets.symmetric(horizontal: 5),
-                                    child: products(),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          );
+                          return ListPhobe[index];
                         },
-                        itemCount: 3,
+                        itemCount: ListPhobe.length,
                         pagination: null,
                         control: null,
                         autoplay: false,
