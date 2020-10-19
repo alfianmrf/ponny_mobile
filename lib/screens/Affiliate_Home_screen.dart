@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
 
+
 class AffiliateHomeScreen extends StatefulWidget {
   static const String id = "Affiliate_Home_screen";
 

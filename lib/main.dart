@@ -73,6 +73,8 @@ import 'package:ponny/screens/Pengiriman_screen.dart';
 
 /*Account ==> Affiliate*/
 import 'package:ponny/screens/Affiliate_Home_screen.dart';
+import 'package:ponny/screens/Affiliate_LogedIn_screen.dart';
+import 'package:ponny/screens/Affiliate_CairkanDana_screen.dart';
 
 void main() {
   runApp(
@@ -143,7 +145,9 @@ class MyApp extends StatelessWidget {
         FAQScreen.id: (context) => FAQScreen(),
         SyaratKetentuanScreen.id: (context) => SyaratKetentuanScreen(),
         PengirimanScreen.id: (context) => PengirimanScreen(),
-        AffiliateHomeScreen.id: (context) => AffiliateHomeScreen()
+        AffiliateHomeScreen.id: (context) => AffiliateHomeScreen(),
+        AffiliateLogedIn.id: (context) => AffiliateLogedIn(),
+        CairkanDanaScreen.id: (context) => CairkanDanaScreen()
       },
     );
   }
