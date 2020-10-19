@@ -10,6 +10,7 @@ import 'package:ponny/model/User.dart';
 import 'package:ponny/screens/account_screen.dart';
 import 'package:ponny/screens/pra_daftar.dart';
 import 'package:ponny/screens/home_screen.dart';
+import 'package:ponny/screens/login_otp.dart';
 import 'package:keyboard_attachable/keyboard_attachable.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
@@ -42,9 +43,9 @@ class _LoginStateScreen extends State<LoginScreen> {
 
   _fetchLogin() async {
     FocusScope.of(context).requestFocus(new FocusNode());
-    if(myemail.text.isEmpty||mypass.text.isEmpty){
+    if (myemail.text.isEmpty || mypass.text.isEmpty) {
       setState(() {
-        _validate=false;
+        _validate = false;
       });
     }else{
       UIBlock.block(context,customLoaderChild: LoadingWidget(context));
@@ -250,6 +251,36 @@ class _LoginStateScreen extends State<LoginScreen> {
                             "MASUK",
                             style: TextStyle(
                                 fontSize: 22,
+                                fontFamily: 'Brandon',
+                                fontWeight: FontWeight.w800,
+                                letterSpacing: 1,
+                                color: Colors.white),
+                          ),
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                        ),
+                      ),
+                      Container(
+                        height: 10,
+                      ),
+                      ButtonTheme(
+                        buttonColor: Hexcolor('#444444'),
+                        minWidth: 220.0,
+                        height: 60.0,
+                        child: RaisedButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => LoginOTP(),
+                              ),
+                            );
+                          },
+                          child: Text(
+                            "Login with Phone Number",
+                            style: TextStyle(
+                                fontSize: 14,
                                 fontFamily: 'Brandon',
                                 fontWeight: FontWeight.w800,
                                 letterSpacing: 1,
