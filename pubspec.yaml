@@ -38,6 +38,10 @@ dependencies:
   localstorage: 3.0.1+4
   grouped_buttons: ^1.0.4
   dropdown_formfield: ^0.1.3
+  flutter_html: ^1.0.2
+  waterfall_flow: ^2.0.3
+  lodash_dart: ^0.0.7
+  cached_network_image: ^2.3.3
 
 
   # The following adds the Cupertino Icons font to your application.
