@@ -79,6 +79,10 @@ import 'package:ponny/screens/Syarat_Ketentuan_screen.dart';
 /* Account ==> Pengiriman */
 import 'package:ponny/screens/Pengiriman_screen.dart';
 
+/*Account ==> Affiliate*/
+import 'package:ponny/screens/Affiliate_Home_screen.dart';
+import 'package:ponny/screens/Affiliate_LogedIn_screen.dart';
+import 'package:ponny/screens/Affiliate_CairkanDana_screen.dart';
 import 'model/App.dart';
 
 void main() {
@@ -157,7 +161,10 @@ class MyApp extends StatelessWidget {
         TopQuestionScreen.id: (context) => TopQuestionScreen(),
         FAQScreen.id: (context) => FAQScreen(),
         SyaratKetentuanScreen.id: (context) => SyaratKetentuanScreen(),
-        PengirimanScreen.id: (context) => PengirimanScreen() 
+        PengirimanScreen.id: (context) => PengirimanScreen(),
+        AffiliateHomeScreen.id: (context) => AffiliateHomeScreen(),
+        AffiliateLogedIn.id: (context) => AffiliateLogedIn(),
+        CairkanDanaScreen.id: (context) => CairkanDanaScreen()
       },
     );
   }
