@@ -2,12 +2,14 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:ponny/common/constant.dart';
+import 'package:ponny/model/App.dart';
 import 'package:ponny/model/Cart.dart';
 import 'package:ponny/util/globalUrl.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
 import 'package:ponny/screens/shipping_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:ponny/model/Cart.dart';
+import 'package:uiblock/uiblock.dart';
 
 class CartScreen extends StatefulWidget {
   static const String id = "cart_screen";
@@ -17,9 +19,12 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreenState extends State<CartScreen> {
+  TextEditingController _code = TextEditingController();
+  GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   void initState() {
     super.initState();
+
   }
 
   int _n1 = 1;
@@ -56,6 +61,7 @@ class _CartScreenState extends State<CartScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: scaffoldKey,
       backgroundColor: Theme.of(context).primaryColor,
       body: Stack(children: <Widget>[
         Scaffold(
@@ -74,6 +80,8 @@ class _CartScreenState extends State<CartScreen> {
                     if(value.listCardOfitem.isEmpty){
                      return new Container( height: MediaQuery.of(context).size.height, child: Center(child: Text("Kerajang Belaja Kosong"),),);
                     }else {
+
+
                       return new Column(
                         children: <Widget>[
                           Container(
@@ -414,48 +422,55 @@ class _CartScreenState extends State<CartScreen> {
                                 ),
                               ),
                             ),
+
+
                             child: IntrinsicHeight(
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment
-                                    .spaceBetween,
+
+                              child:Stack(
+                                alignment: Alignment(1.0,0.0), // right & center
                                 children: <Widget>[
-                                  Column(
-                                      crossAxisAlignment: CrossAxisAlignment
-                                          .start,
-                                      children: <Widget>[
-                                        Text(
-                                          'KODE PROMO',
-                                          style: TextStyle(
-                                            fontFamily: 'Brandon',
-                                            fontSize: 14,
-                                          ),
-                                        ),
-                                        Text(
-                                          'HBDPHOEBE',
-                                          style: TextStyle(
-                                            fontFamily: 'Brandon',
-                                            fontSize: 16,
-                                          ),
-                                        ),
-                                      ]
+                                  TextField(
+                                    controller: _code..text = (value.coupon != null && value.coupon.coupon_id != null) ? value.coupon.code : null,
+                                    decoration: InputDecoration(
+                                        border: InputBorder.none,
+                                        focusedBorder: InputBorder.none,
+                                        enabledBorder: InputBorder.none,
+                                        errorBorder: InputBorder.none,
+                                        disabledBorder: InputBorder.none,
+                                        fillColor: Colors.transparent,
+                                        labelText: 'KODE PROMO',
+                                        hintText: 'Enter KODE PROMO',
+                                    ),
                                   ),
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: <Widget>[
-                                      Expanded(
-                                        child: Align(
-                                          alignment: Alignment.bottomRight,
-                                          child: Text(
-                                            'PAKAI',
-                                            style: TextStyle(
-                                              fontFamily: 'Brandon',
-                                              fontSize: 14,
-                                              color: Color(0xffF48262),
-                                            ),
-                                          ),
+                                  Positioned(
+                                    child:FlatButton (
+                                      child: Text("PAKAI",style: TextStyle(fontFamily: 'Brandon',
+                                        fontSize: 14,
+                                        color: Color(0xffF48262),
+                                        ) ,
+                                        textAlign: TextAlign.right,
                                         ),
-                                      ),
-                                    ],
+                                      onPressed: () {
+
+                                        if(_code.text.isNotEmpty){
+                                          value.AppyCoupon(_code.value.text, Provider.of<AppModel>(context).auth.access_token).then((values){
+                                            if(value.coupon != null && value.coupon.code != null){
+                                              final snackBar = SnackBar(
+                                                content: Text('Success.',style: TextStyle(color: Colors.white)),
+                                                backgroundColor: Colors.green,
+                                              );
+                                              scaffoldKey.currentState.showSnackBar(snackBar);
+                                            }else{
+                                              final snackBar = SnackBar(
+                                                content: Text('Code promo tidak berlaku!',style: TextStyle(color: Colors.white)),
+                                                backgroundColor: Colors.redAccent,
+                                              );
+                                              scaffoldKey.currentState.showSnackBar(snackBar);
+                                            }
+                                          });
+                                        }
+                                      },
+                                    ),
                                   ),
                                 ],
                               ),
@@ -494,6 +509,7 @@ class _CartScreenState extends State<CartScreen> {
                                       ],
                                     ),
                                   ),
+                                  if(value.coupon != null )
                                   Padding(
                                     padding: EdgeInsets.symmetric(vertical: 5),
                                     child: Row(
@@ -508,7 +524,7 @@ class _CartScreenState extends State<CartScreen> {
                                           ),
                                         ),
                                         Text(
-                                          'Rp 50.000',
+                                        NumberFormat.simpleCurrency(locale: "id_ID",decimalDigits: 0 ).format(value.getJmlDiskon()),
                                           style: TextStyle(
                                             fontFamily: 'Brandon',
                                             fontSize: 14,
@@ -531,7 +547,7 @@ class _CartScreenState extends State<CartScreen> {
                                           ),
                                         ),
                                         Text(
-                                          'Rp 350.000',
+                                          NumberFormat.simpleCurrency(locale: "id_ID",decimalDigits: 0 ).format(value.getSumtotal()),
                                           style: TextStyle(
                                             fontFamily: 'Brandon',
                                             fontSize: 14,

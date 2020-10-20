@@ -10,12 +10,16 @@ import 'package:ponny/util/globalUrl.dart';
 class ProductModel with ChangeNotifier{
   List<Product> Best_sell =[];
   List<Product> PhoebeChoices=[];
+  List<Product> Recomendasi=[];
   bool loadingBestSale =true;
   bool loadingPhobe =true;
+  bool loadingRekomendasi = true;
+
 
   ProductModel(){
     getBestSell();
     getPhoebe();
+    getRekomendasi();
   }
 
   Future<void> getBestSell() async {
@@ -45,6 +49,23 @@ class ProductModel with ChangeNotifier{
         }
       }
       loadingPhobe=false;
+      notifyListeners();
+    }catch(err){
+      print("error."+err.toString());
+      notifyListeners();
+    }
+  }
+
+  Future<void> getRekomendasi() async {
+    try{
+      final result = await http.get(rekomendasiProduk);
+      if(result.statusCode == 200){
+        final responseJson = json.decode(result.body);
+        for (Map item in responseJson["data"]) {
+          Recomendasi.add(Product.fromJson(item));
+        }
+      }
+      loadingRekomendasi=false;
       notifyListeners();
     }catch(err){
       print("error."+err.toString());

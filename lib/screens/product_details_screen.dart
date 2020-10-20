@@ -248,6 +248,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     List<String> listBahanAktif = widget.product.bahan_aktif != null? widget.product.bahan_aktif.split(',') : [];
     final cardData = Provider.of<CartModel>(context);
     int  jmlCard= Provider.of<CartModel>(context).getCountOfquantity();
+    List<Widget> ListRekomedasi;
 
     
     return Scaffold(
@@ -725,28 +726,24 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                             ),
                           ),
                           Container(
-                            height: 250,
-                            child: new Swiper(
-                              itemBuilder: (BuildContext context, int index) {
-                                return GridView.count(
-                                  shrinkWrap: true,
-                                  primary: false,
-                                  padding: const EdgeInsets.symmetric(horizontal: 5),
-                                  crossAxisSpacing: 10,
-                                  mainAxisSpacing: 10,
-                                  childAspectRatio: 0.4,
-                                  crossAxisCount: 3,
-                                  children: <Widget>[
-                                    product(),
-                                    product(),
-                                    product(),
-                                  ],
-                                );
+                            height: MediaQuery.of(context).size.width * .7,
+                            child: Consumer<ProductModel>(
+                              builder: (context,value,child){
+                                if(value.loadingRekomendasi){
+                                  return LoadingWidgetFadingcube(context);
+                                }else{
+                                  ListRekomedasi = getColumProduct(context,value.Recomendasi,3);
+                                  return  new Swiper(
+                                    itemBuilder: (BuildContext context, int index) {
+                                      return ListRekomedasi[index];
+                                    },
+                                    itemCount: ListRekomedasi.length,
+                                    pagination: null,
+                                    control: null,
+                                    autoplay: false,
+                                  );
+                                }
                               },
-                              itemCount: 3,
-                              pagination: null,
-                              control: null,
-                              autoplay: false,
                             ),
                           ),
                           Align(
