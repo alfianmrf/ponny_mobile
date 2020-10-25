@@ -1,9 +1,17 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:ponny/model/App.dart';
+import 'package:ponny/model/Order.dart';
 import 'package:ponny/screens/account_screen.dart';
 import 'package:ponny/screens/account/menunggu_pembayaran_sukses_screen.dart';
+import 'package:ponny/util/globalUrl.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
+import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 
 class MenungguPembayaranScreen extends StatefulWidget {
   static const String id = "Menunggu_Pembayaran_Screen";
@@ -13,6 +21,14 @@ class MenungguPembayaranScreen extends StatefulWidget {
 }
 
 class _MenungguPembayaranStateScreen extends State<MenungguPembayaranScreen> {
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -642,7 +658,7 @@ class _MenungguPembayaranStateScreen extends State<MenungguPembayaranScreen> {
             Container(
               child: RaisedButton(
                 onPressed: () {
-                  Navigator.push(
+                  Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
                       builder: (context) => MenungguPembayaranSuksesScreen(),

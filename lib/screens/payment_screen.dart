@@ -1,9 +1,20 @@
+import 'dart:ffi';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:ponny/common/constant.dart';
+import 'package:ponny/model/Address.dart';
+import 'package:ponny/model/App.dart';
+import 'package:ponny/model/Cart.dart';
+import 'package:ponny/model/Order.dart';
+import 'package:ponny/screens/account/menunggu_pembayaran_sukses_screen.dart';
+import 'package:ponny/screens/home_screen.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
 import 'package:ponny/screens/bank_transfer_screen.dart';
 import 'package:ponny/screens/pembayaran_ovo_screen.dart';
 import 'package:ponny/screens/pembayaran_gopay_screen.dart';
+import 'package:provider/provider.dart';
+import 'package:uiblock/uiblock.dart';
 
 class PaymentScreen extends StatefulWidget {
   static const String id = "payment_screen";
@@ -13,14 +24,55 @@ class PaymentScreen extends StatefulWidget {
 }
 
 class _PaymentScreenState extends State<PaymentScreen> {
+  GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   void initState() {
     super.initState();
+  }
+  Future<void> chekOut(BuildContext context,String method){
+     final card = Provider.of<CartModel>(context,listen: false);
+     showDialog(
+        context: context,
+        builder: (context) => new AlertDialog(
+      title: new Text('Konfirmasi Pesanan'),
+      content:  Text("Total Pembayaran: "+card.summary.total),
+      actions: <Widget>[
+        new FlatButton(
+          onPressed: () => Navigator.of(context).pop(false),
+          child: new Text('No'),
+        ),
+        new FlatButton(
+          onPressed: (){
+            UIBlock.block(context,customLoaderChild: LoadingWidget(context));
+            Provider.of<CartModel>(context).Checkout(Provider.of<AppModel>(context).auth.access_token, Provider.of<AddressModel>(context).useAddress, method).then((value) {
+              if(value){
+                Provider.of<OrderModel>(context).getOrder(Provider.of<AppModel>(context).auth.access_token).then((value){
+                  UIBlock.unblock(context);
+                  Navigator.pushReplacement(context,new MaterialPageRoute(
+                    builder: (BuildContext context) => new MenungguPembayaranSuksesScreen(),
+                  ));
+                });
+              }else{
+                UIBlock.unblock(context);
+                final snackBar = SnackBar(
+                  content: Text('Terjadi kesalah Pada Server, Silakan coba kembali nanti!',style: TextStyle(color: Colors.white)),
+                  backgroundColor: Colors.redAccent,
+                );
+                scaffoldKey.currentState.showSnackBar(snackBar);
+              }
+            });
+          },
+          child: new Text('Yes'),
+        ),
+      ],
+    ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: scaffoldKey,
       backgroundColor: Theme.of(context).primaryColor,
       body: Stack(children: <Widget>[
         Scaffold(
@@ -88,66 +140,234 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                   ),
                                 ),
                               ),
-                              Container(
-                                width: MediaQuery.of(context).size.width,
-                                padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Image.asset(
-                                          'assets/images/payment/bca-02.png',
-                                          height: 40,
-                                        ),
-                                        Padding(
-                                          padding: EdgeInsets.only(left: 10),
-                                          child: Text(
-                                            'BCA Virtual Account',
-                                            style: TextStyle(
-                                              fontFamily: 'Brandon',
-                                              fontSize: 14,
+                              InkWell(
+                                onTap: () {
+                                  chekOut(context,"mt_tf_bca");
+                                },
+                                child: Container(
+                                  width: MediaQuery.of(context).size.width,
+                                  padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Image.asset(
+                                            'assets/images/payment/bca-02.png',
+                                            height: 40,
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.only(left: 10),
+                                            child: Text(
+                                              'BCA Virtual Account',
+                                              style: TextStyle(
+                                                fontFamily: 'Brandon',
+                                                fontSize: 14,
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                    Icon(
-                                      Icons.chevron_right,
-                                      color: Color(0xffF48262),
-                                    ),
-                                  ],
+                                        ],
+                                      ),
+                                      Icon(
+                                        Icons.chevron_right,
+                                        color: Color(0xffF48262),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              InkWell(
+                                onTap: () {
+                                  chekOut(context,"mt_tf_mdr");
+                                },
+                                child: Container(
+                                  width: MediaQuery.of(context).size.width,
+                                  padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Image.asset(
+                                            'assets/images/payment/mandiri-02.png',
+                                            height: 40,
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.only(left: 10),
+                                            child: Text(
+                                              'Mandiri Virtual Account',
+                                              style: TextStyle(
+                                                fontFamily: 'Brandon',
+                                                fontSize: 14,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      Icon(
+                                        Icons.chevron_right,
+                                        color: Color(0xffF48262),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              InkWell(
+                                onTap: () {
+                                  chekOut(context,"mt_tf_bni");
+                                },
+                                child: Container(
+                                  width: MediaQuery.of(context).size.width,
+                                  padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Image.asset(
+                                            'assets/images/payment/bni-02.png',
+                                            height: 40,
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.only(left: 10),
+                                            child: Text(
+                                              'BNI Virtual Account',
+                                              style: TextStyle(
+                                                fontFamily: 'Brandon',
+                                                fontSize: 14,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      Icon(
+                                        Icons.chevron_right,
+                                        color: Color(0xffF48262),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              InkWell(
+                                onTap: () {
+                                  chekOut(context,"mt_tf_permata");
+                                },
+                                child: Container(
+                                  width: MediaQuery.of(context).size.width,
+                                  padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Image.asset(
+                                            'assets/images/payment/permata-02.png',
+                                            height: 40,
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.only(left: 10),
+                                            child: Text(
+                                              'Permata Virtual Account',
+                                              style: TextStyle(
+                                                fontFamily: 'Brandon',
+                                                fontSize: 14,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      Icon(
+                                        Icons.chevron_right,
+                                        color: Color(0xffF48262),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                               Container(
+                                color: Color(0xffFDEDE4),
                                 width: MediaQuery.of(context).size.width,
-                                padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Image.asset(
-                                          'assets/images/payment/bri-02.png',
-                                          height: 40,
-                                        ),
-                                        Padding(
-                                          padding: EdgeInsets.only(left: 10),
-                                          child: Text(
-                                            'BRI BRIVA',
-                                            style: TextStyle(
-                                              fontFamily: 'Brandon',
-                                              fontSize: 14,
+                                padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                                child: Text(
+                                  'OVER THE COUNTER (Alfamart/Indomart)',
+                                  style: TextStyle(
+                                    fontFamily: 'Brandon',
+                                    fontSize: 14,
+                                    color: Color(0xffF48262),
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ),
+                              InkWell(
+                                onTap: () {
+                                  chekOut(context,"Indomaret");
+                                },
+                                child: Container(
+                                  width: MediaQuery.of(context).size.width,
+                                  padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Image.asset(
+                                            'assets/images/payment/indomaret-02.png',
+                                            height: 40,
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.only(left: 10),
+                                            child: Text(
+                                              'Indomaret',
+                                              style: TextStyle(
+                                                fontFamily: 'Brandon',
+                                                fontSize: 14,
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                    Icon(
-                                      Icons.chevron_right,
-                                      color: Color(0xffF48262),
-                                    ),
-                                  ],
+                                        ],
+                                      ),
+                                      Icon(
+                                        Icons.chevron_right,
+                                        color: Color(0xffF48262),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              InkWell(
+                                onTap: () {
+                                  chekOut(context,"alfamart");
+                                },
+                                child: Container(
+                                  width: MediaQuery.of(context).size.width,
+                                  padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Image.asset(
+                                            'assets/images/payment/alfamart-02.png',
+                                            height: 40,
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.only(left: 10),
+                                            child: Text(
+                                              'Mandiri Virtual Account',
+                                              style: TextStyle(
+                                                fontFamily: 'Brandon',
+                                                fontSize: 14,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      Icon(
+                                        Icons.chevron_right,
+                                        color: Color(0xffF48262),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                               Container(

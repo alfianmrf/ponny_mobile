@@ -6,7 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:ponny/common/constant.dart';
+import 'package:ponny/model/Address.dart';
 import 'package:ponny/model/App.dart';
+import 'package:ponny/model/Cart.dart';
+import 'package:ponny/model/Order.dart';
 import 'package:ponny/model/User.dart';
 import 'package:ponny/screens/pra_daftar.dart';
 import 'package:ponny/screens/login.dart';
@@ -25,6 +28,8 @@ import 'package:ponny/util/globalUrl.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
+import 'package:uiblock/uiblock.dart';
+import 'account/menunggu_pembayaran_sukses_screen.dart';
 import 'home_screen.dart';
 
 class AccountScreen extends StatefulWidget {
@@ -40,7 +45,11 @@ class _AccountScreenState extends State<AccountScreen> {
   @override
   void initState() {
     super.initState();
-    getUser();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+     Provider.of<OrderModel>(context).getOrder(Provider.of<AppModel>(context, listen: false).auth.access_token).then((value) {
+       getUser();
+     });
+    });
   }
 
   Future<void> getUser() async {
@@ -49,6 +58,7 @@ class _AccountScreenState extends State<AccountScreen> {
     print(token);
     final response = await http.get(userprofile,headers: { HttpHeaders.contentTypeHeader: 'application/json',HttpHeaders.authorizationHeader: "Bearer $token" });
     final responseJson = json.decode(response.body);
+
     setState(() {
       isLoading =false;
     });
@@ -57,7 +67,9 @@ class _AccountScreenState extends State<AccountScreen> {
         user = User.fromLocalJson(responseJson);
       });
     }else{
+      await Provider.of<AddressModel>(context).RemoveDefaultAddress();
       await Provider.of<AppModel>(context).logout();
+
       Navigator.pushReplacement(context,new MaterialPageRoute(
         builder: (BuildContext context) =>  new LoginScreen(),
       ));
@@ -125,10 +137,16 @@ class _AccountScreenState extends State<AccountScreen> {
                       ),
                     ),
                     onTap: () async {
-                      await Provider.of<AppModel>(context).logout();
-                      Navigator.pushReplacement(context,new MaterialPageRoute(
-                        builder: (BuildContext context) =>  new HomeScreen(),
-                      ));
+                      UIBlock.block(context,customLoaderChild: LoadingWidget(context));
+                      Provider.of<CartModel>(context).DefaultCart().then((value){
+                        Provider.of<AppModel>(context).logout().then((value) {
+                          UIBlock.unblock(context);
+                          Navigator.pushReplacement(context,new MaterialPageRoute(
+                            builder: (BuildContext context) =>  new HomeScreen(),
+                          ));
+                        });
+                      });
+
                     },
                   )
 
@@ -405,11 +423,21 @@ class _AccountScreenState extends State<AccountScreen> {
                 children: <Widget>[
                   GestureDetector(
                     onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => MenungguPembayaranScreen()),
-                      );
+                      if(Provider.of<OrderModel>(context).unpaid != null){
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => MenungguPembayaranSuksesScreen(),
+                          ),
+                        );
+                      }else{
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => MenungguPembayaranScreen()),
+                        );
+                      }
+
                     },
                     child: Container(
                       decoration: new BoxDecoration(

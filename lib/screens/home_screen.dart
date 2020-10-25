@@ -3,6 +3,7 @@ import 'dart:collection';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ponny/common/constant.dart';
+import 'package:ponny/model/App.dart';
 import 'package:ponny/model/Cart.dart';
 import 'package:ponny/model/Product.dart';
 import 'package:ponny/model/Slider.dart';
@@ -49,6 +50,9 @@ class _HomeScreenState extends State<HomeScreen> {
     showModal();
     _controller = ScrollController();
     _controller.addListener(_scrollListener);
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      _getCartOfitem();
+    });
   }
 
   @override
@@ -70,6 +74,13 @@ class _HomeScreenState extends State<HomeScreen> {
       setState(() {
         _color = newColor;
       });
+    }
+  }
+
+  Future<void> _getCartOfitem() async {
+    final auth = Provider.of<AppModel>(context);
+    if(auth.loggedIn){
+      await Provider.of<CartModel>(context).getCart(auth.auth.access_token);
     }
   }
 
@@ -400,11 +411,17 @@ class _HomeScreenState extends State<HomeScreen> {
                           ]
                       ),
                       onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => CartScreen()),
-                        );
+                        if(Provider.of<AppModel>(context).loggedIn){
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => CartScreen()),
+                          );
+                        }else{
+                          Navigator.push(context,new MaterialPageRoute(
+                            builder: (BuildContext context) => new LoginScreen(),
+                          ));
+                        }
                       },
                     ),
                   ],

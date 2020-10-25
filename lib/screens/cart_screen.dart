@@ -24,6 +24,9 @@ class _CartScreenState extends State<CartScreen> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+     await Provider.of<CartModel>(context).RemoveCoupon();
+    });
 
   }
 
@@ -213,7 +216,10 @@ class _CartScreenState extends State<CartScreen> {
                                                           ),
                                                         ),
                                                         onPressed:(){
-                                                          value.RemoveProductToCart(item.product);
+                                                          UIBlock.block(context,customLoaderChild: LoadingWidget(context));
+                                                          value.RemoveProductToCart(item.product,Provider.of<AppModel>(context).auth.access_token).then((value) {
+                                                            UIBlock.unblock(context);
+                                                          });
                                                         },
                                                       )
                                                   ),
@@ -243,7 +249,11 @@ class _CartScreenState extends State<CartScreen> {
                                                           ),
                                                         ),
                                                         onPressed: (){
-                                                          value.addProductToCart(item.product);
+                                                          UIBlock.block(context,customLoaderChild: LoadingWidget(context));
+                                                          value.addProductToCart(item.product,Provider.of<AppModel>(context).auth.access_token).then((value){
+                                                            UIBlock.unblock(context);
+                                                          });
+
                                                         },
                                                       )
                                                   ),
@@ -288,7 +298,10 @@ class _CartScreenState extends State<CartScreen> {
                                                 alignment: Alignment.bottomRight,
                                                 child:  IconButton(
                                                   onPressed: (){
-                                                    value.DeleteProductToCart(item.product);
+                                                    UIBlock.block(context,customLoaderChild: LoadingWidget(context));
+                                                    value.DeleteProductToCart(item.product,Provider.of<AppModel>(context).auth.access_token).then((value) {
+                                                      UIBlock.unblock(context);
+                                                    });
                                                   },
                                                   icon: Icon(Icons.delete_outline,
                                                       color: Color(0xffF48262)),
@@ -451,9 +464,10 @@ class _CartScreenState extends State<CartScreen> {
                                         textAlign: TextAlign.right,
                                         ),
                                       onPressed: () {
-
+                                        UIBlock.block(context,customLoaderChild: LoadingWidget(context));
                                         if(_code.text.isNotEmpty){
                                           value.AppyCoupon(_code.value.text, Provider.of<AppModel>(context).auth.access_token).then((values){
+                                            UIBlock.unblock(context);
                                             if(value.coupon != null && value.coupon.code != null){
                                               final snackBar = SnackBar(
                                                 content: Text('Success.',style: TextStyle(color: Colors.white)),
@@ -500,7 +514,7 @@ class _CartScreenState extends State<CartScreen> {
                                           ),
                                         ),
                                         Text(
-                                          NumberFormat.simpleCurrency(locale: "id_ID",decimalDigits: 0 ).format((value.getSubtotal())),
+                                          value.summary.subtotal,
                                           style: TextStyle(
                                             fontFamily: 'Brandon',
                                             fontSize: 14,
@@ -524,7 +538,7 @@ class _CartScreenState extends State<CartScreen> {
                                           ),
                                         ),
                                         Text(
-                                        NumberFormat.simpleCurrency(locale: "id_ID",decimalDigits: 0 ).format(value.getJmlDiskon()),
+                                          value.summary.discount,
                                           style: TextStyle(
                                             fontFamily: 'Brandon',
                                             fontSize: 14,
@@ -547,7 +561,7 @@ class _CartScreenState extends State<CartScreen> {
                                           ),
                                         ),
                                         Text(
-                                          NumberFormat.simpleCurrency(locale: "id_ID",decimalDigits: 0 ).format(value.getSumtotal()),
+                                          value.summary.total,
                                           style: TextStyle(
                                             fontFamily: 'Brandon',
                                             fontSize: 14,
@@ -571,7 +585,7 @@ class _CartScreenState extends State<CartScreen> {
                                           ),
                                         ),
                                         Text(
-                                          '+ 2000',
+                                          '+ '+value.summary.earnPoint.toString(),
                                           style: TextStyle(
                                             fontFamily: 'Brandon',
                                             fontSize: 14,
@@ -606,8 +620,16 @@ class _CartScreenState extends State<CartScreen> {
                                 borderRadius: BorderRadius.circular(7.0),
                               ),
                               onPressed: () {
-                                Navigator.of(context)
-                                    .pushReplacementNamed(ShippingScreen.id);
+                                FocusScope.of(context).requestFocus(FocusNode());
+                                UIBlock.block(context,customLoaderChild: LoadingWidget(context));
+                                value.RemoveShipping().then((value){
+                                  UIBlock.unblock(context);
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => ShippingScreen()),
+                                  );
+                                });
                               },
                             ),
                           ),
