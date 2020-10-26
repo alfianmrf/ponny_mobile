@@ -24,6 +24,7 @@ class AppModel with ChangeNotifier{
           auth = LoginAuth.fromLocalJson(json);
           loggedIn = true;
           notifyListeners();
+
         }
       }
     } catch (err) {
@@ -49,18 +50,21 @@ class AppModel with ChangeNotifier{
   }
 
   Future<void> logout() async {
-    auth = null;
-    loggedIn = false;
+
     final LocalStorage storage = LocalStorage("ponnystore");
     try {
       final ready = await storage.ready;
       if (ready) {
         await storage.deleteItem("auth");
+        await storage.deleteItem("useAddress");
+        auth = null;
+        loggedIn = false;
+        notifyListeners();
       }
     } catch (err) {
       print(err);
     }
-    notifyListeners();
+
   }
 
 }

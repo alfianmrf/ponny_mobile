@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ponny/model/Address.dart';
 import 'package:ponny/model/Cart.dart';
 import 'package:ponny/model/Product.dart';
 import 'package:ponny/model/Slider.dart';
@@ -84,6 +85,7 @@ import 'package:ponny/screens/Affiliate_Home_screen.dart';
 import 'package:ponny/screens/Affiliate_LogedIn_screen.dart';
 import 'package:ponny/screens/Affiliate_CairkanDana_screen.dart';
 import 'model/App.dart';
+import 'model/Order.dart';
 
 
 
@@ -95,6 +97,8 @@ void main() {
           ChangeNotifierProvider(create: (context) => SliderModel()),
           ChangeNotifierProvider(create: (context)=> ProductModel()),
           ChangeNotifierProvider(create: (context)=> CartModel()),
+          ChangeNotifierProvider(create: (context)=> AddressModel()),
+          ChangeNotifierProvider(create: (context)=> OrderModel()),
         ],
         child: MyApp(),
       ),

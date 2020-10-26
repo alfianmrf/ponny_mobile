@@ -274,3 +274,13 @@ List<Widget> getColumProduct(context,List<Product> data,int sizes) {
   return _result;
 }
 
+class AlwaysDisabledFocusNode extends FocusNode {
+  @override
+  bool get hasFocus => false;
+}
+
+final snackBar = SnackBar(
+  content: Text('Terjadi kesalahan pada server, silakan coba kembali nanti.!',style: TextStyle(color: Colors.white)),
+  backgroundColor: Colors.redAccent,
+);
+

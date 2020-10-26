@@ -4,12 +4,15 @@ import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:intl/intl.dart';
 import 'package:ponny/common/constant.dart';
+import 'package:ponny/model/App.dart';
 import 'package:ponny/model/Cart.dart';
 import 'package:ponny/model/Product.dart';
 import 'package:ponny/screens/cart_screen.dart';
 import 'package:ponny/util/globalUrl.dart';
 import 'package:provider/provider.dart';
 import 'package:uiblock/uiblock.dart';
+
+import 'login.dart';
 
 class ProductDetailsScreen extends StatefulWidget {
   static const String id = "product_details_screen";
@@ -1077,13 +1080,17 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                     ),
                     color: Color(0xffF48262),
                     onPressed: () {
-                      UIBlock.block(context,customLoaderChild: LoadingWidget(context));
-                      cardData.addProductToCart(widget.product).then((value){
-                        UIBlock.unblock(context);
-                        showAlertDialog(context);
-                      });
-
-
+                      if(Provider.of<AppModel>(context).loggedIn){
+                        UIBlock.block(context,customLoaderChild: LoadingWidget(context));
+                        cardData.addProductToCart(widget.product,Provider.of<AppModel>(context).auth.access_token).then((value){
+                          UIBlock.unblock(context);
+                          showAlertDialog(context);
+                        });
+                      }else{
+                        Navigator.push(context,new MaterialPageRoute(
+                          builder: (BuildContext context) => new LoginScreen(),
+                        ));
+                      }
                     },
                   ),
                 ],

@@ -1,10 +1,22 @@
+import 'dart:async';
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:ponny/common/constant.dart';
+import 'package:ponny/model/Address.dart';
+import 'package:ponny/model/App.dart';
+import 'package:ponny/screens/account/mapsScreen.dart';
 import 'package:ponny/screens/home_screen.dart';
 import 'package:ponny/screens/account_screen.dart';
 import 'package:ponny/screens/account/daftar_keinginan_sukses_screen.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
+import 'package:provider/provider.dart';
+import 'package:search_map_place/search_map_place.dart';
+import 'package:uiblock/uiblock.dart';
 
 class TambahAlamatScreen extends StatefulWidget {
   static const String id = "tambah_alamat_Screen";
@@ -13,6 +25,38 @@ class TambahAlamatScreen extends StatefulWidget {
 }
 
 class _TambahAlamatStateScreen extends State<TambahAlamatScreen> {
+  GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+  List<MasterAddress> listProvinces =List<MasterAddress>();
+  List<MasterAddress> listcities =List<MasterAddress>();
+  List<MasterAddress> listsubcities =List<MasterAddress>();
+  bool loading=true;
+
+  LatLng lokasi;
+  TextEditingController _lokasi = TextEditingController();
+  TextEditingController _address = TextEditingController();
+  TextEditingController _portalcode = TextEditingController();
+  TextEditingController _phone = TextEditingController();
+  TextEditingController _nama = TextEditingController();
+  TextEditingController _Lastnama = TextEditingController();
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      Provider.of<AddressModel>(context).getParamAddress("prov", null).then((value){
+        setState(() {
+          listProvinces =value;
+          loading=false;
+        });
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   List<String> province = [
     "Jawa Timur",
     "Jawa Barat",
@@ -33,31 +77,82 @@ class _TambahAlamatStateScreen extends State<TambahAlamatScreen> {
     "Jambangan",
   ];
 
-  String prov = "DKI Jakarta";
-  String kota = "Jakarta Utara";
-  String distrik = "Penjaringan";
+  MasterAddress  prov;
+  MasterAddress  kota;
+  MasterAddress  distrik;
 
-  void onChanged(String value) {
-    setState(() {
-      prov = value;
+
+
+  void onChanged(MasterAddress _prov) {
+    UIBlock.block(context,customLoaderChild: LoadingWidget(context));
+    Provider.of<AddressModel>(context).getParamAddress("kab", _prov.id).then((value){
+      UIBlock.unblock(context);
+      setState(() {
+        prov = _prov;
+        listcities.clear();
+        listcities =value;
+
+      });
     });
   }
 
-  void onChangedKota(String value) {
-    setState(() {
-      kota = value;
+  void onChangedKota(MasterAddress _kec) {
+    UIBlock.block(context,customLoaderChild: LoadingWidget(context));
+    Provider.of<AddressModel>(context).getParamAddress("kec", _kec.id).then((value){
+      UIBlock.unblock(context);
+      setState(() {
+        kota = _kec;
+        listsubcities.clear();
+        listsubcities =value;
+
+      });
     });
   }
 
-  void onChangedDistrik(String value) {
+  void onChangedDistrik(MasterAddress value) {
     setState(() {
       distrik = value;
     });
   }
 
+  void validateInput() {
+    FormState form = this.formKey.currentState;
+    if (form.validate()) {
+      FocusScope.of(context).requestFocus(new FocusNode());
+      final param={
+        "nama_depan":_nama.value.text,
+        "nama_belakang":_Lastnama.value.text,
+        "nomor_hp":_phone.value.text,
+        "province_id":prov.id,
+        "province":prov.text,
+        "city_id":kota.id,
+        "city_name":kota.text,
+        "kecamatan_id":distrik.id,
+        "kecamatan":distrik.text,
+        "postal_code":_portalcode.value.text,
+        "alamat_lengkap":_address.value.text,
+        "lat":lokasi.latitude,
+        "lng":lokasi.longitude,
+      };
+      UIBlock.block(context,customLoaderChild: LoadingWidget(context));
+      Provider.of<AddressModel>(context).SaveAddressToServer(Provider.of<AppModel>(context).auth.access_token, param).then((value){
+        UIBlock.unblock(context);
+        if(value){
+          Navigator.pop(context);
+        }else{
+          scaffoldKey.currentState.showSnackBar(snackBar);
+        }
+      });
+      // _fetchLogin();
+    }
+  }
+
+
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
+      key: scaffoldKey,
       resizeToAvoidBottomInset: false,
       backgroundColor: Hexcolor('#FCF8F0'),
       body: SingleChildScrollView(
@@ -116,7 +211,11 @@ class _TambahAlamatStateScreen extends State<TambahAlamatScreen> {
                 top: 15,
                 bottom: 30,
               ),
-              child: Column(
+              child: loading?Center(
+                child: LoadingWidget(context),
+              ):Form(
+                key: formKey,
+                child: Column(
                 children: [
                   Container(
                     padding: EdgeInsets.only(bottom: 5),
@@ -129,21 +228,28 @@ class _TambahAlamatStateScreen extends State<TambahAlamatScreen> {
                       ),
                     ),
                     child: TextFormField(
+                      controller: _nama,
                       style: TextStyle(
                         fontFamily: "Brandon",
                         fontSize: 17,
                         fontWeight: FontWeight.w300,
                       ),
+
                       decoration: InputDecoration(
                         border: InputBorder.none,
-                        labelText: 'Full Name',
-                        hintText: 'Nama Lengkap',
+                        labelText: 'Frist Name',
+                        hintText: 'Nama Depan',
                         labelStyle: TextStyle(color: Colors.black),
                         isDense: true,
                       ),
                       keyboardType: TextInputType.name,
                       maxLines: 1,
                       minLines: 1,
+                      validator: (String value){
+                        if (value.isEmpty) {
+                          return "Nama Lengkap tidak boleh kosong";
+                        }
+                      },
                     ),
                   ),
                   Container(
@@ -157,6 +263,42 @@ class _TambahAlamatStateScreen extends State<TambahAlamatScreen> {
                       ),
                     ),
                     child: TextFormField(
+                      controller: _Lastnama,
+                      style: TextStyle(
+                        fontFamily: "Brandon",
+                        fontSize: 17,
+                        fontWeight: FontWeight.w300,
+                      ),
+
+                      decoration: InputDecoration(
+                        border: InputBorder.none,
+                        labelText: 'Last Name',
+                        hintText: 'Nama Belakang',
+                        labelStyle: TextStyle(color: Colors.black),
+                        isDense: true,
+                      ),
+                      keyboardType: TextInputType.name,
+                      maxLines: 1,
+                      minLines: 1,
+                      validator: (String value){
+                        if (value.isEmpty) {
+                          return "Nama Belakang tidak boleh kosong";
+                        }
+                      },
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.only(bottom: 5),
+                    decoration: BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(
+                          color: Color(0xffF48262),
+                          width: 1,
+                        ),
+                      ),
+                    ),
+                    child: TextFormField(
+                      controller: _address,
                       style: TextStyle(
                         fontFamily: "Brandon",
                         fontSize: 17,
@@ -172,6 +314,11 @@ class _TambahAlamatStateScreen extends State<TambahAlamatScreen> {
                       keyboardType: TextInputType.name,
                       maxLines: 1,
                       minLines: 1,
+                      validator: (String val){
+                        if(val.isEmpty){
+                          return "Alamat tidak boleh kosong";
+                        }
+                      },
                     ),
                   ),
                   Container(
@@ -180,13 +327,16 @@ class _TambahAlamatStateScreen extends State<TambahAlamatScreen> {
                     child: Column(
                       children: [
                         DropdownButtonFormField(
+                          onTap: (){
+                            FocusScope.of(context).requestFocus(new FocusNode());
+                          },
                           decoration: InputDecoration(
                             border: UnderlineInputBorder(
                               borderSide: new BorderSide(color: Colors.red),
                             ),
                           ),
                           isExpanded: true,
-                          // value: prov,
+                          value: prov,
                           icon: Icon(
                             Icons.arrow_forward_ios,
                           ),
@@ -201,12 +351,12 @@ class _TambahAlamatStateScreen extends State<TambahAlamatScreen> {
                               fontWeight: FontWeight.w300,
                             ),
                           ),
-                          items: province.map((String val) {
+                          items: listProvinces.map((MasterAddress val) {
                             return DropdownMenuItem(
                               value: val,
                               child: Container(
                                 child: Text(
-                                  val,
+                                  val.text,
                                   style: TextStyle(
                                     fontFamily: "Brandon",
                                     fontSize: 15,
@@ -216,8 +366,17 @@ class _TambahAlamatStateScreen extends State<TambahAlamatScreen> {
                               ),
                             );
                           }).toList(),
-                          onChanged: (String value) {
+                          onChanged: (MasterAddress value) {
+                            setState(() {
+                              kota=null;
+                              distrik=null;
+                            });
                             onChanged(value);
+                          },
+                          validator: (MasterAddress value){
+                            if (value == null) {
+                              return "Province tidak boleh kosong";
+                            }
                           },
                         )
                       ],
@@ -229,13 +388,16 @@ class _TambahAlamatStateScreen extends State<TambahAlamatScreen> {
                     child: Column(
                       children: [
                         DropdownButtonFormField(
+                          onTap: (){
+                            FocusScope.of(context).requestFocus(new FocusNode());
+                          },
                           decoration: InputDecoration(
                             border: UnderlineInputBorder(
                               borderSide: new BorderSide(color: Colors.red),
                             ),
                           ),
                           isExpanded: true,
-                          // value: kota,
+                          value: kota,
                           icon: Icon(Icons.arrow_forward_ios),
                           iconSize: 20,
                           iconEnabledColor: Color(0xffF48262),
@@ -248,12 +410,12 @@ class _TambahAlamatStateScreen extends State<TambahAlamatScreen> {
                               fontWeight: FontWeight.w300,
                             ),
                           ),
-                          items: city.map((String val) {
+                          items: listcities.map((MasterAddress val) {
                             return DropdownMenuItem(
                               value: val,
                               child: Container(
                                 child: Text(
-                                  val,
+                                  val.text,
                                   style: TextStyle(
                                     fontFamily: "Brandon",
                                     fontSize: 15,
@@ -263,8 +425,16 @@ class _TambahAlamatStateScreen extends State<TambahAlamatScreen> {
                               ),
                             );
                           }).toList(),
-                          onChanged: (String value) {
+                          onChanged: (MasterAddress value) {
+                            setState(() {
+                             distrik =null;
+                            });
                             onChangedKota(value);
+                          },
+                          validator: (MasterAddress value){
+                            if (value == null) {
+                              return "City tidak boleh kosong";
+                            }
                           },
                         )
                       ],
@@ -276,13 +446,16 @@ class _TambahAlamatStateScreen extends State<TambahAlamatScreen> {
                     child: Column(
                       children: [
                         DropdownButtonFormField(
+                          onTap: (){
+                            FocusScope.of(context).requestFocus(new FocusNode());
+                          },
                           decoration: InputDecoration(
                             border: UnderlineInputBorder(
                               borderSide: new BorderSide(color: Colors.red),
                             ),
                           ),
                           isExpanded: true,
-                          // value: distrik,
+                          value: distrik,
                           icon: Icon(Icons.arrow_forward_ios),
                           iconSize: 20,
                           iconEnabledColor: Color(0xffF48262),
@@ -295,12 +468,12 @@ class _TambahAlamatStateScreen extends State<TambahAlamatScreen> {
                               fontWeight: FontWeight.w300,
                             ),
                           ),
-                          items: district.map((String val) {
+                          items: listsubcities.map((MasterAddress val) {
                             return DropdownMenuItem(
                               value: val,
                               child: Container(
                                 child: Text(
-                                  val,
+                                  val.text,
                                   style: TextStyle(
                                     fontFamily: "Brandon",
                                     fontSize: 15,
@@ -310,8 +483,13 @@ class _TambahAlamatStateScreen extends State<TambahAlamatScreen> {
                               ),
                             );
                           }).toList(),
-                          onChanged: (String value) {
+                          onChanged: (MasterAddress value) {
                             onChangedDistrik(value);
+                          },
+                          validator: (MasterAddress value){
+                            if (value == null) {
+                              return "Distrik tidak boleh kosong";
+                            }
                           },
                         ),
                       ],
@@ -328,6 +506,7 @@ class _TambahAlamatStateScreen extends State<TambahAlamatScreen> {
                       ),
                     ),
                     child: TextFormField(
+                      controller: _portalcode,
                       style: TextStyle(
                         fontFamily: "Brandon",
                         fontSize: 17,
@@ -339,10 +518,20 @@ class _TambahAlamatStateScreen extends State<TambahAlamatScreen> {
                         hintText: 'Kode Pos',
                         labelStyle: TextStyle(color: Colors.black),
                         isDense: true,
+                        suffixIcon: Icon(
+                          Icons.emoji_transportation_sharp,
+                          color: Color(0xffF48262),
+                        )
                       ),
                       keyboardType: TextInputType.number,
                       maxLines: 1,
                       minLines: 1,
+                      validator: (String val){
+                        if(val.isEmpty){
+                          return "Postal Code tidak boleh kosong";
+                        }
+                      },
+
                     ),
                   ),
                   Container(
@@ -356,6 +545,61 @@ class _TambahAlamatStateScreen extends State<TambahAlamatScreen> {
                       ),
                     ),
                     child: TextFormField(
+                      controller: _phone,
+                      style: TextStyle(
+                        fontFamily: "Brandon",
+                        fontSize: 17,
+                        fontWeight: FontWeight.w300,
+                      ),
+                      decoration: InputDecoration(
+                        prefixText: "+62",
+                        border: InputBorder.none,
+                        labelText: 'Contact Number',
+                        hintText: 'Nomor Telepon',
+                        labelStyle: TextStyle(color: Colors.black),
+                        isDense: true,
+                        suffixIcon: Icon(
+                          Icons.contact_phone,
+                          color: Color(0xffF48262),
+                        )
+                      ),
+                      keyboardType: TextInputType.phone,
+                      maxLines: 1,
+                      minLines: 1,
+                      validator: (String val){
+                        if(val.isEmpty){
+                          return "Nomor Telepon tidak boleh kosong";
+                        }
+                      },
+                    ),
+
+                  ),
+                  Container(
+                    padding: EdgeInsets.only(bottom: 5),
+                    decoration: BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(
+                          color: Color(0xffF48262),
+                          width: 1,
+                        ),
+                      ),
+                    ),
+                    child: TextFormField(
+                      focusNode: AlwaysDisabledFocusNode(),
+                      controller: _lokasi,
+                      onTap: () async {
+                        FocusScope.of(context).requestFocus(new FocusNode());
+                        final result = await Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => MapsScreen(param: lokasi,)),
+                        );
+                        if(result !=null)
+                        setState(() {
+                          lokasi= result;
+                          _lokasi.text = lokasi.latitude.toString()+","+lokasi.longitude.toString();
+                        });
+
+                      },
                       style: TextStyle(
                         fontFamily: "Brandon",
                         fontSize: 17,
@@ -363,42 +607,60 @@ class _TambahAlamatStateScreen extends State<TambahAlamatScreen> {
                       ),
                       decoration: InputDecoration(
                         border: InputBorder.none,
-                        labelText: 'Contact Number',
-                        hintText: 'Nomor Telepon',
+                        labelText: 'Lokasi Pengiriman',
+                        hintText: 'Pilih Lokasi Pengiriman',
                         labelStyle: TextStyle(color: Colors.black),
+                        suffixIcon: Icon(
+                          Icons.location_pin,
+                          color: Color(0xffF48262),
+                        ),
                         isDense: true,
                       ),
                       keyboardType: TextInputType.phone,
                       maxLines: 1,
                       minLines: 1,
+                      validator: (String val){
+                        if(val.isEmpty){
+                          return "Lokasi tidak boleh kosong";
+                        }
+                      },
                     ),
                   ),
                 ],
               ),
-            ),
-            Container(
-              decoration: BoxDecoration(
-                color: Color(0xffF48262),
-                borderRadius: BorderRadius.circular(7),
               ),
-              margin: EdgeInsets.only(left: 20, top: 20, right: 20, bottom: 10),
-              padding: EdgeInsets.only(top: 15, bottom: 15),
-              child: Center(
-                child: Text(
-                  "SAVE",
-                  style: TextStyle(
-                    fontFamily: "Brandon",
-                    fontWeight: FontWeight.w700,
-                    color: Colors.white,
-                    fontSize: 16,
+            ),
+            GestureDetector(
+              onTap: () {
+                validateInput();
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Color(0xffF48262),
+                  borderRadius: BorderRadius.circular(7),
+                ),
+                margin: EdgeInsets.only(left: 20, top: 20, right: 20, bottom: 10),
+                padding: EdgeInsets.only(top: 15, bottom: 15),
+                child: Center(
+                  child: Text(
+                    "SAVE",
+                    style: TextStyle(
+                      fontFamily: "Brandon",
+                      fontWeight: FontWeight.w700,
+                      color: Colors.white,
+                      fontSize: 16,
+                    ),
                   ),
                 ),
               ),
-            ),
+            )
+            ,
           ],
         ),
       ),
       bottomNavigationBar: new PonnyBottomNavbar(selectedIndex: 4),
     );
+
+
   }
 }
