@@ -5,6 +5,7 @@ import 'package:ponny/screens/HairAndMakeup_Screen.dart';
 import 'package:ponny/screens/Tools_Screen.dart';
 import 'package:ponny/screens/Localpride_Screen.dart';
 import 'package:ponny/screens/ShopSale_Screen.dart';
+import 'package:ponny/screens/Promotion_screen.dart';
 
 class Browse_Category extends StatefulWidget {
   Browse_Category({Key key}) : super(key: key);
@@ -195,7 +196,12 @@ class _Browse_CategoryState extends State<Browse_Category> {
               minWidth: 380.0,
               height: 60.0,
               child: RaisedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => PromotionScreen()));
+                },
                 child: Text(
                   "PROMOTION",
                   style: TextStyle(

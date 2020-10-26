@@ -13,11 +13,10 @@ import 'package:ponny/screens/pembayaran_ovo_screen.dart';
 import 'package:ponny/screens/pembayaran_gopay_screen.dart';
 
 /* Navbar Bottom Bar */
-import 'package:ponny/screens/forums_screen.dart';
+import 'package:ponny/screens/Forum_screen.dart';
 import 'package:ponny/screens/Browse_Screen.dart';
 import 'package:ponny/screens/intro_screen.dart';
 import 'package:ponny/screens/home_screen.dart';
-import 'package:ponny/screens/forums_screen.dart';
 import 'package:ponny/screens/account_screen.dart';
 
 import 'package:ponny/screens/Browse_Screen.dart';
@@ -87,7 +86,7 @@ import 'package:ponny/screens/Affiliate_CairkanDana_screen.dart';
 import 'model/App.dart';
 import 'model/Order.dart';
 
-
+import 'package:ponny/screens/Basic_SkinCare_screen.dart';
 
 void main() {
   runApp(
@@ -116,12 +115,12 @@ class MyApp extends StatelessWidget {
         primaryColor: Color(0xFFFDF8F0),
         accentColor: Colors.red,
       ),
-      initialRoute:SplashScreen.id,
+      initialRoute: SplashScreen.id,
       routes: {
         SplashScreen.id: (context) => SplashScreen(),
         IntroScreen.id: (context) => IntroScreen(),
         HomeScreen.id: (context) => HomeScreen(),
-        ForumsScreen.id: (context) => ForumsScreen(),
+        ForumScreen.id: (context) => ForumScreen(),
         AccountScreen.id: (context) => AccountScreen(),
         Browse.id: (context) => Browse(),
         Skinklopedia.id: (context) => Skinklopedia(),
@@ -171,7 +170,7 @@ class MyApp extends StatelessWidget {
         AffiliateHomeScreen.id: (context) => AffiliateHomeScreen(),
         AffiliateLogedIn.id: (context) => AffiliateLogedIn(),
         CairkanDanaScreen.id: (context) => CairkanDanaScreen(),
-
+        BasicSkincare.id: (context) => BasicSkincare()
       },
     );
   }

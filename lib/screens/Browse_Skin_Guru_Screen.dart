@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:ponny/screens/Basic_SkinCare_screen.dart';
 import 'package:ponny/screens/Skinklopedia_Screen.dart';
 
 class Browse_Skin_Guru extends StatefulWidget {
@@ -74,7 +75,12 @@ class _Browse_Skin_GuruState extends State<Browse_Skin_Guru> {
             minWidth: 380.0,
             height: 180.0,
             child: RaisedButton(
-                onPressed: () {}, child: Image.asset("assets/images/blog.png")),
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => BasicSkincare()));
+                },
+                
+                child: Image.asset("assets/images/blog.png")),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(5.0),
               side: BorderSide(color: Hexcolor('#F48262')),
