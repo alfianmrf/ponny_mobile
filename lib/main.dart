@@ -85,6 +85,8 @@ import 'package:ponny/screens/Affiliate_LogedIn_screen.dart';
 import 'package:ponny/screens/Affiliate_CairkanDana_screen.dart';
 import 'model/App.dart';
 
+
+
 void main() {
   runApp(
       MultiProvider(
@@ -110,7 +112,7 @@ class MyApp extends StatelessWidget {
         primaryColor: Color(0xFFFDF8F0),
         accentColor: Colors.red,
       ),
-      initialRoute: SplashScreen.id,
+      initialRoute:SplashScreen.id,
       routes: {
         SplashScreen.id: (context) => SplashScreen(),
         IntroScreen.id: (context) => IntroScreen(),
@@ -164,7 +166,8 @@ class MyApp extends StatelessWidget {
         PengirimanScreen.id: (context) => PengirimanScreen(),
         AffiliateHomeScreen.id: (context) => AffiliateHomeScreen(),
         AffiliateLogedIn.id: (context) => AffiliateLogedIn(),
-        CairkanDanaScreen.id: (context) => CairkanDanaScreen()
+        CairkanDanaScreen.id: (context) => CairkanDanaScreen(),
+
       },
     );
   }
