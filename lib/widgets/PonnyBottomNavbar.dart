@@ -3,7 +3,7 @@ import 'package:ponny/main.dart';
 import 'package:ponny/model/User.dart';
 import 'package:ponny/screens/home_screen.dart';
 import 'package:ponny/screens/account_screen.dart';
-import 'package:ponny/screens/forums_screen.dart';
+import 'package:ponny/screens/Forum_screen.dart';
 import 'package:ponny/screens/login.dart';
 import 'package:provider/provider.dart';
 import 'package:ponny/screens/Browse_Screen.dart';
@@ -27,7 +27,7 @@ class PonnyBottomNavbar extends StatelessWidget {
           break;
         case 3:
           if (index != selectedIndex)
-            Navigator.of(context).pushReplacementNamed(ForumsScreen.id);
+            Navigator.of(context).pushReplacementNamed(ForumScreen.id);
           break;
         case 4:
           Navigator.of(context).pushReplacementNamed(AccountScreen.id);
