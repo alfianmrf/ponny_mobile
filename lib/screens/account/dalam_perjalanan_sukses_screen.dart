@@ -466,33 +466,277 @@ class _DalamPerjalananSuksesStateScreen
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      // border: Border.all(
-                      //   color: Colors.red[500],
-                      // ),
-                      color: Color(0xffF3C1B5),
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(5),
+                  GestureDetector(
+                    onTap: () {
+                      showModalBottomSheet<void>(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10)),
+                        ),
+                        backgroundColor: Color(0xffFEF9F0),
+                        context: context,
+                        builder: (BuildContext context) {
+                          return Wrap(
+                            children: [
+                              Container(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Container(
+                                      padding: EdgeInsets.symmetric(horizontal: 20),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            'LACAK PESANAN',
+                                            style: TextStyle(
+                                              fontFamily: 'Brandon',
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                          IconButton(
+                                            icon: Icon(
+                                              Icons.close,
+                                              color: Color(0xffF48262),
+                                              size: 24,
+                                            ),
+                                            onPressed: () => Navigator.pop(context),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Container(
+                                      color: Color(0xffFEEEE4),
+                                      padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                                      child: IntrinsicHeight(
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  'Sicepat',
+                                                  style: TextStyle(
+                                                    fontFamily: 'Brandon',
+                                                  ),
+                                                ),
+                                                Text(
+                                                  'No Resi: ID39202020220939',
+                                                  style: TextStyle(
+                                                    fontFamily: 'Brandon',
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            Container(
+                                              alignment: Alignment.bottomRight,
+                                              child: Text(
+                                                'SALIN',
+                                                style: TextStyle(
+                                                  fontFamily: 'Brandon',
+                                                  color: Color(0xffF48262),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                    Container(
+                                      color: Color(0xffFEF9F0),
+                                      padding: EdgeInsets.all(20),
+                                      child: Column(
+                                        children: [
+                                          IntrinsicHeight(
+                                            child: Row(
+                                              children: [
+                                                Container(
+                                                  padding: EdgeInsets.only(top: 15),
+                                                  width: 30,
+                                                  alignment: Alignment.topCenter,
+                                                  child: Container(
+                                                    width: 10,
+                                                    height: 10,
+                                                    decoration: BoxDecoration(
+                                                      color: Color(0xffF48262),
+                                                      shape: BoxShape.circle,
+                                                    ),
+                                                  ),
+                                                ),
+                                                Expanded(
+                                                  child: Container(
+                                                    padding: EdgeInsets.symmetric(vertical: 10),
+                                                    decoration: BoxDecoration(
+                                                      border: Border(
+                                                        bottom: BorderSide(
+                                                          width: 1,
+                                                          color: Color(0xffF48262),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    child: Column(
+                                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                                      children: [
+                                                        Text(
+                                                          'Paket sedang dikirim oleh kurir',
+                                                          style: TextStyle(
+                                                            fontFamily: 'Brandon',
+                                                          ),
+                                                        ),
+                                                        Text(
+                                                          '28-10-2020 13.58',
+                                                          style: TextStyle(
+                                                            fontFamily: 'Brandon',
+                                                            color: Color(0xff6D6E71),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          IntrinsicHeight(
+                                            child: Row(
+                                              children: [
+                                                Container(
+                                                  padding: EdgeInsets.only(top: 15),
+                                                  width: 30,
+                                                  alignment: Alignment.topCenter,
+                                                  child: Container(
+                                                    width: 10,
+                                                    height: 10,
+                                                    decoration: BoxDecoration(
+                                                      color: Color(0xffF48262),
+                                                      shape: BoxShape.circle,
+                                                    ),
+                                                  ),
+                                                ),
+                                                Expanded(
+                                                  child: Container(
+                                                    padding: EdgeInsets.symmetric(vertical: 10),
+                                                    decoration: BoxDecoration(
+                                                      border: Border(
+                                                        bottom: BorderSide(
+                                                          width: 1,
+                                                          color: Color(0xffF48262),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    child: Column(
+                                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                                      children: [
+                                                        Text(
+                                                          'Paket telah diterima Pusat Sortir',
+                                                          style: TextStyle(
+                                                            fontFamily: 'Brandon',
+                                                          ),
+                                                        ),
+                                                        Text(
+                                                          '28-10-2020 13.58',
+                                                          style: TextStyle(
+                                                            fontFamily: 'Brandon',
+                                                            color: Color(0xff6D6E71),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          IntrinsicHeight(
+                                            child: Row(
+                                              children: [
+                                                Container(
+                                                  padding: EdgeInsets.only(top: 15),
+                                                  width: 30,
+                                                  alignment: Alignment.topCenter,
+                                                  child: Container(
+                                                    width: 10,
+                                                    height: 10,
+                                                    decoration: BoxDecoration(
+                                                      color: Color(0xffF48262),
+                                                      shape: BoxShape.circle,
+                                                    ),
+                                                  ),
+                                                ),
+                                                Expanded(
+                                                  child: Container(
+                                                    padding: EdgeInsets.symmetric(vertical: 10),
+                                                    decoration: BoxDecoration(
+                                                      border: Border(
+                                                        bottom: BorderSide(
+                                                          width: 1,
+                                                          color: Color(0xffF48262),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    child: Column(
+                                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                                      children: [
+                                                        Text(
+                                                          'Paket telah dikirim dari Ponny Beaute',
+                                                          style: TextStyle(
+                                                            fontFamily: 'Brandon',
+                                                          ),
+                                                        ),
+                                                        Text(
+                                                          '28-10-2020 13.58',
+                                                          style: TextStyle(
+                                                            fontFamily: 'Brandon',
+                                                            color: Color(0xff6D6E71),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        // border: Border.all(
+                        //   color: Colors.red[500],
+                        // ),
+                        color: Color(0xffF3C1B5),
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(5),
+                        ),
                       ),
-                    ),
-                    width: 160,
-                    height: 35,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                          child: Text(
-                            "Lacak Pesanan",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontFamily: "Brandon",
-                              color: Colors.white,
-                              fontSize: 15,
+                      width: 160,
+                      height: 35,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            child: Text(
+                              "Lacak Pesanan",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontFamily: "Brandon",
+                                color: Colors.white,
+                                fontSize: 15,
+                              ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                   GestureDetector(
