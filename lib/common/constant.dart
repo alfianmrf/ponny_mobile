@@ -19,11 +19,17 @@ Widget LoadingWidget(context) => Center(
   ),
 );
 
-
-Widget LoadingWidgetFadingcube(context) => Center(
-  child: SpinKitFadingCube(
+Widget LoadingRing(context) => Center(
+  child: SpinKitDualRing(
     color:  Color(0xffF48262),
-    size: 25.0,
+    size: 15.0,
+  ),
+);
+
+Widget LoadingWidgetFadingCircle(context) => Center(
+  child: SpinKitFadingCircle(
+    color:  Color(0xffF48262),
+    size: 45.0,
   ),
 );
 
@@ -279,8 +285,13 @@ class AlwaysDisabledFocusNode extends FocusNode {
   bool get hasFocus => false;
 }
 
-final snackBar = SnackBar(
+final snackBarError = SnackBar(
   content: Text('Terjadi kesalahan pada server, silakan coba kembali nanti.!',style: TextStyle(color: Colors.white)),
   backgroundColor: Colors.redAccent,
+);
+
+final snackBarSuccess = SnackBar(
+  content: Text('Success',style: TextStyle(color: Colors.white)),
+  backgroundColor: Colors.green,
 );
 

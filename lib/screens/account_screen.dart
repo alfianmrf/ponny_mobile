@@ -40,14 +40,18 @@ class AccountScreen extends StatefulWidget {
 
 class _AccountScreenState extends State<AccountScreen> {
   bool isLoading =true;
-  User user;
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
      Provider.of<OrderModel>(context).getOrder(Provider.of<AppModel>(context, listen: false).auth.access_token).then((value) {
-       getUser();
+       Provider.of<UserModel>(context).getUser(Provider.of<AppModel>(context, listen: false).auth.access_token).then((value) {
+         setState(() {
+           isLoading =false;
+         });
+       });
+
      });
     });
   }
@@ -56,24 +60,25 @@ class _AccountScreenState extends State<AccountScreen> {
     final auth = Provider.of<AppModel>(context, listen: false);
     String token  =  auth.auth.access_token;
     print(token);
-    final response = await http.get(userprofile,headers: { HttpHeaders.contentTypeHeader: 'application/json',HttpHeaders.authorizationHeader: "Bearer $token" });
-    final responseJson = json.decode(response.body);
 
-    setState(() {
-      isLoading =false;
-    });
-    if(response.statusCode == 200){
-      setState(() {
-        user = User.fromLocalJson(responseJson);
-      });
-    }else{
-      await Provider.of<AddressModel>(context).RemoveDefaultAddress();
-      await Provider.of<AppModel>(context).logout();
-
-      Navigator.pushReplacement(context,new MaterialPageRoute(
-        builder: (BuildContext context) =>  new LoginScreen(),
-      ));
-    }
+    // final response = await http.get(userprofile,headers: { HttpHeaders.contentTypeHeader: 'application/json',HttpHeaders.authorizationHeader: "Bearer $token" });
+    // final responseJson = json.decode(response.body);
+    //
+    // setState(() {
+    //   isLoading =false;
+    // });
+    // if(response.statusCode == 200){
+    //   setState(() {
+    //     user = User.fromLocalJson(responseJson);
+    //   });
+    // }else{
+    //   await Provider.of<AddressModel>(context).RemoveDefaultAddress();
+    //   await Provider.of<AppModel>(context).logout();
+    //
+    //   Navigator.pushReplacement(context,new MaterialPageRoute(
+    //     builder: (BuildContext context) =>  new LoginScreen(),
+    //   ));
+    // }
 
 
   }
@@ -88,10 +93,32 @@ class _AccountScreenState extends State<AccountScreen> {
 
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+  Future<bool> _onWillPop() async {
+    return (await showDialog(
+      context: context,
+      builder: (context) => new AlertDialog(
+        title: new Text('Are you sure?'),
+        content: new Text('Do you want to exit an App'),
+        actions: <Widget>[
+          new FlatButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: new Text('No'),
+          ),
+          new FlatButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            child: new Text('Yes'),
+          ),
+        ],
+      ),
+    )) ?? false;
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    final user  = Provider.of<UserModel>(context).user;
+    return new WillPopScope(
+        onWillPop: _onWillPop,
+        child: Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Hexcolor('#FCF8F0'),
       body: SingleChildScrollView(
@@ -99,7 +126,7 @@ class _AccountScreenState extends State<AccountScreen> {
         Container(
           height: MediaQuery.of(context).size.height,
           child: Center(
-          child: LoadingWidgetFadingcube(context),
+          child: LoadingWidgetFadingCircle(context),
         ),)
         :
         Column(
@@ -201,13 +228,21 @@ class _AccountScreenState extends State<AccountScreen> {
                         Container(
                           alignment: Alignment.centerLeft,
                           margin: EdgeInsets.only(top: 10),
-                          child: Text(
-                            user.name+" "+user.last_name,
-                            style: TextStyle(
-                              fontFamily: "Yeseva",
-                              fontSize: 12,
-                              color: Hexcolor("#F59379"),
-                              fontWeight: FontWeight.w600,
+                          child: RichText(
+                            text:TextSpan(
+                              text:user.name,
+                              style: TextStyle(
+                                fontFamily: "Yeseva",
+                                fontSize: 12,
+                                color: Hexcolor("#F59379"),
+                                fontWeight: FontWeight.w600,
+                              ),
+                              children: <TextSpan>[
+                                TextSpan(text: " "),
+                                TextSpan(
+                                  text: user.last_name
+                                )
+                              ]
                             ),
                           ),
                         ),
@@ -1471,6 +1506,7 @@ class _AccountScreenState extends State<AccountScreen> {
         ),
       ),
       bottomNavigationBar: new PonnyBottomNavbar(selectedIndex: 4),
+      ),
     );
 
 

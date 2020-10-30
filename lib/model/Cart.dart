@@ -14,7 +14,7 @@ import 'Address.dart';
 
 class CartModel with ChangeNotifier{
   List<Cart> listCardOfitem=[];
-  bool loadingCard = false;
+  bool loadingCard = true;
   Coupon coupon;
   Summary summary;
   MapCost shipping;
@@ -97,6 +97,7 @@ class CartModel with ChangeNotifier{
         }
       }
       await getSummary(token);
+      loadingCard =false;
       notifyListeners();
     }catch(err){
       print("error."+err.toString());

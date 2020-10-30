@@ -5,6 +5,7 @@ const img_url ="https://ponnybeaute.revoapps.id/public/";
 const loginUrl = base_url+"auth/login";
 const register = base_url+"auth/signup";
 const userprofile = base_url+"auth/user";
+const loginOtp =base_url+"auth/login-otp";
 
 //home
 const banner = base_url+"banners";
@@ -22,9 +23,18 @@ const CostShipping = base_url+"shipping/couriers";
 const cartSummary = base_url+"checkout/summary";
 const cartChekouturl =base_url+"checkout/store";
 
+//wishlist
+const listOfwishlist = base_url+"product/wishlist";
+const addToWishlist = base_url+"product/addToWishlist";
+const removeToWishlist = base_url+"product/delFromWishlist";
+const countOfwishlist = base_url+"product/wishlist/count";
+
+
 //Account
 const urlAddress =base_url+"shipping/address";
 const urlOrder = base_url+"account/orders";
+const urlUpdateProfile = base_url+"account/update";
+const updateBeauteProfile = base_url+"account/update_beauty";
 
 
 

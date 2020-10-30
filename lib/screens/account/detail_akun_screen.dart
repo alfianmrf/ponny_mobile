@@ -1,9 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:intl/intl.dart';
 import 'package:ponny/common/constant.dart';
 import 'package:ponny/model/Address.dart';
 import 'package:ponny/model/App.dart';
+import 'package:ponny/model/User.dart';
 import 'package:ponny/screens/home_screen.dart';
 import 'package:ponny/screens/account_screen.dart';
 import 'package:ponny/screens/account/edit_akun_screen.dart';
@@ -16,12 +18,16 @@ import 'package:uiblock/uiblock.dart';
 
 class DetailAkunScreen extends StatefulWidget {
   static const String id = "detail_akun_Screen";
+
   @override
   _DetailAkunStateScreen createState() => _DetailAkunStateScreen();
 }
 
 class _DetailAkunStateScreen extends State<DetailAkunScreen> {
   bool isloading =true;
+  final f = new DateFormat('dd/MM/yyyy');
+  DateTime tgl_lahir;
+
   @override
   void initState() {
 
@@ -32,12 +38,16 @@ class _DetailAkunStateScreen extends State<DetailAkunScreen> {
       });
     });
 
+
   }
 
 
   @override
   Widget build(BuildContext context) {
-
+    final user = Provider.of<UserModel>(context).user;
+    setState(() {
+      tgl_lahir = DateTime.parse(user.tgl_lahir);
+    });
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Hexcolor('#FCF8F0'),
@@ -124,7 +134,7 @@ class _DetailAkunStateScreen extends State<DetailAkunScreen> {
                         ),
                         Container(
                           child: Text(
-                            "carlastarla@gmail.com",
+                            user.provider_id == null ? user.email :user.phone,
                             style: TextStyle(
                               fontFamily: "Brandon",
                               fontSize: 15,
@@ -160,7 +170,7 @@ class _DetailAkunStateScreen extends State<DetailAkunScreen> {
                         ),
                         Container(
                           child: Text(
-                            "Carla",
+                            user.name,
                             style: TextStyle(
                               fontFamily: "Brandon",
                               fontSize: 15,
@@ -196,7 +206,7 @@ class _DetailAkunStateScreen extends State<DetailAkunScreen> {
                         ),
                         Container(
                           child: Text(
-                            "Starla",
+                           user.last_name != null ? user.last_name : "" ,
                             style: TextStyle(
                               fontFamily: "Brandon",
                               fontSize: 15,
@@ -232,7 +242,8 @@ class _DetailAkunStateScreen extends State<DetailAkunScreen> {
                         ),
                         Container(
                           child: Text(
-                            "Female",
+                            user.gender != null ?
+                            user.gender =="P" ? "Female" : "Male" : "",
                             style: TextStyle(
                               fontFamily: "Brandon",
                               fontSize: 15,
@@ -268,7 +279,7 @@ class _DetailAkunStateScreen extends State<DetailAkunScreen> {
                         ),
                         Container(
                           child: Text(
-                            "11/05/1990",
+                            f.format(tgl_lahir),
                             style: TextStyle(
                               fontFamily: "Brandon",
                               fontSize: 15,
@@ -304,7 +315,7 @@ class _DetailAkunStateScreen extends State<DetailAkunScreen> {
                         ),
                         Container(
                           child: Text(
-                            "+62 8123456910",
+                           user.phone,
                             style: TextStyle(
                               fontFamily: "Brandon",
                               fontSize: 15,
@@ -339,6 +350,7 @@ class _DetailAkunStateScreen extends State<DetailAkunScreen> {
                 ],
               ),
             ),
+            if(user.provider_id == null)
             Container(
               child: GestureDetector(
                 onTap: () {
@@ -469,7 +481,7 @@ class _DetailAkunStateScreen extends State<DetailAkunScreen> {
             Container(
               height: MediaQuery.of(context).size.width*.1,
               child: Center(
-                child: LoadingWidgetFadingcube(context),
+                child: LoadingWidgetFadingCircle(context),
               ),):
                 Container(
                   margin: EdgeInsets.only(

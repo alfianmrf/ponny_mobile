@@ -1,6 +1,18 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:ponny/common/constant.dart';
+import 'package:ponny/model/App.dart';
+import 'package:ponny/screens/Phone_OTP_screen.dart';
+import 'package:ponny/screens/home_screen.dart';
+import 'package:provider/provider.dart';
+import 'package:sms_autofill/sms_autofill.dart';
+import 'package:uiblock/uiblock.dart';
+
+import 'account_screen.dart';
 
 class LoginOTP extends StatefulWidget {
   static const String id = "login_otp";
@@ -11,10 +23,15 @@ class LoginOTP extends StatefulWidget {
 class _LoginOTPScreen extends State<LoginOTP> {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+  GlobalKey<ScaffoldState> scaffoldKey2 = GlobalKey<ScaffoldState>();
+  final Future<FirebaseApp> _initialization = Firebase.initializeApp();
   bool _validate = false;
 
-  final myemail = TextEditingController();
-  final mypass = TextEditingController();
+  final phoneCode = TextEditingController();
+  final phoneNumber = TextEditingController();
+  String code;
+  String VerifiCode;
+
 
   void validateInput() {
     FormState form = this.formKey.currentState;
@@ -25,217 +42,448 @@ class _LoginOTPScreen extends State<LoginOTP> {
     // }
   }
 
-  // _fetchLogin() async {
-  //   FocusScope.of(context).requestFocus(new FocusNode());
-  //   if (myemail.text.isEmpty || mypass.text.isEmpty) {
-  //     setState(() {
-  //       _validate = false;
-  //     });
-  //   } else {
-  //     UIBlock.block(context, customLoaderChild: LoadingWidget(context));
-  //     var param = {"email": myemail.text, "password": mypass.text};
-  //     final res = await http.post(loginUrl,
-  //         headers: {HttpHeaders.contentTypeHeader: 'application/json'},
-  //         body: json.encode(param));
-  //     final _user = UserModel();
+  void showInputCode(String verificationId, int resendToken){
+    showMaterialModalBottomSheet(
+      context: context,
+      useRootNavigator: true,
+      builder: (context, scrollController) => Container(
+        child:SafeArea(
+          child: Scaffold(
+            key: scaffoldKey2,
+            resizeToAvoidBottomInset: false,
+            backgroundColor: Hexcolor('#FCF8F0'),
+            body: Container(
+              width: double.infinity,
+              height: double.infinity,
+              margin: EdgeInsets.symmetric(vertical: 40, horizontal: 30),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "DAFTAR SEBAGAI ANGGOTA PHOEBE'S SQUAD",
+                        style: TextStyle(
+                          fontSize: 22,
+                          fontFamily: 'Brandon',
+                          fontWeight: FontWeight.w800,
+                          letterSpacing: 1,
+                        ),
+                      ),
+                      Text(
+                        "Masukkan alamat email kamu untuk masuk atau mendaftar",
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontFamily: 'Brandon',
+                          fontWeight: FontWeight.w800,
+                          letterSpacing: 1,
+                        ),
+                      ),
+                      Container(height: 20),
+                      Text(
+                        "Nomor Telepon",
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontFamily: 'Brandon',
+                          letterSpacing: 1,
+                        ),
+                      ),
+                      Container(height: 20),
+                      Text(
+                        "+62"+phoneNumber.value.text,
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontFamily: 'Brandon',
+                          letterSpacing: 1,
+                        ),
+                      ),
+                      Container(height: 20),
+                      Container(
+                        height: 30,
+                        width: double.infinity,
+                        child: PinFieldAutoFill(
+                          controller: phoneCode,
+                          codeLength: 6,
+                        ),
+                      ),
+                      Container(height: 20),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          InkWell(
+                            child: Text(
+                              "Kirim ulang kode",
+                              style: TextStyle(
+                                  decoration: TextDecoration.underline,
+                                  fontSize: 15,
+                                  fontFamily: 'Brandon',
+                                  letterSpacing: 1,
+                                  color: Colors.grey),
+                            ),
+                          ),
+                          ButtonTheme(
+                            buttonColor: Hexcolor('#F48262'),
+                            child: RaisedButton(
+                              onPressed: () async {
+                                if(phoneCode.value.text.length == 6){
+                                  UIBlock.block(context,customLoaderChild: LoadingWidget(context));
+                                  PhoneAuthCredential phoneAuthCredential = PhoneAuthProvider.credential(verificationId: verificationId, smsCode: phoneCode.value.text);
+                                   final crediatial =  await  FirebaseAuth.instance.signInWithCredential(phoneAuthCredential);
+                                   if(crediatial !=null){
+                                     var param ={
+                                       "uid":crediatial.user.uid,
+                                       "phone":crediatial.user.phoneNumber
+                                     };
+                                     Provider.of<AppModel>(context).setAuthOtp(param).then((value){
+                                       UIBlock.unblock(context);
+                                       if(value){
+                                         Navigator.pushReplacement(context,new MaterialPageRoute(
+                                           builder: (BuildContext context) =>  new HomeScreen(),
+                                         ));
+                                       }else{
+                                         final snackBar = SnackBar(
+                                           content: Text('Terjadi kesalahan pada server!',style: TextStyle(color: Colors.white)),
+                                           backgroundColor: Colors.redAccent,
+                                         );
+                                         scaffoldKey2.currentState.showSnackBar(snackBar);
+                                       }
 
-  //     UIBlock.unblock(context);
-  //     if (res.statusCode == 200) {
-  //       var result = json.decode(res.body);
-  //       final us = User.fromLocalJson(result['user']);
-  //       await Provider.of<UserModel>(context).saveUser(result['user']);
+                                     });
+                                   }else{
+                                     UIBlock.unblock(context);
+                                     final snackBar = SnackBar(
+                                       content: Text('Kode yang anda masukan salah!',style: TextStyle(color: Colors.white)),
+                                       backgroundColor: Colors.redAccent,
+                                     );
+                                     scaffoldKey2.currentState.showSnackBar(snackBar);
+                                   }
 
-  //       Navigator.pushReplacement(
-  //           context,
-  //           new MaterialPageRoute(
-  //             builder: (BuildContext context) => new AccountScreen(),
-  //           ));
-  //     } else {
-  //       final snackBar = SnackBar(
-  //         content: Text('Email atau password salah!',
-  //             style: TextStyle(color: Colors.white)),
-  //         backgroundColor: Colors.redAccent,
-  //       );
-  //       scaffoldKey.currentState.showSnackBar(snackBar);
-  //     }
-  //   }
-  // }
+                                }
+                              },
+                              child: Text(
+                                "LANJUT",
+                                style: TextStyle(
+                                    fontSize: 14,
+                                    fontFamily: 'Brandon',
+                                    fontWeight: FontWeight.w500,
+                                    letterSpacing: 1,
+                                    color: Colors.white),
+                              ),
+                            ),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5.0),
+                              side: BorderSide(color: Hexcolor('#F48262')),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  Column(
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                        child: Row(
+                          children: [
+                            Icon(Icons.arrow_back_ios,color: Hexcolor('#F48262')),
+                            Text(
+                              "Kembali",
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontFamily: 'Brandon',
+                                letterSpacing: 1,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        height: 20,
+                      ),
+                      Text(
+                        "Dengan melakukan pendaftaran kamu telah menyetujui",
+                        style: TextStyle(
+                            fontSize: 11,
+                            fontFamily: 'Brandon',
+                            fontWeight: FontWeight.w800,
+                            letterSpacing: 1,
+                            color: Colors.grey),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          InkWell(
+                            child: Text(
+                              "Kebijakan Privasi ",
+                              style: TextStyle(
+                                  fontSize: 11,
+                                  fontFamily: 'Brandon',
+                                  fontWeight: FontWeight.w800,
+                                  letterSpacing: 1,
+                                  color: Colors.blue),
+                            ),
+                          ),
+                          Text(
+                            "dan ",
+                            style: TextStyle(
+                                fontSize: 11,
+                                fontFamily: 'Brandon',
+                                fontWeight: FontWeight.w800,
+                                letterSpacing: 1,
+                                color: Colors.grey),
+                          ),
+                          InkWell(
+                            child: Text(
+                              "Syarat dan Ketentuan",
+                              style: TextStyle(
+                                  fontSize: 11,
+                                  fontFamily: 'Brandon',
+                                  fontWeight: FontWeight.w800,
+                                  letterSpacing: 1,
+                                  color: Colors.blue),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+
+  }
+
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      // resizeToAvoidBottomPadding: false,
-      resizeToAvoidBottomInset: false,
-      key: scaffoldKey,
-      backgroundColor: Hexcolor('#FCF8F0'),
-      body: Container(
-        child: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              Container(
-                height: 100.0,
-              ),
-              // Container(
-              //   alignment: Alignment.centerLeft,
-              //   padding: EdgeInsets.only(left: 20.0),
-              //   child: Text(
-              //     'Akun Saya',
-              //     style: TextStyle(
-              //         fontSize: 30,
-              //         fontFamily: 'Yeseva',
-              //         color: Hexcolor('#F48262'),
-              //         fontWeight: FontWeight.w500,
-              //         letterSpacing: 1),
-              //   ),
-              // ),
-              Container(
-                color: Hexcolor('#F48262'),
-                margin: EdgeInsets.only(top: 20),
-                height: 2,
-              ),
-              Container(
-                margin: EdgeInsets.only(left: 35, right: 35, top: 70),
-                padding: EdgeInsets.only(top: 20, bottom: 20),
+    return FutureBuilder(
+      future: _initialization,
+      builder: (context,snapshot){
+        if(snapshot.connectionState == ConnectionState.waiting){
+          return Center(
+            child: LoadingWidget(context),
+          );
+        }else{
+          return Scaffold(
+            // resizeToAvoidBottomPadding: false,
+            resizeToAvoidBottomInset: false,
+            key: scaffoldKey,
+            backgroundColor: Hexcolor('#FCF8F0'),
+            body: Container(
+              child: SingleChildScrollView(
                 child: Column(
-                  children: [
+                  children: <Widget>[
                     Container(
-                      child: Row(
-                        children: [
-                          Flexible(
-                            child: Text(
-                              "SELAMAT DATANG DI PONNY BEAUTE!",
-                              style: TextStyle(
-                                fontFamily: "Brandon",
-                                fontWeight: FontWeight.w600,
-                                fontSize: 18,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
+                      height: 100.0,
                     ),
                     Container(
-                      margin: EdgeInsets.only(
-                        top: 5,
-                        bottom: 15,
-                      ),
-                      child: Row(
-                        children: [
-                          Flexible(
-                            child: Text(
-                              "Masukkan nomor telepon kamu untuk masuk",
-                              style: TextStyle(
-                                fontFamily: "Brandon",
-                                fontWeight: FontWeight.w600,
-                                fontSize: 15,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
+                      color: Hexcolor('#F48262'),
+                      margin: EdgeInsets.only(top: 20),
+                      height: 2,
                     ),
                     Container(
-                      // color: Colors.white,
-                      child: Row(
+                      margin: EdgeInsets.only(left: 35, right: 35, top: 70),
+                      padding: EdgeInsets.only(top: 20, bottom: 20),
+                      child: Column(
                         children: [
                           Container(
-                            color: Colors.white,
-                            width: 50,
-                            child: TextFormField(
-                              textAlign: TextAlign.center,
-                              readOnly: true,
-                              initialValue: "+62",
-                              style: TextStyle(
-                                fontFamily: "Brandon",
-                                fontSize: 15,
-                                fontWeight: FontWeight.w300,
-                              ),
-                              decoration: InputDecoration(
-                                hintText: 'Nomor Telepon ?',
-                                contentPadding: const EdgeInsets.all(10.0),
-                                isDense: true,
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(3.0)),
-                                  borderSide:
-                                      BorderSide(color: Hexcolor('#F48262')),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(7.0),
-                                    bottomLeft: Radius.circular(7.0),
+                            child: Row(
+                              children: [
+                                Flexible(
+                                  child: Text(
+                                    "SELAMAT DATANG DI PONNY BEAUTE!",
+                                    style: TextStyle(
+                                      fontFamily: "Brandon",
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 18,
+                                    ),
                                   ),
-                                  borderSide:
-                                      BorderSide(color: Hexcolor('#F48262')),
                                 ),
-                              ),
+                              ],
                             ),
                           ),
                           Container(
-                            width:
-                                MediaQuery.of(context).size.width - (70 + 50),
-                            color: Colors.white,
-                            child: TextFormField(
-                              // initialValue: " 8123456910",
-                              style: TextStyle(
-                                fontFamily: "Brandon",
-                                fontSize: 15,
-                                fontWeight: FontWeight.w300,
-                              ),
-                              decoration: InputDecoration(
-                                hintText: 'Nomor Handphone',
-                                contentPadding: const EdgeInsets.all(10.0),
-                                isDense: true,
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(3.0)),
-                                  borderSide:
-                                      BorderSide(color: Hexcolor('#F48262')),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.only(
-                                    topRight: Radius.circular(7.0),
-                                    bottomRight: Radius.circular(7.0),
+                            margin: EdgeInsets.only(
+                              top: 5,
+                              bottom: 15,
+                            ),
+                            child: Row(
+                              children: [
+                                Flexible(
+                                  child: Text(
+                                    "Masukkan nomor telepon kamu untuk masuk",
+                                    style: TextStyle(
+                                      fontFamily: "Brandon",
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 15,
+                                    ),
                                   ),
-                                  borderSide:
-                                      BorderSide(color: Hexcolor('#F48262')),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Form(
+                            key: formKey,
+                            child:Container(
+                              // color: Colors.white,
+                              child: Row(
+                                children: [
+                                  Container(
+                                    color: Colors.white,
+                                    width: 50,
+                                    child: TextFormField(
+                                      textAlign: TextAlign.center,
+                                      readOnly: true,
+                                      initialValue: "+62",
+                                      style: TextStyle(
+                                        fontFamily: "Brandon",
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w300,
+                                      ),
+                                      decoration: InputDecoration(
+                                        hintText: 'Nomor Telepon ?',
+                                        contentPadding: const EdgeInsets.all(10.0),
+                                        isDense: true,
+                                        enabledBorder: OutlineInputBorder(
+                                          borderRadius:
+                                          BorderRadius.all(Radius.circular(3.0)),
+                                          borderSide:
+                                          BorderSide(color: Hexcolor('#F48262')),
+                                        ),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(7.0),
+                                            bottomLeft: Radius.circular(7.0),
+                                          ),
+                                          borderSide:
+                                          BorderSide(color: Hexcolor('#F48262')),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Container(
+                                    width:
+                                    MediaQuery.of(context).size.width - (70 + 50),
+                                    color: Colors.white,
+                                    child: TextFormField(
+                                      // initialValue: " 8123456910",
+                                      controller: phoneNumber,
+                                      style: TextStyle(
+                                        fontFamily: "Brandon",
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w300,
+                                      ),
+                                      decoration: InputDecoration(
+                                        hintText: 'Nomor Handphone',
+                                        contentPadding: const EdgeInsets.all(10.0),
+                                        isDense: true,
+                                        enabledBorder: OutlineInputBorder(
+                                          borderRadius:
+                                          BorderRadius.all(Radius.circular(3.0)),
+                                          borderSide:
+                                          BorderSide(color: Hexcolor('#F48262')),
+                                        ),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderRadius: BorderRadius.only(
+                                            topRight: Radius.circular(7.0),
+                                            bottomRight: Radius.circular(7.0),
+                                          ),
+                                          borderSide:
+                                          BorderSide(color: Hexcolor('#F48262')),
+                                        ),
+                                      ),
+                                      maxLines: 1,
+                                      minLines: 1,
+                                      keyboardType: TextInputType.phone,
+                                      validator: (value){
+                                        if(value.startsWith("0")){
+                                          return "Nomor awal tidak boleh 0.";
+                                        }else if(value.isEmpty){
+                                          return "Nomor Handphone tidak boleh kosong";
+                                        }
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          Container(
+                            decoration: BoxDecoration(
+                              color: Hexcolor('#F48262'),
+                              borderRadius: BorderRadius.circular(7.0),
+                            ),
+                            margin: EdgeInsets.only(top: 40),
+                            width: MediaQuery.of(context).size.width - 70,
+                            child: FlatButton(
+                              onPressed: () async {
+                                FocusScope.of(context).requestFocus(new FocusNode());
+
+                                FormState form = this.formKey.currentState;
+                                if(form.validate()){
+                                  UIBlock.block(context,customLoaderChild: LoadingWidget(context));
+                                  var phone = "+62"+phoneNumber.value.text;
+                                  print(phone);
+                                  await FirebaseAuth.instance.verifyPhoneNumber(
+                                    phoneNumber: phone,
+                                    timeout: Duration(minutes: 2),
+                                    verificationCompleted: (PhoneAuthCredential credential) {
+                                      print(credential.smsCode);
+                                    },
+                                    verificationFailed: (FirebaseAuthException e) {
+                                      UIBlock.unblock(context);
+                                      final snackBar = SnackBar(
+                                        content: Text(e.message,style: TextStyle(color: Colors.white)),
+                                        backgroundColor: Colors.redAccent,
+                                      );
+                                      scaffoldKey.currentState.showSnackBar(snackBar);
+                                      print(e.message);
+                                    },
+                                    codeSent: (String verificationId, int resendToken) {
+                                      UIBlock.unblock(context);
+                                      showInputCode(verificationId,resendToken);
+                                    },
+                                    codeAutoRetrievalTimeout: (String verificationId) {
+                                      UIBlock.unblock(context);
+                                      final snackBar = SnackBar(
+                                        content: Text('Waktu anda habis silakan coba kembali.!',style: TextStyle(color: Colors.white)),
+                                        backgroundColor: Colors.redAccent,
+                                      );
+                                      scaffoldKey.currentState.showSnackBar(snackBar);
+                                      print('timeout');
+                                    },
+                                  );
+                                }
+                              },
+                              child: Text(
+                                "LOGIN",
+                                style: TextStyle(
+                                  fontFamily: "Brandon",
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.white,
                                 ),
                               ),
-                              maxLines: 1,
-                              minLines: 1,
-                              keyboardType: TextInputType.phone,
                             ),
                           ),
                         ],
-                      ),
-                    ),
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Hexcolor('#F48262'),
-                        borderRadius: BorderRadius.circular(7.0),
-                      ),
-                      margin: EdgeInsets.only(top: 40),
-                      width: MediaQuery.of(context).size.width - 70,
-                      child: FlatButton(
-                        onPressed: () {},
-                        child: Text(
-                          "DAFTAR",
-                          style: TextStyle(
-                            fontFamily: "Brandon",
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.white,
-                          ),
-                        ),
                       ),
                     ),
                   ],
                 ),
               ),
-            ],
-          ),
-        ),
-      ),
+            ),
+          );
+        }
+      },
     );
+
   }
 }

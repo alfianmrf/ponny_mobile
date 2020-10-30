@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:sms_autofill/sms_autofill.dart';
 
 class PhoneOTPScreen extends StatefulWidget {
+  String nomorTfn;
+  PhoneOTPScreen({Key Key, this.nomorTfn});
   @override
   _PhoneOTPScreenState createState() => _PhoneOTPScreenState();
 }
 
 class _PhoneOTPScreenState extends State<PhoneOTPScreen> {
+  String code;
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -64,14 +69,15 @@ class _PhoneOTPScreenState extends State<PhoneOTPScreen> {
                   Container(
                     height: 30,
                     width: double.infinity,
-                    child: Row(children: [
-                      otpTextField(),
-                      otpTextField(),
-                      otpTextField(),
-                      otpTextField(),
-                      otpTextField(),
-                      otpTextField(),
-                    ]),
+                    child: PinFieldAutoFill(
+                      codeLength: 6,
+                      onCodeChanged: (value){
+                        print(value);
+                      },
+                      onCodeSubmitted: (value){
+                        print(value);
+                      },
+                    ),
                   ),
                   Container(height: 20),
                   Row(
@@ -175,7 +181,9 @@ Widget rectanglebutton(context, String subtext) {
   return ButtonTheme(
     buttonColor: Hexcolor('#F48262'),
     child: RaisedButton(
-      onPressed: () {},
+      onPressed: () {
+
+      },
       child: Text(
         subtext,
         style: TextStyle(

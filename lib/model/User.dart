@@ -1,17 +1,18 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:localstorage/localstorage.dart';
+import 'package:ponny/util/globalUrl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 
 class UserModel with ChangeNotifier{
   User user;
   bool loggedIn = false;
   bool loading = false;
 
-  UserModel(){
-    getUser();
-  }
+  UserModel();
 
   Future<void> saveUser(Map<String, dynamic> user) async {
     final LocalStorage storage = LocalStorage("ponnystore");
@@ -33,22 +34,32 @@ class UserModel with ChangeNotifier{
     }
   }
 
-  Future<void> getUser() async {
-    final LocalStorage storage = LocalStorage("ponnystore");
-    try {
-      final ready = await storage.ready;
 
-      if (ready) {
-        final json = storage.getItem("userInfo");
-        if (json != null) {
-          user = User.fromLocalJson(json);
-          loggedIn = true;
-          notifyListeners();
-        }
+  Future<void> getUser(String token) async {
+    try {
+      final response = await http.get(userprofile,headers: { HttpHeaders.contentTypeHeader: 'application/json',HttpHeaders.authorizationHeader: "Bearer $token" });
+      final responseJson = json.decode(response.body);
+      if(response.statusCode == 200){
+        user = User.fromLocalJson(responseJson);
+        notifyListeners();
       }
     } catch (err) {
       print(err);
     }
+  }
+
+  Future<bool> setUser(String token,param) async {
+
+    try {
+      final result = await http.post(urlUpdateProfile+"/"+user.id.toString(), headers: { HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: "Bearer $token"},body: json.encode(param));
+      if (result.statusCode == 200) {
+        await getUser(token);
+        return true;
+      }
+    } catch (err) {
+      print(err);
+    }
+    return false;
   }
 
   Future<void> logout() async {

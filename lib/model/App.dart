@@ -49,6 +49,23 @@ class AppModel with ChangeNotifier{
     return false;
   }
 
+  Future<bool> setAuthOtp(param) async {
+    final res = await http.post(loginOtp,headers: { HttpHeaders.contentTypeHeader: 'application/json' },body: json.encode(param));
+    final LocalStorage storage = LocalStorage("ponnystore");
+    if(res.statusCode == 200){
+      var result = json.decode(res.body);
+      auth = LoginAuth.fromLocalJson(result);
+      loggedIn =true;
+      final ready = await storage.ready;
+      if (ready) {
+        await storage.setItem("auth", result);
+        notifyListeners();
+        return true;
+      }
+    }
+    return false;
+  }
+
   Future<void> logout() async {
 
     final LocalStorage storage = LocalStorage("ponnystore");

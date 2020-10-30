@@ -77,7 +77,7 @@ class _CartScreenState extends State<CartScreen> {
                 builder: (context,value,child){
                   if(value.loadingCard){
                     return Center(
-                     child: LoadingWidgetFadingcube(context),
+                     child: LoadingWidgetFadingCircle(context),
                     );
                   }else{
                     if(value.listCardOfitem.isEmpty){
@@ -465,7 +465,7 @@ class _CartScreenState extends State<CartScreen> {
                                         ),
                                       onPressed: () {
                                         UIBlock.block(context,customLoaderChild: LoadingWidget(context));
-                                        if(_code.text.isNotEmpty){
+                                        if(_code.value.text.isNotEmpty){
                                           value.AppyCoupon(_code.value.text, Provider.of<AppModel>(context).auth.access_token).then((values){
                                             UIBlock.unblock(context);
                                             if(value.coupon != null && value.coupon.code != null){

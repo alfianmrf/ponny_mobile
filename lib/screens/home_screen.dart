@@ -8,6 +8,7 @@ import 'package:ponny/model/Cart.dart';
 import 'package:ponny/model/Product.dart';
 import 'package:ponny/model/Slider.dart';
 import 'package:ponny/model/User.dart';
+import 'package:ponny/model/WishProduct.dart';
 import 'package:ponny/screens/login.dart';
 import 'package:ponny/screens/product_details_screen.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
@@ -18,6 +19,8 @@ import 'package:ponny/widgets/PonnyAppBar.dart';
 import 'package:provider/provider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ponny/screens/cart_screen.dart';
+
+import 'account/daftar_keinginan_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   static const String id = "home_screen";
@@ -52,6 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
     _controller.addListener(_scrollListener);
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       _getCartOfitem();
+      _getWishListCount();
     });
   }
 
@@ -81,6 +85,13 @@ class _HomeScreenState extends State<HomeScreen> {
     final auth = Provider.of<AppModel>(context);
     if(auth.loggedIn){
       await Provider.of<CartModel>(context).getCart(auth.auth.access_token);
+    }
+  }
+
+  Future<void> _getWishListCount() async {
+    final auth = Provider.of<AppModel>(context);
+    if(auth.loggedIn){
+      await Provider.of<WishModel>(context).getCountWislist(auth.auth.access_token);
     }
   }
 
@@ -348,10 +359,15 @@ class _HomeScreenState extends State<HomeScreen> {
                     IconButton(
                       icon: new Stack(
                           children: <Widget>[
+                            Provider.of<AppModel>(context).loggedIn?
                             new Container(
+                              padding: EdgeInsets.all(5),
+                              child: Provider.of<WishModel>(context).loading ? LoadingRing(context) : Icon(Icons.favorite_border),
+                            ):new Container(
                               padding: EdgeInsets.all(5),
                               child: Icon(Icons.favorite_border),
                             ),
+                            if(Provider.of<WishModel>(context).countwishlist > 0)
                             new Positioned(  // draw a red marble
                               top: 0.0,
                               right: 0.0,
@@ -364,7 +380,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                                 child: Center(
                                   child: Text(
-                                    '10',
+                                    Provider.of<WishModel>(context).countwishlist.toString(),
                                     style: TextStyle(
                                       color: Colors.white,
                                       fontFamily: 'Brandon',
@@ -376,12 +392,28 @@ class _HomeScreenState extends State<HomeScreen> {
                             )
                           ]
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        if(Provider.of<AppModel>(context).loggedIn){
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>  DaftarKeinginanScreen()),
+                          );
+                        }else{
+                          Navigator.push(context,new MaterialPageRoute(
+                            builder: (BuildContext context) => new LoginScreen(),
+                          ));
+                        }
+                      },
                     ),
                     IconButton(
                       icon: new Stack(
                           children: <Widget>[
+                            Provider.of<AppModel>(context).loggedIn?
                             new Container(
+                              padding: EdgeInsets.all(5),
+                              child: Provider.of<CartModel>(context).loadingCard? LoadingRing(context): Icon(Icons.shopping_cart),
+                            ):new Container(
                               padding: EdgeInsets.all(5),
                               child: Icon(Icons.shopping_cart),
                             ),
@@ -465,7 +497,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Consumer<ProductModel>(
                   builder: (context,value,child){
                     if(value.loadingBestSale){
-                      return LoadingWidgetFadingcube(context);
+                      return LoadingWidgetFadingCircle(context);
                     }else{
                       ListBestsale = getColumProduct(context,value.Best_sell,3);
                       return  new Swiper(
@@ -492,7 +524,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Consumer<ProductModel>(
                   builder: (context,value,child){
                     if(value.loadingPhobe){
-                      return LoadingWidgetFadingcube(context);
+                      return LoadingWidgetFadingCircle(context);
                     }else{
                       ListPhobe = getColumProduct(context,value.PhoebeChoices,3);
                       return  new Swiper(

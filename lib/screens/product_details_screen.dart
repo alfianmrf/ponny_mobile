@@ -7,11 +7,13 @@ import 'package:ponny/common/constant.dart';
 import 'package:ponny/model/App.dart';
 import 'package:ponny/model/Cart.dart';
 import 'package:ponny/model/Product.dart';
+import 'package:ponny/model/WishProduct.dart';
 import 'package:ponny/screens/cart_screen.dart';
 import 'package:ponny/util/globalUrl.dart';
 import 'package:provider/provider.dart';
 import 'package:uiblock/uiblock.dart';
 
+import 'account/daftar_keinginan_screen.dart';
 import 'login.dart';
 
 class ProductDetailsScreen extends StatefulWidget {
@@ -24,6 +26,8 @@ class ProductDetailsScreen extends StatefulWidget {
 }
 
 class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
+  GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+
   @override
   void initState() {
     super.initState();
@@ -246,15 +250,97 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     );
   }
 
+  void showWishDialog(BuildContext context) {
+    // set up the AlertDialog
+    SimpleDialog alert = SimpleDialog(
+      backgroundColor: Color(0xfffdf8f0),
+      contentPadding: EdgeInsets.all(5.0),
+      children: <Widget>[
+        Container(
+          padding: EdgeInsets.only(top: 30),
+          child: Icon(
+            Icons.favorite,
+            color: Color(0xffF48262),
+            size: 40,
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: 10),
+          child: Center(
+              child: Text(
+                'DITAMBAHKAN KE WISHLIST',
+                style: TextStyle(
+                  fontFamily: 'Brandon',
+                  fontWeight: FontWeight.w600,
+                  fontSize: 16,
+                  color: Color(0xffF48262),
+                ),
+              )),
+        ),
+        Padding(
+          padding: EdgeInsets.only(top: 15, bottom: 30),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 5),
+                child: Image.network(
+                  img_url+widget.product.thumbnail_image,
+                  width: MediaQuery.of(context).size.width*0.2,
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 5),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      widget.product.brand.name,
+                      style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontFamily: 'Brandon'
+                      ),
+                    ),
+                    Text(
+                      widget.product.name.length > 20 ? widget.product.name.substring(0, 20)+'...' : widget.product.name,
+                      style: TextStyle(
+                          fontFamily: 'Brandon'
+                      ),
+                    ),
+                    if(widget.product.varian.isNotEmpty)
+                      Text(
+                        '120ml',
+                        style: TextStyle(
+                            fontFamily: 'Brandon'
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     List<String> listBahanAktif = widget.product.bahan_aktif != null? widget.product.bahan_aktif.split(',') : [];
     final cardData = Provider.of<CartModel>(context);
     int  jmlCard= Provider.of<CartModel>(context).getCountOfquantity();
     List<Widget> ListRekomedasi;
-
     
     return Scaffold(
+      key: scaffoldKey,
       backgroundColor: Theme.of(context).primaryColor,
       body: Stack(
         children: <Widget>[
@@ -272,9 +358,57 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                 color: Color(0xffF48262),
               ),
               actions: <Widget>[
+
                 IconButton(
-                  icon: Icon(Icons.favorite_border),
-                  onPressed: () {},
+
+                  icon: new Stack(
+                      children: <Widget>[
+                        Provider.of<AppModel>(context).loggedIn?
+                        new Container(
+                          padding: EdgeInsets.all(5),
+                          child: Provider.of<WishModel>(context).loading ? LoadingRing(context) : Icon(Icons.favorite_border),
+                        ):new Container(
+                          padding: EdgeInsets.all(5),
+                          child: Icon(Icons.favorite_border),
+                        ),
+                        if(Provider.of<WishModel>(context).countwishlist > 0)
+                          new Positioned(  // draw a red marble
+                            top: 0.0,
+                            right: 0.0,
+                            child: Container(
+                              width: 12,
+                              height: 12,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(40),
+                                color: Colors.redAccent,
+                              ),
+                              child: Center(
+                                child: Text(
+                                  Provider.of<WishModel>(context).countwishlist.toString(),
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontFamily: 'Brandon',
+                                    fontSize: 8,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          )
+                      ]
+                  ),
+                  onPressed: () {
+                    if(Provider.of<AppModel>(context).loggedIn){
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>  DaftarKeinginanScreen()),
+                      );
+                    }else{
+                      Navigator.push(context,new MaterialPageRoute(
+                        builder: (BuildContext context) => new LoginScreen(),
+                      ));
+                    }
+                  },
                 ),
                 IconButton(
                   icon: new Stack(
@@ -733,7 +867,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                             child: Consumer<ProductModel>(
                               builder: (context,value,child){
                                 if(value.loadingRekomendasi){
-                                  return LoadingWidgetFadingcube(context);
+                                  return LoadingWidgetFadingCircle(context);
                                 }else{
                                   ListRekomedasi = getColumProduct(context,value.Recomendasi,3);
                                   return  new Swiper(
@@ -1063,7 +1197,23 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                       borderRadius: BorderRadius.circular(7.0),
                     ),
                     color: Color(0xffF48262),
-                    onPressed: () {/** */},
+                    onPressed: () {
+                      if(Provider.of<AppModel>(context).loggedIn) {
+                        UIBlock.block(context,customLoaderChild: LoadingWidget(context));
+                        Provider.of<WishModel>(context).addProductToWish(widget.product, Provider.of<AppModel>(context).auth.access_token).then((value){
+                          UIBlock.unblock(context);
+                          if(value){
+                            showWishDialog(context);
+                          }else{
+                            scaffoldKey.currentState.showSnackBar(snackBarError);
+                          }
+                        });
+                      }else{
+                        Navigator.push(context,new MaterialPageRoute(
+                          builder: (BuildContext context) => new LoginScreen(),
+                        ));
+                      }
+                    },
                   ),
                   FlatButton(
                     padding: EdgeInsets.symmetric(horizontal: 30),

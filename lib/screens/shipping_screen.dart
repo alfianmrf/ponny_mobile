@@ -347,7 +347,7 @@ class _ShippingScreenState extends State<ShippingScreen> {
                             Container(
                               height: MediaQuery.of(context).size.height,
                               child: Center(
-                                child: LoadingWidgetFadingcube(context),
+                                child: LoadingWidgetFadingCircle(context),
                               ),
                             ),
                           ],
@@ -576,7 +576,7 @@ class _ShippingScreenState extends State<ShippingScreen> {
                                                     unselectedWidgetColor: Colors.black,
                                                   ),
                                                   child:isloading?
-                                                  Container( height: MediaQuery.of(context).size.width*.2, child: Center(child: LoadingWidgetFadingcube(context),),):ListTileTheme(
+                                                  Container( height: MediaQuery.of(context).size.width*.2, child: Center(child: LoadingWidgetFadingCircle(context),),):ListTileTheme(
                                                     contentPadding: EdgeInsets.symmetric(horizontal: 15),
                                                     child: ExpansionTile(
                                                       initiallyExpanded: true,

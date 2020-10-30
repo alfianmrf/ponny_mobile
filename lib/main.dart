@@ -86,10 +86,16 @@ import 'package:ponny/screens/Affiliate_LogedIn_screen.dart';
 import 'package:ponny/screens/Affiliate_CairkanDana_screen.dart';
 import 'model/App.dart';
 import 'model/Order.dart';
+import 'package:firebase_core/firebase_core.dart';
+
+import 'model/WishProduct.dart';
 
 
 
-void main() {
+Future<void> main() async {
+
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(
       MultiProvider(
         providers: [
@@ -97,8 +103,10 @@ void main() {
           ChangeNotifierProvider(create: (context) => SliderModel()),
           ChangeNotifierProvider(create: (context)=> ProductModel()),
           ChangeNotifierProvider(create: (context)=> CartModel()),
+          ChangeNotifierProvider(create: (context)=> WishModel()),
           ChangeNotifierProvider(create: (context)=> AddressModel()),
           ChangeNotifierProvider(create: (context)=> OrderModel()),
+          ChangeNotifierProvider(create: (context)=> UserModel()),
         ],
         child: MyApp(),
       ),
@@ -107,6 +115,7 @@ void main() {
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

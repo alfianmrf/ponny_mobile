@@ -142,7 +142,7 @@ class _EditAlamatStateScreen extends State<EditAlamatScreen> {
         if(value){
           Navigator.pop(context);
         }else{
-          scaffoldKey.currentState.showSnackBar(snackBar);
+          scaffoldKey.currentState.showSnackBar(snackBarError);
         }
       });
       // _fetchLogin();

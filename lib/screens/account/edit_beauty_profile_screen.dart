@@ -1,10 +1,21 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:lodash_dart/lodash_dart.dart';
+import 'package:ponny/common/constant.dart';
+import 'package:ponny/model/App.dart';
+import 'package:ponny/model/User.dart';
 import 'package:ponny/screens/home_screen.dart';
 import 'package:ponny/screens/account_screen.dart';
 import 'package:ponny/screens/account/edit_beauty_profile_screen.dart';
+import 'package:ponny/util/globalUrl.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
+import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
+import 'package:uiblock/uiblock.dart';
 
 class EditBeautyProfileScreen extends StatefulWidget {
   static const String id = "edit_beauty_profile_Screen";
@@ -14,6 +25,148 @@ class EditBeautyProfileScreen extends StatefulWidget {
 }
 
 class _EditBeautyProfileStateScreen extends State<EditBeautyProfileScreen> {
+  GlobalKey<ScaffoldState> scafoldKey = GlobalKey<ScaffoldState>();
+  List<WarnaKulit> listwarnaKulit = [
+    WarnaKulit(1,"#F1D7C3","Putih",0),
+    WarnaKulit(2,"#F5CEA9","Kuning Langsat",0),
+    WarnaKulit(3,"#E0A16E","Sawo Matang",0),
+    WarnaKulit(4,"#6A4332","Gelap",0)
+  ];
+
+  List<ParamVariable> listJenisKulit =[
+    ParamVariable(1,"assets/images/kulit-normal.png", "Normal", 0),
+    ParamVariable(2,"assets/images/kulit-kering.png", "Kering", 0),
+    ParamVariable(3,"assets/images/kulit-berminyak.png", "Berminyak", 0),
+    ParamVariable(4,"assets/images/kulit-kombinasi.png", "Kombinasi", 0),
+    ParamVariable(5,"assets/images/kulit-sensitif.png", "Sensitif",0),
+  ];
+  
+  List<ParamVariable> KondisiKulit=[
+    ParamVariable(1,"assets/images/jerawat.png", "Jerawat", 0),
+    ParamVariable(2,"assets/images/keriput.png", "Garis Halus \n/ Keriput", 0),
+    ParamVariable(3,"assets/images/komedo.png", "Komedo", 0),
+    ParamVariable(4,"assets/images/pori-besar.png",  "Pori Besar", 0),
+    ParamVariable(5,"assets/images/kulit-kusam.png", "Kulit Kusam", 0),
+    ParamVariable(6,"assets/images/darkspot.png", "Dark Spot", 0),
+    ParamVariable(7,"assets/images/kantung-mata.png", "Kantung \n Mata", 0),
+    ParamVariable(8,"assets/images/kemerahan.png", "Kemerahan", 0),
+    ParamVariable(9,"assets/images/flek.png", "Flek", 0)
+  ];
+
+  List<ParamVariable> KondisiRambut=[
+    ParamVariable(1,"assets/images/ketombe.png", "Ketombe", 0),
+    ParamVariable(2,"assets/images/rontok.png", "Rontok", 0),
+    ParamVariable(3,"assets/images/bercabang.png", "Bercabang", 0),
+    ParamVariable(4,"assets/images/kusut.png", "Kusut", 0),
+    ParamVariable(5,"assets/images/kusam.png", "Kusam", 0),
+  ];
+
+  List<ParamVariable> PreferensiProduk=[
+    ParamVariable(1,"assets/images/indonesia.png", "Lokal", 0),
+    ParamVariable(2,"assets/images/korea.png", "Korean", 0),
+    ParamVariable(3,"assets/images/amerika.png", "Western", 0),
+  ];
+
+  @override
+  void initState() {
+
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      User user = Provider.of<UserModel>(context).user;
+      setState(() {
+        listwarnaKulit.firstWhere((element) => element.id == user.warna_kulit).value =1;
+        listJenisKulit.firstWhere((element) => element.id == user.jenis_kulit).Value =1;
+        for(int i in json.decode(user.kondisi_kulit)){
+          KondisiKulit.firstWhere((element) => element.id == i).Value =1;
+        }
+        for(int i in json.decode(user.kondisi_rambut)){
+          KondisiRambut.firstWhere((element) => element.id == i).Value =1;
+        }
+        for(int i in json.decode(user.preferensi_product)){
+          PreferensiProduk.firstWhere((element) => element.id == i).Value =1;
+        }
+      });
+    });
+
+  }
+
+  setWarnaKulit(WarnaKulit index){
+    setState(() {
+      listwarnaKulit.forEach((element) {
+        element.value =0;
+      });
+      listwarnaKulit.singleWhere((element) => element.Label == index.Label).value =1;
+    });
+  }
+  setJenisKulit(ParamVariable index){
+    setState(() {
+      listJenisKulit.forEach((element) {
+        element.Value =0;
+      });
+      listJenisKulit.singleWhere((element) => element.Label == index.Label).Value =1;
+    });
+  }
+
+  bool validation(){
+
+    final jmlListWarnkulit = listwarnaKulit.where((element) => element.value == 1);
+    final jmlJenisKulit = listJenisKulit.where((element) => element.Value == 1);
+    final jmlKondisiRambut = KondisiRambut.where((element) => element.Value == 1);
+    final jmlKondisiKulit = KondisiKulit.where((element) => element.Value == 1);
+    final jmlPrefrensi = PreferensiProduk.where((element) => element.Value == 1);
+    if(jmlListWarnkulit.length > 0 && jmlJenisKulit.length>0 && jmlKondisiRambut.length>0 && jmlKondisiKulit.length>0 && jmlPrefrensi.length>0){
+
+      return true;
+    }else{
+      String Pesan;
+      if(jmlListWarnkulit.length<=0){
+        Pesan = "Pilih Warna Kulit";
+      }else if(jmlJenisKulit.length<=0){
+        Pesan = "Pilih Jenis Kulit";
+      }else if(jmlKondisiRambut.length<=0){
+        Pesan = "Pilih Kondisi Rambut Minimal 1.";
+      }else if(jmlKondisiKulit.length<=0){
+        Pesan = "Pilih Kondisi Kulit Minimal 1.";
+      }else if(jmlPrefrensi.length<=0){
+        Pesan = "Pilih Preferensi Produk Minimal 1.";
+      }
+
+      final snackBarError = SnackBar(
+        content: Text(Pesan,style: TextStyle(color: Colors.white)),
+        backgroundColor: Colors.redAccent,
+      );
+      scafoldKey.currentState.showSnackBar(snackBarError);
+      return false;
+    }
+  }
+  Future<bool>_simpan() async {
+
+    String token = Provider.of<AppModel>(context).auth.access_token;
+    WarnaKulit _warnaKulit = listwarnaKulit.firstWhere((element) => element.value == 1);
+    ParamVariable _jenisKulit = listJenisKulit.firstWhere((element) => element.Value == 1);
+    List<int> _kondisiKulit = [];
+    List<int> _kondisiRambut = [];
+    List<int> _prefrensi = [];
+    KondisiKulit.forEach((element) { if(element.Value == 1) _kondisiKulit.add(element.id);});
+    KondisiRambut.forEach((element) { if(element.Value == 1) _kondisiRambut.add(element.id);});
+    PreferensiProduk.forEach((element) { if(element.Value == 1) _prefrensi.add(element.id);});
+    final param ={
+      "jenis_kulit": _jenisKulit.id,
+      "warna_kulit": _warnaKulit.id,
+      "kondisi_kulit":"["+_kondisiKulit.join(',')+"]",
+      "kondisi_rambut":"["+_kondisiRambut.join(',')+"]",
+      "preferensi_produk":"["+_prefrensi.join(',')+"]"
+    };
+
+    final res = await http.post(updateBeauteProfile, headers: { HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: "Bearer $token"}, body: json.encode(param));
+
+    if(res.statusCode == 200){
+      await Provider.of<UserModel>(context).getUser(token);
+      return true;
+    }
+    return false;
+  }
+
   void showAlertDialog(BuildContext context) {
     // set up the AlertDialog
     var container = Container(
@@ -459,10 +612,11 @@ class _EditBeautyProfileStateScreen extends State<EditBeautyProfileScreen> {
       },
     );
   }
-
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
+      key: scafoldKey,
       resizeToAvoidBottomInset: false,
       backgroundColor: Hexcolor('#FCF8F0'),
       body: SingleChildScrollView(
@@ -545,168 +699,58 @@ class _EditBeautyProfileStateScreen extends State<EditBeautyProfileScreen> {
                     // color: Colors.deepOrangeAccent,
                     padding: EdgeInsets.only(top: 5),
                     child: Row(
-                      children: [
-                        Container(
-                          margin: EdgeInsets.only(left: 10, right: 10),
-                          child: Column(
-                            children: [
-                              Container(
-                                // color: Colors.greenAccent,
-                                width: 80,
-                                height: 50,
-                                child: Column(
-                                  children: [
-                                    Container(
-                                      decoration: BoxDecoration(
-                                        color: Hexcolor('#F1D7C3'),
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(100)),
-                                      ),
-                                      width: 50,
-                                      height: 50,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Container(
-                                width: 80,
-                                height: 20,
-                                margin: EdgeInsets.only(
-                                  top: 1,
-                                ),
-                                child: Text(
-                                  "Putih",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    fontFamily: "Brandon",
-                                    fontSize: 12,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(right: 10),
-                          child: Column(
-                            children: [
-                              Container(
-                                // color: Colors.greenAccent,
-                                width: 80,
-                                height: 50,
-                                child: Column(
-                                  children: [
-                                    Container(
-                                      decoration: BoxDecoration(
-                                        color: Hexcolor('#F5CEA9'),
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(100)),
-                                      ),
-                                      width: 50,
-                                      height: 50,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Container(
-                                width: 80,
-                                height: 20,
-                                margin: EdgeInsets.only(
-                                  top: 1,
-                                ),
-                                child: Text(
-                                  "Kuning Langsat",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    fontFamily: "Brandon",
-                                    fontSize: 12,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(right: 10),
-                          child: Column(
-                            children: [
-                              Container(
-                                // color: Colors.greenAccent,
-                                width: 80,
-                                height: 50,
-                                child: Column(
-                                  children: [
-                                    Container(
-                                      decoration: BoxDecoration(
-                                        color: Hexcolor('#E0A16E'),
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(100)),
-                                      ),
-                                      width: 50,
-                                      height: 50,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Container(
-                                width: 80,
-                                height: 20,
-                                margin: EdgeInsets.only(
-                                  top: 1,
-                                ),
-                                child: Text(
-                                  "Sawo Matang",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    fontFamily: "Brandon",
-                                    fontSize: 12,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(),
-                          child: Column(
-                            children: [
-                              Container(
-                                // color: Colors.greenAccent,
-                                width: 80,
-                                height: 50,
-                                child: Column(
-                                  children: [
-                                    Container(
-                                      decoration: BoxDecoration(
-                                        color: Hexcolor('#6A4332'),
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(100)),
-                                      ),
-                                      width: 50,
-                                      height: 50,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Container(
-                                width: 80,
-                                height: 20,
-                                margin: EdgeInsets.only(
-                                  top: 1,
-                                ),
-                                child: Text(
-                                  "Gelap",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    fontFamily: "Brandon",
-                                    fontSize: 12,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
+                      children: listwarnaKulit.map((e){
+                       return Container(
+                         margin: EdgeInsets.only(left: 10, right: 10),
+                         child: Column(
+                           children: [
+                             Container(
+                               // color: Colors.greenAccent,
+                               width: 80,
+                               height: 50,
+                               child: Stack(
+                                 alignment: Alignment.center,
+                                 children: [
+                                   GestureDetector(
+                                     onTap: (){
+                                       setWarnaKulit(e);
+                                     },
+                                     child: Container(
+                                       decoration: BoxDecoration(
+                                         color: Hexcolor(e.Hexcolor),
+                                         borderRadius: BorderRadius.all(
+                                             Radius.circular(100)),
+                                       ),
+                                       width: 50,
+                                       height: 50,
+                                     ),
+                                   ),
+                                   if(e.value == 1)
+                                     Positioned(
+                                       child: Icon(Icons.check_circle,color: Colors.green,),
+                                     )
+                                 ],
+                               ),
+                             ),
+                             Container(
+                               width: 80,
+                               height: 20,
+                               margin: EdgeInsets.only(
+                                 top: 1,
+                               ),
+                               child: Text(
+                                 e.Label,
+                                 textAlign: TextAlign.center,
+                                 style: TextStyle(
+                                   fontFamily: "Brandon",
+                                   fontSize: 12,
+                                 ),
+                               ),
+                             ),
+                           ],
+                         ),
+                       );
+                      }).toList()
                     ),
                   ),
                 ],
@@ -793,240 +837,68 @@ class _EditBeautyProfileStateScreen extends State<EditBeautyProfileScreen> {
                   Container(
                     margin: EdgeInsets.only(top: 5),
                     child: Row(
-                      children: [
-                        Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: Color(0xffF3C1B5),
-                              width:
-                                  1, //                   <--- border width here
-                            ),
-                            borderRadius: BorderRadius.all(Radius.circular(7)),
-                          ),
-                          margin: EdgeInsets.only(left: 8, top: 5, right: 13),
-                          width: 60,
-                          height: 107,
-                          child: Column(
-                            children: [
-                              Container(
-                                width: 70,
-                                height: 70,
-                                child: Image.asset(
-                                  "assets/images/kulit-normal.png",
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                              Container(
+                      children: listJenisKulit.map((e){
+                        return Container(
+                            decoration: BoxDecoration(
+                              border: Border.all(
                                 color: Color(0xffF3C1B5),
-                                width: 70,
-                                height: 35,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      child: Text(
-                                        "Normal",
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          fontFamily: "Brandon",
-                                          fontSize: 10,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                                width:
+                                1, //                   <--- border width here
                               ),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: Color(0xffF3C1B5),
-                              width:
-                                  1, //                   <--- border width here
+                              borderRadius: BorderRadius.all(Radius.circular(7)),
                             ),
-                            borderRadius: BorderRadius.all(Radius.circular(7)),
-                          ),
-                          margin: EdgeInsets.only(top: 5, right: 13),
-                          width: 60,
-                          height: 107,
-                          child: Column(
-                            children: [
-                              Container(
-                                width: 70,
-                                height: 70,
-                                child: Image.asset(
-                                  "assets/images/kulit-kering.png",
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                              Container(
-                                color: Color(0xffF3C1B5),
-                                width: 70,
-                                height: 35,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      child: Text(
-                                        "Kering",
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          fontFamily: "Brandon",
-                                          fontSize: 10,
-                                          color: Colors.white,
-                                        ),
-                                      ),
+                            margin: EdgeInsets.only(left: 8, top: 5, right: 13),
+                            width: 60,
+                            height: 107,
+                            child: Stack(
+                              children: [
+                                GestureDetector(
+                                  onTap: (){
+                                    setJenisKulit(e);
+                                  },
+                                  child: Container(
+                                    width: 70,
+                                    height: 70,
+                                    child: Image.asset(
+                                      e.Gambar,
+                                      fit: BoxFit.cover,
                                     ),
-                                  ],
+                                  ),
                                 ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: Color(0xffF3C1B5),
-                              width:
-                                  1, //                   <--- border width here
+                                Positioned(
+                                  child:  Container(
+                                    color: Color(0xffF3C1B5),
+                                    width: 70,
+                                    height: 35,
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Container(
+                                          child: Text(
+                                            e.Label,
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                              fontFamily: "Brandon",
+                                              fontSize: 10,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  bottom: 0,
+                                ),
+                                if(e.Value == 1)
+                                  Positioned(
+                                    child: Icon(Icons.check_circle,color: Colors.green,),
+                                  )
+
+                              ],
+                              alignment: Alignment.topCenter,
                             ),
-                            borderRadius: BorderRadius.all(Radius.circular(7)),
-                          ),
-                          margin: EdgeInsets.only(top: 5, right: 13),
-                          width: 60,
-                          height: 107,
-                          child: Column(
-                            children: [
-                              Container(
-                                width: 70,
-                                height: 70,
-                                child: Image.asset(
-                                  "assets/images/kulit-berminyak.png",
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                              Container(
-                                color: Color(0xffF3C1B5),
-                                width: 70,
-                                height: 35,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      child: Text(
-                                        "Berminyak",
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          fontFamily: "Brandon",
-                                          fontSize: 10,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: Color(0xffF3C1B5),
-                              width:
-                                  1, //                   <--- border width here
-                            ),
-                            borderRadius: BorderRadius.all(Radius.circular(7)),
-                          ),
-                          margin: EdgeInsets.only(top: 5, right: 13),
-                          width: 60,
-                          height: 107,
-                          child: Column(
-                            children: [
-                              Container(
-                                width: 70,
-                                height: 70,
-                                child: Image.asset(
-                                  "assets/images/kulit-kombinasi.png",
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                              Container(
-                                color: Color(0xffF3C1B5),
-                                width: 70,
-                                height: 35,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      child: Text(
-                                        "Kombinasi",
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          fontFamily: "Brandon",
-                                          fontSize: 10,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: Color(0xffF3C1B5),
-                              width:
-                                  1, //                   <--- border width here
-                            ),
-                            borderRadius: BorderRadius.all(Radius.circular(7)),
-                          ),
-                          margin: EdgeInsets.only(
-                            top: 5,
-                          ),
-                          width: 60,
-                          height: 107,
-                          child: Column(
-                            children: [
-                              Container(
-                                width: 70,
-                                height: 70,
-                                child: Image.asset(
-                                  "assets/images/kulit-sensitif.png",
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                              Container(
-                                color: Color(0xffF3C1B5),
-                                width: 70,
-                                height: 35,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      child: Text(
-                                        "Sensitif",
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          fontFamily: "Brandon",
-                                          fontSize: 10,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
+                        );
+                      }).toList()
                     ),
                   ),
                 ],
@@ -1092,102 +964,55 @@ class _EditBeautyProfileStateScreen extends State<EditBeautyProfileScreen> {
                       ],
                     ),
                   ),
-                  Container(
-                    margin: EdgeInsets.only(top: 5),
-                    child: Row(
-                      children: [
-                        Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: Color(0xffF3C1B5),
-                              width:
+                  for(List<ParamVariable> params in Lodash().chunk(array: KondisiKulit, size: 5))(
+                      Container(
+                        margin: EdgeInsets.only(top: 5),
+                        child: Row(
+                          children: params.map((e) {
+                            return Container(
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: Color(0xffF3C1B5),
+                                  width:
                                   1, //                   <--- border width here
-                            ),
-                            borderRadius: BorderRadius.all(Radius.circular(7)),
-                          ),
-                          margin: EdgeInsets.only(left: 8, top: 5, right: 13),
-                          width: 60,
-                          height: 107,
-                          child: Column(
-                            children: [
-                              Container(
-                                width: 70,
-                                height: 70,
-                                child: Image.asset(
-                                  "assets/images/jerawat.png",
-                                  fit: BoxFit.cover,
                                 ),
+                                borderRadius: BorderRadius.all(Radius.circular(7)),
                               ),
-                              Container(
-                                color: Color(0xffF3C1B5),
-                                width: 70,
-                                height: 35,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      child: Text(
-                                        "Jerawat",
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          fontFamily: "Brandon",
-                                          fontSize: 10,
-                                          color: Colors.white,
-                                        ),
+                              margin: EdgeInsets.only(left: 8, top: 5, right: 13),
+                              width: 60,
+                              height: 107,
+                              child: Stack(
+                                alignment: Alignment.topCenter,
+                                children: [
+                                  GestureDetector(
+                                    onTap: (){
+                                      final v =  KondisiKulit.firstWhere((element) => element.Label == e.Label).Value;
+                                      print(v);
+                                      setState(() {
+                                        KondisiKulit.firstWhere((element) => element.Label == e.Label).Value = v == 0 ? 1 : 0;
+                                      });
+                                    },
+                                    child: Container(
+                                      width: 70,
+                                      height: 70,
+                                      child: Image.asset(
+                                        e.Gambar,
+                                        fit: BoxFit.cover,
                                       ),
                                     ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: Color(0xffF3C1B5),
-                              width:
-                                  1, //                   <--- border width here
-                            ),
-                            borderRadius: BorderRadius.all(Radius.circular(7)),
-                          ),
-                          margin: EdgeInsets.only(top: 5, right: 13),
-                          width: 60,
-                          height: 107,
-                          child: Column(
-                            children: [
-                              Container(
-                                width: 70,
-                                height: 70,
-                                child: Image.asset(
-                                  "assets/images/keriput.png",
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                              Container(
-                                color: Color(0xffF3C1B5),
-                                width: 70,
-                                height: 35,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      child: Column(
+                                  ),
+                                  Positioned(
+                                    bottom: 0,
+                                    child: Container(
+                                      color: Color(0xffF3C1B5),
+                                      width: 70,
+                                      height: 35,
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
                                         children: [
                                           Container(
                                             child: Text(
-                                              "Garis Halus",
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(
-                                                fontFamily: "Brandon",
-                                                fontSize: 10,
-                                                color: Colors.white,
-                                              ),
-                                            ),
-                                          ),
-                                          Container(
-                                            child: Text(
-                                              "/ Keriput",
+                                              e.Label,
                                               textAlign: TextAlign.center,
                                               style: TextStyle(
                                                 fontFamily: "Brandon",
@@ -1199,363 +1024,18 @@ class _EditBeautyProfileStateScreen extends State<EditBeautyProfileScreen> {
                                         ],
                                       ),
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                  if(e.Value == 1)
+                                    Positioned(
+                                      child: Icon(Icons.check_circle,color: Colors.green,),
+                                    )
+                                ],
                               ),
-                            ],
-                          ),
+                            );
+                          }).toList()
                         ),
-                        Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: Color(0xffF3C1B5),
-                              width:
-                                  1, //                   <--- border width here
-                            ),
-                            borderRadius: BorderRadius.all(Radius.circular(7)),
-                          ),
-                          margin: EdgeInsets.only(top: 5, right: 13),
-                          width: 60,
-                          height: 107,
-                          child: Column(
-                            children: [
-                              Container(
-                                width: 70,
-                                height: 70,
-                                child: Image.asset(
-                                  "assets/images/komedo.png",
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                              Container(
-                                color: Color(0xffF3C1B5),
-                                width: 70,
-                                height: 35,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      child: Text(
-                                        "Komedo",
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          fontFamily: "Brandon",
-                                          fontSize: 10,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: Color(0xffF3C1B5),
-                              width:
-                                  1, //                   <--- border width here
-                            ),
-                            borderRadius: BorderRadius.all(Radius.circular(7)),
-                          ),
-                          margin: EdgeInsets.only(top: 5, right: 13),
-                          width: 60,
-                          height: 107,
-                          child: Column(
-                            children: [
-                              Container(
-                                width: 70,
-                                height: 70,
-                                child: Image.asset(
-                                  "assets/images/pori-besar.png",
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                              Container(
-                                color: Color(0xffF3C1B5),
-                                width: 70,
-                                height: 35,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      child: Text(
-                                        "Pori Besar",
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          fontFamily: "Brandon",
-                                          fontSize: 10,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: Color(0xffF3C1B5),
-                              width:
-                                  1, //                   <--- border width here
-                            ),
-                            borderRadius: BorderRadius.all(Radius.circular(7)),
-                          ),
-                          margin: EdgeInsets.only(
-                            top: 5,
-                          ),
-                          width: 60,
-                          height: 107,
-                          child: Column(
-                            children: [
-                              Container(
-                                width: 70,
-                                height: 70,
-                                child: Image.asset(
-                                  "assets/images/kulit-kusam.png",
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                              Container(
-                                color: Color(0xffF3C1B5),
-                                width: 70,
-                                height: 35,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      child: Text(
-                                        "Kulit Kusam",
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          fontFamily: "Brandon",
-                                          fontSize: 10,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(top: 5),
-                    child: Row(
-                      children: [
-                        Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: Color(0xffF3C1B5),
-                              width:
-                                  1, //                   <--- border width here
-                            ),
-                            borderRadius: BorderRadius.all(Radius.circular(7)),
-                          ),
-                          margin: EdgeInsets.only(left: 8, top: 5, right: 13),
-                          width: 60,
-                          height: 107,
-                          child: Column(
-                            children: [
-                              Container(
-                                width: 70,
-                                height: 70,
-                                child: Image.asset(
-                                  "assets/images/darkspot.png",
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                              Container(
-                                color: Color(0xffF3C1B5),
-                                width: 70,
-                                height: 35,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      child: Text(
-                                        "Dark Spot",
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          fontFamily: "Brandon",
-                                          fontSize: 10,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: Color(0xffF3C1B5),
-                              width:
-                                  1, //                   <--- border width here
-                            ),
-                            borderRadius: BorderRadius.all(Radius.circular(7)),
-                          ),
-                          margin: EdgeInsets.only(top: 5, right: 13),
-                          width: 60,
-                          height: 107,
-                          child: Column(
-                            children: [
-                              Container(
-                                width: 70,
-                                height: 70,
-                                child: Image.asset(
-                                  "assets/images/kantung-mata.png",
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                              Container(
-                                color: Color(0xffF3C1B5),
-                                width: 70,
-                                height: 35,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      child: Column(
-                                        children: [
-                                          Container(
-                                            child: Text(
-                                              "Kantung",
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(
-                                                fontFamily: "Brandon",
-                                                fontSize: 10,
-                                                color: Colors.white,
-                                              ),
-                                            ),
-                                          ),
-                                          Container(
-                                            child: Text(
-                                              "Mata",
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(
-                                                fontFamily: "Brandon",
-                                                fontSize: 10,
-                                                color: Colors.white,
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: Color(0xffF3C1B5),
-                              width:
-                                  1, //                   <--- border width here
-                            ),
-                            borderRadius: BorderRadius.all(Radius.circular(7)),
-                          ),
-                          margin: EdgeInsets.only(top: 5, right: 13),
-                          width: 60,
-                          height: 107,
-                          child: Column(
-                            children: [
-                              Container(
-                                width: 70,
-                                height: 70,
-                                child: Image.asset(
-                                  "assets/images/kemerahan.png",
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                              Container(
-                                color: Color(0xffF3C1B5),
-                                width: 70,
-                                height: 35,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      child: Text(
-                                        "Kemerahan",
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          fontFamily: "Brandon",
-                                          fontSize: 10,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: Color(0xffF3C1B5),
-                              width:
-                                  1, //                   <--- border width here
-                            ),
-                            borderRadius: BorderRadius.all(Radius.circular(7)),
-                          ),
-                          margin: EdgeInsets.only(top: 5, right: 13),
-                          width: 60,
-                          height: 107,
-                          child: Column(
-                            children: [
-                              Container(
-                                width: 70,
-                                height: 70,
-                                child: Image.asset(
-                                  "assets/images/flek.png",
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                              Container(
-                                color: Color(0xffF3C1B5),
-                                width: 70,
-                                height: 35,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      child: Text(
-                                        "Flek",
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          fontFamily: "Brandon",
-                                          fontSize: 10,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                      )
+                  )
                 ],
               ),
             ),
@@ -1623,240 +1103,72 @@ class _EditBeautyProfileStateScreen extends State<EditBeautyProfileScreen> {
                   Container(
                     margin: EdgeInsets.only(top: 5),
                     child: Row(
-                      children: [
-                        Container(
+                      children: KondisiRambut.map((e){
+                        return Container(
                           decoration: BoxDecoration(
                             border: Border.all(
                               color: Color(0xffF3C1B5),
                               width:
-                                  1, //                   <--- border width here
+                              1, //                   <--- border width here
                             ),
                             borderRadius: BorderRadius.all(Radius.circular(7)),
                           ),
                           margin: EdgeInsets.only(left: 8, top: 5, right: 13),
                           width: 60,
                           height: 107,
-                          child: Column(
+                          child: Stack(
+                            alignment: Alignment.topCenter,
                             children: [
-                              Container(
-                                width: 70,
-                                height: 70,
-                                child: Image.asset(
-                                  "assets/images/ketombe.png",
-                                  fit: BoxFit.cover,
+                              GestureDetector(
+                                onTap: (){
+                                  final v =  KondisiRambut.firstWhere((element) => element.Label == e.Label).Value;
+                                  print(v);
+                                  setState(() {
+                                    KondisiRambut.firstWhere((element) => element.Label == e.Label).Value = v == 0 ? 1 : 0;
+                                  });
+                                },
+                                child: Container(
+                                  width: 70,
+                                  height: 70,
+                                  child: Image.asset(
+                                    e.Gambar,
+                                    fit: BoxFit.cover,
+                                  ),
                                 ),
                               ),
-                              Container(
-                                color: Color(0xffF3C1B5),
-                                width: 70,
-                                height: 35,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      child: Text(
-                                        "Ketombe",
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          fontFamily: "Brandon",
-                                          fontSize: 10,
-                                          color: Colors.white,
+                              Positioned(
+                                bottom: 0,
+                                child: Container(
+                                  color: Color(0xffF3C1B5),
+                                  width: 70,
+                                  height: 35,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Container(
+                                        child: Text(
+                                          e.Label,
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontFamily: "Brandon",
+                                            fontSize: 10,
+                                            color: Colors.white,
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
                               ),
+                              if(e.Value == 1)
+                                Positioned(
+                                  child: Icon(Icons.check_circle,color: Colors.green,),
+                                )
+
                             ],
                           ),
-                        ),
-                        Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: Color(0xffF3C1B5),
-                              width:
-                                  1, //                   <--- border width here
-                            ),
-                            borderRadius: BorderRadius.all(Radius.circular(7)),
-                          ),
-                          margin: EdgeInsets.only(top: 5, right: 13),
-                          width: 60,
-                          height: 107,
-                          child: Column(
-                            children: [
-                              Container(
-                                width: 70,
-                                height: 70,
-                                child: Image.asset(
-                                  "assets/images/rontok.png",
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                              Container(
-                                color: Color(0xffF3C1B5),
-                                width: 70,
-                                height: 35,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      child: Text(
-                                        "Rontok",
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          fontFamily: "Brandon",
-                                          fontSize: 10,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: Color(0xffF3C1B5),
-                              width:
-                                  1, //                   <--- border width here
-                            ),
-                            borderRadius: BorderRadius.all(Radius.circular(7)),
-                          ),
-                          margin: EdgeInsets.only(top: 5, right: 13),
-                          width: 60,
-                          height: 107,
-                          child: Column(
-                            children: [
-                              Container(
-                                width: 70,
-                                height: 70,
-                                child: Image.asset(
-                                  "assets/images/bercabang.png",
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                              Container(
-                                color: Color(0xffF3C1B5),
-                                width: 70,
-                                height: 35,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      child: Text(
-                                        "Bercabang",
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          fontFamily: "Brandon",
-                                          fontSize: 10,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: Color(0xffF3C1B5),
-                              width:
-                                  1, //                   <--- border width here
-                            ),
-                            borderRadius: BorderRadius.all(Radius.circular(7)),
-                          ),
-                          margin: EdgeInsets.only(top: 5, right: 13),
-                          width: 60,
-                          height: 107,
-                          child: Column(
-                            children: [
-                              Container(
-                                width: 70,
-                                height: 70,
-                                child: Image.asset(
-                                  "assets/images/kusut.png",
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                              Container(
-                                color: Color(0xffF3C1B5),
-                                width: 70,
-                                height: 35,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      child: Text(
-                                        "Kusut",
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          fontFamily: "Brandon",
-                                          fontSize: 10,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: Color(0xffF3C1B5),
-                              width:
-                                  1, //                   <--- border width here
-                            ),
-                            borderRadius: BorderRadius.all(Radius.circular(7)),
-                          ),
-                          margin: EdgeInsets.only(
-                            top: 5,
-                          ),
-                          width: 60,
-                          height: 107,
-                          child: Column(
-                            children: [
-                              Container(
-                                width: 70,
-                                height: 70,
-                                child: Image.asset(
-                                  "assets/images/kusam.png",
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                              Container(
-                                color: Color(0xffF3C1B5),
-                                width: 70,
-                                height: 35,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      child: Text(
-                                        "Kusam",
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          fontFamily: "Brandon",
-                                          fontSize: 10,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
+                        );
+                      }).toList()
                     ),
                   ),
                 ],
@@ -1916,184 +1228,147 @@ class _EditBeautyProfileStateScreen extends State<EditBeautyProfileScreen> {
                   Container(
                     margin: EdgeInsets.only(top: 5),
                     child: Row(
-                      children: [
-                        Container(
+                      children: PreferensiProduk.map((e) {
+                        return Container(
                           decoration: BoxDecoration(
                             border: Border.all(
                               color: Color(0xffF3C1B5),
                               width:
-                                  1, //                   <--- border width here
+                              1, //                   <--- border width here
                             ),
                             borderRadius: BorderRadius.all(Radius.circular(7)),
                           ),
                           margin: EdgeInsets.only(left: 8, top: 5, right: 13),
                           width: 60,
                           height: 107,
-                          child: Column(
+                          child: Stack(
+                            alignment: Alignment.topCenter,
                             children: [
-                              Container(
-                                width: 70,
-                                height: 70,
-                                child: Image.asset(
-                                  "assets/images/indonesia.png",
-                                  fit: BoxFit.cover,
+                              GestureDetector(
+                                child: Container(
+                                  width: 70,
+                                  height: 70,
+                                  child: Image.asset(
+                                    e.Gambar,
+                                    fit: BoxFit.cover,
+                                  ),
                                 ),
+                                onTap: (){
+                                  final v =  PreferensiProduk.firstWhere((element) => element.Label == e.Label).Value;
+                                  print(v);
+                                  setState(() {
+                                    PreferensiProduk.firstWhere((element) => element.Label == e.Label).Value = v == 0 ? 1 : 0;
+                                  });
+                                },
                               ),
-                              Container(
-                                color: Color(0xffF3C1B5),
-                                width: 70,
-                                height: 35,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      child: Text(
-                                        "Lokal",
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          fontFamily: "Brandon",
-                                          fontSize: 10,
-                                          color: Colors.white,
+                              Positioned(
+                                bottom: 0,
+                                child:  Container(
+                                  color: Color(0xffF3C1B5),
+                                  width: 70,
+                                  height: 35,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Container(
+                                        child: Text(
+                                          e.Label,
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontFamily: "Brandon",
+                                            fontSize: 10,
+                                            color: Colors.white,
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
                               ),
+                              if(e.Value == 1)
+                                Positioned(
+                                  child: Icon(Icons.check_circle,color: Colors.green,),
+                                )
+
                             ],
                           ),
-                        ),
-                        Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: Color(0xffF3C1B5),
-                              width:
-                                  1, //                   <--- border width here
-                            ),
-                            borderRadius: BorderRadius.all(Radius.circular(7)),
-                          ),
-                          margin: EdgeInsets.only(top: 5, right: 13),
-                          width: 60,
-                          height: 107,
-                          child: Column(
-                            children: [
-                              Container(
-                                width: 70,
-                                height: 70,
-                                child: Image.asset(
-                                  "assets/images/korea.png",
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                              Container(
-                                color: Color(0xffF3C1B5),
-                                width: 70,
-                                height: 35,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      child: Text(
-                                        "Korean",
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          fontFamily: "Brandon",
-                                          fontSize: 10,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: Color(0xffF3C1B5),
-                              width:
-                                  1, //                   <--- border width here
-                            ),
-                            borderRadius: BorderRadius.all(Radius.circular(7)),
-                          ),
-                          margin: EdgeInsets.only(top: 5, right: 13),
-                          width: 60,
-                          height: 107,
-                          child: Column(
-                            children: [
-                              Container(
-                                width: 70,
-                                height: 70,
-                                child: Image.asset(
-                                  "assets/images/amerika.png",
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                              Container(
-                                color: Color(0xffF3C1B5),
-                                width: 70,
-                                height: 35,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      child: Text(
-                                        "Western",
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          fontFamily: "Brandon",
-                                          fontSize: 10,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
+                        );
+                      }).toList()
                     ),
                   ),
                 ],
               ),
             ),
-            Container(
-              width: MediaQuery.of(context).size.width,
-              decoration: BoxDecoration(
-                color: Color(0xffF3C1B5),
-                borderRadius: BorderRadius.all(Radius.circular(5)),
-              ),
-              margin: EdgeInsets.only(
-                left: 20,
-                right: 20,
-                top: 40,
-                bottom: 40,
-              ),
-              padding: EdgeInsets.only(top: 15, bottom: 15),
-              child: Column(
-                children: [
-                  Container(
-                    child: Text(
-                      "SIMPAN",
-                      style: TextStyle(
-                        fontFamily: "Brandon",
-                        fontSize: 18,
-                        fontWeight: FontWeight.w700,
-                        color: Colors.white,
+            GestureDetector(
+              onTap: (){
+
+              },
+              child:Container(
+                width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(
+                  color: Color(0xffF3C1B5),
+                  borderRadius: BorderRadius.all(Radius.circular(5)),
+                ),
+                margin: EdgeInsets.only(
+                  left: 20,
+                  right: 20,
+                  top: 40,
+                  bottom: 40,
+                ),
+                padding: EdgeInsets.only(top: 15, bottom: 15),
+                child: Column(
+                  children: [
+                    GestureDetector(
+                      onTap:(){
+                        if(validation()){
+                          UIBlock.block(context,customLoaderChild: LoadingWidget(context));
+                          _simpan().then((value){
+                            UIBlock.unblock(context);
+                            if(value){
+                              scafoldKey.currentState.showSnackBar(snackBarSuccess);
+                            }else{
+                              scafoldKey.currentState.showSnackBar(snackBarError);
+                            }
+                          });
+                        }
+                      },
+                      child: Container(
+                        child: Text(
+                          "SIMPAN",
+                          style: TextStyle(
+                            fontFamily: "Brandon",
+                            fontSize: 18,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.white,
+                          ),
+                        ),
                       ),
                     ),
-                  ),
-                ],
+
+                  ],
+                ),
               ),
-            ),
+            )
           ],
         ),
       ),
       bottomNavigationBar: new PonnyBottomNavbar(selectedIndex: 4),
     );
   }
+}
+
+class WarnaKulit{
+  int id;
+  String Hexcolor;
+  String Label;
+  int value;
+  WarnaKulit(this.id, this.Hexcolor,this.Label,this.value);
+}
+
+class ParamVariable{
+  int id;
+  String Gambar;
+  String Label;
+  int Value;
+  ParamVariable(this.id,this.Gambar,this.Label,this.Value);
 }

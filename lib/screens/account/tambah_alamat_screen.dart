@@ -140,7 +140,7 @@ class _TambahAlamatStateScreen extends State<TambahAlamatScreen> {
         if(value){
           Navigator.pop(context);
         }else{
-          scaffoldKey.currentState.showSnackBar(snackBar);
+          scaffoldKey.currentState.showSnackBar(snackBarError);
         }
       });
       // _fetchLogin();
