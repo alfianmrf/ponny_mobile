@@ -8,6 +8,7 @@ import 'package:ponny/model/Cart.dart';
 import 'package:ponny/model/Product.dart';
 import 'package:ponny/model/Slider.dart';
 import 'package:ponny/model/User.dart';
+import 'package:ponny/screens/flash_sale_screen.dart';
 import 'package:ponny/model/WishProduct.dart';
 import 'package:ponny/screens/login.dart';
 import 'package:ponny/screens/product_details_screen.dart';
@@ -308,6 +309,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
 
     final silder = Provider.of<SliderModel>(context).listSlider;
+    List<Widget> ListFlash;
     List<Widget> ListBestsale;
     List<Widget> ListPhobe;
     final jmlCard = Provider.of<CartModel>(context).getCountOfquantity();
@@ -489,6 +491,172 @@ class _HomeScreenState extends State<HomeScreen> {
                     control: null,
                     autoplay: true,
                   ),
+                ),
+              ),
+              Container(
+                color: Color(0xffFACAC1),
+                width: MediaQuery.of(context).size.width,
+                padding: EdgeInsets.only(top: 8, bottom: 3),
+                child: Image.asset('assets/images/flash-sale.png', height: 40),
+              ),
+              Container(
+                color: Color(0xffFBDFD2),
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(top: 10),
+                      child: Text(
+                        'Happy Skin',
+                        style: TextStyle(
+                          fontFamily: 'Yeseva',
+                          fontSize: 26,
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: 10),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            flex: 1,
+                            child: Padding(
+                              padding: EdgeInsets.only(right: 10),
+                              child: Text(
+                                'DIMULAI DALAM',
+                                style: TextStyle(
+                                  fontFamily: 'Brandon',
+                                ),
+                                textAlign: TextAlign.right,
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            flex: 1,
+                            child: Padding(
+                              padding: EdgeInsets.only(left: 10),
+                              child: Row(
+                                children: [
+                                  Container(
+                                    width: 24,
+                                    height: 24,
+                                    decoration: BoxDecoration(
+                                      color: Color(0xffF48262),
+                                      borderRadius: BorderRadius.circular(3),
+                                    ),
+                                    child: Center(
+                                      child: Text(
+                                        '12',
+                                        style: TextStyle(
+                                          fontFamily: 'Brandon',
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.symmetric(horizontal: 5),
+                                    child: Text(
+                                      ':',
+                                      style: TextStyle(
+                                        fontFamily: 'Brandon',
+                                        color: Color(0xffF48262),
+                                      ),
+                                    ),
+                                  ),
+                                  Container(
+                                    width: 24,
+                                    height: 24,
+                                    decoration: BoxDecoration(
+                                      color: Color(0xffF48262),
+                                      borderRadius: BorderRadius.circular(3),
+                                    ),
+                                    child: Center(
+                                      child: Text(
+                                        '12',
+                                        style: TextStyle(
+                                          fontFamily: 'Brandon',
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.symmetric(horizontal: 5),
+                                    child: Text(
+                                      ':',
+                                      style: TextStyle(
+                                        fontFamily: 'Brandon',
+                                        color: Color(0xffF48262),
+                                      ),
+                                    ),
+                                  ),
+                                  Container(
+                                    width: 24,
+                                    height: 24,
+                                    decoration: BoxDecoration(
+                                      color: Color(0xffF48262),
+                                      borderRadius: BorderRadius.circular(3),
+                                    ),
+                                    child: Center(
+                                      child: Text(
+                                        '27',
+                                        style: TextStyle(
+                                          fontFamily: 'Brandon',
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      height: MediaQuery.of(context).size.width*0.95,
+                      padding: EdgeInsets.only(top: 10),
+                      child: Consumer<ProductModel>(
+                        builder: (context,value,child){
+                          if(value.loadingBestSale){
+                            return LoadingWidgetFadingcube(context);
+                          }else{
+                            ListFlash = getColumProductFlash(context,value.Best_sell,3);
+                            return  new Swiper(
+                              itemBuilder: (BuildContext context, int index) {
+                                return ListFlash[index];
+                              },
+                              itemCount: ListFlash.length,
+                              pagination: null,
+                              control: null,
+                              autoplay: false,
+                            );
+                          }
+                        },
+                      ),
+                    ),
+                    Container(
+                      padding: EdgeInsets.symmetric(vertical: 10),
+                      child: FlatButton(
+                        height: 30,
+                        padding: EdgeInsets.symmetric(horizontal: 20),
+                        onPressed: (){
+                          Navigator.push(context, new MaterialPageRoute(
+                            builder: (BuildContext context) => new FlashSaleScreen(),
+                          ));
+                        },
+                        color: Color(0xffF48262),
+                        child: Text(
+                          'LIHAT SEMUA',
+                          style: TextStyle(
+                            fontFamily: 'Brandon',
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
               title("Best Seller"),
