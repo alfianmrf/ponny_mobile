@@ -149,7 +149,7 @@ class MyApp extends StatelessWidget {
         AffiliateHomeScreen.id: (context) => AffiliateHomeScreen(),
         AffiliateLogedIn.id: (context) => AffiliateLogedIn(),
         CairkanDanaScreen.id: (context) => CairkanDanaScreen(),
-        BasicSkincare.id: (context) => BasicSkincare()
+        BasicSkincareData.id: (context) => BasicSkincareData()
       },
     );
   }

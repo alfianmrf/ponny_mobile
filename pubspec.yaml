@@ -41,6 +41,8 @@ dependencies:
   flutter_signin_button: ^1.1.0
   dotted_line: ^2.0.1
   readmore: ^1.0.0
+  dio: ^3.0.10
+  flutter_html: ^1.0.2
 
 
   # The following adds the Cupertino Icons font to your application.
