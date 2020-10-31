@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 
+import 'Detail_Brand_Screen.dart';
+
 class Browse_Brands extends StatefulWidget {
   Browse_Brands({Key key}) : super(key: key);
 
@@ -97,22 +99,30 @@ class _Browse_BrandsState extends State<Browse_Brands> {
                   ),
                   color: Hexcolor('#FFC5AD'),
                 ),
-                Container(
-                    child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      child: Text("Aeris"),
-                      margin: EdgeInsets.fromLTRB(25, 20, 0, 10),
-                    ),
-                    Container(
-                      color: Colors.black,
-                      height: 1,
-                      width: double.infinity,
-                      margin: EdgeInsets.fromLTRB(20, 0, 20, 20),
-                    )
-                  ],
-                )),
+                InkWell(
+                  onTap: (){
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => DetailBrand()),
+                    );
+                  },
+                  child: Container(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            child: Text("Aeris"),
+                            margin: EdgeInsets.fromLTRB(25, 20, 0, 10),
+                          ),
+                          Container(
+                            color: Colors.black,
+                            height: 1,
+                            width: double.infinity,
+                            margin: EdgeInsets.fromLTRB(20, 0, 20, 20),
+                          )
+                        ],
+                      )),
+                ),
               ],
             );
           }),

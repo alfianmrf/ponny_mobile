@@ -5,6 +5,7 @@ import 'package:ponny/model/Product.dart';
 import 'package:ponny/model/Slider.dart';
 import 'package:ponny/model/User.dart';
 import 'package:ponny/screens/Skinklopedia_Screen.dart';
+import 'file:///C:/Users/muham/AndroidStudioProjects/ponny/lib/screens/Detail_Brand_Screen.dart';
 import 'package:ponny/screens/bank_transfer_screen.dart';
 import 'package:ponny/screens/bank_transfer_detail_screen.dart';
 import 'package:ponny/screens/konfirmasi_pembayaran_screen.dart';
@@ -180,7 +181,8 @@ class MyApp extends StatelessWidget {
         AffiliateHomeScreen.id: (context) => AffiliateHomeScreen(),
         AffiliateLogedIn.id: (context) => AffiliateLogedIn(),
         CairkanDanaScreen.id: (context) => CairkanDanaScreen(),
-        BasicSkincare.id: (context) => BasicSkincare()
+        BasicSkincare.id: (context) => BasicSkincare(),
+        DetailBrand.id: (context) => DetailBrand()
       },
     );
   }
