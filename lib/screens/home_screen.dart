@@ -620,7 +620,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: Consumer<ProductModel>(
                         builder: (context,value,child){
                           if(value.loadingBestSale){
-                            return LoadingWidgetFadingcube(context);
+                            return LoadingWidgetFadingCircle(context);
                           }else{
                             ListFlash = getColumProductFlash(context,value.Best_sell,3);
                             return  new Swiper(

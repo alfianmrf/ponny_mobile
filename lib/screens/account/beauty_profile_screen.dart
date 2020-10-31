@@ -73,78 +73,102 @@ class _BeautyProfileStateScreen extends State<BeautyProfileScreen> {
   @override
   Widget build(BuildContext context) {
     User user = Provider.of<UserModel>(context).user;
-    setState(() {
-      listwarnaKulit.forEach((element) {
-        element.value =0;
+     bool isComplete (){
+       if(user.warna_kulit != null && user.jenis_kulit != null && user.kondisi_kulit != null && user.kondisi_rambut != null && user.preferensi_product !=null ) return true;
+       return false;
+     }
+    if(isComplete()){
+      setState(() {
+        listwarnaKulit.forEach((element) {
+          element.value =0;
+        });
+        listJenisKulit.forEach((element) {
+          element.Value =0;
+        });
+        KondisiKulit.forEach((element) {
+          element.Value =0;
+        });
+        KondisiRambut.forEach((element) {
+          element.Value =0;
+        });
+        PreferensiProduk.forEach((element) {
+          element.Value =0;
+        });
+        listwarnaKulit.firstWhere((element) => element.id == user.warna_kulit).value =1;
+        listJenisKulit.firstWhere((element) => element.id == user.jenis_kulit).Value =1;
+        for(int i in json.decode(user.kondisi_kulit)){
+          KondisiKulit.firstWhere((element) => element.id == i).Value =1;
+        }
+        for(int i in json.decode(user.kondisi_rambut)){
+          KondisiRambut.firstWhere((element) => element.id == i).Value =1;
+        }
+        for(int i in json.decode(user.preferensi_product)){
+          PreferensiProduk.firstWhere((element) => element.id == i).Value =1;
+        }
       });
-      listJenisKulit.forEach((element) {
-        element.Value =0;
-      });
-      KondisiKulit.forEach((element) {
-        element.Value =0;
-      });
-      KondisiRambut.forEach((element) {
-        element.Value =0;
-      });
-      PreferensiProduk.forEach((element) {
-        element.Value =0;
-      });
-      listwarnaKulit.firstWhere((element) => element.id == user.warna_kulit).value =1;
-      listJenisKulit.firstWhere((element) => element.id == user.jenis_kulit).Value =1;
-      for(int i in json.decode(user.kondisi_kulit)){
-        KondisiKulit.firstWhere((element) => element.id == i).Value =1;
-      }
-      for(int i in json.decode(user.kondisi_rambut)){
-        KondisiRambut.firstWhere((element) => element.id == i).Value =1;
-      }
-      for(int i in json.decode(user.preferensi_product)){
-        PreferensiProduk.firstWhere((element) => element.id == i).Value =1;
-      }
-    });
+    }
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Hexcolor('#FCF8F0'),
-      body: SingleChildScrollView(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: Color(0xffF48262),
+            size: 26,
+          ),
+        ),
+        title:  Text(
+          "Beauty Profile",
+          style: TextStyle(
+            fontSize: 24,
+            fontFamily: "Yeseva",
+            fontWeight: FontWeight.w500,
+            color: Color(0xffF48262),
+          ),
+        ),
+      ),
+      body: !isComplete()? Center(
+        child: Container(
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width*.7,
+
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                alignment: Alignment.center,
+                child: Text("SEDIKIT LAGI UNTUK DAPATKAN BONUS POIN!",style: TextStyle( fontWeight: FontWeight.bold,fontSize: 18 ),textAlign: TextAlign.center,),
+              ),
+              Text("Lengkapi halaman Beauty Profile dan dapatkan 50 poin rewards!",textAlign: TextAlign.center,),
+              FlatButton(
+                color: Color(0xffF48262),
+                textColor: Colors.white,
+                disabledColor: Colors.grey,
+                disabledTextColor: Colors.black,
+                padding: EdgeInsets.all(8.0),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => EditBeautyProfileScreen(),
+                    ),
+                  );
+                },
+                child: Text(
+                  "YUK, LENGKAPI!",
+                  style: TextStyle(fontSize: 20.0),
+                ),
+              )
+
+            ],
+          ),
+        ),
+      ): 
+      SingleChildScrollView(
         child: Column(
           children: <Widget>[
-            Container(
-              height: 70,
-            ),
-            Container(
-              padding: EdgeInsets.only(left: 15, bottom: 15),
-              child: Row(
-                children: [
-                  Container(
-                    margin: EdgeInsets.only(right: 14),
-                    child: GestureDetector(
-                      child: Icon(
-                        Icons.arrow_back_ios,
-                        color: Color(0xffF48262),
-                        size: 26,
-                      ),
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                    ),
-                  ),
-                  Container(
-                    child: Text(
-                      "Beauty Profile",
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontFamily: "Yeseva",
-                        fontWeight: FontWeight.w500,
-                        color: Color(0xffF48262),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              height: 1,
-              color: Color(0xffF3C1B5),
-            ),
             Container(
               decoration: BoxDecoration(
                 border: Border(
@@ -182,7 +206,6 @@ class _BeautyProfileStateScreen extends State<BeautyProfileScreen> {
                   ),
                   Container(
                     width: 220,
-                    height: 120,
                     // color: Colors.redAccent,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -207,7 +230,6 @@ class _BeautyProfileStateScreen extends State<BeautyProfileScreen> {
                                 top: 5,
                               ),
                               width: 65,
-                              height: 30,
                               child: Text(
                                 e.Label,
                                 textAlign: TextAlign.center,

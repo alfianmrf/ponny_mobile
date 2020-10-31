@@ -112,6 +112,9 @@ class _LoginOTPScreen extends State<LoginOTP> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           InkWell(
+                            onTap: (){
+                              sendOtp();
+                            },
                             child: Text(
                               "Kirim ulang kode",
                               style: TextStyle(
@@ -258,6 +261,48 @@ class _LoginOTPScreen extends State<LoginOTP> {
       ),
     );
 
+  }
+
+  Future<void> sendOtp() async {
+    FocusScope.of(context).requestFocus(new FocusNode());
+
+    FormState form = this.formKey.currentState;
+    if(form.validate()){
+      UIBlock.block(context,customLoaderChild: LoadingWidget(context));
+      var phone = "+62"+phoneNumber.value.text;
+      print(phone);
+      try{
+        await FirebaseAuth.instance.verifyPhoneNumber(
+          phoneNumber: phone,
+          timeout: Duration(minutes: 2),
+          verificationCompleted: (PhoneAuthCredential credential) {
+            print(credential.smsCode);
+          },
+          verificationFailed: (FirebaseAuthException e) {
+            UIBlock.unblock(context);
+            final snackBar = SnackBar(
+              content: Text(e.message,style: TextStyle(color: Colors.white)),
+              backgroundColor: Colors.redAccent,
+            );
+            scaffoldKey.currentState.showSnackBar(snackBar);
+            print(e.message);
+          },
+          codeSent: (String verificationId, int resendToken) {
+            UIBlock.unblock(context);
+            showInputCode(verificationId,resendToken);
+          },
+          codeAutoRetrievalTimeout: (String verificationId) {
+            UIBlock.unblock(context);
+            print('timeout');
+          },
+        );
+      }catch(e){
+        UIBlock.unblock(context);
+        print(e);
+        scaffoldKey.currentState.showSnackBar(snackBarError);
+      }
+
+    }
   }
 
 
@@ -424,43 +469,7 @@ class _LoginOTPScreen extends State<LoginOTP> {
                             width: MediaQuery.of(context).size.width - 70,
                             child: FlatButton(
                               onPressed: () async {
-                                FocusScope.of(context).requestFocus(new FocusNode());
-
-                                FormState form = this.formKey.currentState;
-                                if(form.validate()){
-                                  UIBlock.block(context,customLoaderChild: LoadingWidget(context));
-                                  var phone = "+62"+phoneNumber.value.text;
-                                  print(phone);
-                                  await FirebaseAuth.instance.verifyPhoneNumber(
-                                    phoneNumber: phone,
-                                    timeout: Duration(minutes: 2),
-                                    verificationCompleted: (PhoneAuthCredential credential) {
-                                      print(credential.smsCode);
-                                    },
-                                    verificationFailed: (FirebaseAuthException e) {
-                                      UIBlock.unblock(context);
-                                      final snackBar = SnackBar(
-                                        content: Text(e.message,style: TextStyle(color: Colors.white)),
-                                        backgroundColor: Colors.redAccent,
-                                      );
-                                      scaffoldKey.currentState.showSnackBar(snackBar);
-                                      print(e.message);
-                                    },
-                                    codeSent: (String verificationId, int resendToken) {
-                                      UIBlock.unblock(context);
-                                      showInputCode(verificationId,resendToken);
-                                    },
-                                    codeAutoRetrievalTimeout: (String verificationId) {
-                                      UIBlock.unblock(context);
-                                      final snackBar = SnackBar(
-                                        content: Text('Waktu anda habis silakan coba kembali.!',style: TextStyle(color: Colors.white)),
-                                        backgroundColor: Colors.redAccent,
-                                      );
-                                      scaffoldKey.currentState.showSnackBar(snackBar);
-                                      print('timeout');
-                                    },
-                                  );
-                                }
+                                sendOtp();
                               },
                               child: Text(
                                 "LOGIN",

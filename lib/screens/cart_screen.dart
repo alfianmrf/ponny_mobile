@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:ponny/common/constant.dart';
 import 'package:ponny/model/App.dart';
 import 'package:ponny/model/Cart.dart';
@@ -60,6 +61,81 @@ class _CartScreenState extends State<CartScreen> {
   }
 
   String dropdownValue = 'One';
+
+  void showSample(){
+    showMaterialModalBottomSheet(
+      context: context,
+      useRootNavigator: true,
+      builder: (context, scrollController) => Container(
+        child: Container(
+          height: MediaQuery.of(context).size.height*.65,
+          child: Column(
+            children: [
+              Container(
+                alignment: Alignment.center,
+                color:  Color(0xffF48262),
+                height: MediaQuery.of(context).size.width*.1,
+                width: MediaQuery.of(context).size.width,
+                child: Text(
+                  'PILIH SAMPLE',
+                  style: TextStyle(
+                      fontFamily: 'Brandon',
+                      fontSize: 16,
+                      color: Colors.white
+                  ),
+                ),
+              ),
+              Container(
+                height: 300,
+                child: SingleChildScrollView(
+                  child:GridView.count(
+                    primary: false,
+                    padding: const EdgeInsets.all(20),
+                    crossAxisSpacing: 10,
+                    mainAxisSpacing: 10,
+                    crossAxisCount: 2,
+                    children: <Widget>[
+                      Container(
+                        padding: const EdgeInsets.all(8),
+                        child: const Text("He'd have you all unravel at the"),
+                        color: Colors.teal[100],
+                      ),
+                      Container(
+                        padding: const EdgeInsets.all(8),
+                        child: const Text('Heed not the rabble'),
+                        color: Colors.teal[200],
+                      ),
+                      Container(
+                        padding: const EdgeInsets.all(8),
+                        child: const Text('Sound of screams but the'),
+                        color: Colors.teal[300],
+                      ),
+                      Container(
+                        padding: const EdgeInsets.all(8),
+                        child: const Text('Who scream'),
+                        color: Colors.teal[400],
+                      ),
+                      Container(
+                        padding: const EdgeInsets.all(8),
+                        child: const Text('Revolution is coming...'),
+                        color: Colors.teal[500],
+                      ),
+                      Container(
+                        padding: const EdgeInsets.all(8),
+                        child: const Text('Revolution, they...'),
+                        color: Colors.teal[600],
+                      ),
+                    ],
+                  ),
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -326,58 +402,64 @@ class _CartScreenState extends State<CartScreen> {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Container(
-                                    margin: EdgeInsets.symmetric(
-                                        horizontal: 10),
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 8, vertical: 5),
-                                    width: MediaQuery
-                                        .of(context)
-                                        .size
-                                        .width * 0.4,
-                                    decoration: BoxDecoration(
-                                      color: Color(0xffF48262),
-                                      borderRadius: BorderRadius.circular(5),
+                                  GestureDetector(
+                                    child: Container(
+                                      margin: EdgeInsets.symmetric(
+                                          horizontal: 10),
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 8, vertical: 5),
+                                      width: MediaQuery
+                                          .of(context)
+                                          .size
+                                          .width * 0.4,
+                                      decoration: BoxDecoration(
+                                        color: Color(0xffF48262),
+                                        borderRadius: BorderRadius.circular(5),
+                                      ),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment
+                                            .spaceBetween,
+                                        children: <Widget>[
+                                          Image.asset(
+                                              "assets/images/pilih_sample.png"),
+                                          Column(
+                                            crossAxisAlignment: CrossAxisAlignment
+                                                .start,
+                                            children: <Widget>[
+                                              Text(
+                                                'PILIH SAMPLE',
+                                                style: TextStyle(
+                                                    fontFamily: 'Brandon',
+                                                    fontSize: 12,
+                                                    color: Colors.white
+                                                ),
+                                              ),
+                                              Text(
+                                                'YANG KAMU',
+                                                style: TextStyle(
+                                                    fontFamily: 'Brandon',
+                                                    fontSize: 12,
+                                                    color: Colors.white
+                                                ),
+                                              ),
+                                              Text(
+                                                'INGINKAN: 2/2',
+                                                style: TextStyle(
+                                                    fontFamily: 'Brandon',
+                                                    fontSize: 12,
+                                                    color: Colors.white
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment
-                                          .spaceBetween,
-                                      children: <Widget>[
-                                        Image.asset(
-                                            "assets/images/pilih_sample.png"),
-                                        Column(
-                                          crossAxisAlignment: CrossAxisAlignment
-                                              .start,
-                                          children: <Widget>[
-                                            Text(
-                                              'PILIH SAMPLE',
-                                              style: TextStyle(
-                                                  fontFamily: 'Brandon',
-                                                  fontSize: 12,
-                                                  color: Colors.white
-                                              ),
-                                            ),
-                                            Text(
-                                              'YANG KAMU',
-                                              style: TextStyle(
-                                                  fontFamily: 'Brandon',
-                                                  fontSize: 12,
-                                                  color: Colors.white
-                                              ),
-                                            ),
-                                            Text(
-                                              'INGINKAN: 2/2',
-                                              style: TextStyle(
-                                                  fontFamily: 'Brandon',
-                                                  fontSize: 12,
-                                                  color: Colors.white
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ),
+                                    onTap: (){
+                                      showSample();
+                                    },
+                                  )
+                                  ,
                                   Container(
                                     margin: EdgeInsets.symmetric(
                                         horizontal: 10),
