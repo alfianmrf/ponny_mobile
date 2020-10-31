@@ -4,7 +4,9 @@ import 'package:ponny/screens/Browse_Screen.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
 import 'package:ponny/screens/product_details_screen.dart';
+import 'package:ponny/common/constant.dart';
 import 'package:grouped_buttons/grouped_buttons.dart';
+import 'package:waterfall_flow/waterfall_flow.dart';
 
 class Tools extends StatefulWidget {
   static const String id = "Skincare_Screen";
@@ -14,162 +16,157 @@ class Tools extends StatefulWidget {
 }
 
 class _ToolsState extends State<Tools> {
-  int itemlength = 427;
-
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: DefaultTabController(
-        length: 3,
-        child: Scaffold(
-            resizeToAvoidBottomInset: false,
-            backgroundColor: Hexcolor('#FCF8F0'),
-            body: Column(
+    return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        titleSpacing: 0.0,
+        elevation: 0.0,
+        title: Container(
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(10)),
+              color: Colors.white),
+          padding: EdgeInsets.all(10),
+          margin: EdgeInsets.only(left: 10, top: 10, right: 10),
+          child: Row(children: [
+            Icon(Icons.search, color: Color(0xffF48262)),
+            Expanded(
+                child: TextField(
+                  onTap: () {
+                    showSearch(context: null, delegate: Search());
+                  },
+                  cursorColor: Colors.black,
+                  keyboardType: TextInputType.text,
+                  textInputAction: TextInputAction.go,
+                  decoration:
+                  new InputDecoration.collapsed(hintText: ""),
+                ))
+          ]),
+        ),
+        bottom: PreferredSize(
+          preferredSize: Size.fromHeight(50.0),
+          child: Container(
+            margin: EdgeInsets.all(5),
+            child: Row(
               children: [
                 Container(
-                  height: 35,
-                ),
-                Container(
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
-                      color: Colors.white),
-                  padding: EdgeInsets.all(10),
-                  margin: EdgeInsets.only(left: 10, top: 10, right: 10),
-                  child: Row(children: [
-                    Icon(Icons.search, color: Color(0xffF48262)),
-                    Expanded(
-                        child: TextField(
-                      cursorColor: Colors.black,
-                      keyboardType: TextInputType.text,
-                      textInputAction: TextInputAction.go,
-                      decoration:
-                          new InputDecoration.collapsed(hintText: "Search..."),
-                    ))
-                  ]),
-                ),
-                Container(
-                  margin: EdgeInsets.all(5),
-                  child: Row(
-                    children: [
-                      Container(
-                        child: IconButton(
-                            onPressed: () {
-                              Navigator.of(context)
-                                  .pushReplacementNamed(Browse.id);
-                            },
-                            icon: Icon(
-                              Icons.arrow_back_ios,
-                              color: Color(0xffF48262),
-                              size: 26,
-                            )),
-                      ),
-                      Container(
-                        child: Text(
-                          "Tools",
-                          style: TextStyle(
-                            fontSize: 24,
-                            fontFamily: "Yeseva",
-                            fontWeight: FontWeight.w500,
-                            color: Color(0xffF48262),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Container(
-                  height: 1,
-                  color: Color(0xffF3C1B5),
-                ),
-                Container(
-                  margin: EdgeInsets.all(10),
-                  height: 110,
-                  width: double.infinity,
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: 20,
-                    itemBuilder: (context, i) {
-                      return Container(
-                          margin: EdgeInsets.all(10),
-                          child: rectanglebutton(context, "Tools"));
-                    },
-                  ),
-                ),
-                Container(
-                  height: 1,
-                  color: Color(0xffF3C1B5),
-                ),
-                Container(
-                  margin: EdgeInsets.all(15),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        itemlength.toString() + " items",
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontFamily: "Yeseva",
-                          fontWeight: FontWeight.w500,
-                          color: Colors.black,
-                        ),
-                      ),
-                      RaisedButton(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
+                  child: IconButton(
+                      onPressed: () {
+                        Navigator.of(context)
+                            .pushReplacementNamed(Browse.id);
+                      },
+                      icon: Icon(
+                        Icons.arrow_back_ios,
                         color: Color(0xffF48262),
-                        onPressed: () {
-                          _settingModalBottomSheet(context);
-                        },
-                        child: Container(
-                          margin: EdgeInsets.all(10),
-                          child: Row(
-                            children: [
-                              Icon(
-                                Icons.tune,
-                                color: Colors.white,
-                              ),
-                              Container(width: 5),
-                              Text(
-                                "Filter",
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  fontFamily: "Yeseva",
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      )
-                    ],
+                        size: 26,
+                      )),
+                ),
+                Container(
+                  child: Text(
+                    "Tools",
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontFamily: "Yeseva",
+                      fontWeight: FontWeight.w500,
+                      color: Color(0xffF48262),
+                    ),
                   ),
                 ),
-                Expanded(
-                  child: Container(
-                      height: 300,
-                      child: GridView.count(
-                        shrinkWrap: true,
-                        primary: false,
-                        padding: const EdgeInsets.symmetric(horizontal: 5),
-                        crossAxisSpacing: 10,
-                        mainAxisSpacing: 10,
-                        childAspectRatio: 0.4,
-                        crossAxisCount: 2,
-                        children: [
-                          product(context),
-                          product(context),
-                          product(context),
-                          product(context),
-                          product(context),
-                          product(context)
-                        ],
-                      )),
-                )
               ],
             ),
-            bottomNavigationBar: new PonnyBottomNavbar(selectedIndex: 1)),
+          ),
+        ),
+      ),
+      backgroundColor: Hexcolor('#FCF8F0'),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Container(
+              width: double.infinity,
+              height: 130,
+              padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+              decoration: BoxDecoration(
+                border: Border(
+                  bottom: BorderSide(
+                    width: 1,
+                    color: Color(0xffF48262),
+                  ),
+                  top: BorderSide(
+                    width: 1,
+                    color: Color(0xffF48262),
+                  ),
+                ),
+              ),
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: 4,
+                itemBuilder: (context, i) {
+                  return Container(
+                      margin: EdgeInsets.all(10),
+                      width: 100,
+                      child: rectanglebutton(context, "CLEANSING & BRUSH"));
+                },
+              ),
+            ),
+            Container(
+              width: MediaQuery.of(context).size.width,
+              padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    '457 items',
+                    style: TextStyle(
+                      fontFamily: 'Brandon',
+                      fontSize: 16,
+                    ),
+                  ),
+                  FlatButton(
+                    onPressed: (){
+                      _settingModalBottomSheet(context);
+                    },
+                    color: Color(0xffF48262),
+                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    height: 30,
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.tune,
+                          color: Colors.white,
+                        ),
+                        Text(
+                          'Filter',
+                          style: TextStyle(
+                            fontFamily: 'Brandon',
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                ],
+              ),
+            ),
+            WaterfallFlow.count(
+              padding: EdgeInsets.fromLTRB(20.0, 0, 20.0, 10.0),
+              shrinkWrap: true,
+              crossAxisCount: 2,
+              mainAxisSpacing: 10,
+              crossAxisSpacing: 20,
+              physics: ScrollPhysics(),
+              children: [
+                product(context),
+                product(context),
+                product(context),
+                product(context),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -178,163 +175,35 @@ class _ToolsState extends State<Tools> {
 Widget rectanglebutton(context, String subtext) {
   return ButtonTheme(
     buttonColor: Hexcolor('#FCF8F0'),
-    minWidth: 100.0,
-    height: 100.0,
     child: RaisedButton(
-      onPressed: () {
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => Tools()));
-      },
-      child: Text(
-        subtext,
-        style: TextStyle(
-            fontSize: 14,
-            fontFamily: 'Brandon',
-            fontWeight: FontWeight.w800,
-            letterSpacing: 1,
-            color: Hexcolor('#F48262')),
+      onPressed: () {},
+      child: Padding(
+        padding: EdgeInsets.symmetric(vertical: 5),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Icon(
+              Icons.clean_hands_outlined,
+              color: Color(0xffF48262),
+              size: 50,
+            ),
+            Text(
+              subtext,
+              style: TextStyle(
+                fontSize: 12,
+                fontFamily: 'Brandon',
+                color: Colors.black,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
       ),
     ),
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(5.0),
       side: BorderSide(color: Hexcolor('#F48262')),
     ),
-  );
-}
-
-Widget product(context) {
-  return Column(
-    children: <Widget>[
-      Container(
-        child: Stack(
-          children: <Widget>[
-            GestureDetector(
-              onTap: () {
-                Navigator.of(context)
-                    .pushReplacementNamed(ProductDetailsScreen.id);
-              },
-              child: Image.asset(
-                "assets/images/produk.png",
-                width: MediaQuery.of(context).size.width,
-                fit: BoxFit.cover,
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(top: 10.0),
-              child: Align(
-                  alignment: Alignment.topLeft,
-                  child: Container(
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 5.0),
-                      child: const Text(
-                        '35%',
-                        style: TextStyle(
-                            color: Colors.white, fontFamily: 'Brandon'),
-                      ),
-                    ),
-                    color: Color(0xffF48262),
-                  )),
-            ),
-            Padding(
-              padding: EdgeInsets.all(5.0),
-              child: Align(
-                alignment: Alignment.topRight,
-                child: Icon(
-                  Icons.favorite_border,
-                  color: Color(0xffF48262),
-                  size: 20,
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-      Container(
-        alignment: Alignment.bottomCenter,
-        child: Container(
-          width: MediaQuery.of(context).size.width,
-          child: const Text(
-            'ADD TO BAG',
-            textAlign: TextAlign.center,
-            style: TextStyle(color: Colors.white, fontFamily: 'Brandon'),
-          ),
-          color: Color(0xffF3C1B5),
-        ),
-      ),
-      Padding(
-        padding: EdgeInsets.only(top: 7.0),
-        child: Text(
-          'Skin Game',
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontFamily: 'Yeseva',
-            fontSize: 16,
-          ),
-        ),
-      ),
-      Text(
-        'Acne Warrior',
-        textAlign: TextAlign.center,
-        style: TextStyle(
-          fontFamily: 'Brandon',
-          fontSize: 14,
-        ),
-      ),
-      Text(
-        'Rp. 125.000',
-        textAlign: TextAlign.center,
-        style: TextStyle(
-          fontFamily: 'Brandon',
-          fontSize: 14,
-        ),
-      ),
-      Center(
-        child: RichText(
-          text: TextSpan(
-              text: 'Rp. 125.000',
-              style: TextStyle(
-                color: Colors.black,
-                fontFamily: 'Brandon',
-                fontSize: 12,
-                decoration: TextDecoration.lineThrough,
-              ),
-              children: [
-                TextSpan(
-                  text: '(35%)',
-                  style: TextStyle(
-                    color: Color(0xffF48262),
-                    fontFamily: 'Brandon',
-                    fontSize: 12,
-                    decoration: TextDecoration.none,
-                  ),
-                ),
-              ]),
-        ),
-      ),
-      Text.rich(TextSpan(children: <InlineSpan>[
-        WidgetSpan(
-          child: RatingBar(
-            initialRating: 4,
-            minRating: 1,
-            direction: Axis.horizontal,
-            allowHalfRating: true,
-            itemCount: 5,
-            itemSize: 14.0,
-            itemPadding: EdgeInsets.symmetric(horizontal: 1.0),
-            itemBuilder: (context, index) => Icon(
-              Icons.favorite,
-              color: Color(0xffF48262),
-            ),
-            unratedColor: Color(0xffFBD2CD),
-          ),
-        ),
-        TextSpan(
-            text: '(5)',
-            style: TextStyle(
-              fontSize: 12,
-            ))
-      ])),
-    ],
   );
 }
 
