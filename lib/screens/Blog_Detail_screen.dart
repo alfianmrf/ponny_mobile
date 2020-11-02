@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
+import 'package:flutter_html/flutter_html.dart';
 
 class BlogDetailScreen extends StatefulWidget {
-  BlogDetailScreen({Key key}) : super(key: key);
+  final List list;
+  final int i;
+  BlogDetailScreen({this.list, this.i});
 
   @override
   _BlogDetailScreenState createState() => _BlogDetailScreenState();
@@ -19,6 +22,9 @@ class _BlogDetailScreenState extends State<BlogDetailScreen> {
       onWillPop: () {
         setState(() {
           onSearch = false;
+          if (onSearch == false) {
+            Navigator.pop(context);
+          }
         });
       },
       child: DefaultTabController(
@@ -213,7 +219,7 @@ class _BlogDetailScreenState extends State<BlogDetailScreen> {
                                 Container(height: 10),
                                 Container(
                                   child: Text(
-                                    "BASIC SKINCARE",
+                                    widget.list[widget.i]["category"]["title"],
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
                                         fontSize: 14,
@@ -225,7 +231,7 @@ class _BlogDetailScreenState extends State<BlogDetailScreen> {
                                 Container(height: 10),
                                 Container(
                                   child: Text(
-                                    "BEDA EYE GEL, EYE CREAM, DAN EYE SERUM",
+                                    widget.list[widget.i]["title"],
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
                                       letterSpacing: 1,
@@ -260,7 +266,7 @@ class _BlogDetailScreenState extends State<BlogDetailScreen> {
                                           ),
                                         ),
                                         subtitle: Text(
-                                          "15 JANUARI, 2020",
+                                          widget.list[widget.i]["created_at"],
                                           style: TextStyle(
                                             letterSpacing: 1,
                                             fontSize: 14,
@@ -274,16 +280,13 @@ class _BlogDetailScreenState extends State<BlogDetailScreen> {
                                   ],
                                 ),
                                 Container(height: 10),
-                                Text(
-                                  "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-                                  style: TextStyle(
-                                    letterSpacing: 1,
-                                    fontSize: 14,
-                                    fontFamily: "Brandon",
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                                Container(height: 30),
+                                Text(widget.list[widget.i]["content"],
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      fontFamily: "Brandon",
+                                      fontWeight: FontWeight.w500,
+                                    )),
+                                /*Container(height: 30),
                                 Container(
                                   height: 400,
                                   child: Image.network(
@@ -300,7 +303,7 @@ class _BlogDetailScreenState extends State<BlogDetailScreen> {
                                     fontFamily: "Brandon",
                                     fontWeight: FontWeight.w500,
                                   ),
-                                ),
+                                ),*/
                                 Container(height: 30),
                                 Row(
                                   children: [

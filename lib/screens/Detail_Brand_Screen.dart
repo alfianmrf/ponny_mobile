@@ -1,21 +1,19 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:hexcolor/hexcolor.dart';
-import 'package:ponny/screens/Browse_Screen.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:ponny/widgets/PonnyBottomNavbar.dart';
-import 'package:ponny/screens/product_details_screen.dart';
-import 'package:ponny/common/constant.dart';
 import 'package:grouped_buttons/grouped_buttons.dart';
+import 'package:hexcolor/hexcolor.dart';
+import 'package:ponny/common/constant.dart';
+import 'package:ponny/widgets/PonnyBottomNavbar.dart';
 import 'package:waterfall_flow/waterfall_flow.dart';
 
-class Tools extends StatefulWidget {
-  static const String id = "Skincare_Screen";
+class DetailBrand extends StatefulWidget {
+  static const String id = "Detail_Brand_Screen";
 
   @override
-  _ToolsState createState() => _ToolsState();
+  _DetailBrandScreen createState() => _DetailBrandScreen();
 }
 
-class _ToolsState extends State<Tools> {
+class _DetailBrandScreen extends State<DetailBrand> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,8 +51,7 @@ class _ToolsState extends State<Tools> {
                 Container(
                   child: IconButton(
                       onPressed: () {
-                        Navigator.of(context)
-                            .pushReplacementNamed(Browse.id);
+                        Navigator.pop(context);
                       },
                       icon: Icon(
                         Icons.arrow_back_ios,
@@ -64,7 +61,7 @@ class _ToolsState extends State<Tools> {
                 ),
                 Container(
                   child: Text(
-                    "Tools",
+                    "Aeris",
                     style: TextStyle(
                       fontSize: 24,
                       fontFamily: "Yeseva",
@@ -83,30 +80,44 @@ class _ToolsState extends State<Tools> {
         child: Column(
           children: [
             Container(
-              width: double.infinity,
-              height: 130,
-              padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+              height: MediaQuery.of(context).size.width * 0.5,
+              color: Colors.white,
+              child: CachedNetworkImage(
+                imageUrl: "http://via.placeholder.com/350x150",
+                placeholder: (context, url) => LoadingWidgetPulse(context),
+                errorWidget: (context, url, error) => Image.asset('assets/images/basic.jpg'),
+                fit: BoxFit.cover,
+              ),
+            ),
+            Container(
+              width: MediaQuery.of(context).size.width,
+              padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
               decoration: BoxDecoration(
                 border: Border(
                   bottom: BorderSide(
                     width: 1,
                     color: Color(0xffF48262),
                   ),
-                  top: BorderSide(
-                    width: 1,
-                    color: Color(0xffF48262),
-                  ),
                 ),
               ),
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: 4,
-                itemBuilder: (context, i) {
-                  return Container(
-                      margin: EdgeInsets.all(10),
-                      width: 100,
-                      child: rectanglebutton(context, "CLEANSING & BRUSH"));
-                },
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Headline About Brand',
+                    style: TextStyle(
+                      fontFamily: 'Yeseva',
+                      fontSize: 16,
+                    ),
+                  ),
+                  Padding(padding: EdgeInsets.only(top: 5)),
+                  Text(
+                    'Lorem ipsum dolor sit amet, constectur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+                    style: TextStyle(
+                      fontFamily: 'Brandon',
+                    ),
+                  ),
+                ],
               ),
             ),
             Container(
@@ -168,43 +179,46 @@ class _ToolsState extends State<Tools> {
           ],
         ),
       ),
+      bottomNavigationBar: new PonnyBottomNavbar(selectedIndex: 1),
     );
   }
 }
 
-Widget rectanglebutton(context, String subtext) {
-  return ButtonTheme(
-    buttonColor: Hexcolor('#FCF8F0'),
-    child: RaisedButton(
-      onPressed: () {},
-      child: Padding(
-        padding: EdgeInsets.symmetric(vertical: 5),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Icon(
-              Icons.clean_hands_outlined,
-              color: Color(0xffF48262),
-              size: 50,
-            ),
-            Text(
-              subtext,
-              style: TextStyle(
-                fontSize: 12,
-                fontFamily: 'Brandon',
-                color: Colors.black,
-              ),
-              textAlign: TextAlign.center,
-            ),
-          ],
+class Search extends SearchDelegate {
+  @override
+  List<Widget> buildActions(BuildContext context) {
+    return <Widget>[
+      IconButton(
+          icon: Icon(Icons.close),
+          onPressed: () {
+            query = "";
+          })
+    ];
+  }
+
+  @override
+  Widget buildLeading(BuildContext context) {
+    return IconButton(
+        icon: Icon(
+          Icons.arrow_back,
         ),
-      ),
-    ),
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(5.0),
-      side: BorderSide(color: Hexcolor('#F48262')),
-    ),
-  );
+        onPressed: () {
+          Navigator.pop(context);
+        });
+  }
+
+  String selectedResults;
+
+  @override
+  Widget buildResults(BuildContext context) {
+    return Container(child: Center(child: Text(selectedResults)));
+  }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    // TODO: implement buildSuggestions
+    throw UnimplementedError();
+  }
 }
 
 void _settingModalBottomSheet(context) {
@@ -269,13 +283,13 @@ void _settingModalBottomSheet(context) {
                         activeColor: Color(0xffF48262),
                         checked: checked,
                         onSelected: (List selected) => setState(() {
-                              if (selected.length > 1) {
-                                selected.removeAt(0);
-                              } else {
-                                print("only one");
-                              }
-                              checked = selected;
-                            }),
+                          if (selected.length > 1) {
+                            selected.removeAt(0);
+                          } else {
+                            print("only one");
+                          }
+                          checked = selected;
+                        }),
                         labels: <String>[
                           "Terlaris",
                           "Baru",
@@ -315,15 +329,15 @@ void _settingModalBottomSheet(context) {
                     Container(
                       child: expandBrand
                           ? Column(
-                              children: [
-                                checkboxtiles("Aeris"),
-                                checkboxtiles("Biyu"),
-                                checkboxtiles("iUNIK"),
-                                checkboxtiles("Thayers"),
-                                checkboxtiles("The Ordinary"),
-                                checkboxtiles("Upmost Beauty"),
-                              ],
-                            )
+                        children: [
+                          checkboxtiles("Aeris"),
+                          checkboxtiles("Biyu"),
+                          checkboxtiles("iUNIK"),
+                          checkboxtiles("Thayers"),
+                          checkboxtiles("The Ordinary"),
+                          checkboxtiles("Upmost Beauty"),
+                        ],
+                      )
                           : Container(),
                     ),
                     Container(
@@ -434,7 +448,7 @@ Widget checkboxtiles(String subtext) {
               });
             },
             controlAffinity:
-                ListTileControlAffinity.leading, //  <-- leading Checkbox
+            ListTileControlAffinity.leading, //  <-- leading Checkbox
           ),
         ],
       );
