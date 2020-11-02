@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:dio/dio.dart';
+import 'package:ponny/util/globalUrl.dart';
 import 'package:ponny/screens/Blog_Detail_screen.dart';
 
 class BasicSkincare extends StatefulWidget {
-  static const String id = "Basic_SkinCare";
+  final List list;
+
+  BasicSkincare({this.list});
 
   @override
   _BasicSkincareState createState() => _BasicSkincareState();
@@ -206,7 +212,8 @@ class _BasicSkincareState extends State<BasicSkincare> {
                           child: GridView.builder(
                               primary: false,
                               shrinkWrap: true,
-                              itemCount: 16,
+                              itemCount:
+                                  widget.list == null ? 0 : widget.list.length,
                               gridDelegate:
                                   SliverGridDelegateWithFixedCrossAxisCount(
                                       crossAxisCount: 2),
@@ -217,7 +224,10 @@ class _BasicSkincareState extends State<BasicSkincare> {
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                BlogDetailScreen()));
+                                                BlogDetailScreen(
+                                                  list: widget.list,
+                                                  i: i,
+                                                )));
                                   },
                                   child: Container(
                                     margin: EdgeInsets.all(5),
@@ -234,7 +244,7 @@ class _BasicSkincareState extends State<BasicSkincare> {
                                       Expanded(
                                         flex: 1,
                                         child: Text(
-                                          "Beda Eye Gel, Eye Cream, dan Eye Serum",
+                                          widget.list[i]["title"],
                                           style: TextStyle(
                                             fontSize: 14,
                                             fontFamily: "Brandon",
@@ -299,5 +309,36 @@ class _BasicSkincareState extends State<BasicSkincare> {
             bottomNavigationBar: new PonnyBottomNavbar(selectedIndex: 0)),
       ),
     );
+  }
+}
+
+class BasicSkincareData extends StatefulWidget {
+  static const String id = "Basic_SkinCare";
+
+  @override
+  _BasicSkincareDataState createState() => _BasicSkincareDataState();
+}
+
+class _BasicSkincareDataState extends State<BasicSkincareData> {
+  Future<List> getproduct() async {
+    final response = await http.get("https://myponnylive.com/api/v1/blog");
+
+    return json.decode(response.body);
+  }
+
+
+
+  @override
+  Widget build(BuildContext context) {
+    return new FutureBuilder<List>(
+        future: getproduct(),
+        builder: (context, snapshot) {
+          if (snapshot.hasError) print(snapshot.error);
+          return snapshot.hasData
+              ? BasicSkincare(
+                  list: snapshot.data,
+                )
+              : Center(child: new CircularProgressIndicator());
+        });
   }
 }
