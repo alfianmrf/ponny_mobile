@@ -22,6 +22,11 @@ const applyCoupon = base_url+"checkout/applyCoupon";
 const CostShipping = base_url+"shipping/couriers";
 const cartSummary = base_url+"checkout/summary";
 const cartChekouturl =base_url+"checkout/store";
+const preChekout =base_url+"checkout/preCheckout";
+const addSample  = base_url+"cart/sample";
+const removeProductSample  = base_url+"delete/sample";
+const rendemProduct =base_url+"cart/redeem";
+const removePoinProduct =base_url+"delete/point";
 
 //wishlist
 const listOfwishlist = base_url+"product/wishlist";
@@ -35,6 +40,9 @@ const urlAddress =base_url+"shipping/address";
 const urlOrder = base_url+"account/orders";
 const urlUpdateProfile = base_url+"account/update";
 const updateBeauteProfile = base_url+"account/update_beauty";
+
+//Redeem
+const rdmProduk = base_url+"product/redeemable";
 
 
 

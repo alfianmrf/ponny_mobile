@@ -21,16 +21,19 @@ class OrderModel with ChangeNotifier{
     print("get order");
     final res = await http.get(urlOrder, headers: { HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: "Bearer $token"});
 
+
     if (res.statusCode == 200) {
       unpaid=[];
+      print(res.body);
       final responseJson = json.decode(res.body);
       for (Map item in responseJson["unpaid"]) {
         print(Order.fromJson(item).code);
         unpaid.add(Order.fromJson(item));
       }
-      loading=false;
-      notifyListeners();
+
     }
+    loading=false;
+    notifyListeners();
 
   }
 }

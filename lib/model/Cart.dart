@@ -11,19 +11,25 @@ import 'package:http/http.dart' as http;
 import 'package:ponny/util/globalUrl.dart';
 
 import 'Address.dart';
+import 'ProductPoin.dart';
 
 class CartModel with ChangeNotifier{
   List<Cart> listCardOfitem=[];
+  List<Product> listSample=[];
+  List<Product> listUseSample=[];
+  List<ProductPoin> listProductPoin=[];
   bool loadingCard = true;
   Coupon coupon;
   Summary summary;
   MapCost shipping;
+  int CurentPoint =0;
+
 
 
   CartModel();
 
- Future<void> addProductToCart(Product product, String token) async
-   {
+  Future<void> addProductToCart(Product product, String token) async
+  {
      int index = listCardOfitem.indexWhere((element) =>
      element.product.id == product.id);
 
@@ -59,6 +65,36 @@ class CartModel with ChangeNotifier{
 
  }
 
+  Future<void> addSampleToCart(Product product, String token) async
+  {
+    int index = listUseSample.indexWhere((element) =>
+    element.id == product.id);
+    if (index < 0) {
+      final res = await http.post(addSample+"/"+product.id.toString(), headers: { HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: "Bearer $token"});
+      print(res.body);
+      if (res.statusCode == 200) {
+        print(res.body);
+        listUseSample.add(product);
+        notifyListeners();
+      }
+    }
+  }
+
+  Future<void> addRedemToCart(ProductPoin product, String token) async
+  {
+    int index = listProductPoin.indexWhere((element) =>
+    element.id == product.id);
+    if (index < 0) {
+      final res = await http.post(rendemProduct+"/"+product.product.id.toString(), headers: { HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: "Bearer $token"});
+      print(res.body);
+      if (res.statusCode == 200) {
+        print(res.body);
+        listProductPoin.add(product);
+        notifyListeners();
+      }
+    }
+  }
+
   Future<void> RemoveProductToCart(Product product,String token) async
   {
     int index = listCardOfitem.indexWhere((element) => element.product.id == product.id);
@@ -79,26 +115,66 @@ class CartModel with ChangeNotifier{
     }
 
   }
+  Future<void> DeleteProductSample(Product product,String token) async
+  {
+    final res = await http.get(removeProductSample+"/"+product.id.toString(), headers: { HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: "Bearer $token"});
+    if (res.statusCode == 200) {
+      int index = listUseSample.indexWhere((element) => element.id == product.id);
+      listUseSample.removeAt(index);
+      await getSummary(token);
+      notifyListeners();
+    }
+
+  }
+
+  Future<void> DeleteRendemProduct(ProductPoin product,String token) async
+  {
+    final res = await http.get(removePoinProduct+"/"+product.product.id.toString(), headers: { HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: "Bearer $token"});
+    if (res.statusCode == 200) {
+      int index = listProductPoin.indexWhere((element) => element.id == product.id);
+      listProductPoin.removeAt(index);
+      await getSummary(token);
+      notifyListeners();
+    }
+
+  }
 
   Future<void> getCart(String token) async
   {
-
-
     try{
-      final result = await http.get(listCarturl, headers: { HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: "Bearer $token"});
+      final result = await http.get(preChekout, headers: { HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: "Bearer $token"});
       if(result.statusCode == 200){
         listCardOfitem=[];
+        loadingCard=true;
         coupon = null;
         summary = null;
         shipping = null;
+        listSample =[];
+        listUseSample=[];
+
         final responseJson = json.decode(result.body);
-        for (Map item in responseJson["data"]) {
+
+        for (Map item in responseJson["cart"]) {
           listCardOfitem.add(Cart.fromJson(item));
         }
+        for (Map item in responseJson["sampleOfProducts"]) {
+          listSample.add(Product.fromJson(item["product"]["availability"]));
+        }
+
+        print(responseJson["sampleProduct_used"] );
+        for (Map item in responseJson["sampleProduct_used"]) {
+          listUseSample.add(Product.fromJson(item["product"]["availability"]));
+        }
+        print(responseJson["productPoint_used"]);
+        for (Map item in responseJson["productPoint_used"]) {
+          listProductPoin.add(ProductPoin(item["id"], item["jml_point"], Product.fromJson(item["product"]["availability"])));
+        }
+        summary = Summary.fromJson(responseJson["summary"]);
+        loadingCard =false;
+        notifyListeners();
+
       }
-      await getSummary(token);
-      loadingCard =false;
-      notifyListeners();
+
     }catch(err){
       print("error."+err.toString());
       notifyListeners();
@@ -284,8 +360,8 @@ class Cart{
   Product product;
   Cart(this.quantity, this.product);
   factory Cart.fromJson(Map<String, dynamic> parsedJson){
-    Product  _product = Product.fromJson(parsedJson);
-    int _quantity = parsedJson['cart']['quantity'];
+    Product  _product = Product.fromJson(parsedJson["product"]["availability"]);
+    int _quantity = parsedJson['quantity'];
     return Cart(_quantity, _product);
   }
 

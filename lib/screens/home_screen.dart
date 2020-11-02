@@ -369,7 +369,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               padding: EdgeInsets.all(5),
                               child: Icon(Icons.favorite_border),
                             ),
-                            if(Provider.of<WishModel>(context).countwishlist > 0)
+                            if(Provider.of<WishModel>(context).countwishlist > 0 && Provider.of<AppModel>(context).loggedIn)
                             new Positioned(  // draw a red marble
                               top: 0.0,
                               right: 0.0,
