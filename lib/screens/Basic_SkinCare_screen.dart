@@ -10,6 +10,7 @@ import 'package:ponny/screens/Blog_Detail_screen.dart';
 class BasicSkincare extends StatefulWidget {
   final List list;
 
+  static const String id = "BasicSkincare";
   BasicSkincare({this.list});
 
   @override

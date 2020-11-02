@@ -6,7 +6,6 @@ const loginUrl = base_url+"auth/login";
 const register = base_url+"auth/signup";
 const blogUrl  = base_url+"blog";
 const filterUrl  = base_url+"filter";
-const filterUrl  = base_url+"filter";
 const userprofile = base_url+"auth/user";
 const loginOtp =base_url+"auth/login-otp";
 
