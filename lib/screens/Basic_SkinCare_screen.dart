@@ -8,6 +8,7 @@ import 'package:ponny/util/globalUrl.dart';
 import 'package:ponny/screens/Blog_Detail_screen.dart';
 
 class BasicSkincare extends StatefulWidget {
+  static const String id = "BasicSkinCare_Screen";
   final List list;
 
   BasicSkincare({this.list});
