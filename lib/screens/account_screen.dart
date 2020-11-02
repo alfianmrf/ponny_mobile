@@ -45,21 +45,17 @@ class _AccountScreenState extends State<AccountScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-     Provider.of<OrderModel>(context).getOrder(Provider.of<AppModel>(context, listen: false).auth.access_token).then((value) {
        Provider.of<UserModel>(context).getUser(Provider.of<AppModel>(context, listen: false).auth.access_token).then((value) {
          setState(() {
            isLoading =false;
          });
        });
-
-     });
     });
   }
 
   Future<void> getUser() async {
     final auth = Provider.of<AppModel>(context, listen: false);
     String token  =  auth.auth.access_token;
-    print(token);
 
     // final response = await http.get(userprofile,headers: { HttpHeaders.contentTypeHeader: 'application/json',HttpHeaders.authorizationHeader: "Bearer $token" });
     // final responseJson = json.decode(response.body);
@@ -458,20 +454,13 @@ class _AccountScreenState extends State<AccountScreen> {
                 children: <Widget>[
                   GestureDetector(
                     onTap: () {
-                      if(Provider.of<OrderModel>(context).unpaid != null){
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => MenungguPembayaranSuksesScreen(),
-                          ),
-                        );
-                      }else{
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => MenungguPembayaranScreen()),
-                        );
-                      }
+
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => MenungguPembayaranSuksesScreen(),
+                        ),
+                      );
 
                     },
                     child: Container(

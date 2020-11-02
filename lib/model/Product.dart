@@ -11,6 +11,7 @@ class ProductModel with ChangeNotifier{
   List<Product> Best_sell =[];
   List<Product> PhoebeChoices=[];
   List<Product> Recomendasi=[];
+  List<Product> Sample=[];
   bool loadingBestSale =true;
   bool loadingPhobe =true;
   bool loadingRekomendasi = true;
