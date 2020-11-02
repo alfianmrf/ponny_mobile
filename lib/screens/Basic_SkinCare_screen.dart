@@ -11,6 +11,7 @@ class BasicSkincare extends StatefulWidget {
   static const String id = "BasicSkinCare_Screen";
   final List list;
 
+  static const String id = "BasicSkincare";
   BasicSkincare({this.list});
 
   @override
