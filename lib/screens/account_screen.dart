@@ -11,6 +11,7 @@ import 'package:ponny/model/App.dart';
 import 'package:ponny/model/Cart.dart';
 import 'package:ponny/model/Order.dart';
 import 'package:ponny/model/User.dart';
+import 'package:ponny/screens/account/hubungi_kami_screen.dart';
 import 'package:ponny/screens/pra_daftar.dart';
 import 'package:ponny/screens/login.dart';
 import 'package:ponny/screens/account/menunggu_pembayaran_screen.dart';
@@ -1332,35 +1333,45 @@ class _AccountScreenState extends State<AccountScreen> {
                       ],
                     ),
                   ),
-                  Container(
-                    padding: EdgeInsets.only(bottom: 15, top: 15),
-                    decoration: new BoxDecoration(
-                      border: Border(
-                        bottom: BorderSide(
-                          width: 2,
-                          color: Hexcolor("#F59379"),
+                  InkWell(
+                    onTap: (){
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => HubungiKamiScreen(),
+                        ),
+                      );
+                    },
+                    child: Container(
+                      padding: EdgeInsets.only(bottom: 15, top: 15),
+                      decoration: new BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(
+                            width: 2,
+                            color: Hexcolor("#F59379"),
+                          ),
                         ),
                       ),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                          child: Text(
-                            "Hubungi Kami",
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w200,
-                              fontFamily: "Brandon",
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            child: Text(
+                              "Hubungi Kami",
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w200,
+                                fontFamily: "Brandon",
+                              ),
                             ),
                           ),
-                        ),
-                        Container(
-                          child: Icon(
-                            Icons.arrow_forward_ios,
-                          ),
-                        )
-                      ],
+                          Container(
+                            child: Icon(
+                              Icons.arrow_forward_ios,
+                            ),
+                          )
+                        ],
+                      ),
                     ),
                   ),
                   Container(
