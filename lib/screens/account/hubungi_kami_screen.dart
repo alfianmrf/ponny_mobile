@@ -21,7 +21,7 @@ import 'package:uiblock/uiblock.dart';
 import 'package:ponny/util/globalUrl.dart';
 
 class HubungiKamiScreen extends StatefulWidget {
-  static const String id = "lupa_password_Screen";
+  static const String id = "hubungi_kami_Screen";
   @override
   _HubungiKamiStateScreen createState() => _HubungiKamiStateScreen();
 }
