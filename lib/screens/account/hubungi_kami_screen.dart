@@ -7,6 +7,7 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:ponny/common/constant.dart';
 import 'package:ponny/model/App.dart';
 import 'package:ponny/model/User.dart';
+import 'package:ponny/screens/account/chat_email_screen.dart';
 import 'package:ponny/screens/account_screen.dart';
 import 'package:ponny/screens/metode_verifikasi_screen.dart';
 import 'package:ponny/screens/pra_daftar.dart';
@@ -98,7 +99,14 @@ class _HubungiKamiStateScreen extends State<HubungiKamiScreen> {
                       height: 15,
                     ),
                     InkWell(
-                      onTap: (){},
+                      onTap: (){
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ChatEmailScreen(),
+                          ),
+                        );
+                      },
                       child: Container(
                         width: double.infinity,
                         decoration: BoxDecoration(
@@ -169,7 +177,14 @@ class _HubungiKamiStateScreen extends State<HubungiKamiScreen> {
                       child: Ink(
                         color: Color(0xffFEEDE5),
                         child: InkWell(
-                          onTap: (){},
+                          onTap: (){
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ChatEmailScreen(),
+                              ),
+                            );
+                          },
                           child: Container(
                             padding: EdgeInsets.symmetric(vertical: 25),
                             child: Column(
