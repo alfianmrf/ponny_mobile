@@ -71,6 +71,9 @@ class Order {
   StatusOrder status;
   StatusOrder payment;
   String typePayment;
+  String confrimCourier;
+  String confrimResi;
+  String deliveryStatus;
 
   Order(
       this.id,
@@ -90,7 +93,10 @@ class Order {
       this.orderDetailPoint,
       this.status,
       this.payment,
-      this.typePayment
+      this.typePayment,
+      this.confrimCourier,
+      this.confrimResi,
+      this.deliveryStatus
       );
 
   factory Order.fromJson(Map<String, dynamic> parsedJson){
@@ -130,7 +136,10 @@ class Order {
       _orderDetailPoint,
       _status,
       _payment,
-        parsedJson["typePayment"]["param_2"]
+        parsedJson["typePayment"]["param_2"],
+      parsedJson["confrim_courier"],
+      parsedJson["confrim_resi"],
+      parsedJson["delivery_status"],
     );
   }
 

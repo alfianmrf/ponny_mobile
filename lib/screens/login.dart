@@ -8,6 +8,7 @@ import 'package:ponny/common/constant.dart';
 import 'package:ponny/model/App.dart';
 import 'package:ponny/model/User.dart';
 import 'package:ponny/screens/account_screen.dart';
+import 'package:ponny/screens/lupa_password_screen.dart';
 import 'package:ponny/screens/pra_daftar.dart';
 import 'package:ponny/screens/home_screen.dart';
 import 'package:ponny/screens/login_otp.dart';
@@ -293,13 +294,20 @@ class _LoginStateScreen extends State<LoginScreen> {
                       ),
                       Container(
                         margin: EdgeInsets.only(top: 10.0),
-                        child: Text(
-                          'Lupa Password ?',
-                          style: TextStyle(
-                              fontFamily: 'Brandon',
-                              fontWeight: FontWeight.w300,
-                              color: Colors.black,
-                              decoration: TextDecoration.underline),
+                        child: GestureDetector(
+                          onTap: (){
+                            Navigator.push(context, new MaterialPageRoute(
+                              builder: (BuildContext context) => new LupaPasswordScreen(),
+                            ));
+                          },
+                          child: Text(
+                            'Lupa Password ?',
+                            style: TextStyle(
+                                fontFamily: 'Brandon',
+                                fontWeight: FontWeight.w300,
+                                color: Colors.black,
+                                decoration: TextDecoration.underline),
+                          ),
                         ),
                       ),
                     ],

@@ -749,8 +749,10 @@ class _OrderScreenState extends State<OrderScreen> {
                         );
                       },
                     ) ,
-                  )
-                
+                  ),
+                if(order.payment_status == 'paid' && order.confrimResi != null)
+                  Container()
+
               ],
             ),
           );
