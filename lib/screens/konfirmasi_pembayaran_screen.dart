@@ -1,24 +1,120 @@
+import 'dart:io';
+
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hexcolor/hexcolor.dart';
+import 'package:ponny/common/constant.dart';
+import 'package:ponny/model/App.dart';
+import 'package:ponny/model/ManualInfo.dart';
+import 'package:ponny/model/Order.dart';
+import 'package:ponny/util/globalUrl.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
 import 'package:ponny/screens/pesanan_berhasil_screen.dart';
+import 'package:provider/provider.dart';
+import 'package:http/http.dart' as http;
+import 'package:http_parser/http_parser.dart';
+import 'package:uiblock/uiblock.dart';
 
 class KonfirmasiPembayaranScreen extends StatefulWidget {
   static const String id = "konfirmasi_pembayaran_screen";
+  ManualInfo manualInfo;
+  KonfirmasiPembayaranScreen({Key key,this.manualInfo});
 
   @override
   _KonfirmasiPembayaranScreenState createState() => _KonfirmasiPembayaranScreenState();
 }
 
 class _KonfirmasiPembayaranScreenState extends State<KonfirmasiPembayaranScreen> {
+  File _image;
+  final _formKey = GlobalKey<FormState>();
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
+  final bank = TextEditingController();
+  final rek = TextEditingController();
+  final an = TextEditingController();
+
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if(widget.manualInfo.orderConfrim != null){
+        setState(() {
+          bank.text = widget.manualInfo.orderConfrim.bank;
+          rek.text = widget.manualInfo.orderConfrim.noRek;
+          an.text = widget.manualInfo.orderConfrim.anRek;
+        });
+      }
+    });
   }
 
-  @override
+  Future getImage() async {
+    FilePickerResult result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['jpg','png'],
+    );
+
+    setState(() {
+      if (result != null) {
+        _image = File(result.files.single.path);
+        print(_image.path);
+      } else {
+        print('No image selected.');
+
+      }
+    });
+  }
+
+  _fetchInsert() async {
+    UIBlock.block(context,customLoaderChild: LoadingWidget(context));
+    var token = Provider.of<AppModel>(context,listen: false).auth.access_token;
+    Map<String, String> headers = { "Authorization": "Bearer $token"};
+    var request = http.MultipartRequest(
+        "POST", Uri.parse(paymentConfrim+"/"+widget.manualInfo.id.toString()));
+    if(_image != null){
+      var multipartFile = await http.MultipartFile.fromPath(
+          "photo", _image.path,
+          contentType:  MediaType('image', 'jpeg'));
+
+      request.files.add(multipartFile);
+    }
+    request.fields["bank"] = bank.value.text;
+    request.fields["an"] = an.value.text;
+    request.fields["norek"] = rek.value.text;
+    request.headers.addAll(headers);
+    http.StreamedResponse response = await request.send();
+
+    if(response.statusCode == 200)
+    {
+      _scaffoldKey.currentState.showSnackBar(snackBarSuccess);
+    }else{
+
+      _scaffoldKey.currentState.showSnackBar(snackBarError);
+    }
+    UIBlock.unblock(context);
+
+  }
+
+  Widget _imageFile(){
+    return InkWell(
+      onTap: getImage ,
+      child: Center(
+        child: _image != null ? Image.file(_image):Image.network(img_url+widget.manualInfo.orderConfrim.uploadImg),
+      ),
+    );
+  }
+
+  Widget _iconUpload(){
+    return InkWell(
+      onTap: getImage,
+      child: Icon(Icons.add,size: 50,color: Colors.black12,),
+    );
+  }
+
+
+    @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       backgroundColor: Theme.of(context).primaryColor,
       body: Stack(children: <Widget>[
         Scaffold(
@@ -80,7 +176,7 @@ class _KonfirmasiPembayaranScreenState extends State<KonfirmasiPembayaranScreen>
                                   ),
                                 ),
                                 Text(
-                                  'WKSKDKAL',
+                                  "#"+widget.manualInfo.code,
                                   style: TextStyle(
                                     fontFamily: 'Brandon',
                                     color: Colors.white,
@@ -108,7 +204,7 @@ class _KonfirmasiPembayaranScreenState extends State<KonfirmasiPembayaranScreen>
                                   ),
                                 ),
                                 Text(
-                                  'Rp 469.000',
+                                  nm_format.format(widget.manualInfo.grandTotal+widget.manualInfo.uniqTfManual),
                                   style: TextStyle(
                                     fontFamily: 'Brandon',
                                     color: Colors.white,
@@ -140,16 +236,16 @@ class _KonfirmasiPembayaranScreenState extends State<KonfirmasiPembayaranScreen>
                                 ),
                               ),
                               Text(
-                                'Transfer Bank BCA',
+                                widget.manualInfo.typePayment,
                                 style: TextStyle(
                                   fontFamily: 'Brandon',
                                 ),
                               ),
                             ],
                           ),
-                          Image.asset(
-                            'assets/images/payment/bca-02.png',
-                            height: 40,
+                          Image.network(
+                            widget.manualInfo.path,
+                            height: 70,
                           ),
                         ],
                       ),
@@ -181,7 +277,7 @@ class _KonfirmasiPembayaranScreenState extends State<KonfirmasiPembayaranScreen>
                                       ),
                                     ),
                                     Text(
-                                      'Bank BCA',
+                                      bank.value.text,
                                       style: TextStyle(
                                         fontFamily: 'Brandon',
                                       ),
@@ -202,7 +298,7 @@ class _KonfirmasiPembayaranScreenState extends State<KonfirmasiPembayaranScreen>
                                       ),
                                     ),
                                     Text(
-                                      '12334567890',
+                                      rek.value.text,
                                       style: TextStyle(
                                         fontFamily: 'Brandon',
                                       ),
@@ -231,7 +327,7 @@ class _KonfirmasiPembayaranScreenState extends State<KonfirmasiPembayaranScreen>
                                       ),
                                     ),
                                     Text(
-                                      'Aninda Anita',
+                                      an.value.text,
                                       style: TextStyle(
                                         fontFamily: 'Brandon',
                                       ),
@@ -239,15 +335,161 @@ class _KonfirmasiPembayaranScreenState extends State<KonfirmasiPembayaranScreen>
                                   ],
                                 ),
                               ),
-                              Container(
-                                width: MediaQuery.of(context).size.width,
-                                padding: EdgeInsets.only(left: 15, right: 15, top: 10, bottom: 0),
-                                child: Center(
-                                  child: Text(
-                                    'UBAH',
-                                    style: TextStyle(
-                                      fontFamily: 'Brandon',
-                                      color: Color(0xffF48262),
+                              InkWell(
+                                onTap: (){
+                                  showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          backgroundColor: Color(0xffFDF8F0),
+                                          content: Stack(
+                                            overflow: Overflow.visible,
+                                            children: <Widget>[
+                                              Positioned(
+                                                right: -40.0,
+                                                top: -40.0,
+                                                child: InkResponse(
+                                                  onTap: () {
+                                                    Navigator.of(context).pop();
+                                                  },
+                                                  child: CircleAvatar(
+                                                    child: Icon(Icons.close,color: Colors.white,),
+                                                    backgroundColor: Color(0xffF48262),
+                                                  ),
+                                                ),
+                                              ),
+                                              Form(
+                                                key: _formKey,
+                                                child: Column(
+                                                  mainAxisSize: MainAxisSize.min,
+                                                  children: <Widget>[
+                                                    Padding(
+                                                      padding: EdgeInsets.all(8.0),
+                                                      child: TextFormField(
+                                                        controller: bank,
+                                                        decoration: InputDecoration(
+                                                          filled: true,
+                                                          fillColor: Colors.white,
+                                                          hintText: 'Nama Bank',
+                                                          labelText: 'Nama Bank:',
+                                                          labelStyle: TextStyle(color: Colors.black),
+                                                          focusedBorder: OutlineInputBorder(
+                                                            borderRadius: BorderRadius.circular(8.0),
+                                                            borderSide: BorderSide(
+                                                              color: Hexcolor('#F48262'),
+                                                            ),
+                                                          ),
+                                                          enabledBorder: OutlineInputBorder(
+                                                            borderRadius: BorderRadius.circular(8.0),
+                                                            borderSide: BorderSide(
+                                                              color: Hexcolor('#F48262'),
+                                                              width: 2.0,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        keyboardType: TextInputType.emailAddress,
+                                                        validator: (String value) {
+                                                          if (value.isEmpty) {
+                                                            return 'Nama Bank tidak boleh kosong';
+                                                          }
+                                                        },
+                                                      ),
+                                                    ),
+                                                    Padding(
+                                                      padding: EdgeInsets.all(8.0),
+                                                      child: TextFormField(
+                                                        controller: rek,
+                                                        decoration: InputDecoration(
+                                                          filled: true,
+                                                          fillColor: Colors.white,
+                                                          hintText: 'Nomor Rekening',
+                                                          labelText: 'Nomor Rekening:',
+                                                          labelStyle: TextStyle(color: Colors.black),
+                                                          focusedBorder: OutlineInputBorder(
+                                                            borderRadius: BorderRadius.circular(8.0),
+                                                            borderSide: BorderSide(
+                                                              color: Hexcolor('#F48262'),
+                                                            ),
+                                                          ),
+                                                          enabledBorder: OutlineInputBorder(
+                                                            borderRadius: BorderRadius.circular(8.0),
+                                                            borderSide: BorderSide(
+                                                              color: Hexcolor('#F48262'),
+                                                              width: 2.0,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        keyboardType: TextInputType.number,
+                                                        validator: (String value) {
+                                                          if (value.isEmpty) {
+                                                            return 'Nomor Rekening tidak boleh kosong';
+                                                          }
+                                                        },
+                                                      ),
+                                                    ),
+                                                    Padding(
+                                                      padding: EdgeInsets.all(8.0),
+                                                      child: TextFormField(
+                                                        controller: an,
+                                                        decoration: InputDecoration(
+                                                          filled: true,
+                                                          fillColor: Colors.white,
+                                                          hintText: 'Nama Pemilik Rekening',
+                                                          labelText: 'Nama Pemilik Rekening:',
+                                                          labelStyle: TextStyle(color: Colors.black),
+                                                          focusedBorder: OutlineInputBorder(
+                                                            borderRadius: BorderRadius.circular(8.0),
+                                                            borderSide: BorderSide(
+                                                              color: Hexcolor('#F48262'),
+                                                            ),
+                                                          ),
+                                                          enabledBorder: OutlineInputBorder(
+                                                            borderRadius: BorderRadius.circular(8.0),
+                                                            borderSide: BorderSide(
+                                                              color: Hexcolor('#F48262'),
+                                                              width: 2.0,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        validator: (String value) {
+                                                          if (value.isEmpty) {
+                                                            return 'Nama Pemilik Rekening tidak boleh kosong';
+                                                          }
+                                                        },
+                                                      ),
+                                                    ),
+                                                    Padding(
+                                                      padding: const EdgeInsets.all(8.0),
+                                                      child: RaisedButton(
+                                                        color: Color(0xffF48262),
+                                                        textColor: Colors.white,
+                                                        child: Text("Simpan"),
+                                                        onPressed: () {
+                                                          if (_formKey.currentState.validate()) {
+                                                            _formKey.currentState.save();
+                                                            Navigator.of(context).pop();
+                                                          }
+                                                        },
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                                      });
+                                },
+                                child: Container(
+                                  width: MediaQuery.of(context).size.width,
+                                  padding: EdgeInsets.only(left: 15, right: 15, top: 10, bottom: 0),
+                                  child: Center(
+                                    child: Text(
+                                      'UBAH',
+                                      style: TextStyle(
+                                        fontFamily: 'Brandon',
+                                        color: Color(0xffF48262),
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -271,14 +513,18 @@ class _KonfirmasiPembayaranScreenState extends State<KonfirmasiPembayaranScreen>
                       child: Container(
                         padding: EdgeInsets.symmetric(vertical: 30),
                         child: Column(
+
                           children: [
+                            widget.manualInfo.orderConfrim != null ?
                             Container(
                               padding: EdgeInsets.only(bottom: 10),
-                              child: Icon(
-                                Icons.add,
-                                size: 50,
-                              ),
-                            ),
+                              child:  _imageFile(),
+                            ) : Container(
+                              padding: EdgeInsets.only(bottom: 10),
+                              child:   _image != null ? _imageFile() : _iconUpload(),
+                            )
+
+                            ,
                             Text(
                               'Upload Bukti Pembayaran',
                               style: TextStyle(
@@ -321,7 +567,9 @@ class _KonfirmasiPembayaranScreenState extends State<KonfirmasiPembayaranScreen>
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(7.0),
                               ),
-                              onPressed: (){},
+                              onPressed: (){
+                                Navigator.of(context).pop();
+                              },
                             ),
                           ),
                         ),
@@ -343,8 +591,19 @@ class _KonfirmasiPembayaranScreenState extends State<KonfirmasiPembayaranScreen>
                                 borderRadius: BorderRadius.circular(7.0),
                               ),
                               onPressed: (){
-                                Navigator.of(context)
-                                    .pushReplacementNamed(PesananBerhasilScreen.id);
+                                if(bank.text.isNotEmpty && rek.text.isNotEmpty && an.text.isNotEmpty && _image != null && widget.manualInfo.orderConfrim == null){
+                                  _fetchInsert();
+                                } else if(bank.text.isNotEmpty && rek.text.isNotEmpty && an.text.isNotEmpty && widget.manualInfo.orderConfrim != null){
+                                  _fetchInsert();
+                                } else{
+                                  final snackBar = SnackBar(
+                                    content: Text('Bukti pembayaran belum lengkap.!',style: TextStyle(color: Colors.white)),
+                                    backgroundColor: Colors.redAccent,
+                                  );
+                                  _scaffoldKey.currentState.showSnackBar(snackBar);
+                                }
+
+
                               },
                             ),
                           ),

@@ -30,6 +30,10 @@ const removeProductSample  = base_url+"delete/sample";
 const rendemProduct =base_url+"cart/redeem";
 const removePoinProduct =base_url+"delete/point";
 
+//payment
+const paymentInfo =base_url+"payment/detail";
+const paymentConfrim =base_url+"payment/confirmation";
+
 //wishlist
 const listOfwishlist = base_url+"product/wishlist";
 const addToWishlist = base_url+"product/addToWishlist";
@@ -45,6 +49,9 @@ const updateBeauteProfile = base_url+"account/update_beauty";
 
 //Redeem
 const rdmProduk = base_url+"product/redeemable";
+
+//Review
+const reviewList =base_url+"review/list";
 
 
 

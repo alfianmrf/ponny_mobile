@@ -728,3 +728,6 @@ final snackBarSuccess = SnackBar(
   backgroundColor: Colors.green,
 );
 
+final nm_format= NumberFormat.simpleCurrency(locale: "id_ID",decimalDigits: 0 );
+
+

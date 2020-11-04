@@ -45,7 +45,6 @@ class AddressModel with ChangeNotifier{
       print(json);
       if (json != null) {
         useAddress = Address.fromJson(json);
-
         notifyListeners();
       }
       loading=false;
@@ -101,10 +100,17 @@ class AddressModel with ChangeNotifier{
 
   Future<bool> SaveAddressToServer(token,param) async {
     final res = await http.post(saveAddressUrl,headers: { HttpHeaders.contentTypeHeader: 'application/json',HttpHeaders.authorizationHeader: "Bearer $token"  },body: json.encode(param));
-    print(res.body);
+
     if(res.statusCode == 200){
       final responseJson = json.decode(res.body);
       await getListAddress(token);
+      if(param['id'] == useAddress.id){
+        useAddress = listAdress.firstWhere((element) => element.id == param['id']);
+        await getListCourier(token);
+        notifyListeners();
+      }
+      //
+
       return true;
     }
     return false;

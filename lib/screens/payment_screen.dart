@@ -9,6 +9,7 @@ import 'package:ponny/model/Cart.dart';
 import 'package:ponny/model/Order.dart';
 import 'package:ponny/screens/account/menunggu_pembayaran_sukses_screen.dart';
 import 'package:ponny/screens/home_screen.dart';
+import 'package:ponny/screens/pesanan_berhasil_screen.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
 import 'package:ponny/screens/bank_transfer_screen.dart';
 import 'package:ponny/screens/pembayaran_ovo_screen.dart';
@@ -45,21 +46,27 @@ class _PaymentScreenState extends State<PaymentScreen> {
           onPressed: (){
             UIBlock.block(context,customLoaderChild: LoadingWidget(context));
             Provider.of<CartModel>(context).Checkout(Provider.of<AppModel>(context).auth.access_token, Provider.of<AddressModel>(context).useAddress, method).then((value) {
-              if(value){
-                Provider.of<OrderModel>(context).getOrder(Provider.of<AppModel>(context).auth.access_token).then((value){
-                  UIBlock.unblock(context);
-                  Navigator.pushReplacement(context,new MaterialPageRoute(
-                    builder: (BuildContext context) => new MenungguPembayaranSuksesScreen(),
-                  ));
-                });
+              if(value!= null && value.success){
+                Navigator.pushReplacement(context,new MaterialPageRoute(
+                  builder: (BuildContext context) => new PesananBerhasilScreen(code: value.orderCode,),
+                ));
               }else{
                 UIBlock.unblock(context);
+                print(value.message);
                 final snackBar = SnackBar(
                   content: Text('Terjadi kesalah Pada Server, Silakan coba kembali nanti!',style: TextStyle(color: Colors.white)),
                   backgroundColor: Colors.redAccent,
                 );
                 scaffoldKey.currentState.showSnackBar(snackBar);
               }
+            }).catchError((onError){
+              UIBlock.unblock(context);
+              final snackBar = SnackBar(
+                content: Text('Terjadi kesalah Pada Server, Silakan coba kembali nanti!',style: TextStyle(color: Colors.white)),
+                backgroundColor: Colors.redAccent,
+              );
+              scaffoldKey.currentState.showSnackBar(snackBar);
+              print(onError);
             });
           },
           child: new Text('Yes'),
@@ -386,8 +393,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                               ),
                               InkWell(
                                 onTap: () {
-                                  Navigator.of(context)
-                                      .pushReplacementNamed(BankTransferScreen.id);
+                                  chekOut(context,"manual_bca");
                                 },
                                 child: Container(
                                   width: MediaQuery.of(context).size.width,
@@ -421,95 +427,112 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                   ),
                                 ),
                               ),
-                              Container(
-                                width: MediaQuery.of(context).size.width,
-                                padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Image.asset(
-                                          'assets/images/payment/mandiri-02.png',
-                                          height: 40,
-                                        ),
-                                        Padding(
-                                          padding: EdgeInsets.only(left: 10),
-                                          child: Text(
-                                            'Bank Mandiri',
-                                            style: TextStyle(
-                                              fontFamily: 'Brandon',
-                                              fontSize: 14,
+                              InkWell(
+                                onTap: (){
+                                  chekOut(context,"manual_mandiri");
+                                },
+                                child: Container(
+                                  width: MediaQuery.of(context).size.width,
+                                  padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Image.asset(
+                                            'assets/images/payment/mandiri-02.png',
+                                            height: 40,
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.only(left: 10),
+                                            child: Text(
+                                              'Bank Mandiri',
+                                              style: TextStyle(
+                                                fontFamily: 'Brandon',
+                                                fontSize: 14,
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                    Icon(
-                                      Icons.chevron_right,
-                                      color: Color(0xffF48262),
-                                    ),
-                                  ],
+                                        ],
+                                      ),
+                                      Icon(
+                                        Icons.chevron_right,
+                                        color: Color(0xffF48262),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
-                              Container(
-                                width: MediaQuery.of(context).size.width,
-                                padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Image.asset(
-                                          'assets/images/payment/permata-02.png',
-                                          height: 40,
-                                        ),
-                                        Padding(
-                                          padding: EdgeInsets.only(left: 10),
-                                          child: Text(
-                                            'Bank Permata',
-                                            style: TextStyle(
-                                              fontFamily: 'Brandon',
-                                              fontSize: 14,
+                              InkWell(
+                                onTap: (){
+                                  chekOut(context,"manual_permata");
+                                },
+                                child: Container(
+                                  width: MediaQuery.of(context).size.width,
+                                  padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Image.asset(
+                                            'assets/images/payment/permata-02.png',
+                                            height: 40,
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.only(left: 10),
+                                            child: Text(
+                                              'Bank Permata',
+                                              style: TextStyle(
+                                                fontFamily: 'Brandon',
+                                                fontSize: 14,
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                    Icon(
-                                      Icons.chevron_right,
-                                      color: Color(0xffF48262),
-                                    ),
-                                  ],
+                                        ],
+                                      ),
+                                      Icon(
+                                        Icons.chevron_right,
+                                        color: Color(0xffF48262),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
-                              Container(
-                                width: MediaQuery.of(context).size.width,
-                                padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Padding(
-                                          padding: EdgeInsets.only(left: 5),
-                                          child: Text(
-                                            'Bank Lain',
-                                            style: TextStyle(
-                                              fontFamily: 'Brandon',
-                                              fontSize: 14,
+                              InkWell(
+                                onTap: (){
+                                  chekOut(context,"transfer_manual");
+                                },
+                                child: Container(
+                                  width: MediaQuery.of(context).size.width,
+                                  padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Padding(
+                                            padding: EdgeInsets.only(left: 5),
+                                            child: Text(
+                                              'Bank Lain',
+                                              style: TextStyle(
+                                                fontFamily: 'Brandon',
+                                                fontSize: 14,
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                    Icon(
-                                      Icons.chevron_right,
-                                      color: Color(0xffF48262),
-                                    ),
-                                  ],
+                                        ],
+                                      ),
+                                      Icon(
+                                        Icons.chevron_right,
+                                        color: Color(0xffF48262),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
+
+
                               Container(
                                 color: Color(0xffFDEDE4),
                                 width: MediaQuery.of(context).size.width,
