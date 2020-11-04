@@ -9,6 +9,7 @@ import 'package:ponny/model/Cart.dart';
 import 'package:ponny/model/Product.dart';
 import 'package:ponny/model/WishProduct.dart';
 import 'package:ponny/screens/cart_screen.dart';
+import 'package:ponny/screens/review_screen.dart';
 import 'package:ponny/util/globalUrl.dart';
 import 'package:provider/provider.dart';
 import 'package:uiblock/uiblock.dart';
@@ -887,18 +888,30 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                             alignment: Alignment.centerLeft,
                             child: Container(
                               margin: EdgeInsets.only(top: 25, bottom: 15),
-                              padding: EdgeInsets.symmetric(horizontal: 15),
-                              child: Text(
-                                'TULIS REVIEW',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontFamily: 'Brandon',
-                                  fontSize: 15,
+                              child: InkWell(
+                                onTap: (){
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => ReviewScreen(),
+                                    ),
+                                  );
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.symmetric(horizontal: 15),
+                                  child: Text(
+                                    'TULIS REVIEW',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontFamily: 'Brandon',
+                                      fontSize: 15,
+                                    ),
+                                  ),
+                                  decoration: BoxDecoration(
+                                    border: Border.all(color: Color(0xffF48262)),
+                                    borderRadius: BorderRadius.circular(5),
+                                  ),
                                 ),
-                              ),
-                              decoration: BoxDecoration(
-                                border: Border.all(color: Color(0xffF48262)),
-                                borderRadius: BorderRadius.circular(5),
                               ),
                             ),
                           ),

@@ -21,7 +21,7 @@ import 'package:uiblock/uiblock.dart';
 import 'package:ponny/util/globalUrl.dart';
 
 class ChatEmailScreen extends StatefulWidget {
-  static const String id = "lupa_password_Screen";
+  static const String id = "chat_email_Screen";
   @override
   _ChatEmailStateScreen createState() => _ChatEmailStateScreen();
 }
