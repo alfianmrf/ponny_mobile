@@ -1,8 +1,16 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:ponny/common/constant.dart';
+import 'package:ponny/model/App.dart';
 import 'package:ponny/screens/account_screen.dart';
+import 'package:ponny/util/globalUrl.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
+import 'package:provider/provider.dart';
+import 'package:http/http.dart' as http;
 
 class KomplainDalamPerjalananScreen extends StatefulWidget {
   static const String id = "Komplain_Dalam_Perjalanan_Screen";
@@ -11,14 +19,58 @@ class KomplainDalamPerjalananScreen extends StatefulWidget {
       _KomplainDalamPerjalananStateScreen();
 }
 
-class _KomplainDalamPerjalananStateScreen
-    extends State<KomplainDalamPerjalananScreen> {
+class _KomplainDalamPerjalananStateScreen extends State<KomplainDalamPerjalananScreen> {
   bool _value1 = false;
   bool _value2 = false;
+  bool loading =true;
+  List<KomplainInput> _masalah =[];
+  List<KomplainInput> _solusi =[];
 
   //we omitted the brackets '{}' and are using fat arrow '=>' instead, this is dart syntax
   void _value1Changed(bool value) => setState(() => _value1 = value);
   void _value2Changed(bool value) => setState(() => _value2 = value);
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      _getParam();
+    });
+  }
+
+  Future<bool> _getParam() async {
+    bool result =false;
+    String token = Provider.of<AppModel>(context).auth.access_token;
+    final res = await http.get(listParamKompain+"/"+"66", headers: { HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: "Bearer $token"});
+    if(res.statusCode == 200){
+      final responseJson = json.decode(res.body);
+      print(res.body);
+      setState(() {
+      for (Map item in responseJson["masalah"]) {
+          _masalah.add(
+            KomplainInput(
+                item["param_3"],
+                item["param_2"],
+                false
+            )
+          );
+      }
+      for (Map item in responseJson["solusi"]) {
+        _solusi.add(
+            KomplainInput(
+                item["param_3"],
+                item["param_2"],
+                false
+            )
+        );
+      }
+      loading =false;
+      });
+      result = true;
+    }
+    return result;
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -85,7 +137,11 @@ class _KomplainDalamPerjalananStateScreen
             Container(
               margin: EdgeInsets.only(left: 25, right: 25, top: 30),
               width: MediaQuery.of(context).size.width,
-              child: Column(
+              child: loading ? Container(
+                child: Center(
+                  child: LoadingWidgetFadingCircle(context),
+                )
+              ):Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
@@ -98,150 +154,41 @@ class _KomplainDalamPerjalananStateScreen
                       ),
                     ),
                   ),
-                  Container(
-                    height: 35,
-                    width: 300,
-                    child: Row(
-                      children: [
-                        Container(
-                          width: 30,
-                          margin: EdgeInsets.only(top: 0),
-                          child: Checkbox(
-                            onChanged: (bool value) {
-                              setState(() => this._value1 = value);
-                            },
-                            value: this._value1,
-                            checkColor: Hexcolor("#F59379"),
-                            activeColor: Hexcolor('#FCF8F0'),
-                          ),
-                        ),
-                        Container(
-                          child: Text(
-                            "Barang belum saya terima",
-                            style: TextStyle(
-                              fontFamily: "Brandon",
-                              fontWeight: FontWeight.w400,
+                  Column(
+                      children: _masalah.map((e) => Container(
+                        height: 35,
+                        width: 300,
+                        child: Row(
+                          children: [
+                            Container(
+                              width: 30,
+                              margin: EdgeInsets.only(top: 0),
+                              child: Checkbox(
+                                onChanged: (bool value) {
+                                  setState(() {
+                                    _masalah.forEach((ev) {
+                                      ev.val = false;
+                                    });
+                                    _masalah.firstWhere((element) => element.id == e.id).val =value;
+                                  });
+                                },
+                                value: e.val,
+                                checkColor: Hexcolor("#F59379"),
+                                activeColor: Hexcolor('#FCF8F0'),
+                              ),
                             ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    height: 35,
-                    width: 300,
-                    child: Row(
-                      children: [
-                        Container(
-                          width: 30,
-                          margin: EdgeInsets.only(top: 0),
-                          child: Checkbox(
-                            onChanged: (bool value) {
-                              setState(() => this._value1 = value);
-                            },
-                            value: this._value1,
-                            checkColor: Hexcolor("#F59379"),
-                            activeColor: Hexcolor('#FCF8F0'),
-                          ),
-                        ),
-                        Container(
-                          child: Text(
-                            "Barang rusak/cacat/pecah",
-                            style: TextStyle(
-                              fontFamily: "Brandon",
-                              fontWeight: FontWeight.w400,
+                            Container(
+                              child: Text(
+                                e.label,
+                                style: TextStyle(
+                                  fontFamily: "Brandon",
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
                             ),
-                          ),
+                          ],
                         ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    height: 35,
-                    width: 300,
-                    child: Row(
-                      children: [
-                        Container(
-                          width: 30,
-                          margin: EdgeInsets.only(top: 0),
-                          child: Checkbox(
-                            onChanged: (bool value) {
-                              setState(() => this._value1 = value);
-                            },
-                            value: this._value1,
-                            checkColor: Hexcolor("#F59379"),
-                            activeColor: Hexcolor('#FCF8F0'),
-                          ),
-                        ),
-                        Container(
-                          child: Text(
-                            "Jumlah barang kurang",
-                            style: TextStyle(
-                              fontFamily: "Brandon",
-                              fontWeight: FontWeight.w400,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    height: 35,
-                    width: 300,
-                    child: Row(
-                      children: [
-                        Container(
-                          width: 30,
-                          margin: EdgeInsets.only(top: 0),
-                          child: Checkbox(
-                            onChanged: (bool value) {
-                              setState(() => this._value1 = value);
-                            },
-                            value: this._value1,
-                            checkColor: Hexcolor("#F59379"),
-                            activeColor: Hexcolor('#FCF8F0'),
-                          ),
-                        ),
-                        Container(
-                          child: Text(
-                            "Barang tidak sesuai pesanan",
-                            style: TextStyle(
-                              fontFamily: "Brandon",
-                              fontWeight: FontWeight.w400,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    height: 35,
-                    width: 300,
-                    child: Row(
-                      children: [
-                        Container(
-                          width: 30,
-                          margin: EdgeInsets.only(top: 0),
-                          child: Checkbox(
-                            onChanged: (bool value) {
-                              setState(() => this._value1 = value);
-                            },
-                            value: this._value1,
-                            checkColor: Hexcolor("#F59379"),
-                            activeColor: Hexcolor('#FCF8F0'),
-                          ),
-                        ),
-                        Container(
-                          child: Text(
-                            "Lainnya",
-                            style: TextStyle(
-                              fontFamily: "Brandon",
-                              fontWeight: FontWeight.w400,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                      ),).toList()
                   ),
                   Container(
                     margin: EdgeInsets.only(
@@ -336,59 +283,41 @@ class _KomplainDalamPerjalananStateScreen
                       ),
                     ),
                   ),
-                  Container(
-                    child: Row(
-                      children: [
-                        Container(
-                          width: 30,
-                          height: 25,
-                          child: Checkbox(
-                            onChanged: (bool value) {
-                              setState(() => this._value1 = value);
-                            },
-                            value: this._value1,
-                            checkColor: Hexcolor("#F59379"),
-                            activeColor: Hexcolor('#FCF8F0'),
-                          ),
-                        ),
-                        Container(
-                          child: Text(
-                            "Pengembalian Dana",
-                            style: TextStyle(
-                              fontFamily: "Brandon",
-                              fontWeight: FontWeight.w400,
+                  Column(
+                      children: _solusi.map((e) => Container(
+                        height: 35,
+                        width: 300,
+                        child: Row(
+                          children: [
+                            Container(
+                              width: 30,
+                              margin: EdgeInsets.only(top: 0),
+                              child: Checkbox(
+                                onChanged: (bool value) {
+                                  setState(() {
+                                    _solusi.forEach((ev) {
+                                      ev.val = false;
+                                    });
+                                    _solusi.firstWhere((element) => element.id == e.id).val =value;
+                                  });
+                                },
+                                value: e.val,
+                                checkColor: Hexcolor("#F59379"),
+                                activeColor: Hexcolor('#FCF8F0'),
+                              ),
                             ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    child: Row(
-                      children: [
-                        Container(
-                          width: 30,
-                          height: 25,
-                          child: Checkbox(
-                            onChanged: (bool value) {
-                              setState(() => this._value1 = value);
-                            },
-                            value: this._value1,
-                            checkColor: Hexcolor("#F59379"),
-                            activeColor: Hexcolor('#FCF8F0'),
-                          ),
-                        ),
-                        Container(
-                          child: Text(
-                            "Penggantian Barang",
-                            style: TextStyle(
-                              fontFamily: "Brandon",
-                              fontWeight: FontWeight.w400,
+                            Container(
+                              child: Text(
+                                e.label,
+                                style: TextStyle(
+                                  fontFamily: "Brandon",
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
                             ),
-                          ),
+                          ],
                         ),
-                      ],
-                    ),
+                      ),).toList()
                   ),
                   Container(
                     margin: EdgeInsets.only(
@@ -445,7 +374,7 @@ class _KomplainDalamPerjalananStateScreen
                     ),
                   ),
                 ],
-              ),
+              )
             ),
           ],
         ),
@@ -453,4 +382,11 @@ class _KomplainDalamPerjalananStateScreen
       bottomNavigationBar: new PonnyBottomNavbar(selectedIndex: 4),
     );
   }
+}
+
+class KomplainInput{
+  String id;
+  String label;
+  bool val ;
+  KomplainInput(this.id,this.label,this.val);
 }

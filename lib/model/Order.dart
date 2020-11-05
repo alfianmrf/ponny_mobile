@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/widgets.dart';
 import 'package:ponny/model/Address.dart';
 import 'package:ponny/model/Courier.dart';
+import 'package:ponny/model/LacakResult.dart';
 import 'package:ponny/model/ManualInfo.dart';
 import 'package:ponny/model/Product.dart';
 import 'package:http/http.dart' as http;
@@ -47,6 +48,17 @@ class OrderModel with ChangeNotifier{
       result = ManualInfo.fromJson(responseJson);
     }
     return result;
+  }
+
+  Future<LacakResult> getLacak(String token,String order_id) async {
+    final res = await http.get(urlTracking+"/"+order_id, headers: { HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: "Bearer $token"});
+    LacakResult result;
+    if(res.statusCode == 200){
+      final responseJson = json.decode(res.body);
+      result = LacakResult.fromJson(responseJson);
+    }
+    return result;
+
   }
 
 }

@@ -47,11 +47,17 @@ const urlOrder = base_url+"account/orders";
 const urlUpdateProfile = base_url+"account/update";
 const updateBeauteProfile = base_url+"account/update_beauty";
 
+//Order
+const urlTracking =base_url+"checkout/tracking";
+
 //Redeem
 const rdmProduk = base_url+"product/redeemable";
 
 //Review
 const reviewList =base_url+"review/list";
+
+//Komplain
+const listParamKompain = base_url+"checkout/complaint";
 
 
 

@@ -3,12 +3,16 @@ import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:intl/intl.dart';
 import 'package:ponny/common/constant.dart';
 import 'package:ponny/model/App.dart';
+import 'package:ponny/model/LacakResult.dart';
 import 'package:ponny/model/Order.dart';
 import 'package:http/http.dart' as http;
+import 'package:ponny/screens/account/komplain_dalam_perjalanan_screen.dart';
 import 'package:ponny/screens/konfirmasi_pembayaran_screen.dart';
 import 'package:ponny/util/globalUrl.dart';
 import 'package:provider/provider.dart';
@@ -39,7 +43,7 @@ class _OrderScreenState extends State<OrderScreen> {
   int current_page=0;
   int last_page =0;
   String NextPage;
-  String type ="unpaid";
+
 
   @override
   void initState() {
@@ -751,7 +755,272 @@ class _OrderScreenState extends State<OrderScreen> {
                     ) ,
                   ),
                 if(order.payment_status == 'paid' && order.confrimResi != null)
-                  Container()
+                  Container(
+                    margin: EdgeInsets.only(top: 30, left: 15, right: 15),
+                    padding: EdgeInsets.only(left: 15, right: 15),
+                    width: MediaQuery.of(context).size.width,
+                    height: 50,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            showModalBottomSheet<void>(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10)),
+                              ),
+                              backgroundColor: Color(0xffFEF9F0),
+                              context: context,
+                              builder: (BuildContext context) {
+
+                                return Wrap(
+                                  children: [
+                                    Container(
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: <Widget>[
+                                          Container(
+                                            padding: EdgeInsets.symmetric(horizontal: 20),
+                                            child: Row(
+                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                              children: [
+                                                Text(
+                                                  'LACAK PESANAN',
+                                                  style: TextStyle(
+                                                    fontFamily: 'Brandon',
+                                                    fontSize: 18,
+                                                    fontWeight: FontWeight.w600,
+                                                  ),
+                                                ),
+                                                IconButton(
+                                                  icon: Icon(
+                                                    Icons.close,
+                                                    color: Color(0xffF48262),
+                                                    size: 24,
+                                                  ),
+                                                  onPressed: () => Navigator.pop(context),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          Container(
+                                            child:  FutureBuilder<LacakResult>(
+                                              future:Provider.of<OrderModel>(context).getLacak(Provider.of<AppModel>(context,listen: false).auth.access_token, order.id.toString()),
+                                              builder:(BuildContext context, AsyncSnapshot<LacakResult> snapshot){
+                                                if(snapshot.hasData){
+                                                  print(snapshot.data.toJson());
+                                                  return Column(
+                                                    children: [
+                                                      Container(
+                                                        color: Color(0xffFEEEE4),
+                                                        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                                                        child: IntrinsicHeight(
+                                                          child: Row(
+                                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                            children: [
+                                                              Column(
+                                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                                children: [
+                                                                  Text(
+                                                                    snapshot.data.query.courier,
+                                                                    style: TextStyle(
+                                                                      fontFamily: 'Brandon',
+                                                                    ),
+                                                                  ),
+                                                                  Text(
+                                                                    'No Resi: '+snapshot.data.query.waybill,
+                                                                    style: TextStyle(
+                                                                      fontFamily: 'Brandon',
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                              InkWell(
+                                                                onTap: (){
+                                                                  Clipboard.setData(new ClipboardData(text: snapshot.data.query.waybill));
+                                                                  Fluttertoast.showToast(
+                                                                      msg: "Copied to Clipboard",
+                                                                      toastLength: Toast.LENGTH_SHORT,
+                                                                      gravity: ToastGravity.CENTER,
+                                                                      timeInSecForIosWeb: 1,
+                                                                      backgroundColor: Colors.red,
+                                                                      textColor: Colors.white,
+                                                                      fontSize: 16.0
+                                                                  );
+                                                                },
+                                                                child: Container(
+                                                                  alignment: Alignment.bottomRight,
+                                                                  child: Text(
+                                                                    'SALIN',
+                                                                    style: TextStyle(
+                                                                      fontFamily: 'Brandon',
+                                                                      color: Color(0xffF48262),
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ),
+
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      Container(
+                                                        color: Color(0xffFEF9F0),
+                                                        padding: EdgeInsets.all(20),
+                                                        child: Column(
+                                                          children: snapshot.data.result.manifest.map(
+                                                                  (e) => IntrinsicHeight(
+                                                            child: Row(
+                                                              children: [
+                                                                Container(
+                                                                  padding: EdgeInsets.only(top: 15),
+                                                                  width: 30,
+                                                                  alignment: Alignment.topCenter,
+                                                                  child: Container(
+                                                                    width: 10,
+                                                                    height: 10,
+                                                                    decoration: BoxDecoration(
+                                                                      color: Color(0xffF48262),
+                                                                      shape: BoxShape.circle,
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                                Expanded(
+                                                                  child: Container(
+                                                                    padding: EdgeInsets.symmetric(vertical: 10),
+                                                                    decoration: BoxDecoration(
+                                                                      border: Border(
+                                                                        bottom: BorderSide(
+                                                                          width: 1,
+                                                                          color: Color(0xffF48262),
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                    child: Column(
+                                                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                                                      children: [
+                                                                        Text(
+                                                                          e.manifestDescription,
+                                                                          style: TextStyle(
+                                                                            fontFamily: 'Brandon',
+                                                                          ),
+                                                                        ),
+                                                                        Text(
+                                                                          e.manifestDate+' '+e.manifestTime,
+                                                                          style: TextStyle(
+                                                                            fontFamily: 'Brandon',
+                                                                            color: Color(0xff6D6E71),
+                                                                          ),
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          )
+                                                          ).toList()
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  );
+                                                }else if(snapshot.hasError){
+                                                    return Container(
+                                                      child: Center(
+                                                        child: Text("Belum ada"),
+                                                      ),
+                                                    );
+                                                }else{
+                                                  return Container(
+                                                    child: Center(
+                                                      child: LoadingWidgetFadingCircle(context),
+                                                    ),
+                                                  );
+                                                }
+                                              },
+                                            ),
+                                          )
+                                          ,
+
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              // border: Border.all(
+                              //   color: Colors.red[500],
+                              // ),
+                              color: Color(0xffF3C1B5),
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(5),
+                              ),
+                            ),
+                            width: 160,
+                            height: 35,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Container(
+                                  child: Text(
+                                    "Lacak Pesanan",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontFamily: "Brandon",
+                                      color: Colors.white,
+                                      fontSize: 15,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      KomplainDalamPerjalananScreen()),
+                            );
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: Color(0xffF3C1B5),
+                              ),
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(5),
+                              ),
+                            ),
+                            width: 160,
+                            height: 35,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Container(
+                                  child: Text(
+                                    "Komplain",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontFamily: "Brandon",
+                                      color: Colors.black,
+                                      fontSize: 15,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
 
               ],
             ),
@@ -770,7 +1039,7 @@ class _OrderScreenState extends State<OrderScreen> {
     }else if(widget.type == OrderScreen.paid){
       title = "Pembayaran Diterima";
     }else if(widget.type == OrderScreen.on_delivery){
-      title = "Dalam Pembayaran";
+      title = "Dalam Perjalanan";
     }else if(widget.type == OrderScreen.delivered){
       title = "Terkirim";
     }else if(widget.type == OrderScreen.completed){
