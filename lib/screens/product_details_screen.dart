@@ -976,9 +976,11 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => ReviewScreen(),
+                                      builder: (context) => ReviewScreen(product: widget.product,),
                                     ),
-                                  );
+                                  ).then((value){
+                                    _getData();
+                                  });
                                 },
                                 child: Container(
                                   padding: EdgeInsets.symmetric(horizontal: 15),
@@ -1050,7 +1052,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                           child: Text.rich(TextSpan(children: <InlineSpan>[
                                             WidgetSpan(
                                               child:  RatingBar(
-                                                initialRating: widget.product.rating,
+                                                initialRating: review.rating,
                                                 minRating: 0,
                                                 direction: Axis.horizontal,
                                                 allowHalfRating: true,

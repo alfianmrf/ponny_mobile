@@ -784,6 +784,70 @@ class _AccountScreenState extends State<AccountScreen> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
+                          builder: (context) => OrderScreen(type: OrderScreen.komplain,),
+                        ),
+                      );
+                    },
+                    child: Container(
+                      decoration: new BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(
+                            width: 2,
+                            color: Hexcolor("#F59379"),
+                          ),
+                        ),
+                      ),
+                      child: Row(
+                        children: [
+                          Container(
+                            margin: EdgeInsets.only(
+                                bottom: 10, left: 15, right: 15, top: 10),
+                            child: Image.asset(
+                              'assets/images/komplain.png',
+                              width: 32,
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(bottom: 5, top: 5),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  margin: EdgeInsets.only(top: 0),
+                                  child: Text(
+                                    "Sedang Komplain",
+                                    style: TextStyle(
+                                      fontFamily: "Brandon",
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 20,
+                                    ),
+                                  ),
+                                ),
+                                Container(
+                                  // width: 150,
+                                  child: Text(
+                                    "Purchased Items",
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(
+                                      fontFamily: "Brandon",
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.grey,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
                             builder: (context) => UlasanProdukScreen()),
                       );
                     },

@@ -26,6 +26,7 @@ class OrderScreen extends StatefulWidget {
   static const String on_delivery ="on_delivery";
   static const String delivered ="delivered";
   static const String completed ="completed";
+  static const String komplain ="komplain";
   String type;
   OrderScreen({Key key,this.type});
 
@@ -754,7 +755,7 @@ class _OrderScreenState extends State<OrderScreen> {
                       },
                     ) ,
                   ),
-                if(order.payment_status == 'paid' && order.confrimResi != null)
+                if(order.payment_status == 'paid' && order.confrimResi != null && order.deliveryStatus != "komplain" && order.deliveryStatus != "completed")
                   Container(
                     margin: EdgeInsets.only(top: 30, left: 15, right: 15),
                     padding: EdgeInsets.only(left: 15, right: 15),
@@ -986,8 +987,10 @@ class _OrderScreenState extends State<OrderScreen> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) =>
-                                      KomplainDalamPerjalananScreen()),
-                            );
+                                      KomplainDalamPerjalananScreen(order: order, )),
+                            ).then((value){
+                              _getData();
+                            });
                           },
                           child: Container(
                             decoration: BoxDecoration(
@@ -1044,6 +1047,8 @@ class _OrderScreenState extends State<OrderScreen> {
       title = "Terkirim";
     }else if(widget.type == OrderScreen.completed){
       title = "Pesanan Selesai";
+    } else if(widget.type == OrderScreen.komplain){
+      title = "Sedang Komplain";
     }
     // TODO: implement build
     return Scaffold(

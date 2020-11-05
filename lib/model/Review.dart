@@ -35,7 +35,7 @@ class Review {
     statusRecomendasi = json['status_recomendasi'];
     comment = json['comment'];
     time = json['time'];
-    photos = json['photos'].cast<String>();
+    photos = json['photos'] != null ? json['photos'].cast<String>():[];
   }
 
   Map<String, dynamic> toJson() {

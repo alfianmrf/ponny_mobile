@@ -55,6 +55,7 @@ const rdmProduk = base_url+"product/redeemable";
 
 //Review
 const reviewList =base_url+"review/list";
+const revieStore = base_url+"review/store";
 
 //Komplain
 const listParamKompain = base_url+"checkout/complaint";
