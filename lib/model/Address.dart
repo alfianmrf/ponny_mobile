@@ -104,7 +104,7 @@ class AddressModel with ChangeNotifier{
     if(res.statusCode == 200){
       final responseJson = json.decode(res.body);
       await getListAddress(token);
-      if(param['id'] == useAddress.id){
+      if(param['id']!=null  && param['id'] == useAddress.id){
         useAddress = listAdress.firstWhere((element) => element.id == param['id']);
         await getListCourier(token);
         notifyListeners();

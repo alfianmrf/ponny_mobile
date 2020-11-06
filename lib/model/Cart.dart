@@ -163,13 +163,14 @@ class CartModel with ChangeNotifier{
           listSample.add(Product.fromJson(item["product"]["availability"]));
         }
 
-        print(responseJson["sampleProduct_used"] );
+
         for (Map item in responseJson["sampleProduct_used"]) {
           listUseSample.add(Product.fromJson(item["product"]["availability"]));
         }
         print(responseJson["productPoint_used"]);
         for (Map item in responseJson["productPoint_used"]) {
-          listProductPoin.add(ProductPoin(item["id"], item["product_point"]["jml_point"], Product.fromJson(item["product"]["availability"])));
+          if(item["product"]!=null)
+          listProductPoin.add(ProductPoin(item["id"], item["product_point"]!= null ? item["product_point"]["jml_point"]:null, item["product"]!=null?  Product.fromJson(item["product"]["availability"]) :null));
         }
         summary = Summary.fromJson(responseJson["summary"]);
         loadingCard =false;
