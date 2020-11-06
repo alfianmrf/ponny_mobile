@@ -1198,65 +1198,78 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   ),
                 ],
               ),
-              child: ButtonBar(
-                alignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  FlatButton(
-                    child: Icon(
-                      Icons.favorite_border,
-                      color: Colors.white,
-                    ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(7.0),
-                    ),
-                    color: Color(0xffF48262),
-                    onPressed: () {
-                      if(Provider.of<AppModel>(context).loggedIn) {
-                        UIBlock.block(context,customLoaderChild: LoadingWidget(context));
-                        Provider.of<WishModel>(context).addProductToWish(widget.product, Provider.of<AppModel>(context).auth.access_token).then((value){
-                          UIBlock.unblock(context);
-                          if(value){
-                            showWishDialog(context);
-                          }else{
-                            scaffoldKey.currentState.showSnackBar(snackBarError);
-                          }
-                        });
-                      }else{
-                        Navigator.push(context,new MaterialPageRoute(
-                          builder: (BuildContext context) => new LoginScreen(),
-                        ));
-                      }
-                    },
-                  ),
-                  FlatButton(
-                    padding: EdgeInsets.symmetric(horizontal: 30),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(7.0),
-                    ),
-                    child: Text(
-                      'MASUKKAN KERANJANG',
-                      style: TextStyle(
-                        fontFamily: 'Brandon',
-                        fontWeight: FontWeight.w700,
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 15),
+                child: Row(
+                  children: [
+                    FlatButton(
+                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      padding: EdgeInsets.all(10),
+                      minWidth: 0,
+                      child: Icon(
+                        Icons.favorite_border,
                         color: Colors.white,
+                        size: 20,
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(7.0),
+                      ),
+                      color: Color(0xffF48262),
+                      onPressed: () {
+                        if(Provider.of<AppModel>(context).loggedIn) {
+                          UIBlock.block(context,customLoaderChild: LoadingWidget(context));
+                          Provider.of<WishModel>(context).addProductToWish(widget.product, Provider.of<AppModel>(context).auth.access_token).then((value){
+                            UIBlock.unblock(context);
+                            if(value){
+                              showWishDialog(context);
+                            }else{
+                              scaffoldKey.currentState.showSnackBar(snackBarError);
+                            }
+                          });
+                        }else{
+                          Navigator.push(context,new MaterialPageRoute(
+                            builder: (BuildContext context) => new LoginScreen(),
+                          ));
+                        }
+                      },
+                    ),
+                    Expanded(
+                      child: Container(
+                        margin: EdgeInsets.only(left: 15),
+                        child: FlatButton(
+                          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                          padding: EdgeInsets.all(10),
+                          minWidth: 0,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(7.0),
+                          ),
+                          child: Text(
+                            'MASUKKAN KERANJANG',
+                            style: TextStyle(
+                              fontFamily: 'Brandon',
+                              fontWeight: FontWeight.w700,
+                              color: Colors.white,
+                            ),
+                          ),
+                          color: Color(0xffF48262),
+                          onPressed: () {
+                            if(Provider.of<AppModel>(context).loggedIn){
+                              UIBlock.block(context,customLoaderChild: LoadingWidget(context));
+                              cardData.addProductToCart(widget.product,Provider.of<AppModel>(context).auth.access_token).then((value){
+                                UIBlock.unblock(context);
+                                showAlertDialog(context);
+                              });
+                            }else{
+                              Navigator.push(context,new MaterialPageRoute(
+                                builder: (BuildContext context) => new LoginScreen(),
+                              ));
+                            }
+                          },
+                        ),
                       ),
                     ),
-                    color: Color(0xffF48262),
-                    onPressed: () {
-                      if(Provider.of<AppModel>(context).loggedIn){
-                        UIBlock.block(context,customLoaderChild: LoadingWidget(context));
-                        cardData.addProductToCart(widget.product,Provider.of<AppModel>(context).auth.access_token).then((value){
-                          UIBlock.unblock(context);
-                          showAlertDialog(context);
-                        });
-                      }else{
-                        Navigator.push(context,new MaterialPageRoute(
-                          builder: (BuildContext context) => new LoginScreen(),
-                        ));
-                      }
-                    },
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           )
