@@ -374,12 +374,13 @@ class _AccountScreenState extends State<AccountScreen> {
                             ],
                           ),
                         ),
-                        Container(
-                          child: LinearPercentIndicator(
-                            width: 210.0,
-                            lineHeight: 8.0,
-                            percent: 0.4,
-                            progressColor: Colors.white,
+                        Expanded(
+                          child: Container(
+                            child: LinearPercentIndicator(
+                              lineHeight: 8.0,
+                              percent: 0.4,
+                              progressColor: Colors.white,
+                            ),
                           ),
                         ),
                         Container(
@@ -449,21 +450,19 @@ class _AccountScreenState extends State<AccountScreen> {
                 right: 30,
                 bottom: 20,
               ),
-              height: 560,
               child: ListView(
-                physics: NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                physics: ScrollPhysics(),
                 primary: false,
                 children: <Widget>[
-                  GestureDetector(
+                  InkWell(
                     onTap: () {
-
                       Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => OrderScreen(type: OrderScreen.unpaid,),
                         ),
                       );
-
                     },
                     child: Container(
                       decoration: new BoxDecoration(
@@ -521,7 +520,7 @@ class _AccountScreenState extends State<AccountScreen> {
                       ),
                     ),
                   ),
-                  GestureDetector(
+                  InkWell(
                     onTap: () {
                       Navigator.push(
                         context,
@@ -586,7 +585,7 @@ class _AccountScreenState extends State<AccountScreen> {
                       ),
                     ),
                   ),
-                  GestureDetector(
+                  InkWell(
                     onTap: () {
                       Navigator.push(
                         context,
@@ -650,7 +649,7 @@ class _AccountScreenState extends State<AccountScreen> {
                       ),
                     ),
                   ),
-                  GestureDetector(
+                  InkWell(
                     onTap: () {
                       Navigator.push(
                         context,
@@ -715,7 +714,7 @@ class _AccountScreenState extends State<AccountScreen> {
                       ),
                     ),
                   ),
-                  GestureDetector(
+                  InkWell(
                     onTap: () {
                       Navigator.push(
                         context,
@@ -779,7 +778,7 @@ class _AccountScreenState extends State<AccountScreen> {
                       ),
                     ),
                   ),
-                  GestureDetector(
+                  InkWell(
                     onTap: () {
                       Navigator.push(
                         context,
@@ -906,7 +905,7 @@ class _AccountScreenState extends State<AccountScreen> {
                       ),
                     ),
                   ),
-                  GestureDetector(
+                  InkWell(
                     onTap: () {
                       Navigator.push(
                         context,
@@ -969,7 +968,7 @@ class _AccountScreenState extends State<AccountScreen> {
                       ),
                     ),
                   ),
-                  GestureDetector(
+                  InkWell(
                     onTap: () {
                       Navigator.push(
                         context,
@@ -1039,12 +1038,12 @@ class _AccountScreenState extends State<AccountScreen> {
                 right: 30,
                 bottom: 10,
               ),
-              height: 300,
               child: ListView(
-                physics: NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                physics: ScrollPhysics(),
                 primary: false,
                 children: <Widget>[
-                  GestureDetector(
+                  InkWell(
                     onTap: () {
                       Navigator.push(
                         context,
@@ -1107,7 +1106,7 @@ class _AccountScreenState extends State<AccountScreen> {
                       ),
                     ),
                   ),
-                  GestureDetector(
+                  InkWell(
                     onTap: () {
                       Navigator.push(
                         context,
@@ -1170,104 +1169,110 @@ class _AccountScreenState extends State<AccountScreen> {
                       ),
                     ),
                   ),
-                  Container(
-                    decoration: new BoxDecoration(
-                      border: Border(
-                        bottom: BorderSide(
-                          width: 2,
-                          color: Hexcolor("#F59379"),
+                  InkWell(
+                    onTap: (){},
+                    child: Container(
+                      decoration: new BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(
+                            width: 2,
+                            color: Hexcolor("#F59379"),
+                          ),
                         ),
                       ),
-                    ),
-                    child: Row(
-                      children: [
-                        Container(
-                          margin: EdgeInsets.only(
-                              bottom: 10, left: 15, right: 15, top: 10),
-                          child: Image.asset(
-                            'assets/images/Asset 14.png',
-                            width: 30,
+                      child: Row(
+                        children: [
+                          Container(
+                            margin: EdgeInsets.only(
+                                bottom: 10, left: 15, right: 15, top: 10),
+                            child: Image.asset(
+                              'assets/images/Asset 14.png',
+                              width: 30,
+                            ),
                           ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(bottom: 5, top: 5),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                margin: EdgeInsets.only(left: 0),
-                                child: Text(
-                                  "Keuntungan Happy Skin Reward",
-                                  style: TextStyle(
-                                    fontFamily: "Brandon",
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: 17,
+                          Container(
+                            margin: EdgeInsets.only(bottom: 5, top: 5),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  margin: EdgeInsets.only(left: 0),
+                                  child: Text(
+                                    "Keuntungan Happy Skin Reward",
+                                    style: TextStyle(
+                                      fontFamily: "Brandon",
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 17,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              Container(
-                                // width: 150,
-                                child: Text(
-                                  "Purchased Items",
-                                  textAlign: TextAlign.left,
-                                  style: TextStyle(
-                                    fontFamily: "Brandon",
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.grey,
-                                    fontSize: 16,
+                                Container(
+                                  // width: 150,
+                                  child: Text(
+                                    "Purchased Items",
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(
+                                      fontFamily: "Brandon",
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.grey,
+                                      fontSize: 16,
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
-                  Container(
-                    child: Row(
-                      children: [
-                        Container(
-                          margin: EdgeInsets.only(
-                              bottom: 10, left: 15, right: 15, top: 10),
-                          child: Image.asset(
-                            'assets/images/Asset 15.png',
-                            width: 30,
+                  InkWell(
+                    onTap: (){},
+                    child: Container(
+                      child: Row(
+                        children: [
+                          Container(
+                            margin: EdgeInsets.only(
+                                bottom: 10, left: 15, right: 15, top: 10),
+                            child: Image.asset(
+                              'assets/images/Asset 15.png',
+                              width: 30,
+                            ),
                           ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(bottom: 5, top: 5),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                margin: EdgeInsets.only(left: 0),
-                                child: Text(
-                                  "Rincian Point",
-                                  style: TextStyle(
-                                    fontFamily: "Brandon",
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: 20,
+                          Container(
+                            margin: EdgeInsets.only(bottom: 5, top: 5),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  margin: EdgeInsets.only(left: 0),
+                                  child: Text(
+                                    "Rincian Point",
+                                    style: TextStyle(
+                                      fontFamily: "Brandon",
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 20,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              Container(
-                                // width: 150,
-                                child: Text(
-                                  "Purchased Items",
-                                  textAlign: TextAlign.left,
-                                  style: TextStyle(
-                                    fontFamily: "Brandon",
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.grey,
-                                    fontSize: 16,
+                                Container(
+                                  // width: 150,
+                                  child: Text(
+                                    "Purchased Items",
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(
+                                      fontFamily: "Brandon",
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.grey,
+                                      fontSize: 16,
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ],
@@ -1285,121 +1290,133 @@ class _AccountScreenState extends State<AccountScreen> {
                 right: 30,
                 bottom: 0,
               ),
-              height: 570,
               child: ListView(
-                physics: NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                physics: ScrollPhysics(),
                 primary: false,
                 children: <Widget>[
-                  Container(
-                    padding: EdgeInsets.only(bottom: 10),
-                    decoration: new BoxDecoration(
-                      border: Border(
-                        bottom: BorderSide(
-                          width: 2,
-                          color: Hexcolor("#F59379"),
+                  InkWell(
+                    onTap: (){},
+                    child: Container(
+                      padding: EdgeInsets.only(bottom: 10),
+                      decoration: new BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(
+                            width: 2,
+                            color: Hexcolor("#F59379"),
+                          ),
                         ),
                       ),
-                    ),
-                    child: Text(
-                      "BUTUH BANTUAN ?",
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w700,
-                        fontFamily: "Brandon",
+                      child: Text(
+                        "BUTUH BANTUAN ?",
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w700,
+                          fontFamily: "Brandon",
+                        ),
                       ),
                     ),
                   ),
-                  Container(
-                    padding: EdgeInsets.only(bottom: 15, top: 15),
-                    decoration: new BoxDecoration(
-                      border: Border(
-                        bottom: BorderSide(
-                          width: 2,
-                          color: Hexcolor("#F59379"),
+                  InkWell(
+                    onTap: (){},
+                    child: Container(
+                      padding: EdgeInsets.only(bottom: 15, top: 15),
+                      decoration: new BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(
+                            width: 2,
+                            color: Hexcolor("#F59379"),
+                          ),
                         ),
                       ),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                          child: Text(
-                            "Tentang Ponny Beaute",
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w200,
-                              fontFamily: "Brandon",
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            child: Text(
+                              "Tentang Ponny Beaute",
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w200,
+                                fontFamily: "Brandon",
+                              ),
                             ),
                           ),
-                        ),
-                        Container(
-                          child: Icon(
-                            Icons.arrow_forward_ios,
-                          ),
-                        )
-                      ],
+                          Container(
+                            child: Icon(
+                              Icons.arrow_forward_ios,
+                            ),
+                          )
+                        ],
+                      ),
                     ),
                   ),
-                  Container(
-                    padding: EdgeInsets.only(bottom: 15, top: 15),
-                    decoration: new BoxDecoration(
-                      border: Border(
-                        bottom: BorderSide(
-                          width: 2,
-                          color: Hexcolor("#F59379"),
+                  InkWell(
+                    onTap: (){},
+                    child: Container(
+                      padding: EdgeInsets.only(bottom: 15, top: 15),
+                      decoration: new BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(
+                            width: 2,
+                            color: Hexcolor("#F59379"),
+                          ),
                         ),
                       ),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                          child: Text(
-                            "Pengiriman",
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w200,
-                              fontFamily: "Brandon",
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            child: Text(
+                              "Pengiriman",
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w200,
+                                fontFamily: "Brandon",
+                              ),
                             ),
                           ),
-                        ),
-                        Container(
-                          child: Icon(
-                            Icons.arrow_forward_ios,
-                          ),
-                        )
-                      ],
+                          Container(
+                            child: Icon(
+                              Icons.arrow_forward_ios,
+                            ),
+                          )
+                        ],
+                      ),
                     ),
                   ),
-                  Container(
-                    padding: EdgeInsets.only(bottom: 15, top: 15),
-                    decoration: new BoxDecoration(
-                      border: Border(
-                        bottom: BorderSide(
-                          width: 2,
-                          color: Hexcolor("#F59379"),
+                  InkWell(
+                    onTap: (){},
+                    child: Container(
+                      padding: EdgeInsets.only(bottom: 15, top: 15),
+                      decoration: new BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(
+                            width: 2,
+                            color: Hexcolor("#F59379"),
+                          ),
                         ),
                       ),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                          child: Text(
-                            "FAQ",
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w200,
-                              fontFamily: "Brandon",
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            child: Text(
+                              "FAQ",
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w200,
+                                fontFamily: "Brandon",
+                              ),
                             ),
                           ),
-                        ),
-                        Container(
-                          child: Icon(
-                            Icons.arrow_forward_ios,
-                          ),
-                        )
-                      ],
+                          Container(
+                            child: Icon(
+                              Icons.arrow_forward_ios,
+                            ),
+                          )
+                        ],
+                      ),
                     ),
                   ),
                   InkWell(
@@ -1443,100 +1460,109 @@ class _AccountScreenState extends State<AccountScreen> {
                       ),
                     ),
                   ),
-                  Container(
-                    padding: EdgeInsets.only(bottom: 15, top: 15),
-                    decoration: new BoxDecoration(
-                      border: Border(
-                        bottom: BorderSide(
-                          width: 2,
-                          color: Hexcolor("#F59379"),
+                  InkWell(
+                    onTap: (){},
+                    child: Container(
+                      padding: EdgeInsets.only(bottom: 15, top: 15),
+                      decoration: new BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(
+                            width: 2,
+                            color: Hexcolor("#F59379"),
+                          ),
                         ),
                       ),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                          child: Text(
-                            "Konsultasi",
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w200,
-                              fontFamily: "Brandon",
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            child: Text(
+                              "Konsultasi",
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w200,
+                                fontFamily: "Brandon",
+                              ),
                             ),
                           ),
-                        ),
-                        Container(
-                          child: Icon(
-                            Icons.arrow_forward_ios,
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                  Container(
-                    padding: EdgeInsets.only(bottom: 15, top: 15),
-                    decoration: new BoxDecoration(
-                      border: Border(
-                        bottom: BorderSide(
-                          width: 2,
-                          color: Hexcolor("#F59379"),
-                        ),
+                          Container(
+                            child: Icon(
+                              Icons.arrow_forward_ios,
+                            ),
+                          )
+                        ],
                       ),
                     ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                          child: Text(
-                            "Syarat dan Ketentuan",
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w200,
-                              fontFamily: "Brandon",
-                            ),
-                          ),
-                        ),
-                        Container(
-                          child: Icon(
-                            Icons.arrow_forward_ios,
-                          ),
-                        )
-                      ],
-                    ),
                   ),
-                  Container(
-                    padding: EdgeInsets.only(bottom: 15, top: 15),
-                    decoration: new BoxDecoration(
-                      border: Border(
-                        bottom: BorderSide(
-                          width: 2,
-                          color: Hexcolor("#F59379"),
+                  InkWell(
+                    onTap: (){},
+                    child: Container(
+                      padding: EdgeInsets.only(bottom: 15, top: 15),
+                      decoration: new BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(
+                            width: 2,
+                            color: Hexcolor("#F59379"),
+                          ),
                         ),
                       ),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                          child: Text(
-                            "Kebijakan Privasi",
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w200,
-                              fontFamily: "Brandon",
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            child: Text(
+                              "Syarat dan Ketentuan",
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w200,
+                                fontFamily: "Brandon",
+                              ),
                             ),
                           ),
-                        ),
-                        Container(
-                          child: Icon(
-                            Icons.arrow_forward_ios,
-                          ),
-                        )
-                      ],
+                          Container(
+                            child: Icon(
+                              Icons.arrow_forward_ios,
+                            ),
+                          )
+                        ],
+                      ),
                     ),
                   ),
-                  GestureDetector(
+                  InkWell(
+                    onTap: (){},
+                    child: Container(
+                      padding: EdgeInsets.only(bottom: 15, top: 15),
+                      decoration: new BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(
+                            width: 2,
+                            color: Hexcolor("#F59379"),
+                          ),
+                        ),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            child: Text(
+                              "Kebijakan Privasi",
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w200,
+                                fontFamily: "Brandon",
+                              ),
+                            ),
+                          ),
+                          Container(
+                            child: Icon(
+                              Icons.arrow_forward_ios,
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                  InkWell(
                     onTap: () {
                       Navigator.push(
                         context,
