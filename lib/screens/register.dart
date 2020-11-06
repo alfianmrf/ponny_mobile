@@ -158,16 +158,16 @@ class _RegisterScreen extends State<RegisterScreen> {
                             labelText: 'Nama Depan : ',
                             labelStyle: TextStyle(color: Colors.black),
                             focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8.0),
+                              borderRadius: BorderRadius.circular(5.0),
                               borderSide: BorderSide(
                                 color: Hexcolor('#F48262'),
                               ),
                             ),
                             enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8.0),
+                              borderRadius: BorderRadius.circular(5.0),
                               borderSide: BorderSide(
                                 color: Hexcolor('#F48262'),
-                                width: 2.0,
+                                width: 1.0,
                               ),
                             ),
                           ),
@@ -190,16 +190,16 @@ class _RegisterScreen extends State<RegisterScreen> {
                             labelText: 'Nama Belakang : ',
                             labelStyle: TextStyle(color: Colors.black),
                             focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8.0),
+                              borderRadius: BorderRadius.circular(5.0),
                               borderSide: BorderSide(
                                 color: Hexcolor('#F48262'),
                               ),
                             ),
                             enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8.0),
+                              borderRadius: BorderRadius.circular(5.0),
                               borderSide: BorderSide(
                                 color: Hexcolor('#F48262'),
-                                width: 2.0,
+                                width: 1.0,
                               ),
                             ),
                           ),
@@ -222,16 +222,16 @@ class _RegisterScreen extends State<RegisterScreen> {
                             labelText: 'Email : ',
                             labelStyle: TextStyle(color: Colors.black),
                             focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8.0),
+                              borderRadius: BorderRadius.circular(5.0),
                               borderSide: BorderSide(
                                 color: Hexcolor('#F48262'),
                               ),
                             ),
                             enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8.0),
+                              borderRadius: BorderRadius.circular(5.0),
                               borderSide: BorderSide(
                                 color: Hexcolor('#F48262'),
-                                width: 2.0,
+                                width: 1.0,
                               ),
                             ),
                           ),
@@ -257,16 +257,16 @@ class _RegisterScreen extends State<RegisterScreen> {
                             labelText: 'Password : ',
                             labelStyle: TextStyle(color: Colors.black),
                             focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8.0),
+                              borderRadius: BorderRadius.circular(5.0),
                               borderSide: BorderSide(
                                 color: Hexcolor('#F48262'),
                               ),
                             ),
                             enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8.0),
+                              borderRadius: BorderRadius.circular(5.0),
                               borderSide: BorderSide(
                                 color: Hexcolor('#F48262'),
-                                width: 2.0,
+                                width: 1.0,
                               ),
                             ),
                           ),
@@ -290,16 +290,16 @@ class _RegisterScreen extends State<RegisterScreen> {
                             labelText: 'Konfirmasi Password : ',
                             labelStyle: TextStyle(color: Colors.black),
                             focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8.0),
+                              borderRadius: BorderRadius.circular(5.0),
                               borderSide: BorderSide(
                                 color: Hexcolor('#F48262'),
                               ),
                             ),
                             enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8.0),
+                              borderRadius: BorderRadius.circular(5.0),
                               borderSide: BorderSide(
                                 color: Hexcolor('#F48262'),
-                                width: 2.0,
+                                width: 1.0,
                               ),
                             ),
                           ),
@@ -322,16 +322,16 @@ class _RegisterScreen extends State<RegisterScreen> {
                             labelText: 'Nomor Handphone : ',
                             labelStyle: TextStyle(color: Colors.black),
                             focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8.0),
+                              borderRadius: BorderRadius.circular(5.0),
                               borderSide: BorderSide(
                                 color: Hexcolor('#F48262'),
                               ),
                             ),
                             enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8.0),
+                              borderRadius: BorderRadius.circular(5.0),
                               borderSide: BorderSide(
                                 color: Hexcolor('#F48262'),
-                                width: 2.0,
+                                width: 1.0,
                               ),
                             ),
                           ),
@@ -365,60 +365,70 @@ class _RegisterScreen extends State<RegisterScreen> {
                           child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: <Widget>[
-                                ButtonTheme(
-                                  buttonColor: Hexcolor('#FCF8F0'),
-                                  minWidth: 180.0,
-                                  height: 45.0,
-                                  child: RaisedButton(
+                                Expanded(
+                                  flex: 1,
+                                  child: Container(
+                                    padding: EdgeInsets.only(right: 10),
+                                    child: ButtonTheme(
+                                      buttonColor: Hexcolor('#FCF8F0'),
+                                      height: 45.0,
+                                      child: FlatButton(
 
-                                    onPressed: () {
-                                        setState(() {
-                                          JenisKelamin="P";
-                                        });
-                                    },
-                                    child: Text(
-                                      "Perempuan",
-                                      style: TextStyle(
-                                          fontSize: 18,
-                                          fontFamily: 'Brandon',
-                                          fontWeight: FontWeight.w800,
-                                          letterSpacing: 1,
-                                          color: Hexcolor('#F48262')),
-                                    ),
+                                        onPressed: () {
+                                          setState(() {
+                                            JenisKelamin="P";
+                                          });
+                                        },
+                                        child: Text(
+                                          "Perempuan",
+                                          style: TextStyle(
+                                              fontSize: 18,
+                                              fontFamily: 'Brandon',
+                                              fontWeight: FontWeight.w800,
+                                              letterSpacing: 1,
+                                              color: Hexcolor('#F48262')),
+                                        ),
 
-                                    color: JenisKelamin == "P" ? Colors.white70 : null,
-                                  ),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(5.0),
-                                    side:
+                                        color: JenisKelamin == "P" ? Colors.white70 : null,
+                                      ),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(5.0),
+                                        side:
                                         BorderSide(color: Hexcolor('#F48262')),
+                                      ),
+                                    ),
                                   ),
                                 ),
-                                ButtonTheme(
-                                  buttonColor: Hexcolor('#FCF8F0'),
-                                  minWidth: 180.0,
-                                  height: 45.0,
-                                  child: RaisedButton(
-                                    onPressed: () {
-                                      setState(() {
-                                        JenisKelamin="L";
-                                      });
-                                    },
-                                    child: Text(
-                                      "Laki-laki",
-                                      style: TextStyle(
-                                          fontSize: 18,
-                                          fontFamily: 'Brandon',
-                                          fontWeight: FontWeight.w800,
-                                          letterSpacing: 1,
-                                          color: Hexcolor('#F48262')),
-                                    ),
-                                    color: JenisKelamin == "L" ? Colors.white70 : null,
-                                  ),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(5.0),
-                                    side:
+                                Expanded(
+                                  flex: 1,
+                                  child: Container(
+                                    padding: EdgeInsets.only(left: 10),
+                                    child: ButtonTheme(
+                                      buttonColor: Hexcolor('#FCF8F0'),
+                                      height: 45.0,
+                                      child: FlatButton(
+                                        onPressed: () {
+                                          setState(() {
+                                            JenisKelamin="L";
+                                          });
+                                        },
+                                        child: Text(
+                                          "Laki-laki",
+                                          style: TextStyle(
+                                              fontSize: 18,
+                                              fontFamily: 'Brandon',
+                                              fontWeight: FontWeight.w800,
+                                              letterSpacing: 1,
+                                              color: Hexcolor('#F48262')),
+                                        ),
+                                        color: JenisKelamin == "L" ? Colors.white70 : null,
+                                      ),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(5.0),
+                                        side:
                                         BorderSide(color: Hexcolor('#F48262')),
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ]),
@@ -440,27 +450,31 @@ class _RegisterScreen extends State<RegisterScreen> {
                                   fontWeight: FontWeight.w500,
                                 ),
                               ),
-                              ButtonTheme(
-                                buttonColor: Hexcolor('#FCF8F0'),
-                                minWidth: 250.0,
-                                height: 45.0,
-                                child: RaisedButton(
-                                  onPressed: () {
-                                    selectDate(context);
-                                  },
-                                  child: Text(
-                                    TglLahir != null ? TglLahir :"Pilih Tanggal Lahir",
-                                    style: TextStyle(
-                                        fontSize: 14,
-                                        fontFamily: 'Brandon',
-                                        fontWeight: FontWeight.w800,
-                                        letterSpacing: 1,
-                                        color: Hexcolor('#F48262')),
+                              Expanded(
+                                child: Container(
+                                  padding: EdgeInsets.only(left: 20),
+                                  child: ButtonTheme(
+                                    buttonColor: Hexcolor('#FCF8F0'),
+                                    height: 45.0,
+                                    child: FlatButton(
+                                      onPressed: () {
+                                        selectDate(context);
+                                      },
+                                      child: Text(
+                                        TglLahir != null ? TglLahir :"Pilih Tanggal Lahir",
+                                        style: TextStyle(
+                                            fontSize: 14,
+                                            fontFamily: 'Brandon',
+                                            fontWeight: FontWeight.w800,
+                                            letterSpacing: 1,
+                                            color: Hexcolor('#F48262')),
+                                      ),
+                                    ),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(5.0),
+                                      side: BorderSide(color: Hexcolor('#F48262')),
+                                    ),
                                   ),
-                                ),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(5.0),
-                                  side: BorderSide(color: Hexcolor('#F48262')),
                                 ),
                               ),
                             ],
@@ -478,7 +492,8 @@ class _RegisterScreen extends State<RegisterScreen> {
                     buttonColor: Hexcolor('#F48262'),
                     minWidth: 250.0,
                     height: 45.0,
-                    child: RaisedButton(
+                    child: FlatButton(
+                      color: Hexcolor('#F48262'),
                       onPressed: validateInput,
                       child: Text(
                         "DAFTAR",

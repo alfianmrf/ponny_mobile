@@ -109,51 +109,62 @@ class _LoginStateScreen extends State<LoginScreen> {
                 child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      ButtonTheme(
-                        buttonColor: Hexcolor('#F48262'),
-                        minWidth: 180.0,
-                        height: 45.0,
-                        child: RaisedButton(
-                          onPressed: () {},
-                          child: Text(
-                            "MASUK",
-                            style: TextStyle(
-                                fontSize: 18,
-                                fontFamily: 'Brandon',
-                                fontWeight: FontWeight.w800,
-                                letterSpacing: 1,
-                                color: Colors.white),
+                      Expanded(
+                        flex: 1,
+                        child: Container(
+                          padding: EdgeInsets.only(right: 10),
+                          child: ButtonTheme(
+                            buttonColor: Hexcolor('#F48262'),
+                            height: 45.0,
+                            child: FlatButton(
+                              onPressed: () {},
+                              color: Hexcolor('#F48262'),
+                              child: Text(
+                                "MASUK",
+                                style: TextStyle(
+                                    fontSize: 18,
+                                    fontFamily: 'Brandon',
+                                    fontWeight: FontWeight.w800,
+                                    letterSpacing: 1,
+                                    color: Colors.white),
+                              ),
+                            ),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5.0),
+                            ),
                           ),
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5.0),
                         ),
                       ),
-                      ButtonTheme(
-                        buttonColor: Hexcolor('#FCF8F0'),
-                        minWidth: 180.0,
-                        height: 45.0,
-                        child: RaisedButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => PraDaftarScreen()),
-                            );
-                          },
-                          child: Text(
-                            "DAFTAR",
-                            style: TextStyle(
-                                fontSize: 18,
-                                fontFamily: 'Brandon',
-                                fontWeight: FontWeight.w800,
-                                letterSpacing: 1,
-                                color: Hexcolor('#F48262')),
+                      Expanded(
+                        flex: 1,
+                        child: Container(
+                          padding: EdgeInsets.only(left: 10),
+                          child: ButtonTheme(
+                            buttonColor: Hexcolor('#FCF8F0'),
+                            height: 45.0,
+                            child: FlatButton(
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => PraDaftarScreen()),
+                                );
+                              },
+                              child: Text(
+                                "DAFTAR",
+                                style: TextStyle(
+                                    fontSize: 18,
+                                    fontFamily: 'Brandon',
+                                    fontWeight: FontWeight.w800,
+                                    letterSpacing: 1,
+                                    color: Hexcolor('#F48262')),
+                              ),
+                            ),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5.0),
+                              side: BorderSide(color: Hexcolor('#F48262')),
+                            ),
                           ),
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5.0),
-                          side: BorderSide(color: Hexcolor('#F48262')),
                         ),
                       ),
                     ]),
@@ -182,7 +193,7 @@ class _LoginStateScreen extends State<LoginScreen> {
                             borderRadius: BorderRadius.circular(8.0),
                             borderSide: BorderSide(
                               color: Hexcolor('#F48262'),
-                              width: 2.0,
+                              width: 1.0,
                             ),
                           ),
                         ),
@@ -217,7 +228,7 @@ class _LoginStateScreen extends State<LoginScreen> {
                             borderRadius: BorderRadius.circular(8.0),
                             borderSide: BorderSide(
                               color: Hexcolor('#F48262'),
-                              width: 2.0,
+                              width: 1.0,
                             ),
                           ),
                         ),
@@ -234,7 +245,8 @@ class _LoginStateScreen extends State<LoginScreen> {
                         buttonColor: Hexcolor('#F48262'),
                         minWidth: 220.0,
                         height: 60.0,
-                        child: RaisedButton(
+                        child: FlatButton(
+                          color: Hexcolor('#F48262'),
                           onPressed: validateInput,
                           // onPressed: () {
                           //   return showDialog(
@@ -269,7 +281,8 @@ class _LoginStateScreen extends State<LoginScreen> {
                         buttonColor: Hexcolor('#444444'),
                         minWidth: 220.0,
                         height: 60.0,
-                        child: RaisedButton(
+                        child: FlatButton(
+                          color: Hexcolor('#444444'),
                           onPressed: () {
                             Navigator.push(
                               context,

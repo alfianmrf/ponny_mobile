@@ -44,51 +44,64 @@ class _PraDaftarScreen extends State<PraDaftarScreen> {
             child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  ButtonTheme(
-                    buttonColor: Hexcolor('#FCF8F0'),
-                    minWidth: 180.0,
-                    height: 45.0,
-                    child: RaisedButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => LoginScreen()),
-                        );
-                      },
-                      child: Text(
-                        "MASUK",
-                        style: TextStyle(
-                            fontSize: 18,
-                            fontFamily: 'Brandon',
-                            fontWeight: FontWeight.w800,
-                            letterSpacing: 1,
-                            color: Hexcolor('#F48262')),
+                  Expanded(
+                    flex: 1,
+                    child: Container(
+                      padding: EdgeInsets.only(right: 10),
+                      child: ButtonTheme(
+                        buttonColor: Hexcolor('#FCF8F0'),
+                        height: 45.0,
+                        child: FlatButton(
+                          color: Hexcolor('#FCF8F0'),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => LoginScreen()),
+                            );
+                          },
+                          child: Text(
+                            "MASUK",
+                            style: TextStyle(
+                                fontSize: 18,
+                                fontFamily: 'Brandon',
+                                fontWeight: FontWeight.w800,
+                                letterSpacing: 1,
+                                color: Hexcolor('#F48262')),
+                          ),
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                          side: BorderSide(color: Hexcolor('#F48262')),
+                        ),
                       ),
-                    ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5.0),
-                      side: BorderSide(color: Hexcolor('#F48262')),
                     ),
                   ),
-                  ButtonTheme(
-                    buttonColor: Hexcolor('#F48262'),
-                    minWidth: 180.0,
-                    height: 45.0,
-                    child: RaisedButton(
-                      onPressed: () {},
-                      child: Text(
-                        "DAFTAR",
-                        style: TextStyle(
-                            fontSize: 18,
-                            fontFamily: 'Brandon',
-                            fontWeight: FontWeight.w800,
-                            letterSpacing: 1,
-                            color: Colors.white),
+                  Expanded(
+                    flex: 1,
+                    child: Container(
+                      padding: EdgeInsets.only(left: 10),
+                      child: ButtonTheme(
+                        buttonColor: Hexcolor('#F48262'),
+                        minWidth: 180.0,
+                        height: 45.0,
+                        child: FlatButton(
+                          color: Hexcolor('#F48262'),
+                          onPressed: () {},
+                          child: Text(
+                            "DAFTAR",
+                            style: TextStyle(
+                                fontSize: 18,
+                                fontFamily: 'Brandon',
+                                fontWeight: FontWeight.w800,
+                                letterSpacing: 1,
+                                color: Colors.white),
+                          ),
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                        ),
                       ),
-                    ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5.0),
                     ),
                   ),
                 ]),
@@ -183,7 +196,8 @@ class _PraDaftarScreen extends State<PraDaftarScreen> {
               buttonColor: Hexcolor('#F48262'),
               minWidth: 180.0,
               height: 45.0,
-              child: RaisedButton(
+              child: FlatButton(
+                color: Hexcolor('#F48262'),
                 onPressed: () {
                   Navigator.push(
                     context,
