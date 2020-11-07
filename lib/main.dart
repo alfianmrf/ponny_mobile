@@ -9,6 +9,7 @@ import 'package:ponny/screens/Detail_Brand_Screen.dart';
 import 'package:ponny/screens/bank_transfer_screen.dart';
 import 'package:ponny/screens/bank_transfer_detail_screen.dart';
 import 'package:ponny/screens/konfirmasi_pembayaran_screen.dart';
+import 'package:ponny/screens/konsultasi_screen.dart';
 import 'package:ponny/screens/pesanan_berhasil_screen.dart';
 import 'package:ponny/screens/pembayaran_ovo_screen.dart';
 import 'package:ponny/screens/pembayaran_gopay_screen.dart';
@@ -128,7 +129,7 @@ class MyApp extends StatelessWidget {
         primaryColor: Color(0xFFFDF8F0),
         accentColor: Colors.red,
       ),
-      initialRoute: KartuScreen.id, //SplashScreen.id,
+      initialRoute: SplashScreen.id, //SplashScreen.id,
       routes: {
         SplashScreen.id: (context) => SplashScreen(),
         IntroScreen.id: (context) => IntroScreen(),
@@ -188,6 +189,8 @@ class MyApp extends StatelessWidget {
         BasicSkincareData.id: (context) => BasicSkincareData(),
         DaftarLoginScreen.id: (context) => DaftarLoginScreen(),
         KartuScreen.id: (context) => KartuScreen(),
+        KonsultasiScreen.id: (context) => KonsultasiScreen(),
+        ForumScreen.id : (context) => ForumScreen()
       },
     );
   }

@@ -7,6 +7,7 @@ import 'package:ponny/screens/account_screen.dart';
 import 'package:ponny/screens/Browse_Screen.dart';
 import 'package:ponny/screens/forums_screen.dart';
 import 'package:ponny/screens/Forum_screen.dart';
+import 'package:ponny/screens/konsultasi_screen.dart';
 import 'package:ponny/screens/login.dart';
 import 'package:provider/provider.dart';
 import 'package:ponny/screens/Browse_Screen.dart';
@@ -34,6 +35,13 @@ class PonnyBottomNavbar extends StatelessWidget {
             Navigator.pushNamedAndRemoveUntil(
                 context,
                 Browse.id,(_) => false
+            );
+          break;
+        case 2:
+          if(ModalRoute.of(context).settings.name != "konsultasi_screen")
+            Navigator.pushNamedAndRemoveUntil(
+                context,
+                KonsultasiScreen.id,(_) => false
             );
           break;
         case 3:
