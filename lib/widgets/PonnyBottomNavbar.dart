@@ -27,7 +27,7 @@ class PonnyBottomNavbar extends StatelessWidget {
           break;
         case 3:
           if (index != selectedIndex)
-            Navigator.of(context).pushReplacementNamed(ForumScreen.id);
+            Navigator.of(context).pushReplacementNamed(ForumData.id);
           break;
         case 4:
           Navigator.of(context).pushReplacementNamed(AccountScreen.id);

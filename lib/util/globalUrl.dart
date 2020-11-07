@@ -1,7 +1,8 @@
-const base_url ="https://myponnylive.com/api/v1/";
+const base_url ="https://ponnybeaute.revoapps.id/api/v1/";
 
 //Auth
 const loginUrl = base_url+"auth/login";
 const register = base_url+"auth/signup";
 const blogUrl  = base_url+"blog";
-const filterUrl  = base_url+"filter";
+const forumUrl  = base_url+"forum";
+const roomUrl  = forumUrl+"/rooms";

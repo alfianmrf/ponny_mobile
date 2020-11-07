@@ -77,6 +77,10 @@ import 'package:ponny/screens/Affiliate_CairkanDana_screen.dart';
 
 import 'package:ponny/screens/Basic_SkinCare_screen.dart';
 
+import 'package:ponny/screens/daftarLogin_screen.dart';
+
+import 'package:ponny/screens/kartu_screen.dart';
+
 void main() {
   runApp(
     MultiProvider(
@@ -98,12 +102,12 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primaryColor: Color(0xFFFDF8F0),
       ),
-      initialRoute: SplashScreen.id,
+      initialRoute: KartuScreen.id, //SplashScreen.id,
       routes: {
         SplashScreen.id: (context) => SplashScreen(),
         IntroScreen.id: (context) => IntroScreen(),
         HomeScreen.id: (context) => HomeScreen(),
-        ForumScreen.id: (context) => ForumScreen(),
+        ForumData.id: (context) => ForumData(),
         AccountScreen.id: (context) => AccountScreen(),
         MenungguPembayaranScreen.id: (context) => MenungguPembayaranScreen(),
         MenungguPembayaranSuksesScreen.id: (context) =>
@@ -149,7 +153,9 @@ class MyApp extends StatelessWidget {
         AffiliateHomeScreen.id: (context) => AffiliateHomeScreen(),
         AffiliateLogedIn.id: (context) => AffiliateLogedIn(),
         CairkanDanaScreen.id: (context) => CairkanDanaScreen(),
-        BasicSkincareData.id: (context) => BasicSkincareData()
+        BasicSkincareData.id: (context) => BasicSkincareData(),
+        DaftarLoginScreen.id: (context) => DaftarLoginScreen(),
+        KartuScreen.id: (context) => KartuScreen(),
       },
     );
   }

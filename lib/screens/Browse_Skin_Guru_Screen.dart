@@ -70,7 +70,7 @@ class _Browse_Skin_GuruState extends State<Browse_Skin_Guru> {
             buttonColor: Hexcolor('#FCF8F0'),
             minWidth: 380.0,
             height: 180.0,
-            child: RaisedButton(
+            child: RaisedButton( 
                 onPressed: () {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => BasicSkincareData()));
