@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:readmore/readmore.dart';
 import 'Forum_screen.dart';
+import 'Detail_komen_screen.dart';
 
 class DetailForum extends StatefulWidget {
   bool gabung = false;
@@ -17,94 +18,95 @@ class _DetailForumState extends State<DetailForum> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        resizeToAvoidBottomInset: false,
-        body: Column(
-          children: [
-            Expanded(
-              flex: 1,
-              child: Container(
-                  color: Hexcolor('#FCF8F0'),
-                  child: Column(
-                    children: [
-                      Container(height: 20),
-                      Expanded(
-                        flex: 2,
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: Container(
-                                decoration: BoxDecoration(
-                                    shape: BoxShape.circle, color: Colors.grey),
-                              ),
+      resizeToAvoidBottomInset: false,
+      body: Column(
+        children: [
+          Expanded(
+            flex: 1,
+            child: Container(
+                color: Hexcolor('#FCF8F0'),
+                child: Column(
+                  children: [
+                    Container(height: 20),
+                    Expanded(
+                      flex: 2,
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.circle, color: Colors.grey),
                             ),
-                            Expanded(
-                              child: Column(
-                                children: [
-                                  Expanded(
-                                    flex: 1,
-                                    child: Text(
-                                      "Kulit Berminyak",
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        fontSize: 12,
-                                        fontFamily: 'Yeseva',
-                                        fontWeight: FontWeight.w800,
-                                        letterSpacing: 1,
-                                      ),
+                          ),
+                          Expanded(
+                            child: Column(
+                              children: [
+                                Expanded(
+                                  flex: 1,
+                                  child: Text(
+                                    "Kulit Berminyak",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      fontFamily: 'Yeseva',
+                                      fontWeight: FontWeight.w800,
+                                      letterSpacing: 1,
                                     ),
                                   ),
-                                  Expanded(
-                                    flex: 1,
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Icon(Icons.people,
-                                            size: 12, color: Color(0xffF48262)),
-                                        Text(
-                                          "1200",
+                                ),
+                                Expanded(
+                                  flex: 1,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(Icons.people,
+                                          size: 12, color: Color(0xffF48262)),
+                                      Text(
+                                        "1200",
+                                        style: TextStyle(
+                                            color: Color(0xffF48262),
+                                            fontSize: 12),
+                                      ),
+                                      Container(width: 10),
+                                      Icon(Icons.comment,
+                                          size: 12, color: Color(0xffF48262)),
+                                      Text("500",
                                           style: TextStyle(
                                               color: Color(0xffF48262),
-                                              fontSize: 12),
-                                        ),
-                                        Container(width: 10),
-                                        Icon(Icons.comment,
-                                            size: 12, color: Color(0xffF48262)),
-                                        Text("500",
-                                            style: TextStyle(
-                                                color: Color(0xffF48262),
-                                                fontSize: 12))
-                                      ],
+                                              fontSize: 12))
+                                    ],
+                                  ),
+                                ),
+                                Expanded(
+                                  flex: 2,
+                                  child: Text(
+                                    "Ga setiap saat harus glowing",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontSize: 10,
+                                      fontFamily: 'Yeseva',
+                                      fontWeight: FontWeight.w500,
+                                      letterSpacing: 1,
                                     ),
                                   ),
-                                  Expanded(
-                                    flex: 2,
-                                    child: Text(
-                                      "Ga setiap saat harus glowing",
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        fontSize: 10,
-                                        fontFamily: 'Yeseva',
-                                        fontWeight: FontWeight.w500,
-                                        letterSpacing: 1,
-                                      ),
-                                    ),
-                                  ),
-                                  Expanded(
-                                    child: Row(
-                                      children: [
-                                        Expanded(
-                                          flex: 1,
-                                          child: Container(
-                                            width: double.infinity,
-                                            child: widget.gabung
-                                                ? RaisedButton(
-                                                    color: Color(0xffF3C1B5),
-                                                    onPressed: () {
-                                                      setState(() {
-                                                        widget.gabung = false;
-                                                      });
-                                                    },
+                                ),
+                                Expanded(
+                                  child: Row(
+                                    children: [
+                                      Expanded(
+                                        flex: 1,
+                                        child: Container(
+                                          width: double.infinity,
+                                          child: widget.gabung
+                                              ? RaisedButton(
+                                                  color: Color(0xffF3C1B5),
+                                                  onPressed: () {
+                                                    setState(() {
+                                                      widget.gabung = false;
+                                                    });
+                                                  },
+                                                  child: FittedBox(
+                                                    fit: BoxFit.fitWidth,
                                                     child: Text(
                                                       "MEMBER",
                                                       style: TextStyle(
@@ -112,14 +114,17 @@ class _DetailForumState extends State<DetailForum> {
                                                           fontFamily:
                                                               "Brandon"),
                                                     ),
-                                                  )
-                                                : RaisedButton(
-                                                    color: Color(0xffF48262),
-                                                    onPressed: () {
-                                                      setState(() {
-                                                        widget.gabung = true;
-                                                      });
-                                                    },
+                                                  ),
+                                                )
+                                              : RaisedButton(
+                                                  color: Color(0xffF48262),
+                                                  onPressed: () {
+                                                    setState(() {
+                                                      widget.gabung = true;
+                                                    });
+                                                  },
+                                                  child: FittedBox(
+                                                    fit: BoxFit.fitWidth,
                                                     child: Text(
                                                       "Bergabung",
                                                       style: TextStyle(
@@ -128,21 +133,25 @@ class _DetailForumState extends State<DetailForum> {
                                                               "Brandon"),
                                                     ),
                                                   ),
-                                          ),
+                                                ),
                                         ),
-                                        Expanded(
-                                          flex: 1,
-                                          child: Container(
-                                            decoration: BoxDecoration(color: Colors.transparent,
-                                                border: Border.all(
-                                                    color: Color(0xffF48262))),
-                                            width: double.infinity,
-                                            child: RaisedButton(
-                                              onPressed: () {
-                                                setState(() {
-                                                  widget.gabung = false;
-                                                });
-                                              },
+                                      ),
+                                      Expanded(
+                                        flex: 1,
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                              color: Colors.transparent,
+                                              border: Border.all(
+                                                  color: Color(0xffF48262))),
+                                          width: double.infinity,
+                                          child: RaisedButton(
+                                            onPressed: () {
+                                              setState(() {
+                                                widget.gabung = false;
+                                              });
+                                            },
+                                            child: FittedBox(
+                                              fit: BoxFit.fitWidth,
                                               child: Text(
                                                 "Mulai Obrolan",
                                                 style: TextStyle(
@@ -150,40 +159,48 @@ class _DetailForumState extends State<DetailForum> {
                                               ),
                                             ),
                                           ),
-                                        )
-                                      ],
-                                    ),
+                                        ),
+                                      )
+                                    ],
                                   ),
-                                ],
-                              ),
-                            )
+                                ),
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.symmetric(vertical: 20),
+                      height: 1,
+                      color: Color(0xffF3C1B5),
+                    ),
+                    Expanded(
+                        flex: 1,
+                        child: ListView(
+                          scrollDirection: Axis.horizontal,
+                          children: [
+                            listCategory("Trending"),
+                            listCategory("Popular"),
+                            listCategory("Terbaru"),
                           ],
-                        ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.symmetric(vertical: 20),
-                        height: 1,
-                        color: Color(0xffF3C1B5),
-                      ),
-                      Expanded(
-                          flex: 1,
-                          child: ListView(
-                            scrollDirection: Axis.horizontal,
-                            children: [
-                              listCategory("Trending"),
-                              listCategory("Popular"),
-                              listCategory("Terbaru"),
-                            ],
-                          )),
-                    ],
-                  )),
-            ),
-            Expanded(
-              flex: 2,
-              child: ListView.builder(
-                itemCount: 2,
-                itemBuilder: (context, i) {
-                  return Container(
+                        )),
+                  ],
+                )),
+          ),
+          Expanded(
+            flex: 2,
+            child: ListView.builder(
+              itemCount: 2,
+              itemBuilder: (context, i) {
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => DetailKomenScreen()));
+                  },
+                  child: Container(
                     color: Hexcolor('#FCF8F0'),
                     margin: EdgeInsets.symmetric(vertical: 10),
                     child: Card(
@@ -217,14 +234,23 @@ class _DetailForumState extends State<DetailForum> {
                                 ),
                               ],
                             ),
-                            Text(
-                              "Sunscreen yang bikin kulit berminyak",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontFamily: 'Yeseva',
-                                fontWeight: FontWeight.w800,
-                                letterSpacing: 1,
+                            InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            DetailKomenScreen()));
+                              },
+                              child: Text(
+                                "Sunscreen yang bikin kulit berminyak",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontFamily: 'Yeseva',
+                                  fontWeight: FontWeight.w800,
+                                  letterSpacing: 1,
+                                ),
                               ),
                             ),
                             Row(
@@ -449,12 +475,14 @@ class _DetailForumState extends State<DetailForum> {
                         ),
                       ),
                     ),
-                  );
-                },
-              ),
-            )
-          ],
-        ));
+                  ),
+                );
+              },
+            ),
+          )
+        ],
+      ),
+    );
   }
 }
 
