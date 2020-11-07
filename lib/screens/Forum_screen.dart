@@ -9,6 +9,7 @@ import 'package:ponny/util/globalUrl.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 class ForumScreen extends StatefulWidget {
+  static const String id = "forum_screen";
   final List list;
 
   ForumScreen({this.list});
