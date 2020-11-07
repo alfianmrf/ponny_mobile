@@ -11,6 +11,7 @@ import 'package:ponny/model/App.dart';
 import 'package:ponny/model/Cart.dart';
 import 'package:ponny/model/Order.dart';
 import 'package:ponny/model/User.dart';
+import 'package:ponny/screens/Syarat_Ketentuan_screen.dart';
 import 'package:ponny/screens/account/hubungi_kami_screen.dart';
 import 'package:ponny/screens/Order_Screen.dart';
 import 'package:ponny/screens/account/ulasan_produk_sukses_screen.dart';
@@ -1496,7 +1497,14 @@ class _AccountScreenState extends State<AccountScreen> {
                     ),
                   ),
                   InkWell(
-                    onTap: (){},
+                    onTap: (){
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => SyaratKetentuanScreen()),
+                      );
+
+                    },
                     child: Container(
                       padding: EdgeInsets.only(bottom: 15, top: 15),
                       decoration: new BoxDecoration(
