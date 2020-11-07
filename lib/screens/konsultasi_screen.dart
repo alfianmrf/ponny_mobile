@@ -111,15 +111,9 @@ class _KonsultasiState extends State<KonsultasiScreen> {
                           child: Column(
                             children: [
                               Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(100),
-                                  color: Hexcolor("#F7866A"),
-                                ),
-                                padding: EdgeInsets.all(10),
-                                child: Icon(
-                                  Icons.add,
-                                  color: Colors.white,
-                                  size: 32,
+                                child: Image.asset(
+                                  "assets/images/tambah.png",
+                                  width: 50,
                                 ),
                               ),
                               Container(
@@ -152,15 +146,9 @@ class _KonsultasiState extends State<KonsultasiScreen> {
                           child: Column(
                             children: [
                               Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(100),
-                                  color: Hexcolor("#F7866A"),
-                                ),
-                                padding: EdgeInsets.all(10),
-                                child: Icon(
-                                  Icons.money,
-                                  color: Colors.white,
-                                  size: 32,
+                                child: Image.asset(
+                                  "assets/images/Asset 3.png",
+                                  width: 50,
                                 ),
                               ),
                               Container(
@@ -194,15 +182,9 @@ class _KonsultasiState extends State<KonsultasiScreen> {
                           child: Column(
                             children: [
                               Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(100),
-                                  color: Hexcolor("#F7866A"),
-                                ),
-                                padding: EdgeInsets.all(10),
-                                child: Icon(
-                                  Icons.update,
-                                  color: Colors.white,
-                                  size: 32,
+                                child: Image.asset(
+                                  "assets/images/Asset 1.png",
+                                  width: 50,
                                 ),
                               ),
                               Container(
@@ -234,21 +216,15 @@ class _KonsultasiState extends State<KonsultasiScreen> {
                           child: Column(
                             children: [
                               Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(100),
-                                  color: Hexcolor("#F7866A"),
-                                ),
-                                padding: EdgeInsets.all(10),
-                                child: Icon(
-                                  Icons.people_alt,
-                                  color: Colors.white,
-                                  size: 32,
+                                child: Image.asset(
+                                  "assets/images/konsultasi.png",
+                                  width: 50,
                                 ),
                               ),
                               Container(
                                 margin: EdgeInsets.only(top: 5),
                                 child: Text(
-                                  "Komunikasi",
+                                  "Konsultasi",
                                   style: TextStyle(
                                     fontSize: 12,
                                     fontFamily: "Brandon",
@@ -285,7 +261,7 @@ class _KonsultasiState extends State<KonsultasiScreen> {
                   }
                 case 3:
                   {
-                    return komunikasi_screen();
+                    return konsultasi();
                   }
                 case 4:
                   {
@@ -1172,13 +1148,13 @@ class _KonsultasiState extends State<KonsultasiScreen> {
   }
 }
 
-class komunikasi_screen extends StatefulWidget {
+class konsultasi extends StatefulWidget {
   @override
-  _KomunikasiState createState() => _KomunikasiState();
+  _Konsultasi createState() => _Konsultasi();
 }
 
-class _KomunikasiState extends State<komunikasi_screen> {
-  int _komunikasiPage = 0;
+class _Konsultasi extends State<konsultasi> {
+  int _konsultasiPage = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -1194,7 +1170,7 @@ class _KomunikasiState extends State<komunikasi_screen> {
                   flex: 1,
                   child: GestureDetector(
                     onTap: () {
-                      setState(() => _komunikasiPage = 0);
+                      setState(() => _konsultasiPage = 0);
                     },
                     child: Container(
                       decoration: BoxDecoration(
@@ -1220,7 +1196,7 @@ class _KomunikasiState extends State<komunikasi_screen> {
                   flex: 1,
                   child: GestureDetector(
                     onTap: () {
-                      setState(() => _komunikasiPage = 1);
+                      setState(() => _konsultasiPage = 1);
                     },
                     child: Container(
                       decoration: BoxDecoration(
@@ -1246,7 +1222,7 @@ class _KomunikasiState extends State<komunikasi_screen> {
                   flex: 1,
                   child: GestureDetector(
                     onTap: () {
-                      setState(() => _komunikasiPage = 2);
+                      setState(() => _konsultasiPage = 2);
                     },
                     child: Container(
                       decoration: BoxDecoration(
@@ -1272,7 +1248,7 @@ class _KomunikasiState extends State<komunikasi_screen> {
           ),
           LayoutBuilder(
             builder: (context, constraint) {
-              switch (_komunikasiPage) {
+              switch (_konsultasiPage) {
                 case 0:
                   {
                     return beli_screen();
