@@ -21,25 +21,31 @@ class PonnyBottomNavbar extends StatelessWidget {
     void _onItemTapped(int index) {
       switch (index) {
         case 0:
-          if (index != selectedIndex)
-            Navigator.of(context).pushReplacementNamed(HomeScreen.id);
+            Navigator.pushNamedAndRemoveUntil(
+              context,
+              HomeScreen.id,(_) => false
+            );
           break;
         case 1:
-          if (index != selectedIndex)
-            Navigator.of(context).pushReplacementNamed(Browse.id);
+            Navigator.pushNamedAndRemoveUntil(
+                context,
+                Browse.id,(_) => false
+            );
           break;
         case 3:
-          if (index != selectedIndex)
-            Navigator.of(context).pushReplacementNamed(ForumScreen.id);
+            Navigator.pushNamedAndRemoveUntil(
+                context,
+                ForumScreen.id,(_) => false
+            );
           break;
         case 4:
-          if (index != selectedIndex)
-            Provider.of<AppModel>(context).loggedIn ?
-            Navigator.of(context).pushReplacementNamed(AccountScreen.id) :  Navigator.push(
+            Provider.of<AppModel>(context).loggedIn ?Navigator.pushNamedAndRemoveUntil(
+                context,
+                AccountScreen.id,(_) => false
+            ) :  Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => LoginScreen()),
             );
-
           break;
         default:
           Navigator.of(context).pushReplacementNamed(HomeScreen.id);

@@ -36,7 +36,7 @@ class _BankTransferDetailScreenState extends State<BankTransferDetailScreen> {
             toolbarHeight: 75,
             leading: InkWell(
               onTap: (){
-                Navigator.pop(context);
+                Navigator.pop(context,true);
               },
               child: Container(
                 margin: EdgeInsets.only(left: 10),

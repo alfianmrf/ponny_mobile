@@ -61,6 +61,15 @@ class OrderModel with ChangeNotifier{
 
   }
 
+  Future<bool> konfirmasiTerima(String token,String order_id) async {
+    final res = await http.get(urlTerimaBarang+"/"+order_id, headers: { HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: "Bearer $token"});
+    bool result =false;
+    if(res.statusCode == 200){
+      result = true;
+    }
+    return result;
+  }
+
 }
 
 

@@ -730,4 +730,86 @@ final snackBarSuccess = SnackBar(
 
 final nm_format= NumberFormat.simpleCurrency(locale: "id_ID",decimalDigits: 0 );
 
+void showAlertDialog(BuildContext context,Product product) {
+  // set up the AlertDialog
+  SimpleDialog alert = SimpleDialog(
+    backgroundColor: Color(0xfffdf8f0),
+    contentPadding: EdgeInsets.all(5.0),
+    children: <Widget>[
+      Container(
+        padding: EdgeInsets.only(top: 30),
+        child: Icon(
+          Icons.shopping_cart,
+          color: Color(0xffF48262),
+          size: 40,
+        ),
+      ),
+      Padding(
+        padding: EdgeInsets.symmetric(vertical: 10),
+        child: Center(
+            child: Text(
+              'DITAMBAHKAN KE KERANJANG',
+              style: TextStyle(
+                fontFamily: 'Brandon',
+                fontWeight: FontWeight.w600,
+                fontSize: 16,
+                color: Color(0xffF48262),
+              ),
+            )),
+      ),
+      Padding(
+        padding: EdgeInsets.only(top: 15, bottom: 30),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 5),
+              child: Image.network(
+                img_url+product.thumbnail_image,
+                width: MediaQuery.of(context).size.width*0.2,
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 5),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    product.brand.name,
+                    style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontFamily: 'Brandon'
+                    ),
+                  ),
+                  Text(
+                    product.name.length > 20 ? product.name.substring(0, 20)+'...' : product.name,
+                    style: TextStyle(
+                        fontFamily: 'Brandon'
+                    ),
+                  ),
+                  if(product.varian.isNotEmpty)
+                    Text(
+                      '120ml',
+                      style: TextStyle(
+                          fontFamily: 'Brandon'
+                      ),
+                    ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    ],
+  );
+
+  // show the dialog
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
+}
+
 

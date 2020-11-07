@@ -13,6 +13,7 @@ import 'package:ponny/model/Order.dart';
 import 'package:ponny/model/User.dart';
 import 'package:ponny/screens/account/hubungi_kami_screen.dart';
 import 'package:ponny/screens/Order_Screen.dart';
+import 'package:ponny/screens/account/ulasan_produk_sukses_screen.dart';
 import 'package:ponny/screens/pra_daftar.dart';
 import 'package:ponny/screens/login.dart';
 import 'package:ponny/screens/account/menunggu_pembayaran_screen.dart';
@@ -847,7 +848,7 @@ class _AccountScreenState extends State<AccountScreen> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => UlasanProdukScreen()),
+                            builder: (context) => UlasanProdukSuksesScreen()),
                       );
                     },
                     child: Container(

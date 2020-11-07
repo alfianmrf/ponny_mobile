@@ -1,3 +1,5 @@
+import 'package:ponny/model/Product.dart';
+
 class Review {
   User user;
   double rating;
@@ -10,6 +12,7 @@ class Review {
   String comment;
   String time;
   List<String> photos;
+  Product product;
 
   Review(
       {this.user,
@@ -22,11 +25,12 @@ class Review {
         this.statusRecomendasi,
         this.comment,
         this.time,
-        this.photos});
+        this.photos,
+        this.product});
 
   Review.fromJson(Map<String, dynamic> json) {
     user = json['user'] != null ? new User.fromJson(json['user']) : null;
-    rating = json['rating'];
+    rating = double.parse(json['rating'].toString());
     ratingKemasan = json['rating_kemasan'];
     ratingKegunaan = json['rating_kegunaan'];
     ratingEfektif = json['rating_efektif'];
@@ -36,6 +40,7 @@ class Review {
     comment = json['comment'];
     time = json['time'];
     photos = json['photos'] != null ? json['photos'].cast<String>():[];
+    product = json['product'] != null ? Product.fromJson(json['product']) : null;
   }
 
   Map<String, dynamic> toJson() {

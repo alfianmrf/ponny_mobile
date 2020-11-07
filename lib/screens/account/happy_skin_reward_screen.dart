@@ -55,13 +55,13 @@ class _HappySkinRewardStateScreen extends State<HappySkinRewardScreen>
 
         setState(() {
         for(Map item in responseJson["lessThan200"]){
-          lessThan200.add(ProductPoin(item["id"],item["jml_point"],Product.fromJson(item["product"]["availability"])));
+          lessThan200.add(ProductPoin(item["id"],item["jml_point"],Product.fromJson(item["product"]["availability"]),1));
         }
         for(Map item in responseJson["200to500"]){
-          more200to500.add(ProductPoin(item["id"],item["jml_point"],Product.fromJson(item["product"]["availability"])));
+          more200to500.add(ProductPoin(item["id"],item["jml_point"],Product.fromJson(item["product"]["availability"]),1));
         }
         for(Map item in responseJson["moreThan500"]){
-          moreThan500.add(ProductPoin(item["id"],item["jml_point"],Product.fromJson(item["product"]["availability"])));
+          moreThan500.add(ProductPoin(item["id"],item["jml_point"],Product.fromJson(item["product"]["availability"]),1));
         }
         loading =false;
         });
@@ -73,8 +73,13 @@ class _HappySkinRewardStateScreen extends State<HappySkinRewardScreen>
 
 
 
+
+
   @override
   Widget build(BuildContext context) {
+    int usepoin = Provider.of<CartModel>(context).gettotalPoin();
+    int mypoin = Provider.of<UserModel>(context).user.point;
+    int sisa = mypoin-usepoin;
     return DefaultTabController(
       length: 3,
       // initialIndex: tabIndex,
@@ -157,7 +162,7 @@ class _HappySkinRewardStateScreen extends State<HappySkinRewardScreen>
                           Container(
                             child: RichText(
                               text: TextSpan(
-                                text: Provider.of<UserModel>(context).user.point.toString(),
+                                text: sisa.toString(),
                                 style: TextStyle(
                                   color: Color(0xffF48262),
                                   fontFamily: 'Brandon',
@@ -257,6 +262,9 @@ class seratus_point extends StatefulWidget {
 class _SeratusPointScreen extends State<seratus_point> {
   @override
   Widget build(BuildContext context) {
+    int usepoin = Provider.of<CartModel>(context).gettotalPoin();
+    int mypoin = Provider.of<UserModel>(context).user.point;
+    int sisa = mypoin-usepoin;
     return Container(
       child: SingleChildScrollView(
         child: Column(
@@ -332,7 +340,7 @@ class _SeratusPointScreen extends State<seratus_point> {
                               ),
                             ),
                             Container(
-                              child:productPoin.jml_point <= Provider.of<UserModel>(context).user.point?
+                              child:productPoin.jml_point <= sisa?
                               FlatButton(
                                 color: Color(0xffF48262),
                                 textColor: Colors.white,
@@ -344,6 +352,7 @@ class _SeratusPointScreen extends State<seratus_point> {
                                   UIBlock.block(context,customLoaderChild: LoadingWidget(context));
                                   Provider.of<CartModel>(context).addRedemToCart(productPoin, Provider.of<AppModel>(context,listen: false).auth.access_token).then((value) {
                                     UIBlock.unblock(context);
+                                    showAlertDialog(context,productPoin.product);
                                   }).catchError((onError){
                                     UIBlock.unblock(context);
                                   });
@@ -391,6 +400,9 @@ class lebih_duaratus_point extends StatefulWidget {
 class _LebihDuaRatusPointScreen extends State<lebih_duaratus_point> {
   @override
   Widget build(BuildContext context) {
+    int usepoin = Provider.of<CartModel>(context).gettotalPoin();
+    int mypoin = Provider.of<UserModel>(context).user.point;
+    int sisa = mypoin-usepoin;
     return Container(
       child: SingleChildScrollView(
         child: Column(
@@ -466,7 +478,7 @@ class _LebihDuaRatusPointScreen extends State<lebih_duaratus_point> {
                                 ),
                               ),
                               Container(
-                                child:productPoin.jml_point <= Provider.of<UserModel>(context).user.point?
+                                child:productPoin.jml_point <= sisa?
                                 FlatButton(
                                   color: Color(0xffF48262),
                                   textColor: Colors.white,
@@ -476,6 +488,13 @@ class _LebihDuaRatusPointScreen extends State<lebih_duaratus_point> {
                                   splashColor: Colors.blueAccent,
                                   onPressed: () {
                                     /*...*/
+                                    UIBlock.block(context,customLoaderChild: LoadingWidget(context));
+                                    Provider.of<CartModel>(context).addRedemToCart(productPoin, Provider.of<AppModel>(context,listen: false).auth.access_token).then((value) {
+                                      UIBlock.unblock(context);
+                                      showAlertDialog(context,productPoin.product);
+                                    }).catchError((onError){
+                                      UIBlock.unblock(context);
+                                    });
                                   },
                                   child: Text(
                                     "Tukar",
@@ -520,6 +539,9 @@ class lebih_500_point extends StatefulWidget {
 class _LebihLimaRatusPointScreen extends State<lebih_500_point> {
   @override
   Widget build(BuildContext context) {
+    int usepoin = Provider.of<CartModel>(context).gettotalPoin();
+    int mypoin = Provider.of<UserModel>(context).user.point;
+    int sisa = mypoin-usepoin;
     return Container(
       child: SingleChildScrollView(
         child: Column(
@@ -595,7 +617,7 @@ class _LebihLimaRatusPointScreen extends State<lebih_500_point> {
                                 ),
                               ),
                               Container(
-                                child:productPoin.jml_point <= Provider.of<UserModel>(context).user.point?
+                                child:productPoin.jml_point <= sisa?
                                 FlatButton(
                                   color: Color(0xffF48262),
                                   textColor: Colors.white,
@@ -605,6 +627,13 @@ class _LebihLimaRatusPointScreen extends State<lebih_500_point> {
                                   splashColor: Colors.blueAccent,
                                   onPressed: () {
                                     /*...*/
+                                    UIBlock.block(context,customLoaderChild: LoadingWidget(context));
+                                    Provider.of<CartModel>(context).addRedemToCart(productPoin, Provider.of<AppModel>(context,listen: false).auth.access_token).then((value) {
+                                      UIBlock.unblock(context);
+                                      showAlertDialog(context,productPoin.product);
+                                    }).catchError((onError){
+                                      UIBlock.unblock(context);
+                                    });
                                   },
                                   child: Text(
                                     "Tukar",

@@ -15,7 +15,9 @@ import 'package:http/http.dart' as http;
 import 'package:ponny/screens/account/komplain_dalam_perjalanan_screen.dart';
 import 'package:ponny/screens/konfirmasi_pembayaran_screen.dart';
 import 'package:ponny/util/globalUrl.dart';
+import 'package:ponny/widgets/PonnyBottomNavbar.dart';
 import 'package:provider/provider.dart';
+import 'package:uiblock/uiblock.dart';
 
 import 'bank_transfer_detail_screen.dart';
 
@@ -374,7 +376,7 @@ class _OrderScreenState extends State<OrderScreen> {
                                                   margin: EdgeInsets.only(top: 1),
                                                   width: 90,
                                                   child: Text(
-                                                    "Tukar Poin",
+                                                    "Tukar Poin ("+e.quantity.toString()+")",
                                                     textAlign: TextAlign.left,
                                                     style: TextStyle(
                                                       fontFamily: "Brandon",
@@ -755,122 +757,123 @@ class _OrderScreenState extends State<OrderScreen> {
                       },
                     ) ,
                   ),
-                if(order.payment_status == 'paid' && order.confrimResi != null && order.deliveryStatus != "komplain" && order.deliveryStatus != "completed")
-                  Container(
-                    margin: EdgeInsets.only(top: 30, left: 15, right: 15),
-                    padding: EdgeInsets.only(left: 15, right: 15),
-                    width: MediaQuery.of(context).size.width,
-                    height: 50,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            showModalBottomSheet<void>(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10)),
-                              ),
-                              backgroundColor: Color(0xffFEF9F0),
-                              context: context,
-                              builder: (BuildContext context) {
+                if(order.confrimResi!=null)
+                  InkWell(
+                    child: Container(
+                      padding: EdgeInsets.only(left: 15, right: 15),
+                      alignment: Alignment.topLeft,
+                      child: Text("Lacak Pesanan",style: TextStyle(
+                        decoration: TextDecoration.underline,
+                        fontSize: 16,
+                        color: Color(0xffF48262)
+                      ),),
+                    ),
+                    onTap: (){
+                      showModalBottomSheet<void>(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10)),
+                        ),
+                        backgroundColor: Color(0xffFEF9F0),
+                        context: context,
+                        builder: (BuildContext context) {
 
-                                return Wrap(
-                                  children: [
+                          return Wrap(
+                            children: [
+                              Container(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
                                     Container(
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: <Widget>[
-                                          Container(
-                                            padding: EdgeInsets.symmetric(horizontal: 20),
-                                            child: Row(
-                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                              children: [
-                                                Text(
-                                                  'LACAK PESANAN',
-                                                  style: TextStyle(
-                                                    fontFamily: 'Brandon',
-                                                    fontSize: 18,
-                                                    fontWeight: FontWeight.w600,
-                                                  ),
-                                                ),
-                                                IconButton(
-                                                  icon: Icon(
-                                                    Icons.close,
-                                                    color: Color(0xffF48262),
-                                                    size: 24,
-                                                  ),
-                                                  onPressed: () => Navigator.pop(context),
-                                                ),
-                                              ],
+                                      padding: EdgeInsets.symmetric(horizontal: 20),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            'LACAK PESANAN',
+                                            style: TextStyle(
+                                              fontFamily: 'Brandon',
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.w600,
                                             ),
                                           ),
-                                          Container(
-                                            child:  FutureBuilder<LacakResult>(
-                                              future:Provider.of<OrderModel>(context).getLacak(Provider.of<AppModel>(context,listen: false).auth.access_token, order.id.toString()),
-                                              builder:(BuildContext context, AsyncSnapshot<LacakResult> snapshot){
-                                                if(snapshot.hasData){
-                                                  print(snapshot.data.toJson());
-                                                  return Column(
-                                                    children: [
-                                                      Container(
-                                                        color: Color(0xffFEEEE4),
-                                                        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                                                        child: IntrinsicHeight(
-                                                          child: Row(
-                                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                            children: [
-                                                              Column(
-                                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                                                children: [
-                                                                  Text(
-                                                                    snapshot.data.query.courier,
-                                                                    style: TextStyle(
-                                                                      fontFamily: 'Brandon',
-                                                                    ),
-                                                                  ),
-                                                                  Text(
-                                                                    'No Resi: '+snapshot.data.query.waybill,
-                                                                    style: TextStyle(
-                                                                      fontFamily: 'Brandon',
-                                                                    ),
-                                                                  ),
-                                                                ],
+                                          IconButton(
+                                            icon: Icon(
+                                              Icons.close,
+                                              color: Color(0xffF48262),
+                                              size: 24,
+                                            ),
+                                            onPressed: () => Navigator.pop(context),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Container(
+                                      child:  FutureBuilder<LacakResult>(
+                                        future:Provider.of<OrderModel>(context).getLacak(Provider.of<AppModel>(context,listen: false).auth.access_token, order.id.toString()),
+                                        builder:(BuildContext context, AsyncSnapshot<LacakResult> snapshot){
+                                          if(snapshot.hasData){
+                                            print(snapshot.data.toJson());
+                                            return Column(
+                                              children: [
+                                                Container(
+                                                  color: Color(0xffFEEEE4),
+                                                  padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                                                  child: IntrinsicHeight(
+                                                    child: Row(
+                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                      children: [
+                                                        Column(
+                                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                                          children: [
+                                                            Text(
+                                                              snapshot.data.query.courier,
+                                                              style: TextStyle(
+                                                                fontFamily: 'Brandon',
                                                               ),
-                                                              InkWell(
-                                                                onTap: (){
-                                                                  Clipboard.setData(new ClipboardData(text: snapshot.data.query.waybill));
-                                                                  Fluttertoast.showToast(
-                                                                      msg: "Copied to Clipboard",
-                                                                      toastLength: Toast.LENGTH_SHORT,
-                                                                      gravity: ToastGravity.CENTER,
-                                                                      timeInSecForIosWeb: 1,
-                                                                      backgroundColor: Colors.red,
-                                                                      textColor: Colors.white,
-                                                                      fontSize: 16.0
-                                                                  );
-                                                                },
-                                                                child: Container(
-                                                                  alignment: Alignment.bottomRight,
-                                                                  child: Text(
-                                                                    'SALIN',
-                                                                    style: TextStyle(
-                                                                      fontFamily: 'Brandon',
-                                                                      color: Color(0xffF48262),
-                                                                    ),
-                                                                  ),
-                                                                ),
+                                                            ),
+                                                            Text(
+                                                              'No Resi: '+snapshot.data.query.waybill,
+                                                              style: TextStyle(
+                                                                fontFamily: 'Brandon',
                                                               ),
-
-                                                            ],
+                                                            ),
+                                                          ],
+                                                        ),
+                                                        InkWell(
+                                                          onTap: (){
+                                                            Clipboard.setData(new ClipboardData(text: snapshot.data.query.waybill));
+                                                            Fluttertoast.showToast(
+                                                                msg: "Copied to Clipboard",
+                                                                toastLength: Toast.LENGTH_SHORT,
+                                                                gravity: ToastGravity.CENTER,
+                                                                timeInSecForIosWeb: 1,
+                                                                backgroundColor: Colors.red,
+                                                                textColor: Colors.white,
+                                                                fontSize: 16.0
+                                                            );
+                                                          },
+                                                          child: Container(
+                                                            alignment: Alignment.bottomRight,
+                                                            child: Text(
+                                                              'SALIN',
+                                                              style: TextStyle(
+                                                                fontFamily: 'Brandon',
+                                                                color: Color(0xffF48262),
+                                                              ),
+                                                            ),
                                                           ),
                                                         ),
-                                                      ),
-                                                      Container(
-                                                        color: Color(0xffFEF9F0),
-                                                        padding: EdgeInsets.all(20),
-                                                        child: Column(
-                                                          children: snapshot.data.result.manifest.map(
-                                                                  (e) => IntrinsicHeight(
+
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                                Container(
+                                                  color: Color(0xffFEF9F0),
+                                                  padding: EdgeInsets.all(20),
+                                                  child: Column(
+                                                      children: snapshot.data.result.manifest.map(
+                                                              (e) => IntrinsicHeight(
                                                             child: Row(
                                                               children: [
                                                                 Container(
@@ -920,36 +923,53 @@ class _OrderScreenState extends State<OrderScreen> {
                                                               ],
                                                             ),
                                                           )
-                                                          ).toList()
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  );
-                                                }else if(snapshot.hasError){
-                                                    return Container(
-                                                      child: Center(
-                                                        child: Text("Belum ada"),
-                                                      ),
-                                                    );
-                                                }else{
-                                                  return Container(
-                                                    child: Center(
-                                                      child: LoadingWidgetFadingCircle(context),
-                                                    ),
-                                                  );
-                                                }
-                                              },
-                                            ),
-                                          )
-                                          ,
-
-                                        ],
+                                                      ).toList()
+                                                  ),
+                                                ),
+                                              ],
+                                            );
+                                          }else if(snapshot.hasError){
+                                            return Container(
+                                              height: 100,
+                                              child: Center(
+                                                child: Text("Nomor resi belum ada."),
+                                              ),
+                                            );
+                                          }else{
+                                            return Container(
+                                              child: Center(
+                                                child: LoadingWidgetFadingCircle(context),
+                                              ),
+                                            );
+                                          }
+                                        },
                                       ),
-                                    ),
+                                    )
+                                    ,
+
                                   ],
-                                );
-                              },
-                            );
+                                ),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+
+                    },
+                  ),
+                if(order.payment_status == 'paid' && order.deliveryStatus != "komplain" && order.deliveryStatus != "completed")
+                  Container(
+                    margin: EdgeInsets.only(top: 30, left: 15, right: 15),
+                    padding: EdgeInsets.only(left: 15, right: 15),
+                    width: MediaQuery.of(context).size.width,
+                    height: 50,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            showAlertDialog(context,order);
+
                           },
                           child: Container(
                             decoration: BoxDecoration(
@@ -968,7 +988,7 @@ class _OrderScreenState extends State<OrderScreen> {
                               children: [
                                 Container(
                                   child: Text(
-                                    "Lacak Pesanan",
+                                    "Terima Barang",
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
                                       fontFamily: "Brandon",
@@ -1034,6 +1054,148 @@ class _OrderScreenState extends State<OrderScreen> {
     );
   }
 
+  void showAlertDialog(BuildContext context,Order order) {
+    // set up the AlertDialog
+    SimpleDialog alert = SimpleDialog(
+      backgroundColor: Color(0xfffdf8f0),
+      contentPadding: EdgeInsets.all(5.0),
+      children: <Widget>[
+        Align(
+          alignment: Alignment.centerRight,
+          child: IconButton(
+              icon: Icon(Icons.close),
+              color: Color(0xffF48262),
+              onPressed: () {
+                Navigator.of(context).pop();
+              }),
+        ),
+        Container(
+          child: Column(
+            children: [
+              Center(
+                  child: Text(
+                    "Pesanan Diterima",
+                    style: TextStyle(
+                      fontFamily: 'Brandon',
+                      fontWeight: FontWeight.w600,
+                      fontSize: 20,
+                    ),
+                  )
+              ),
+              Container(
+                  padding: EdgeInsets.all(5.0),
+                  child: Text(
+                    "Saya telah memastikan bahwa produk telah saya terima dan tidak ada masalah. Saya tidak akan mengajukan pengembalian barang atau dana setelah ini.",
+                    style: TextStyle(
+                      fontFamily: 'Brandon',
+                      fontSize: 12,
+                    ),
+                    textAlign: TextAlign.center,
+                  )
+              ),
+            ],
+          ),
+        ),
+        Container(
+          padding: EdgeInsets.symmetric(vertical: 10.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              GestureDetector(
+                onTap: () {
+                  Navigator.of(context).pop();
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Color(0xffF3C1B5),
+                    ),
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(5),
+                    ),
+                  ),
+                  width: 160,
+                  height: 35,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        child: Text(
+                          "NANTI SAJA",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontFamily: "Brandon",
+                            color: Color(0xffF48262),
+                            fontSize: 15,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              GestureDetector(
+                onTap: () {
+                  UIBlock.block(context,customLoaderChild: LoadingWidgetFadingCircle(context));
+                  Provider.of<OrderModel>(context,listen: false).konfirmasiTerima(Provider.of<AppModel>(context,listen: false).auth.access_token, order.id.toString()).then((value){
+                    UIBlock.unblock(context);
+                    Navigator.of(context).pop();
+                    _getData();
+                  }).catchError((onError){
+                    UIBlock.unblock(context);
+                    Navigator.of(context).pop();
+                    print(onError);
+                  });
+
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    // border: Border.all(
+                    //   color: Colors.red[500],
+                    // ),
+                    color: Color(0xffF48262),
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(5),
+                    ),
+                  ),
+                  width: 160,
+                  height: 35,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        child: Text(
+                          "KONFIRMASI",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontFamily: "Brandon",
+                            color: Colors.white,
+                            fontSize: 15,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          )
+        )
+
+
+       
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     String title ="";
@@ -1091,6 +1253,7 @@ class _OrderScreenState extends State<OrderScreen> {
           ],
         ),
       ),
+      bottomNavigationBar: new PonnyBottomNavbar(selectedIndex: 4),
     );
   }
 

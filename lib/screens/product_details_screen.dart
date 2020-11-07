@@ -368,13 +368,12 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   }
 
   Future<Null> _getData()  async {
-    String token = Provider.of<AppModel>(context,listen: false).auth.access_token;
     setState(() {
       isLoading = true;
       NextPage=null;
       listReview=[];
     });
-    final response = await http.get(reviewList+"/"+widget.product.id.toString(), headers: { HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: "Bearer $token"});
+    final response = await http.get(reviewList+"/"+widget.product.id.toString());
     if(response.statusCode == 200)
     {
       print(response.body);
@@ -395,12 +394,11 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   }
   void _getMoreData() async {
     if(NextPage != null && !isLoading  && current_page <= last_page){
-      String token = Provider.of<AppModel>(context,listen: false).auth.access_token;
       setState(() {
         isLoading = true;
         current_page ++;
       });
-      final response = await http.get(NextPage,headers: { HttpHeaders.contentTypeHeader: 'application/json',HttpHeaders.authorizationHeader: "Bearer $token" });
+      final response = await http.get(NextPage);
       final responseJson = json.decode(response.body);
 
       setState(() {
@@ -973,14 +971,20 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                               margin: EdgeInsets.only(top: 25, bottom: 15),
                               child: InkWell(
                                 onTap: (){
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => ReviewScreen(product: widget.product,),
-                                    ),
-                                  ).then((value){
-                                    _getData();
-                                  });
+                                  if(Provider.of<AppModel>(context).loggedIn){
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => ReviewScreen(product: widget.product,),
+                                      ),
+                                    ).then((value){
+                                      _getData();
+                                    });
+                                  }else{
+                                  Navigator.push(context,new MaterialPageRoute(
+                                    builder: (BuildContext context) => new LoginScreen(),
+                                    ));
+                                  }
                                 },
                                 child: Container(
                                   padding: EdgeInsets.symmetric(horizontal: 15),
