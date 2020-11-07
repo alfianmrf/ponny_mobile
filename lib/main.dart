@@ -91,7 +91,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:ponny/screens/Basic_SkinCare_screen.dart';
 import 'model/WishProduct.dart';
 
+import 'package:ponny/screens/daftarLogin_screen.dart';
 
+import 'package:ponny/screens/kartu_screen.dart';
 
 Future<void> main() async {
 
@@ -126,12 +128,12 @@ class MyApp extends StatelessWidget {
         primaryColor: Color(0xFFFDF8F0),
         accentColor: Colors.red,
       ),
-      initialRoute: SplashScreen.id,
+      initialRoute: KartuScreen.id, //SplashScreen.id,
       routes: {
         SplashScreen.id: (context) => SplashScreen(),
         IntroScreen.id: (context) => IntroScreen(),
         HomeScreen.id: (context) => HomeScreen(),
-        ForumScreen.id: (context) => ForumScreen(),
+        ForumData.id: (context) => ForumData(),
         AccountScreen.id: (context) => AccountScreen(),
         Browse.id: (context) => Browse(),
         Skinklopedia.id: (context) => Skinklopedia(),
@@ -183,7 +185,9 @@ class MyApp extends StatelessWidget {
         CairkanDanaScreen.id: (context) => CairkanDanaScreen(),
         BasicSkincare.id: (context) => BasicSkincare(),
         DetailBrand.id: (context) => DetailBrand(),
-        BasicSkincareData.id: (context) => BasicSkincareData()
+        BasicSkincareData.id: (context) => BasicSkincareData(),
+        DaftarLoginScreen.id: (context) => DaftarLoginScreen(),
+        KartuScreen.id: (context) => KartuScreen(),
       },
     );
   }

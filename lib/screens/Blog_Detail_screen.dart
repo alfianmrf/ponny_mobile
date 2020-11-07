@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
-import 'package:flutter_html/flutter_html.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class BlogDetailScreen extends StatefulWidget {
   final List list;
+  final List listTag;
   final int i;
-  BlogDetailScreen({this.list, this.i});
+  final int categoryId;
+  BlogDetailScreen({this.list, this.i, this.listTag, this.categoryId});
 
   @override
   _BlogDetailScreenState createState() => _BlogDetailScreenState();
@@ -15,6 +18,11 @@ class BlogDetailScreen extends StatefulWidget {
 
 class _BlogDetailScreenState extends State<BlogDetailScreen> {
   bool onSearch = false;
+  @override
+  void initState() {
+    // TODO: implement initState
+    print(widget.listTag);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -219,7 +227,7 @@ class _BlogDetailScreenState extends State<BlogDetailScreen> {
                                 Container(height: 10),
                                 Container(
                                   child: Text(
-                                    widget.list[widget.i]["category"]["title"],
+                                    widget.listTag[0]["title"],
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
                                         fontSize: 14,
@@ -377,6 +385,42 @@ class _BlogDetailScreenState extends State<BlogDetailScreen> {
             bottomNavigationBar: new PonnyBottomNavbar(selectedIndex: 0)),
       ),
     );
+  }
+}
+
+class BlogDetailData extends StatefulWidget {
+  final List list;
+  final int i;
+  final categoryId;
+
+  BlogDetailData({this.list, this.i, this.categoryId});
+
+  @override
+  _BlogDetailDataState createState() => _BlogDetailDataState();
+}
+
+class _BlogDetailDataState extends State<BlogDetailData> {
+  Future<List> getTag() async {
+    final response = await http.post(
+        "http://192.168.0.139/something/app/http/controllers/blogTag.php",
+        body: {'categoryId': widget.categoryId.toString()});
+    return json.decode(response.body);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return new FutureBuilder<List>(
+        future: getTag(),
+        builder: (context, snapshot) {
+          if (snapshot.hasError) print(snapshot.error);
+          return snapshot.hasData
+              ? BlogDetailScreen(
+                  listTag: snapshot.data,
+                  list: widget.list,
+                  i: widget.i,
+                )
+              : Center(child: new CircularProgressIndicator());
+        });
   }
 }
 
