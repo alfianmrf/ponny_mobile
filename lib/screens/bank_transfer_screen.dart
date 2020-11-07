@@ -5,7 +5,6 @@ import 'package:ponny/screens/bank_transfer_detail_screen.dart';
 
 class BankTransferScreen extends StatefulWidget {
   static const String id = "bank_transfer_screen";
-
   @override
   _BankTransferScreenState createState() => _BankTransferScreenState();
 }

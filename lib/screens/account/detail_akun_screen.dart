@@ -45,6 +45,7 @@ class _DetailAkunStateScreen extends State<DetailAkunScreen> {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<UserModel>(context).user;
+    if(user.tgl_lahir!=null)
     setState(() {
       tgl_lahir = DateTime.parse(user.tgl_lahir);
     });
@@ -279,7 +280,7 @@ class _DetailAkunStateScreen extends State<DetailAkunScreen> {
                         ),
                         Container(
                           child: Text(
-                            f.format(tgl_lahir),
+                            user.tgl_lahir != null? f.format(tgl_lahir) :"",
                             style: TextStyle(
                               fontFamily: "Brandon",
                               fontSize: 15,

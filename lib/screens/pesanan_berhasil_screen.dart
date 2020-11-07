@@ -5,6 +5,8 @@ import 'package:ponny/screens/home_screen.dart';
 
 class PesananBerhasilScreen extends StatefulWidget {
   static const String id = "pesanan_berhasil_screen";
+  String code;
+  PesananBerhasilScreen({Key key,this.code});
 
   @override
   _PesananBerhasilScreenState createState() => _PesananBerhasilScreenState();
@@ -83,7 +85,7 @@ class _PesananBerhasilScreenState extends State<PesananBerhasilScreen> {
                     borderRadius: BorderRadius.circular(5),
                   ),
                   child: Text(
-                    'Transaksi #1256VC',
+                    'Transaksi #'+widget.code,
                     style: TextStyle(
                       fontFamily: 'Brandon',
                       fontSize: 12,

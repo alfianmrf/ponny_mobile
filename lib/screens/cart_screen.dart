@@ -1,10 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:lodash_dart/lodash_dart.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:ponny/common/constant.dart';
 import 'package:ponny/model/App.dart';
 import 'package:ponny/model/Cart.dart';
+import 'package:ponny/model/User.dart';
 import 'package:ponny/screens/PilihSample.dart';
 import 'package:ponny/screens/account/happy_skin_reward_screen.dart';
 import 'package:ponny/util/globalUrl.dart';
@@ -29,6 +31,7 @@ class _CartScreenState extends State<CartScreen> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
      await Provider.of<CartModel>(context).RemoveCoupon();
+     await Provider.of<UserModel>(context).getUser(Provider.of<AppModel>(context,listen: false).auth.access_token);
     });
 
   }
@@ -453,7 +456,7 @@ class _CartScreenState extends State<CartScreen> {
                                               ),
                                             ),
                                             Text(
-                                              item.jml_point.toString()+" POIN",
+                                              (item.jml_point*item.qty).toString()+" POIN",
                                               style: TextStyle(
                                                 fontFamily: 'Brandon',
                                                 fontSize: 15,
@@ -500,17 +503,17 @@ class _CartScreenState extends State<CartScreen> {
                                                           ),
                                                         ),
                                                         onPressed:(){
-                                                          // UIBlock.block(context,customLoaderChild: LoadingWidget(context));
-                                                          // value.RemoveProductToCart(item.product,Provider.of<AppModel>(context).auth.access_token).then((value) {
-                                                          //   UIBlock.unblock(context);
-                                                          // });
+                                                          UIBlock.block(context,customLoaderChild: LoadingWidget(context));
+                                                          value.RemoveRedemToCart(item,Provider.of<AppModel>(context).auth.access_token).then((value) {
+                                                            UIBlock.unblock(context);
+                                                          });
                                                         },
                                                       )
                                                   ),
                                                   Container(
                                                     padding: EdgeInsets.symmetric(
                                                         horizontal: 10),
-                                                    child: Text("1"),
+                                                    child: Text(item.qty.toString()),
                                                   ),
                                                   SizedBox(
 
@@ -533,11 +536,12 @@ class _CartScreenState extends State<CartScreen> {
                                                           ),
                                                         ),
                                                         onPressed: (){
-                                                          // UIBlock.block(context,customLoaderChild: LoadingWidget(context));
-                                                          // value.addProductToCart(item.product,Provider.of<AppModel>(context).auth.access_token).then((value){
-                                                          //   UIBlock.unblock(context);
-                                                          // });
-
+                                                          if(value.gettotalPoin()+item.jml_point<=Provider.of<UserModel>(context).user.point){
+                                                            UIBlock.block(context,customLoaderChild: LoadingWidget(context));
+                                                            value.addRedemToCart(item,Provider.of<AppModel>(context).auth.access_token).then((value){
+                                                              UIBlock.unblock(context);
+                                                            });
+                                                          }
                                                         },
                                                       )
                                                   ),

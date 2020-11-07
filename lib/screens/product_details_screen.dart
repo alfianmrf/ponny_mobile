@@ -1,3 +1,7 @@
+import 'dart:convert';
+import 'dart:io';
+
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
@@ -7,6 +11,7 @@ import 'package:ponny/common/constant.dart';
 import 'package:ponny/model/App.dart';
 import 'package:ponny/model/Cart.dart';
 import 'package:ponny/model/Product.dart';
+import 'package:ponny/model/Review.dart';
 import 'package:ponny/model/WishProduct.dart';
 import 'package:ponny/screens/cart_screen.dart';
 import 'package:ponny/screens/review_screen.dart';
@@ -16,6 +21,7 @@ import 'package:uiblock/uiblock.dart';
 
 import 'account/daftar_keinginan_screen.dart';
 import 'login.dart';
+import 'package:http/http.dart' as http;
 
 class ProductDetailsScreen extends StatefulWidget {
   static const String id = "product_details_screen";
@@ -28,10 +34,26 @@ class ProductDetailsScreen extends StatefulWidget {
 
 class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+  ScrollController _scrollController = new ScrollController();
+  List<Review> listReview =[];
+  bool isLoading =true;
+  int current_page=0;
+  int last_page =0;
+  String NextPage;
+
 
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      _getData();
+      _scrollController.addListener(() {
+        if (_scrollController.position.pixels ==
+            _scrollController.position.maxScrollExtent) {
+          _getMoreData();
+        }
+      });
+    });
   }
 
   Widget product() {
@@ -333,6 +355,64 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     );
   }
 
+  Widget _buildProgressIndicator() {
+    return new Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: new Center(
+        child: new Opacity(
+          opacity: isLoading ? 1.0 : 00,
+          child: LoadingWidget(context),
+        ),
+      ),
+    );
+  }
+
+  Future<Null> _getData()  async {
+    setState(() {
+      isLoading = true;
+      NextPage=null;
+      listReview=[];
+    });
+    final response = await http.get(reviewList+"/"+widget.product.id.toString());
+    if(response.statusCode == 200)
+    {
+      print(response.body);
+      final responseJson = json.decode(response.body);
+
+
+      setState(() {
+        for (Map item in responseJson["data"]) {
+          listReview.add(Review.fromJson(item));
+        }
+        isLoading =false;
+        current_page = responseJson['pagination']['current_page'];
+        last_page = responseJson['pagination']['last_page'];
+        NextPage = responseJson['pagination']["next_page_url"];
+      });
+    }
+
+  }
+  void _getMoreData() async {
+    if(NextPage != null && !isLoading  && current_page <= last_page){
+      setState(() {
+        isLoading = true;
+        current_page ++;
+      });
+      final response = await http.get(NextPage);
+      final responseJson = json.decode(response.body);
+
+      setState(() {
+        for (Map item in responseJson["data"]) {
+          listReview.add(Review.fromJson(item));
+        }
+        isLoading =false;
+        current_page = responseJson['pagination']['current_page'];
+        last_page = responseJson['pagination']['last_page'];
+        NextPage = responseJson['pagination']["next_page_url"];
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     List<String> listBahanAktif = widget.product.bahan_aktif != null? widget.product.bahan_aktif.split(',') : [];
@@ -452,6 +532,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
             body: Container(
               margin: MediaQuery.of(context).padding,
               child: SingleChildScrollView(
+                controller: _scrollController,
                 child: Column(
                   children: <Widget>[
                     Container(
@@ -890,12 +971,20 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                               margin: EdgeInsets.only(top: 25, bottom: 15),
                               child: InkWell(
                                 onTap: (){
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => ReviewScreen(),
-                                    ),
-                                  );
+                                  if(Provider.of<AppModel>(context).loggedIn){
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => ReviewScreen(product: widget.product,),
+                                      ),
+                                    ).then((value){
+                                      _getData();
+                                    });
+                                  }else{
+                                  Navigator.push(context,new MaterialPageRoute(
+                                    builder: (BuildContext context) => new LoginScreen(),
+                                    ));
+                                  }
                                 },
                                 child: Container(
                                   padding: EdgeInsets.symmetric(horizontal: 15),
@@ -915,6 +1004,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                               ),
                             ),
                           ),
+                          for(Review review in listReview)
                           Container(
                             width: MediaQuery.of(context).size.width,
                             padding: EdgeInsets.all(10),
@@ -937,7 +1027,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                           shape: BoxShape.circle,
                                           image: DecorationImage(
                                               fit: BoxFit.cover,
-                                              image: AssetImage('assets/images/produk.png')
+                                              image:  NetworkImage(review.user.avatarOriginal != null ? img_url+ review.user.avatarOriginal : review.user.gender == "P" ? img_url+"frontend/images/avatar/avatar-female.png" : img_url+ "frontend/images/avatar/avatar-male.png" )
                                           )
                                       ),
                                     ),
@@ -953,7 +1043,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                         Container(
                                           alignment: Alignment.centerLeft,
                                           child: Text(
-                                            'Aninda Anita',
+                                            review.user.name,
                                             style: TextStyle(
                                               fontFamily: 'Yeseva',
                                               fontSize: 15,
@@ -965,26 +1055,22 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                           margin: EdgeInsets.symmetric(vertical: 5),
                                           child: Text.rich(TextSpan(children: <InlineSpan>[
                                             WidgetSpan(
-                                              child: RatingBar(
-                                                initialRating: 4,
-                                                minRating: 1,
+                                              child:  RatingBar(
+                                                initialRating: review.rating,
+                                                minRating: 0,
                                                 direction: Axis.horizontal,
                                                 allowHalfRating: true,
                                                 itemCount: 5,
                                                 itemSize: 14.0,
                                                 itemPadding: EdgeInsets.symmetric(horizontal: 1.0),
-                                                ratingWidget: RatingWidget(
-                                                  full: Icon(
-                                                    Icons.favorite,
-                                                    color: Color(0xffF48262),
-                                                  ),
-                                                  empty: Icon(
-                                                    Icons.favorite_border,
-                                                    color: Color(0xffF48262),
-                                                  ),
+                                                itemBuilder: (context, index) => Icon(
+                                                  Icons.favorite,
+                                                  color: Color(0xffF48262),
                                                 ),
+                                                unratedColor: Color(0xffFBD2CD),
                                               ),
                                             ),
+                                            if(review.statusBeli == 1)
                                             WidgetSpan(
                                               child: Container(
                                                 margin: EdgeInsets.only(left: 10),
@@ -1005,7 +1091,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                           ])),
                                         ),
                                         Text(
-                                          'Kualitas barangnya baik, pengiriman cukup cepat produk diterima dengan baik dan juga sedang promo',
+                                          review.comment,
                                           style: TextStyle(
                                             fontFamily: 'Brandon',
                                             fontSize: 12,
@@ -1014,29 +1100,17 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                         Container(
                                           margin: EdgeInsets.only(top: 5),
                                           child: Row(
-                                            children: <Widget>[
-                                              Container(
-                                                margin: EdgeInsets.only(right: 7),
-                                                child: Image.asset(
-                                                  'assets/images/produk_1.png',
-                                                  width: MediaQuery.of(context).size.width*0.15,
-                                                ),
-                                              ),
-                                              Container(
-                                                margin: EdgeInsets.only(right: 7),
-                                                child: Image.asset(
-                                                  'assets/images/produk_1.png',
-                                                  width: MediaQuery.of(context).size.width*0.15,
-                                                ),
-                                              ),
-                                              Container(
-                                                margin: EdgeInsets.only(right: 7),
-                                                child: Image.asset(
-                                                  'assets/images/produk_1.png',
-                                                  width: MediaQuery.of(context).size.width*0.15,
-                                                ),
-                                              ),
-                                            ],
+                                            children: review.photos.map((e) => Container(
+                                              margin: EdgeInsets.only(right: 7),
+                                              child:  CachedNetworkImage(
+                                              imageUrl: img_url+e,
+                                              placeholder: (context, url) => LoadingWidgetPulse(context),
+                                              errorWidget: (context, url, error) => Image.asset('assets/images/basic.jpg'),
+                                              width: MediaQuery.of(context).size.width*0.15,
+                                              fit: BoxFit.cover,
+                                              )
+                                            )).toList()
+
                                           ),
                                         ),
                                       ],
@@ -1046,137 +1120,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                               ],
                             ),
                           ),
-                          Container(
-                            width: MediaQuery.of(context).size.width,
-                            padding: EdgeInsets.all(10),
-                            margin: EdgeInsets.only(bottom: 10),
-                            decoration: BoxDecoration(
-                              border: Border.all(color: Color(0xffF48262)),
-                              color: Color(0xffFDDCC3),
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Expanded(
-                                    flex: 1,
-                                    child: AspectRatio(
-                                      aspectRatio: 1,
-                                      child: Container(
-                                        width: MediaQuery.of(context).size.width,
-                                        decoration: BoxDecoration(
-                                            shape: BoxShape.circle,
-                                            image: DecorationImage(
-                                                fit: BoxFit.cover,
-                                                image: AssetImage('assets/images/produk.png')
-                                            )
-                                        ),
-                                      ),
-                                    )
-                                ),
-                                Expanded(
-                                  flex: 4,
-                                  child: Container(
-                                    alignment: Alignment.topLeft,
-                                    padding: EdgeInsets.only(left: 10),
-                                    child: Column(
-                                      children: <Widget>[
-                                        Container(
-                                          alignment: Alignment.centerLeft,
-                                          child: Text(
-                                            'Aninda Anita',
-                                            style: TextStyle(
-                                              fontFamily: 'Yeseva',
-                                              fontSize: 15,
-                                            ),
-                                          ),
-                                        ),
-                                        Container(
-                                          alignment: Alignment.centerLeft,
-                                          margin: EdgeInsets.symmetric(vertical: 5),
-                                          child: Text.rich(TextSpan(children: <InlineSpan>[
-                                            WidgetSpan(
-                                              child: RatingBar(
-                                                initialRating: 4,
-                                                minRating: 1,
-                                                direction: Axis.horizontal,
-                                                allowHalfRating: true,
-                                                itemCount: 5,
-                                                itemSize: 14.0,
-                                                itemPadding: EdgeInsets.symmetric(horizontal: 1.0),
-                                                ratingWidget: RatingWidget(
-                                                  full: Icon(
-                                                    Icons.favorite,
-                                                    color: Color(0xffF48262),
-                                                  ),
-                                                  empty: Icon(
-                                                    Icons.favorite_border,
-                                                    color: Color(0xffF48262),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                            WidgetSpan(
-                                              child: Container(
-                                                margin: EdgeInsets.only(left: 10),
-                                                padding: EdgeInsets.symmetric(horizontal: 5),
-                                                child: Text(
-                                                  'Verified by Phoebe',
-                                                  style: TextStyle(
-                                                      fontFamily: 'Brandon',
-                                                      fontSize: 10
-                                                  ),
-                                                ),
-                                                decoration: BoxDecoration(
-                                                  color: Colors.white,
-                                                  borderRadius: BorderRadius.circular(3),
-                                                ),
-                                              ),
-                                            )
-                                          ])),
-                                        ),
-                                        Text(
-                                          'Kualitas barangnya baik, pengiriman cukup cepat produk diterima dengan baik dan juga sedang promo',
-                                          style: TextStyle(
-                                            fontFamily: 'Brandon',
-                                            fontSize: 12,
-                                          ),
-                                        ),
-                                        Container(
-                                          margin: EdgeInsets.only(top: 5),
-                                          child: Row(
-                                            children: <Widget>[
-                                              Container(
-                                                margin: EdgeInsets.only(right: 7),
-                                                child: Image.asset(
-                                                  'assets/images/produk_1.png',
-                                                  width: MediaQuery.of(context).size.width*0.15,
-                                                ),
-                                              ),
-                                              Container(
-                                                margin: EdgeInsets.only(right: 7),
-                                                child: Image.asset(
-                                                  'assets/images/produk_1.png',
-                                                  width: MediaQuery.of(context).size.width*0.15,
-                                                ),
-                                              ),
-                                              Container(
-                                                margin: EdgeInsets.only(right: 7),
-                                                child: Image.asset(
-                                                  'assets/images/produk_1.png',
-                                                  width: MediaQuery.of(context).size.width*0.15,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
+                          if(isLoading)
+                            _buildProgressIndicator()
                         ],
                       ),
                     ),

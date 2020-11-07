@@ -12,6 +12,8 @@ import 'package:ponny/model/Cart.dart';
 import 'package:ponny/model/Order.dart';
 import 'package:ponny/model/User.dart';
 import 'package:ponny/screens/account/hubungi_kami_screen.dart';
+import 'package:ponny/screens/Order_Screen.dart';
+import 'package:ponny/screens/account/ulasan_produk_sukses_screen.dart';
 import 'package:ponny/screens/pra_daftar.dart';
 import 'package:ponny/screens/login.dart';
 import 'package:ponny/screens/account/menunggu_pembayaran_screen.dart';
@@ -459,7 +461,7 @@ class _AccountScreenState extends State<AccountScreen> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => MenungguPembayaranSuksesScreen(),
+                          builder: (context) => OrderScreen(type: OrderScreen.unpaid,),
                         ),
                       );
                     },
@@ -524,7 +526,8 @@ class _AccountScreenState extends State<AccountScreen> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => PembayaranDiterimaScreen()),
+                          builder: (context) => OrderScreen(type: OrderScreen.paid,),
+                        ),
                       );
                     },
                     child: Container(
@@ -588,7 +591,8 @@ class _AccountScreenState extends State<AccountScreen> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => DalamPerjalananScreen()),
+                          builder: (context) => OrderScreen(type: OrderScreen.on_delivery,),
+                        ),
                       );
                     },
                     child: Container(
@@ -651,7 +655,8 @@ class _AccountScreenState extends State<AccountScreen> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => TerkirimScreen()),
+                          builder: (context) => OrderScreen(type: OrderScreen.delivered,),
+                        ),
                       );
                     },
                     child: Container(
@@ -715,7 +720,8 @@ class _AccountScreenState extends State<AccountScreen> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => PesananSelesaiScreen()),
+                          builder: (context) => OrderScreen(type: OrderScreen.completed,),
+                        ),
                       );
                     },
                     child: Container(
@@ -778,7 +784,71 @@ class _AccountScreenState extends State<AccountScreen> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => UlasanProdukScreen()),
+                          builder: (context) => OrderScreen(type: OrderScreen.komplain,),
+                        ),
+                      );
+                    },
+                    child: Container(
+                      decoration: new BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(
+                            width: 2,
+                            color: Hexcolor("#F59379"),
+                          ),
+                        ),
+                      ),
+                      child: Row(
+                        children: [
+                          Container(
+                            margin: EdgeInsets.only(
+                                bottom: 10, left: 15, right: 15, top: 10),
+                            child: Image.asset(
+                              'assets/images/komplain.png',
+                              width: 32,
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(bottom: 5, top: 5),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  margin: EdgeInsets.only(top: 0),
+                                  child: Text(
+                                    "Sedang Komplain",
+                                    style: TextStyle(
+                                      fontFamily: "Brandon",
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 20,
+                                    ),
+                                  ),
+                                ),
+                                Container(
+                                  // width: 150,
+                                  child: Text(
+                                    "Purchased Items",
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(
+                                      fontFamily: "Brandon",
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.grey,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => UlasanProdukSuksesScreen()),
                       );
                     },
                     child: Container(

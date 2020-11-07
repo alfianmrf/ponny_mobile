@@ -2,12 +2,14 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:ponny/common/constant.dart';
 import 'package:ponny/model/App.dart';
+import 'package:ponny/model/Product.dart';
 import 'package:ponny/model/User.dart';
 import 'package:ponny/screens/account_screen.dart';
 import 'package:ponny/screens/metode_verifikasi_screen.dart';
@@ -21,20 +23,82 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uiblock/uiblock.dart';
 import 'package:ponny/util/globalUrl.dart';
+import 'package:http_parser/http_parser.dart';
 
 enum BeliProduk { beli, tidak }
 
 class ReviewScreen extends StatefulWidget {
   static const String id = "review_Screen";
+  Product product;
+  ReviewScreen({Key key,@required this.product});
+
   @override
   _ReviewStateScreen createState() => _ReviewStateScreen();
 }
 
 class _ReviewStateScreen extends State<ReviewScreen> {
-  BeliProduk _status;
+  final _scaffoldKey =GlobalKey<ScaffoldState>();
+  List<File> files =[];
+  int kemasan=0;
+  int kegunaan =0;
+  int efektif =0;
+  int harga =0;
+  bool _status;
+  bool _recomended;
+  final _catatan = TextEditingController();
+
+  _fetchInsert() async {
+    UIBlock.block(context,customLoaderChild: LoadingWidget(context));
+    var token = Provider.of<AppModel>(context,listen: false).auth.access_token;
+    Map<String, String> headers = { "Authorization": "Bearer $token"};
+    var request = http.MultipartRequest(
+        "POST", Uri.parse(revieStore));
+
+    for (var file in files) {
+      var multipartFile = await http.MultipartFile.fromPath(
+          "photos[]", file.path,
+          contentType:  MediaType('image', 'jpeg'));
+
+      request.files.add(multipartFile);
+    }
+    request.fields["product_id"] = widget.product.id.toString();
+    request.fields["packaging_rate"] = kemasan.toString();
+    request.fields["usability_rate"] = kegunaan.toString();
+    request.fields["effective_rate"] = efektif.toString();
+    request.fields["price_rate"] = harga.toString();
+    request.fields["comment"] = _catatan.value.text;
+    request.fields["recommended"] = _recomended ? "1":"0";
+    request.fields["at_ponny"] = _status ? "1":"0";
+    request.headers.addAll(headers);
+    http.StreamedResponse response = await request.send();
+
+    if(response.statusCode == 200)
+    {
+      Navigator.pop(context,true);
+    }else{
+
+      _scaffoldKey.currentState.showSnackBar(snackBarError);
+    }
+    UIBlock.unblock(context);
+
+  }
+  _validation(){
+    if(_recomended != null && _catatan.value.text.isNotEmpty && _catatan.value.text.length >= 50 && _status != null ){
+      _fetchInsert();
+    }else{
+      final snackBar = SnackBar(
+        content: Text('Form Review belum lengkap!',style: TextStyle(color: Colors.white)),
+        backgroundColor: Colors.redAccent,
+      );
+      _scaffoldKey.currentState.showSnackBar(snackBar);
+    }
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         titleSpacing: 0.0,
         elevation: 0.0,
@@ -77,8 +141,8 @@ class _ReviewStateScreen extends State<ReviewScreen> {
                     IntrinsicHeight(
                       child: Row(
                         children: [
-                          Image.asset(
-                            'assets/images/produk.png',
+                          Image.network(
+                            img_url+widget.product.thumbnail_image,
                             width: 80,
                           ),
                           Container(
@@ -87,48 +151,48 @@ class _ReviewStateScreen extends State<ReviewScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  'AERIS',
+                                  widget.product.brand.name,
                                   style: TextStyle(
                                     fontFamily: 'Yeseva',
                                     fontSize: 20,
                                   ),
                                 ),
                                 Text(
-                                  'Sister Blendie',
+                                  widget.product.name,
                                   style: TextStyle(
                                     fontFamily: 'Brandon',
                                     fontSize: 20,
                                   ),
                                 ),
-                                Row(
-                                  children: [
-                                    Container(
-                                      padding: EdgeInsets.symmetric(horizontal: 20),
-                                      margin: EdgeInsets.only(right: 10),
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(5),
-                                        border: Border.all(width: 1, color: Color(0xffF48262))
-                                      ),
-                                      child: Text(
-                                        '60 ml',
-                                        style: TextStyle(fontFamily: 'Brandon',fontSize: 12),
-                                      ),
+                              for(Varian item in widget.product.varian)(
+                              Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Container(
+                                    padding: EdgeInsets.only(top: 9.0),
+                                    child: Row(
+                                      children: <Widget>[
+                                        Text(item.atribut_name+" :"),
+                                        for(String xitem in item.values)(
+                                            Container(
+                                              margin: EdgeInsets.symmetric(horizontal: 7),
+                                              padding: EdgeInsets.symmetric(horizontal: 7),
+                                              child: Text(
+                                                xitem,
+                                                style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontFamily: 'Brandon'
+                                                ),
+                                              ),
+                                              decoration: BoxDecoration(
+                                                border: Border.all(color: Color(0xffF48262)),
+                                                borderRadius: BorderRadius.circular(5),
+                                              ),
+                                            )
+                                        )
+                                      ],
                                     ),
-                                    Container(
-                                      padding: EdgeInsets.symmetric(horizontal: 20),
-                                      margin: EdgeInsets.only(right: 10),
-                                      decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(5),
-                                          color: Color(0xffF48262),
-                                          border: Border.all(width: 1, color: Color(0xffF48262))
-                                      ),
-                                      child: Text(
-                                        '100 ml',
-                                        style: TextStyle(fontFamily: 'Brandon',fontSize: 12,color: Colors.white),
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                                  )
+                              ))
                               ],
                             ),
                           ),
@@ -180,7 +244,9 @@ class _ReviewStateScreen extends State<ReviewScreen> {
                                     ),
                                     unratedColor: Color(0xffFBD2CD),
                                     onRatingUpdate: (rating) {
-                                      print(rating);
+                                      setState(() {
+                                        kemasan = int.parse(rating.toStringAsFixed(0));
+                                      });
                                     },
                                   ),
                                 ],
@@ -216,7 +282,9 @@ class _ReviewStateScreen extends State<ReviewScreen> {
                                     ),
                                     unratedColor: Color(0xffFBD2CD),
                                     onRatingUpdate: (rating) {
-                                      print(rating);
+                                      setState(() {
+                                        kegunaan = int.parse(rating.toStringAsFixed(0));
+                                      });
                                     },
                                   ),
                                 ],
@@ -260,7 +328,9 @@ class _ReviewStateScreen extends State<ReviewScreen> {
                                     ),
                                     unratedColor: Color(0xffFBD2CD),
                                     onRatingUpdate: (rating) {
-                                      print(rating);
+                                      setState(() {
+                                        efektif = int.parse(rating.toStringAsFixed(0));
+                                      });
                                     },
                                   ),
                                 ],
@@ -296,7 +366,9 @@ class _ReviewStateScreen extends State<ReviewScreen> {
                                     ),
                                     unratedColor: Color(0xffFBD2CD),
                                     onRatingUpdate: (rating) {
-                                      print(rating);
+                                      setState(() {
+                                        harga = int.parse(rating.toStringAsFixed(0));
+                                      });
                                     },
                                   ),
                                 ],
@@ -318,6 +390,7 @@ class _ReviewStateScreen extends State<ReviewScreen> {
                       ),
                     ),
                     TextField(
+                      controller: _catatan,
                       maxLines: 6,
                       cursorColor: Color(0xffF48262),
                       keyboardType: TextInputType.multiline,
@@ -391,6 +464,7 @@ class _ReviewStateScreen extends State<ReviewScreen> {
                         scrollDirection: Axis.horizontal,
                         child: Row(
                           children: [
+                            for(File file in files)
                             Container(
                               width: 100,
                               height: 140,
@@ -404,8 +478,8 @@ class _ReviewStateScreen extends State<ReviewScreen> {
                                 children: [
                                   ClipRRect(
                                     borderRadius: BorderRadius.circular(5),
-                                    child: Image.asset(
-                                      'assets/images/produk.png',
+                                    child: Image.file(
+                                      file,
                                       fit: BoxFit.cover,
                                     ),
                                   ),
@@ -415,10 +489,17 @@ class _ReviewStateScreen extends State<ReviewScreen> {
                                       alignment: Alignment.topRight,
                                       child: Transform.rotate(
                                         angle: 45 * pi / 180,
-                                        child: Icon(
-                                          Icons.add_circle,
-                                          color: Color(0xffF48262),
-                                          size: 20,
+                                        child: InkWell(
+                                          onTap: (){
+                                            setState(() {
+                                              files.remove(file);
+                                            });
+                                          },
+                                          child: Icon(
+                                            Icons.add_circle,
+                                            color: Color(0xffF48262),
+                                            size: 20,
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -426,22 +507,42 @@ class _ReviewStateScreen extends State<ReviewScreen> {
                                 ],
                               ),
                             ),
-                            Container(
-                              width: 100,
-                              height: 140,
-                              decoration: BoxDecoration(
-                                color: Color(0xFFFDEDE3),
-                                border: Border.all(width: 1,color: Color(0xffF48262)),
-                                borderRadius: BorderRadius.circular(5),
-                              ),
-                              child: Center(
-                                child: Icon(
-                                  Icons.add,
-                                  color: Colors.black,
-                                  size: 40,
+
+                            InkWell(
+                              onTap: () async {
+                                FilePickerResult result = await FilePicker.platform.pickFiles(
+                                  type: FileType.custom,
+                                  allowMultiple: true,
+                                  allowedExtensions: ['jpg', 'png', 'gif'],
+                                );
+
+                                if(result != null) {
+                                  setState(() {
+                                    List<File> files2 = result.paths.map((path) => File(path)).toList();
+                                    files.addAll(files2);
+                                  });
+                                } else {
+                                  // User canceled the picker
+                                }
+                              },
+                              child: Container(
+                                width: 100,
+                                height: 140,
+                                decoration: BoxDecoration(
+                                  color: Color(0xFFFDEDE3),
+                                  border: Border.all(width: 1,color: Color(0xffF48262)),
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
+                                child: Center(
+                                  child: Icon(
+                                    Icons.add,
+                                    color: Colors.black,
+                                    size: 40,
+                                  ),
                                 ),
                               ),
-                            ),
+                            )
+                            ,
                           ],
                         ),
                       ),
@@ -459,11 +560,15 @@ class _ReviewStateScreen extends State<ReviewScreen> {
                           margin: EdgeInsets.only(bottom: 15, right: 10),
                           child: ButtonTheme(
                             child: FlatButton(
-                              onPressed: (){},
+                              onPressed: (){
+                                setState(() {
+                                  _recomended =true;
+                                });
+                              },
                               height: 24,
                               minWidth: 100,
                               materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                              color: Color(0xffF48262),
+                              color: _recomended == null ?  Color(0xffFBD2CD): _recomended? Color(0xffF48262) : Color(0xffFBD2CD),
                               child: Text(
                                 "YA",
                                 style: TextStyle(
@@ -482,11 +587,15 @@ class _ReviewStateScreen extends State<ReviewScreen> {
                           margin: EdgeInsets.only(bottom: 15),
                           child: ButtonTheme(
                             child: FlatButton(
-                              onPressed: (){},
+                              onPressed: (){
+                                setState(() {
+                                  _recomended =false;
+                                });
+                              },
                               height: 24,
                               minWidth: 100,
                               materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                              color: Color(0xffF48262),
+                              color: _recomended == null ?  Color(0xffFBD2CD): !_recomended? Color(0xffF48262) : Color(0xffFBD2CD),
                               child: Text(
                                 "TIDAK",
                                 style: TextStyle(
@@ -511,10 +620,10 @@ class _ReviewStateScreen extends State<ReviewScreen> {
                           ),
                           child: Radio(
                             materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                            value: BeliProduk.beli,
+                            value: true,
                             groupValue: _status,
                             activeColor: Color(0xffF48262),
-                            onChanged: (BeliProduk value) {
+                            onChanged: (bool value) {
                               setState(() {
                                 _status = value;
                               });
@@ -539,10 +648,10 @@ class _ReviewStateScreen extends State<ReviewScreen> {
                           ),
                           child: Radio(
                             materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                            value: BeliProduk.tidak,
+                            value: false,
                             groupValue: _status,
                             activeColor: Color(0xffF48262),
-                            onChanged: (BeliProduk value) {
+                            onChanged: (bool value) {
                               setState(() {
                                 _status = value;
                               });
@@ -566,7 +675,9 @@ class _ReviewStateScreen extends State<ReviewScreen> {
                         child: ButtonTheme(
                           padding: EdgeInsets.symmetric(vertical: 10, horizontal: 70),
                           child: FlatButton(
-                            onPressed: (){},
+                            onPressed: (){
+                              _validation();
+                            },
                             color: Color(0xffF48262),
                             child: Text(
                               "SAVE",

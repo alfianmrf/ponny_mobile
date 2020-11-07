@@ -26,9 +26,13 @@ const cartSummary = base_url+"checkout/summary";
 const cartChekouturl =base_url+"checkout/store";
 const preChekout =base_url+"checkout/preCheckout";
 const addSample  = base_url+"cart/sample";
-const removeProductSample  = base_url+"delete/sample";
+const removeProductSample  = base_url+"cart/delete/sample";
 const rendemProduct =base_url+"cart/redeem";
-const removePoinProduct =base_url+"delete/point";
+const removePoinProduct =base_url+"cart/delete/point";
+
+//payment
+const paymentInfo =base_url+"payment/detail";
+const paymentConfrim =base_url+"payment/confirmation";
 
 //wishlist
 const listOfwishlist = base_url+"product/wishlist";
@@ -43,8 +47,21 @@ const urlOrder = base_url+"account/orders";
 const urlUpdateProfile = base_url+"account/update";
 const updateBeauteProfile = base_url+"account/update_beauty";
 
+//Order
+const urlTracking =base_url+"checkout/tracking";
+const urlTerimaBarang = base_url+"checkout/receipt";
+
 //Redeem
 const rdmProduk = base_url+"product/redeemable";
+
+//Review
+const reviewList =base_url+"review/list";
+const revieStore = base_url+"review/store";
+const reviewNot = base_url+"review/not";
+const myReview = base_url+"review/saya";
+
+//Komplain
+const listParamKompain = base_url+"checkout/complaint";
 
 
 

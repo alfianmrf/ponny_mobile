@@ -7,6 +7,7 @@ import 'package:ponny/model/Address.dart';
 import 'package:ponny/model/App.dart';
 import 'package:ponny/model/Cart.dart';
 import 'package:ponny/model/Courier.dart';
+import 'package:ponny/screens/account/tambah_alamat_screen.dart';
 import 'package:ponny/screens/payment_screen.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
 import 'dart:math' as math;
@@ -473,9 +474,16 @@ class _ShippingScreenState extends State<ShippingScreen> {
                                             Row(
                                               mainAxisAlignment: MainAxisAlignment.end,
                                               children: <Widget>[
-                                                Icon(
-                                                  Icons.edit,
+                                                IconButton(
+                                                  icon:Icon(Icons.edit),
                                                   color: Color(0xffF48262),
+                                                  onPressed: (){
+                                                    Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) => EditAlamatScreen(address: value.useAddress), ),
+                                                    );
+                                                  },
                                                 ),
                                                 Padding(
                                                   padding: EdgeInsets.symmetric(horizontal: 5),
@@ -533,15 +541,24 @@ class _ShippingScreenState extends State<ShippingScreen> {
                                           ),
                                           Expanded(
                                             flex: 1,
-                                            child: Container(
-                                              padding: EdgeInsets.symmetric(vertical: 10),
-                                              child: Text(
-                                                'Tambah Alamat Baru',
-                                                textAlign: TextAlign.center,
-                                                style: TextStyle(
-                                                  fontFamily: 'Brandon',
+                                            child:InkWell(
+                                              child: Container(
+                                                padding: EdgeInsets.symmetric(vertical: 10),
+                                                child: Text(
+                                                  'Tambah Alamat Baru',
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                    fontFamily: 'Brandon',
+                                                  ),
                                                 ),
                                               ),
+                                              onTap: (){
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) => TambahAlamatScreen()),
+                                                );
+                                              },
                                             ),
                                           ),
                                         ],

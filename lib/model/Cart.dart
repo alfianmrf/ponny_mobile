@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:lodash_dart/lodash_dart.dart';
 import 'package:ponny/model/Coupon.dart';
 import 'package:ponny/model/Courier.dart';
+import 'package:ponny/model/OrderResult.dart';
 import 'package:ponny/model/Product.dart';
 import 'package:http/http.dart' as http;
 import 'package:ponny/util/globalUrl.dart';
@@ -85,13 +86,27 @@ class CartModel with ChangeNotifier{
     int index = listProductPoin.indexWhere((element) =>
     element.id == product.id);
     if (index < 0) {
-      final res = await http.post(rendemProduct+"/"+product.product.id.toString(), headers: { HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: "Bearer $token"});
-      print(res.body);
+      var param={
+        "qty":1
+      };
+      final res = await http.post(rendemProduct+"/"+product.product.id.toString(), headers: { HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: "Bearer $token"},body: json.encode(param));
       if (res.statusCode == 200) {
         print(res.body);
         listProductPoin.add(product);
         notifyListeners();
       }
+    }else{
+      int quantity= listProductPoin.elementAt(index).qty;
+      var param={
+        "qty":quantity+1
+      };
+      final res = await http.post(rendemProduct+"/"+product.product.id.toString(), headers: { HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: "Bearer $token"},body: json.encode(param));
+      if (res.statusCode == 200) {
+        print(res.body);
+        listProductPoin.elementAt(index).qty++;
+        notifyListeners();
+      }
+
     }
   }
 
@@ -115,9 +130,26 @@ class CartModel with ChangeNotifier{
     }
 
   }
+
+  Future<void> RemoveRedemToCart(ProductPoin product,String token) async
+  {
+    int index = listProductPoin.indexWhere((element) => element.id == product.id);
+    if(listProductPoin.elementAt(index).qty > 1){
+      int quantity= listProductPoin.elementAt(index).qty;
+      var param = {
+        "qty": quantity-1
+      };
+      final res = await http.post(rendemProduct+"/"+product.product.id.toString(), headers: { HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: "Bearer $token"}, body: json.encode(param));
+      if (res.statusCode == 200) {
+        listProductPoin.elementAt(index).qty--;
+        notifyListeners();
+      }
+    }
+  }
   Future<void> DeleteProductSample(Product product,String token) async
   {
     final res = await http.get(removeProductSample+"/"+product.id.toString(), headers: { HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: "Bearer $token"});
+    print(res.body);
     if (res.statusCode == 200) {
       int index = listUseSample.indexWhere((element) => element.id == product.id);
       listUseSample.removeAt(index);
@@ -151,6 +183,7 @@ class CartModel with ChangeNotifier{
         shipping = null;
         listSample =[];
         listUseSample=[];
+        listProductPoin=[];
 
         final responseJson = json.decode(result.body);
 
@@ -161,13 +194,14 @@ class CartModel with ChangeNotifier{
           listSample.add(Product.fromJson(item["product"]["availability"]));
         }
 
-        print(responseJson["sampleProduct_used"] );
+
         for (Map item in responseJson["sampleProduct_used"]) {
           listUseSample.add(Product.fromJson(item["product"]["availability"]));
         }
         print(responseJson["productPoint_used"]);
         for (Map item in responseJson["productPoint_used"]) {
-          listProductPoin.add(ProductPoin(item["id"], item["jml_point"], Product.fromJson(item["product"]["availability"])));
+          if(item["product"]!=null)
+          listProductPoin.add(ProductPoin(item["id"], item["product_point"]!= null ? item["product_point"]["jml_point"]:null, item["product"]!=null?  Product.fromJson(item["product"]["availability"]) :null,item["qty"]));
         }
         summary = Summary.fromJson(responseJson["summary"]);
         loadingCard =false;
@@ -277,8 +311,9 @@ class CartModel with ChangeNotifier{
     notifyListeners();
   }
 
-  Future<bool> Checkout(String token, Address useAddress,String method) async {
+  Future<OrderResult> Checkout(String token, Address useAddress,String method) async {
    var param;
+   OrderResult result;
    if(coupon != null){
      param={
        "address_id":useAddress.id,
@@ -294,15 +329,15 @@ class CartModel with ChangeNotifier{
      };
    }
    final res = await http.post(cartChekouturl, headers: { HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: "Bearer $token"},body: json.encode(param));
-   print(res.body);
    if (res.statusCode == 200) {
      final responseJson = json.decode(res.body);
+     result= OrderResult.fromJson(responseJson);
      print(responseJson);
      listCardOfitem=[];
      notifyListeners();
-     return true;
+     return result;
    }
-   return false;
+   return result;
   }
 
  int getCountOfquantity(){
@@ -320,6 +355,14 @@ class CartModel with ChangeNotifier{
    }
    return subtotal;
  }
+
+  int gettotalPoin(){
+    int subtotal=0;
+    for(ProductPoin item in listProductPoin){
+      subtotal+=item.qty*item.jml_point;
+    }
+    return subtotal;
+  }
 
   double getSumtotal(){
     double total=0;
