@@ -90,9 +90,9 @@ class _KomplainDalamPerjalananStateScreen extends State<KomplainDalamPerjalananS
     return result;
 
   }
-  _validation(){
+  Future<bool> _validation() async {
     if(_masalah.where((element) => element.val ==true).length>0 && _solusi.where((element) => element.val ==true).length>0 && _catatan.value.text.isNotEmpty && files.length>0 && _product.where((element) => element.val == true).length > 0&& _value1){
-      _fetchInsert();
+      return await _fetchInsert();
     }else{
       final snackBar = SnackBar(
         content: Text('Form komplain belum lengkap!',style: TextStyle(color: Colors.white)),
@@ -100,9 +100,11 @@ class _KomplainDalamPerjalananStateScreen extends State<KomplainDalamPerjalananS
       );
       _scaffoldKey.currentState.showSnackBar(snackBar);
     }
+    return false;
   }
 
-  _fetchInsert() async {
+  Future<bool>_fetchInsert() async {
+    bool result =false;
     UIBlock.block(context,customLoaderChild: LoadingWidget(context));
     var token = Provider.of<AppModel>(context,listen: false).auth.access_token;
     Map<String, String> headers = { "Authorization": "Bearer $token"};
@@ -127,12 +129,12 @@ class _KomplainDalamPerjalananStateScreen extends State<KomplainDalamPerjalananS
 
     if(response.statusCode == 200)
     {
-      Navigator.pop(context,true);
+      result =true;
     }else{
-
       _scaffoldKey.currentState.showSnackBar(snackBarError);
     }
     UIBlock.unblock(context);
+    return result;
 
   }
 
@@ -593,7 +595,11 @@ class _KomplainDalamPerjalananStateScreen extends State<KomplainDalamPerjalananS
                   ),
                   GestureDetector(
                     onTap: (){
-                      _validation();
+                      _validation().then((hasil){
+                        if(hasil){
+                          Navigator.pop(context,true);
+                        }
+                      });
                     },
                     child: Container(
                       decoration: BoxDecoration(

@@ -813,3 +813,9 @@ void showAlertDialog(BuildContext context,Product product) {
 }
 
 
+DateTime convertDateFromString(String strDate){
+  DateTime todayDate = DateTime.parse(strDate);
+  return todayDate;
+}
+
+

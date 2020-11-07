@@ -9,8 +9,6 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:ponny/common/constant.dart';
 import 'package:ponny/model/App.dart';
 import 'package:ponny/model/Review.dart';
-import 'package:ponny/screens/home_screen.dart';
-import 'package:ponny/screens/account_screen.dart';
 import 'package:ponny/util/globalUrl.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
 import 'package:http/http.dart' as http;
@@ -155,6 +153,21 @@ class _UlasanProdukSuksesStateScreen extends State<UlasanProdukSuksesScreen> {
                         unratedColor: Color(0xffFBD2CD),
                       ),
                     ),
+                    WidgetSpan(
+                    child: Container(
+                      margin: EdgeInsets.only(left: 10),
+                      padding: EdgeInsets.symmetric(horizontal: 5),
+                      child: Text(
+                        listReview[index].rating.toString(),
+                        style: TextStyle(
+                            color: Color(0xffF48262),
+                            fontSize: 18,
+                            fontWeight: FontWeight.w700,
+                            fontFamily: 'Brandon',
+                        ),
+                      ),
+                    ),
+                    ),
                     if(listReview[index].statusBeli == 1)
                       WidgetSpan(
                         child: Container(
@@ -193,6 +206,7 @@ class _UlasanProdukSuksesStateScreen extends State<UlasanProdukSuksesScreen> {
                     ],
                   ),
                 ),
+                if(listReview[index].photos.length>0)
                 ListView(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),

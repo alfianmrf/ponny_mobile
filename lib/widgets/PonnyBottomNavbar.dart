@@ -21,31 +21,39 @@ class PonnyBottomNavbar extends StatelessWidget {
     void _onItemTapped(int index) {
       switch (index) {
         case 0:
-            Navigator.pushNamedAndRemoveUntil(
-              context,
-              HomeScreen.id,(_) => false
-            );
+          print(ModalRoute.of(context).settings.name);
+            if(ModalRoute.of(context).settings.name != "home_screen"){
+              Navigator.pushNamedAndRemoveUntil(
+                  context,
+                  HomeScreen.id,(_) => false
+              );
+            }
           break;
         case 1:
+            if(ModalRoute.of(context).settings.name != "Browse_Category_Screen")
             Navigator.pushNamedAndRemoveUntil(
                 context,
                 Browse.id,(_) => false
             );
           break;
         case 3:
-            Navigator.pushNamedAndRemoveUntil(
-                context,
-                ForumScreen.id,(_) => false
-            );
+            if( ModalRoute.of(context).settings.name != "forums_screen"){
+              Navigator.pushNamedAndRemoveUntil(
+                  context,
+                  ForumScreen.id,(_) => false
+              );
+            }
           break;
         case 4:
-            Provider.of<AppModel>(context).loggedIn ?Navigator.pushNamedAndRemoveUntil(
+            if(ModalRoute.of(context).settings.name !=  "account_screen"){
+              Provider.of<AppModel>(context).loggedIn ?Navigator.pushNamedAndRemoveUntil(
+                  context,
+                  AccountScreen.id,(_) => false
+              ) :  Navigator.push(
                 context,
-                AccountScreen.id,(_) => false
-            ) :  Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => LoginScreen()),
-            );
+                MaterialPageRoute(builder: (context) => LoginScreen()),
+              );
+            }
           break;
         default:
           Navigator.of(context).pushReplacementNamed(HomeScreen.id);

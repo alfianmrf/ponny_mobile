@@ -14,6 +14,7 @@ import 'package:ponny/model/Order.dart';
 import 'package:http/http.dart' as http;
 import 'package:ponny/screens/account/komplain_dalam_perjalanan_screen.dart';
 import 'package:ponny/screens/konfirmasi_pembayaran_screen.dart';
+import 'package:ponny/screens/review_screen.dart';
 import 'package:ponny/util/globalUrl.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
 import 'package:provider/provider.dart';
@@ -46,7 +47,6 @@ class _OrderScreenState extends State<OrderScreen> {
   int current_page=0;
   int last_page =0;
   String NextPage;
-
 
   @override
   void initState() {
@@ -313,6 +313,33 @@ class _OrderScreenState extends State<OrderScreen> {
                                                     ),
                                                   ),
                                                 ),
+                                                if(order.deliveryStatus == OrderScreen.completed && e.reviewed == 0)
+                                                Container(
+                                                  margin:EdgeInsets.only(top: 4),
+                                                  child: RaisedButton(
+                                                    color: Color(0xffF48262),
+                                                    onPressed: () {
+                                                      Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                          builder: (context) => ReviewScreen(product: e.product,orderReview: OrderReview(e.id,"order_detail_id"),), ),
+                                                      ).then((_value){
+                                                        if(_value){
+                                                         _getData();
+                                                        }
+                                                      });
+                                                    },
+                                                    child: Text(
+                                                      "Review",
+                                                      style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontSize: 12,
+                                                          fontFamily:
+                                                          "Brandon"),
+                                                    ),
+                                                  ),
+                                                  height: 30,
+                                                )
                                               ],
                                             ),
                                           ),
@@ -385,6 +412,33 @@ class _OrderScreenState extends State<OrderScreen> {
                                                     ),
                                                   ),
                                                 ),
+                                                if(order.deliveryStatus == OrderScreen.completed && e.reviewed == 0)
+                                                  Container(
+                                                    margin:EdgeInsets.only(top: 4),
+                                                    child: RaisedButton(
+                                                      color: Color(0xffF48262),
+                                                      onPressed: () {
+                                                        Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                            builder: (context) => ReviewScreen(product: e.product,orderReview: OrderReview(e.id,"order_point_id"),), ),
+                                                        ).then(( _value){
+                                                          if(_value){
+                                                            _getData();
+                                                          }
+                                                        });
+                                                      },
+                                                      child: Text(
+                                                        "Review",
+                                                        style: TextStyle(
+                                                            color: Colors.white,
+                                                            fontSize: 12,
+                                                            fontFamily:
+                                                            "Brandon"),
+                                                      ),
+                                                    ),
+                                                    height: 30,
+                                                  )
                                               ],
                                             ),
                                           ),
@@ -457,6 +511,36 @@ class _OrderScreenState extends State<OrderScreen> {
                                                     ),
                                                   ),
                                                 ),
+                                                if(order.deliveryStatus == OrderScreen.completed && e.reviewed == 0)
+                                                  Container(
+                                                    margin:EdgeInsets.only(top: 4),
+                                                    child: RaisedButton(
+                                                      color: Color(0xffF48262),
+                                                      onPressed: () {
+
+                                                        Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                            builder: (context) => ReviewScreen(product: e.product,orderReview: OrderReview(e.id,"order_sample_id"),), ),
+                                                        ).then((_value) async {
+                                                          if(_value){
+                                                            print("get dta");
+                                                            await _getData();
+                                                          }
+                                                        });
+
+                                                      },
+                                                      child: Text(
+                                                        "Review",
+                                                        style: TextStyle(
+                                                            color: Colors.white,
+                                                            fontSize: 12,
+                                                            fontFamily:
+                                                            "Brandon"),
+                                                      ),
+                                                    ),
+                                                    height: 30,
+                                                  )
                                               ],
                                             ),
                                           ),
@@ -957,7 +1041,7 @@ class _OrderScreenState extends State<OrderScreen> {
 
                     },
                   ),
-                if(order.payment_status == 'paid' && order.deliveryStatus != "komplain" && order.deliveryStatus != "completed")
+                if(order.payment_status == 'paid' && order.deliveryStatus != "komplain" && order.deliveryStatus != "completed" && order.deliveryStatus != "pending")
                   Container(
                     margin: EdgeInsets.only(top: 30, left: 15, right: 15),
                     padding: EdgeInsets.only(left: 15, right: 15),
@@ -1008,7 +1092,7 @@ class _OrderScreenState extends State<OrderScreen> {
                               MaterialPageRoute(
                                   builder: (context) =>
                                       KomplainDalamPerjalananScreen(order: order, )),
-                            ).then((value){
+                            ).then((_value){
                               _getData();
                             });
                           },

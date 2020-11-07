@@ -198,9 +198,10 @@ class OrderDetail {
   int quantity;
   int price;
   Product product;
-  OrderDetail(this.id, this.quantity, this.product,this.price);
+  int reviewed;
+  OrderDetail(this.id, this.quantity, this.product,this.price,this.reviewed);
   factory OrderDetail.fromJson(Map<String, dynamic> parsedJson){
-    return OrderDetail(parsedJson["id"],parsedJson["quantity"],Product.fromJson(parsedJson["product"]["availability"]),parsedJson["price"]);
+    return OrderDetail(parsedJson["id"],parsedJson["quantity"],Product.fromJson(parsedJson["product"]["availability"]),parsedJson["price"],parsedJson["reviewed"]);
   }
 }
 
@@ -208,9 +209,10 @@ class OrderDetailSample  {
   int id;
   int quantity;
   Product product;
-  OrderDetailSample (this.id, this.quantity, this.product);
+  int reviewed;
+  OrderDetailSample (this.id, this.quantity, this.product,this.reviewed);
   factory OrderDetailSample.fromJson(Map<String, dynamic> parsedJson){
-    return OrderDetailSample(parsedJson["id"],parsedJson["quantity"],Product.fromJson(parsedJson["product"]["availability"]));
+    return OrderDetailSample(parsedJson["id"],parsedJson["quantity"],Product.fromJson(parsedJson["product"]["availability"]),parsedJson["reviewed"]);
   }
 }
 
@@ -219,9 +221,10 @@ class OrderDetailPoint  {
   int quantity;
   int jml_point;
   Product product;
-  OrderDetailPoint (this.id, this.quantity, this.product,this.jml_point);
+  int reviewed;
+  OrderDetailPoint (this.id, this.quantity, this.product,this.jml_point,this.reviewed);
   factory OrderDetailPoint.fromJson(Map<String, dynamic> parsedJson){
-    return OrderDetailPoint(parsedJson["id"],parsedJson["quantity"],Product.fromJson(parsedJson["product"]["availability"]),parsedJson["log_product_point"]["jml_point"]);
+    return OrderDetailPoint(parsedJson["id"],parsedJson["quantity"],Product.fromJson(parsedJson["product"]["availability"]),parsedJson["log_product_point"]["jml_point"],parsedJson["reviewed"]);
   }
 }
 

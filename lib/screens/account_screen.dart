@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:intl/intl.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:ponny/common/constant.dart';
 import 'package:ponny/model/Address.dart';
@@ -44,6 +45,7 @@ class AccountScreen extends StatefulWidget {
 
 class _AccountScreenState extends State<AccountScreen> {
   bool isLoading =true;
+  final mon =  DateFormat('MMMM');
 
   @override
   void initState() {
@@ -203,7 +205,7 @@ class _AccountScreenState extends State<AccountScreen> {
                         Container(
                           margin: EdgeInsets.only(top: 7),
                           child: Text(
-                            "DEWY",
+                            user.dashboard.membershipTitle.toUpperCase(),
                             style: TextStyle(
                               color: Hexcolor("#F59379"),
                               fontFamily: "Brandon",
@@ -305,7 +307,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                           Container(
                                             margin: EdgeInsets.only(left: 5),
                                             child: Text(
-                                              "Desember",
+                                              mon.format(convertDateFromString(user.dashboard.log.endsOn)).toUpperCase(),
                                               style: TextStyle(
                                                 fontFamily: "Brandon",
                                                 fontSize: 11,
@@ -317,7 +319,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                           Container(
                                             // margin: EdgeInsets.only(left: 10),
                                             child: Text(
-                                              "2021",
+                                              convertDateFromString(user.dashboard.log.endsOn).year.toString(),
                                               style: TextStyle(
                                                 fontFamily: "Brandon",
                                                 fontSize: 11,
@@ -352,7 +354,7 @@ class _AccountScreenState extends State<AccountScreen> {
                             children: <Widget>[
                               Container(
                                 child: Text(
-                                  "DEWY",
+                                  user.dashboard.membershipTitle.toUpperCase(),
                                   style: TextStyle(
                                     fontFamily: "Brandon",
                                     fontWeight: FontWeight.w700,
@@ -380,7 +382,7 @@ class _AccountScreenState extends State<AccountScreen> {
                           child: Container(
                             child: LinearPercentIndicator(
                               lineHeight: 8.0,
-                              percent: 0.4,
+                              percent: user.dashboard.percent/100,
                               progressColor: Colors.white,
                             ),
                           ),
@@ -390,7 +392,7 @@ class _AccountScreenState extends State<AccountScreen> {
                             children: <Widget>[
                               Container(
                                 child: Text(
-                                  "HEALTHY",
+                                  user.dashboard.next.toUpperCase(),
                                   style: TextStyle(
                                     fontFamily: "Brandon",
                                     fontWeight: FontWeight.w700,
@@ -421,7 +423,7 @@ class _AccountScreenState extends State<AccountScreen> {
                       children: <Widget>[
                         Container(
                           child: Text(
-                            "Belanja 1.750.000 lagi untuk naik tingkat",
+                            "Belanja "+nm_format.format(user.dashboard.toNext)+" lagi untuk naik tingkat",
                             style: TextStyle(
                               fontSize: 10,
                               color: Colors.white,
@@ -431,7 +433,7 @@ class _AccountScreenState extends State<AccountScreen> {
                           ),
                         ),
                         Container(
-                          child: Text("ke Healthy Skin",
+                          child: Text("ke "+user.dashboard.next +" Skin",
                               style: TextStyle(
                                 fontSize: 10,
                                 color: Colors.white,

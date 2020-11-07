@@ -30,7 +30,8 @@ enum BeliProduk { beli, tidak }
 class ReviewScreen extends StatefulWidget {
   static const String id = "review_Screen";
   Product product;
-  ReviewScreen({Key key,@required this.product});
+  OrderReview orderReview;
+  ReviewScreen({Key key,@required this.product,this.orderReview});
 
   @override
   _ReviewStateScreen createState() => _ReviewStateScreen();
@@ -47,9 +48,12 @@ class _ReviewStateScreen extends State<ReviewScreen> {
   bool _recomended;
   final _catatan = TextEditingController();
 
-  _fetchInsert() async {
-    UIBlock.block(context,customLoaderChild: LoadingWidget(context));
-    var token = Provider.of<AppModel>(context,listen: false).auth.access_token;
+  Future<bool> _fetchInsert(BuildContext contexts) async {
+    FocusScope.of(contexts).requestFocus(new FocusNode());
+    bool result = false;
+
+    UIBlock.block(contexts,customLoaderChild: LoadingWidget(contexts));
+    var token = Provider.of<AppModel>(contexts,listen: false).auth.access_token;
     Map<String, String> headers = { "Authorization": "Bearer $token"};
     var request = http.MultipartRequest(
         "POST", Uri.parse(revieStore));
@@ -61,6 +65,9 @@ class _ReviewStateScreen extends State<ReviewScreen> {
 
       request.files.add(multipartFile);
     }
+    if(widget.orderReview != null){
+      request.fields[widget.orderReview.label] = widget.orderReview.id.toString();
+    }
     request.fields["product_id"] = widget.product.id.toString();
     request.fields["packaging_rate"] = kemasan.toString();
     request.fields["usability_rate"] = kegunaan.toString();
@@ -68,43 +75,51 @@ class _ReviewStateScreen extends State<ReviewScreen> {
     request.fields["price_rate"] = harga.toString();
     request.fields["comment"] = _catatan.value.text;
     request.fields["recommended"] = _recomended ? "1":"0";
-    request.fields["at_ponny"] = _status ? "1":"0";
+    request.fields["at_ponny"] = widget.orderReview != null ? "1" :_status ? "1":"0";
     request.headers.addAll(headers);
     http.StreamedResponse response = await request.send();
 
     if(response.statusCode == 200)
     {
-      Navigator.pop(context,true);
+     result = true;
     }else{
-
+      result = false;
       _scaffoldKey.currentState.showSnackBar(snackBarError);
     }
-    UIBlock.unblock(context);
+    UIBlock.unblock(contexts);
+    return result;
 
   }
-  _validation(){
-    if(_recomended != null && _catatan.value.text.isNotEmpty && _catatan.value.text.length >= 50 && _status != null ){
-      _fetchInsert();
-    }else{
+  Future<bool> _validation(BuildContext contexts) async {
+    bool result = false;
+    if(_recomended != null && _catatan.value.text.isNotEmpty && _catatan.value.text.length >= 50 && widget.orderReview !=null ){
+      result = await _fetchInsert(contexts);
+    }else if(_recomended != null && _catatan.value.text.isNotEmpty && _catatan.value.text.length >= 50 && _status != null){
+      result= await _fetchInsert(contexts);
+    } else{
       final snackBar = SnackBar(
         content: Text('Form Review belum lengkap!',style: TextStyle(color: Colors.white)),
         backgroundColor: Colors.redAccent,
       );
       _scaffoldKey.currentState.showSnackBar(snackBar);
     }
+    return result;
   }
 
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+
+    return WillPopScope(
+
+      child: Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
         titleSpacing: 0.0,
         elevation: 0.0,
         leading: IconButton(
           onPressed: (){
-            Navigator.pop(context);
+            Navigator.pop(context,false);
           },
           icon: Icon(
             Icons.arrow_back_ios_rounded,
@@ -157,11 +172,14 @@ class _ReviewStateScreen extends State<ReviewScreen> {
                                     fontSize: 20,
                                   ),
                                 ),
-                                Text(
-                                  widget.product.name,
-                                  style: TextStyle(
-                                    fontFamily: 'Brandon',
-                                    fontSize: 20,
+                                Container(
+                                  width: MediaQuery.of(context).size.width*.7,
+                                  child: Text(
+                                    widget.product.name,
+                                    style: TextStyle(
+                                      fontFamily: 'Brandon',
+                                      fontSize: 20,
+                                    ),
                                   ),
                                 ),
                               for(Varian item in widget.product.varian)(
@@ -612,6 +630,7 @@ class _ReviewStateScreen extends State<ReviewScreen> {
                         ),
                       ],
                     ),
+                    if(widget.orderReview == null)
                     Row(
                       children: [
                         Theme(
@@ -640,6 +659,7 @@ class _ReviewStateScreen extends State<ReviewScreen> {
                         ),
                       ],
                     ),
+                    if(widget.orderReview == null)
                     Row(
                       children: [
                         Theme(
@@ -676,7 +696,11 @@ class _ReviewStateScreen extends State<ReviewScreen> {
                           padding: EdgeInsets.symmetric(vertical: 10, horizontal: 70),
                           child: FlatButton(
                             onPressed: (){
-                              _validation();
+                              _validation(context).then((hasil){
+                                if(hasil){
+                                  Navigator.pop(context,true);
+                                }
+                              });
                             },
                             color: Color(0xffF48262),
                             child: Text(
@@ -703,6 +727,17 @@ class _ReviewStateScreen extends State<ReviewScreen> {
         ),
       ),
       bottomNavigationBar: new PonnyBottomNavbar(selectedIndex: 4),
+      ),
+      onWillPop: () async {
+        Navigator.pop(context,false);
+        return Future.value(true);
+      },
+
     );
   }
+}
+class OrderReview{
+  int id;
+  String label;
+  OrderReview(this.id,this.label);
 }

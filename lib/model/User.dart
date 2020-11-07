@@ -3,9 +3,12 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:localstorage/localstorage.dart';
+import 'package:ponny/model/Dashboard.dart';
 import 'package:ponny/util/globalUrl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+import 'package:ponny/model/Dashboard.dart';
+
 
 class UserModel with ChangeNotifier{
   User user;
@@ -99,6 +102,7 @@ class User{
    int completed_profile;
    int tier;
    int point;
+   Dashboards dashboard;
 
    User(
       this.id,
@@ -119,7 +123,8 @@ class User{
       this.preferensi_product,
       this.completed_profile,
       this.tier,
-      this.point
+      this.point,
+       this.dashboard
        );
 
    User.fromLocalJson(Map<String, dynamic> json) {
@@ -144,6 +149,9 @@ class User{
        completed_profile = json['completed_profile'];
        tier = json['tier'];
        point = json['point'];
+       dashboard = json['dashboard'] != null
+           ? new Dashboards.fromJson(json['dashboard'])
+           : null;
      } catch (e) {
        print(e.toString());
      }
