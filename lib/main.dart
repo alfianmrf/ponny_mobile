@@ -96,24 +96,27 @@ import 'package:ponny/screens/daftarLogin_screen.dart';
 
 import 'package:ponny/screens/kartu_screen.dart';
 
-Future<void> main() async {
+import 'package:ponny/screens/Keuntungan_HappyReward_screen.dart';
 
+import 'package:ponny/screens/RincianPoint_screen.dart';
+
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(
-      MultiProvider(
-        providers: [
-          ChangeNotifierProvider(create: (context) => AppModel()),
-          ChangeNotifierProvider(create: (context) => SliderModel()),
-          ChangeNotifierProvider(create: (context)=> ProductModel()),
-          ChangeNotifierProvider(create: (context)=> CartModel()),
-          ChangeNotifierProvider(create: (context)=> WishModel()),
-          ChangeNotifierProvider(create: (context)=> AddressModel()),
-          ChangeNotifierProvider(create: (context)=> OrderModel()),
-          ChangeNotifierProvider(create: (context)=> UserModel()),
-        ],
-        child: MyApp(),
-      ),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => AppModel()),
+        ChangeNotifierProvider(create: (context) => SliderModel()),
+        ChangeNotifierProvider(create: (context) => ProductModel()),
+        ChangeNotifierProvider(create: (context) => CartModel()),
+        ChangeNotifierProvider(create: (context) => WishModel()),
+        ChangeNotifierProvider(create: (context) => AddressModel()),
+        ChangeNotifierProvider(create: (context) => OrderModel()),
+        ChangeNotifierProvider(create: (context) => UserModel()),
+      ],
+      child: MyApp(),
+    ),
   );
 }
 
@@ -129,7 +132,7 @@ class MyApp extends StatelessWidget {
         primaryColor: Color(0xFFFDF8F0),
         accentColor: Colors.red,
       ),
-      initialRoute: SplashScreen.id, //SplashScreen.id,
+      initialRoute: SplashScreen.id,
       routes: {
         SplashScreen.id: (context) => SplashScreen(),
         IntroScreen.id: (context) => IntroScreen(),
@@ -190,7 +193,9 @@ class MyApp extends StatelessWidget {
         DaftarLoginScreen.id: (context) => DaftarLoginScreen(),
         KartuScreen.id: (context) => KartuScreen(),
         KonsultasiScreen.id: (context) => KonsultasiScreen(),
-        ForumScreen.id : (context) => ForumScreen()
+        ForumScreen.id: (context) => ForumScreen(),
+        UntungReward.id: (context) => UntungReward(),
+        RincianPoint.id: (context) => RincianPoint()
       },
     );
   }
