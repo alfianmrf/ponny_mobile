@@ -2,15 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
+import 'package:ponny/util/globalUrl.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:intl/intl.dart';
 
 class BlogDetailScreen extends StatefulWidget {
-  final List list;
-  final List listTag;
   final int i;
-  final int categoryId;
-  BlogDetailScreen({this.list, this.i, this.listTag, this.categoryId});
+  final Map title;
+
+  BlogDetailScreen({this.i, this.title});
 
   @override
   _BlogDetailScreenState createState() => _BlogDetailScreenState();
@@ -18,11 +19,13 @@ class BlogDetailScreen extends StatefulWidget {
 
 class _BlogDetailScreenState extends State<BlogDetailScreen> {
   bool onSearch = false;
-  @override
-  void initState() {
-    // TODO: implement initState
-    print(widget.listTag);
-  }
+
+
+DateTime convertDateFromString(String strDate){
+   DateTime todayDate = DateTime.parse(strDate);
+  
+    return todayDate;
+ }
 
   @override
   Widget build(BuildContext context) {
@@ -227,7 +230,7 @@ class _BlogDetailScreenState extends State<BlogDetailScreen> {
                                 Container(height: 10),
                                 Container(
                                   child: Text(
-                                    widget.listTag[0]["title"],
+                                    widget.title["category"]["title"],
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
                                         fontSize: 14,
@@ -239,7 +242,7 @@ class _BlogDetailScreenState extends State<BlogDetailScreen> {
                                 Container(height: 10),
                                 Container(
                                   child: Text(
-                                    widget.list[widget.i]["title"],
+                                    widget.title["title"],
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
                                       letterSpacing: 1,
@@ -265,7 +268,7 @@ class _BlogDetailScreenState extends State<BlogDetailScreen> {
                                           ],
                                         ),
                                         title: Text(
-                                          "Sisca Lalala",
+                                          widget.title["user"]["name"],
                                           style: TextStyle(
                                             letterSpacing: 1,
                                             fontSize: 12,
@@ -274,7 +277,7 @@ class _BlogDetailScreenState extends State<BlogDetailScreen> {
                                           ),
                                         ),
                                         subtitle: Text(
-                                          widget.list[widget.i]["created_at"],
+                                         DateFormat('dd MMMM yyyy').format(convertDateFromString(widget.title["created_at"])),
                                           style: TextStyle(
                                             letterSpacing: 1,
                                             fontSize: 14,
@@ -288,9 +291,9 @@ class _BlogDetailScreenState extends State<BlogDetailScreen> {
                                   ],
                                 ),
                                 Container(height: 10),
-                                Text(widget.list[widget.i]["content"],
+                                Text(widget.title["content"],
                                     style: TextStyle(
-                                      fontSize: 14,
+                                      fontSize: 15,
                                       fontFamily: "Brandon",
                                       fontWeight: FontWeight.w500,
                                     )),
@@ -389,35 +392,33 @@ class _BlogDetailScreenState extends State<BlogDetailScreen> {
 }
 
 class BlogDetailData extends StatefulWidget {
-  final List list;
-  final int i;
-  final categoryId;
+  final contentId;
 
-  BlogDetailData({this.list, this.i, this.categoryId});
+  BlogDetailData({this.contentId});
 
   @override
   _BlogDetailDataState createState() => _BlogDetailDataState();
 }
 
 class _BlogDetailDataState extends State<BlogDetailData> {
-  Future<List> getTag() async {
-    final response = await http.post(
-        "http://192.168.0.139/something/app/http/controllers/blogTag.php",
-        body: {'categoryId': widget.categoryId.toString()});
+  Future<Map<String, dynamic>> getTitle() async {
+    final response =
+        await http.get(blogUrl + "/" + widget.contentId.toString());
+   // Map<String, dynamic> map = json.decode(response.body);
+    //List<dynamic> data = map[0];
+
     return json.decode(response.body);
   }
 
   @override
   Widget build(BuildContext context) {
-    return new FutureBuilder<List>(
-        future: getTag(),
+    return new FutureBuilder<Map>(
+        future: getTitle(),
         builder: (context, snapshot) {
           if (snapshot.hasError) print(snapshot.error);
           return snapshot.hasData
               ? BlogDetailScreen(
-                  listTag: snapshot.data,
-                  list: widget.list,
-                  i: widget.i,
+                  title: snapshot.data,
                 )
               : Center(child: new CircularProgressIndicator());
         });

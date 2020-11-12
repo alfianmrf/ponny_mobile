@@ -5,12 +5,14 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:ponny/util/globalUrl.dart';
 import 'package:ponny/screens/Blog_Detail_screen.dart';
+import 'package:intl/intl.dart';
+import 'package:date_format/date_format.dart';
 
 class BasicSkincare extends StatefulWidget {
-  final List list;
+
 
   static const String id = "BasicSkincare";
-  BasicSkincare({this.list});
+
 
   @override
   _BasicSkincareState createState() => _BasicSkincareState();
@@ -23,15 +25,31 @@ class _BasicSkincareState extends State<BasicSkincare> {
   int lostData = 0;
   var categoryFilter;
 
-  Future<List> filterData() async {
-    final response = await http.post(
-        "http://192.168.0.139/something/app/http/controllers/blogFilterController.php",
-        body: {'categoryId': categoryId.toString()});
+ 
+
+  Future<List> filterData(int categoryId) async {
+    final response = await http.get(blogUrl +
+        (() {
+          if (categoryId == 0) {
+            return "/all";
+          } else {
+            return "/category/" + categoryId.toString();
+          }
+        }()));
     return json.decode(response.body);
+  }
+
+  Future<List> getOtherArticles() async {
+    final response = await http.get(blogUrl);
+    Map<String, dynamic> map = json.decode(response.body);
+    List<dynamic> data = map["other_articles"];
+    return data;
   }
 
   @override
   Widget build(BuildContext context) {
+
+
     return WillPopScope(
       onWillPop: () {
         setState(() {
@@ -258,11 +276,12 @@ class _BasicSkincareState extends State<BasicSkincare> {
                       children: [
                         Container(
                             child: new FutureBuilder<List>(
-                                future: filterData(),
+                                future: filterData(categoryId),
                                 builder: (context, snapshot) {
                                   if (snapshot.hasError) print(snapshot.error);
                                   return snapshot.hasData
-                                      ? categoryList(context, snapshot.data)
+                                      ? categoryList(
+                                          context, snapshot.data, categoryId)
                                       : Center(
                                           child:
                                               new CircularProgressIndicator());
@@ -280,35 +299,14 @@ class _BasicSkincareState extends State<BasicSkincare> {
                           ),
                           margin: EdgeInsets.only(bottom: 30),
                         ),
-                        ListView.builder(
-                            itemCount: 6,
-                            shrinkWrap: true,
-                            primary: false,
-                            itemBuilder: (context, i) {
-                              return Container(
-                                  margin: EdgeInsets.only(bottom: 10),
-                                  child: ListTile(
-                                    leading: Image.asset(
-                                      "assets/images/blogImage.png",
-                                      fit: BoxFit.cover,
-                                    ),
-                                    title: Text(
-                                      "Beda Eye Gel, Eye Cream, dan Eye Serum",
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        fontFamily: "Brandon",
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                    subtitle: Text(
-                                      "Sisca Lalala\n15 Januari, 2020",
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        fontFamily: "Brandon",
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                  ));
+                        new FutureBuilder<List>(
+                            future: getOtherArticles(),
+                            builder: (context, snapshot) {
+                              if (snapshot.hasError) print(snapshot.error);
+                              return snapshot.hasData
+                                  ? otherArticlesScreen(snapshot.data)
+                                  : Center(
+                                      child: new CircularProgressIndicator());
                             })
                       ],
                     ),
@@ -322,37 +320,73 @@ class _BasicSkincareState extends State<BasicSkincare> {
   }
 }
 
-class BasicSkincareData extends StatefulWidget {
-  static const String id = "Basic_SkinCare";
+class otherArticlesScreen extends StatefulWidget {
+  List list;
+  otherArticlesScreen(this.list);
 
   @override
-  _BasicSkincareDataState createState() => _BasicSkincareDataState();
+  _otherArticlesScreenState createState() => _otherArticlesScreenState();
 }
 
-class _BasicSkincareDataState extends State<BasicSkincareData> {
-  Future<List> getproduct() async {
-    final response = await http.get(blogUrl);
+class _otherArticlesScreenState extends State<otherArticlesScreen> {
 
-    return json.decode(response.body);
-  }
+DateTime convertDateFromString(String strDate){
+   DateTime todayDate = DateTime.parse(strDate);
+  
+    return todayDate;
+ }
 
   @override
   Widget build(BuildContext context) {
-    return new FutureBuilder<List>(
-        future: getproduct(),
-        builder: (context, snapshot) {
-          if (snapshot.hasError) print(snapshot.error);
-          return snapshot.hasData
-              ? BasicSkincare(
-                  list: snapshot.data,
-                )
-              : Center(child: new CircularProgressIndicator());
+    return ListView.builder(
+        itemCount: widget.list.length,
+        shrinkWrap: true,
+        primary: false,
+        itemBuilder: (context, i) {
+          return Container(
+              margin: EdgeInsets.only(bottom: 10),
+              child: ListTile(
+                leading: Image.asset(
+                  "assets/images/blogImage.png",
+                  fit: BoxFit.cover,
+                ),
+                title: Text(
+                  widget.list[i]["title"],
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontFamily: "Brandon",
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                subtitle: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      widget.list[i]["user"]["name"],
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontFamily: "Brandon",
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    Text(
+                      DateFormat('dd MMMM yyyy').format(convertDateFromString(widget.list[i]["created_at"])),
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontFamily: "Brandon",
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
+                ),
+              ));
         });
   }
 }
 
-Widget categoryList(context, List list) {
 
+
+Widget categoryList(context, List list, int categoryId) {
   return GridView.builder(
       primary: false,
       shrinkWrap: true,
@@ -362,14 +396,8 @@ Widget categoryList(context, List list) {
       itemBuilder: (BuildContext context, int i) {
         return GestureDetector(
           onTap: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => BlogDetailData(
-                          list: list,
-                          i: i,
-                          categoryId: list[i]["categoryblog_id"],
-                        )));
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => BlogDetailData(contentId:list[i]["id"])));
           },
           child: Container(
             margin: EdgeInsets.all(5),
@@ -384,13 +412,16 @@ Widget categoryList(context, List list) {
                       ))),
               Container(height: 5),
               Expanded(
-                  flex: 1,
-                  child: Text(list[i]["title"],
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontFamily: "Brandon",
-                        fontWeight: FontWeight.w500,
-                      )))
+                flex: 1,
+                child: Text(
+                  list[i]["title"],
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontFamily: "Brandon",
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              )
             ]),
           ),
         );
@@ -427,5 +458,7 @@ class _categoryFilterState extends State<categoryFilter> {
                 )
               : Center(child: new CircularProgressIndicator());
         });
+  }
+}
   }
 }*/
