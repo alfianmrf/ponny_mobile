@@ -7,7 +7,11 @@ const register = base_url + "auth/signup";
 const blogUrl = base_url + "blog";
 const forumUrl = base_url + "forum";
 const roomUrl = forumUrl + "/rooms";
+const myRoomUrl = forumUrl + "/rooms";
+const postRoom = base_url + "forum/joinRoom";
 const blogDetailUrl = base_url + "blog/23";
+const recomProduct = base_url + "product/recommended?chunk=3";
+const skinkloUrl = base_url + "product/skinlopedia?keyword=&alphabet=";
 const userprofile = base_url + "auth/user";
 const loginOtp = base_url + "auth/login-otp";
 

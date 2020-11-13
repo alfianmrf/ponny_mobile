@@ -5,6 +5,7 @@ import 'package:ponny/widgets/PonnyBottomNavbar.dart';
 import 'package:ponny/util/globalUrl.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:css_text/css_text.dart';
 import 'package:intl/intl.dart';
 
 class BlogDetailScreen extends StatefulWidget {
@@ -20,12 +21,18 @@ class BlogDetailScreen extends StatefulWidget {
 class _BlogDetailScreenState extends State<BlogDetailScreen> {
   bool onSearch = false;
 
+  DateTime convertDateFromString(String strDate) {
+    DateTime todayDate = DateTime.parse(strDate);
 
-DateTime convertDateFromString(String strDate){
-   DateTime todayDate = DateTime.parse(strDate);
-  
     return todayDate;
- }
+  }
+
+  Future<List> getRecom() async {
+    final response = await http.get(recomProduct);
+    // Map<String, dynamic> map = json.decode(response.body);
+    //List<dynamic> data = map[0];
+    return json.decode(response.body);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -277,7 +284,9 @@ DateTime convertDateFromString(String strDate){
                                           ),
                                         ),
                                         subtitle: Text(
-                                         DateFormat('dd MMMM yyyy').format(convertDateFromString(widget.title["created_at"])),
+                                          DateFormat('dd MMMM yyyy').format(
+                                              convertDateFromString(
+                                                  widget.title["created_at"])),
                                           style: TextStyle(
                                             letterSpacing: 1,
                                             fontSize: 14,
@@ -290,7 +299,9 @@ DateTime convertDateFromString(String strDate){
                                     Expanded(flex: 1, child: Container()),
                                   ],
                                 ),
-                                Container(height: 10),
+                                Container(
+                                    height:
+                                        10), //HTML.toRichText(context, "<p>dsggsdgsdg</p>"),
                                 Text(widget.title["content"],
                                     style: TextStyle(
                                       fontSize: 15,
@@ -361,21 +372,20 @@ DateTime convertDateFromString(String strDate){
                                     fontWeight: FontWeight.w800,
                                     color: Color(0xffF48262)),
                               ),
-                              Container(
-                                child: Row(
-                                  children: [
-                                    Expanded(child: product(context)),
-                                    Container(
-                                      width: 10,
-                                    ),
-                                    Expanded(child: product(context)),
-                                    Container(
-                                      width: 10,
-                                    ),
-                                    Expanded(child: product(context))
-                                  ],
-                                ),
-                              )
+                              new FutureBuilder<List>(
+                                  future: getRecom(),
+                                  builder: (context, snapshot) {
+                                    if (snapshot.hasError)
+                                      print(snapshot.error);
+                                    return snapshot.hasData
+                                        ? recommendationSection(
+                                            context,
+                                            snapshot.data,
+                                          )
+                                        : Center(
+                                            child:
+                                                new CircularProgressIndicator());
+                                  })
                             ],
                           ),
                         ),
@@ -404,7 +414,7 @@ class _BlogDetailDataState extends State<BlogDetailData> {
   Future<Map<String, dynamic>> getTitle() async {
     final response =
         await http.get(blogUrl + "/" + widget.contentId.toString());
-   // Map<String, dynamic> map = json.decode(response.body);
+    // Map<String, dynamic> map = json.decode(response.body);
     //List<dynamic> data = map[0];
 
     return json.decode(response.body);
@@ -425,7 +435,35 @@ class _BlogDetailDataState extends State<BlogDetailData> {
   }
 }
 
-Widget product(context) {
+Widget recommendationSection(context, List list) {
+  // print(list[0]["name"]);
+  return Container(
+    child: Row(
+      children: [
+        Expanded(
+            child: product(
+                context,
+                list[0]["data"][0]["name"],
+                list[0]["data"][0]["base_price"],
+                list[0]["data"][0]["rating"],
+                list[0]["data"][0]["discount"])),
+        Container(
+          width: 10,
+        ),
+        Expanded(
+            child: product(
+                context,
+                list[0]["data"][1]["name"],
+                list[0]["data"][1]["base_price"],
+                list[0]["data"][1]["rating"],
+                list[0]["data"][1]["discount"])),
+      ],
+    ),
+  );
+}
+
+Widget product(context, String productName, int productPrice, int ratingData,
+    int discount) {
   return Column(
     children: <Widget>[
       Container(
@@ -439,22 +477,28 @@ Widget product(context) {
                 fit: BoxFit.cover,
               ),
             ),
-            Padding(
-              padding: EdgeInsets.only(top: 10.0),
-              child: Align(
-                  alignment: Alignment.topLeft,
-                  child: Container(
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 5.0),
-                      child: const Text(
-                        '35%',
-                        style: TextStyle(
-                            color: Colors.white, fontFamily: 'Brandon'),
-                      ),
-                    ),
-                    color: Color(0xffF48262),
-                  )),
-            ),
+            (() {
+              if (discount == 0) {
+                return Container();
+              } else {
+                return Padding(
+                  padding: EdgeInsets.only(top: 10.0),
+                  child: Align(
+                      alignment: Alignment.topLeft,
+                      child: Container(
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 5.0),
+                          child: const Text(
+                            '35%',
+                            style: TextStyle(
+                                color: Colors.white, fontFamily: 'Brandon'),
+                          ),
+                        ),
+                        color: Color(0xffF48262),
+                      )),
+                );
+              }
+            }()),
             Padding(
               padding: EdgeInsets.all(5.0),
               child: Align(
@@ -484,7 +528,7 @@ Widget product(context) {
       Padding(
         padding: EdgeInsets.only(top: 7.0),
         child: Text(
-          'Skin Game',
+          productName,
           textAlign: TextAlign.center,
           style: TextStyle(
             fontFamily: 'Yeseva',
@@ -501,40 +545,17 @@ Widget product(context) {
         ),
       ),
       Text(
-        'Rp. 125.000',
+        productPrice.toString(),
         textAlign: TextAlign.center,
         style: TextStyle(
           fontFamily: 'Brandon',
           fontSize: 14,
         ),
       ),
-      Center(
-        child: RichText(
-          text: TextSpan(
-              text: 'Rp. 125.000',
-              style: TextStyle(
-                color: Colors.black,
-                fontFamily: 'Brandon',
-                fontSize: 12,
-                decoration: TextDecoration.lineThrough,
-              ),
-              children: [
-                TextSpan(
-                  text: '(35%)',
-                  style: TextStyle(
-                    color: Color(0xffF48262),
-                    fontFamily: 'Brandon',
-                    fontSize: 12,
-                    decoration: TextDecoration.none,
-                  ),
-                ),
-              ]),
-        ),
-      ),
       Text.rich(TextSpan(children: <InlineSpan>[
         WidgetSpan(
           child: RatingBar(
-            initialRating: 4,
+            initialRating: ratingData.toDouble(),
             minRating: 1,
             direction: Axis.horizontal,
             allowHalfRating: true,
