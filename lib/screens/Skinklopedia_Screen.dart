@@ -14,17 +14,46 @@ class Skinklopedia extends StatefulWidget {
 
 class _SkinklopediaState extends State<Skinklopedia> {
   String alphaBets = "A";
+  var arrayOfalphaBets = [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H",
+    "I",
+    "J",
+    "K",
+    "L",
+    "M",
+    "N",
+    "O",
+    "P",
+    "Q",
+    "R",
+    "S",
+    "T",
+    "U",
+    "V",
+    "W",
+    "X",
+    "Y",
+    "Z"
+  ];
 
   Future<List> filterSkin(String alphaBets) async {
     final response = await http.get(skinkloUrl + alphaBets);
-
-    return json.decode(response.body);
+    Map<String, dynamic> map = json.decode(response.body);
+    List<dynamic> data = map["data"];
+    return data;
   }
 
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 7,
+      length: 26,
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         backgroundColor: Hexcolor('#FCF8F0'),
@@ -161,27 +190,63 @@ class _SkinklopediaState extends State<Skinklopedia> {
                 ),
               ],
             ),
-            new FutureBuilder<List>(
-                future: filterSkin(alphaBets),
-                builder: (context, snapshot) {
-                  if (snapshot.hasError) print(snapshot.error);
-                  return snapshot.hasData
-                      ? tabAlphabets(context)
-                      : Center(child: new CircularProgressIndicator());
-                }),
-            Expanded(
-              child: TabBarView(
-                children: [
-                  page_a(),
-                  page_b(),
-                  page_c(),
-                  page_d(),
-                  page_e(),
-                  page_f(),
-                  page_g(),
+            Container(
+              // color: Colors.green,
+              padding: EdgeInsets.only(top: 10, bottom: 10),
+              width: MediaQuery.of(context).size.width,
+              child: TabBar(
+                onTap: (i) {
+                  setState(() {
+                    alphaBets = arrayOfalphaBets[i];
+                  });
+                },
+                isScrollable: true,
+                unselectedLabelColor: Colors.black,
+                indicatorSize: TabBarIndicatorSize.label,
+                indicator: BoxDecoration(
+                  borderRadius: BorderRadius.circular(5),
+                  // color: Color(0xffF48262),
+                ),
+                labelColor: Color(0xffF48262),
+                tabs: [
+                  tabStyler("A"),
+                  tabStyler("B"),
+                  tabStyler("C"),
+                  tabStyler("D"),
+                  tabStyler("E"),
+                  tabStyler("F"),
+                  tabStyler("G"),
+                  tabStyler("H"),
+                  tabStyler("I"),
+                  tabStyler("J"),
+                  tabStyler("K"),
+                  tabStyler("L"),
+                  tabStyler("M"),
+                  tabStyler("N"),
+                  tabStyler("O"),
+                  tabStyler("P"),
+                  tabStyler("Q"),
+                  tabStyler("R"),
+                  tabStyler("S"),
+                  tabStyler("T"),
+                  tabStyler("U"),
+                  tabStyler("V"),
+                  tabStyler("W"),
+                  tabStyler("X"),
+                  tabStyler("Y"),
+                  tabStyler("Z"),
                 ],
               ),
             ),
+            Expanded(
+                child: new FutureBuilder<List>(
+                    future: filterSkin(alphaBets),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasError) print(snapshot.error);
+                      return snapshot.hasData
+                          ? pageAlphaBets(snapshot.data)
+                          : Center(child: new CircularProgressIndicator());
+                    })),
           ],
         ),
         bottomNavigationBar: new PonnyBottomNavbar(selectedIndex: 4),
@@ -190,188 +255,43 @@ class _SkinklopediaState extends State<Skinklopedia> {
   }
 }
 
-Widget tabAlphabets(context) {
-  return Container(
-    // color: Colors.green,
-    padding: EdgeInsets.only(top: 10, bottom: 10),
-    width: MediaQuery.of(context).size.width,
-    child: TabBar(
-      isScrollable: true,
-      unselectedLabelColor: Colors.black,
-      indicatorSize: TabBarIndicatorSize.label,
-      indicator: BoxDecoration(
-        borderRadius: BorderRadius.circular(5),
-        // color: Color(0xffF48262),
-      ),
-      labelColor: Color(0xffF48262),
-      tabs: [
-        Tab(
-          child: Container(
-            padding: EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(5),
-              border: Border.all(
-                color: Color(0xffF48262),
-                width: 1,
-              ),
-            ),
-            child: Align(
-              alignment: Alignment.center,
-              child: Text(
-                "A",
-                style: TextStyle(
-                  fontFamily: "Yeseva",
-                  fontWeight: FontWeight.w600,
-                  fontSize: 20,
-                ),
-              ),
-            ),
-          ),
-        ),
-        Tab(
-          child: Container(
-            padding: EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(5),
-              border: Border.all(
-                color: Color(0xffF48262),
-                width: 1,
-              ),
-            ),
-            child: Align(
-              alignment: Alignment.center,
-              child: Text(
-                "B",
-                style: TextStyle(
-                  fontFamily: "Yeseva",
-                  fontWeight: FontWeight.w600,
-                  fontSize: 20,
-                ),
-              ),
-            ),
-          ),
-        ),
-        Tab(
-          child: Container(
-            padding: EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(5),
-              border: Border.all(
-                color: Color(0xffF48262),
-                width: 1,
-              ),
-            ),
-            child: Align(
-              alignment: Alignment.center,
-              child: Text(
-                "C",
-                style: TextStyle(
-                  fontFamily: "Yeseva",
-                  fontWeight: FontWeight.w600,
-                  fontSize: 20,
-                ),
-              ),
-            ),
-          ),
-        ),
-        Tab(
-          child: Container(
-            padding: EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(5),
-              border: Border.all(
-                color: Color(0xffF48262),
-                width: 1,
-              ),
-            ),
-            child: Align(
-              alignment: Alignment.center,
-              child: Text(
-                "D",
-                style: TextStyle(
-                  fontFamily: "Yeseva",
-                  fontWeight: FontWeight.w600,
-                  fontSize: 20,
-                ),
-              ),
-            ),
-          ),
-        ),
-        Tab(
-          child: Container(
-            padding: EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(5),
-              border: Border.all(
-                color: Color(0xffF48262),
-                width: 1,
-              ),
-            ),
-            child: Align(
-              alignment: Alignment.center,
-              child: Text(
-                "E",
-                style: TextStyle(
-                  fontFamily: "Yeseva",
-                  fontWeight: FontWeight.w600,
-                  fontSize: 20,
-                ),
-              ),
-            ),
-          ),
-        ),
-        Tab(
-          child: Container(
-            padding: EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(5),
-              border: Border.all(
-                color: Color(0xffF48262),
-                width: 1,
-              ),
-            ),
-            child: Align(
-              alignment: Alignment.center,
-              child: Text(
-                "F",
-                style: TextStyle(
-                  fontFamily: "Yeseva",
-                  fontWeight: FontWeight.w600,
-                  fontSize: 20,
-                ),
-              ),
-            ),
-          ),
-        ),
-        Tab(
-          child: Container(
-            padding: EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(5),
-              border: Border.all(
-                color: Color(0xffF48262),
-                width: 1,
-              ),
-            ),
-            child: Align(
-              alignment: Alignment.center,
-              child: Text(
-                "G",
-                style: TextStyle(
-                  fontFamily: "Yeseva",
-                  fontWeight: FontWeight.w600,
-                  fontSize: 20,
-                ),
-              ),
-            ),
-          ),
-        ),
-      ],
-    ),
+Widget pageAlphaBets(List list) {
+  return TabBarView(
+    children: [
+      page_a(list: list),
+      page_a(list: list),
+      page_a(list: list),
+      page_a(list: list),
+      page_a(list: list),
+      page_a(list: list),
+      page_a(list: list),
+      page_a(list: list),
+      page_a(list: list),
+      page_a(list: list),
+      page_a(list: list),
+      page_a(list: list),
+      page_a(list: list),
+      page_a(list: list),
+      page_a(list: list),
+      page_a(list: list),
+      page_a(list: list),
+      page_a(list: list),
+      page_a(list: list),
+      page_a(list: list),
+      page_a(list: list),
+      page_a(list: list),
+      page_a(list: list),
+      page_a(list: list),
+      page_a(list: list),
+      page_a(list: list),
+    ],
   );
 }
 
 class page_a extends StatefulWidget {
+  List list;
+  page_a({this.list});
+
   @override
   _PageAScreen createState() => _PageAScreen();
 }
@@ -379,330 +299,202 @@ class page_a extends StatefulWidget {
 class _PageAScreen extends State<page_a> {
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          Container(
-            margin: EdgeInsets.only(left: 25, right: 25, top: 20),
-            child: Row(
-              children: [
-                Expanded(
-                  flex: 1,
-                  child: Container(
-                    padding: EdgeInsets.only(
-                      top: 20,
-                      left: 20,
-                    ),
-                    decoration: BoxDecoration(
-                      // color: Colors.indigo,
-                      border: Border(
-                        right: BorderSide(
-                          color: Color(0xffF48262),
-                        ),
-                      ),
-                    ),
-                    child: Container(
-                      height: 140,
-                      color: Colors.grey,
-                    ),
-                  ),
-                ),
-                Expanded(
-                  flex: 1,
-                  child: Container(
-                    padding: EdgeInsets.only(
-                      top: 20,
-                      left: 20,
-                    ),
-                    decoration: BoxDecoration(
-                      // color: Colors.indigo,
-                      border: Border(
-                          // right: BorderSide(
-                          //   color: Color(0xffF48262),
-                          // ),
-                          ),
-                    ),
-                    child: Container(
-                      height: 140,
-                      // color: Colors.grey,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(
-                            child: Row(
-                              children: [
-                                Container(
-                                  child: Text(
-                                    "Antioxidant",
-                                    style: TextStyle(
-                                      fontFamily: "Yeseva",
-                                      fontWeight: FontWeight.w400,
-                                    ),
-                                  ),
-                                ),
-                              ],
+    return ListView.builder(
+      itemCount: widget.list.length,
+      itemBuilder: (context, i) {
+        return Column(
+          children: [
+            i % 2 == 0
+                ? Container(
+                    margin: EdgeInsets.only(left: 25, right: 25, top: 20),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: Container(
+                            padding: EdgeInsets.only(
+                              top: 20,
+                              left: 20,
                             ),
-                          ),
-                          Container(
-                            margin: EdgeInsets.only(top: 5),
-                            child: Text(
-                              "Non adipisicing eu voluptate fugiat ullamco eu duis consequat cillum. Eu aute excepteur tempor dolore aliquip adipisicing.",
-                              style: TextStyle(
-                                fontFamily: "Brandon",
-                                fontWeight: FontWeight.w300,
-                                fontSize: 12,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    // height: 150,
-                  ),
-                )
-              ],
-            ),
-          ),
-          Container(
-            margin: EdgeInsets.only(left: 25, right: 25),
-            child: Row(
-              children: [
-                Expanded(
-                  flex: 1,
-                  child: Container(
-                    padding: EdgeInsets.only(
-                      top: 20,
-                      left: 20,
-                    ),
-                    decoration: BoxDecoration(
-                      // color: Colors.indigo,
-                      border: Border(
-                        right: BorderSide(
-                          color: Color(0xffF48262),
-                        ),
-                      ),
-                    ),
-                    child: Container(
-                      height: 140,
-                      // color: Colors.grey,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(
-                            child: Row(
-                              children: [
-                                Container(
-                                  child: Text(
-                                    "Anti-Inflamasi",
-                                    style: TextStyle(
-                                      fontFamily: "Yeseva",
-                                      fontWeight: FontWeight.w400,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Container(
-                            margin: EdgeInsets.only(top: 5),
-                            child: Text(
-                              "Non adipisicing eu voluptate fugiat ullamco eu duis consequat cillum. Eu aute excepteur tempor dolore aliquip adipisicing.",
-                              style: TextStyle(
-                                fontFamily: "Brandon",
-                                fontWeight: FontWeight.w300,
-                                fontSize: 12,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    // height: 150,
-                  ),
-                ),
-                Expanded(
-                  flex: 1,
-                  child: Container(
-                    padding: EdgeInsets.only(
-                      top: 20,
-                      right: 20,
-                    ),
-                    decoration: BoxDecoration(
-                        // color: Colors.indigo,
-                        ),
-                    child: Container(
-                      height: 140,
-                      color: Colors.grey,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Container(
-            margin: EdgeInsets.only(
-              left: 25,
-              right: 25,
-            ),
-            child: Row(
-              children: [
-                Expanded(
-                  flex: 1,
-                  child: Container(
-                    padding: EdgeInsets.only(
-                      top: 20,
-                      left: 20,
-                    ),
-                    decoration: BoxDecoration(
-                      // color: Colors.indigo,
-                      border: Border(
-                        right: BorderSide(
-                          color: Color(0xffF48262),
-                        ),
-                      ),
-                    ),
-                    child: Container(
-                      height: 140,
-                      color: Colors.grey,
-                    ),
-                  ),
-                ),
-                Expanded(
-                  flex: 1,
-                  child: Container(
-                    padding: EdgeInsets.only(
-                      top: 20,
-                      left: 20,
-                    ),
-                    decoration: BoxDecoration(
-                        // color: Colors.indigo,
+                            decoration: BoxDecoration(
+                              // color: Colors.indigo,
 
-                        ),
-                    child: Container(
-                      height: 140,
-                      // color: Colors.grey,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(
-                            child: Row(
-                              children: [
-                                Container(
-                                  child: Text(
-                                    "Antioxidant",
-                                    style: TextStyle(
-                                      fontFamily: "Yeseva",
-                                      fontWeight: FontWeight.w400,
-                                    ),
-                                  ),
+                              border: Border(
+                                right: BorderSide(
+                                  color: Color(0xffF48262),
                                 ),
-                              ],
-                            ),
-                          ),
-                          Container(
-                            margin: EdgeInsets.only(top: 5),
-                            child: Text(
-                              "Non adipisicing eu voluptate fugiat ullamco eu duis consequat cillum. Eu aute excepteur tempor dolore aliquip adipisicing.",
-                              style: TextStyle(
-                                fontFamily: "Brandon",
-                                fontWeight: FontWeight.w300,
-                                fontSize: 12,
                               ),
                             ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    // height: 150,
-                  ),
-                )
-              ],
-            ),
-          ),
-          Container(
-            margin: EdgeInsets.only(
-              left: 25,
-              right: 25,
-              bottom: 20,
-            ),
-            child: Row(
-              children: [
-                Expanded(
-                  flex: 1,
-                  child: Container(
-                    padding: EdgeInsets.only(
-                      top: 20,
-                      left: 20,
-                      bottom: 20,
-                    ),
-                    decoration: BoxDecoration(
-                      // color: Colors.indigo,
-                      border: Border(
-                        right: BorderSide(
-                          color: Color(0xffF48262),
-                        ),
-                      ),
-                    ),
-                    child: Container(
-                      height: 140,
-                      // color: Colors.grey,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(
-                            child: Row(
-                              children: [
-                                Container(
-                                  child: Text(
-                                    "Anti-Inflamasi",
-                                    style: TextStyle(
-                                      fontFamily: "Yeseva",
-                                      fontWeight: FontWeight.w400,
-                                    ),
-                                  ),
-                                ),
-                              ],
+                            child: Container(
+                              height: 140,
+                              color: Colors.grey,
                             ),
                           ),
-                          Container(
-                            margin: EdgeInsets.only(top: 5),
-                            child: Text(
-                              "Non adipisicing eu voluptate fugiat ullamco eu duis consequat cillum. Eu aute excepteur tempor dolore aliquip adipisicing.",
-                              style: TextStyle(
-                                fontFamily: "Brandon",
-                                fontWeight: FontWeight.w300,
-                                fontSize: 12,
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: Container(
+                            padding: EdgeInsets.only(
+                              top: 20,
+                              left: 20,
+                            ),
+
+                            decoration: BoxDecoration(
+                              // color: Colors.indigo,
+
+                              border: Border(
+
+                                  // right: BorderSide(
+
+                                  //   color: Color(0xffF48262),
+
+                                  // ),
+
+                                  ),
+                            ),
+
+                            child: Container(
+                              height: 140,
+
+                              // color: Colors.grey,
+
+                              child: SingleChildScrollView(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                      child: Row(
+                                        children: [
+                                          Flexible(
+                                            child: Container(
+                                              child: FittedBox(
+                                                  child: Text(
+                                                widget.list[i]["title"],
+                                                style: TextStyle(
+                                                  fontFamily: "Yeseva",
+                                                  fontWeight: FontWeight.w400,
+                                                ),
+                                              )),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Container(
+                                      margin: EdgeInsets.only(top: 5),
+                                      child: Text(
+                                        widget.list[i]["text"],
+                                        style: TextStyle(
+                                          fontFamily: "Brandon",
+                                          fontWeight: FontWeight.w300,
+                                          fontSize: 12,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
+
+                            // height: 150,
                           ),
-                        ],
-                      ),
+                        )
+                      ],
                     ),
-                    // height: 150,
-                  ),
-                ),
-                Expanded(
-                  flex: 1,
-                  child: Container(
-                    padding: EdgeInsets.only(
-                      top: 20,
-                      right: 20,
-                      bottom: 20,
-                    ),
-                    decoration: BoxDecoration(
-                        // color: Colors.indigo,
+                  )
+                : Container(
+                    margin: EdgeInsets.only(left: 25, right: 25),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: Container(
+                            padding: EdgeInsets.only(
+                              top: 20,
+                              left: 20,
+                            ),
+
+                            decoration: BoxDecoration(
+                              // color: Colors.indigo,
+
+                              border: Border(
+                                right: BorderSide(
+                                  color: Color(0xffF48262),
+                                ),
+                              ),
+                            ),
+
+                            child: Container(
+                              height: 140,
+
+                              // color: Colors.grey,
+
+                              child: SingleChildScrollView(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                      child: Row(
+                                        children: [
+                                          Flexible(
+                                            child: Container(
+                                              child: FittedBox(
+                                                child: Text(
+                                                  widget.list[i]["title"],
+                                                  style: TextStyle(
+                                                    fontFamily: "Yeseva",
+                                                    fontWeight: FontWeight.w400,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Container(
+                                      margin: EdgeInsets.only(top: 5),
+                                      child: Text(
+                                        widget.list[i]["text"],
+                                        style: TextStyle(
+                                          fontFamily: "Brandon",
+                                          fontWeight: FontWeight.w300,
+                                          fontSize: 12,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+
+                            // height: 150,
+                          ),
                         ),
-                    child: Container(
-                      height: 140,
-                      color: Colors.grey,
+                        Expanded(
+                          flex: 1,
+                          child: Container(
+                            padding: EdgeInsets.only(
+                              top: 20,
+                              right: 20,
+                            ),
+                            decoration: BoxDecoration(
+
+                                // color: Colors.indigo,
+
+                                ),
+                            child: Container(
+                              height: 140,
+                              color: Colors.grey,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
+          ],
+        );
+      },
     );
   }
 }
@@ -813,4 +605,28 @@ class _PageGScreen extends State<page_g> {
       ),
     );
   }
+}
+
+Widget tabStyler(String alphaBets) {
+  return Container(
+    padding: EdgeInsets.all(10),
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(5),
+      border: Border.all(
+        color: Color(0xffF48262),
+        width: 1,
+      ),
+    ),
+    child: Align(
+      alignment: Alignment.center,
+      child: Text(
+        alphaBets,
+        style: TextStyle(
+          fontFamily: "Yeseva",
+          fontWeight: FontWeight.w600,
+          fontSize: 20,
+        ),
+      ),
+    ),
+  );
 }

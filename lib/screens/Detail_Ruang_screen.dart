@@ -1,25 +1,68 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:intl/intl.dart';
 import 'package:readmore/readmore.dart';
 import 'Forum_screen.dart';
 import 'Detail_komen_screen.dart';
+import 'package:ponny/util/globalUrl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
+import 'package:date_format/date_format.dart';
 
 class DetailForum extends StatefulWidget {
   bool gabung = false;
   int index;
+  List list;
+  List listFilter;
+  int indexFilter;
+  bool filters;
 
-  DetailForum({this.gabung, this.index});
+  DetailForum(
+      {this.gabung,
+      this.index,
+      this.list,
+      this.listFilter,
+      this.indexFilter,
+      this.filters});
 
   @override
   _DetailForumState createState() => _DetailForumState();
 }
 
 class _DetailForumState extends State<DetailForum> {
+  int hours;
+
+  addBoolToSF() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool('GabungValue', widget.gabung);
+  }
+
+  addIntToSF() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setInt('intValue', widget.index);
+  }
+
+  DateTime convertDateFromString(String strDate) {
+    DateTime todayDate = DateTime.parse(strDate);
+
+    return todayDate;
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+
+    hours = DateTime.now()
+        .difference(DateTime.parse(widget.list[widget.index]["updated_at"]))
+        .inHours;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
           Expanded(
             flex: 1,
@@ -44,7 +87,10 @@ class _DetailForumState extends State<DetailForum> {
                                 Expanded(
                                   flex: 1,
                                   child: Text(
-                                    "Kulit Berminyak",
+                                    widget.filters
+                                        ? widget.listFilter[widget.indexFilter]
+                                            ["title"]
+                                        : widget.list[widget.index]["title"],
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
                                       fontSize: 12,
@@ -62,7 +108,8 @@ class _DetailForumState extends State<DetailForum> {
                                       Icon(Icons.people,
                                           size: 12, color: Color(0xffF48262)),
                                       Text(
-                                        "1200",
+                                        widget.list[widget.index]["total_user"]
+                                            .toString(),
                                         style: TextStyle(
                                             color: Color(0xffF48262),
                                             fontSize: 12),
@@ -70,7 +117,10 @@ class _DetailForumState extends State<DetailForum> {
                                       Container(width: 10),
                                       Icon(Icons.comment,
                                           size: 12, color: Color(0xffF48262)),
-                                      Text("500",
+                                      Text(
+                                          widget.list[widget.index]["posts"]
+                                              .length
+                                              .toString(),
                                           style: TextStyle(
                                               color: Color(0xffF48262),
                                               fontSize: 12))
@@ -80,7 +130,11 @@ class _DetailForumState extends State<DetailForum> {
                                 Expanded(
                                   flex: 2,
                                   child: Text(
-                                    "Ga setiap saat harus glowing",
+                                    widget.filters
+                                        ? widget.listFilter[widget.indexFilter]
+                                            ["title"]
+                                        : widget.list[widget.index]
+                                            ["sub_title"],
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
                                       fontSize: 10,
@@ -103,6 +157,8 @@ class _DetailForumState extends State<DetailForum> {
                                                   onPressed: () {
                                                     setState(() {
                                                       widget.gabung = false;
+                                                      addBoolToSF();
+                                                      addIntToSF();
                                                     });
                                                   },
                                                   child: FittedBox(
@@ -121,6 +177,8 @@ class _DetailForumState extends State<DetailForum> {
                                                   onPressed: () {
                                                     setState(() {
                                                       widget.gabung = true;
+                                                      addBoolToSF();
+                                                      addIntToSF();
                                                     });
                                                   },
                                                   child: FittedBox(
@@ -148,7 +206,11 @@ class _DetailForumState extends State<DetailForum> {
                                             onPressed: () {
                                               setState(() {
                                                 _settingModalBottomSheet(
-                                                    context);
+                                                    context,
+                                                    widget.list,
+                                                    widget.index,
+                                                    1,
+                                                    0);
                                               });
                                             },
                                             child: FittedBox(
@@ -192,7 +254,7 @@ class _DetailForumState extends State<DetailForum> {
           Expanded(
             flex: 2,
             child: ListView.builder(
-              itemCount: 2,
+              itemCount: widget.list[widget.index]["posts"].length,
               itemBuilder: (context, i) {
                 return GestureDetector(
                   onTap: () {
@@ -224,7 +286,7 @@ class _DetailForumState extends State<DetailForum> {
                                   ),
                                 ),
                                 Text(
-                                  " Kulit Berminyak",
+                                  widget.list[widget.index]["title"],
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                     fontSize: 10,
@@ -244,8 +306,7 @@ class _DetailForumState extends State<DetailForum> {
                                             DetailKomenScreen()));
                               },
                               child: Text(
-                                "Sunscreen yang bikin kulit berminyak",
-                                textAlign: TextAlign.center,
+                                widget.list[widget.index]["posts"][i]["title"],
                                 style: TextStyle(
                                   fontSize: 14,
                                   fontFamily: 'Yeseva',
@@ -257,7 +318,11 @@ class _DetailForumState extends State<DetailForum> {
                             Row(
                               children: [
                                 Text(
-                                  "Posted 20-07-2020",
+                                  "Posted " +
+                                      DateFormat('dd MMMM yyyy').format(
+                                          convertDateFromString(
+                                              widget.list[widget.index]
+                                                  ["created_at"])),
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                     fontSize: 10,
@@ -268,7 +333,8 @@ class _DetailForumState extends State<DetailForum> {
                                 ),
                                 Container(width: 10),
                                 Text(
-                                  "12.27",
+                                  DateFormat('Hm').format(convertDateFromString(
+                                      widget.list[widget.index]["created_at"])),
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                     fontSize: 10,
@@ -290,7 +356,9 @@ class _DetailForumState extends State<DetailForum> {
                                 ),
                                 Container(width: 10),
                                 Text(
-                                  "Diupdate 1 jam yang lalu",
+                                  "Diupdate " +
+                                      hours.toString() +
+                                      " jam yang lalu",
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                     fontSize: 10,
@@ -350,7 +418,7 @@ class _DetailForumState extends State<DetailForum> {
                               height: 5,
                             ),
                             ReadMoreText(
-                              "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam pretium turpis sed lectus molestie, ac convallis ante faucibus. Vivamus id porta tellus, at accumsan dolor. Class aptent taciti sociosqu ad litora",
+                              widget.list[widget.index]["posts"][i]["text"],
                               style: TextStyle(fontFamily: "Brandon"),
                               trimLines: 2,
                               colorClickableText: Colors.blue,
@@ -361,117 +429,137 @@ class _DetailForumState extends State<DetailForum> {
                             Container(
                               height: 5,
                             ),
-                            Container(
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(5),
-                                  border: Border.all(color: Color(0xffF3C1B5))),
-                              padding: EdgeInsets.all(5),
-                              child: Column(
-                                children: [
-                                  Row(
-                                    children: [
-                                      Container(
-                                        height: 35,
-                                        width: 35,
-                                        decoration: BoxDecoration(
-                                            shape: BoxShape.circle,
-                                            color: Color(0xffF48262)),
-                                      ),
-                                      Container(
-                                        width: 5,
-                                      ),
-                                      Text(
-                                        "Phobe",
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          fontFamily: 'Yeseva',
-                                          fontWeight: FontWeight.w800,
-                                          letterSpacing: 1,
+                            ListView.builder(
+                                primary: false,
+                                itemCount: widget
+                                    .list[widget.index]["posts"][i]["reply"]
+                                    .length,
+                                shrinkWrap: true,
+                                itemBuilder: (context, idx) {
+                                  return Container(
+                                    margin: EdgeInsets.only(top: 10),
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(5),
+                                        border: Border.all(
+                                            color: Color(0xffF3C1B5))),
+                                    padding: EdgeInsets.all(5),
+                                    child: Column(
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Container(
+                                              height: 35,
+                                              width: 35,
+                                              decoration: BoxDecoration(
+                                                  shape: BoxShape.circle,
+                                                  color: Color(0xffF48262)),
+                                            ),
+                                            Container(
+                                              width: 5,
+                                            ),
+                                            Text(
+                                              "Phobe",
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                                fontFamily: 'Yeseva',
+                                                fontWeight: FontWeight.w800,
+                                                letterSpacing: 1,
+                                              ),
+                                            ),
+                                            Container(
+                                              width: 5,
+                                            ),
+                                            Container(
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 3),
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(5),
+                                                  color: Color(0xffF48262)),
+                                              child: Text(
+                                                "Dewy Skin",
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 11,
+                                                  fontFamily: 'Brandon',
+                                                  fontWeight: FontWeight.w800,
+                                                  letterSpacing: 1,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
                                         ),
-                                      ),
-                                      Container(
-                                        width: 5,
-                                      ),
-                                      Container(
-                                        padding:
-                                            EdgeInsets.symmetric(horizontal: 3),
-                                        decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(5),
-                                            color: Color(0xffF48262)),
-                                        child: Text(
-                                          "Dewy Skin",
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 11,
-                                            fontFamily: 'Brandon',
-                                            fontWeight: FontWeight.w800,
-                                            letterSpacing: 1,
-                                          ),
+                                        Container(
+                                          height: 5,
                                         ),
-                                      ),
-                                    ],
-                                  ),
-                                  Container(
-                                    height: 5,
-                                  ),
-                                  Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        "Reply: ",
-                                        style: TextStyle(
-                                            fontFamily: "Brandon",
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      Expanded(
-                                        child: ReadMoreText(
-                                          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam pretium turpis sed lectus molestie, ac convallis ante faucibus. Vivamus id porta tellus, at accumsan dolor. Class aptent taciti sociosqu ad litora",
-                                          style:
-                                              TextStyle(fontFamily: "Brandon"),
-                                          trimLines: 2,
-                                          colorClickableText: Colors.blue,
-                                          trimMode: TrimMode.Line,
-                                          trimCollapsedText:
-                                              '...baca selengkapnya',
-                                          trimExpandedText: ' show less',
+                                        Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              "Reply: ",
+                                              style: TextStyle(
+                                                  fontFamily: "Brandon",
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                            Expanded(
+                                              child: ReadMoreText(
+                                                widget.list[widget.index]
+                                                        ["posts"][i]["reply"]
+                                                    [idx]["text"],
+                                                style: TextStyle(
+                                                    fontFamily: "Brandon"),
+                                                trimLines: 2,
+                                                colorClickableText: Colors.blue,
+                                                trimMode: TrimMode.Line,
+                                                trimCollapsedText:
+                                                    '...baca selengkapnya',
+                                                trimExpandedText: ' show less',
+                                              ),
+                                            ),
+                                          ],
                                         ),
-                                      ),
-                                    ],
-                                  ),
-                                  Row(
-                                    children: [
-                                      Icon(
-                                        Icons.favorite,
-                                        color: Color(0xffF48262),
-                                      ),
-                                      Text("52",
-                                          style:
-                                              TextStyle(fontFamily: "Brandon")),
-                                      Container(width: 10),
-                                      Icon(
-                                        Icons.reply,
-                                        color: Color(0xffF48262),
-                                      ),
-                                      Text("Balas",
-                                          style:
-                                              TextStyle(fontFamily: "Brandon")),
-                                      Container(width: 10),
-                                      Text("|",
-                                          style:
-                                              TextStyle(fontFamily: "Brandon")),
-                                      Container(width: 10),
-                                      Text("39 Balasan",
-                                          style:
-                                              TextStyle(fontFamily: "Brandon")),
-                                    ],
-                                  )
-                                ],
-                              ),
-                            )
+                                        Row(
+                                          children: [
+                                            Icon(
+                                              Icons.favorite,
+                                              color: Color(0xffF48262),
+                                            ),
+                                            Text("52",
+                                                style: TextStyle(
+                                                    fontFamily: "Brandon")),
+                                            Container(width: 10),
+                                            IconButton(
+                                              icon: Icon(Icons.reply),
+                                              color: Color(0xffF48262),
+                                              onPressed: () {
+                                                _settingModalBottomSheet(
+                                                    context,
+                                                    widget.list,
+                                                    widget.index,
+                                                    2,
+                                                    idx);
+                                              },
+                                            ),
+                                            Text("Balas",
+                                                style: TextStyle(
+                                                    fontFamily: "Brandon")),
+                                            Container(width: 10),
+                                            Text("|",
+                                                style: TextStyle(
+                                                    fontFamily: "Brandon")),
+                                            Container(width: 10),
+                                            Text("39 Balasan",
+                                                style: TextStyle(
+                                                    fontFamily: "Brandon")),
+                                          ],
+                                        )
+                                      ],
+                                    ),
+                                  );
+                                })
                           ],
                         ),
                       ),
@@ -512,7 +600,25 @@ Widget listCategory(String tagCategory) {
   );
 }
 
-void _settingModalBottomSheet(context) {
+void _settingModalBottomSheet(
+    context, List list, int index, int type, int postIndex) {
+  TextEditingController text = new TextEditingController();
+
+  void createPost() {
+    http.post(newPost, body: {
+      "title": list[index]["title"],
+      "text": text.text,
+      "room_id": list[index]["id"].toString(),
+    });
+  }
+
+  void addComment() {
+    http.post(newPost, body: {
+      "post_id": list[index]["title"],
+      "text": text.text,
+    });
+  }
+
   showModalBottomSheet(
     isScrollControlled: true,
     backgroundColor: Hexcolor('#FCF8F0'),
@@ -564,14 +670,22 @@ void _settingModalBottomSheet(context) {
                         ),
                       ),
                     ),
-                    FittedBox(
-                      fit: BoxFit.fitWidth,
-                      child: Text(
-                        "Kirim",
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontFamily: "Brandon",
-                          fontWeight: FontWeight.w500,
+                    InkWell(
+                      onTap: () {
+                        if (type == 1) {
+                          createPost();
+                        } else if (type == 2) {}
+                        addComment();
+                      },
+                      child: FittedBox(
+                        fit: BoxFit.fitWidth,
+                        child: Text(
+                          "Kirim",
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontFamily: "Brandon",
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
                       ),
                     ),
