@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:collection';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_countdown_timer/flutter_countdown_timer.dart';
 import 'package:ponny/common/constant.dart';
 import 'package:ponny/model/App.dart';
 import 'package:ponny/model/Cart.dart';
@@ -314,6 +315,11 @@ class _HomeScreenState extends State<HomeScreen> {
     List<Widget> ListPhobe;
     final jmlCard = Provider.of<CartModel>(context).getCountOfquantity();
 
+    final flashdeal = Provider.of<ProductModel>(context).flashsale;
+
+
+
+
 
 
 
@@ -493,12 +499,14 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
               ),
+              if(flashdeal != null && DateTime.now().isBefore(DateTime.fromMillisecondsSinceEpoch(flashdeal.detail.endDate * 1000)))
               Container(
                 color: Color(0xffFACAC1),
                 width: MediaQuery.of(context).size.width,
                 padding: EdgeInsets.only(top: 8, bottom: 3),
                 child: Image.asset('assets/images/flash-sale.png', height: 40),
               ),
+              if(flashdeal != null && DateTime.now().isBefore(DateTime.fromMillisecondsSinceEpoch(flashdeal.detail.endDate * 1000)))
               Container(
                 color: Color(0xffFBDFD2),
                 child: Column(
@@ -506,7 +514,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     Padding(
                       padding: EdgeInsets.only(top: 10),
                       child: Text(
-                        'Happy Skin',
+                        flashdeal.detail.title,
                         style: TextStyle(
                           fontFamily: 'Yeseva',
                           fontSize: 26,
@@ -522,7 +530,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             child: Padding(
                               padding: EdgeInsets.only(right: 10),
                               child: Text(
-                                'DIMULAI DALAM',
+                                DateTime.now().isBefore(DateTime.fromMillisecondsSinceEpoch(flashdeal.detail.startDate * 1000))? 'DIMULAI DALAM':'BERAKHIR DALAM',
                                 style: TextStyle(
                                   fontFamily: 'Brandon',
                                 ),
@@ -534,81 +542,113 @@ class _HomeScreenState extends State<HomeScreen> {
                             flex: 1,
                             child: Padding(
                               padding: EdgeInsets.only(left: 10),
-                              child: Row(
-                                children: [
-                                  Container(
-                                    width: 24,
-                                    height: 24,
-                                    decoration: BoxDecoration(
-                                      color: Color(0xffF48262),
-                                      borderRadius: BorderRadius.circular(3),
-                                    ),
-                                    child: Center(
-                                      child: Text(
-                                        '12',
-                                        style: TextStyle(
-                                          fontFamily: 'Brandon',
-                                          color: Colors.white,
+                              child: CountdownTimer(
+                                endTime: flashdeal.detail.endDate*1000,
+                                widgetBuilder: (BuildContext context, CurrentRemainingTime time) {
+                                  return Row(
+                                    children: [
+                                      Container(
+                                        width: 24,
+                                        height: 24,
+                                        decoration: BoxDecoration(
+                                          color: Color(0xffF48262),
+                                          borderRadius: BorderRadius.circular(3),
+                                        ),
+                                        child: Center(
+                                          child: Text(
+                                            time.days != null ? time.days.toString():"00",
+                                            style: TextStyle(
+                                              fontFamily: 'Brandon',
+                                              color: Colors.white,
+                                            ),
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.symmetric(horizontal: 5),
-                                    child: Text(
-                                      ':',
-                                      style: TextStyle(
-                                        fontFamily: 'Brandon',
-                                        color: Color(0xffF48262),
-                                      ),
-                                    ),
-                                  ),
-                                  Container(
-                                    width: 24,
-                                    height: 24,
-                                    decoration: BoxDecoration(
-                                      color: Color(0xffF48262),
-                                      borderRadius: BorderRadius.circular(3),
-                                    ),
-                                    child: Center(
-                                      child: Text(
-                                        '12',
-                                        style: TextStyle(
-                                          fontFamily: 'Brandon',
-                                          color: Colors.white,
+                                      Padding(
+                                        padding: EdgeInsets.symmetric(horizontal: 5),
+                                        child: Text(
+                                          ':',
+                                          style: TextStyle(
+                                            fontFamily: 'Brandon',
+                                            color: Color(0xffF48262),
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.symmetric(horizontal: 5),
-                                    child: Text(
-                                      ':',
-                                      style: TextStyle(
-                                        fontFamily: 'Brandon',
-                                        color: Color(0xffF48262),
-                                      ),
-                                    ),
-                                  ),
-                                  Container(
-                                    width: 24,
-                                    height: 24,
-                                    decoration: BoxDecoration(
-                                      color: Color(0xffF48262),
-                                      borderRadius: BorderRadius.circular(3),
-                                    ),
-                                    child: Center(
-                                      child: Text(
-                                        '27',
-                                        style: TextStyle(
-                                          fontFamily: 'Brandon',
-                                          color: Colors.white,
+                                      Container(
+                                        width: 24,
+                                        height: 24,
+                                        decoration: BoxDecoration(
+                                          color: Color(0xffF48262),
+                                          borderRadius: BorderRadius.circular(3),
+                                        ),
+                                        child: Center(
+                                          child: Text(
+                                            time.hours != null ?time.hours.toString(): "00",
+                                            style: TextStyle(
+                                              fontFamily: 'Brandon',
+                                              color: Colors.white,
+                                            ),
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                  ),
-                                ],
-                              ),
+                                      Padding(
+                                        padding: EdgeInsets.symmetric(horizontal: 5),
+                                        child: Text(
+                                          ':',
+                                          style: TextStyle(
+                                            fontFamily: 'Brandon',
+                                            color: Color(0xffF48262),
+                                          ),
+                                        ),
+                                      ),
+                                      Container(
+                                        width: 24,
+                                        height: 24,
+                                        decoration: BoxDecoration(
+                                          color: Color(0xffF48262),
+                                          borderRadius: BorderRadius.circular(3),
+                                        ),
+                                        child: Center(
+                                          child: Text(
+                                            time.min != null ? time.min.toString(): "00",
+                                            style: TextStyle(
+                                              fontFamily: 'Brandon',
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsets.symmetric(horizontal: 5),
+                                        child: Text(
+                                          ':',
+                                          style: TextStyle(
+                                            fontFamily: 'Brandon',
+                                            color: Color(0xffF48262),
+                                          ),
+                                        ),
+                                      ),
+                                      Container(
+                                        width: 24,
+                                        height: 24,
+                                        decoration: BoxDecoration(
+                                          color: Color(0xffF48262),
+                                          borderRadius: BorderRadius.circular(3),
+                                        ),
+                                        child: Center(
+                                          child: Text(
+                                            time.sec != null? time.sec.toString() :"00",
+                                            style: TextStyle(
+                                              fontFamily: 'Brandon',
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  );
+                                }
+                              )
                             ),
                           ),
                         ],
@@ -622,7 +662,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           if(value.loadingBestSale){
                             return LoadingWidgetFadingCircle(context);
                           }else{
-                            ListFlash = getColumProductFlash(context,value.Best_sell,3);
+                            ListFlash = getColumProductFlash(context,flashdeal.flash_products,3);
                             return  new Swiper(
                               itemBuilder: (BuildContext context, int index) {
                                 return ListFlash[index];

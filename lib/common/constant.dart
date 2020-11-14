@@ -5,6 +5,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:intl/intl.dart';
 import 'package:lodash_dart/lodash_dart.dart';
+import 'package:ponny/model/FlashDeal.dart';
 import 'package:ponny/model/Product.dart';
 import 'package:ponny/screens/product_details_screen.dart';
 import 'package:ponny/util/globalUrl.dart';
@@ -323,7 +324,9 @@ Widget getProduct(context,Product product) => Column(
     ],
   );
 
-Widget getProductFlash(context,Product product) => Column(
+Widget getProductFlash(context,FlashSaleProduct productFlash) {
+  final product = productFlash.product;
+  return  Column(
   children: <Widget>[
     Container(
       child: Stack(
@@ -506,7 +509,7 @@ Widget getProductFlash(context,Product product) => Column(
                   child: ClipRRect(
                     child: LinearProgressIndicator(
                       backgroundColor: Color(0xffFBDFD2),
-                      value: 0.4,
+                      value: productFlash.percentase/100,
                       valueColor: AlwaysStoppedAnimation<Color>(Color(0xffF48262)),
                       minHeight: 5,
                     ),
@@ -516,8 +519,8 @@ Widget getProductFlash(context,Product product) => Column(
                 Padding(
                   padding: EdgeInsets.symmetric(vertical: 5),
                   child: Text(
-                    'Segera Habis',
-                    // 'Tersisa 19',
+                    // 'Segera Habis',
+                    'Tersisa '+productFlash.qty.toString(),
                     // 'Masih Tersedia',
                     style: TextStyle(
                       fontFamily: 'Brandon',
@@ -533,6 +536,9 @@ Widget getProductFlash(context,Product product) => Column(
     ),
   ],
 );
+}
+
+
 
 
 Widget getDetailColumnProduct(context,List<Product> products) {
@@ -614,7 +620,7 @@ Widget getDetailColumnProduct(context,List<Product> products) {
   );
 }
 
-Widget getDetailColumnProductFlash(context,List<Product> products) {
+Widget getDetailColumnProductFlash(context,List<FlashSaleProduct> products) {
   List<Widget> _tmp =[];
   if(products.length ==1){
 
@@ -673,7 +679,7 @@ Widget getDetailColumnProductFlash(context,List<Product> products) {
       ),
     );
   }else{
-    for( Product product in products){
+    for( FlashSaleProduct product in products){
       _tmp.add(
         Expanded(
           flex: 1,
@@ -703,11 +709,10 @@ List<Widget> getColumProduct(context,List<Product> data,int sizes) {
   return _result;
 }
 
-List<Widget> getColumProductFlash(context,List<Product> data,int sizes) {
+List<Widget> getColumProductFlash(context,List<FlashSaleProduct> data,int sizes) {
   final tmp = Lodash().chunk(array: data, size: sizes);
   List<Widget> _result = [];
-
-  for(List<Product> products in tmp){
+  for(List<FlashSaleProduct> products in tmp){
     _result.add(getDetailColumnProductFlash(context,products));
   }
   return _result;

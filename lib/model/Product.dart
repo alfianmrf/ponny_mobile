@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
@@ -7,6 +8,8 @@ import 'package:ponny/model/Brand.dart';
 import 'package:ponny/model/ProductFlashDeal.dart';
 import 'package:ponny/util/globalUrl.dart';
 
+import 'FlashDeal.dart';
+
 class ProductModel with ChangeNotifier{
   List<Product> Best_sell =[];
   List<Product> PhoebeChoices=[];
@@ -15,12 +18,14 @@ class ProductModel with ChangeNotifier{
   bool loadingBestSale =true;
   bool loadingPhobe =true;
   bool loadingRekomendasi = true;
+  FlashDetail flashsale;
 
 
   ProductModel(){
     getBestSell();
     getPhoebe();
     getRekomendasi();
+    getFlashSale();
   }
 
   Future<void> getBestSell() async {
@@ -28,12 +33,30 @@ class ProductModel with ChangeNotifier{
       final result = await http.get(best_sale);
       if(result.statusCode == 200){
         final responseJson = json.decode(result.body);
+        if(responseJson != null)
         for (Map item in responseJson["data"]) {
           Best_sell.add(Product.fromJson(item));
         }
       }
       loadingBestSale=false;
       notifyListeners();
+    }catch(err){
+      loadingBestSale=false;
+      print("error."+err.toString());
+      notifyListeners();
+    }
+  }
+  Future<void> getFlashSale() async{
+    try{
+    final result = await http.get(flashdealUrl);
+      if(result.statusCode == 200){
+        final responseJson = json.decode(result.body);
+        print(responseJson);
+        if(responseJson["status"]) {
+          flashsale =FlashDetail.fromJson(responseJson);
+          notifyListeners();
+        }
+      }
     }catch(err){
       print("error."+err.toString());
       notifyListeners();
@@ -69,6 +92,7 @@ class ProductModel with ChangeNotifier{
       loadingRekomendasi=false;
       notifyListeners();
     }catch(err){
+      loadingRekomendasi=false;
       print("error."+err.toString());
       notifyListeners();
     }
