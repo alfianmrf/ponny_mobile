@@ -147,7 +147,8 @@ class _DetailForumState extends State<DetailForum> {
                                           child: RaisedButton(
                                             onPressed: () {
                                               setState(() {
-                                                widget.gabung = false;
+                                                _settingModalBottomSheet(
+                                                    context);
                                               });
                                             },
                                             child: FittedBox(
@@ -508,5 +509,95 @@ Widget listCategory(String tagCategory) {
         ),
       ),
     ],
+  );
+}
+
+void _settingModalBottomSheet(context) {
+  showModalBottomSheet(
+    isScrollControlled: true,
+    backgroundColor: Hexcolor('#FCF8F0'),
+    shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(30), topRight: Radius.circular(30))),
+    context: context,
+    builder: (builder) {
+      return Container(
+        padding: EdgeInsets.all(10),
+        height: MediaQuery.of(context).size.height * 0.75,
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Container(
+                margin: EdgeInsets.all(5),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      flex: 1,
+                      child: Container(
+                        child: IconButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            icon: Icon(
+                              Icons.arrow_back_ios,
+                              color: Color(0xffF48262),
+                              size: 26,
+                            )),
+                      ),
+                    ),
+                    Expanded(
+                      flex: 4,
+                      child: Container(
+                        margin: EdgeInsets.only(right: 10),
+                        child: FittedBox(
+                          fit: BoxFit.fitWidth,
+                          child: Text(
+                            "Tambahkan Komentar",
+                            style: TextStyle(
+                              fontSize: 24,
+                              fontFamily: "Yeseva",
+                              fontWeight: FontWeight.w500,
+                              color: Color(0xffF48262),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    FittedBox(
+                      fit: BoxFit.fitWidth,
+                      child: Text(
+                        "Kirim",
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontFamily: "Brandon",
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                height: 1,
+                color: Color(0xffF3C1B5),
+              ),
+              Container(
+                margin: EdgeInsets.all(10),
+                child: TextField(
+                  keyboardType: TextInputType.multiline,
+                  maxLines: null,
+                  cursorColor: Colors.black,
+                  textInputAction: TextInputAction.go,
+                  decoration: new InputDecoration.collapsed(
+                      hintStyle: TextStyle(fontFamily: "Brandon"),
+                      hintText: "Tambahkan Komentar"),
+                ),
+              )
+            ],
+          ),
+        ),
+      );
+    },
   );
 }

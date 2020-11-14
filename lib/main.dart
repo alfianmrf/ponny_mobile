@@ -191,7 +191,7 @@ class MyApp extends StatelessWidget {
         CairkanDanaScreen.id: (context) => CairkanDanaScreen(),
         BasicSkincare.id: (context) => BasicSkincare(),
         DetailBrand.id: (context) => DetailBrand(),
-        BasicSkincareData.id: (context) => BasicSkincareData(),
+        BasicSkincare.id: (context) => BasicSkincare(),
         DaftarLoginScreen.id: (context) => DaftarLoginScreen(),
         KartuScreen.id: (context) => KartuScreen(),
         KonsultasiScreen.id: (context) => KonsultasiScreen(),

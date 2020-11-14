@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
+import 'package:http/http.dart' as http;
+import 'package:ponny/util/globalUrl.dart';
+import 'dart:convert';
 
 class Skinklopedia extends StatefulWidget {
   static const String id = "Skinklopedia_Screen";
@@ -10,6 +13,14 @@ class Skinklopedia extends StatefulWidget {
 }
 
 class _SkinklopediaState extends State<Skinklopedia> {
+  String alphaBets = "A";
+
+  Future<List> filterSkin(String alphaBets) async {
+    final response = await http.get(skinkloUrl + alphaBets);
+
+    return json.decode(response.body);
+  }
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -150,184 +161,14 @@ class _SkinklopediaState extends State<Skinklopedia> {
                 ),
               ],
             ),
-            Container(
-              // color: Colors.green,
-              padding: EdgeInsets.only(top: 10, bottom: 10),
-              width: MediaQuery.of(context).size.width,
-              child: TabBar(
-                isScrollable: true,
-                unselectedLabelColor: Colors.black,
-                indicatorSize: TabBarIndicatorSize.label,
-                indicator: BoxDecoration(
-                  borderRadius: BorderRadius.circular(5),
-                  // color: Color(0xffF48262),
-                ),
-                labelColor: Color(0xffF48262),
-                tabs: [
-                  Tab(
-                    child: Container(
-                      padding: EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
-                        border: Border.all(
-                          color: Color(0xffF48262),
-                          width: 1,
-                        ),
-                      ),
-                      child: Align(
-                        alignment: Alignment.center,
-                        child: Text(
-                          "A",
-                          style: TextStyle(
-                            fontFamily: "Yeseva",
-                            fontWeight: FontWeight.w600,
-                            fontSize: 20,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Tab(
-                    child: Container(
-                      padding: EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
-                        border: Border.all(
-                          color: Color(0xffF48262),
-                          width: 1,
-                        ),
-                      ),
-                      child: Align(
-                        alignment: Alignment.center,
-                        child: Text(
-                          "B",
-                          style: TextStyle(
-                            fontFamily: "Yeseva",
-                            fontWeight: FontWeight.w600,
-                            fontSize: 20,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Tab(
-                    child: Container(
-                      padding: EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
-                        border: Border.all(
-                          color: Color(0xffF48262),
-                          width: 1,
-                        ),
-                      ),
-                      child: Align(
-                        alignment: Alignment.center,
-                        child: Text(
-                          "C",
-                          style: TextStyle(
-                            fontFamily: "Yeseva",
-                            fontWeight: FontWeight.w600,
-                            fontSize: 20,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Tab(
-                    child: Container(
-                      padding: EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
-                        border: Border.all(
-                          color: Color(0xffF48262),
-                          width: 1,
-                        ),
-                      ),
-                      child: Align(
-                        alignment: Alignment.center,
-                        child: Text(
-                          "D",
-                          style: TextStyle(
-                            fontFamily: "Yeseva",
-                            fontWeight: FontWeight.w600,
-                            fontSize: 20,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Tab(
-                    child: Container(
-                      padding: EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
-                        border: Border.all(
-                          color: Color(0xffF48262),
-                          width: 1,
-                        ),
-                      ),
-                      child: Align(
-                        alignment: Alignment.center,
-                        child: Text(
-                          "E",
-                          style: TextStyle(
-                            fontFamily: "Yeseva",
-                            fontWeight: FontWeight.w600,
-                            fontSize: 20,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Tab(
-                    child: Container(
-                      padding: EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
-                        border: Border.all(
-                          color: Color(0xffF48262),
-                          width: 1,
-                        ),
-                      ),
-                      child: Align(
-                        alignment: Alignment.center,
-                        child: Text(
-                          "F",
-                          style: TextStyle(
-                            fontFamily: "Yeseva",
-                            fontWeight: FontWeight.w600,
-                            fontSize: 20,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Tab(
-                    child: Container(
-                      padding: EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
-                        border: Border.all(
-                          color: Color(0xffF48262),
-                          width: 1,
-                        ),
-                      ),
-                      child: Align(
-                        alignment: Alignment.center,
-                        child: Text(
-                          "G",
-                          style: TextStyle(
-                            fontFamily: "Yeseva",
-                            fontWeight: FontWeight.w600,
-                            fontSize: 20,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            new FutureBuilder<List>(
+                future: filterSkin(alphaBets),
+                builder: (context, snapshot) {
+                  if (snapshot.hasError) print(snapshot.error);
+                  return snapshot.hasData
+                      ? tabAlphabets(context)
+                      : Center(child: new CircularProgressIndicator());
+                }),
             Expanded(
               child: TabBarView(
                 children: [
@@ -347,6 +188,187 @@ class _SkinklopediaState extends State<Skinklopedia> {
       ),
     );
   }
+}
+
+Widget tabAlphabets(context) {
+  return Container(
+    // color: Colors.green,
+    padding: EdgeInsets.only(top: 10, bottom: 10),
+    width: MediaQuery.of(context).size.width,
+    child: TabBar(
+      isScrollable: true,
+      unselectedLabelColor: Colors.black,
+      indicatorSize: TabBarIndicatorSize.label,
+      indicator: BoxDecoration(
+        borderRadius: BorderRadius.circular(5),
+        // color: Color(0xffF48262),
+      ),
+      labelColor: Color(0xffF48262),
+      tabs: [
+        Tab(
+          child: Container(
+            padding: EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(5),
+              border: Border.all(
+                color: Color(0xffF48262),
+                width: 1,
+              ),
+            ),
+            child: Align(
+              alignment: Alignment.center,
+              child: Text(
+                "A",
+                style: TextStyle(
+                  fontFamily: "Yeseva",
+                  fontWeight: FontWeight.w600,
+                  fontSize: 20,
+                ),
+              ),
+            ),
+          ),
+        ),
+        Tab(
+          child: Container(
+            padding: EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(5),
+              border: Border.all(
+                color: Color(0xffF48262),
+                width: 1,
+              ),
+            ),
+            child: Align(
+              alignment: Alignment.center,
+              child: Text(
+                "B",
+                style: TextStyle(
+                  fontFamily: "Yeseva",
+                  fontWeight: FontWeight.w600,
+                  fontSize: 20,
+                ),
+              ),
+            ),
+          ),
+        ),
+        Tab(
+          child: Container(
+            padding: EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(5),
+              border: Border.all(
+                color: Color(0xffF48262),
+                width: 1,
+              ),
+            ),
+            child: Align(
+              alignment: Alignment.center,
+              child: Text(
+                "C",
+                style: TextStyle(
+                  fontFamily: "Yeseva",
+                  fontWeight: FontWeight.w600,
+                  fontSize: 20,
+                ),
+              ),
+            ),
+          ),
+        ),
+        Tab(
+          child: Container(
+            padding: EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(5),
+              border: Border.all(
+                color: Color(0xffF48262),
+                width: 1,
+              ),
+            ),
+            child: Align(
+              alignment: Alignment.center,
+              child: Text(
+                "D",
+                style: TextStyle(
+                  fontFamily: "Yeseva",
+                  fontWeight: FontWeight.w600,
+                  fontSize: 20,
+                ),
+              ),
+            ),
+          ),
+        ),
+        Tab(
+          child: Container(
+            padding: EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(5),
+              border: Border.all(
+                color: Color(0xffF48262),
+                width: 1,
+              ),
+            ),
+            child: Align(
+              alignment: Alignment.center,
+              child: Text(
+                "E",
+                style: TextStyle(
+                  fontFamily: "Yeseva",
+                  fontWeight: FontWeight.w600,
+                  fontSize: 20,
+                ),
+              ),
+            ),
+          ),
+        ),
+        Tab(
+          child: Container(
+            padding: EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(5),
+              border: Border.all(
+                color: Color(0xffF48262),
+                width: 1,
+              ),
+            ),
+            child: Align(
+              alignment: Alignment.center,
+              child: Text(
+                "F",
+                style: TextStyle(
+                  fontFamily: "Yeseva",
+                  fontWeight: FontWeight.w600,
+                  fontSize: 20,
+                ),
+              ),
+            ),
+          ),
+        ),
+        Tab(
+          child: Container(
+            padding: EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(5),
+              border: Border.all(
+                color: Color(0xffF48262),
+                width: 1,
+              ),
+            ),
+            child: Align(
+              alignment: Alignment.center,
+              child: Text(
+                "G",
+                style: TextStyle(
+                  fontFamily: "Yeseva",
+                  fontWeight: FontWeight.w600,
+                  fontSize: 20,
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
+    ),
+  );
 }
 
 class page_a extends StatefulWidget {
