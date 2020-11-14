@@ -17,6 +17,7 @@ const slider = base_url+"sliders";
 const best_sale = base_url+"product/bestSeller";
 const phobe = base_url+"product/phoebeChoices";
 const rekomendasiProduk = base_url+"product/recommended";
+const flashdealUrl = base_url+"product/flashDeal";
 
 //cart
 const listCarturl = base_url+"cart/get";
@@ -65,6 +66,13 @@ const myReview = base_url+"review/saya";
 //Komplain
 const listParamKompain = base_url+"checkout/complaint";
 
+//Konsultasi
+const voucherUrl = base_url+"consultation/voucher";
+const voucherCheckout = base_url+"consultation/checkout";
+const historyVoucher = base_url+"consultation/history";
+const listVoucherActive = base_url+"consultation/myvoucher";
+const inCallconsultation = base_url+"consultation/incall";
+const updateDuration = base_url+"consultation/incallStatus";
 
 
 //master

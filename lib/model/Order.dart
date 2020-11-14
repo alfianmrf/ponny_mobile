@@ -89,6 +89,7 @@ class Order {
   List<OrderDetail> order_details;
   List<OrderDetailSample> orderDetailSample;
   List<OrderDetailPoint> orderDetailPoint;
+  List<OrderDetailVoucher> orderDetailVoucher;
   StatusOrder status;
   StatusOrder payment;
   String typePayment;
@@ -117,16 +118,18 @@ class Order {
       this.typePayment,
       this.confrimCourier,
       this.confrimResi,
-      this.deliveryStatus
+      this.deliveryStatus,
+      this.orderDetailVoucher
       );
 
   factory Order.fromJson(Map<String, dynamic> parsedJson){
     List<OrderDetail> _order_details=[];
-    Address _user_order_address = Address.fromJson(parsedJson["user_order_address"]);
-    MapCost _shipping_info = MapCost.fromJson(parsedJson["shipping_info"]);
-    Midtrans _mitrans_val = Midtrans.fromJson(parsedJson["mitrans_val"]);
+    Address _user_order_address = parsedJson["user_order_address"] != null ? Address.fromJson(parsedJson["user_order_address"]) :null;
+    MapCost _shipping_info = parsedJson["shipping_info"] != null ?  MapCost.fromJson(parsedJson["shipping_info"]) :null;
+    Midtrans _mitrans_val = parsedJson["mitrans_val"] != null ? Midtrans.fromJson(parsedJson["mitrans_val"]) : null;
     List<OrderDetailSample> _orderDetailSample=[];
     List<OrderDetailPoint> _orderDetailPoint=[];
+    List<OrderDetailVoucher> _orderDetailVoucher=[];
     StatusOrder _status = StatusOrder.fromJson(parsedJson["statusOrder"]);
     StatusOrder _payment= StatusOrder.fromJson(parsedJson["typePayment"]);
     
@@ -139,6 +142,9 @@ class Order {
     }
     for(Map item in parsedJson["orderDetailPoint"]){
       _orderDetailPoint.add(OrderDetailPoint.fromJson(item));
+    }
+    for(Map item in parsedJson["orderVoucher"]){
+      _orderDetailVoucher.add(OrderDetailVoucher.fromJson(item));
     }
     return Order(parsedJson["id"],
         parsedJson["code"],
@@ -161,6 +167,7 @@ class Order {
       parsedJson["confrim_courier"],
       parsedJson["confrim_resi"],
       parsedJson["delivery_status"],
+        _orderDetailVoucher
     );
   }
 
@@ -227,6 +234,76 @@ class OrderDetailPoint  {
     return OrderDetailPoint(parsedJson["id"],parsedJson["quantity"],Product.fromJson(parsedJson["product"]["availability"]),parsedJson["log_product_point"]["jml_point"],parsedJson["reviewed"]);
   }
 }
+
+class OrderDetailVoucher {
+  int id;
+  int durasi;
+  String expDate;
+  int harga;
+  int orderId;
+  int userId;
+  int isActive;
+  String createdAt;
+  String updatedAt;
+  int masaBerlaku;
+  int dokterId;
+  int durasiPanggilan;
+  String waktuPanggilan;
+  String waktuPanggilanBerakhir;
+
+  OrderDetailVoucher(
+      {this.id,
+        this.durasi,
+        this.expDate,
+        this.harga,
+        this.orderId,
+        this.userId,
+        this.isActive,
+        this.createdAt,
+        this.updatedAt,
+        this.masaBerlaku,
+        this.dokterId,
+        this.durasiPanggilan,
+        this.waktuPanggilan,
+        this.waktuPanggilanBerakhir});
+
+  OrderDetailVoucher.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    durasi = json['durasi'];
+    expDate = json['exp_date'];
+    harga = json['harga'];
+    orderId = json['order_id'];
+    userId = json['user_id'];
+    isActive = json['is_active'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
+    masaBerlaku = json['masa_berlaku'];
+    dokterId = json['dokter_id'];
+    durasiPanggilan = json['durasi_panggilan'];
+    waktuPanggilan = json['waktu_panggilan'];
+    waktuPanggilanBerakhir = json['waktu_panggilan_berakhir'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['durasi'] = this.durasi;
+    data['exp_date'] = this.expDate;
+    data['harga'] = this.harga;
+    data['order_id'] = this.orderId;
+    data['user_id'] = this.userId;
+    data['is_active'] = this.isActive;
+    data['created_at'] = this.createdAt;
+    data['updated_at'] = this.updatedAt;
+    data['masa_berlaku'] = this.masaBerlaku;
+    data['dokter_id'] = this.dokterId;
+    data['durasi_panggilan'] = this.durasiPanggilan;
+    data['waktu_panggilan'] = this.waktuPanggilan;
+    data['waktu_panggilan_berakhir'] = this.waktuPanggilanBerakhir;
+    return data;
+  }
+}
+
 
 class StatusOrder {
   int _id;
