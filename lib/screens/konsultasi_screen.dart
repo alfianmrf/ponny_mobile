@@ -564,8 +564,10 @@ class _KonsultasiState extends State<KonsultasiScreen> {
         child: Center(child: LoadingWidgetFadingCircle(context),),
       );
     }else if(listMyvoucher.length>0){
-      return Container(
-        height: MediaQuery.of(context).size.height*.46,
+      return
+        Flexible(child:
+        Container(
+          height: MediaQuery.of(context).size.height*.46,
         child: ListView.builder(
             controller: _scrollControllerVoucher,
             scrollDirection: Axis.vertical,
@@ -733,6 +735,7 @@ class _KonsultasiState extends State<KonsultasiScreen> {
               }
 
             }),
+        )
       );
     }else{
       return Container(

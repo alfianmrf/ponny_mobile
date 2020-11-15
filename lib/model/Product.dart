@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -10,18 +11,18 @@ import 'package:ponny/util/globalUrl.dart';
 
 import 'FlashDeal.dart';
 
-class ProductModel with ChangeNotifier{
-  List<Product> Best_sell =[];
-  List<Product> PhoebeChoices=[];
-  List<Product> Recomendasi=[];
-  List<Product> Sample=[];
-  bool loadingBestSale =true;
-  bool loadingPhobe =true;
+class ProductModel with ChangeNotifier {
+  List<Product> Best_sell = [];
+  List<Product> PhoebeChoices = [];
+  List<Product> Recomendasi = [];
+  List<Product> Sample = [];
+  bool loadingBestSale = true;
+  bool loadingPhobe = true;
   bool loadingRekomendasi = true;
   FlashDetail flashsale;
 
 
-  ProductModel(){
+  ProductModel() {
     getBestSell();
     getPhoebe();
     getRekomendasi();
@@ -29,73 +30,98 @@ class ProductModel with ChangeNotifier{
   }
 
   Future<void> getBestSell() async {
-    try{
+    try {
       final result = await http.get(best_sale);
-      if(result.statusCode == 200){
+      if (result.statusCode == 200) {
         final responseJson = json.decode(result.body);
-        if(responseJson != null)
-        for (Map item in responseJson["data"]) {
-          Best_sell.add(Product.fromJson(item));
-        }
+        if (responseJson != null)
+          for (Map item in responseJson["data"]) {
+            Best_sell.add(Product.fromJson(item));
+          }
       }
-      loadingBestSale=false;
+      loadingBestSale = false;
       notifyListeners();
-    }catch(err){
-      loadingBestSale=false;
-      print("error."+err.toString());
+    } catch (err) {
+      loadingBestSale = false;
+      print("error." + err.toString());
       notifyListeners();
     }
   }
-  Future<void> getFlashSale() async{
-    try{
-    final result = await http.get(flashdealUrl);
-      if(result.statusCode == 200){
+
+  Future<void> getFlashSale() async {
+    try {
+      final result = await http.get(flashdealUrl);
+      if (result.statusCode == 200) {
         final responseJson = json.decode(result.body);
         print(responseJson);
-        if(responseJson["status"]) {
-          flashsale =FlashDetail.fromJson(responseJson);
+        if (responseJson["status"]) {
+          flashsale = FlashDetail.fromJson(responseJson);
           notifyListeners();
         }
       }
-    }catch(err){
-      print("error."+err.toString());
+    } catch (err) {
+      print("error." + err.toString());
       notifyListeners();
     }
   }
 
   Future<void> getPhoebe() async {
-    try{
+    try {
       final result = await http.get(phobe);
-      if(result.statusCode == 200){
+      if (result.statusCode == 200) {
         final responseJson = json.decode(result.body);
         for (Map item in responseJson["data"]) {
           PhoebeChoices.add(Product.fromJson(item));
         }
       }
-      loadingPhobe=false;
+      loadingPhobe = false;
       notifyListeners();
-    }catch(err){
-      print("error."+err.toString());
+    } catch (err) {
+      print("error." + err.toString());
       notifyListeners();
     }
   }
 
   Future<void> getRekomendasi() async {
-    try{
+    try {
       final result = await http.get(rekomendasiProduk);
-      if(result.statusCode == 200){
+      if (result.statusCode == 200) {
         final responseJson = json.decode(result.body);
         for (Map item in responseJson["data"]) {
           Recomendasi.add(Product.fromJson(item));
         }
       }
-      loadingRekomendasi=false;
+      loadingRekomendasi = false;
       notifyListeners();
-    }catch(err){
-      loadingRekomendasi=false;
-      print("error."+err.toString());
+    } catch (err) {
+      loadingRekomendasi = false;
+      print("error." + err.toString());
       notifyListeners();
     }
+  }
+
+  Future<SearchResult> searchProduct(String url,param) async {
+    SearchResult resultSearch =null;
+    // try {
+    print(json.encode(param));
+      final result = await http.post(url,headers: { HttpHeaders.contentTypeHeader: 'application/json'} ,body: json.encode(param));
+      if (result.statusCode == 200) {
+        final responseJson = json.decode(result.body);
+        print(responseJson["links"]["next"]);
+        List<Product> _tmp=[];
+        for (Map item in responseJson["data"]) {
+          _tmp.add(Product.fromJson(item));
+        }
+
+        print(_tmp.length);
+
+        return SearchResult(products: _tmp,nextUrl: responseJson["links"]["next"],total: responseJson["meta"]["total"]);
+      }
+
+    // } catch (err) {
+    //   print("error." + err.toString());
+    // }
+    return resultSearch;
   }
 
 
@@ -165,6 +191,7 @@ class Product{
     List<String> _tmp=[];
     List<Varian> _var=[];
 
+    if(parsedJson["photos"] != null)
     for(String item in parsedJson['photos']){
       _tmp.add(item);
     }
@@ -217,6 +244,14 @@ class Varian {
     }
     return Varian(parsedJson["attribute_id"], parsedJson["atribut_name"], _tmp);
   }
+
+
+}
+class SearchResult{
+  List<Product> products;
+  String nextUrl;
+  int total;
+  SearchResult({this.products,this.nextUrl,this.total});
 
 }
 

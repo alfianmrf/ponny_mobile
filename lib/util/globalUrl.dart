@@ -84,3 +84,9 @@ const urlKab = base_url + "shipping/cities";
 const urlKec = base_url + "shipping/subDistricts";
 const saveAddressUrl = base_url + "shipping/saveAddress";
 const removeAddressUrl = base_url + "shipping/delAddress";
+
+
+//browse
+const brandSearch = base_url+"product/brands?pageSize=all";
+const searchProductUrl =base_url+"product/search";
+

@@ -21,6 +21,7 @@ import 'package:ponny/widgets/PonnyAppBar.dart';
 import 'package:provider/provider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ponny/screens/cart_screen.dart';
+import 'package:uiblock/uiblock.dart';
 
 import 'account/daftar_keinginan_screen.dart';
 
@@ -39,6 +40,7 @@ class _HomeScreenState extends State<HomeScreen> {
   var _color = Colors.transparent;
   double _elevation = 0;
   ScrollController _controller;
+  bool loading_flashdeal = false;
 
   showModal() {
     return _timer = Timer(Duration(seconds: 2), () {
@@ -499,14 +501,14 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
               ),
-              if(flashdeal != null && DateTime.now().isBefore(DateTime.fromMillisecondsSinceEpoch(flashdeal.detail.endDate * 1000)))
+              if(flashdeal != null && DateTime.now().millisecondsSinceEpoch < flashdeal.detail.endDate * 1000 && !loading_flashdeal)
               Container(
                 color: Color(0xffFACAC1),
                 width: MediaQuery.of(context).size.width,
                 padding: EdgeInsets.only(top: 8, bottom: 3),
                 child: Image.asset('assets/images/flash-sale.png', height: 40),
               ),
-              if(flashdeal != null && DateTime.now().isBefore(DateTime.fromMillisecondsSinceEpoch(flashdeal.detail.endDate * 1000)))
+              if(flashdeal != null && DateTime.now().millisecondsSinceEpoch < flashdeal.detail.endDate * 1000 && !loading_flashdeal)
               Container(
                 color: Color(0xffFBDFD2),
                 child: Column(
@@ -543,7 +545,24 @@ class _HomeScreenState extends State<HomeScreen> {
                             child: Padding(
                               padding: EdgeInsets.only(left: 10),
                               child: CountdownTimer(
-                                endTime: flashdeal.detail.endDate*1000,
+                                onEnd: (){
+                                  setState(() {
+                                    loading_flashdeal =true;
+                                  });
+                                  UIBlock.block(context,customLoaderChild: LoadingWidget(context));
+                                  Provider.of<ProductModel>(context).getFlashSale().then((value){
+                                    UIBlock.unblock(context);
+                                    setState(() {
+                                      loading_flashdeal =false;
+                                    });
+                                  }).catchError((onError){
+                                    UIBlock.unblock(context);
+                                    setState(() {
+                                      loading_flashdeal =false;
+                                    });
+                                  });
+                                },
+                                endTime: DateTime.now().isBefore(DateTime.fromMillisecondsSinceEpoch(flashdeal.detail.startDate * 1000)) ?flashdeal.detail.startDate*1000:flashdeal.detail.endDate*1000,
                                 widgetBuilder: (BuildContext context, CurrentRemainingTime time) {
                                   return Row(
                                     children: [

@@ -14,6 +14,7 @@ import 'package:percent_indicator/percent_indicator.dart';
 import 'package:ponny/screens/product_details_screen.dart';
 import 'package:ponny/util/globalUrl.dart';
 import 'package:provider/provider.dart';
+import 'package:uiblock/uiblock.dart';
 import 'package:waterfall_flow/waterfall_flow.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
 
@@ -112,12 +113,19 @@ class _FlashSaleStateScreen extends State<FlashSaleScreen> {
                     child: Padding(
                         padding: EdgeInsets.only(left: 10),
                         child: CountdownTimer(
-                            endTime: flashdeal.detail.endDate*1000,
+                            endTime: DateTime.now().isBefore(DateTime.fromMillisecondsSinceEpoch(flashdeal.detail.startDate * 1000)) ?flashdeal.detail.startDate*1000:flashdeal.detail.endDate*1000,
                             onEnd:(){
-                              Navigator.pushNamedAndRemoveUntil(
-                                  context,
-                                  HomeScreen.id,(_) => false
-                              );
+                              UIBlock.block(context,customLoaderChild: LoadingWidget(context));
+                              Provider.of<ProductModel>(context).getFlashSale().then((value){
+                                UIBlock.unblock(context);
+                                Navigator.pushNamedAndRemoveUntil(
+                                    context,
+                                    HomeScreen.id,(_) => false
+                                );
+                              }).catchError((onError){
+                                UIBlock.unblock(context);
+                              });
+
                             },
                             widgetBuilder: (BuildContext context, CurrentRemainingTime time) {
                               return Row(

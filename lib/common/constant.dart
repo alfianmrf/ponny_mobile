@@ -189,7 +189,7 @@ Widget getProduct(context,Product product) => Column(
                 color: Colors.white,
                 height: MediaQuery.of(context).size.width*0.35,
                 child: CachedNetworkImage(
-                  imageUrl: img_url+product.thumbnail_image,
+                  imageUrl:product.thumbnail_image != null?  img_url+product.thumbnail_image:"",
                   placeholder: (context, url) => LoadingWidgetPulse(context),
                   errorWidget: (context, url, error) => Image.asset('assets/images/basic.jpg'),
                   width: MediaQuery.of(context).size.width,

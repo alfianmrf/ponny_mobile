@@ -16,6 +16,8 @@ import 'package:agora_rtm/agora_rtm.dart';
 import 'package:provider/provider.dart';
 import 'package:uiblock/uiblock.dart';
 
+import 'konsultasi_screen.dart';
+
 class CallPage extends StatefulWidget {
   static const String id = "inCall_screen";
   String chanel;
@@ -186,7 +188,10 @@ class _CallPageState extends State<CallPage> {
       if(value){
         var engine = await RtcEngine.create(appID);
         engine.leaveChannel();
-        Navigator.pop(context,true);
+        Navigator.pushNamedAndRemoveUntil(
+            context,
+            KonsultasiScreen.id,(_) => false
+        );
       }
     });
 
