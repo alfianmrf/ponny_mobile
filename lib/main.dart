@@ -101,6 +101,8 @@ import 'package:ponny/screens/Keuntungan_HappyReward_screen.dart';
 
 import 'package:ponny/screens/RincianPoint_screen.dart';
 
+import 'package:ponny/screens/account/hubungi_kami_screen.dart';
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -189,13 +191,14 @@ class MyApp extends StatelessWidget {
         AffiliateHomeScreen.id: (context) => AffiliateHomeScreen(),
         AffiliateLogedIn.id: (context) => AffiliateLogedIn(),
         CairkanDanaScreen.id: (context) => CairkanDanaScreen(),
+        HubungiKamiScreen.id: (context) => HubungiKamiScreen(),
         BasicSkincare.id: (context) => BasicSkincare(),
         DetailBrand.id: (context) => DetailBrand(),
         BasicSkincare.id: (context) => BasicSkincare(),
         DaftarLoginScreen.id: (context) => DaftarLoginScreen(),
         KartuScreen.id: (context) => KartuScreen(),
         KonsultasiScreen.id: (context) => KonsultasiScreen(),
-        ForumScreen.id: (context) => ForumScreen(),
+        ForumData.id: (context) => ForumData(),
         UntungReward.id: (context) => UntungReward(),
         RincianPoint.id: (context) => RincianPoint()
       },

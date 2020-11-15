@@ -19,6 +19,7 @@ import 'package:ponny/widgets/PonnyBottomNavbar.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uiblock/uiblock.dart';
+import 'package:link/link.dart';
 import 'package:ponny/util/globalUrl.dart';
 
 class HubungiKamiScreen extends StatefulWidget {
@@ -28,6 +29,9 @@ class HubungiKamiScreen extends StatefulWidget {
 }
 
 class _HubungiKamiStateScreen extends State<HubungiKamiScreen> {
+
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,7 +39,7 @@ class _HubungiKamiStateScreen extends State<HubungiKamiScreen> {
         titleSpacing: 0.0,
         elevation: 0.0,
         leading: IconButton(
-          onPressed: (){
+          onPressed: () {
             Navigator.pop(context);
           },
           icon: Icon(
@@ -56,8 +60,7 @@ class _HubungiKamiStateScreen extends State<HubungiKamiScreen> {
               color: Color(0xffF48262),
               height: 1.0,
             ),
-            preferredSize: Size.fromHeight(1.0)
-        ),
+            preferredSize: Size.fromHeight(1.0)),
       ),
       resizeToAvoidBottomInset: false,
       backgroundColor: Hexcolor('#FCF8F0'),
@@ -99,7 +102,7 @@ class _HubungiKamiStateScreen extends State<HubungiKamiScreen> {
                       height: 15,
                     ),
                     InkWell(
-                      onTap: (){
+                      onTap: () {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -110,10 +113,12 @@ class _HubungiKamiStateScreen extends State<HubungiKamiScreen> {
                       child: Container(
                         width: double.infinity,
                         decoration: BoxDecoration(
-                          border: Border.all(width: 1,color: Color(0xffF48262)),
+                          border:
+                              Border.all(width: 1, color: Color(0xffF48262)),
                           borderRadius: BorderRadius.circular(5),
                         ),
-                        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 7),
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 10, vertical: 7),
                         child: Text(
                           'Chat via Email',
                           style: TextStyle(
@@ -126,15 +131,17 @@ class _HubungiKamiStateScreen extends State<HubungiKamiScreen> {
                     Container(
                       height: 10,
                     ),
-                    InkWell(
-                      onTap: (){},
+                    Link(
+                      url: "https://wa.me/6283831450890?text=Halo%20Phoebe's",
                       child: Container(
                         width: double.infinity,
                         decoration: BoxDecoration(
-                          border: Border.all(width: 1,color: Color(0xffF48262)),
+                          border:
+                              Border.all(width: 1, color: Color(0xffF48262)),
                           borderRadius: BorderRadius.circular(5),
                         ),
-                        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 7),
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 10, vertical: 7),
                         child: Text(
                           'Chat via Whatsapp',
                           style: TextStyle(
@@ -148,14 +155,16 @@ class _HubungiKamiStateScreen extends State<HubungiKamiScreen> {
                       height: 10,
                     ),
                     InkWell(
-                      onTap: (){},
+                      onTap: () {},
                       child: Container(
                         width: double.infinity,
                         decoration: BoxDecoration(
-                          border: Border.all(width: 1,color: Color(0xffF48262)),
+                          border:
+                              Border.all(width: 1, color: Color(0xffF48262)),
                           borderRadius: BorderRadius.circular(5),
                         ),
-                        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 7),
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 10, vertical: 7),
                         child: Text(
                           'Video call dengan Phoebe Advisor',
                           style: TextStyle(
@@ -177,7 +186,7 @@ class _HubungiKamiStateScreen extends State<HubungiKamiScreen> {
                       child: Ink(
                         color: Color(0xffFEEDE5),
                         child: InkWell(
-                          onTap: (){
+                          onTap: () {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -214,8 +223,9 @@ class _HubungiKamiStateScreen extends State<HubungiKamiScreen> {
                       flex: 1,
                       child: Ink(
                         color: Color(0xffFEEDE5),
-                        child: InkWell(
-                          onTap: (){},
+                        child: Link(
+                          url:
+                              "https://wa.me/6283831450890?text=Halo%20Phoebe's",
                           child: Container(
                             padding: EdgeInsets.symmetric(vertical: 25),
                             child: Column(
@@ -246,7 +256,7 @@ class _HubungiKamiStateScreen extends State<HubungiKamiScreen> {
                       child: Ink(
                         color: Color(0xffFEEDE5),
                         child: InkWell(
-                          onTap: (){},
+                          onTap: () {},
                           child: Container(
                             padding: EdgeInsets.symmetric(vertical: 25),
                             child: Column(

@@ -9,7 +9,6 @@ import 'package:ponny/util/globalUrl.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 class ForumScreen extends StatefulWidget {
-  static const String id = "forum_screen";
   final List list;
 
   ForumScreen({this.list});
@@ -78,7 +77,8 @@ class _ForumScreenState extends State<ForumScreen> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Flexible(
-                                  child: FittedBox(fit: BoxFit.cover,
+                                  child: FittedBox(
+                                    fit: BoxFit.cover,
                                     child: Text(
                                       "PHOEBE BOARD",
                                       textAlign: TextAlign.center,
@@ -127,18 +127,40 @@ class _ForumScreenState extends State<ForumScreen> {
                               itemCount:
                                   widget.list == null ? 0 : widget.list.length,
                               itemBuilder: (context, i) {
-                                return Container(
-                                  margin: EdgeInsets.all(10),
-                                  height: 200,
-                                  width: double.infinity,
-                                  child: CachedNetworkImage(
-                                    imageUrl:
-                                        "http://via.placeholder.com/350x150",
-                                    placeholder: (context, url) =>
-                                        CircularProgressIndicator(),
-                                    errorWidget: (context, url, error) =>
-                                        Icon(Icons.error),
-                                  ),
+                                return Column(
+                                  children: [
+                                    Container(
+                                      margin: EdgeInsets.only(top: 10),
+                                      height: 200,
+                                      width: double.infinity,
+                                      child: CachedNetworkImage(
+                                        imageUrl:
+                                            "http://via.placeholder.com/350x150",
+                                        placeholder: (context, url) =>
+                                            CircularProgressIndicator(),
+                                        errorWidget: (context, url, error) =>
+                                            Icon(Icons.error),
+                                      ),
+                                    ),
+                                    Text(
+                                      widget.list[i]["title"],
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                        fontFamily: "Brandon",
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                    Text(
+                                      "Temukan topik yang kamu",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        fontFamily: "Brandon",
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  ],
                                 );
                               }),
                         ),

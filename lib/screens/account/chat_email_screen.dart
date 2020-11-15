@@ -27,7 +27,18 @@ class ChatEmailScreen extends StatefulWidget {
 }
 
 class _ChatEmailStateScreen extends State<ChatEmailScreen> {
+
   String dropdownValue;
+  TextEditingController nama = new TextEditingController();
+  TextEditingController email = new TextEditingController();
+  TextEditingController subject = new TextEditingController();
+  TextEditingController message = new TextEditingController();
+
+  /*void postData() async {
+    http.post(postRoom, body: {"name": )});
+   
+  }*/
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,7 +46,7 @@ class _ChatEmailStateScreen extends State<ChatEmailScreen> {
         titleSpacing: 0.0,
         elevation: 0.0,
         leading: IconButton(
-          onPressed: (){
+          onPressed: () {
             Navigator.pop(context);
           },
           icon: Icon(
@@ -56,8 +67,7 @@ class _ChatEmailStateScreen extends State<ChatEmailScreen> {
               color: Color(0xffF48262),
               height: 1.0,
             ),
-            preferredSize: Size.fromHeight(1.0)
-        ),
+            preferredSize: Size.fromHeight(1.0)),
       ),
       resizeToAvoidBottomInset: false,
       backgroundColor: Hexcolor('#FCF8F0'),
@@ -89,7 +99,7 @@ class _ChatEmailStateScreen extends State<ChatEmailScreen> {
                         textAlign: TextAlign.justify,
                       ),
                     ),
-                    TextFormField(
+                    TextFormField(controller: nama,
                       cursorColor: Color(0xffF48262),
                       keyboardType: TextInputType.name,
                       decoration: InputDecoration(
@@ -101,7 +111,8 @@ class _ChatEmailStateScreen extends State<ChatEmailScreen> {
                         ),
                         fillColor: Color(0xFFFDF8F0),
                         isDense: true,
-                        contentPadding: EdgeInsets.symmetric(horizontal: 17, vertical: 10),
+                        contentPadding:
+                            EdgeInsets.symmetric(horizontal: 17, vertical: 10),
                         labelStyle: TextStyle(color: Colors.black),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(5.0),
@@ -121,7 +132,7 @@ class _ChatEmailStateScreen extends State<ChatEmailScreen> {
                     Container(
                       height: 10,
                     ),
-                    TextFormField(
+                    TextFormField(controller: email,
                       cursorColor: Color(0xffF48262),
                       keyboardType: TextInputType.emailAddress,
                       decoration: InputDecoration(
@@ -133,7 +144,8 @@ class _ChatEmailStateScreen extends State<ChatEmailScreen> {
                         ),
                         fillColor: Color(0xFFFDF8F0),
                         isDense: true,
-                        contentPadding: EdgeInsets.symmetric(horizontal: 17, vertical: 10),
+                        contentPadding:
+                            EdgeInsets.symmetric(horizontal: 17, vertical: 10),
                         labelStyle: TextStyle(color: Colors.black),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(5.0),
@@ -156,7 +168,7 @@ class _ChatEmailStateScreen extends State<ChatEmailScreen> {
                     Container(
                       width: double.infinity,
                       decoration: BoxDecoration(
-                        border: Border.all(width: 1,color: Color(0xffF48262)),
+                        border: Border.all(width: 1, color: Color(0xffF48262)),
                         borderRadius: BorderRadius.circular(5),
                       ),
                       child: DropdownButtonHideUnderline(
@@ -165,7 +177,8 @@ class _ChatEmailStateScreen extends State<ChatEmailScreen> {
                           child: DropdownButton<String>(
                             value: dropdownValue,
                             isExpanded: true,
-                            icon: Icon(Icons.expand_more_rounded, color: Color(0xffF48262)),
+                            icon: Icon(Icons.expand_more_rounded,
+                                color: Color(0xffF48262)),
                             iconSize: 24,
                             elevation: 16,
                             hint: Text(
@@ -186,8 +199,12 @@ class _ChatEmailStateScreen extends State<ChatEmailScreen> {
                                 dropdownValue = newValue;
                               });
                             },
-                            items: <String>['Komplain', 'Pengembalian Barang', 'Pengembalian Dana', 'Lainnya']
-                                .map<DropdownMenuItem<String>>((String value) {
+                            items: <String>[
+                              'Komplain',
+                              'Pengembalian Barang',
+                              'Pengembalian Dana',
+                              'Lainnya'
+                            ].map<DropdownMenuItem<String>>((String value) {
                               return DropdownMenuItem<String>(
                                 value: value,
                                 child: Text(value),
@@ -200,7 +217,7 @@ class _ChatEmailStateScreen extends State<ChatEmailScreen> {
                     Container(
                       height: 10,
                     ),
-                    TextField(
+                    TextField(controller: message,
                       maxLines: 8,
                       cursorColor: Color(0xffF48262),
                       keyboardType: TextInputType.multiline,
@@ -213,7 +230,8 @@ class _ChatEmailStateScreen extends State<ChatEmailScreen> {
                         ),
                         fillColor: Color(0xFFFDF8F0),
                         isDense: true,
-                        contentPadding: EdgeInsets.symmetric(horizontal: 17, vertical: 10),
+                        contentPadding:
+                            EdgeInsets.symmetric(horizontal: 17, vertical: 10),
                         labelStyle: TextStyle(color: Colors.black),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(5.0),
@@ -234,9 +252,10 @@ class _ChatEmailStateScreen extends State<ChatEmailScreen> {
                       child: Container(
                         margin: EdgeInsets.symmetric(vertical: 25),
                         child: ButtonTheme(
-                          padding: EdgeInsets.symmetric(vertical: 10, horizontal: 70),
+                          padding: EdgeInsets.symmetric(
+                              vertical: 10, horizontal: 70),
                           child: FlatButton(
-                            onPressed: (){},
+                            onPressed: () {},
                             color: Color(0xffF48262),
                             child: Text(
                               "KIRIM",

@@ -8,6 +8,8 @@ const blogUrl = base_url + "blog";
 const forumUrl = base_url + "forum";
 const roomUrl = forumUrl + "/rooms";
 const myRoomUrl = forumUrl + "/rooms";
+const newPost = base_url + "forum/store";
+const contactUsUrl = base_url + "contact/wa";
 const postRoom = base_url + "forum/joinRoom";
 const blogDetailUrl = base_url + "blog/23";
 const recomProduct = base_url + "product/recommended?chunk=3";
