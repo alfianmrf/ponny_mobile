@@ -5,6 +5,8 @@ import 'package:ponny/model/Product.dart';
 import 'package:ponny/model/Slider.dart';
 import 'package:ponny/model/User.dart';
 import 'package:ponny/model/Voucher.dart';
+import 'package:ponny/model/chatEmail.dart';
+import 'package:ponny/model/PostandComment.dart';
 import 'package:ponny/screens/Skinklopedia_Screen.dart';
 import 'package:ponny/screens/Detail_Brand_Screen.dart';
 import 'package:ponny/screens/bank_transfer_screen.dart';
@@ -117,7 +119,9 @@ Future<void> main() async {
         ChangeNotifierProvider(create: (context) => AddressModel()),
         ChangeNotifierProvider(create: (context) => OrderModel()),
         ChangeNotifierProvider(create: (context) => UserModel()),
-        ChangeNotifierProvider(create: (context) => VoucherModel())
+        ChangeNotifierProvider(create: (context) => VoucherModel()),
+        ChangeNotifierProvider(create: (context) => ChatEmail()),
+        ChangeNotifierProvider(create: (context) => PostandComment()),
       ],
       child: MyApp(),
     ),
@@ -136,7 +140,7 @@ class MyApp extends StatelessWidget {
         primaryColor: Color(0xFFFDF8F0),
         accentColor: Colors.red,
       ),
-      initialRoute: SplashScreen.id,
+      initialRoute: HubungiKamiScreen.id, //SplashScreen.id,
       routes: {
         SplashScreen.id: (context) => SplashScreen(),
         IntroScreen.id: (context) => IntroScreen(),
