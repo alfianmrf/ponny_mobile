@@ -435,12 +435,14 @@ Widget getProductFlash(context,FlashSaleProduct productFlash) {
                   ),
                 ),
                 Text(
-                  product.name.length > 25 ? product.name.substring(0, 23)+'...' : product.name,
+                  product.name,
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontFamily: 'Brandon',
                     fontSize: 14,
                   ),
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 2,
                 ),
                 Text(
                   product.home_discounted_price,
