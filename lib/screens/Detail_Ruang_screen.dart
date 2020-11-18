@@ -49,6 +49,8 @@ class _DetailForumState extends State<DetailForum> {
   int hours;
   Future<List> roomRefresh;
   File _image;
+  TextEditingController title = new TextEditingController();
+  TextEditingController post = new TextEditingController();
 
   addBoolToSF() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -65,7 +67,6 @@ class _DetailForumState extends State<DetailForum> {
       type: FileType.custom,
       allowedExtensions: ['jpg', 'png'],
     );
-
     setState(() {
       if (result != null) {
         _image = File(result.files.single.path);
@@ -79,7 +80,10 @@ class _DetailForumState extends State<DetailForum> {
   Widget _imageFile() {
     return InkWell(
       onTap: getImage,
-      child: Center(child: Image.file(_image)),
+      child: _image != null
+          ? Image.file(_image)
+          : Image.network(
+              "https://www.google.com/url?sa=i&url=https%3A%2F%2Fviewplus.com%2F41763258-warning-symbol%2F&psig=AOvVaw1KLjN3L9AASS3dCMBuJJrM&ust=1605629204199000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCMCiioi5h-0CFQAAAAAdAAAAABAD"),
     );
   }
 
@@ -87,6 +91,38 @@ class _DetailForumState extends State<DetailForum> {
     DateTime todayDate = DateTime.parse(strDate);
 
     return todayDate;
+  }
+
+  Future<bool> kirimPost(BuildContext context) async {
+    bool result = false;
+    UIBlock.block(context, customLoaderChild: LoadingWidget(context));
+    // var paramPost = {};
+    var paramPost = {
+      "title": title.text,
+      "text": post.text,
+      "room_id": widget.list[widget.index]["id"],
+      "thumbnail": base64Encode(_image.readAsBytesSync())
+    };
+
+    final value = await Provider.of<PostandComment>(context)
+        .posts(Provider.of<AppModel>(context).auth.access_token, paramPost);
+
+    if (value) {
+      UIBlock.unblock(context);
+      result = value;
+    }
+    return result;
+  }
+
+  Widget _iconUpload() {
+    return InkWell(
+      onTap: getImage,
+      child: Icon(
+        Icons.add,
+        size: 50,
+        color: Colors.black12,
+      ),
+    );
   }
 
   List<dynamic> _users = [];
@@ -263,9 +299,244 @@ class _DetailForumState extends State<DetailForum> {
                                           width: double.infinity,
                                           child: RaisedButton(
                                             onPressed: () {
-                                              setState(() {
-                                                _mulaiObrolan(context,
-                                                    widget.list, widget.index);
+                                              Scaffold.of(context)
+                                                  .showBottomSheet<void>(
+                                                      (BuildContext context) {
+                                                return Container(
+                                                    padding: EdgeInsets.all(10),
+                                                    height:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .height *
+                                                            0.75,
+                                                    child:
+                                                        SingleChildScrollView(
+                                                      child: Column(
+                                                        mainAxisSize:
+                                                            MainAxisSize.min,
+                                                        children: [
+                                                          Container(
+                                                            margin:
+                                                                EdgeInsets.all(
+                                                                    5),
+                                                            child: Row(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .start,
+                                                              children: [
+                                                                Container(
+                                                                  child:
+                                                                      IconButton(
+                                                                          onPressed:
+                                                                              () {
+                                                                            Navigator.pop(context);
+                                                                          },
+                                                                          icon:
+                                                                              Icon(
+                                                                            Icons.arrow_back_ios,
+                                                                            color:
+                                                                                Color(0xffF48262),
+                                                                            size:
+                                                                                26,
+                                                                          )),
+                                                                ),
+                                                                Container(
+                                                                  margin: EdgeInsets
+                                                                      .only(
+                                                                          right:
+                                                                              10),
+                                                                  child:
+                                                                      FittedBox(
+                                                                    fit: BoxFit
+                                                                        .fitWidth,
+                                                                    child: Text(
+                                                                      "Mulai Obrolan",
+                                                                      style:
+                                                                          TextStyle(
+                                                                        fontSize:
+                                                                            24,
+                                                                        fontFamily:
+                                                                            "Yeseva",
+                                                                        fontWeight:
+                                                                            FontWeight.w500,
+                                                                        color: Color(
+                                                                            0xffF48262),
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                          Container(
+                                                            height: 1,
+                                                            color: Color(
+                                                                0xffF3C1B5),
+                                                          ),
+                                                          Container(
+                                                            margin:
+                                                                EdgeInsets.all(
+                                                                    10),
+                                                            child: TextField(
+                                                              controller: title,
+                                                              decoration: new InputDecoration(
+                                                                  contentPadding:
+                                                                      EdgeInsets
+                                                                          .all(
+                                                                              10),
+                                                                  border: OutlineInputBorder(
+                                                                      borderSide: BorderSide(
+                                                                          color: Colors
+                                                                              .grey)),
+                                                                  hintStyle: TextStyle(
+                                                                      fontFamily:
+                                                                          "Brandon"),
+                                                                  hintText:
+                                                                      "Title"),
+                                                            ),
+                                                          ),
+                                                          ClipRRect(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        5),
+                                                            child: Container(
+                                                              padding: EdgeInsets
+                                                                  .symmetric(
+                                                                      vertical:
+                                                                          30),
+                                                              child: Column(
+                                                                children: [
+                                                                  InkWell(
+                                                                    onTap:
+                                                                        () {},
+                                                                    child:
+                                                                        Container(
+                                                                      padding: EdgeInsets.only(
+                                                                          bottom:
+                                                                              10),
+                                                                      child: _image !=
+                                                                              null
+                                                                          ? _imageFile()
+                                                                          : _iconUpload(),
+                                                                    ),
+                                                                  ),
+                                                                  Text(
+                                                                    'Letakkan Thumbnail Post disini',
+                                                                    style:
+                                                                        TextStyle(
+                                                                      fontFamily:
+                                                                          'Brandon',
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w600,
+                                                                      fontSize:
+                                                                          12,
+                                                                    ),
+                                                                  ),
+                                                                  Text(
+                                                                    '(max. 5MB)',
+                                                                    style:
+                                                                        TextStyle(
+                                                                      fontFamily:
+                                                                          'Brandon',
+                                                                      fontSize:
+                                                                          12,
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          Container(
+                                                            margin:
+                                                                EdgeInsets.all(
+                                                                    10),
+                                                            child: TextField(
+                                                              controller: post,
+                                                              decoration: new InputDecoration(
+                                                                  contentPadding:
+                                                                      EdgeInsets
+                                                                          .all(
+                                                                              10),
+                                                                  border: OutlineInputBorder(
+                                                                      borderSide: BorderSide(
+                                                                          color: Color(
+                                                                              0xffF48262))),
+                                                                  hintStyle: TextStyle(
+                                                                      fontFamily:
+                                                                          "Brandon"),
+                                                                  hintText:
+                                                                      "Balas"),
+                                                            ),
+                                                          ),
+                                                          Row(
+                                                            children: [
+                                                              Container(
+                                                                margin:
+                                                                    EdgeInsets
+                                                                        .all(
+                                                                            10),
+                                                                alignment:
+                                                                    Alignment
+                                                                        .center,
+                                                                padding:
+                                                                    EdgeInsets
+                                                                        .all(
+                                                                            10),
+                                                                decoration: BoxDecoration(
+                                                                    border: Border.all(
+                                                                        color: Color(
+                                                                            0xffF48262))),
+                                                                child: Text(
+                                                                  "BATAL",
+                                                                  style: TextStyle(
+                                                                      fontFamily:
+                                                                          "Brandon"),
+                                                                ),
+                                                              ),
+                                                              Container(
+                                                                  width: 10),
+                                                              InkWell(
+                                                                  onTap: () {
+                                                                    setState(
+                                                                        () async {
+                                                                      final result =
+                                                                          await kirimPost(
+                                                                              context);
+
+                                                                      Navigator.pop(
+                                                                          context,
+                                                                          true);
+                                                                    });
+                                                                  },
+                                                                  child:
+                                                                      Container(
+                                                                    margin: EdgeInsets
+                                                                        .all(
+                                                                            10),
+                                                                    alignment:
+                                                                        Alignment
+                                                                            .center,
+                                                                    padding:
+                                                                        EdgeInsets.all(
+                                                                            10),
+                                                                    color: Color(
+                                                                        0xffF48262),
+                                                                    child: Text(
+                                                                      "POST",
+                                                                      style: TextStyle(
+                                                                          fontFamily:
+                                                                              "Brandon",
+                                                                          color:
+                                                                              Colors.white),
+                                                                    ),
+                                                                  )),
+                                                            ],
+                                                          )
+                                                        ],
+                                                      ),
+                                                    ));
                                               });
                                             },
                                             child: FittedBox(
@@ -797,8 +1068,8 @@ void _settingModalBottomSheet(context, List list, int index, int type,
                           onTap: () async {
                             setState(() async {
                               final result = await kirimPostdanComment(context);
-                              roomRefresh = roomData;
-                              // Navi gator.pop(context, true);
+                            
+                              Navigator.pop(context, true);
                             });
                           },
                           child: FittedBox(
@@ -864,10 +1135,6 @@ void _mulaiObrolan(
       "thumbnail": base64Encode(imageUpload._image.readAsBytesSync())
     };
 
-    /* type == 1
-        ? await Provider.of<PostandComment>(context)
-            .posts(Provider.of<AppModel>(context).auth.access_token, paramPost)
-        :*/
     final value = await Provider.of<PostandComment>(context)
         .posts(Provider.of<AppModel>(context).auth.access_token, paramPost);
 
@@ -881,170 +1148,159 @@ void _mulaiObrolan(
   final detaiForum = _DetailForumState();
 
   showModalBottomSheet(
-    isScrollControlled: true,
-    backgroundColor: Hexcolor('#FCF8F0'),
-    shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(30), topRight: Radius.circular(30))),
-    context: context,
-    builder: (builder) {
-      return Container(
-          padding: EdgeInsets.all(10),
-          height: MediaQuery.of(context).size.height * 0.75,
-          child: SingleChildScrollView(
-            child: Column(mainAxisSize: MainAxisSize.min,
-              children: [
-                Container(
-                  margin: EdgeInsets.all(5),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
+      isScrollControlled: true,
+      backgroundColor: Hexcolor('#FCF8F0'),
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(30), topRight: Radius.circular(30))),
+      context: context,
+      builder: (builder) {
+        return StatefulBuilder(
+          builder: (BuildContext context, StateSetter setState) {
+            return Container(
+                padding: EdgeInsets.all(10),
+                height: MediaQuery.of(context).size.height * 0.75,
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
                     children: [
-                      Expanded(
-                        flex: 1,
-                        child: Container(
-                          child: IconButton(
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                              icon: Icon(
-                                Icons.arrow_back_ios,
-                                color: Color(0xffF48262),
-                                size: 26,
-                              )),
-                        ),
-                      ),
-                      Flexible(
-                        flex: 4,
-                        child: Container(
-                          margin: EdgeInsets.only(right: 10),
-                          child: FittedBox(
-                            fit: BoxFit.fitWidth,
-                            child: Text(
-                              "Mulai Obrolan",
-                              style: TextStyle(
-                                fontSize: 24,
-                                fontFamily: "Yeseva",
-                                fontWeight: FontWeight.w500,
-                                color: Color(0xffF48262),
+                      Container(
+                        margin: EdgeInsets.all(5),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Container(
+                              child: IconButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  icon: Icon(
+                                    Icons.arrow_back_ios,
+                                    color: Color(0xffF48262),
+                                    size: 26,
+                                  )),
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(right: 10),
+                              child: FittedBox(
+                                fit: BoxFit.fitWidth,
+                                child: Text(
+                                  "Mulai Obrolan",
+                                  style: TextStyle(
+                                    fontSize: 24,
+                                    fontFamily: "Yeseva",
+                                    fontWeight: FontWeight.w500,
+                                    color: Color(0xffF48262),
+                                  ),
+                                ),
                               ),
                             ),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        height: 1,
+                        color: Color(0xffF3C1B5),
+                      ),
+                      Container(
+                        margin: EdgeInsets.all(10),
+                        child: TextField(
+                          controller: title,
+                          decoration: new InputDecoration(
+                              contentPadding: EdgeInsets.all(10),
+                              border: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.grey)),
+                              hintStyle: TextStyle(fontFamily: "Brandon"),
+                              hintText: "Title"),
+                        ),
+                      ),
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(5),
+                        child: Container(
+                          padding: EdgeInsets.symmetric(vertical: 30),
+                          child: Column(
+                            children: [
+                              InkWell(
+                                onTap: () {},
+                                child: Container(
+                                  padding: EdgeInsets.only(bottom: 10),
+                                  child: detaiForum._image != null
+                                      ? detaiForum._imageFile()
+                                      : detaiForum._iconUpload(),
+                                ),
+                              ),
+                              Text(
+                                'Letakkan Thumbnail Post disini',
+                                style: TextStyle(
+                                  fontFamily: 'Brandon',
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 12,
+                                ),
+                              ),
+                              Text(
+                                '(max. 5MB)',
+                                style: TextStyle(
+                                  fontFamily: 'Brandon',
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ),
-                    ],
-                  ),
-                ),
-                Container(
-                  height: 1,
-                  color: Color(0xffF3C1B5),
-                ),
-                Container(
-                  margin: EdgeInsets.all(10),
-                  child: TextField(
-                    controller: title,
-                    decoration: new InputDecoration(
-                        contentPadding: EdgeInsets.all(10),
-                        border: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.grey)),
-                        hintStyle: TextStyle(fontFamily: "Brandon"),
-                        hintText: "Title"),
-                  ),
-                ),
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(5),
-                  child: Container(
-                    padding: EdgeInsets.symmetric(vertical: 30),
-                    child: Column(
-                      children: [
-                        InkWell(
-                          onTap: () {
-                            detaiForum.getImage();
-                          },
-                          child: Container(
-                              padding: EdgeInsets.only(bottom: 10),
-                              child: Text("Ambil Gambar")),
+                      Container(
+                        margin: EdgeInsets.all(10),
+                        child: TextField(
+                          controller: post,
+                          decoration: new InputDecoration(
+                              contentPadding: EdgeInsets.all(10),
+                              border: OutlineInputBorder(
+                                  borderSide:
+                                      BorderSide(color: Color(0xffF48262))),
+                              hintStyle: TextStyle(fontFamily: "Brandon"),
+                              hintText: "Balas"),
                         ),
-                        Text(
-                          'Letakkan Thumbnail Post disini',
-                          style: TextStyle(
-                            fontFamily: 'Brandon',
-                            fontWeight: FontWeight.w600,
-                            fontSize: 12,
-                          ),
-                        ),
-                        Text(
-                          '(max. 5MB)',
-                          style: TextStyle(
-                            fontFamily: 'Brandon',
-                            fontSize: 12,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.all(10),
-                  child: TextField(
-                    controller: post,
-                    decoration: new InputDecoration(
-                        contentPadding: EdgeInsets.all(10),
-                        border: OutlineInputBorder(
-                            borderSide: BorderSide(color: Color(0xffF48262))),
-                        hintStyle: TextStyle(fontFamily: "Brandon"),
-                        hintText: "Balas"),
-                  ),
-                ),
-                Row(
-                  children: [
-                    Container(
-                      margin: EdgeInsets.all(10),
-                      alignment: Alignment.center,
-                      padding: EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                          border: Border.all(color: Color(0xffF48262))),
-                      child: Text(
-                        "BATAL",
-                        style: TextStyle(fontFamily: "Brandon"),
                       ),
-                    ),
-                    Container(width: 10),
-                    StatefulBuilder(
-                      builder: (BuildContext context, StateSetter setState) {
-                        return InkWell(onTap: () {
-                          setState(() async {
-                            final result = await kirimPost(context);
-
-                            Navigator.pop(context, true);
-                          });
-
-                          child:
+                      Row(
+                        children: [
                           Container(
                             margin: EdgeInsets.all(10),
                             alignment: Alignment.center,
                             padding: EdgeInsets.all(10),
-                            color: Color(0xffF48262),
+                            decoration: BoxDecoration(
+                                border: Border.all(color: Color(0xffF48262))),
                             child: Text(
-                              "POST",
-                              style: TextStyle(
-                                  fontFamily: "Brandon", color: Colors.white),
+                              "BATAL",
+                              style: TextStyle(fontFamily: "Brandon"),
                             ),
-                          );
-                        });
-                      },
-                    ),
-                  ],
-                )
-              ],
-            ),
-          ));
-    },
-  );
-}
+                          ),
+                          Container(width: 10),
+                          InkWell(
+                              onTap: () {
+                                setState(() async {
+                                  final result = await kirimPost(context);
 
-void sdad() async {
-  FilePickerResult result = await FilePicker.platform.pickFiles(
-    type: FileType.custom,
-    allowedExtensions: ['jpg', 'pdf', 'doc'],
-  );
+                                  Navigator.pop(context, true);
+                                });
+                              },
+                              child: Container(
+                                margin: EdgeInsets.all(10),
+                                alignment: Alignment.center,
+                                padding: EdgeInsets.all(10),
+                                color: Color(0xffF48262),
+                                child: Text(
+                                  "POST",
+                                  style: TextStyle(
+                                      fontFamily: "Brandon",
+                                      color: Colors.white),
+                                ),
+                              )),
+                        ],
+                      )
+                    ],
+                  ),
+                ));
+          },
+        );
+      });
 }
