@@ -79,31 +79,29 @@ class _LoginStateScreen extends State<LoginScreen> {
       resizeToAvoidBottomInset: false,
       key: scaffoldKey,
       backgroundColor: Hexcolor('#FCF8F0'),
+      appBar: AppBar(
+        titleSpacing: 20.0,
+        elevation: 0.0,
+        automaticallyImplyLeading: false,
+        title: Text(
+          'Akun Saya',
+          style: TextStyle(
+            fontSize: 24,
+            fontFamily: 'Yeseva',
+            color: Hexcolor('#F48262'),
+          ),
+        ),
+        bottom: PreferredSize(
+            child: Container(
+              color: Color(0xffF48262),
+              height: 1.0,
+            ),
+            preferredSize: Size.fromHeight(1.0)),
+      ),
       body: Container(
         child: SingleChildScrollView(
           child: Column(
             children: <Widget>[
-              Container(
-                height: 70.0,
-              ),
-              Container(
-                alignment: Alignment.centerLeft,
-                padding: EdgeInsets.only(left: 20.0),
-                child: Text(
-                  'Akun Saya',
-                  style: TextStyle(
-                      fontSize: 30,
-                      fontFamily: 'Yeseva',
-                      color: Hexcolor('#F48262'),
-                      fontWeight: FontWeight.w500,
-                      letterSpacing: 1),
-                ),
-              ),
-              Container(
-                color: Hexcolor('#F48262'),
-                margin: EdgeInsets.only(top: 20),
-                height: 2,
-              ),
               Container(
                 margin: EdgeInsets.only(left: 20.0, right: 20.0, top: 20.0),
                 child: Row(
@@ -170,73 +168,79 @@ class _LoginStateScreen extends State<LoginScreen> {
                     ]),
               ),
               Container(
-                margin: EdgeInsets.only(left: 20.0, right: 20.0, top: 40.0),
+                margin: EdgeInsets.only(top: 40.0),
                 child: Form(
                   key: formKey,
                   child: Column(
                     children: <Widget>[
-                      TextFormField(
-                        controller: myemail,
-                        decoration: InputDecoration(
-                          filled: true,
-                          fillColor: Colors.white,
-                          hintText: 'Email',
-                          labelText: 'Email:',
-                          labelStyle: TextStyle(color: Colors.black),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8.0),
-                            borderSide: BorderSide(
-                              color: Hexcolor('#F48262'),
+                      Container(
+                        margin: EdgeInsets.only(left: 20.0, right: 20.0,),
+                        child: TextFormField(
+                          controller: myemail,
+                          decoration: InputDecoration(
+                            filled: true,
+                            fillColor: Colors.white,
+                            hintText: 'Email',
+                            labelText: 'Email:',
+                            labelStyle: TextStyle(color: Colors.black),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8.0),
+                              borderSide: BorderSide(
+                                color: Hexcolor('#F48262'),
+                              ),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8.0),
+                              borderSide: BorderSide(
+                                color: Hexcolor('#F48262'),
+                                width: 1.0,
+                              ),
                             ),
                           ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8.0),
-                            borderSide: BorderSide(
-                              color: Hexcolor('#F48262'),
-                              width: 1.0,
-                            ),
-                          ),
+                          keyboardType: TextInputType.emailAddress,
+                          validator: (String value) {
+                            if (value.isEmpty) {
+                              return 'Email tidak boleh kosong';
+                            } else if (!value.contains('@')) {
+                              return 'Email tidak valid';
+                            }
+                          },
                         ),
-                        keyboardType: TextInputType.emailAddress,
-                        validator: (String value) {
-                          if (value.isEmpty) {
-                            return 'Email tidak boleh kosong';
-                          } else if (!value.contains('@')) {
-                            return 'Email tidak valid';
-                          }
-                        },
                       ),
                       Container(
                         height: 20.0,
                       ),
-                      TextFormField(
-                        controller: mypass,
-                        obscureText: true,
-                        decoration: InputDecoration(
-                          filled: true,
-                          fillColor: Colors.white,
-                          hintText: 'Password',
-                          labelText: 'Password :',
-                          labelStyle: TextStyle(color: Colors.black),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8.0),
-                            borderSide: BorderSide(
-                              color: Hexcolor('#F48262'),
+                      Container(
+                        margin: EdgeInsets.only(left: 20.0, right: 20.0,),
+                        child: TextFormField(
+                          controller: mypass,
+                          obscureText: true,
+                          decoration: InputDecoration(
+                            filled: true,
+                            fillColor: Colors.white,
+                            hintText: 'Password',
+                            labelText: 'Password :',
+                            labelStyle: TextStyle(color: Colors.black),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8.0),
+                              borderSide: BorderSide(
+                                color: Hexcolor('#F48262'),
+                              ),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8.0),
+                              borderSide: BorderSide(
+                                color: Hexcolor('#F48262'),
+                                width: 1.0,
+                              ),
                             ),
                           ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8.0),
-                            borderSide: BorderSide(
-                              color: Hexcolor('#F48262'),
-                              width: 1.0,
-                            ),
-                          ),
+                          validator: (String value) {
+                            if (value.isEmpty) {
+                              return 'Password tidak boleh kosong';
+                            }
+                          },
                         ),
-                        validator: (String value) {
-                          if (value.isEmpty) {
-                            return 'Password tidak boleh kosong';
-                          }
-                        },
                       ),
                       Container(
                         height: 45.0,
@@ -271,38 +275,7 @@ class _LoginStateScreen extends State<LoginScreen> {
                           ),
                         ),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5.0),
-                        ),
-                      ),
-                      Container(
-                        height: 10,
-                      ),
-                      ButtonTheme(
-                        buttonColor: Hexcolor('#444444'),
-                        minWidth: 220.0,
-                        height: 60.0,
-                        child: FlatButton(
-                          color: Hexcolor('#444444'),
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => LoginOTP(),
-                              ),
-                            );
-                          },
-                          child: Text(
-                            "Login with Phone Number",
-                            style: TextStyle(
-                                fontSize: 14,
-                                fontFamily: 'Brandon',
-                                fontWeight: FontWeight.w800,
-                                letterSpacing: 1,
-                                color: Colors.white),
-                          ),
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5.0),
+                          borderRadius: BorderRadius.circular(10.0),
                         ),
                       ),
                       Container(
@@ -322,6 +295,258 @@ class _LoginStateScreen extends State<LoginScreen> {
                                 decoration: TextDecoration.underline),
                           ),
                         ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.symmetric(vertical: 20),
+                        child: IntrinsicHeight(
+                          child: Row(
+                            children: [
+                              Expanded(
+                                flex: 1,
+                                child: Container(
+                                  alignment: Alignment.center,
+                                  width: double.infinity,
+                                  height: 1,
+                                  color: Hexcolor('#F48262'),
+                                  margin: EdgeInsets.symmetric(horizontal: 20),
+                                ),
+                              ),
+                              Expanded(
+                                flex: 1,
+                                child: Container(
+                                  child: Text(
+                                    'atau masuk dengan',
+                                    style: TextStyle(
+                                      fontFamily: 'Brandon',
+                                      color: Hexcolor('#F48262'),
+                                      fontSize: 16,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                flex: 1,
+                                child: Container(
+                                  alignment: Alignment.center,
+                                  width: double.infinity,
+                                  height: 1,
+                                  color: Hexcolor('#F48262'),
+                                  margin: EdgeInsets.symmetric(horizontal: 20),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.symmetric(vertical: 5),
+                        child: Row(
+                          children: [
+                            Expanded(flex: 1, child: Container()),
+                            Expanded(
+                              flex: 3,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: Hexcolor('#F48262'),
+                                  ),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: IntrinsicHeight(
+                                  child: Row(
+                                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                                    children: [
+                                      Expanded(
+                                        flex: 1,
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            border: Border(
+                                              right: BorderSide(
+                                                width: 1,
+                                                color: Hexcolor('#F48262'),
+                                              ),
+                                            ),
+                                          ),
+                                          child: IconButton(
+                                            onPressed: () {},
+                                            icon: Image.asset("assets/images/googleLogo.png"),
+                                          ),
+                                        ),
+                                      ),
+                                      Expanded(
+                                        flex: 2,
+                                        child: FlatButton(
+                                          onPressed: () {},
+                                          child: SizedBox(
+                                            width: double.infinity,
+                                            child: Text(
+                                              "GOOGLE",
+                                              textAlign: TextAlign.left,
+                                              style: TextStyle(
+                                                  fontSize: 18,
+                                                  fontFamily: 'Brandon',
+                                                  fontWeight: FontWeight.w800,
+                                                  letterSpacing: 1,
+                                                  color: Hexcolor('#F48262')),
+                                            ),
+                                          ),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Expanded(flex: 1, child: Container()),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.symmetric(vertical: 5),
+                        child: Row(
+                          children: [
+                            Expanded(flex: 1, child: Container()),
+                            Expanded(
+                              flex: 3,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: Hexcolor('#F48262'),
+                                  ),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: IntrinsicHeight(
+                                  child: Row(
+                                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                                    children: [
+                                      Expanded(
+                                        flex: 1,
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            border: Border(
+                                              right: BorderSide(
+                                                width: 1,
+                                                color: Hexcolor('#F48262'),
+                                              ),
+                                            ),
+                                          ),
+                                          child: IconButton(
+                                            onPressed: () {},
+                                            icon: Image.asset("assets/images/facebookLogo.png"),
+                                          ),
+                                        ),
+                                      ),
+                                      Expanded(
+                                        flex: 2,
+                                        child: FlatButton(
+                                          onPressed: () {},
+                                          child: SizedBox(
+                                            width: double.infinity,
+                                            child: Text(
+                                              "FACEBOOK",
+                                              textAlign: TextAlign.left,
+                                              style: TextStyle(
+                                                  fontSize: 18,
+                                                  fontFamily: 'Brandon',
+                                                  fontWeight: FontWeight.w800,
+                                                  letterSpacing: 1,
+                                                  color: Hexcolor('#F48262')),
+                                            ),
+                                          ),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Expanded(flex: 1, child: Container()),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.symmetric(vertical: 5),
+                        child: Row(
+                          children: [
+                            Expanded(flex: 1, child: Container()),
+                            Expanded(
+                              flex: 3,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: Hexcolor('#F48262'),
+                                  ),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: IntrinsicHeight(
+                                  child: Row(
+                                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                                    children: [
+                                      Expanded(
+                                        flex: 1,
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            border: Border(
+                                              right: BorderSide(
+                                                width: 1,
+                                                color: Hexcolor('#F48262'),
+                                              ),
+                                            ),
+                                          ),
+                                          child: IconButton(
+                                            onPressed: () {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) => LoginOTP(),
+                                                ),
+                                              );
+                                            },
+                                            icon: Icon(
+                                              Icons.phone_android,
+                                              color: Hexcolor('#F48262'),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      Expanded(
+                                        flex: 2,
+                                        child: FlatButton(
+                                          onPressed: () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) => LoginOTP(),
+                                              ),
+                                            );
+                                          },
+                                          child: SizedBox(
+                                            width: double.infinity,
+                                            child: Text(
+                                              "OTP / SMS",
+                                              textAlign: TextAlign.left,
+                                              style: TextStyle(
+                                                  fontSize: 18,
+                                                  fontFamily: 'Brandon',
+                                                  fontWeight: FontWeight.w800,
+                                                  letterSpacing: 1,
+                                                  color: Hexcolor('#F48262')),
+                                            ),
+                                          ),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Expanded(flex: 1, child: Container()),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        height: 50,
                       ),
                     ],
                   ),
