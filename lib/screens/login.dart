@@ -115,7 +115,7 @@ class _LoginStateScreen extends State<LoginScreen> {
                           padding: EdgeInsets.only(right: 10),
                           child: ButtonTheme(
                             buttonColor: Hexcolor('#F48262'),
-                            height: 45.0,
+                            height: 35.0,
                             child: FlatButton(
                               onPressed: () {},
                               color: Hexcolor('#F48262'),
@@ -130,7 +130,7 @@ class _LoginStateScreen extends State<LoginScreen> {
                               ),
                             ),
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(5.0),
+                              borderRadius: BorderRadius.circular(10.0),
                             ),
                           ),
                         ),
@@ -141,7 +141,7 @@ class _LoginStateScreen extends State<LoginScreen> {
                           padding: EdgeInsets.only(left: 10),
                           child: ButtonTheme(
                             buttonColor: Hexcolor('#FCF8F0'),
-                            height: 45.0,
+                            height: 35.0,
                             child: FlatButton(
                               onPressed: () {
                                 Navigator.push(
@@ -161,7 +161,7 @@ class _LoginStateScreen extends State<LoginScreen> {
                               ),
                             ),
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(5.0),
+                              borderRadius: BorderRadius.circular(10.0),
                               side: BorderSide(color: Hexcolor('#F48262')),
                             ),
                           ),

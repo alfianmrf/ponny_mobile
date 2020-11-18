@@ -50,7 +50,7 @@ class _PraDaftarScreen extends State<PraDaftarScreen> {
                       padding: EdgeInsets.only(right: 10),
                       child: ButtonTheme(
                         buttonColor: Hexcolor('#FCF8F0'),
-                        height: 45.0,
+                        height: 35.0,
                         child: FlatButton(
                           color: Hexcolor('#FCF8F0'),
                           onPressed: () {
@@ -71,7 +71,7 @@ class _PraDaftarScreen extends State<PraDaftarScreen> {
                           ),
                         ),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5.0),
+                          borderRadius: BorderRadius.circular(10.0),
                           side: BorderSide(color: Hexcolor('#F48262')),
                         ),
                       ),
@@ -84,7 +84,7 @@ class _PraDaftarScreen extends State<PraDaftarScreen> {
                       child: ButtonTheme(
                         buttonColor: Hexcolor('#F48262'),
                         minWidth: 180.0,
-                        height: 45.0,
+                        height: 35.0,
                         child: FlatButton(
                           color: Hexcolor('#F48262'),
                           onPressed: () {},
@@ -99,7 +99,7 @@ class _PraDaftarScreen extends State<PraDaftarScreen> {
                           ),
                         ),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5.0),
+                          borderRadius: BorderRadius.circular(10.0),
                         ),
                       ),
                     ),
@@ -158,7 +158,7 @@ class _PraDaftarScreen extends State<PraDaftarScreen> {
             child: Column(
               children: <Widget>[
                 Text(
-                  "Yuk gabung menjadi",
+                  "Cus, daftarkan dirimu",
                   style: TextStyle(
                     fontSize: 18,
                     fontFamily: "Yeseva",
@@ -169,7 +169,7 @@ class _PraDaftarScreen extends State<PraDaftarScreen> {
                 ),
                 Text(
                   "HAPPY SKIN REWARD",
-                  style: TextStyle(fontSize: 18, fontFamily: 'Yeseva'),
+                  style: TextStyle(fontSize: 22, fontFamily: 'Yeseva'),
                 ),
               ],
             ),
@@ -180,11 +180,11 @@ class _PraDaftarScreen extends State<PraDaftarScreen> {
             child: Column(
               children: <Widget>[
                 Text(
-                  "Wujudkan impian happy skin dan dapatkan keuntungan",
-                  style: TextStyle(fontSize: 12, fontFamily: 'Brandon'),
+                  "BEBAS pilih sample sesukamu. GRATIS hadiah bulanan.",
+                  style: TextStyle(fontFamily: 'Brandon'),
                 ),
-                Text("menarik lainnya melalui poin yang bisa kamu dapatkan",
-                    style: TextStyle(fontSize: 12, fontFamily: 'Brandon')),
+                Text("DISKON gede-gedean. Temukan penawaran lainnya.",
+                    style: TextStyle(fontFamily: 'Brandon')),
               ],
             ),
           ),
@@ -194,10 +194,12 @@ class _PraDaftarScreen extends State<PraDaftarScreen> {
           Container(
             child: ButtonTheme(
               buttonColor: Hexcolor('#F48262'),
-              minWidth: 180.0,
-              height: 45.0,
+              padding: EdgeInsets.symmetric(horizontal: 75, vertical: 10),
               child: FlatButton(
                 color: Hexcolor('#F48262'),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
                 onPressed: () {
                   Navigator.push(
                     context,
@@ -205,7 +207,7 @@ class _PraDaftarScreen extends State<PraDaftarScreen> {
                   );
                 },
                 child: Text(
-                  "MASUK",
+                  "DAFTAR",
                   style: TextStyle(
                       fontSize: 18,
                       fontFamily: 'Brandon',

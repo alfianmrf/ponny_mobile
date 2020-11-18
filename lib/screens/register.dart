@@ -34,7 +34,7 @@ class _RegisterScreen extends State<RegisterScreen> {
     if (selected != null && selected != this.date) {
       setState(() {
         this.date = selected;
-        TglLahir=DateFormat("yyyy-MM-dd").format(selected);
+        TglLahir=DateFormat("d MMMM yyyy").format(selected);
       });
     }
   }
@@ -117,54 +117,81 @@ class _RegisterScreen extends State<RegisterScreen> {
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       backgroundColor: Hexcolor('#FCF8F0'),
+      appBar: AppBar(
+        titleSpacing: 0.0,
+        elevation: 0.0,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: Icon(
+            Icons.arrow_back_ios_rounded,
+            color: Color(0xffF48262),
+          ),
+        ),
+        title: Text(
+          'Daftar',
+          style: TextStyle(
+            fontSize: 24,
+            fontFamily: 'Yeseva',
+            color: Hexcolor('#F48262'),
+          ),
+        ),
+        bottom: PreferredSize(
+            child: Container(
+              color: Color(0xffF48262),
+              height: 1.0,
+            ),
+            preferredSize: Size.fromHeight(1.0)),
+      ),
       body: SingleChildScrollView(
         child: Stack(
           children: <Widget>[
             Column(
               children: <Widget>[
                 Container(
-                  height: 70.0,
-                ),
-                Container(
-                  alignment: Alignment.centerLeft,
-                  padding: EdgeInsets.only(left: 20.0),
-                  child: Text(
-                    'Daftar',
-                    style: TextStyle(
-                        fontSize: 30,
-                        fontFamily: 'Yeseva',
-                        color: Hexcolor('#F48262'),
-                        fontWeight: FontWeight.w500,
-                        letterSpacing: 1),
-                  ),
-                ),
-                Container(
-                  color: Hexcolor('#F48262'),
-                  margin: EdgeInsets.only(top: 20),
-                  height: 2,
-                ),
-                Container(
-                  margin: EdgeInsets.only(left: 20.0, right: 20.0, top: 40.0),
+                  margin: EdgeInsets.only(left: 20.0, right: 20.0, top: 20.0),
                   child: Form(
                     key: formKey,
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.only(bottom: 5),
+                          child: RichText(
+                            text: TextSpan(
+                              text: 'Nama Depan',
+                              style: TextStyle(
+                                fontFamily: 'Brandon',
+                                color: Colors.black,
+                              ),
+                              children: [
+                                TextSpan(
+                                  text: '*',
+                                  style: TextStyle(
+                                    color: Hexcolor('#F48262'),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
                         TextFormField(
                           controller: nama_depan,
                           decoration: InputDecoration(
+                            isDense: true,
+                            contentPadding: EdgeInsets.all(10),
                             filled: true,
                             fillColor: Colors.white,
-                            hintText: 'Nama Depan',
-                            labelText: 'Nama Depan : ',
                             labelStyle: TextStyle(color: Colors.black),
                             focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(5.0),
+                              borderRadius: BorderRadius.circular(10.0),
                               borderSide: BorderSide(
                                 color: Hexcolor('#F48262'),
                               ),
                             ),
                             enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(5.0),
+                              borderRadius: BorderRadius.circular(10.0),
                               borderSide: BorderSide(
                                 color: Hexcolor('#F48262'),
                                 width: 1.0,
@@ -178,25 +205,42 @@ class _RegisterScreen extends State<RegisterScreen> {
                             }
                           },
                         ),
-                        Container(
-                          height: 20.0,
+                        Padding(
+                          padding: EdgeInsets.only(bottom: 5, top: 10),
+                          child: RichText(
+                            text: TextSpan(
+                              text: 'Nama Belakang',
+                              style: TextStyle(
+                                fontFamily: 'Brandon',
+                                color: Colors.black,
+                              ),
+                              children: [
+                                TextSpan(
+                                  text: '*',
+                                  style: TextStyle(
+                                    color: Hexcolor('#F48262'),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
                         TextFormField(
                           controller: nama_belakang,
                           decoration: InputDecoration(
+                            isDense: true,
+                            contentPadding: EdgeInsets.all(10),
                             filled: true,
                             fillColor: Colors.white,
-                            hintText: 'Nama Belakang',
-                            labelText: 'Nama Belakang : ',
                             labelStyle: TextStyle(color: Colors.black),
                             focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(5.0),
+                              borderRadius: BorderRadius.circular(10.0),
                               borderSide: BorderSide(
                                 color: Hexcolor('#F48262'),
                               ),
                             ),
                             enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(5.0),
+                              borderRadius: BorderRadius.circular(10.0),
                               borderSide: BorderSide(
                                 color: Hexcolor('#F48262'),
                                 width: 1.0,
@@ -210,25 +254,42 @@ class _RegisterScreen extends State<RegisterScreen> {
                             }
                           },
                         ),
-                        Container(
-                          height: 20.0,
+                        Padding(
+                          padding: EdgeInsets.only(bottom: 5, top: 10),
+                          child: RichText(
+                            text: TextSpan(
+                              text: 'Email',
+                              style: TextStyle(
+                                fontFamily: 'Brandon',
+                                color: Colors.black,
+                              ),
+                              children: [
+                                TextSpan(
+                                  text: '*',
+                                  style: TextStyle(
+                                    color: Hexcolor('#F48262'),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
                         TextFormField(
                           controller: email,
                           decoration: InputDecoration(
+                            isDense: true,
+                            contentPadding: EdgeInsets.all(10),
                             filled: true,
                             fillColor: Colors.white,
-                            hintText: 'Email',
-                            labelText: 'Email : ',
                             labelStyle: TextStyle(color: Colors.black),
                             focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(5.0),
+                              borderRadius: BorderRadius.circular(10.0),
                               borderSide: BorderSide(
                                 color: Hexcolor('#F48262'),
                               ),
                             ),
                             enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(5.0),
+                              borderRadius: BorderRadius.circular(10.0),
                               borderSide: BorderSide(
                                 color: Hexcolor('#F48262'),
                                 width: 1.0,
@@ -244,26 +305,43 @@ class _RegisterScreen extends State<RegisterScreen> {
                             }
                           },
                         ),
-                        Container(
-                          height: 20.0,
+                        Padding(
+                          padding: EdgeInsets.only(bottom: 5, top: 10),
+                          child: RichText(
+                            text: TextSpan(
+                              text: 'Password',
+                              style: TextStyle(
+                                fontFamily: 'Brandon',
+                                color: Colors.black,
+                              ),
+                              children: [
+                                TextSpan(
+                                  text: '*',
+                                  style: TextStyle(
+                                    color: Hexcolor('#F48262'),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
                         TextFormField(
                           controller: password,
                           obscureText: true,
                           decoration: InputDecoration(
+                            isDense: true,
+                            contentPadding: EdgeInsets.all(10),
                             filled: true,
                             fillColor: Colors.white,
-                            hintText: 'Password',
-                            labelText: 'Password : ',
                             labelStyle: TextStyle(color: Colors.black),
                             focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(5.0),
+                              borderRadius: BorderRadius.circular(10.0),
                               borderSide: BorderSide(
                                 color: Hexcolor('#F48262'),
                               ),
                             ),
                             enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(5.0),
+                              borderRadius: BorderRadius.circular(10.0),
                               borderSide: BorderSide(
                                 color: Hexcolor('#F48262'),
                                 width: 1.0,
@@ -277,26 +355,43 @@ class _RegisterScreen extends State<RegisterScreen> {
                             }
                           },
                         ),
-                        Container(
-                          height: 20.0,
+                        Padding(
+                          padding: EdgeInsets.only(bottom: 5, top: 10),
+                          child: RichText(
+                            text: TextSpan(
+                              text: 'Konfirmasi Password',
+                              style: TextStyle(
+                                fontFamily: 'Brandon',
+                                color: Colors.black,
+                              ),
+                              children: [
+                                TextSpan(
+                                  text: '*',
+                                  style: TextStyle(
+                                    color: Hexcolor('#F48262'),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
                         TextFormField(
                           controller: konfirmasi_password,
                           obscureText: true,
                           decoration: InputDecoration(
+                            isDense: true,
+                            contentPadding: EdgeInsets.all(10),
                             filled: true,
                             fillColor: Colors.white,
-                            hintText: 'Konfirmasi Password',
-                            labelText: 'Konfirmasi Password : ',
                             labelStyle: TextStyle(color: Colors.black),
                             focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(5.0),
+                              borderRadius: BorderRadius.circular(10.0),
                               borderSide: BorderSide(
                                 color: Hexcolor('#F48262'),
                               ),
                             ),
                             enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(5.0),
+                              borderRadius: BorderRadius.circular(10.0),
                               borderSide: BorderSide(
                                 color: Hexcolor('#F48262'),
                                 width: 1.0,
@@ -310,25 +405,42 @@ class _RegisterScreen extends State<RegisterScreen> {
                             }
                           },
                         ),
-                        Container(
-                          height: 20.0,
+                        Padding(
+                          padding: EdgeInsets.only(bottom: 5, top: 10),
+                          child: RichText(
+                            text: TextSpan(
+                              text: 'Nomor Handphone',
+                              style: TextStyle(
+                                fontFamily: 'Brandon',
+                                color: Colors.black,
+                              ),
+                              children: [
+                                TextSpan(
+                                  text: '*',
+                                  style: TextStyle(
+                                    color: Hexcolor('#F48262'),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
                         TextFormField(
                           controller: no_telepon,
                           decoration: InputDecoration(
+                            isDense: true,
+                            contentPadding: EdgeInsets.all(10),
                             filled: true,
                             fillColor: Colors.white,
-                            hintText: 'Nomor Handphone',
-                            labelText: 'Nomor Handphone : ',
                             labelStyle: TextStyle(color: Colors.black),
                             focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(5.0),
+                              borderRadius: BorderRadius.circular(10.0),
                               borderSide: BorderSide(
                                 color: Hexcolor('#F48262'),
                               ),
                             ),
                             enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(5.0),
+                              borderRadius: BorderRadius.circular(10.0),
                               borderSide: BorderSide(
                                 color: Hexcolor('#F48262'),
                                 width: 1.0,
@@ -342,24 +454,25 @@ class _RegisterScreen extends State<RegisterScreen> {
                             }
                           },
                         ),
-                        Container(
-                          height: 20.0,
-                        ),
-                        Container(
-                          alignment: Alignment.centerLeft,
-                          margin: EdgeInsets.only(left: 3.0),
-                          child: Text(
-                            'Jenis Kelamin',
-                            style: TextStyle(
-                              fontSize: 15,
-                              fontFamily: 'Brandon',
-                              color: Colors.black,
-                              fontWeight: FontWeight.w500,
+                        Padding(
+                          padding: EdgeInsets.only(bottom: 5, top: 10),
+                          child: RichText(
+                            text: TextSpan(
+                              text: 'Jenis Kelamin',
+                              style: TextStyle(
+                                fontFamily: 'Brandon',
+                                color: Colors.black,
+                              ),
+                              children: [
+                                TextSpan(
+                                  text: '*',
+                                  style: TextStyle(
+                                    color: Hexcolor('#F48262'),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                        ),
-                        Container(
-                          height: 3,
                         ),
                         Container(
                           child: Row(
@@ -371,9 +484,8 @@ class _RegisterScreen extends State<RegisterScreen> {
                                     padding: EdgeInsets.only(right: 10),
                                     child: ButtonTheme(
                                       buttonColor: Hexcolor('#FCF8F0'),
-                                      height: 45.0,
                                       child: FlatButton(
-
+                                        padding: EdgeInsets.all(10),
                                         onPressed: () {
                                           setState(() {
                                             JenisKelamin="P";
@@ -382,17 +494,15 @@ class _RegisterScreen extends State<RegisterScreen> {
                                         child: Text(
                                           "Perempuan",
                                           style: TextStyle(
-                                              fontSize: 18,
+                                              fontSize: 16,
                                               fontFamily: 'Brandon',
-                                              fontWeight: FontWeight.w800,
-                                              letterSpacing: 1,
-                                              color: Hexcolor('#F48262')),
+                                              color: JenisKelamin == "P" ? Colors.white : Hexcolor('#F48262')),
                                         ),
 
-                                        color: JenisKelamin == "P" ? Colors.white70 : null,
+                                        color: JenisKelamin == "P" ? Hexcolor('#F48262') : Colors.white,
                                       ),
                                       shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(5.0),
+                                        borderRadius: BorderRadius.circular(10.0),
                                         side:
                                         BorderSide(color: Hexcolor('#F48262')),
                                       ),
@@ -405,8 +515,8 @@ class _RegisterScreen extends State<RegisterScreen> {
                                     padding: EdgeInsets.only(left: 10),
                                     child: ButtonTheme(
                                       buttonColor: Hexcolor('#FCF8F0'),
-                                      height: 45.0,
                                       child: FlatButton(
+                                        padding: EdgeInsets.all(10),
                                         onPressed: () {
                                           setState(() {
                                             JenisKelamin="L";
@@ -415,16 +525,14 @@ class _RegisterScreen extends State<RegisterScreen> {
                                         child: Text(
                                           "Laki-laki",
                                           style: TextStyle(
-                                              fontSize: 18,
+                                              fontSize: 16,
                                               fontFamily: 'Brandon',
-                                              fontWeight: FontWeight.w800,
-                                              letterSpacing: 1,
-                                              color: Hexcolor('#F48262')),
+                                              color: JenisKelamin == "L" ? Colors.white : Hexcolor('#F48262')),
                                         ),
-                                        color: JenisKelamin == "L" ? Colors.white70 : null,
+                                        color: JenisKelamin == "L" ? Hexcolor('#F48262') : Colors.white,
                                       ),
                                       shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(5.0),
+                                        borderRadius: BorderRadius.circular(10.0),
                                         side:
                                         BorderSide(color: Hexcolor('#F48262')),
                                       ),
@@ -433,47 +541,120 @@ class _RegisterScreen extends State<RegisterScreen> {
                                 ),
                               ]),
                         ),
-                        Container(
-                          height: 10,
+                        Padding(
+                          padding: EdgeInsets.only(bottom: 5, top: 10),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                flex: 1,
+                                child: Container(
+                                  padding: EdgeInsets.only(right: 10),
+                                  child: RichText(
+                                    text: TextSpan(
+                                      text: 'Tanggal Lahir',
+                                      style: TextStyle(
+                                        fontFamily: 'Brandon',
+                                        color: Colors.black,
+                                      ),
+                                      children: [
+                                        TextSpan(
+                                          text: '*',
+                                          style: TextStyle(
+                                            color: Hexcolor('#F48262'),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                flex: 1,
+                                child: Container(
+                                  padding: EdgeInsets.only(left: 10),
+                                  child: RichText(
+                                    text: TextSpan(
+                                      text: 'Kode Referal',
+                                      style: TextStyle(
+                                        fontFamily: 'Brandon',
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                         Container(
                           margin: EdgeInsets.only(left: 3.0),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
-                              Text(
-                                'Tanggal Lahir',
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  fontFamily: 'Brandon',
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
                               Expanded(
+                                flex: 1,
                                 child: Container(
-                                  padding: EdgeInsets.only(left: 20),
+                                  padding: EdgeInsets.only(right: 10),
                                   child: ButtonTheme(
                                     buttonColor: Hexcolor('#FCF8F0'),
-                                    height: 45.0,
                                     child: FlatButton(
+                                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                      padding: EdgeInsets.all(10),
+                                      color: Colors.white,
                                       onPressed: () {
                                         selectDate(context);
                                       },
-                                      child: Text(
-                                        TglLahir != null ? TglLahir :"Pilih Tanggal Lahir",
-                                        style: TextStyle(
-                                            fontSize: 14,
-                                            fontFamily: 'Brandon',
-                                            fontWeight: FontWeight.w800,
-                                            letterSpacing: 1,
-                                            color: Hexcolor('#F48262')),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            TglLahir != null ? TglLahir :"Pilih Tanggal Lahir",
+                                            style: TextStyle(
+                                                fontSize: 14,
+                                                fontFamily: 'Brandon',
+                                                color: Colors.black26),
+                                          ),
+                                          Icon(
+                                            Icons.expand_more_rounded,
+                                            color: Hexcolor('#F48262'),
+                                            size: 14,
+                                          ),
+                                        ],
                                       ),
                                     ),
                                     shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(5.0),
+                                      borderRadius: BorderRadius.circular(10.0),
                                       side: BorderSide(color: Hexcolor('#F48262')),
                                     ),
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                flex: 1,
+                                child: Container(
+                                  padding: EdgeInsets.only(left: 10),
+                                  child: TextFormField(
+                                    decoration: InputDecoration(
+                                      isDense: true,
+                                      contentPadding: EdgeInsets.all(10),
+                                      filled: true,
+                                      fillColor: Colors.white,
+                                      labelStyle: TextStyle(color: Colors.black),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10.0),
+                                        borderSide: BorderSide(
+                                          color: Hexcolor('#F48262'),
+                                        ),
+                                      ),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10.0),
+                                        borderSide: BorderSide(
+                                          color: Hexcolor('#F48262'),
+                                          width: 1.0,
+                                        ),
+                                      ),
+                                    ),
+                                    keyboardType: TextInputType.text,
                                   ),
                                 ),
                               ),
@@ -485,7 +666,7 @@ class _RegisterScreen extends State<RegisterScreen> {
                   ),
                 ),
                 Container(
-                  height: 50,
+                  height: 30,
                 ),
                 Container(
                   child: ButtonTheme(
@@ -496,7 +677,7 @@ class _RegisterScreen extends State<RegisterScreen> {
                       color: Hexcolor('#F48262'),
                       onPressed: validateInput,
                       child: Text(
-                        "DAFTAR",
+                        "MASUK",
                         style: TextStyle(
                             fontSize: 18,
                             fontFamily: 'Brandon',
@@ -506,7 +687,7 @@ class _RegisterScreen extends State<RegisterScreen> {
                       ),
                     ),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5.0),
+                      borderRadius: BorderRadius.circular(10.0),
                     ),
                   ),
                 ),
