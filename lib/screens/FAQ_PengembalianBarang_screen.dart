@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:ponny/model/FaqHeader.dart';
+import 'package:ponny/screens/FAQ_screen.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
 import 'package:ponny/screens/FAQ_TopQuestion_screen.dart';
 
 class PengembalianBarang extends StatefulWidget {
   static const String id = "FAQ_PengembalianBarang_screen";
+  Faq faq;
+  PengembalianBarang({Key key,this.faq});
 
   @override
   _PengembalianBarangState createState() => _PengembalianBarangState();
@@ -29,8 +33,7 @@ class _PengembalianBarangState extends State<PengembalianBarang> {
                     Container(
                       child: IconButton(
                           onPressed: () {
-                            Navigator.pushReplacementNamed(
-                                context, TopQuestionScreen.id);
+                            Navigator.pop(context);
                           },
                           icon: Icon(
                             Icons.arrow_back_ios,
@@ -40,7 +43,7 @@ class _PengembalianBarangState extends State<PengembalianBarang> {
                     ),
                     Container(
                       child: Text(
-                        "Pengembalian Barang",
+                        "",
                         style: TextStyle(
                           fontSize: 24,
                           fontFamily: "Yeseva",
@@ -64,7 +67,7 @@ class _PengembalianBarangState extends State<PengembalianBarang> {
                       Container(
                         margin: EdgeInsets.only(top: 10, bottom: 10),
                         child: Text(
-                          "What is the return and exchange policy?",
+                          widget.faq.ask,
                           style: TextStyle(
                             fontFamily: 'Brandon',
                             fontSize: 14,
@@ -77,7 +80,7 @@ class _PengembalianBarangState extends State<PengembalianBarang> {
                         color: Color(0xffF48262),
                       ),
                       Text(
-                        "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi",
+                        widget.faq.ans,
                         style: TextStyle(
                           fontFamily: 'Brandon',
                           fontSize: 14,
@@ -102,7 +105,10 @@ class _PengembalianBarangState extends State<PengembalianBarang> {
                     borderRadius: BorderRadius.circular(7.0),
                   ),
                   onPressed: () {
-                    Navigator.pop(context);
+                    Navigator.pushNamedAndRemoveUntil(
+                        context,
+                        FAQScreen.id,(_) => false
+                    );
                   },
                 ),
               ),

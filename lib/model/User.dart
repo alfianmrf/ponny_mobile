@@ -103,6 +103,7 @@ class User{
    int tier;
    int point;
    Dashboards dashboard;
+   String referral_code;
 
    User(
       this.id,
@@ -124,7 +125,8 @@ class User{
       this.completed_profile,
       this.tier,
       this.point,
-       this.dashboard
+       this.dashboard,
+       this.referral_code
        );
 
    User.fromLocalJson(Map<String, dynamic> json) {
@@ -152,6 +154,7 @@ class User{
        dashboard = json['dashboard'] != null
            ? new Dashboards.fromJson(json['dashboard'])
            : null;
+       referral_code = json['referral_code'];
      } catch (e) {
        print(e.toString());
      }

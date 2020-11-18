@@ -140,7 +140,7 @@ class MyApp extends StatelessWidget {
         primaryColor: Color(0xFFFDF8F0),
         accentColor: Colors.red,
       ),
-      initialRoute: HubungiKamiScreen.id, //SplashScreen.id,
+      initialRoute: SplashScreen.id,
       routes: {
         SplashScreen.id: (context) => SplashScreen(),
         IntroScreen.id: (context) => IntroScreen(),

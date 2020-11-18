@@ -30,6 +30,10 @@ class _DetailBrandScreen extends State<DetailBrand> {
   String _q ="";
   TextEditingController _seachcontroller = new TextEditingController();
   int total=0;
+  var _currentSliderValue = RangeValues(200000, 1000000);
+  List<String> checked = [];
+
+
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
@@ -306,12 +310,8 @@ class _DetailBrandScreen extends State<DetailBrand> {
   }
 
   void _settingModalBottomSheet(context) {
-    bool expandBrand = false;
-    bool expandConcern = false;
-    bool expandSkinType = false;
-    bool expandPrice = false;
-    List<String> checked = [];
-    var _currentSliderValue = RangeValues(0, 3000);
+
+
 
     showModalBottomSheet(
         backgroundColor: Hexcolor('#FCF8F0'),
@@ -323,7 +323,6 @@ class _DetailBrandScreen extends State<DetailBrand> {
           return StatefulBuilder(builder: (BuildContext context, setState) {
             return Container(
               padding: EdgeInsets.all(10),
-              height: 350.0,
               child: SingleChildScrollView(
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -380,50 +379,50 @@ class _DetailBrandScreen extends State<DetailBrand> {
                             "Harga: Tinggi - Rendah",
                             "Harga: Rendah - Tinggi"
                           ]),
-                      Container(
-                        margin: EdgeInsets.only(top: 10, bottom: 10),
-                        height: 1,
-                        color: Color(0xffF3C1B5),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                            margin: EdgeInsets.all(10),
-                            child: Text(
-                              "BRANDS",
-                              style: TextStyle(
-                                fontSize: 20,
-                                fontFamily: "Yeseva",
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                          ),
-                          IconButton(
-                            icon: Icon(expandBrand ? Icons.remove : Icons.add),
-                            color: Color(0xffF48262),
-                            onPressed: () {
-                              setState(() {
-                                expandBrand = !expandBrand;
-                              });
-                            },
-                          )
-                        ],
-                      ),
-                      Container(
-                        child: expandBrand
-                            ? Column(
-                          children: [
-                            checkboxtiles("Aeris"),
-                            checkboxtiles("Biyu"),
-                            checkboxtiles("iUNIK"),
-                            checkboxtiles("Thayers"),
-                            checkboxtiles("The Ordinary"),
-                            checkboxtiles("Upmost Beauty"),
-                          ],
-                        )
-                            : Container(),
-                      ),
+                      // Container(
+                      //   margin: EdgeInsets.only(top: 10, bottom: 10),
+                      //   height: 1,
+                      //   color: Color(0xffF3C1B5),
+                      // ),
+                      // Row(
+                      //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //   children: [
+                      //     Container(
+                      //       margin: EdgeInsets.all(10),
+                      //       child: Text(
+                      //         "BRANDS",
+                      //         style: TextStyle(
+                      //           fontSize: 20,
+                      //           fontFamily: "Yeseva",
+                      //           fontWeight: FontWeight.w500,
+                      //         ),
+                      //       ),
+                      //     ),
+                      //     IconButton(
+                      //       icon: Icon(expandBrand ? Icons.remove : Icons.add),
+                      //       color: Color(0xffF48262),
+                      //       onPressed: () {
+                      //         setState(() {
+                      //           expandBrand = !expandBrand;
+                      //         });
+                      //       },
+                      //     )
+                      //   ],
+                      // ),
+                      // Container(
+                      //   child: expandBrand
+                      //       ? Column(
+                      //     children: [
+                      //       checkboxtiles("Aeris"),
+                      //       checkboxtiles("Biyu"),
+                      //       checkboxtiles("iUNIK"),
+                      //       checkboxtiles("Thayers"),
+                      //       checkboxtiles("The Ordinary"),
+                      //       checkboxtiles("Upmost Beauty"),
+                      //     ],
+                      //   )
+                      //       : Container(),
+                      // ),
                       Container(
                         margin: EdgeInsets.only(
                           top: 10,
@@ -447,15 +446,11 @@ class _DetailBrandScreen extends State<DetailBrand> {
                         activeColor: Color(0xffF48262),
                         values: _currentSliderValue,
                         min: 0,
-                        max: 3000,
-                        divisions: 6,
+                        max: 3000000,
+                        divisions: 30,
                         labels: RangeLabels(
-                          "Rp." +
-                              _currentSliderValue.start.round().toString() +
-                              ".000",
-                          "Rp." +
-                              _currentSliderValue.end.round().toString() +
-                              ".000",
+                          nm_format.format(_currentSliderValue.start.round().isNegative ? 0 : _currentSliderValue.start.round()) ,
+                          nm_format.format(_currentSliderValue.end.round())
                         ),
                         onChanged: (RangeValues values) {
                           setState(() {
@@ -487,10 +482,49 @@ class _DetailBrandScreen extends State<DetailBrand> {
                             ),
                           ),
                           Expanded(
-                            child: Container(
+                            child:
+                            Container(
                               margin: EdgeInsets.all(10),
                               child: RaisedButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  setState(() {
+                                    loadingProduct =true;
+                                    dataProduct=[];
+                                  });
+                                  var param ={
+                                    "keyword":_q.isEmpty ? "" : _q,
+                                    "brand_id":widget.brand.id.toString(),
+                                    "min_price": _currentSliderValue.start.round().toString(),
+                                    "max_price": _currentSliderValue.end.round().toString()
+                                  };
+                                 if(checked.length > 0){
+                                    param ={
+                                      "keyword":_q.isEmpty ? "" : _q,
+                                      "brand_id":widget.brand.id.toString(),
+                                      "min_price": _currentSliderValue.start.round().toString(),
+                                      "max_price": _currentSliderValue.end.round().toString(),
+                                      "scope": getOrdering()
+                                    };
+                                  }
+
+                                  Provider.of<ProductModel>(context).searchProduct(searchProductUrl, param).then((value){
+                                    if(value != null){
+
+                                      setState(() {
+                                        NextUrl =value.nextUrl;
+                                        dataProduct.addAll(value.products);
+                                        total = value.total;
+                                        loadingProduct =false;
+                                      });
+                                    }else{
+                                      setState(() {
+                                        loadingProduct =false;
+                                      });
+                                    }
+
+                                  });
+
+                                },
                                 color: Color(0xffF48262),
                                 child: Text(
                                   "GUNAKAN",
@@ -508,6 +542,23 @@ class _DetailBrandScreen extends State<DetailBrand> {
             );
           });
         });
+  }
+
+  String getOrdering(){
+    String result;
+    if(checked.length>0){
+      String val = checked[0];
+      if(val == "Terlaris"){
+        result = "popularity";
+      }else if(val  == "Baru"){
+        result = "new_arrival";
+      }else if(val  == "Harga: Tinggi - Rendah"){
+        result = "price_high_to_low";
+      }else if(val  == "arga: Rendah - Tinggi"){
+        result = "price_low_to_high";
+      }
+    }
+    return result;
   }
 }
 

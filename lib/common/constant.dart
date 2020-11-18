@@ -822,5 +822,6 @@ DateTime convertDateFromString(String strDate){
   DateTime todayDate = DateTime.parse(strDate);
   return todayDate;
 }
+final DateFormat formatter = DateFormat('dd MMMM yyyy');
 
 

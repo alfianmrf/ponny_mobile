@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_html/style.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:dotted_line/dotted_line.dart';
+import 'package:ponny/common/constant.dart';
+import 'package:ponny/model/PromotionResult.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
 
 class PromotionDetailScreen extends StatefulWidget {
-  PromotionDetailScreen({Key key}) : super(key: key);
+  Coupons cupon;
+  PromotionDetailScreen({Key key,this.cupon}) : super(key: key);
 
   @override
   _PromotionDetailScreenState createState() => _PromotionDetailScreenState();
@@ -13,6 +20,8 @@ class PromotionDetailScreen extends StatefulWidget {
 class _PromotionDetailScreenState extends State<PromotionDetailScreen> {
   @override
   Widget build(BuildContext context) {
+    final start = DateTime.fromMillisecondsSinceEpoch(widget.cupon.startDate*1000);
+    final end = DateTime.fromMillisecondsSinceEpoch(widget.cupon.endDate*1000);
     return SafeArea(
       child: Scaffold(
           body: Column(
@@ -63,7 +72,7 @@ class _PromotionDetailScreenState extends State<PromotionDetailScreen> {
                         width: double.infinity,
                         child: Center(
                           child: Text(
-                            "Kupon Thayers",
+                            widget.cupon.title,
                             style: TextStyle(
                               fontSize: 24,
                               fontFamily: "Yeseva",
@@ -100,13 +109,15 @@ class _PromotionDetailScreenState extends State<PromotionDetailScreen> {
                                   ),
                                 ),
                                 Expanded(
-                                  child: Text(
-                                    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy  ",
-                                    style: TextStyle(
-                                      fontSize: 11,
-                                      fontFamily: "Yeseva",
-                                      fontWeight: FontWeight.w500,
-                                    ),
+                                  child: Html(
+                                    data:widget.cupon.keterangan,
+                                    style: {
+                                      "html": Style(
+                                        fontSize: FontSize.small,
+                                        fontFamily: "Yeseva",
+                                        fontWeight: FontWeight.w500,
+                                      )
+                                    },
                                   ),
                                 ),
                               ],
@@ -155,7 +166,7 @@ class _PromotionDetailScreenState extends State<PromotionDetailScreen> {
                                               ),
                                             ),
                                             Text(
-                                              "Rp.150.000",
+                                              nm_format.format(widget.cupon.details.minBuy),
                                               style: TextStyle(
                                                 fontSize: 14,
                                                 fontFamily: "Brandon",
@@ -211,7 +222,8 @@ class _PromotionDetailScreenState extends State<PromotionDetailScreen> {
                                             ),
                                             Expanded(
                                               child: Text(
-                                                "1 - 31 Agustus 2020",
+                                                  start.month == end.month?
+                                                  start.day.toString()+" - "+formatter.format(end) : formatter.format(start)+" - "+formatter.format( end),
                                                 style: TextStyle(
                                                   fontSize: 14,
                                                   fontFamily: "Brandon",
@@ -273,7 +285,7 @@ class _PromotionDetailScreenState extends State<PromotionDetailScreen> {
                                           ),
                                           Expanded(
                                             child: Text(
-                                              "HBDPHOEBE06",
+                                              widget.cupon.code,
                                               style: TextStyle(
                                                 fontSize: 14,
                                                 fontFamily: "Brandon",
@@ -289,6 +301,18 @@ class _PromotionDetailScreenState extends State<PromotionDetailScreen> {
                             Expanded(
                               flex: 2,
                               child: GestureDetector(
+                                onTap: (){
+                                  Clipboard.setData(new ClipboardData(text: widget.cupon.code ));
+                                  Fluttertoast.showToast(
+                                      msg: "Copied to Clipboard",
+                                      toastLength: Toast.LENGTH_SHORT,
+                                      gravity: ToastGravity.CENTER,
+                                      timeInSecForIosWeb: 1,
+                                      backgroundColor: Colors.red,
+                                      textColor: Colors.white,
+                                      fontSize: 16.0
+                                  );
+                                },
                                 child: Container(
                                   color: Hexcolor('#F48262'),
                                   padding: EdgeInsets.symmetric(vertical: 20),
@@ -335,6 +359,7 @@ class _PromotionDetailScreenState extends State<PromotionDetailScreen> {
                             Container(
                               height: 10,
                             ),
+                            for(String item in widget.cupon.syarat)
                             Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -345,80 +370,20 @@ class _PromotionDetailScreenState extends State<PromotionDetailScreen> {
                                 ),
                                 Expanded(
                                   flex: 5,
-                                  child: Text(
-                                    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has",
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      fontFamily: "Brandon",
-                                      fontWeight: FontWeight.w800,
-                                    ),
+                                  child: Html(
+                                    data: item,
+                                    style: {
+                                      "html" :Style(
+                                        fontSize: FontSize.medium,
+                                        fontFamily: "Brandon",
+                                        fontWeight: FontWeight.w800,
+                                      )
+                                    },
                                   ),
                                 ),
                               ],
                             ),
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Expanded(
-                                  flex: 1,
-                                  child: Icon(Icons.favorite,
-                                      color: Color(0xffF48262)),
-                                ),
-                                Expanded(
-                                  flex: 5,
-                                  child: Text(
-                                    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has",
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      fontFamily: "Brandon",
-                                      fontWeight: FontWeight.w800,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Expanded(
-                                  flex: 1,
-                                  child: Icon(Icons.favorite,
-                                      color: Color(0xffF48262)),
-                                ),
-                                Expanded(
-                                  flex: 5,
-                                  child: Text(
-                                    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has",
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      fontFamily: "Brandon",
-                                      fontWeight: FontWeight.w800,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Expanded(
-                                  flex: 1,
-                                  child: Icon(Icons.favorite,
-                                      color: Color(0xffF48262)),
-                                ),
-                                Expanded(
-                                  flex: 5,
-                                  child: Text(
-                                    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has",
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      fontFamily: "Brandon",
-                                      fontWeight: FontWeight.w800,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            )
+
                           ],
                         ),
                       ),

@@ -1,5 +1,6 @@
 const base_url = "https://ponnybeaute.revoapps.id/api/v1/";
 const img_url = "https://ponnybeaute.revoapps.id/public/";
+const urlGlobal = "https://ponnybeaute.revoapps.id/";
 
 //Auth
 const loginUrl = base_url + "auth/login";
@@ -56,6 +57,7 @@ const urlAddress = base_url + "shipping/address";
 const urlOrder = base_url + "account/orders";
 const urlUpdateProfile = base_url + "account/update";
 const updateBeauteProfile = base_url + "account/update_beauty";
+const faqUrl = base_url+"account/faqs";
 
 //Order
 const urlTracking = base_url + "checkout/tracking";
@@ -92,4 +94,7 @@ const removeAddressUrl = base_url + "shipping/delAddress";
 //browse
 const brandSearch = base_url+"product/brands?pageSize=all";
 const searchProductUrl =base_url+"product/search";
+
+//promotion
+const getpromo =base_url+"product/promotions";
 

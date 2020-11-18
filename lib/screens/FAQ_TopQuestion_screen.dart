@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:ponny/model/FaqHeader.dart';
 
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
 import 'package:ponny/screens/FAQ_PengembalianBarang_screen.dart';
 
 class TopQuestionScreen extends StatefulWidget {
   static const String id = "FAQ_TopQuestion_screen";
+  FaqHeader header;
+  TopQuestionScreen({Key key,this.header});
 
   @override
   _TopQuestionScreenState createState() => _TopQuestionScreenState();
@@ -38,8 +41,9 @@ class _TopQuestionScreenState extends State<TopQuestionScreen> {
                           )),
                     ),
                     Container(
+                      width: MediaQuery.of(context).size.width*.76,
                       child: Text(
-                        "Top Question",
+                        widget.header.title,
                         style: TextStyle(
                           fontSize: 24,
                           fontFamily: "Yeseva",
@@ -57,18 +61,58 @@ class _TopQuestionScreenState extends State<TopQuestionScreen> {
               ),
               Container(
                 child: Column(
-                  children: [
-                    faqList("Bagaimana Cara Mengembalikan Barang?",
-                        PengembalianBarang.id, context),
-                    faqList("Apa Itu Happy Skin Reward?",
-                        PengembalianBarang.id, context),
-                    faqList("Apa Itu Happy Skin Reward?",
-                        PengembalianBarang.id, context),
-                    faqList("Apa Itu Happy Skin Reward?",
-                        PengembalianBarang.id, context),
-                    faqList("Apa Itu Happy Skin Reward?",
-                        PengembalianBarang.id, context),
-                  ],
+                  children:widget.header.faq.map((e) =>
+                  InkWell(
+                    onTap: (){
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>PengembalianBarang(faq: e,)),
+                      );
+                    },
+                    child:  Container(
+                      margin: EdgeInsets.only(left: 20, right: 20),
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Container(
+                                width: MediaQuery.of(context).size.width*.76,
+                                child: Text(
+                                  e.ask,
+                                  style: TextStyle(
+                                    fontFamily: 'Brandon',
+                                    fontSize: 14,
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                child: IconButton(
+                                  icon: Icon(
+                                    Icons.arrow_forward_ios,
+                                    color: Color(0xffF48262),
+                                  ),
+                                  onPressed: () {
+                                    Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>PengembalianBarang(faq: e,)),
+                                    );
+                                  },
+                                ),
+                              )
+                            ],
+                          ),
+                          Container(
+                            height: 1,
+                            color: Color(0xffF48262),
+                          ),
+                        ],
+                      ),
+                    ),
+                  )
+                  ).toList(),
                 ),
               )
             ],
