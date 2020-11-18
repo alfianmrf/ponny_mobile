@@ -81,38 +81,48 @@ class PonnyBottomNavbar extends StatelessWidget {
       child: new BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
+            icon: ImageIcon(
+              AssetImage('assets/images/bottomNavbar/beranda.png'),
+            ),
             title: Text(
-              'Home',
-              style: TextStyle(fontSize: 12.0, fontFamily: 'Brandon'),
+              'Beranda',
+              style: TextStyle(fontSize: 11.0, fontFamily: 'Brandon'),
             ),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.search),
+            icon: ImageIcon(
+              AssetImage('assets/images/bottomNavbar/cari.png'),
+            ),
             title: Text(
-              'Browse',
-              style: TextStyle(fontSize: 12.0, fontFamily: 'Brandon'),
+              'Cari',
+              style: TextStyle(fontSize: 11.0, fontFamily: 'Brandon'),
             ),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.headset_mic),
+            icon: ImageIcon(
+              AssetImage('assets/images/bottomNavbar/bantuan.png'),
+            ),
             title: Text(
-              'Consultation',
-              style: TextStyle(fontSize: 12.0, fontFamily: 'Brandon'),
+              'Butuh Bantuan?',
+              style: TextStyle(fontSize: 11.0, fontFamily: 'Brandon'),
             ),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.forum),
+            icon: ImageIcon(
+              AssetImage('assets/images/bottomNavbar/forum.png'),
+            ),
             title: Text(
-              'Forums',
-              style: TextStyle(fontSize: 12.0, fontFamily: 'Brandon'),
+              'Forum',
+              style: TextStyle(fontSize: 11.0, fontFamily: 'Brandon'),
             ),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.account_circle),
+            icon: ImageIcon(
+              AssetImage('assets/images/bottomNavbar/akun.png'),
+            ),
             title: Text(
-              'Account',
-              style: TextStyle(fontSize: 12.0, fontFamily: 'Brandon'),
+              'Akun Saya',
+              style: TextStyle(fontSize: 11.0, fontFamily: 'Brandon'),
             ),
           ),
         ],

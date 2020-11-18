@@ -22,6 +22,7 @@ import 'package:provider/provider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ponny/screens/cart_screen.dart';
 import 'package:uiblock/uiblock.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 import 'account/daftar_keinginan_screen.dart';
 
@@ -41,6 +42,16 @@ class _HomeScreenState extends State<HomeScreen> {
   double _elevation = 0;
   ScrollController _controller;
   bool loading_flashdeal = false;
+
+  static String videoId = YoutubePlayer.convertUrlToId("https://www.youtube.com/embed/5ou09YALCJw");
+  YoutubePlayerController _ytcontroller = YoutubePlayerController(
+    initialVideoId: videoId,
+    flags: YoutubePlayerFlags(
+      autoPlay: false,
+      mute: false,
+    ),
+  );
+
 
   showModal() {
     return _timer = Timer(Duration(seconds: 2), () {
@@ -102,8 +113,6 @@ class _HomeScreenState extends State<HomeScreen> {
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
 
-
-
   Widget title(String nameTitle) {
     return Padding(
       padding: EdgeInsets.all(16.0),
@@ -116,60 +125,6 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
-
-  Widget blog() {
-    return Column(
-      children: <Widget>[
-        Align(
-          alignment: Alignment.centerLeft,
-          child: Padding(
-            padding: EdgeInsets.symmetric(vertical: 5.0),
-            child: Text(
-              'BASIC SKINCARE',
-              textAlign: TextAlign.left,
-              style: TextStyle(
-                fontFamily: 'Brandon',
-                fontSize: 14,
-              ),
-            ),
-          ),
-        ),
-        Image.asset(
-          "assets/images/blogImage.png",
-          height: 200,
-          fit: BoxFit.cover,
-        ),
-        Align(
-          alignment: Alignment.centerLeft,
-          child: Padding(
-            padding: EdgeInsets.symmetric(vertical: 5.0),
-            child: Text(
-              'BEDA EYE GEL, EYE CREAM DAN EYE SERUM',
-              textAlign: TextAlign.left,
-              style: TextStyle(
-                fontFamily: 'Brandon',
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ),
-        ),
-        Align(
-          alignment: Alignment.centerLeft,
-          child: Text(
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-            textAlign: TextAlign.left,
-            style: TextStyle(
-              fontFamily: 'Brandon',
-              fontSize: 14,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-
 
   void showAlertDialog(BuildContext context) {
     // set up the AlertDialog
@@ -359,8 +314,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   centerTitle: true,
                   backgroundColor: _color,
                   elevation: _elevation,
-                  leading: Icon(
-                    Icons.search,
+                  leading: IconButton(
+                    onPressed: (){},
+                    icon: ImageIcon(
+                      AssetImage('assets/images/home/search.png')
+                    ),
                   ),
                   iconTheme: IconThemeData(
                     color: Color(0xffF48262),
@@ -422,10 +380,14 @@ class _HomeScreenState extends State<HomeScreen> {
                             Provider.of<AppModel>(context).loggedIn?
                             new Container(
                               padding: EdgeInsets.all(5),
-                              child: Provider.of<CartModel>(context).loadingCard? LoadingRing(context): Icon(Icons.shopping_cart),
+                              child: Provider.of<CartModel>(context).loadingCard? LoadingRing(context):  ImageIcon(
+                                AssetImage('assets/images/home/cart.png'),
+                              ),
                             ):new Container(
                               padding: EdgeInsets.all(5),
-                              child: Icon(Icons.shopping_cart),
+                              child: ImageIcon(
+                                AssetImage('assets/images/home/cart.png'),
+                              ),
                             ),
                             if(jmlCard>0)
                             new Positioned(  // draw a red marble
@@ -499,6 +461,432 @@ class _HomeScreenState extends State<HomeScreen> {
                     control: null,
                     autoplay: true,
                   ),
+                ),
+              ),
+              IntrinsicHeight(
+                child: Row(
+                  children: [
+                    Expanded(
+                      flex: 1,
+                      child: Container(
+                        color: Color(0xffFACAC1),
+                        padding: EdgeInsets.symmetric(vertical: 5),
+                        child: Column(
+                          children: [
+                            Container(
+                              height: 20,
+                              child: Image.asset(
+                                'assets/images/home/asli.png',
+                                fit: BoxFit.contain,
+                              ),
+                            ),
+                            Container(
+                              child: Text(
+                                '100%\nASLI',
+                                style: TextStyle(
+                                  fontFamily: 'Brandon',
+                                  fontSize: 12,
+                                  color: Color(0xffF48262),
+                                  fontWeight: FontWeight.w600,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: Container(
+                        color: Color(0xffFBDFD2),
+                        padding: EdgeInsets.symmetric(vertical: 5),
+                        child: Column(
+                          children: [
+                            Container(
+                              height: 20,
+                              child: Image.asset(
+                                'assets/images/home/bpom.png',
+                                fit: BoxFit.contain,
+                              ),
+                            ),
+                            Container(
+                              child: Text(
+                                'PRODUK\nBER-BPOM',
+                                style: TextStyle(
+                                  fontFamily: 'Brandon',
+                                  fontSize: 12,
+                                  color: Color(0xffF48262),
+                                  fontWeight: FontWeight.w600,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: Container(
+                        color: Color(0xffFACAC1),
+                        padding: EdgeInsets.symmetric(vertical: 5),
+                        child: Column(
+                          children: [
+                            Container(
+                              height: 20,
+                              child: Image.asset(
+                                'assets/images/home/konsumen.png',
+                                fit: BoxFit.contain,
+                              ),
+                            ),
+                            Container(
+                              child: Text(
+                                'LAYANAN\nKONSUMEN',
+                                style: TextStyle(
+                                  fontFamily: 'Brandon',
+                                  fontSize: 12,
+                                  color: Color(0xffF48262),
+                                  fontWeight: FontWeight.w600,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: Container(
+                        color: Color(0xffFBDFD2),
+                        padding: EdgeInsets.symmetric(vertical: 5),
+                        child: Column(
+                          children: [
+                            Container(
+                              height: 20,
+                              child: Image.asset(
+                                'assets/images/home/aman.png',
+                                fit: BoxFit.contain,
+                              ),
+                            ),
+                            Container(
+                              child: Text(
+                                'KEMASAN\nAMAN',
+                                style: TextStyle(
+                                  fontFamily: 'Brandon',
+                                  fontSize: 12,
+                                  color: Color(0xffF48262),
+                                  fontWeight: FontWeight.w600,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                width: MediaQuery.of(context).size.width,
+                padding: EdgeInsets.symmetric(vertical: 10),
+                child: Column(
+                  children: [
+                    IntrinsicHeight(
+                      child: Row(
+                        children: [
+                          Expanded(
+                            flex: 1,
+                            child: Column(
+                              children: [
+                                AspectRatio(
+                                  aspectRatio: 1,
+                                  child: Container(
+                                    margin: EdgeInsets.all(7),
+                                    padding: EdgeInsets.all(5),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(10),
+                                      border: Border.all(width: 1, color: Color(0xffF48262),),
+                                    ),
+                                    child: Image.asset('assets/images/home/skincare.png'),
+                                  ),
+                                ),
+                                Text(
+                                  'Skincare',
+                                  style: TextStyle(
+                                    fontFamily: 'Brandon',
+                                    fontSize: 12,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ],
+                            ),
+                          ),
+                          Expanded(
+                            flex: 1,
+                            child: Column(
+                              children: [
+                                AspectRatio(
+                                  aspectRatio: 1,
+                                  child: Container(
+                                    margin: EdgeInsets.all(7),
+                                    padding: EdgeInsets.all(5),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(10),
+                                      border: Border.all(width: 1, color: Color(0xffF48262),),
+                                    ),
+                                    child: Image.asset('assets/images/home/hair.png'),
+                                  ),
+                                ),
+                                Text(
+                                  'Hair & Makeup',
+                                  style: TextStyle(
+                                    fontFamily: 'Brandon',
+                                    fontSize: 12,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ],
+                            ),
+                          ),
+                          Expanded(
+                            flex: 1,
+                            child: Column(
+                              children: [
+                                AspectRatio(
+                                  aspectRatio: 1,
+                                  child: Container(
+                                    margin: EdgeInsets.all(7),
+                                    padding: EdgeInsets.all(5),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(10),
+                                      border: Border.all(width: 1, color: Color(0xffF48262),),
+                                    ),
+                                    child: Image.asset('assets/images/home/peralatan.png'),
+                                  ),
+                                ),
+                                Text(
+                                  'Peralatan Kecantikan',
+                                  style: TextStyle(
+                                    fontFamily: 'Brandon',
+                                    fontSize: 12,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ],
+                            ),
+                          ),
+                          Expanded(
+                            flex: 1,
+                            child: Column(
+                              children: [
+                                AspectRatio(
+                                  aspectRatio: 1,
+                                  child: Container(
+                                    margin: EdgeInsets.all(7),
+                                    padding: EdgeInsets.all(7),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(10),
+                                      border: Border.all(width: 1, color: Color(0xffF48262),),
+                                    ),
+                                    child: Image.asset('assets/images/home/bangga.png'),
+                                  ),
+                                ),
+                                Text(
+                                  'Bangga Produk Indonesia',
+                                  style: TextStyle(
+                                    fontFamily: 'Brandon',
+                                    fontSize: 12,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ],
+                            ),
+                          ),
+                          Expanded(
+                            flex: 1,
+                            child: Column(
+                              children: [
+                                AspectRatio(
+                                  aspectRatio: 1,
+                                  child: Container(
+                                    margin: EdgeInsets.all(7),
+                                    padding: EdgeInsets.all(5),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(10),
+                                      border: Border.all(width: 1, color: Color(0xffF48262),),
+                                    ),
+                                    child: Image.asset('assets/images/home/masalah.png'),
+                                  ),
+                                ),
+                                Text(
+                                  'Masalah Kulit',
+                                  style: TextStyle(
+                                    fontFamily: 'Brandon',
+                                    fontSize: 12,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    IntrinsicHeight(
+                      child: Row(
+                        children: [
+                          Expanded(
+                            flex: 1,
+                            child: Column(
+                              children: [
+                                AspectRatio(
+                                  aspectRatio: 1,
+                                  child: Container(
+                                    margin: EdgeInsets.all(7),
+                                    padding: EdgeInsets.all(5),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(10),
+                                      border: Border.all(width: 1, color: Color(0xffF48262),),
+                                    ),
+                                    child: Image.asset('assets/images/home/promosi.png'),
+                                  ),
+                                ),
+                                Text(
+                                  'Promosi',
+                                  style: TextStyle(
+                                    fontFamily: 'Brandon',
+                                    fontSize: 12,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ],
+                            ),
+                          ),
+                          Expanded(
+                            flex: 1,
+                            child: Column(
+                              children: [
+                                AspectRatio(
+                                  aspectRatio: 1,
+                                  child: Container(
+                                    margin: EdgeInsets.all(7),
+                                    padding: EdgeInsets.all(5),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(10),
+                                      border: Border.all(width: 1, color: Color(0xffF48262),),
+                                    ),
+                                    child: Image.asset('assets/images/home/skinklopedia.png'),
+                                  ),
+                                ),
+                                Text(
+                                  'Skinklopedia',
+                                  style: TextStyle(
+                                    fontFamily: 'Brandon',
+                                    fontSize: 12,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ],
+                            ),
+                          ),
+                          Expanded(
+                            flex: 1,
+                            child: Column(
+                              children: [
+                                AspectRatio(
+                                  aspectRatio: 1,
+                                  child: Container(
+                                    margin: EdgeInsets.all(7),
+                                    padding: EdgeInsets.all(5),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(10),
+                                      border: Border.all(width: 1, color: Color(0xffF48262),),
+                                    ),
+                                    child: Image.asset('assets/images/home/jenis.png'),
+                                  ),
+                                ),
+                                Text(
+                                  'Jenis Kulit',
+                                  style: TextStyle(
+                                    fontFamily: 'Brandon',
+                                    fontSize: 12,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ],
+                            ),
+                          ),
+                          Expanded(
+                            flex: 1,
+                            child: Column(
+                              children: [
+                                AspectRatio(
+                                  aspectRatio: 1,
+                                  child: Container(
+                                    margin: EdgeInsets.all(7),
+                                    padding: EdgeInsets.all(5),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(10),
+                                      border: Border.all(width: 1, color: Color(0xffF48262),),
+                                    ),
+                                    child: Image.asset('assets/images/home/blog.png'),
+                                  ),
+                                ),
+                                Text(
+                                  'Blog',
+                                  style: TextStyle(
+                                    fontFamily: 'Brandon',
+                                    fontSize: 12,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ],
+                            ),
+                          ),
+                          Expanded(
+                            flex: 1,
+                            child: Column(
+                              children: [
+                                AspectRatio(
+                                  aspectRatio: 1,
+                                  child: Container(
+                                    margin: EdgeInsets.all(7),
+                                    padding: EdgeInsets.all(5),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(10),
+                                      border: Border.all(width: 1, color: Color(0xffF48262),),
+                                    ),
+                                    child: Image.asset('assets/images/home/bantuan.png'),
+                                  ),
+                                ),
+                                Text(
+                                  'Butuh Bantuan?',
+                                  style: TextStyle(
+                                    fontFamily: 'Brandon',
+                                    fontSize: 12,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
               ),
               if(flashdeal != null && DateTime.now().millisecondsSinceEpoch < flashdeal.detail.endDate * 1000 && !loading_flashdeal)
@@ -705,6 +1093,9 @@ class _HomeScreenState extends State<HomeScreen> {
                             builder: (BuildContext context) => new FlashSaleScreen(),
                           ));
                         },
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
                         color: Color(0xffF48262),
                         child: Text(
                           'LIHAT SEMUA',
@@ -768,40 +1159,91 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
               Container(
-                color: Color(0xffFBDFD2),
                 width: MediaQuery.of(context).size.width,
-                padding: EdgeInsets.symmetric(vertical: 15),
-                child: Image.asset('assets/images/blog.png',
-                    fit: BoxFit.contain, height: 40),
+                child: Stack(
+                  children: [
+                    Column(
+                      children: [
+                        Container(
+                          height: 20,
+                          width: double.infinity,
+                        ),
+                        Container(
+                          color: Color(0xffFBDFD2),
+                          height: 20,
+                          width: double.infinity,
+                        ),
+                      ],
+                    ),
+                    Positioned.fill(
+                      child: Center(
+                        child: Text(
+                          'DIARY PHOEBE',
+                          style: TextStyle(
+                            fontSize: 24,
+                            fontFamily: 'Brandon',
+                            color: Color(0xffF48262),
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
               Container(
                 color: Color(0xffFBDFD2),
-                height: MediaQuery.of(context).size.height * .70,
-                child: new Swiper(
-                  itemBuilder: (BuildContext context, int index) {
-                    return GridView.count(
-                      shrinkWrap: true,
-                      primary: false,
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                      crossAxisSpacing: 20,
-                      mainAxisSpacing: 20,
-                      childAspectRatio: 0.35,
-                      crossAxisCount: 2,
-                      children: <Widget>[
-                        blog(),
-                        blog(),
-                      ],
-                    );
-                  },
-                  itemCount: 3,
-                  pagination: new SwiperPagination(
-                      margin: new EdgeInsets.symmetric(
-                          horizontal: 5.0, vertical: 15.0),
-                      builder: new DotSwiperPaginationBuilder(
-                          color: Color(0xffE6E7E9),
-                          activeColor: Color(0xffF48262))),
-                  control: null,
-                  autoplay: false,
+                padding: EdgeInsets.symmetric(horizontal: 30),
+                child: YoutubePlayer(
+                  controller: _ytcontroller,
+                ),
+              ),
+              Container(
+                color: Color(0xffFBDFD2),
+                width: double.infinity,
+                padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Menuju Glowing Bersama Phoebe',
+                      style: TextStyle(
+                        fontFamily: 'Brandon',
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    Text(
+                      'Siapa nih yang masih suka bingung sama skincare routine atau baru mau mulai pakai skincare? Biar nggak salah langkah, kamu bisa tonton video baru dari Ponny Beaute dalam series: Belajar Bareng Phoebe!',
+                      style: TextStyle(
+                        fontFamily: 'Brandon',
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    Container(
+                      padding: EdgeInsets.only(top: 30),
+                      child: FlatButton(
+                        onPressed: (){},
+                        padding: EdgeInsets.symmetric(horizontal: 10),
+                        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          side: BorderSide(
+                            width: 1.0,
+                            color: Color(0xffF48262),
+                          ),
+                        ),
+                        child: Text(
+                          'LIHAT LEBIH BANYAK',
+                          style: TextStyle(
+                            fontFamily: 'Brandon',
+                            color: Color(0xffF48262),
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],

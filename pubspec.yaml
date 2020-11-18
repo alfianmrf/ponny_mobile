@@ -60,6 +60,8 @@ dependencies:
   permission_handler: ^5.0.1+1
   agora_rtm: ^0.9.14
   flutter_countdown_timer: ^1.4.0
+  youtube_player_flutter: ^7.0.0+7
+
   date_format: ^1.0.9
   css_text: ^2.1.0
   link: ^1.1.0
@@ -88,6 +90,8 @@ flutter:
   - assets/images/
   - assets/images/payment/
   - assets/images/contact/
+  - assets/images/home/
+  - assets/images/bottomNavbar/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
