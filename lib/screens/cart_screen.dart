@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:intl/intl.dart';
 import 'package:lodash_dart/lodash_dart.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
@@ -148,11 +149,29 @@ class _CartScreenState extends State<CartScreen> {
     return Scaffold(
       key: scaffoldKey,
       backgroundColor: Theme.of(context).primaryColor,
+      appBar: AppBar(
+        titleSpacing: 20.0,
+        elevation: 0.0,
+        automaticallyImplyLeading: false,
+        title: Text(
+          'Keranjang Belanja',
+          style: TextStyle(
+            fontSize: 24,
+            fontFamily: 'Yeseva',
+            color: Hexcolor('#F48262'),
+          ),
+        ),
+        bottom: PreferredSize(
+            child: Container(
+              color: Color(0xffF48262),
+              height: 1.0,
+            ),
+            preferredSize: Size.fromHeight(1.0)),
+      ),
       body: Stack(children: <Widget>[
         Scaffold(
           backgroundColor: Color(0xffFDF8F0),
           body: Container(
-            margin: MediaQuery.of(context).padding,
             child: SingleChildScrollView(
               child:
               Consumer<CartModel>(
@@ -169,41 +188,17 @@ class _CartScreenState extends State<CartScreen> {
 
                       return new Column(
                         children: <Widget>[
-                          Container(
-                            width: MediaQuery
-                                .of(context)
-                                .size
-                                .width,
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 20, vertical: 30),
-                            decoration: BoxDecoration(
-                              border: Border(
-                                bottom: BorderSide(
-                                  color: Color(0xffF48262),
-                                  width: 1.0,
-                                ),
-                              ),
-                            ),
-                            child: Text(
-                              'Keranjang Belanja',
-                              style: TextStyle(
-                                fontFamily: 'Yeseva',
-                                fontSize: 22,
-                                color: Color(0xffF48262),
-                              ),
-                            ),
-                          ),
                           for(final item in value.listCardOfitem)(
                               Container(
                                 width: MediaQuery
                                     .of(context)
                                     .size
-                                    .width * 0.95,
+                                    .width*0.95,
                                 padding: EdgeInsets.all(15),
                                 decoration: BoxDecoration(
                                   border: Border(
                                     bottom: BorderSide(
-                                      color: Color(0xffF48262),
+                                      color: value.listCardOfitem.indexOf(item)==value.listCardOfitem.length-1 ? Colors.transparent : Color(0xffF48262),
                                       width: 1.0,
                                     ),
                                   ),
@@ -728,7 +723,11 @@ class _CartScreenState extends State<CartScreen> {
                                 ),
                               )
                           ),
-
+                          Container(
+                            height: 10,
+                            width: MediaQuery.of(context).size.width,
+                            color: Colors.white,
+                          ),
                           Container(
                             width: MediaQuery
                                 .of(context)
@@ -856,74 +855,119 @@ class _CartScreenState extends State<CartScreen> {
                             ),
                           ),
                           Container(
+                            height: 10,
+                            width: MediaQuery.of(context).size.width,
+                            color: Colors.white,
+                          ),
+                          Container(
                             width: MediaQuery
                                 .of(context)
                                 .size
-                                .width * 0.95,
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 15, vertical: 7),
-                            decoration: BoxDecoration(
-                              border: Border(
-                                bottom: BorderSide(
-                                  color: Color(0xffF48262),
-                                  width: 1.0,
+                                .width,
+                            padding: EdgeInsets.symmetric(vertical: 7),
+                            child: Column(
+                              children: [
+                                Container(
+                                  width: MediaQuery
+                                      .of(context)
+                                      .size
+                                      .width*0.95,
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 15),
+                                  child: Text(
+                                    'KODE PROMO',
+                                    style: TextStyle(
+                                      fontFamily: 'Brandon',
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    textAlign: TextAlign.left,
+                                  ),
                                 ),
-                              ),
-                            ),
-
-
-                            child: IntrinsicHeight(
-
-                              child:Stack(
-                                alignment: Alignment(1.0,0.0), // right & center
-                                children: <Widget>[
-                                  TextField(
-                                    controller: _code..text = (value.coupon != null && value.coupon.coupon_id != null) ? value.coupon.code : null,
-                                    decoration: InputDecoration(
-                                        border: InputBorder.none,
-                                        focusedBorder: InputBorder.none,
-                                        enabledBorder: InputBorder.none,
-                                        errorBorder: InputBorder.none,
-                                        disabledBorder: InputBorder.none,
-                                        fillColor: Colors.transparent,
-                                        labelText: 'KODE PROMO',
-                                        hintText: 'Enter KODE PROMO',
-                                    ),
-                                  ),
-                                  Positioned(
-                                    child:FlatButton (
-                                      child: Text("PAKAI",style: TextStyle(fontFamily: 'Brandon',
-                                        fontSize: 14,
-                                        color: Color(0xffF48262),
-                                        ) ,
-                                        textAlign: TextAlign.right,
+                                IntrinsicHeight(
+                                  child:Stack(
+                                    alignment: Alignment(1.0,0.0), // right & center
+                                    children: <Widget>[
+                                      Container(
+                                        width: MediaQuery
+                                            .of(context)
+                                            .size
+                                            .width*0.95,
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 15),
+                                        height: 35,
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius: BorderRadius.circular(10),
+                                          border: Border.all(width: 1, color: Color(0xffF48262),),
                                         ),
-                                      onPressed: () {
-                                        if(_code.value.text.isNotEmpty){
-                                          UIBlock.block(context,customLoaderChild: LoadingWidget(context));
-                                          value.AppyCoupon(_code.value.text, Provider.of<AppModel>(context).auth.access_token).then((values){
-                                            UIBlock.unblock(context);
-                                            if(value.coupon != null && value.coupon.code != null){
-                                              final snackBar = SnackBar(
-                                                content: Text('Success.',style: TextStyle(color: Colors.white)),
-                                                backgroundColor: Colors.green,
-                                              );
-                                              scaffoldKey.currentState.showSnackBar(snackBar);
-                                            }else{
-                                              final snackBar = SnackBar(
-                                                content: Text('Code promo tidak berlaku!',style: TextStyle(color: Colors.white)),
-                                                backgroundColor: Colors.redAccent,
-                                              );
-                                              scaffoldKey.currentState.showSnackBar(snackBar);
-                                            }
-                                          });
-                                        }
-                                      },
-                                    ),
+                                      ),
+                                      Container(
+                                        width: MediaQuery
+                                            .of(context)
+                                            .size
+                                            .width*0.95,
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 15),
+                                        child: TextField(
+                                          style: TextStyle(fontFamily: 'Brandon', fontWeight: FontWeight.bold),
+                                          controller: _code..text = (value.coupon != null && value.coupon.coupon_id != null) ? value.coupon.code : null,
+                                          decoration: InputDecoration(
+                                            border: InputBorder.none,
+                                            focusedBorder: InputBorder.none,
+                                            enabledBorder: InputBorder.none,
+                                            errorBorder: InputBorder.none,
+                                            disabledBorder: InputBorder.none,
+                                            fillColor: Colors.transparent,
+                                            hintText: 'Masukkan Kode Promo',
+                                            hintStyle: TextStyle(fontFamily: 'Brandon', fontWeight: FontWeight.bold, color: Colors.black26),
+                                          ),
+                                        ),
+                                      ),
+                                      Container(
+                                        child: Positioned(
+                                          child:FlatButton (
+                                            child: Text("PAKAI",style: TextStyle(fontFamily: 'Brandon',
+                                              fontSize: 14,
+                                              color: Color(0xffF48262),
+                                              fontWeight: FontWeight.bold,
+                                              ) ,
+                                              textAlign: TextAlign.right,
+                                              ),
+                                            onPressed: () {
+                                              if(_code.value.text.isNotEmpty){
+                                                UIBlock.block(context,customLoaderChild: LoadingWidget(context));
+                                                value.AppyCoupon(_code.value.text, Provider.of<AppModel>(context).auth.access_token).then((values){
+                                                  UIBlock.unblock(context);
+                                                  if(value.coupon != null && value.coupon.code != null){
+                                                    final snackBar = SnackBar(
+                                                      content: Text('Success.',style: TextStyle(color: Colors.white)),
+                                                      backgroundColor: Colors.green,
+                                                    );
+                                                    scaffoldKey.currentState.showSnackBar(snackBar);
+                                                  }else{
+                                                    final snackBar = SnackBar(
+                                                      content: Text('Code promo tidak berlaku!',style: TextStyle(color: Colors.white)),
+                                                      backgroundColor: Colors.redAccent,
+                                                    );
+                                                    scaffoldKey.currentState.showSnackBar(snackBar);
+                                                  }
+                                                });
+                                              }
+                                            },
+                                          ),
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
+                          ),
+                          Container(
+                            height: 10,
+                            width: MediaQuery.of(context).size.width,
+                            color: Colors.white,
                           ),
                           Container(
                             width: MediaQuery
@@ -946,6 +990,7 @@ class _CartScreenState extends State<CartScreen> {
                                           style: TextStyle(
                                             fontFamily: 'Brandon',
                                             fontSize: 14,
+                                            fontWeight: FontWeight.bold,
                                           ),
                                         ),
                                         Text(
@@ -953,6 +998,7 @@ class _CartScreenState extends State<CartScreen> {
                                           style: TextStyle(
                                             fontFamily: 'Brandon',
                                             fontSize: 14,
+                                            fontWeight: FontWeight.bold,
                                           ),
                                         ),
                                       ],
@@ -970,6 +1016,7 @@ class _CartScreenState extends State<CartScreen> {
                                           style: TextStyle(
                                             fontFamily: 'Brandon',
                                             fontSize: 14,
+                                            fontWeight: FontWeight.bold,
                                           ),
                                         ),
                                         Text(
@@ -977,6 +1024,7 @@ class _CartScreenState extends State<CartScreen> {
                                           style: TextStyle(
                                             fontFamily: 'Brandon',
                                             fontSize: 14,
+                                            fontWeight: FontWeight.bold,
                                           ),
                                         ),
                                       ],
@@ -993,6 +1041,7 @@ class _CartScreenState extends State<CartScreen> {
                                           style: TextStyle(
                                             fontFamily: 'Brandon',
                                             fontSize: 14,
+                                            fontWeight: FontWeight.bold,
                                           ),
                                         ),
                                         Text(
@@ -1000,6 +1049,7 @@ class _CartScreenState extends State<CartScreen> {
                                           style: TextStyle(
                                             fontFamily: 'Brandon',
                                             fontSize: 14,
+                                            fontWeight: FontWeight.bold,
                                           ),
                                         ),
                                       ],
@@ -1079,7 +1129,7 @@ class _CartScreenState extends State<CartScreen> {
           ),
         )
       ]),
-      bottomNavigationBar: new PonnyBottomNavbar(selectedIndex: 1),
+      bottomNavigationBar: new PonnyBottomNavbar(selectedIndex: 0),
     );
   }
 }

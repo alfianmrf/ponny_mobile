@@ -19,7 +19,7 @@ import 'package:ponny/widgets/PonnyBottomNavbar.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uiblock/uiblock.dart';
-import 'package:link/link.dart';
+import 'package:url_launcher/url_launcher.dart' as Launcher;
 import 'package:ponny/util/globalUrl.dart';
 
 class HubungiKamiScreen extends StatefulWidget {
@@ -29,8 +29,16 @@ class HubungiKamiScreen extends StatefulWidget {
 }
 
 class _HubungiKamiStateScreen extends State<HubungiKamiScreen> {
-
-
+  final VoidCallback onError = null;
+  void _launch(String url) async {
+    if (await Launcher.canLaunch(url)) {
+      await Launcher.launch(url, forceWebView: true,);
+    } else {
+      if (onError != null) {
+        onError();
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -81,9 +89,9 @@ class _HubungiKamiStateScreen extends State<HubungiKamiScreen> {
                       ),
                     ),
                     Container(
-                      margin: EdgeInsets.only(top: 25, bottom: 20),
+                      margin: EdgeInsets.only(top: 25),
                       child: Text(
-                        'Kami selalu menerima masukanmu dengan senang hati. Agar pesan dan masukanmu tersampaikan ke tim yang tepat, silakan pilih menu dibawah ini. Baca juga FAQ kami yang bisa menjawab pertanyaanmu.',
+                        'Kami ingin menjadi pendengar yang baik!\nSampaikan masukanmu untuk tim kami melalui salah satu media komunikasi di bawah ini. Jangan lupa baca juga FAQ kami yang bisa menjawab pertanyaanmu.',
                         style: TextStyle(
                           fontFamily: 'Brandon',
                           fontSize: 16,
@@ -91,193 +99,85 @@ class _HubungiKamiStateScreen extends State<HubungiKamiScreen> {
                         textAlign: TextAlign.justify,
                       ),
                     ),
-                    Text(
-                      'Phoebe punya tiga solusi nih buat teman Phoebe:',
-                      style: TextStyle(
-                        fontFamily: 'Brandon',
-                        fontSize: 16,
-                      ),
+                    Container(
+                      height: 35,
                     ),
                     Container(
-                      height: 15,
-                    ),
-                    InkWell(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ChatEmailScreen(),
+                      alignment: Alignment.center,
+                      child: InkWell(
+                        borderRadius: BorderRadius.circular(10),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ChatEmailScreen(),
+                            ),
+                          );
+                        },
+                        child: Container(
+                          width: 225,
+                          decoration: BoxDecoration(
+                            border:
+                            Border.all(width: 1, color: Color(0xffF48262)),
+                            borderRadius: BorderRadius.circular(10),
                           ),
-                        );
-                      },
-                      child: Container(
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          border:
-                              Border.all(width: 1, color: Color(0xffF48262)),
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 10, vertical: 7),
-                        child: Text(
-                          'Chat via Email',
-                          style: TextStyle(
-                            fontFamily: 'Brandon',
-                            fontSize: 16,
-                          ),
-                        ),
-                      ),
-                    ),
-                    Container(
-                      height: 10,
-                    ),
-                    Link(
-                      url: "https://wa.me/6283831450890?text=Halo%20Phoebe's",
-                      child: Container(
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          border:
-                              Border.all(width: 1, color: Color(0xffF48262)),
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 10, vertical: 7),
-                        child: Text(
-                          'Chat via Whatsapp',
-                          style: TextStyle(
-                            fontFamily: 'Brandon',
-                            fontSize: 16,
-                          ),
-                        ),
-                      ),
-                    ),
-                    Container(
-                      height: 10,
-                    ),
-                    InkWell(
-                      onTap: () {},
-                      child: Container(
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          border:
-                              Border.all(width: 1, color: Color(0xffF48262)),
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 10, vertical: 7),
-                        child: Text(
-                          'Video call dengan Phoebe Advisor',
-                          style: TextStyle(
-                            fontFamily: 'Brandon',
-                            fontSize: 16,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                margin: EdgeInsets.only(top: 30),
-                child: Row(
-                  children: [
-                    Expanded(
-                      flex: 1,
-                      child: Ink(
-                        color: Color(0xffFEEDE5),
-                        child: InkWell(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => ChatEmailScreen(),
+                          padding:
+                          EdgeInsets.symmetric(horizontal: 10, vertical: 12),
+                          child: Column(
+                            children: [
+                              Image.asset(
+                                'assets/images/contact/email.png',
+                                height: 25,
                               ),
-                            );
-                          },
-                          child: Container(
-                            padding: EdgeInsets.symmetric(vertical: 25),
-                            child: Column(
-                              children: [
-                                Image.asset(
-                                  'assets/images/contact/email.png',
-                                  height: 25,
-                                ),
-                                Container(
-                                  margin: EdgeInsets.only(top: 10),
-                                  child: Text(
-                                    'CHAT VIA EMAIL',
-                                    style: TextStyle(
-                                      fontFamily: 'Brandon',
-                                      color: Color(0xffF48262),
-                                      fontSize: 11,
-                                    ),
+                              Container(
+                                margin: EdgeInsets.only(top: 10),
+                                child: Text(
+                                  'HUBUNGI VIA EMAIL',
+                                  style: TextStyle(
+                                    fontFamily: 'Brandon',
+                                    color: Color(0xffF48262),
                                   ),
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
                         ),
                       ),
                     ),
-                    Expanded(
-                      flex: 1,
-                      child: Ink(
-                        color: Color(0xffFEEDE5),
-                        child: Link(
-                          url:
-                              "https://wa.me/6283831450890?text=Halo%20Phoebe's",
-                          child: Container(
-                            padding: EdgeInsets.symmetric(vertical: 25),
-                            child: Column(
-                              children: [
-                                Image.asset(
-                                  'assets/images/contact/wa.png',
-                                  height: 25,
-                                ),
-                                Container(
-                                  margin: EdgeInsets.only(top: 10),
-                                  child: Text(
-                                    'CHAT VIA WHATSAPP',
-                                    style: TextStyle(
-                                      fontFamily: 'Brandon',
-                                      color: Color(0xffF48262),
-                                      fontSize: 11,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
+                    Container(
+                      height: 30,
                     ),
-                    Expanded(
-                      flex: 1,
-                      child: Ink(
-                        color: Color(0xffFEEDE5),
-                        child: InkWell(
-                          onTap: () {},
-                          child: Container(
-                            padding: EdgeInsets.symmetric(vertical: 25),
-                            child: Column(
-                              children: [
-                                Image.asset(
-                                  'assets/images/contact/vc.png',
-                                  height: 25,
-                                ),
-                                Container(
-                                  margin: EdgeInsets.only(top: 10),
-                                  child: Text(
-                                    'VIDEO CALL',
-                                    style: TextStyle(
-                                      fontFamily: 'Brandon',
-                                      color: Color(0xffF48262),
-                                      fontSize: 11,
-                                    ),
+                    Container(
+                      alignment: Alignment.center,
+                      child: InkWell(
+                        borderRadius: BorderRadius.circular(10),
+                        onTap: () => _launch("https://wa.me/6283831450890?text=Halo%20Phoebe's"),
+                        child: Container(
+                          width: 225,
+                          decoration: BoxDecoration(
+                            border:
+                            Border.all(width: 1, color: Color(0xffF48262)),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          padding:
+                          EdgeInsets.symmetric(horizontal: 10, vertical: 12),
+                          child: Column(
+                            children: [
+                              Image.asset(
+                                'assets/images/contact/wa.png',
+                                height: 30,
+                              ),
+                              Container(
+                                margin: EdgeInsets.only(top: 10),
+                                child: Text(
+                                  'CHAT VIA WHATSAPP',
+                                  style: TextStyle(
+                                    fontFamily: 'Brandon',
+                                    color: Color(0xffF48262),
                                   ),
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
                         ),
                       ),

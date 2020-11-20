@@ -330,10 +330,14 @@ class _HomeScreenState extends State<HomeScreen> {
                             Provider.of<AppModel>(context).loggedIn?
                             new Container(
                               padding: EdgeInsets.all(5),
-                              child: Provider.of<WishModel>(context).loading ? LoadingRing(context) : Icon(Icons.favorite_border),
+                              child: Provider.of<WishModel>(context).loading ? LoadingRing(context) : ImageIcon(
+                                AssetImage('assets/images/home/wishlist.png'),
+                              ),
                             ):new Container(
                               padding: EdgeInsets.all(5),
-                              child: Icon(Icons.favorite_border),
+                              child: ImageIcon(
+                                AssetImage('assets/images/home/wishlist.png'),
+                              ),
                             ),
                             if(Provider.of<WishModel>(context).countwishlist > 0 && Provider.of<AppModel>(context).loggedIn)
                             new Positioned(  // draw a red marble

@@ -112,6 +112,8 @@ class _BeautyProfileStateScreen extends State<BeautyProfileScreen> {
       resizeToAvoidBottomInset: false,
       backgroundColor: Hexcolor('#FCF8F0'),
       appBar: AppBar(
+        elevation: 0,
+        titleSpacing: 0,
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back_ios,
@@ -120,7 +122,7 @@ class _BeautyProfileStateScreen extends State<BeautyProfileScreen> {
           ),
         ),
         title:  Text(
-          "Beauty Profile",
+          "Profil Kecantikan",
           style: TextStyle(
             fontSize: 24,
             fontFamily: "Yeseva",
@@ -128,6 +130,12 @@ class _BeautyProfileStateScreen extends State<BeautyProfileScreen> {
             color: Color(0xffF48262),
           ),
         ),
+        bottom: PreferredSize(
+            child: Container(
+              color: Color(0xffF48262),
+              height: 1.0,
+            ),
+            preferredSize: Size.fromHeight(1.0)),
       ),
       body: !isComplete()? Center(
         child: Container(
@@ -173,39 +181,36 @@ class _BeautyProfileStateScreen extends State<BeautyProfileScreen> {
               decoration: BoxDecoration(
                 border: Border(
                   bottom: BorderSide(
-                    color: Color(0xffF3C1B5),
-                    width: 3,
+                    color: Hexcolor('#F48262'),
+                    width: 1,
                   ),
                 ),
                 // color: Colors.cyanAccent,
               ),
               margin: EdgeInsets.only(
-                left: 20,
-                right: 20,
+                left: 25,
+                right: 25,
                 top: 10,
               ),
               padding: EdgeInsets.only(top: 0, bottom: 20),
               child: Row(
                 children: [
                   Container(
-                    margin: EdgeInsets.only(right: 10),
-                    width: 140,
-                    height: 120,
+                    width: 100,
                     // color: Colors.redAccent,
                     child: Container(
-                      alignment: Alignment.center,
+                      alignment: Alignment.centerLeft,
                       child: Text(
-                        "WARNA KULIT",
+                        "WARNA\nKULIT",
                         style: TextStyle(
                           fontFamily: "Brandon",
                           fontWeight: FontWeight.w500,
-                          fontSize: 12,
+                          fontSize: 16,
                         ),
                       ),
                     ),
                   ),
-                  Container(
-                    width: 220,
+                  Expanded(
                     // color: Colors.redAccent,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -251,40 +256,36 @@ class _BeautyProfileStateScreen extends State<BeautyProfileScreen> {
               decoration: BoxDecoration(
                 border: Border(
                   bottom: BorderSide(
-                    color: Color(0xffF3C1B5),
-                    width: 3,
+                    color: Hexcolor('#F48262'),
+                    width: 1,
                   ),
                 ),
                 // color: Colors.cyanAccent,
               ),
               margin: EdgeInsets.only(
-                left: 20,
-                right: 20,
+                left: 25,
+                right: 25,
                 top: 10,
               ),
               padding: EdgeInsets.only(top: 20, bottom: 20),
               child: Row(
                 children: [
                   Container(
-                    margin: EdgeInsets.only(right: 10),
-                    width: 140,
-                    height: 120,
+                    width: 100,
                     // color: Colors.redAccent,
                     child: Container(
-                      alignment: Alignment.center,
+                      alignment: Alignment.centerLeft,
                       child: Text(
-                        "JENIS KULIT",
+                        "JENIS\nKULIT",
                         style: TextStyle(
                           fontFamily: "Brandon",
                           fontWeight: FontWeight.w500,
-                          fontSize: 12,
+                          fontSize: 16,
                         ),
                       ),
                     ),
                   ),
-                  Container(
-                    width: 220,
-                    height: 120,
+                  Expanded(
                     // color: Colors.redAccent,
                     child: Container(
                       child: Column(
@@ -295,11 +296,11 @@ class _BeautyProfileStateScreen extends State<BeautyProfileScreen> {
                               Container(
                                 decoration: BoxDecoration(
                                   border: Border.all(
-                                    color: Color(0xffF3C1B5),
-                                    width: 2,
+                                    color: Hexcolor('#F48262'),
+                                    width: 1,
                                   ),
                                   borderRadius:
-                                  BorderRadius.all(Radius.circular(4)),
+                                  BorderRadius.only(topLeft: Radius.circular(5), topRight: Radius.circular(5)),
                                 ),
                                 width: 65,
                                 height: 90,
@@ -310,19 +311,19 @@ class _BeautyProfileStateScreen extends State<BeautyProfileScreen> {
                               ),
                               Container(
                                 decoration: BoxDecoration(
-                                  color: Color(0xffF3C1B5),
+                                  color: Hexcolor('#F48262'),
                                   border: Border.all(
-                                    color: Color(0xffF3C1B5),
-                                    width: 2,
+                                    color: Hexcolor('#F48262'),
+                                    width: 1,
                                   ),
                                   borderRadius:
-                                  BorderRadius.all(Radius.circular(3)),
+                                  BorderRadius.only(bottomLeft: Radius.circular(5), bottomRight: Radius.circular(5)),
                                 ),
                                 padding: EdgeInsets.only(
                                   top: 5,
                                 ),
                                 width: 65,
-                                height: 30,
+                                height: 28,
                                 child: Text(
                                   e.Label,
                                   textAlign: TextAlign.center,
@@ -346,103 +347,103 @@ class _BeautyProfileStateScreen extends State<BeautyProfileScreen> {
               decoration: BoxDecoration(
                 border: Border(
                   bottom: BorderSide(
-                    color: Color(0xffF3C1B5),
-                    width: 3,
+                    color: Hexcolor('#F48262'),
+                    width: 1,
                   ),
                 ),
                 // color: Colors.cyanAccent,
               ),
               margin: EdgeInsets.only(
-                left: 20,
-                right: 20,
+                left: 25,
+                right: 25,
                 top: 10,
               ),
               padding: EdgeInsets.only(top: 20, bottom: 20),
               child: Row(
                 children: [
                   Container(
-                    margin: EdgeInsets.only(right: 10),
-                    width: 140,
-                    height: 120,
+                    width: 100,
                     // color: Colors.redAccent,
                     child: Container(
-                      alignment: Alignment.center,
+                      alignment: Alignment.centerLeft,
                       child: Text(
-                        "KONDISI KULIT",
+                        "KONDISI\nKULIT",
                         style: TextStyle(
                           fontFamily: "Brandon",
                           fontWeight: FontWeight.w500,
-                          fontSize: 12,
+                          fontSize: 16,
                         ),
                       ),
                     ),
                   ),
-                  Column(
-                    children: [
-                      for(List<ParamVariable> item in Lodash().chunk(array: KondisiKulit.where((element) => element.Value ==1).toList(), size: 3))(
-                          Container(
-                            width: 220,
-                            height: 120,
-                            margin: EdgeInsets.only(bottom: 10),
-                            // color: Colors.redAccent,
-                            child: Row(
-                              children: item.map((e) {
-                                return Container(
-                                  margin: EdgeInsets.only(
-                                    right: 5,
-                                  ),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Container(
-                                        decoration: BoxDecoration(
-                                          border: Border.all(
-                                            color: Color(0xffF3C1B5),
-                                            width: 2,
+                  Expanded(
+                    child: Column(
+                      children: [
+                        for(List<ParamVariable> item in Lodash().chunk(array: KondisiKulit.where((element) => element.Value ==1).toList(), size: 3))(
+                            Container(
+                              width: 220,
+                              height: 120,
+                              margin: EdgeInsets.only(bottom: 10),
+                              // color: Colors.redAccent,
+                              child: Row(
+                                children: item.map((e) {
+                                  return Container(
+                                    margin: EdgeInsets.only(
+                                      right: 5,
+                                    ),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Container(
+                                          decoration: BoxDecoration(
+                                            border: Border.all(
+                                              color: Hexcolor('#F48262'),
+                                              width: 1,
+                                            ),
+                                            borderRadius:
+                                            BorderRadius.only(topLeft: Radius.circular(5), topRight: Radius.circular(5)),
                                           ),
-                                          borderRadius:
-                                          BorderRadius.all(Radius.circular(4)),
-                                        ),
-                                        width: 65,
-                                        height: 90,
-                                        child: Image.asset(
-                                          e.Gambar,
-                                          width: 30,
-                                        ),
-                                      ),
-                                      Container(
-                                        decoration: BoxDecoration(
-                                          color: Color(0xffF3C1B5),
-                                          border: Border.all(
-                                            color: Color(0xffF3C1B5),
-                                            width: 2,
-                                          ),
-                                          borderRadius:
-                                          BorderRadius.all(Radius.circular(3)),
-                                        ),
-                                        padding: EdgeInsets.only(
-                                          top: 5,
-                                        ),
-                                        width: 65,
-                                        height: 30,
-                                        child: Text(
-                                          e.Label,
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                            fontFamily: "Brandon",
-                                            fontSize: 12,
-                                            color: Colors.white,
+                                          width: 65,
+                                          height: 90,
+                                          child: Image.asset(
+                                            e.Gambar,
+                                            width: 30,
                                           ),
                                         ),
-                                      ),
-                                    ],
-                                  ),
-                                );
-                              }).toList()
-                            ),
-                          )
-                      )
-                    ],
+                                        Container(
+                                          decoration: BoxDecoration(
+                                            color: Hexcolor('#F48262'),
+                                            border: Border.all(
+                                              color: Hexcolor('#F48262'),
+                                              width: 1,
+                                            ),
+                                            borderRadius:
+                                            BorderRadius.only(bottomLeft: Radius.circular(5), bottomRight: Radius.circular(5)),
+                                          ),
+                                          padding: EdgeInsets.only(
+                                            top: 5,
+                                          ),
+                                          width: 65,
+                                          height: 28,
+                                          child: Text(
+                                            e.Label,
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                              fontFamily: "Brandon",
+                                              fontSize: 12,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                }).toList()
+                              ),
+                            )
+                        )
+                      ],
+                    ),
                   )
 
                 ],
@@ -452,200 +453,199 @@ class _BeautyProfileStateScreen extends State<BeautyProfileScreen> {
               decoration: BoxDecoration(
                 border: Border(
                   bottom: BorderSide(
-                    color: Color(0xffF3C1B5),
-                    width: 3,
+                    color: Hexcolor('#F48262'),
+                    width: 1,
                   ),
                 ),
                 // color: Colors.cyanAccent,
               ),
               margin: EdgeInsets.only(
-                left: 20,
-                right: 20,
+                left: 25,
+                right: 25,
                 top: 10,
               ),
               padding: EdgeInsets.only(top: 20, bottom: 20),
               child: Row(
                 children: [
                   Container(
-                    margin: EdgeInsets.only(right: 10),
-                    width: 140,
-                    height: 120,
+                    width: 100,
                     // color: Colors.redAccent,
                     child: Container(
-                      alignment: Alignment.center,
+                      alignment: Alignment.centerLeft,
                       child: Text(
-                        "KONDISI RAMBUT",
+                        "KONDISI\nRAMBUT",
                         style: TextStyle(
                           fontFamily: "Brandon",
                           fontWeight: FontWeight.w500,
-                          fontSize: 12,
+                          fontSize: 16,
                         ),
                       ),
                     ),
                   ),
-                  Column(
-                    children: [
-                      for(List<ParamVariable> item in Lodash().chunk(array: KondisiRambut.where((element) => element.Value ==1).toList(), size: 3))(
-                          Container(
-                            width: 220,
-                            height: 120,
-                            margin: EdgeInsets.only(bottom: 10),
-                            // color: Colors.redAccent,
-                            child: Row(
-                                children: item.map((e) {
-                                  return Container(
-                                    margin: EdgeInsets.only(
-                                      right: 5,
-                                    ),
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Container(
-                                          decoration: BoxDecoration(
-                                            border: Border.all(
-                                              color: Color(0xffF3C1B5),
-                                              width: 2,
+                  Expanded(
+                    child: Column(
+                      children: [
+                        for(List<ParamVariable> item in Lodash().chunk(array: KondisiRambut.where((element) => element.Value ==1).toList(), size: 3))(
+                            Container(
+                              width: 220,
+                              height: 120,
+                              margin: EdgeInsets.only(bottom: 10),
+                              // color: Colors.redAccent,
+                              child: Row(
+                                  children: item.map((e) {
+                                    return Container(
+                                      margin: EdgeInsets.only(
+                                        right: 5,
+                                      ),
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Container(
+                                            decoration: BoxDecoration(
+                                              border: Border.all(
+                                                color: Hexcolor('#F48262'),
+                                                width: 1,
+                                              ),
+                                              borderRadius:
+                                              BorderRadius.only(topLeft: Radius.circular(5), topRight: Radius.circular(5)),
                                             ),
-                                            borderRadius:
-                                            BorderRadius.all(Radius.circular(4)),
-                                          ),
-                                          width: 65,
-                                          height: 90,
-                                          child: Image.asset(
-                                            e.Gambar,
-                                            width: 30,
-                                          ),
-                                        ),
-                                        Container(
-                                          decoration: BoxDecoration(
-                                            color: Color(0xffF3C1B5),
-                                            border: Border.all(
-                                              color: Color(0xffF3C1B5),
-                                              width: 2,
-                                            ),
-                                            borderRadius:
-                                            BorderRadius.all(Radius.circular(3)),
-                                          ),
-                                          padding: EdgeInsets.only(
-                                            top: 5,
-                                          ),
-                                          width: 65,
-                                          height: 30,
-                                          child: Text(
-                                            e.Label,
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                              fontFamily: "Brandon",
-                                              fontSize: 12,
-                                              color: Colors.white,
+                                            width: 65,
+                                            height: 90,
+                                            child: Image.asset(
+                                              e.Gambar,
+                                              width: 30,
                                             ),
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                  );
-                                }).toList()
-                            ),
-                          )
-                      )
-                    ],
+                                          Container(
+                                            decoration: BoxDecoration(
+                                              color: Hexcolor('#F48262'),
+                                              border: Border.all(
+                                                color: Hexcolor('#F48262'),
+                                                width: 1,
+                                              ),
+                                              borderRadius:
+                                              BorderRadius.only(bottomLeft: Radius.circular(5), bottomRight: Radius.circular(5)),
+                                            ),
+                                            padding: EdgeInsets.only(
+                                              top: 5,
+                                            ),
+                                            width: 65,
+                                            height: 28,
+                                            child: Text(
+                                              e.Label,
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                fontFamily: "Brandon",
+                                                fontSize: 12,
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  }).toList()
+                              ),
+                            )
+                        )
+                      ],
+                    ),
                   )
                 ],
               ),
             ),
             Container(
               margin: EdgeInsets.only(
-                left: 20,
-                right: 20,
+                left: 25,
+                right: 25,
                 top: 10,
               ),
               padding: EdgeInsets.only(top: 20, bottom: 20),
               child: Row(
                 children: [
                   Container(
-                    margin: EdgeInsets.only(right: 10),
-                    width: 140,
-                    height: 120,
+                    width: 100,
                     // color: Colors.redAccent,
                     child: Container(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        "PREFERENSI PRODUK",
-                        textAlign: TextAlign.left,
+                        "PREFERENSI\nPRODUK",
                         style: TextStyle(
                           fontFamily: "Brandon",
                           fontWeight: FontWeight.w500,
-                          fontSize: 12,
+                          fontSize: 16,
                         ),
                       ),
                     ),
                   ),
-                  Column(
-                    children: [
-                      for(List<ParamVariable> item in Lodash().chunk(array: PreferensiProduk.where((element) => element.Value ==1).toList(), size: 3))(
-                          Container(
-                            width: 220,
-                            height: 120,
-                            margin: EdgeInsets.only(bottom: 10),
-                            // color: Colors.redAccent,
-                            child: Row(
-                                children: item.map((e) {
-                                  return Container(
-                                    margin: EdgeInsets.only(
-                                      right: 5,
-                                    ),
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Container(
-                                          decoration: BoxDecoration(
-                                            border: Border.all(
-                                              color: Color(0xffF3C1B5),
-                                              width: 2,
+                  Expanded(
+                    child: Column(
+                      children: [
+                        for(List<ParamVariable> item in Lodash().chunk(array: PreferensiProduk.where((element) => element.Value ==1).toList(), size: 3))(
+                            Container(
+                              width: 220,
+                              height: 120,
+                              margin: EdgeInsets.only(bottom: 10),
+                              // color: Colors.redAccent,
+                              child: Row(
+                                  children: item.map((e) {
+                                    return Container(
+                                      margin: EdgeInsets.only(
+                                        right: 5,
+                                      ),
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Container(
+                                            decoration: BoxDecoration(
+                                              border: Border.all(
+                                                color: Hexcolor('#F48262'),
+                                                width: 1,
+                                              ),
+                                              borderRadius:
+                                              BorderRadius.only(topLeft: Radius.circular(5), topRight: Radius.circular(5)),
                                             ),
-                                            borderRadius:
-                                            BorderRadius.all(Radius.circular(4)),
-                                          ),
-                                          width: 65,
-                                          height: 90,
-                                          child: Image.asset(
-                                            e.Gambar,
-                                            width: 30,
-                                          ),
-                                        ),
-                                        Container(
-                                          decoration: BoxDecoration(
-                                            color: Color(0xffF3C1B5),
-                                            border: Border.all(
-                                              color: Color(0xffF3C1B5),
-                                              width: 2,
-                                            ),
-                                            borderRadius:
-                                            BorderRadius.all(Radius.circular(3)),
-                                          ),
-                                          padding: EdgeInsets.only(
-                                            top: 5,
-                                          ),
-                                          width: 65,
-                                          height: 30,
-                                          child: Text(
-                                            e.Label,
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                              fontFamily: "Brandon",
-                                              fontSize: 12,
-                                              color: Colors.white,
+                                            width: 65,
+                                            height: 90,
+                                            child: Image.asset(
+                                              e.Gambar,
+                                              width: 30,
                                             ),
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                  );
-                                }).toList()
-                            ),
-                          )
-                      )
-                    ],
+                                          Container(
+                                            decoration: BoxDecoration(
+                                              color: Hexcolor('#F48262'),
+                                              border: Border.all(
+                                                color: Hexcolor('#F48262'),
+                                                width: 1,
+                                              ),
+                                              borderRadius:
+                                              BorderRadius.only(bottomLeft: Radius.circular(5), bottomRight: Radius.circular(5)),
+                                            ),
+                                            padding: EdgeInsets.only(
+                                              top: 5,
+                                            ),
+                                            width: 65,
+                                            height: 28,
+                                            child: Text(
+                                              e.Label,
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                fontFamily: "Brandon",
+                                                fontSize: 12,
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  }).toList()
+                              ),
+                            )
+                        )
+                      ],
+                    ),
                   )
                 ],
               ),
@@ -663,14 +663,14 @@ class _BeautyProfileStateScreen extends State<BeautyProfileScreen> {
                 width: MediaQuery.of(context).size.width,
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
-                  color: Color(0xffF3C1B5),
-                  borderRadius: BorderRadius.all(Radius.circular(5)),
+                  color: Hexcolor('#F48262'),
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
                 ),
                 margin:
                     EdgeInsets.only(right: 20, left: 20, bottom: 20, top: 10),
                 padding: EdgeInsets.only(top: 10, bottom: 10),
                 child: Text(
-                  "EDIT",
+                  "UBAH",
                   style: TextStyle(
                     fontFamily: "Brandon",
                     color: Colors.white,

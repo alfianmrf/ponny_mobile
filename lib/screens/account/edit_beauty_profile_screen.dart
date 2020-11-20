@@ -50,7 +50,7 @@ class _EditBeautyProfileStateScreen extends State<EditBeautyProfileScreen> {
     ParamVariable(6,"assets/images/darkspot.png", "Dark Spot", 0),
     ParamVariable(7,"assets/images/kantung-mata.png", "Kantung \n Mata", 0),
     ParamVariable(8,"assets/images/kemerahan.png", "Kemerahan", 0),
-    ParamVariable(9,"assets/images/flek.png", "Flek", 0)
+    ParamVariable(9,"assets/images/flek.png", "Flek", 0),
   ];
 
   List<ParamVariable> KondisiRambut=[
@@ -169,17 +169,11 @@ class _EditBeautyProfileStateScreen extends State<EditBeautyProfileScreen> {
 
   void showAlertDialog(BuildContext context) {
     // set up the AlertDialog
-    var container = Container(
-      alignment: Alignment.center,
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(10.0),
-        child: Image.asset(
-          "assets/images/kulit-kering.png",
-          width: 60,
-        ),
-      ),
-    );
     SimpleDialog alert = SimpleDialog(
+      shape: RoundedRectangleBorder(
+        side: BorderSide(width: 1, color: Hexcolor('#F48262')),
+        borderRadius: BorderRadius.circular(5),
+      ),
       backgroundColor: Color(0xfffdf8f0),
       contentPadding: EdgeInsets.all(0.0),
       children: <Widget>[
@@ -226,7 +220,7 @@ class _EditBeautyProfileStateScreen extends State<EditBeautyProfileScreen> {
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(10.0),
                                     child: Image.asset(
-                                      "assets/images/kulit-berminyak.png",
+                                      "assets/images/oily-skin.png",
                                       width: 60,
                                     ),
                                   ),
@@ -265,15 +259,16 @@ class _EditBeautyProfileStateScreen extends State<EditBeautyProfileScreen> {
                         ],
                       ),
                     ),
-                    Container(
-                      height: 118,
-                      width: 240,
+                    Expanded(
                       // color: Colors.purpleAccent,
-                      child: Text(
-                        'Kulit berminyak ditandai dengan pori-pori besar yang mudah terlihat. Produksi sebum atau minyak pada wajahmu tergolong banyak sehingga kulit wajah akan terlihat berminyak hampir di seluruh bagian wajah.',
-                        style: TextStyle(
-                          fontFamily: "Brandon",
-                          fontSize: 11,
+                      child: Container(
+                        padding: EdgeInsets.only(right: 10),
+                        child: Text(
+                          'Kulit berminyak ditandai dengan pori-pori besar yang mudah terlihat. Produksi sebum atau minyak pada wajahmu tergolong banyak sehingga kulit wajah akan terlihat berminyak hampir di seluruh bagian wajah.',
+                          style: TextStyle(
+                            fontFamily: "Brandon",
+                            fontSize: 11,
+                          ),
                         ),
                       ),
                     ),
@@ -300,7 +295,7 @@ class _EditBeautyProfileStateScreen extends State<EditBeautyProfileScreen> {
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(10.0),
                                     child: Image.asset(
-                                      "assets/images/kulit-kombinasi.png",
+                                      "assets/images/combination-skin.png",
                                       width: 60,
                                     ),
                                   ),
@@ -339,15 +334,16 @@ class _EditBeautyProfileStateScreen extends State<EditBeautyProfileScreen> {
                         ],
                       ),
                     ),
-                    Container(
-                      height: 118,
-                      width: 240,
+                    Expanded(
                       // color: Colors.purpleAccent,
-                      child: Text(
-                        'Kulit kombinasi ditandai dengan wajah yang berminyak di area dahi, batang hidung, dan dagu (T-Zone) sementara area pipi dan rahang (U-Zone) tergolong kering. Biasanya pori-pori terlihat jelas di area T-Zone.',
-                        style: TextStyle(
-                          fontFamily: "Brandon",
-                          fontSize: 11,
+                      child: Container(
+                        padding: EdgeInsets.only(right: 10),
+                        child: Text(
+                          'Kulit kombinasi ditandai dengan wajah yang berminyak di area dahi, batang hidung, dan dagu (T-Zone) sementara area pipi dan rahang (U-Zone) tergolong kering. Biasanya pori-pori terlihat jelas di area T-Zone.',
+                          style: TextStyle(
+                            fontFamily: "Brandon",
+                            fontSize: 11,
+                          ),
                         ),
                       ),
                     ),
@@ -374,7 +370,7 @@ class _EditBeautyProfileStateScreen extends State<EditBeautyProfileScreen> {
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(10.0),
                                     child: Image.asset(
-                                      "assets/images/kulit-normal.png",
+                                      "assets/images/normal-skin.png",
                                       width: 60,
                                     ),
                                   ),
@@ -413,15 +409,16 @@ class _EditBeautyProfileStateScreen extends State<EditBeautyProfileScreen> {
                         ],
                       ),
                     ),
-                    Container(
-                      height: 118,
-                      width: 240,
+                    Expanded(
                       // color: Colors.purpleAccent,
-                      child: Text(
-                        'Kulit normal ditandai dengan pori-pori kecil. Jenis kulit normal punya produksi minyak yang imbang sehingga kulit wajahmu nggak terlalu berminyak maupun kering.',
-                        style: TextStyle(
-                          fontFamily: "Brandon",
-                          fontSize: 11,
+                      child: Container(
+                        padding: EdgeInsets.only(right: 10),
+                        child: Text(
+                          'Kulit normal ditandai dengan pori-pori kecil. Jenis kulit normal punya produksi minyak yang imbang sehingga kulit wajahmu nggak terlalu berminyak maupun kering.',
+                          style: TextStyle(
+                            fontFamily: "Brandon",
+                            fontSize: 11,
+                          ),
                         ),
                       ),
                     ),
@@ -443,7 +440,16 @@ class _EditBeautyProfileStateScreen extends State<EditBeautyProfileScreen> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                container,
+                                Container(
+                                  alignment: Alignment.center,
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    child: Image.asset(
+                                      "assets/images/dry-skin.png",
+                                      width: 60,
+                                    ),
+                                  ),
+                                ),
                               ],
                             ),
                           ),
@@ -478,15 +484,16 @@ class _EditBeautyProfileStateScreen extends State<EditBeautyProfileScreen> {
                         ],
                       ),
                     ),
-                    Container(
-                      height: 118,
-                      width: 240,
+                    Expanded(
                       // color: Colors.purpleAccent,
-                      child: Text(
-                        'Kulit kering ditandai dengan kulit yang bersisik, terasa kencang, gatal, dan kusam. Produksi sebum yang kurang membuat kulit tetap kering sehingga jarang terlihat berminyak.',
-                        style: TextStyle(
-                          fontFamily: "Brandon",
-                          fontSize: 11,
+                      child: Container(
+                        padding: EdgeInsets.only(right: 10),
+                        child: Text(
+                          'Kulit kering ditandai dengan kulit yang bersisik, terasa kencang, gatal, dan kusam. Produksi sebum yang kurang membuat kulit tetap kering sehingga jarang terlihat berminyak.',
+                          style: TextStyle(
+                            fontFamily: "Brandon",
+                            fontSize: 11,
+                          ),
                         ),
                       ),
                     ),
@@ -513,7 +520,7 @@ class _EditBeautyProfileStateScreen extends State<EditBeautyProfileScreen> {
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(10.0),
                                     child: Image.asset(
-                                      "assets/images/kulit-sensitif.png",
+                                      "assets/images/sensitive-skin.png",
                                       width: 60,
                                     ),
                                   ),
@@ -552,15 +559,16 @@ class _EditBeautyProfileStateScreen extends State<EditBeautyProfileScreen> {
                         ],
                       ),
                     ),
-                    Container(
-                      height: 118,
-                      width: 240,
+                    Expanded(
                       // color: Colors.purpleAccent,
-                      child: Text(
-                        'Kulit sensitif ditandai dengan kondisi kulit seperti rosacea, eczema, atau psoriasis. Umumnya kulit sensifitif akan menunjukkan reaksi iritasi seperti kemerahan atau sensasi terbakar setelah mencoba produk skincare baru dengan kandungan seperti fragrance.',
-                        style: TextStyle(
-                          fontFamily: "Brandon",
-                          fontSize: 11,
+                      child: Container(
+                        padding: EdgeInsets.only(right: 10),
+                        child: Text(
+                          'Kulit sensitif ditandai dengan kondisi kulit seperti rosacea, eczema, atau psoriasis. Umumnya kulit sensifitif akan menunjukkan reaksi iritasi seperti kemerahan atau sensasi terbakar setelah mencoba produk skincare baru dengan kandungan seperti fragrance.',
+                          style: TextStyle(
+                            fontFamily: "Brandon",
+                            fontSize: 11,
+                          ),
                         ),
                       ),
                     ),
@@ -576,7 +584,7 @@ class _EditBeautyProfileStateScreen extends State<EditBeautyProfileScreen> {
           },
           child: Container(
             decoration: BoxDecoration(
-              color: Color(0xffF3C1B5),
+              color: Hexcolor('#F48262'),
               borderRadius: BorderRadius.all(Radius.circular(0)),
             ),
             margin: EdgeInsets.only(top: 20),
@@ -644,7 +652,7 @@ class _EditBeautyProfileStateScreen extends State<EditBeautyProfileScreen> {
                   ),
                   Container(
                     child: Text(
-                      "Edit Beauty Profile",
+                      "Beauty Profile",
                       style: TextStyle(
                         fontSize: 24,
                         fontFamily: "Yeseva",
@@ -677,7 +685,9 @@ class _EditBeautyProfileStateScreen extends State<EditBeautyProfileScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    // color: Colors.blueAccent,
+                    margin: EdgeInsets.only(
+                      left: 10,
+                    ),
                     child: Row(
                       children: [
                         Container(
@@ -700,54 +710,57 @@ class _EditBeautyProfileStateScreen extends State<EditBeautyProfileScreen> {
                     padding: EdgeInsets.only(top: 5),
                     child: Row(
                       children: listwarnaKulit.map((e){
-                       return Container(
-                         margin: EdgeInsets.only(left: 10, right: 10),
-                         child: Column(
-                           children: [
-                             Container(
-                               // color: Colors.greenAccent,
-                               width: 80,
-                               height: 50,
-                               child: Stack(
-                                 alignment: Alignment.center,
-                                 children: [
-                                   GestureDetector(
-                                     onTap: (){
-                                       setWarnaKulit(e);
-                                     },
-                                     child: Container(
-                                       decoration: BoxDecoration(
-                                         color: Hexcolor(e.Hexcolor),
-                                         borderRadius: BorderRadius.all(
-                                             Radius.circular(100)),
+                       return Expanded(
+                         flex: 1,
+                         child: Container(
+                           margin: EdgeInsets.only(left: 10, right: 10),
+                           child: Column(
+                             children: [
+                               Container(
+                                 // color: Colors.greenAccent,
+                                 width: 80,
+                                 height: 50,
+                                 child: Stack(
+                                   alignment: Alignment.center,
+                                   children: [
+                                     GestureDetector(
+                                       onTap: (){
+                                         setWarnaKulit(e);
+                                       },
+                                       child: Container(
+                                         decoration: BoxDecoration(
+                                           color: Hexcolor(e.Hexcolor),
+                                           borderRadius: BorderRadius.all(
+                                               Radius.circular(100)),
+                                         ),
+                                         width: 50,
+                                         height: 50,
                                        ),
-                                       width: 50,
-                                       height: 50,
                                      ),
-                                   ),
-                                   if(e.value == 1)
-                                     Positioned(
-                                       child: Icon(Icons.check_circle,color: Colors.green,),
-                                     )
-                                 ],
-                               ),
-                             ),
-                             Container(
-                               width: 80,
-                               height: 20,
-                               margin: EdgeInsets.only(
-                                 top: 1,
-                               ),
-                               child: Text(
-                                 e.Label,
-                                 textAlign: TextAlign.center,
-                                 style: TextStyle(
-                                   fontFamily: "Brandon",
-                                   fontSize: 12,
+                                     if(e.value == 1)
+                                       Positioned(
+                                         child: Icon(Icons.check_circle,color: Colors.green,),
+                                       )
+                                   ],
                                  ),
                                ),
-                             ),
-                           ],
+                               Container(
+                                 width: 80,
+                                 height: 20,
+                                 margin: EdgeInsets.only(
+                                   top: 1,
+                                 ),
+                                 child: Text(
+                                   e.Label,
+                                   textAlign: TextAlign.center,
+                                   style: TextStyle(
+                                     fontFamily: "Brandon",
+                                     fontSize: 12,
+                                   ),
+                                 ),
+                               ),
+                             ],
+                           ),
                          ),
                        );
                       }).toList()
@@ -808,9 +821,8 @@ class _EditBeautyProfileStateScreen extends State<EditBeautyProfileScreen> {
                             "Apa jenis kulit kamu ?",
                             style: TextStyle(
                               color: Colors.black,
-                              fontFamily: "Yeseva",
-                              fontSize: 10,
-                              fontWeight: FontWeight.w200,
+                              fontFamily: "Brandon",
+                              fontSize: 12,
                             ),
                           ),
                         ),
@@ -824,9 +836,8 @@ class _EditBeautyProfileStateScreen extends State<EditBeautyProfileScreen> {
                               "Pelajari",
                               style: TextStyle(
                                 color: Color(0xffF3C1B5),
-                                fontFamily: "Yeseva",
-                                fontSize: 10,
-                                fontWeight: FontWeight.w200,
+                                fontFamily: "Brandon",
+                                fontSize: 12,
                               ),
                             ),
                           ),
@@ -838,65 +849,68 @@ class _EditBeautyProfileStateScreen extends State<EditBeautyProfileScreen> {
                     margin: EdgeInsets.only(top: 5),
                     child: Row(
                       children: listJenisKulit.map((e){
-                        return Container(
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                color: Color(0xffF3C1B5),
-                                width:
-                                1, //                   <--- border width here
+                        return Expanded(
+                          flex: 1,
+                          child: Container(
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: Color(0xffF3C1B5),
+                                  width:
+                                  1, //                   <--- border width here
+                                ),
+                                borderRadius: BorderRadius.all(Radius.circular(7)),
                               ),
-                              borderRadius: BorderRadius.all(Radius.circular(7)),
-                            ),
-                            margin: EdgeInsets.only(left: 8, top: 5, right: 13),
-                            width: 60,
-                            height: 107,
-                            child: Stack(
-                              children: [
-                                GestureDetector(
-                                  onTap: (){
-                                    setJenisKulit(e);
-                                  },
-                                  child: Container(
-                                    width: 70,
-                                    height: 70,
-                                    child: Image.asset(
-                                      e.Gambar,
-                                      fit: BoxFit.cover,
+                              margin: EdgeInsets.only(left: 5, top: 5, right: 5),
+                              width: 60,
+                              height: 107,
+                              child: Stack(
+                                children: [
+                                  GestureDetector(
+                                    onTap: (){
+                                      setJenisKulit(e);
+                                    },
+                                    child: Container(
+                                      width: 70,
+                                      height: 70,
+                                      child: Image.asset(
+                                        e.Gambar,
+                                        fit: BoxFit.cover,
+                                      ),
                                     ),
                                   ),
-                                ),
-                                Positioned(
-                                  child:  Container(
-                                    color: Color(0xffF3C1B5),
-                                    width: 70,
-                                    height: 35,
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                                        Container(
-                                          child: Text(
-                                            e.Label,
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                              fontFamily: "Brandon",
-                                              fontSize: 10,
-                                              color: Colors.white,
+                                  Positioned(
+                                    child:  Container(
+                                      color: Color(0xffF3C1B5),
+                                      width: 70,
+                                      height: 35,
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          Container(
+                                            child: Text(
+                                              e.Label,
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                fontFamily: "Brandon",
+                                                fontSize: 10,
+                                                color: Colors.white,
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
+                                    bottom: 0,
                                   ),
-                                  bottom: 0,
-                                ),
-                                if(e.Value == 1)
-                                  Positioned(
-                                    child: Icon(Icons.check_circle,color: Colors.green,),
-                                  )
+                                  if(e.Value == 1)
+                                    Positioned(
+                                      child: Icon(Icons.check_circle,color: Colors.green,),
+                                    )
 
-                              ],
-                              alignment: Alignment.topCenter,
-                            ),
+                                ],
+                                alignment: Alignment.topCenter,
+                              ),
+                          ),
                         );
                       }).toList()
                     ),
@@ -955,9 +969,8 @@ class _EditBeautyProfileStateScreen extends State<EditBeautyProfileScreen> {
                             "Bisa pilih lebih dari satu",
                             style: TextStyle(
                               color: Colors.black,
-                              fontFamily: "Yeseva",
-                              fontSize: 10,
-                              fontWeight: FontWeight.w200,
+                              fontFamily: "Brandon",
+                              fontSize: 12,
                             ),
                           ),
                         ),
@@ -969,67 +982,70 @@ class _EditBeautyProfileStateScreen extends State<EditBeautyProfileScreen> {
                         margin: EdgeInsets.only(top: 5),
                         child: Row(
                           children: params.map((e) {
-                            return Container(
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: Color(0xffF3C1B5),
-                                  width:
-                                  1, //                   <--- border width here
+                            return Expanded(
+                              flex: 1,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: Color(0xffF3C1B5),
+                                    width:
+                                    1, //                   <--- border width here
+                                  ),
+                                  borderRadius: BorderRadius.all(Radius.circular(7)),
                                 ),
-                                borderRadius: BorderRadius.all(Radius.circular(7)),
-                              ),
-                              margin: EdgeInsets.only(left: 8, top: 5, right: 13),
-                              width: 60,
-                              height: 107,
-                              child: Stack(
-                                alignment: Alignment.topCenter,
-                                children: [
-                                  GestureDetector(
-                                    onTap: (){
-                                      final v =  KondisiKulit.firstWhere((element) => element.Label == e.Label).Value;
-                                      print(v);
-                                      setState(() {
-                                        KondisiKulit.firstWhere((element) => element.Label == e.Label).Value = v == 0 ? 1 : 0;
-                                      });
-                                    },
-                                    child: Container(
-                                      width: 70,
-                                      height: 70,
-                                      child: Image.asset(
-                                        e.Gambar,
-                                        fit: BoxFit.cover,
+                                margin: EdgeInsets.only(left: 5, top: 5, right: 5),
+                                width: 60,
+                                height: 107,
+                                child: Stack(
+                                  alignment: Alignment.topCenter,
+                                  children: [
+                                    GestureDetector(
+                                      onTap: (){
+                                        final v =  KondisiKulit.firstWhere((element) => element.Label == e.Label).Value;
+                                        print(v);
+                                        setState(() {
+                                          KondisiKulit.firstWhere((element) => element.Label == e.Label).Value = v == 0 ? 1 : 0;
+                                        });
+                                      },
+                                      child: Container(
+                                        width: 70,
+                                        height: 70,
+                                        child: Image.asset(
+                                          e.Gambar,
+                                          fit: BoxFit.cover,
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  Positioned(
-                                    bottom: 0,
-                                    child: Container(
-                                      color: Color(0xffF3C1B5),
-                                      width: 70,
-                                      height: 35,
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        children: [
-                                          Container(
-                                            child: Text(
-                                              e.Label,
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(
-                                                fontFamily: "Brandon",
-                                                fontSize: 10,
-                                                color: Colors.white,
+                                    Positioned(
+                                      bottom: 0,
+                                      child: Container(
+                                        color: Color(0xffF3C1B5),
+                                        width: 70,
+                                        height: 35,
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: [
+                                            Container(
+                                              child: Text(
+                                                e.Label,
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                  fontFamily: "Brandon",
+                                                  fontSize: 10,
+                                                  color: Colors.white,
+                                                ),
                                               ),
                                             ),
-                                          ),
-                                        ],
+                                          ],
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  if(e.Value == 1)
-                                    Positioned(
-                                      child: Icon(Icons.check_circle,color: Colors.green,),
-                                    )
-                                ],
+                                    if(e.Value == 1)
+                                      Positioned(
+                                        child: Icon(Icons.check_circle,color: Colors.green,),
+                                      )
+                                  ],
+                                ),
                               ),
                             );
                           }).toList()
@@ -1091,9 +1107,8 @@ class _EditBeautyProfileStateScreen extends State<EditBeautyProfileScreen> {
                             "Bisa pilih lebih dari satu",
                             style: TextStyle(
                               color: Colors.black,
-                              fontFamily: "Yeseva",
-                              fontSize: 10,
-                              fontWeight: FontWeight.w200,
+                              fontFamily: "Brandon",
+                              fontSize: 12,
                             ),
                           ),
                         ),
@@ -1104,68 +1119,71 @@ class _EditBeautyProfileStateScreen extends State<EditBeautyProfileScreen> {
                     margin: EdgeInsets.only(top: 5),
                     child: Row(
                       children: KondisiRambut.map((e){
-                        return Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: Color(0xffF3C1B5),
-                              width:
-                              1, //                   <--- border width here
+                        return Expanded(
+                          flex: 1,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: Color(0xffF3C1B5),
+                                width:
+                                1, //                   <--- border width here
+                              ),
+                              borderRadius: BorderRadius.all(Radius.circular(7)),
                             ),
-                            borderRadius: BorderRadius.all(Radius.circular(7)),
-                          ),
-                          margin: EdgeInsets.only(left: 8, top: 5, right: 13),
-                          width: 60,
-                          height: 107,
-                          child: Stack(
-                            alignment: Alignment.topCenter,
-                            children: [
-                              GestureDetector(
-                                onTap: (){
-                                  final v =  KondisiRambut.firstWhere((element) => element.Label == e.Label).Value;
-                                  print(v);
-                                  setState(() {
-                                    KondisiRambut.firstWhere((element) => element.Label == e.Label).Value = v == 0 ? 1 : 0;
-                                  });
-                                },
-                                child: Container(
-                                  width: 70,
-                                  height: 70,
-                                  child: Image.asset(
-                                    e.Gambar,
-                                    fit: BoxFit.cover,
+                            margin: EdgeInsets.only(left: 5, top: 5, right: 5),
+                            width: 60,
+                            height: 107,
+                            child: Stack(
+                              alignment: Alignment.topCenter,
+                              children: [
+                                GestureDetector(
+                                  onTap: (){
+                                    final v =  KondisiRambut.firstWhere((element) => element.Label == e.Label).Value;
+                                    print(v);
+                                    setState(() {
+                                      KondisiRambut.firstWhere((element) => element.Label == e.Label).Value = v == 0 ? 1 : 0;
+                                    });
+                                  },
+                                  child: Container(
+                                    width: 70,
+                                    height: 70,
+                                    child: Image.asset(
+                                      e.Gambar,
+                                      fit: BoxFit.cover,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              Positioned(
-                                bottom: 0,
-                                child: Container(
-                                  color: Color(0xffF3C1B5),
-                                  width: 70,
-                                  height: 35,
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Container(
-                                        child: Text(
-                                          e.Label,
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                            fontFamily: "Brandon",
-                                            fontSize: 10,
-                                            color: Colors.white,
+                                Positioned(
+                                  bottom: 0,
+                                  child: Container(
+                                    color: Color(0xffF3C1B5),
+                                    width: 70,
+                                    height: 35,
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Container(
+                                          child: Text(
+                                            e.Label,
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                              fontFamily: "Brandon",
+                                              fontSize: 10,
+                                              color: Colors.white,
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
                                 ),
-                              ),
-                              if(e.Value == 1)
-                                Positioned(
-                                  child: Icon(Icons.check_circle,color: Colors.green,),
-                                )
+                                if(e.Value == 1)
+                                  Positioned(
+                                    child: Icon(Icons.check_circle,color: Colors.green,),
+                                  )
 
-                            ],
+                              ],
+                            ),
                           ),
                         );
                       }).toList()
@@ -1216,9 +1234,8 @@ class _EditBeautyProfileStateScreen extends State<EditBeautyProfileScreen> {
                             "Bisa pilih lebih dari satu",
                             style: TextStyle(
                               color: Colors.black,
-                              fontFamily: "Yeseva",
-                              fontSize: 10,
-                              fontWeight: FontWeight.w200,
+                              fontFamily: "Brandon",
+                              fontSize: 12,
                             ),
                           ),
                         ),
@@ -1238,7 +1255,7 @@ class _EditBeautyProfileStateScreen extends State<EditBeautyProfileScreen> {
                             ),
                             borderRadius: BorderRadius.all(Radius.circular(7)),
                           ),
-                          margin: EdgeInsets.only(left: 8, top: 5, right: 13),
+                          margin: EdgeInsets.only(left: 5, top: 5, right: 5),
                           width: 60,
                           height: 107,
                           child: Stack(
