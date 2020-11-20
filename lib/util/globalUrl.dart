@@ -1,6 +1,6 @@
-const base_url = "https://ponnybeaute.revoapps.id/api/v1/";
-const img_url = "https://ponnybeaute.revoapps.id/public/";
-const urlGlobal = "https://ponnybeaute.revoapps.id/";
+const base_url = "https://ponnybeaute.co.id/api/v1/";
+const img_url = "https://ponnybeaute.co.id/public/";
+const urlGlobal = "https://ponnybeaute.co.id/";
 
 //Auth
 const loginUrl = base_url + "auth/login";
@@ -19,6 +19,7 @@ const recomProduct = base_url + "product/recommended?chunk=3";
 const skinkloUrl = base_url + "product/skinlopedia?keyword=&alphabet=";
 const userprofile = base_url + "auth/user";
 const loginOtp = base_url + "auth/login-otp";
+const loginSocial  = base_url+"auth/social-login";
 
 //home
 const banner = base_url + "banners";

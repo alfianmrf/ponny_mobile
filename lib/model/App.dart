@@ -2,8 +2,11 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_twitter_login/flutter_twitter_login.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:ponny/model/FaqHeader.dart';
+import 'package:ponny/util/AppId.dart';
 import 'package:ponny/util/globalUrl.dart';
 import 'package:http/http.dart' as http;
 
@@ -82,14 +85,39 @@ class AppModel with ChangeNotifier{
     return false;
   }
 
-  Future<void> logout() async {
+  Future<bool> setAuthSocial(param) async {
+    final res = await http.post(loginSocial,headers: { HttpHeaders.contentTypeHeader: 'application/json' },body: json.encode(param));
+    print(res.body);
+    final LocalStorage storage = LocalStorage("ponnystore");
 
+    if(res.statusCode == 200){
+      var result = json.decode(res.body);
+      auth = LoginAuth.fromLocalJson(result);
+      loggedIn =true;
+      final ready = await storage.ready;
+      if (ready) {
+        await storage.setItem("auth", result);
+        notifyListeners();
+        return true;
+      }
+    }
+    return false;
+  }
+
+  Future<void> logout() async {
+    final GoogleSignIn googleSignIn = GoogleSignIn();
+    final TwitterLogin twitterLogin = TwitterLogin(consumerKey: TWITTER_CLIENT_ID, consumerSecret: TWITTER_CLIENT_SECRET);
     final LocalStorage storage = LocalStorage("ponnystore");
     try {
       final ready = await storage.ready;
       if (ready) {
         await storage.deleteItem("auth");
         await storage.deleteItem("useAddress");
+        final googleSinginStatus = await googleSignIn.isSignedIn();
+        if(googleSinginStatus)
+        await googleSignIn.signOut();
+        final twitterStatus =await twitterLogin.isSessionActive;
+        if(twitterStatus) await twitterLogin.logOut();
         auth = null;
         loggedIn = false;
         notifyListeners();

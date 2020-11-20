@@ -61,6 +61,9 @@ dependencies:
   agora_rtm: ^0.9.14
   flutter_countdown_timer: ^1.4.0
   youtube_player_flutter: ^7.0.0+7
+  google_sign_in: ^4.5.3
+  flutter_twitter_login: ^1.1.0
+
 
   date_format: ^1.0.9
   css_text: ^2.1.0
