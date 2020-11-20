@@ -14,6 +14,7 @@ import 'package:ponny/screens/home_screen.dart';
 import 'package:ponny/screens/login_otp.dart';
 import 'package:keyboard_attachable/keyboard_attachable.dart';
 import 'package:http/http.dart' as http;
+import 'package:ponny/model/chatEmail.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -22,17 +23,59 @@ import 'package:ponny/util/globalUrl.dart';
 
 class ChatEmailScreen extends StatefulWidget {
   static const String id = "chat_email_Screen";
+
   @override
   _ChatEmailStateScreen createState() => _ChatEmailStateScreen();
 }
 
 class _ChatEmailStateScreen extends State<ChatEmailScreen> {
-
+  GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   String dropdownValue;
+  //ChatEmail chatEmail;
   TextEditingController nama = new TextEditingController();
   TextEditingController email = new TextEditingController();
-  TextEditingController subject = new TextEditingController();
   TextEditingController message = new TextEditingController();
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  Future<bool> kirimEmail(BuildContext context) async {
+    bool result = false;
+    UIBlock.block(context, customLoaderChild: LoadingWidget(context));
+    var param = {
+      "name": nama.text,
+      "email": email.text,
+      "subject": dropdownValue,
+      "message": message.text
+    };
+    final value = await Provider.of<ChatEmail>(context)
+        .contactsEmail(Provider.of<AppModel>(context).auth.access_token, param);
+
+    print(Provider.of<AppModel>(context).auth.access_token);
+
+    if (value) {
+     UIBlock.unblock(context);
+     /*result = value;*/
+      final snackBar = SnackBar(
+        content: Text(
+            'SUKSES',
+            style: TextStyle(color: Colors.white)),
+        backgroundColor: Colors.redAccent,
+      );
+      scaffoldKey.currentState.showSnackBar(snackBar);
+    } else {
+      UIBlock.unblock(context);
+      final snackBar = SnackBar(
+        content: Text(
+            'Terjadi kesalah Pada Server, Silakan coba kembali nanti!',
+            style: TextStyle(color: Colors.white)),
+        backgroundColor: Colors.redAccent,
+      );
+      scaffoldKey.currentState.showSnackBar(snackBar);
+    }
+    return result;
+  }
 
   /*void postData() async {
     http.post(postRoom, body: {"name": )});
@@ -42,6 +85,7 @@ class _ChatEmailStateScreen extends State<ChatEmailScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: scaffoldKey,
       appBar: AppBar(
         titleSpacing: 0.0,
         elevation: 0.0,
@@ -99,7 +143,8 @@ class _ChatEmailStateScreen extends State<ChatEmailScreen> {
                         textAlign: TextAlign.justify,
                       ),
                     ),
-                    TextFormField(controller: nama,
+                    TextFormField(
+                      controller: nama,
                       cursorColor: Color(0xffF48262),
                       keyboardType: TextInputType.name,
                       decoration: InputDecoration(
@@ -132,7 +177,8 @@ class _ChatEmailStateScreen extends State<ChatEmailScreen> {
                     Container(
                       height: 10,
                     ),
-                    TextFormField(controller: email,
+                    TextFormField(
+                      controller: email,
                       cursorColor: Color(0xffF48262),
                       keyboardType: TextInputType.emailAddress,
                       decoration: InputDecoration(
@@ -222,7 +268,8 @@ class _ChatEmailStateScreen extends State<ChatEmailScreen> {
                     Container(
                       height: 10,
                     ),
-                    TextField(controller: message,
+                    TextField(
+                      controller: message,
                       maxLines: 8,
                       cursorColor: Color(0xffF48262),
                       keyboardType: TextInputType.multiline,
@@ -260,7 +307,12 @@ class _ChatEmailStateScreen extends State<ChatEmailScreen> {
                           padding: EdgeInsets.symmetric(
                               vertical: 10, horizontal: 70),
                           child: FlatButton(
-                            onPressed: () {},
+                            onPressed: () async {
+                              final result = await kirimEmail(context);
+                              if (result) {
+                                Navigator.pop(context, true);
+                              }
+                            },
                             color: Color(0xffF48262),
                             child: Text(
                               "KIRIM",

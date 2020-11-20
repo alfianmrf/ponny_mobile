@@ -3,14 +3,18 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:localstorage/localstorage.dart';
+import 'package:ponny/model/FaqHeader.dart';
 import 'package:ponny/util/globalUrl.dart';
 import 'package:http/http.dart' as http;
 
 class AppModel with ChangeNotifier{
   LoginAuth auth;
+  List<FaqHeader> listFaq =[];
   bool loggedIn =false;
+  bool loadingFaq =true;
   AppModel(){
     getAuth();
+    getFAQ();
   }
 
   Future<void> getAuth() async {
@@ -47,6 +51,18 @@ class AppModel with ChangeNotifier{
       }
     }
     return false;
+  }
+
+  Future<void> getFAQ() async {
+    listFaq =[];
+    final res = await http.get(faqUrl);
+    if(res.statusCode == 200){
+      var result = json.decode(res.body);
+      for(Map item in result){
+        listFaq.add(FaqHeader.fromJson(item));
+      }
+    }
+    loadingFaq =false;
   }
 
   Future<bool> setAuthOtp(param) async {

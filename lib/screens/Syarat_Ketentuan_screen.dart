@@ -10,6 +10,7 @@ class SyaratKetentuanScreen extends StatefulWidget {
 }
 
 class _SyaratKetentuanScreenState extends State<SyaratKetentuanScreen> {
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(

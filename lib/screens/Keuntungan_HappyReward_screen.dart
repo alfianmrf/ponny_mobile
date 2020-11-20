@@ -2,9 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:ponny/common/constant.dart';
+import 'package:ponny/model/User.dart';
+import 'package:ponny/screens/account/happy_skin_reward_screen.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
 import 'package:ponny/screens/product_details_screen.dart';
 import 'package:gradient_text/gradient_text.dart';
+import 'package:provider/provider.dart';
 
 class UntungReward extends StatefulWidget {
   static const String id = "UntungReward";
@@ -14,8 +18,10 @@ class UntungReward extends StatefulWidget {
 }
 
 class _UntungRewardState extends State<UntungReward> {
+
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<UserModel>(context).user;
     return Scaffold(
         resizeToAvoidBottomInset: false,
         backgroundColor: Hexcolor('#FCF8F0'),
@@ -88,7 +94,7 @@ class _UntungRewardState extends State<UntungReward> {
                           FittedBox(
                             fit: BoxFit.fitWidth,
                             child: Text(
-                              "Aninda Anita",
+                              user.name+" "+user.last_name,
                               style: TextStyle(
                                 fontSize: 18,
                                 fontFamily: "Brandon",
@@ -105,7 +111,8 @@ class _UntungRewardState extends State<UntungReward> {
                                       child: FittedBox(
                                         fit: BoxFit.fitWidth,
                                         child: Text(
-                                          "DEWY",
+                                          user.dashboard.membershipTitle
+                                              .toUpperCase(),
                                           style: TextStyle(
                                               color: Hexcolor('#b08d00'),
                                               fontSize: 24,
@@ -117,7 +124,7 @@ class _UntungRewardState extends State<UntungReward> {
                                     Expanded(
                                         flex: 3,
                                         child: new LinearPercentIndicator(
-                                          percent: 0.2,
+                                          percent: user.dashboard.percent / 100,
                                           progressColor: Colors.red,
                                           backgroundColor: Color(0xffF3B5B5),
                                         )),
@@ -125,7 +132,7 @@ class _UntungRewardState extends State<UntungReward> {
                                       child: FittedBox(
                                         fit: BoxFit.fitWidth,
                                         child: Text(
-                                          "HEALTHY",
+                                          user.dashboard.next.toUpperCase(),
                                           style: TextStyle(
                                               color: Hexcolor('#b08d00'),
                                               fontSize: 24,
@@ -139,7 +146,9 @@ class _UntungRewardState extends State<UntungReward> {
                                 FittedBox(
                                   fit: BoxFit.fitWidth,
                                   child: Text(
-                                    "Belanja 1.750.000 lagi untuk naik tingkat ke Healthy Skin",
+                                    "Belanja "+
+                                      nm_format
+                                      .format(user.dashboard.toNext) +" lagi untuk naik tingkat ke " + user.dashboard.next + " Skin",
                                     style: TextStyle(
                                         fontSize: 10,
                                         fontFamily: "Brandon",
@@ -198,17 +207,29 @@ class _UntungRewardState extends State<UntungReward> {
                                 child: product(context)))
                       ],
                     ),
-                    Container(
-                      margin: EdgeInsets.only(bottom: 20),
-                      alignment: Alignment.center,
-                      child: Text("Lihat Semua Rewards",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontSize: 18,
-                              fontFamily: "Brandon",
-                              fontWeight: FontWeight.w500,
-                              color: Color(0xffF48262))),
-                    ),
+                    InkWell(
+                      onTap: (){
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  HappySkinRewardScreen()),
+
+                        );
+                      },
+                      child: Container(
+                        margin: EdgeInsets.only(bottom: 20),
+                        alignment: Alignment.center,
+                        child: Text("Lihat Semua Rewards",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontSize: 18,
+                                fontFamily: "Brandon",
+                                fontWeight: FontWeight.w500,
+                                color: Color(0xffF48262))),
+                      ),
+                    )
+                    ,
                     Container(
                       margin: EdgeInsets.symmetric(horizontal: 20),
                       height: 1,

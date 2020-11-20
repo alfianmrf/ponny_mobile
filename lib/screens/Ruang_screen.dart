@@ -65,12 +65,10 @@ class _RoomScreenState extends State<RoomScreen> {
     }
   }
 
- void postData(){
+  void postData() {
     //var ojo = ;
 
-   http.post(postRoom,
-        
-        body: {"room_id": idRuang.toString()});
+    http.post(postRoom, body: {"room_id": idRuang.toString()});
 
     /*if (response.statusCode == 302) {
       return response;
@@ -98,9 +96,9 @@ class _RoomScreenState extends State<RoomScreen> {
   void initState() {
     for (int i = 0; i < widget.listroom.length; i++) {
       if (widget.listroom[i]["join"] == "GABUNG") {
-        widget.gabung[i] = false;
-      } else {
         widget.gabung[i] = true;
+      } else {
+        widget.gabung[i] = false;
       }
     }
     print(widget.listroom);
@@ -447,9 +445,7 @@ class _RoomScreenState extends State<RoomScreen> {
                                           children: [
                                             InkWell(
                                               onTap: () {
-                                                setState(() {
-                                                  filtered = !filtered;
-                                                });
+                                                filtered = !filtered;
                                               },
                                               child: Container(
                                                 padding: EdgeInsets.all(10),
@@ -624,6 +620,8 @@ class _RoomScreenState extends State<RoomScreen> {
                                                     alignment:
                                                         Alignment.centerRight,
                                                     child: Container(
+                                                      margin: EdgeInsets.only(
+                                                          right: 20),
                                                       decoration: BoxDecoration(
                                                         color:
                                                             Hexcolor('#FCF8F0'),
@@ -636,8 +634,16 @@ class _RoomScreenState extends State<RoomScreen> {
                                                       ),
                                                       padding:
                                                           EdgeInsets.all(10),
-                                                      height: 220,
-                                                      width: 180,
+                                                      height:
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .height *
+                                                              0.3,
+                                                      width:
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .width *
+                                                              0.5,
                                                       child:
                                                           SingleChildScrollView(
                                                         child: Column(
@@ -865,6 +871,19 @@ class _RoomScreenState extends State<RoomScreen> {
   }
 }
 
+Widget _simplePopup() => PopupMenuButton<int>(
+      itemBuilder: (context) => [
+        PopupMenuItem(
+          value: 1,
+          child: Text("First"),
+        ),
+        PopupMenuItem(
+          value: 2,
+          child: Text("Second"),
+        ),
+      ],
+    );
+
 class RoomData extends StatefulWidget {
   RoomData({Key key}) : super(key: key);
 
@@ -873,6 +892,7 @@ class RoomData extends StatefulWidget {
 }
 
 class _RoomDataState extends State<RoomData> {
+
   Future<List> roomData() async {
     final response = await http.get(roomUrl);
 

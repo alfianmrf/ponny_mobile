@@ -104,10 +104,12 @@ class ProductModel with ChangeNotifier {
     SearchResult resultSearch =null;
     // try {
     print(json.encode(param));
+      print(param);
       final result = await http.post(url,headers: { HttpHeaders.contentTypeHeader: 'application/json'} ,body: json.encode(param));
+      print(result.body);
       if (result.statusCode == 200) {
         final responseJson = json.decode(result.body);
-        print(responseJson["links"]["next"]);
+
         List<Product> _tmp=[];
         for (Map item in responseJson["data"]) {
           _tmp.add(Product.fromJson(item));

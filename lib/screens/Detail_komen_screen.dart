@@ -1,16 +1,44 @@
 import 'package:flutter/material.dart';
+import 'package:ponny/common/constant.dart';
 import 'package:readmore/readmore.dart';
+import 'package:ponny/model/PostandComment.dart';
+import 'package:ponny/common/constant.dart';
+import 'package:provider/provider.dart';
+import 'package:ponny/model/App.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:uiblock/uiblock.dart';
+import 'package:intl/intl.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
 
 class DetailKomenScreen extends StatefulWidget {
-  DetailKomenScreen({Key key}) : super(key: key);
+  List list;
+  int index;
+  int roomIdx;
+  DetailKomenScreen({Key key, this.list, this.index, this.roomIdx})
+      : super(key: key);
 
   @override
   _DetailKomenScreenState createState() => _DetailKomenScreenState();
 }
 
 class _DetailKomenScreenState extends State<DetailKomenScreen> {
+  int hours;
+
+  DateTime convertDateFromString(String strDate) {
+    DateTime todayDate = DateTime.parse(strDate);
+
+    return todayDate;
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+
+    hours = DateTime.now()
+        .difference(DateTime.parse(widget.list[widget.index]["updated_at"]))
+        .inHours;
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -75,7 +103,7 @@ class _DetailKomenScreenState extends State<DetailKomenScreen> {
                               ),
                             ),
                             Text(
-                              " Kulit Berminyak",
+                              widget.list[widget.roomIdx]["title"],
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 fontSize: 10,
@@ -99,7 +127,7 @@ class _DetailKomenScreenState extends State<DetailKomenScreen> {
                               width: 5,
                             ),
                             Text(
-                              "Phobe",
+                              "Phoebe",
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 fontSize: 14,
@@ -136,7 +164,10 @@ class _DetailKomenScreenState extends State<DetailKomenScreen> {
                         Row(
                           children: [
                             Text(
-                              "Posted 20-07-2020",
+                              "Posted " +
+                                  DateFormat('dd MMMM yyyy').format(
+                                      convertDateFromString(widget
+                                          .list[widget.index]["created_at"])),
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 fontSize: 10,
@@ -158,7 +189,7 @@ class _DetailKomenScreenState extends State<DetailKomenScreen> {
                             ),
                             Container(width: 10),
                             Text(
-                              "Diupdate 1 jam yang lalu",
+                              "Diupdate " + hours.toString() + " jam yang lalu",
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 fontSize: 10,
@@ -170,8 +201,8 @@ class _DetailKomenScreenState extends State<DetailKomenScreen> {
                           ],
                         ),
                         Text(
-                          "Sunscreen yang bikin kulit berminyak",
-                          textAlign: TextAlign.center,
+                          widget.list[widget.roomIdx]["posts"][widget.index]
+                              ["title"],
                           style: TextStyle(
                             fontSize: 14,
                             fontFamily: 'Yeseva',
@@ -181,7 +212,8 @@ class _DetailKomenScreenState extends State<DetailKomenScreen> {
                         ),
                         Container(height: 5),
                         Text(
-                          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam pretium turpis sed lectus molestie, ac convallis ante faucibus. Vivamus id porta tellus, at accumsan dolor. Class aptent taciti sociosqu ad litora",
+                          widget.list[widget.roomIdx]["posts"][widget.index]
+                              ["text"],
                           style: TextStyle(fontFamily: "Brandon"),
                         ),
                         Container(
@@ -196,14 +228,23 @@ class _DetailKomenScreenState extends State<DetailKomenScreen> {
                                   Icons.favorite,
                                   color: Color(0xffF48262),
                                 ),
-                                Text("52",
+                                Text(
+                                    widget
+                                        .list[widget.roomIdx]["posts"]
+                                            [widget.index]["like"]
+                                        .length
+                                        .toString(),
                                     style: TextStyle(fontFamily: "Brandon")),
                                 Container(width: 10),
                                 IconButton(
                                   icon: Icon(Icons.reply),
                                   color: Color(0xffF48262),
                                   onPressed: () {
-                                    _settingModalBottomSheet(context);
+                                    _settingModalBottomSheet(
+                                        context,
+                                        widget.list,
+                                        widget.list[widget.roomIdx]["posts"]
+                                            [widget.index]["id"]);
                                   },
                                 ),
                                 Text("Balas",
@@ -212,7 +253,12 @@ class _DetailKomenScreenState extends State<DetailKomenScreen> {
                                 Text("|",
                                     style: TextStyle(fontFamily: "Brandon")),
                                 Container(width: 10),
-                                Text("39 Balasan",
+                                Text(
+                                    widget
+                                        .list[widget.roomIdx]["posts"]
+                                            [widget.index]["reply"]
+                                        .length
+                                        .toString(),
                                     style: TextStyle(fontFamily: "Brandon")),
                               ],
                             ),
@@ -223,8 +269,12 @@ class _DetailKomenScreenState extends State<DetailKomenScreen> {
                           ],
                         ),
                         ListView.builder(
+                          primary: false,
                           shrinkWrap: true,
-                          itemCount: 2,
+                          itemCount: widget
+                              .list[widget.roomIdx]["posts"][widget.index]
+                                  ["reply"]
+                              .length,
                           itemBuilder: (context, i) {
                             return Container(
                               margin: EdgeInsets.symmetric(vertical: 5),
@@ -369,10 +419,15 @@ class _DetailKomenScreenState extends State<DetailKomenScreen> {
                                               style: TextStyle(
                                                   fontFamily: "Brandon")),
                                           Container(width: 10),
-                                          IconButton(icon:
-                                            Icon(Icons.reply),
+                                          IconButton(
+                                            icon: Icon(Icons.reply),
                                             onPressed: () {
-                                              _settingModalBottomSheet(context);
+                                              _settingModalBottomSheet(
+                                                  context,
+                                                  widget.list,
+                                                  widget.list[widget.roomIdx]
+                                                          ["posts"]
+                                                      [widget.index]["id"]);
                                             },
                                             color: Color(0xffF48262),
                                           ),
@@ -412,7 +467,38 @@ class _DetailKomenScreenState extends State<DetailKomenScreen> {
   }
 }
 
-void _settingModalBottomSheet(context) {
+void _settingModalBottomSheet(
+  context,
+  List list,
+  int index,
+) {
+  TextEditingController text = new TextEditingController();
+
+  Future<bool> kirimPostdanComment(BuildContext context) async {
+    bool result = false;
+    UIBlock.block(context, customLoaderChild: LoadingWidget(context));
+    // var paramPost = {};
+    var paramComment = {
+      "post_id": index.toString(),
+      "text": text.text,
+      "recommended_items[]": "28",
+      "notifmail": "1"
+    };
+
+    /* type == 1
+        ? await Provider.of<PostandComment>(context)
+            .posts(Provider.of<AppModel>(context).auth.access_token, paramPost)
+        :*/
+    final value = await Provider.of<PostandComment>(context).comment(
+        Provider.of<AppModel>(context).auth.access_token, paramComment);
+
+    if (value) {
+      UIBlock.unblock(context);
+      result = value;
+    }
+    return result;
+  }
+
   showModalBottomSheet(
     isScrollControlled: true,
     backgroundColor: Hexcolor('#FCF8F0'),
@@ -421,82 +507,95 @@ void _settingModalBottomSheet(context) {
             topLeft: Radius.circular(30), topRight: Radius.circular(30))),
     context: context,
     builder: (builder) {
-      return Container(
-        padding: EdgeInsets.all(10),
-        height: MediaQuery.of(context).size.height * 0.75,
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Container(
-                margin: EdgeInsets.all(5),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      flex: 1,
-                      child: Container(
-                        child: IconButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            icon: Icon(
-                              Icons.arrow_back_ios,
-                              color: Color(0xffF48262),
-                              size: 26,
-                            )),
-                      ),
-                    ),
-                    Expanded(
-                      flex: 4,
-                      child: Container(
-                        margin: EdgeInsets.only(right: 10),
-                        child: FittedBox(
-                          fit: BoxFit.fitWidth,
-                          child: Text(
-                            "Tambahkan Komentar",
-                            style: TextStyle(
-                              fontSize: 24,
-                              fontFamily: "Yeseva",
-                              fontWeight: FontWeight.w500,
-                              color: Color(0xffF48262),
+      return StatefulBuilder(
+        builder: (BuildContext context, setState) {
+          return Container(
+            padding: EdgeInsets.all(10),
+            height: MediaQuery.of(context).size.height * 0.75,
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Container(
+                    margin: EdgeInsets.all(5),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: Container(
+                            child: IconButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                icon: Icon(
+                                  Icons.arrow_back_ios,
+                                  color: Color(0xffF48262),
+                                  size: 26,
+                                )),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 4,
+                          child: Container(
+                            margin: EdgeInsets.only(right: 10),
+                            child: FittedBox(
+                              fit: BoxFit.fitWidth,
+                              child: Text(
+                                "Tambahkan Komentar",
+                                style: TextStyle(
+                                  fontSize: 24,
+                                  fontFamily: "Yeseva",
+                                  fontWeight: FontWeight.w500,
+                                  color: Color(0xffF48262),
+                                ),
+                              ),
                             ),
                           ),
                         ),
-                      ),
+                        InkWell(
+                          onTap: () {
+                            setState(() async {
+                              final result = await kirimPostdanComment(context);
+
+                              Navigator.pop(context, true);
+                            });
+                          },
+                          child: FittedBox(
+                            fit: BoxFit.fitWidth,
+                            child: Text(
+                              "Kirim",
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontFamily: "Brandon",
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
                     ),
-                    FittedBox(
-                      fit: BoxFit.fitWidth,
-                      child: Text(
-                        "Kirim",
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontFamily: "Brandon",
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
+                  ),
+                  Container(
+                    height: 1,
+                    color: Color(0xffF3C1B5),
+                  ),
+                  Container(
+                    margin: EdgeInsets.all(10),
+                    child: TextField(
+                      keyboardType: TextInputType.multiline,
+                      maxLines: null,
+                      cursorColor: Colors.black,
+                      textInputAction: TextInputAction.go,
+                      decoration: new InputDecoration.collapsed(
+                          hintStyle: TextStyle(fontFamily: "Brandon"),
+                          hintText: "Tambahkan Komentar"),
                     ),
-                  ],
-                ),
+                  )
+                ],
               ),
-              Container(
-                height: 1,
-                color: Color(0xffF3C1B5),
-              ),
-              Container(
-                margin: EdgeInsets.all(10),
-                child: TextField(
-                  keyboardType: TextInputType.multiline,
-                  maxLines: null,
-                  cursorColor: Colors.black,
-                  textInputAction: TextInputAction.go,
-                  decoration: new InputDecoration.collapsed(
-                      hintStyle: TextStyle(fontFamily: "Brandon"),
-                      hintText: "Tambahkan Komentar"),
-                ),
-              )
-            ],
-          ),
-        ),
+            ),
+          );
+        },
       );
     },
   );

@@ -1,8 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:ponny/model/User.dart';
 import 'package:ponny/screens/account_screen.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
+import 'package:provider/provider.dart';
+import 'package:ponny/util/globalUrl.dart';
 
 class AffiliateUsScreen extends StatefulWidget {
   static const String id = "Affiliate_Us_Screen";
@@ -12,10 +17,16 @@ class AffiliateUsScreen extends StatefulWidget {
 
 class _AffiliateUsStateScreen extends State<AffiliateUsScreen> {
   bool link = false;
+  final scaffoldkey = GlobalKey<ScaffoldState>();
+
 
   @override
   Widget build(BuildContext context) {
+    final user= Provider.of<UserModel>(context).user;
+    String afiliateUrl= urlGlobal+"users/registration?referral_code="+user.referral_code;
+    String ringkasUrl=  urlGlobal+"referral/"+user.referral_code;
     return Scaffold(
+      key: scaffoldkey,
       resizeToAvoidBottomInset: false,
       backgroundColor: Hexcolor('#FCF8F0'),
       body: SingleChildScrollView(
@@ -104,7 +115,7 @@ class _AffiliateUsStateScreen extends State<AffiliateUsScreen> {
                                 children: [
                                   Container(
                                     child: Text(
-                                      "TITAN TYRA",
+                                      user.name+" "+user.last_name,
                                       style: TextStyle(
                                         fontFamily: "Yeseva",
                                         fontSize: 22,
@@ -176,8 +187,9 @@ class _AffiliateUsStateScreen extends State<AffiliateUsScreen> {
                     child: Row(
                       children: [
                         Container(
+                          width:MediaQuery.of(context).size.width*.8,
                           child: Text(
-                            "Link",
+                            afiliateUrl,
                             style: TextStyle(
                               fontFamily: "Brandon",
                               fontWeight: FontWeight.w500,
@@ -244,8 +256,9 @@ class _AffiliateUsStateScreen extends State<AffiliateUsScreen> {
                     child: Row(
                       children: [
                         Container(
+                          width:MediaQuery.of(context).size.width*.8,
                           child: Text(
-                            "Link",
+                            link?ringkasUrl:afiliateUrl,
                             style: TextStyle(
                               fontFamily: "Brandon",
                               fontWeight: FontWeight.w500,
@@ -292,30 +305,45 @@ class _AffiliateUsStateScreen extends State<AffiliateUsScreen> {
                 ],
               ),
             ),
-            Container(
-              decoration: BoxDecoration(
-                color: Color(0xffF48262),
-                borderRadius: BorderRadius.all(Radius.circular(4)),
-              ),
-              margin: EdgeInsets.only(left: 30, right: 30, top: 20),
-              padding: EdgeInsets.all(10),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    child: Text(
-                      "SALIN TAUTAN",
-                      style: TextStyle(
-                        fontFamily: "Brandon",
-                        fontWeight: FontWeight.w600,
-                        color: Colors.white,
-                        fontSize: 16,
+            InkWell(
+              onTap: (){
+                Clipboard.setData(new ClipboardData(text: link?ringkasUrl:afiliateUrl ));
+                Fluttertoast.showToast(
+                    msg: "Copied to Clipboard",
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.CENTER,
+                    timeInSecForIosWeb: 1,
+                    backgroundColor: Colors.red,
+                    textColor: Colors.white,
+                    fontSize: 16.0
+                );
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Color(0xffF48262),
+                  borderRadius: BorderRadius.all(Radius.circular(4)),
+                ),
+                margin: EdgeInsets.only(left: 30, right: 30, top: 20),
+                padding: EdgeInsets.all(10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      child: Text(
+                        "SALIN TAUTAN",
+                        style: TextStyle(
+                          fontFamily: "Brandon",
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white,
+                          fontSize: 16,
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
+            )
+            ,
           ],
         ),
       ),
