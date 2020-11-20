@@ -99,9 +99,9 @@ class _ChatEmailStateScreen extends State<ChatEmailScreen> {
           ),
         ),
         title: Text(
-          'Chat via Email',
+          'Hubungi kami via Email',
           style: TextStyle(
-            fontSize: 24,
+            fontSize: 22,
             fontFamily: 'Yeseva',
             color: Hexcolor('#F48262'),
           ),
@@ -160,13 +160,13 @@ class _ChatEmailStateScreen extends State<ChatEmailScreen> {
                             EdgeInsets.symmetric(horizontal: 17, vertical: 10),
                         labelStyle: TextStyle(color: Colors.black),
                         focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(5.0),
+                          borderRadius: BorderRadius.circular(10.0),
                           borderSide: BorderSide(
                             color: Hexcolor('#F48262'),
                           ),
                         ),
                         enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(5.0),
+                          borderRadius: BorderRadius.circular(10.0),
                           borderSide: BorderSide(
                             color: Hexcolor('#F48262'),
                             width: 1.0,
@@ -194,13 +194,13 @@ class _ChatEmailStateScreen extends State<ChatEmailScreen> {
                             EdgeInsets.symmetric(horizontal: 17, vertical: 10),
                         labelStyle: TextStyle(color: Colors.black),
                         focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(5.0),
+                          borderRadius: BorderRadius.circular(10.0),
                           borderSide: BorderSide(
                             color: Hexcolor('#F48262'),
                           ),
                         ),
                         enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(5.0),
+                          borderRadius: BorderRadius.circular(10.0),
                           borderSide: BorderSide(
                             color: Hexcolor('#F48262'),
                             width: 1.0,
@@ -215,47 +215,52 @@ class _ChatEmailStateScreen extends State<ChatEmailScreen> {
                       width: double.infinity,
                       decoration: BoxDecoration(
                         border: Border.all(width: 1, color: Color(0xffF48262)),
-                        borderRadius: BorderRadius.circular(5),
+                        borderRadius: BorderRadius.circular(10),
                       ),
-                      child: DropdownButtonHideUnderline(
-                        child: ButtonTheme(
-                          alignedDropdown: true,
-                          child: DropdownButton<String>(
-                            value: dropdownValue,
-                            isExpanded: true,
-                            icon: Icon(Icons.expand_more_rounded,
-                                color: Color(0xffF48262)),
-                            iconSize: 24,
-                            elevation: 16,
-                            hint: Text(
-                              'Perihal',
+                      child: Theme(
+                        data: Theme.of(context).copyWith(
+                          canvasColor: Color(0xFFFDF8F0),
+                        ),
+                        child: DropdownButtonHideUnderline(
+                          child: ButtonTheme(
+                            alignedDropdown: true,
+                            child: DropdownButton<String>(
+                              value: dropdownValue,
+                              isExpanded: true,
+                              icon: Icon(Icons.expand_more_rounded,
+                                  color: Color(0xffF48262)),
+                              iconSize: 24,
+                              elevation: 16,
+                              hint: Text(
+                                'Perihal',
+                                style: TextStyle(
+                                  fontFamily: 'Brandon',
+                                  color: Color(0xff959799),
+                                  fontSize: 14,
+                                ),
+                              ),
                               style: TextStyle(
                                 fontFamily: 'Brandon',
-                                color: Color(0xff959799),
+                                color: Colors.black,
                                 fontSize: 14,
                               ),
+                              onChanged: (String newValue) {
+                                setState(() {
+                                  dropdownValue = newValue;
+                                });
+                              },
+                              items: <String>[
+                                'Pengembalian Barang',
+                                'Pengembalian Dana',
+                                'Penukaran Barang',
+                                'Lainnya'
+                              ].map<DropdownMenuItem<String>>((String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(value),
+                                );
+                              }).toList(),
                             ),
-                            style: TextStyle(
-                              fontFamily: 'Brandon',
-                              color: Colors.black,
-                              fontSize: 14,
-                            ),
-                            onChanged: (String newValue) {
-                              setState(() {
-                                dropdownValue = newValue;
-                              });
-                            },
-                            items: <String>[
-                              'Komplain',
-                              'Pengembalian Barang',
-                              'Pengembalian Dana',
-                              'Lainnya'
-                            ].map<DropdownMenuItem<String>>((String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(value),
-                              );
-                            }).toList(),
                           ),
                         ),
                       ),
@@ -281,13 +286,13 @@ class _ChatEmailStateScreen extends State<ChatEmailScreen> {
                             EdgeInsets.symmetric(horizontal: 17, vertical: 10),
                         labelStyle: TextStyle(color: Colors.black),
                         focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(5.0),
+                          borderRadius: BorderRadius.circular(10.0),
                           borderSide: BorderSide(
                             color: Hexcolor('#F48262'),
                           ),
                         ),
                         enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(5.0),
+                          borderRadius: BorderRadius.circular(10.0),
                           borderSide: BorderSide(
                             color: Hexcolor('#F48262'),
                             width: 1.0,
@@ -320,7 +325,7 @@ class _ChatEmailStateScreen extends State<ChatEmailScreen> {
                             ),
                           ),
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5.0),
+                            borderRadius: BorderRadius.circular(10.0),
                           ),
                         ),
                       ),

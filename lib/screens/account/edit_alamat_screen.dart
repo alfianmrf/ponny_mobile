@@ -182,7 +182,7 @@ class _EditAlamatStateScreen extends State<EditAlamatScreen> {
                   ),
                   Container(
                     child: Text(
-                      "Edit Alamat",
+                      "Ubah Alamat",
                       style: TextStyle(
                         fontSize: 24,
                         fontFamily: "Yeseva",
@@ -239,7 +239,7 @@ class _EditAlamatStateScreen extends State<EditAlamatScreen> {
 
                         decoration: InputDecoration(
                           border: InputBorder.none,
-                          labelText: 'Frist Name',
+                          labelText: 'Nama Depan',
                           hintText: 'Nama Depan',
                           labelStyle: TextStyle(color: Colors.black),
                           isDense: true,
@@ -249,7 +249,7 @@ class _EditAlamatStateScreen extends State<EditAlamatScreen> {
                         minLines: 1,
                         validator: (String value){
                           if (value.isEmpty) {
-                            return "Nama Lengkap tidak boleh kosong";
+                            return "Nama Depan tidak boleh kosong";
                           }
                         },
                       ),
@@ -274,7 +274,7 @@ class _EditAlamatStateScreen extends State<EditAlamatScreen> {
 
                         decoration: InputDecoration(
                           border: InputBorder.none,
-                          labelText: 'Last Name',
+                          labelText: 'Nama Belakang',
                           hintText: 'Nama Belakang',
                           labelStyle: TextStyle(color: Colors.black),
                           isDense: true,
@@ -308,7 +308,7 @@ class _EditAlamatStateScreen extends State<EditAlamatScreen> {
                         ),
                         decoration: InputDecoration(
                           border: InputBorder.none,
-                          labelText: 'Address',
+                          labelText: 'Alamat',
                           hintText: 'Alamat Anda',
                           labelStyle: TextStyle(color: Colors.black),
                           isDense: true,
@@ -328,14 +328,30 @@ class _EditAlamatStateScreen extends State<EditAlamatScreen> {
                       width: MediaQuery.of(context).size.width,
                       child: Column(
                         children: [
+                          Container(
+                            width: double.infinity,
+                            padding: EdgeInsets.only(top: 5),
+                            child: Text(
+                              "Provinsi",
+                              style: TextStyle(
+                                fontFamily: "Brandon",
+                                fontSize: 13,
+                                fontWeight: FontWeight.w300,
+                              ),
+                              textAlign: TextAlign.left,
+                            ),
+                          ),
                           if(listProvinces.length > 0)
                           DropdownButtonFormField(
                             onTap: (){
                               FocusScope.of(context).requestFocus(new FocusNode());
                             },
                             decoration: InputDecoration(
+                              enabledBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(color: Color(0xffF48262)),
+                              ),
                               border: UnderlineInputBorder(
-                                borderSide: new BorderSide(color: Colors.red),
+                                borderSide: BorderSide(color: Color(0xffF48262)),
                               ),
                             ),
                             isExpanded: true,
@@ -347,10 +363,10 @@ class _EditAlamatStateScreen extends State<EditAlamatScreen> {
                             iconEnabledColor: Color(0xffF48262),
                             iconDisabledColor: Color(0xffF48262),
                             hint: Text(
-                              "Province",
+                              "Provinsi",
                               style: TextStyle(
                                 fontFamily: "Brandon",
-                                fontSize: 15,
+                                fontSize: 17,
                                 fontWeight: FontWeight.w300,
                               ),
                             ),
@@ -367,7 +383,7 @@ class _EditAlamatStateScreen extends State<EditAlamatScreen> {
                                     val.text,
                                     style: TextStyle(
                                       fontFamily: "Brandon",
-                                      fontSize: 15,
+                                      fontSize: 17,
                                       fontWeight: FontWeight.w300,
                                     ),
                                   ),
@@ -396,13 +412,29 @@ class _EditAlamatStateScreen extends State<EditAlamatScreen> {
                       width: MediaQuery.of(context).size.width,
                       child: Column(
                         children: [
+                          Container(
+                            width: double.infinity,
+                            padding: EdgeInsets.only(top: 5),
+                            child: Text(
+                              "Kota / Kabupaten",
+                              style: TextStyle(
+                                fontFamily: "Brandon",
+                                fontSize: 13,
+                                fontWeight: FontWeight.w300,
+                              ),
+                              textAlign: TextAlign.left,
+                            ),
+                          ),
                           DropdownButtonFormField(
                             onTap: (){
                               FocusScope.of(context).requestFocus(new FocusNode());
                             },
                             decoration: InputDecoration(
+                              enabledBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(color: Color(0xffF48262)),
+                              ),
                               border: UnderlineInputBorder(
-                                borderSide: new BorderSide(color: Colors.red),
+                                borderSide: BorderSide(color: Color(0xffF48262)),
                               ),
                             ),
                             isExpanded: true,
@@ -412,10 +444,10 @@ class _EditAlamatStateScreen extends State<EditAlamatScreen> {
                             iconEnabledColor: Color(0xffF48262),
                             iconDisabledColor: Color(0xffF48262),
                             hint: Text(
-                              "City",
+                              "Kota / Kabupaten",
                               style: TextStyle(
                                 fontFamily: "Brandon",
-                                fontSize: 15,
+                                fontSize: 17,
                                 fontWeight: FontWeight.w300,
                               ),
                             ),
@@ -427,7 +459,7 @@ class _EditAlamatStateScreen extends State<EditAlamatScreen> {
                                     val.text,
                                     style: TextStyle(
                                       fontFamily: "Brandon",
-                                      fontSize: 15,
+                                      fontSize: 17,
                                       fontWeight: FontWeight.w300,
                                     ),
                                   ),
@@ -454,13 +486,29 @@ class _EditAlamatStateScreen extends State<EditAlamatScreen> {
                       width: MediaQuery.of(context).size.width,
                       child: Column(
                         children: [
+                          Container(
+                            width: double.infinity,
+                            padding: EdgeInsets.only(top: 5),
+                            child: Text(
+                              "Kecamatan",
+                              style: TextStyle(
+                                fontFamily: "Brandon",
+                                fontSize: 13,
+                                fontWeight: FontWeight.w300,
+                              ),
+                              textAlign: TextAlign.left,
+                            ),
+                          ),
                           DropdownButtonFormField(
                             onTap: (){
                               FocusScope.of(context).requestFocus(new FocusNode());
                             },
                             decoration: InputDecoration(
+                              enabledBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(color: Color(0xffF48262)),
+                              ),
                               border: UnderlineInputBorder(
-                                borderSide: new BorderSide(color: Colors.red),
+                                borderSide: BorderSide(color: Color(0xffF48262)),
                               ),
                             ),
                             isExpanded: true,
@@ -470,10 +518,10 @@ class _EditAlamatStateScreen extends State<EditAlamatScreen> {
                             iconEnabledColor: Color(0xffF48262),
                             iconDisabledColor: Color(0xffF48262),
                             hint: Text(
-                              "District",
+                              "Kecamatan",
                               style: TextStyle(
                                 fontFamily: "Brandon",
-                                fontSize: 15,
+                                fontSize: 17,
                                 fontWeight: FontWeight.w300,
                               ),
                             ),
@@ -485,7 +533,7 @@ class _EditAlamatStateScreen extends State<EditAlamatScreen> {
                                     val.text,
                                     style: TextStyle(
                                       fontFamily: "Brandon",
-                                      fontSize: 15,
+                                      fontSize: 17,
                                       fontWeight: FontWeight.w300,
                                     ),
                                   ),
@@ -523,7 +571,7 @@ class _EditAlamatStateScreen extends State<EditAlamatScreen> {
                         ),
                         decoration: InputDecoration(
                             border: InputBorder.none,
-                            labelText: 'Postal Code',
+                            labelText: 'Kode Pos',
                             hintText: 'Kode Pos',
                             labelStyle: TextStyle(color: Colors.black),
                             isDense: true,
@@ -563,7 +611,7 @@ class _EditAlamatStateScreen extends State<EditAlamatScreen> {
                         decoration: InputDecoration(
                             prefixText: "+62",
                             border: InputBorder.none,
-                            labelText: 'Contact Number',
+                            labelText: 'Nomor Telepon',
                             hintText: 'Nomor Telepon',
                             labelStyle: TextStyle(color: Colors.black),
                             isDense: true,
@@ -652,7 +700,7 @@ class _EditAlamatStateScreen extends State<EditAlamatScreen> {
                 padding: EdgeInsets.only(top: 15, bottom: 15),
                 child: Center(
                   child: Text(
-                    "SAVE",
+                    "SIMPAN",
                     style: TextStyle(
                       fontFamily: "Brandon",
                       fontWeight: FontWeight.w700,
