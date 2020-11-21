@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_twitter_login/flutter_twitter_login.dart';
 import 'package:google_sign_in/google_sign_in.dart' as google;
 import 'package:hexcolor/hexcolor.dart';
@@ -115,27 +116,15 @@ class _LoginStateScreen extends State<LoginScreen> {
   Future<bool> signInWithTwitter() async {
     // Create a TwitterLogin instance
     bool result =false;
-    String newMessage;
     final TwitterLogin twitterLogin = new TwitterLogin(
       consumerKey: TWITTER_CLIENT_ID,
       consumerSecret: TWITTER_CLIENT_SECRET,
     );
-
+    final twitterStatus =await twitterLogin.isSessionActive;
+    if(twitterStatus) await twitterLogin.logOut();
     // Trigger the sign-in flow
     final TwitterLoginResult loginResult = await twitterLogin.authorize();
-
-    switch (loginResult.status) {
-      case TwitterLoginStatus.loggedIn:
-        newMessage = 'Logged in! username: ${loginResult.session.username}';
-        break;
-      case TwitterLoginStatus.cancelledByUser:
-        newMessage = 'Login cancelled by user.';
-        break;
-      case TwitterLoginStatus.error:
-        newMessage = 'Login error: ${loginResult.errorMessage}';
-        break;
-    }
-    print(newMessage);
+    print(loginResult.errorMessage);
 
     // Get the Logged In session
     final TwitterSession twitterSession = loginResult.session;
@@ -145,8 +134,9 @@ class _LoginStateScreen extends State<LoginScreen> {
     TwitterAuthProvider.credential(accessToken: twitterSession.token, secret: twitterSession.secret);
 
     // Once signed in, return the UserCredential
-    final FirebasePakage.UserCredential authResult = await _auth.signInWithCredential(twitterAuthCredential);
-    final FirebasePakage.User user = authResult.user;
+     final users = await FirebaseAuth.instance.signInWithCredential(twitterAuthCredential);
+     var user = users.user.providerData[0];
+
     print('$user');
     if (user != null ) {
       var param = {
@@ -154,12 +144,15 @@ class _LoginStateScreen extends State<LoginScreen> {
         "name":user.displayName,
         "provider_id":user.uid
       };
+      print(param);
       result = await Provider.of<AppModel>(context).setAuthSocial(param);
 
       print('signInWithGoogle succeeded: $user');
 
       return result;
     }
+
+
     return result;
   }
 
@@ -170,17 +163,40 @@ class _LoginStateScreen extends State<LoginScreen> {
     print("User Signed Out");
   }
 
-  Future<UserCredential> signInWithFacebook() async {
-    // Trigger the sign-in flow
-    // final  result = await facebook.FacebookAuth.instance.login();
-    //
-    // // Create a credential from the access token
-    // final FacebookAuthCredential facebookAuthCredential =
-    // FacebookAuthProvider.credential(result.token);
-    // final Facebookuser = await FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
-    // print(Facebookuser.user.uid);
-    // // Once signed in, return the UserCredential
+  Future<void> signInWithFacebook() async {
+    //Trigger the sign-in flow
+    final  result = await FacebookAuth.instance.login();
+
+    // Create a credential from the access token
+    final FacebookAuthCredential facebookAuthCredential =
+    FacebookAuthProvider.credential(result.token);
+    final Facebookuser = await FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
+    print(Facebookuser.user.uid);
+    // Once signed in, return the UserCredential
     // return Facebookuser;
+    // final FacebookLoginResult result = await facebookSignIn.logIn(['email']);
+    //
+    // switch (result.status) {
+    //   case FacebookLoginStatus.loggedIn:
+    //     final FacebookAccessToken accessToken = result.accessToken;
+    //     print('''
+    //      Logged in!
+    //
+    //      Token: ${accessToken.token}
+    //      User id: ${accessToken.userId}
+    //      Expires: ${accessToken.expires}
+    //      Permissions: ${accessToken.permissions}
+    //      Declined permissions: ${accessToken.declinedPermissions}
+    //      ''');
+    //     break;
+    //   case FacebookLoginStatus.cancelledByUser:
+    //     print('Login cancelled by the user.');
+    //     break;
+    //   case FacebookLoginStatus.error:
+    //     print('Something went wrong with the login process.\n'
+    //         'Here\'s the error Facebook gave us: ${result.errorMessage}');
+    //     break;
+    // }
   }
 
   @override
@@ -568,13 +584,27 @@ class _LoginStateScreen extends State<LoginScreen> {
                                       Expanded(
                                         flex: 2,
                                         child: FlatButton(
-                                          onPressed: () {
-                                            UIBlock.block(context,customLoaderChild: LoadingWidgetFadingCircle(context));
-                                            signInWithFacebook().then((value) {
-                                              UIBlock.unblock(context);
+                                          onPressed: () async {
+                                            // final  result = await FacebookAuth.instance.login();
+                                            FacebookAuth.instance.login().then((value){
+                                              print(value);
+
                                             }).catchError((onError){
-                                              UIBlock.unblock(context);
+                                              print(onError);
                                             });
+
+                                            // Create a credential from the access token
+                                            // final FacebookAuthCredential facebookAuthCredential =
+                                            // FacebookAuthProvider.credential(result.token);
+                                            // final Facebookuser = await FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
+                                            // print(Facebookuser.user.uid);
+                                            // print("facebook");
+                                            // UIBlock.block(context,customLoaderChild: LoadingWidgetFadingCircle(context));
+                                            // signInWithFacebook().then((value) {
+                                            //   UIBlock.unblock(context);
+                                            // }).catchError((onError){
+                                            //   UIBlock.unblock(context);
+                                            // });
                                           },
                                           child: SizedBox(
                                             width: double.infinity,
@@ -642,8 +672,17 @@ class _LoginStateScreen extends State<LoginScreen> {
                                             UIBlock.block(context,customLoaderChild: LoadingWidgetFadingCircle(context));
                                             signInWithTwitter().then((value) {
                                               UIBlock.unblock(context);
+                                              if(value){
+                                                Navigator.pushNamedAndRemoveUntil(
+                                                    context,
+                                                    HomeScreen.id,(_) => false
+                                                );
+                                              }else{
+                                                scaffoldKey.currentState.showSnackBar(snackBarError);
+                                              }
                                             }).catchError((onError){
                                               UIBlock.unblock(context);
+                                              scaffoldKey.currentState.showSnackBar(snackBarError);
                                             });
 
                                           },

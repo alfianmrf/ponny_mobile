@@ -63,6 +63,9 @@ dependencies:
   youtube_player_flutter: ^7.0.0+7
   google_sign_in: ^4.5.3
   flutter_twitter_login: ^1.1.0
+  flutter_facebook_auth: ^1.0.0
+
+
 
 
   date_format: ^1.0.9

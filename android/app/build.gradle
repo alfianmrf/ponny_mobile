@@ -38,6 +38,9 @@ android {
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
     }
+    repositories {
+        maven { url 'https://maven.fabric.io/public' }
+    }
 
     lintOptions {
         disable 'InvalidPackage'
@@ -78,4 +81,5 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'com.google.guava:guava:27.0.1-android'
     implementation 'com.android.support:multidex:1.0.3'
+
 }

@@ -8,51 +8,6 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1028517918903:android:c051244560f6dc8dabf532",
-        "android_client_info": {
-          "package_name": "com.example.ponny"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "1028517918903-50divkoc70h3q8hi1m5uqp1d4l0q1hoj.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.ponny",
-            "certificate_hash": "084ada426372e44802e6877f57b5d6a7e894d0a3"
-          }
-        },
-        {
-          "client_id": "1028517918903-fcg76pp3un5du7r24865vch671k5o499.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.ponny",
-            "certificate_hash": "47639b918b92e36ef0e00cc97e06c5b7062c1d6f"
-          }
-        },
-        {
-          "client_id": "1028517918903-4s17oj4sl7tlhfbvhjeogv8pio7oh3q5.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyBFHiLkI5h0q_aukI27C7PQ9Oy05bVB2FY"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "1028517918903-4s17oj4sl7tlhfbvhjeogv8pio7oh3q5.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
         "mobilesdk_app_id": "1:1028517918903:android:370c1a2b5a1000d2abf532",
         "android_client_info": {
           "package_name": "com.ponnybeauteindonesia.app"
@@ -60,7 +15,15 @@
       },
       "oauth_client": [
         {
-          "client_id": "1028517918903-23adjbk4libj1absp78b2fgc8nu173m0.apps.googleusercontent.com",
+          "client_id": "1028517918903-8p6asvrj2f84roo9jthjuq1r8k7mo55b.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ponnybeauteindonesia.app",
+            "certificate_hash": "543db4dba98214d05c8dbc46f3ae8101e50f79bf"
+          }
+        },
+        {
+          "client_id": "1028517918903-u7lu32nboqnmbung12v43onb6molrg2k.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.ponnybeauteindonesia.app",
@@ -68,11 +31,11 @@
           }
         },
         {
-          "client_id": "1028517918903-o9chhq87gd1dre6fe6kdq1v3jec1lq7c.apps.googleusercontent.com",
+          "client_id": "1028517918903-hu6i5sd972chhn6k0egecohutmsii7kq.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.ponnybeauteindonesia.app",
-            "certificate_hash": "47639b918b92e36ef0e00cc97e06c5b7062c1d6f"
+            "certificate_hash": "c2d175f9dc2028ed4b16a9ce6a618e6686ff9030"
           }
         },
         {
