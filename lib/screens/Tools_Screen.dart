@@ -4,7 +4,6 @@ import 'package:ponny/screens/Browse_Screen.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
 import 'package:ponny/screens/product_details_screen.dart';
-import 'package:ponny/common/constant.dart';
 import 'package:grouped_buttons/grouped_buttons.dart';
 import 'package:waterfall_flow/waterfall_flow.dart';
 
@@ -47,14 +46,22 @@ class _ToolsState extends State<Tools> {
         bottom: PreferredSize(
           preferredSize: Size.fromHeight(50.0),
           child: Container(
-            margin: EdgeInsets.all(5),
+            padding: EdgeInsets.fromLTRB(5,5,5,0),
+            decoration: BoxDecoration(
+              border: Border(
+                bottom: BorderSide(
+                  width: 1,
+                  color: Color(0xffF48262),
+                ),
+              ),
+            ),
             child: Row(
               children: [
                 Container(
                   child: IconButton(
                       onPressed: () {
                         Navigator.of(context)
-                            .pushReplacementNamed(Browse.id);
+                            .pop();
                       },
                       icon: Icon(
                         Icons.arrow_back_ios,
@@ -64,7 +71,7 @@ class _ToolsState extends State<Tools> {
                 ),
                 Container(
                   child: Text(
-                    "Tools",
+                    "Peralatan Kecantikan",
                     style: TextStyle(
                       fontSize: 24,
                       fontFamily: "Yeseva",
@@ -92,21 +99,46 @@ class _ToolsState extends State<Tools> {
                     width: 1,
                     color: Color(0xffF48262),
                   ),
-                  top: BorderSide(
-                    width: 1,
-                    color: Color(0xffF48262),
-                  ),
                 ),
               ),
-              child: ListView.builder(
+              child: SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
-                itemCount: 4,
-                itemBuilder: (context, i) {
-                  return Container(
+                child: Row(
+                  children: [
+                    Container(
                       margin: EdgeInsets.all(10),
-                      width: 100,
-                      child: rectanglebutton(context, "CLEANSING & BRUSH"));
-                },
+                      child: rectanglebutton(context, "CLEANSING &\nBRUSH", 'assets/images/browse/tools/cleansing brush.png'),
+                    ),
+                    Container(
+                      margin: EdgeInsets.all(10),
+                      child: rectanglebutton(context, "COTTON", 'assets/images/browse/tools/cotton.png'),
+                    ),
+                    Container(
+                      margin: EdgeInsets.all(10),
+                      child: rectanglebutton(context, "ELECTRONICS", 'assets/images/browse/tools/electronics.png'),
+                    ),
+                    Container(
+                      margin: EdgeInsets.all(10),
+                      child: rectanglebutton(context, "EYE &\nEYE BROW", 'assets/images/browse/tools/eye brow.png'),
+                    ),
+                    Container(
+                      margin: EdgeInsets.all(10),
+                      child: rectanglebutton(context, "MAKEUP\nPOUCH & BAG", 'assets/images/browse/tools/pouch.png'),
+                    ),
+                    Container(
+                      margin: EdgeInsets.all(10),
+                      child: rectanglebutton(context, "SPONGE", 'assets/images/browse/tools/sponge.png'),
+                    ),
+                    Container(
+                      margin: EdgeInsets.all(10),
+                      child: rectanglebutton(context, "BEAUTY\nROLLER", 'assets/images/browse/tools/roller.png'),
+                    ),
+                    Container(
+                      margin: EdgeInsets.all(10),
+                      child: rectanglebutton(context, "BRUSH &\nAPPLICATOR", 'assets/images/browse/tools/brush.png'),
+                    ),
+                  ],
+                ),
               ),
             ),
             Container(
@@ -116,7 +148,7 @@ class _ToolsState extends State<Tools> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    '457 items',
+                    '457 produk',
                     style: TextStyle(
                       fontFamily: 'Brandon',
                       fontSize: 16,
@@ -129,15 +161,16 @@ class _ToolsState extends State<Tools> {
                     color: Color(0xffF48262),
                     materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5),
+                      borderRadius: BorderRadius.circular(10),
                     ),
                     height: 30,
                     child: Row(
                       children: [
-                        Icon(
-                          Icons.tune,
-                          color: Colors.white,
+                        Image.asset(
+                          'assets/images/filter.png',
+                          height: 16,
                         ),
+                        Container(width: 10,),
                         Text(
                           'Filter',
                           style: TextStyle(
@@ -168,42 +201,186 @@ class _ToolsState extends State<Tools> {
           ],
         ),
       ),
+      bottomNavigationBar: new PonnyBottomNavbar(selectedIndex: 1),
     );
   }
 }
 
-Widget rectanglebutton(context, String subtext) {
+Widget rectanglebutton(context, String subtext, String subimg) {
   return ButtonTheme(
-    buttonColor: Hexcolor('#FCF8F0'),
+    buttonColor: Colors.white,
+    minWidth: 100.0,
+    height: 100.0,
+    padding: EdgeInsets.symmetric(horizontal: 0),
     child: RaisedButton(
-      onPressed: () {},
-      child: Padding(
-        padding: EdgeInsets.symmetric(vertical: 5),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Icon(
-              Icons.clean_hands_outlined,
-              color: Color(0xffF48262),
-              size: 50,
+      onPressed: () {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => Tools()));
+      },
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Image.asset(
+            subimg,
+            height: 55,
+            width: 70,
+            fit: BoxFit.contain,
+          ),
+          Container(height: 5,),
+          Text(
+            subtext,
+            style: TextStyle(
+              fontSize: 13,
+              fontFamily: 'Brandon',
+              height: 1,
             ),
-            Text(
-              subtext,
-              style: TextStyle(
-                fontSize: 12,
-                fontFamily: 'Brandon',
-                color: Colors.black,
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
+    ),
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(10.0),
+      side: BorderSide(color: Hexcolor('#F48262')),
+    ),
+  );
+}
+
+Widget product(context) {
+  return Column(
+    children: <Widget>[
+      Container(
+        child: Stack(
+          children: <Widget>[
+            GestureDetector(
+              onTap: () {
+                Navigator.of(context)
+                    .pushReplacementNamed(ProductDetailsScreen.id);
+              },
+              child: Image.asset(
+                "assets/images/produk.png",
+                width: MediaQuery.of(context).size.width,
+                fit: BoxFit.cover,
               ),
-              textAlign: TextAlign.center,
+            ),
+            Padding(
+              padding: EdgeInsets.only(top: 10.0),
+              child: Align(
+                  alignment: Alignment.topLeft,
+                  child: Container(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 5.0),
+                      child: const Text(
+                        '35%',
+                        style: TextStyle(
+                            color: Colors.white, fontFamily: 'Brandon'),
+                      ),
+                    ),
+                    color: Color(0xffF48262),
+                  )),
+            ),
+            Padding(
+              padding: EdgeInsets.all(5.0),
+              child: Align(
+                alignment: Alignment.topRight,
+                child: Icon(
+                  Icons.favorite_border,
+                  color: Color(0xffF48262),
+                  size: 20,
+                ),
+              ),
             ),
           ],
         ),
       ),
-    ),
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(5.0),
-      side: BorderSide(color: Hexcolor('#F48262')),
-    ),
+      Container(
+        alignment: Alignment.bottomCenter,
+        child: Container(
+          width: MediaQuery.of(context).size.width,
+          padding: EdgeInsets.symmetric(vertical: 3),
+          child: const Text(
+            'TAMBAHKAN',
+            textAlign: TextAlign.center,
+            style: TextStyle(color: Colors.white, fontFamily: 'Brandon'),
+          ),
+          color: Color(0xffF3C1B5),
+        ),
+      ),
+      Padding(
+        padding: EdgeInsets.only(top: 7.0),
+        child: Text(
+          'Skin Game',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontFamily: 'Yeseva',
+            fontSize: 16,
+          ),
+        ),
+      ),
+      Text(
+        'Acne Warrior',
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          fontFamily: 'Brandon',
+          fontSize: 14,
+        ),
+      ),
+      Text(
+        'Rp. 125.000',
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          fontFamily: 'Brandon',
+          fontSize: 14,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+      Center(
+        child: RichText(
+          text: TextSpan(
+              text: 'Rp. 125.000',
+              style: TextStyle(
+                color: Colors.black,
+                fontFamily: 'Brandon',
+                fontSize: 12,
+                decoration: TextDecoration.lineThrough,
+              ),
+              children: [
+                TextSpan(
+                  text: '(35%)',
+                  style: TextStyle(
+                    color: Color(0xffF48262),
+                    fontFamily: 'Brandon',
+                    fontSize: 12,
+                    decoration: TextDecoration.none,
+                  ),
+                ),
+              ]),
+        ),
+      ),
+      Text.rich(TextSpan(children: <InlineSpan>[
+        WidgetSpan(
+          child: RatingBar(
+            initialRating: 4,
+            minRating: 1,
+            direction: Axis.horizontal,
+            allowHalfRating: true,
+            itemCount: 5,
+            itemSize: 14.0,
+            itemPadding: EdgeInsets.symmetric(horizontal: 1.0),
+            itemBuilder: (context, index) => Icon(
+              Icons.favorite,
+              color: Color(0xffF48262),
+            ),
+            unratedColor: Color(0xffFBD2CD),
+          ),
+        ),
+        TextSpan(
+            text: '(5)',
+            style: TextStyle(
+              fontSize: 12,
+            ))
+      ])),
+    ],
   );
 }
 

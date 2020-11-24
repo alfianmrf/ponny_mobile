@@ -373,15 +373,17 @@ class _CartScreenState extends State<CartScreen> {
                                             Expanded(
                                               child: Align(
                                                 alignment: Alignment.bottomRight,
-                                                child:  IconButton(
-                                                  onPressed: (){
+                                                child:  GestureDetector(
+                                                  onTap: (){
                                                     UIBlock.block(context,customLoaderChild: LoadingWidget(context));
                                                     value.DeleteProductToCart(item.product,Provider.of<AppModel>(context).auth.access_token).then((value) {
                                                       UIBlock.unblock(context);
                                                     });
                                                   },
-                                                  icon: Icon(Icons.delete_outline,
-                                                      color: Color(0xffF48262)),
+                                                  child: ImageIcon(
+                                                    AssetImage('assets/images/trash.png'),
+                                                    color: Color(0xffF48262),
+                                                  ),
                                                 ),
                                               ),
                                             ),
@@ -579,15 +581,17 @@ class _CartScreenState extends State<CartScreen> {
                                             Expanded(
                                               child: Align(
                                                 alignment: Alignment.bottomRight,
-                                                child:  IconButton(
-                                                  onPressed: (){
+                                                child:  GestureDetector(
+                                                  onTap: (){
                                                     UIBlock.block(context,customLoaderChild: LoadingWidget(context));
                                                     value.DeleteRendemProduct(item,Provider.of<AppModel>(context).auth.access_token).then((value) {
                                                       UIBlock.unblock(context);
                                                     });
                                                   },
-                                                  icon: Icon(Icons.delete_outline,
-                                                      color: Color(0xffF48262)),
+                                                  child: ImageIcon(
+                                                    AssetImage('assets/images/trash.png'),
+                                                    color: Color(0xffF48262),
+                                                  ),
                                                 ),
                                               ),
                                             ),
@@ -703,15 +707,17 @@ class _CartScreenState extends State<CartScreen> {
                                             Expanded(
                                               child: Align(
                                                 alignment: Alignment.bottomRight,
-                                                child:  IconButton(
-                                                  onPressed: (){
+                                                child:  GestureDetector(
+                                                  onTap: (){
                                                     UIBlock.block(context,customLoaderChild: LoadingWidget(context));
                                                     value.DeleteProductSample(item,Provider.of<AppModel>(context).auth.access_token).then((value) {
                                                       UIBlock.unblock(context);
                                                     });
                                                   },
-                                                  icon: Icon(Icons.delete_outline,
-                                                      color: Color(0xffF48262)),
+                                                  child: ImageIcon(
+                                                    AssetImage('assets/images/trash.png'),
+                                                    color: Color(0xffF48262),
+                                                  ),
                                                 ),
                                               ),
                                             ),

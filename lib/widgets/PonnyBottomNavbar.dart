@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ponny/main.dart';
 import 'package:ponny/model/App.dart';
 import 'package:ponny/model/User.dart';
+import 'package:ponny/screens/bantuan_screen.dart';
 import 'package:ponny/screens/home_screen.dart';
 import 'package:ponny/screens/account_screen.dart';
 import 'package:ponny/screens/Browse_Screen.dart';
@@ -41,7 +42,7 @@ class PonnyBottomNavbar extends StatelessWidget {
           if(ModalRoute.of(context).settings.name != "konsultasi_screen")
             Provider.of<AppModel>(context).loggedIn ? Navigator.pushNamedAndRemoveUntil(
                 context,
-                KonsultasiScreen.id,(_) => false
+                BantuanScreen.id,(_) => false
             ):Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => LoginScreen()),
