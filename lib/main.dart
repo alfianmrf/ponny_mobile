@@ -92,7 +92,7 @@ import 'model/App.dart';
 import 'model/Order.dart';
 import 'package:firebase_core/firebase_core.dart';
 
-import 'package:ponny/screens/Basic_SkinCare_screen.dart';
+import 'package:ponny/screens/Blog_screen.dart';
 import 'model/WishProduct.dart';
 
 import 'package:ponny/screens/daftarLogin_screen.dart';
@@ -196,9 +196,8 @@ class MyApp extends StatelessWidget {
         AffiliateLogedIn.id: (context) => AffiliateLogedIn(),
         CairkanDanaScreen.id: (context) => CairkanDanaScreen(),
         HubungiKamiScreen.id: (context) => HubungiKamiScreen(),
-        BasicSkincare.id: (context) => BasicSkincare(),
+        Blog.id: (context) => Blog(),
         DetailBrand.id: (context) => DetailBrand(),
-        BasicSkincare.id: (context) => BasicSkincare(),
         DaftarLoginScreen.id: (context) => DaftarLoginScreen(),
         KartuScreen.id: (context) => KartuScreen(),
         KonsultasiScreen.id: (context) => KonsultasiScreen(),

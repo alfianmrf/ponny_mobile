@@ -150,105 +150,94 @@ class _RoomScreenState extends State<RoomScreen> {
           : DefaultTabController(
               length: 2,
               child: Column(children: [
-                Expanded(
-                  flex: 3,
-                  child: Container(
-                      padding: EdgeInsets.symmetric(vertical: 10),
-                      height: double.infinity,
-                      width: double.infinity,
-                      color: Color(0xffF3C1B5),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Expanded(
-                            child: FittedBox(
-                              child: Text(
-                                "RUANG",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  color: Color(0xffF48262),
-                                  fontSize: 20,
-                                  fontFamily: 'Yeseva',
-                                  fontWeight: FontWeight.w800,
-                                  letterSpacing: 1,
-                                ),
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            child: Container(
-                              margin: EdgeInsets.symmetric(horizontal: 10),
-                              child: Text(
-                                "Temukan berbagai topik menarik seputar skincare yang kamu sukai dan berbincang dengan member lainnya.",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  fontFamily: 'Brandon',
-                                  fontWeight: FontWeight.w800,
-                                  letterSpacing: 1,
-                                ),
-                              ),
-                            ),
-                          ),
-                          Container(height: 10),
-                          Expanded(
-                            child: Container(
-                              decoration: BoxDecoration(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(50)),
-                                  color: Colors.white),
-                              padding: EdgeInsets.symmetric(horizontal: 10),
-                              margin: EdgeInsets.symmetric(horizontal: 30),
-                              child: Row(children: [
-                                Expanded(
-                                    child: TextField(
-                                  cursorColor: Colors.black,
-                                  keyboardType: TextInputType.text,
-                                  textInputAction: TextInputAction.go,
-                                  decoration: new InputDecoration.collapsed(
-                                      hintText: "Cari Topik",
-                                      hintStyle:
-                                          TextStyle(fontFamily: "Brandon")),
-                                )),
-                                Icon(Icons.search, color: Color(0xffF48262)),
-                              ]),
-                            ),
-                          ),
-                        ],
-                      )),
-                ),
                 Container(
-                  margin: EdgeInsets.all(10),
+                    padding: EdgeInsets.symmetric(vertical: 20),
+                    width: double.infinity,
+                    color: Color(0xffFBDFD2),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                        "RUANG",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Color(0xffF48262),
+                            fontSize: 26,
+                            fontFamily: 'Yeseva',
+                            fontWeight: FontWeight.w800,
+                            letterSpacing: 1,
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.symmetric(horizontal: 30),
+                          child: Text(
+                            "Temukan berbagai topik menarik seputar skincare yang kamu sukai dan berbincang dengan member lainnya.",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontFamily: 'Brandon',
+                              fontWeight: FontWeight.w800,
+                              letterSpacing: 1,
+                            ),
+                          ),
+                        ),
+                        Container(height: 10),
+                        Container(
+                          decoration: BoxDecoration(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(50)),
+                              color: Colors.white),
+                          padding: EdgeInsets.symmetric(horizontal: 15, vertical: 3),
+                          margin: EdgeInsets.symmetric(horizontal: 50),
+                          child: Row(children: [
+                            Expanded(
+                                child: TextField(
+                              cursorColor: Colors.black,
+                              keyboardType: TextInputType.text,
+                              textInputAction: TextInputAction.go,
+                              decoration: new InputDecoration.collapsed(
+                                  hintText: "Cari Topik",
+                                  hintStyle:
+                                      TextStyle(fontFamily: "Brandon")),
+                            )),
+                            Icon(Icons.search, color: Color(0xffF48262)),
+                          ]),
+                        ),
+                      ],
+                    )),
+                Container(
                   child: TabBar(
                     tabs: [
-                      Text(
-                        "Semua Ruang",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 12,
-                          fontFamily: 'Brandon',
-                          fontWeight: FontWeight.w800,
-                          letterSpacing: 1,
+                      Tab(
+                        child: Text(
+                          "Semua Ruang",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontFamily: 'Brandon',
+                            fontWeight: FontWeight.w800,
+                            letterSpacing: 1,
+                          ),
                         ),
                       ),
-                      Text(
-                        "Ruang Saya",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 12,
-                          fontFamily: 'Brandon',
-                          fontWeight: FontWeight.w800,
-                          letterSpacing: 1,
+                      Tab(
+                        child: Text(
+                          "Ruang Saya",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontFamily: 'Brandon',
+                            fontWeight: FontWeight.w800,
+                            letterSpacing: 1,
+                          ),
                         ),
                       ),
                     ],
                   ),
                 ),
-                Container(height: 10),
-                Expanded(
-                    flex: 1,
-                    child: ListView(
-                      scrollDirection: Axis.horizontal,
+                Container(
+                  padding: EdgeInsets.symmetric(vertical: 10),
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         listCategory("Skincare"),
                         listCategory("Trending"),
@@ -257,14 +246,15 @@ class _RoomScreenState extends State<RoomScreen> {
                         listCategory("Skincare"),
                         listCategory("Skincare")
                       ],
-                    )),
+                    ),
+                  ),
+                ),
                 Expanded(
-                  flex: 7,
                   child: TabBarView(
                     children: [
                       GridView.builder(
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2),
+                            crossAxisCount: 2, childAspectRatio: 0.8),
                         itemCount: widget.listroom == null
                             ? 0
                             : widget.listroom.length,
@@ -280,148 +270,182 @@ class _RoomScreenState extends State<RoomScreen> {
                             child: Container(
                               margin: EdgeInsets.symmetric(
                                   horizontal: 5, vertical: 5),
-                              child: Card(
-                                child: Container(
-                                  child: Column(children: [
-                                    Expanded(
-                                      flex: 1,
-                                      child: Container(
-                                        color: Colors.grey,
-                                        /*child: CachedNetworkImage(
-                                          imageUrl: img_url +
-                                              widget.listroom[i]["img"],
-                                          placeholder: (context, url) =>
-                                              CircularProgressIndicator(),
-                                          errorWidget: (context, url, error) =>
-                                              Icon(Icons.error),
-                                        ),*/
-                                      ),
-                                    ),
-                                    Expanded(
-                                        flex: 1,
-                                        child: Container(
-                                            color: Colors.white,
-                                            child: Column(
-                                              children: [
-                                                Expanded(
-                                                  flex: 1,
-                                                  child: Text(
-                                                    widget.listroom[i]["title"],
-                                                    textAlign: TextAlign.center,
-                                                    style: TextStyle(
-                                                      fontSize: 12,
-                                                      fontFamily: 'Yeseva',
-                                                      fontWeight:
-                                                          FontWeight.w800,
-                                                      letterSpacing: 1,
-                                                    ),
-                                                  ),
-                                                ),
-                                                Expanded(
-                                                  flex: 1,
-                                                  child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                    children: [
-                                                      Icon(Icons.people,
-                                                          size: 12,
-                                                          color: Color(
-                                                              0xffF48262)),
-                                                      Text(
-                                                        widget.listroom[i]
-                                                                ["total_user"]
-                                                            .toString(),
-                                                        style: TextStyle(
-                                                            color: Color(
-                                                                0xffF48262),
-                                                            fontSize: 12),
-                                                      ),
-                                                      Container(width: 10),
-                                                      Icon(Icons.comment,
-                                                          size: 12,
-                                                          color: Color(
-                                                              0xffF48262)),
-                                                      Text(
-                                                          widget
-                                                              .listroom[i]
-                                                                  ["posts"]
-                                                              .length
-                                                              .toString(),
-                                                          style: TextStyle(
-                                                              color: Color(
-                                                                  0xffF48262),
-                                                              fontSize: 12))
-                                                    ],
-                                                  ),
-                                                ),
-                                                Expanded(
-                                                  flex: 2,
-                                                  child: Text(
-                                                    widget.listroom[i]
-                                                        ["sub_title"],
-                                                    textAlign: TextAlign.center,
-                                                    style: TextStyle(
-                                                      fontSize: 10,
-                                                      fontFamily: 'Yeseva',
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                      letterSpacing: 1,
-                                                    ),
-                                                  ),
-                                                ),
-                                                Expanded(
-                                                    flex: 1,
-                                                    child: widget.gabung[i]
-                                                        ? Container(
-                                                            width:
-                                                                double.infinity,
-                                                            child: RaisedButton(
-                                                                color: Color(
-                                                                    0xffF3C1B5),
-                                                                onPressed: () {
-                                                                  setState(() {
-                                                                    widget.gabung[
-                                                                            i] =
-                                                                        false;
-                                                                  });
-                                                                },
-                                                                child: Text(
-                                                                    "MEMBER",
-                                                                    style: TextStyle(
-                                                                        color: Colors
-                                                                            .white))),
-                                                          )
-                                                        : Container(
-                                                            width:
-                                                                double.infinity,
-                                                            child: RaisedButton(
-                                                                color: Color(
-                                                                    0xffF48262),
-                                                                onPressed: () {
-                                                                  setState(() {
-                                                                    widget.gabung[
-                                                                            i] =
-                                                                        true;
-                                                                    idRuang = widget
-                                                                            .listroom[
-                                                                        i]["id"];
-                                                                    index = i;
-                                                                    addBoolToSF();
-                                                                    addIntToSF();
-                                                                    postData();
-                                                                  });
-                                                                },
-                                                                child: Text(
-                                                                    "GABUNG",
-                                                                    style: TextStyle(
-                                                                        color: Colors
-                                                                            .white))),
-                                                          )),
-                                              ],
-                                            )))
-                                  ]),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  border: Border.all(
+                                    color: Color(0xffF48262),
+                                  ),
                                 ),
+                                child: Column(children: [
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10)),
+                                    ),
+                                    width: double.infinity,
+                                    height: 100,
+                                    child: ClipRRect(borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10)),child: Image.network("http://via.placeholder.com/350x150",fit: BoxFit.cover,)),
+                                  ),
+                                  Container(
+                                      color: Colors.white,
+                                      child: Column(
+                                        children: [
+                                          Padding(
+                                            padding: EdgeInsets.only(top: 5),
+                                            child: Text(
+                                              widget.listroom[i]["title"],
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                fontFamily: 'Yeseva',
+                                                fontWeight:
+                                                    FontWeight.w800,
+                                                letterSpacing: 1,
+                                              ),
+                                            ),
+                                          ),
+                                          Container(
+                                            padding: EdgeInsets.symmetric(vertical: 5),
+                                            margin: EdgeInsets.symmetric(horizontal: 10),
+                                            decoration: BoxDecoration(
+                                              border: Border(bottom: BorderSide(width: 1, color: Color(0xffF48262))),
+                                            ),
+                                            child: Row(
+                                              mainAxisAlignment: MainAxisAlignment.center,
+                                              children: [
+                                                Image.asset(
+                                                  'assets/images/forum/member.png',
+                                                  height: 14,
+                                                ),
+                                                Container(width: 5),
+                                                Text(
+                                                  widget.listroom[i]
+                                                  ["total_user"]
+                                                      .toString(),
+                                                  style: TextStyle(
+                                                      color: Color(
+                                                          0xffF48262),
+                                                      fontSize: 12),
+                                                ),
+                                                Container(width: 20),
+                                                Image.asset(
+                                                  'assets/images/forum/komen.png',
+                                                  height: 14,
+                                                ),
+                                                Container(width: 5),
+                                                Text(
+                                                    widget
+                                                        .listroom[i]
+                                                    ["posts"]
+                                                        .length
+                                                        .toString(),
+                                                    style: TextStyle(
+                                                        color: Color(
+                                                            0xffF48262),
+                                                        fontSize: 12))
+                                              ],
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.only(top: 5),
+                                            child: Text(
+                                              widget.listroom[i]
+                                                  ["sub_title"],
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                fontSize: 12,
+                                                fontFamily: 'Brandon',
+                                                fontWeight:
+                                                    FontWeight.w500,
+                                                letterSpacing: 1,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      )),
+                                  Expanded(
+                                    child: widget.gabung[i]
+                                        ? Container(
+                                          decoration: BoxDecoration(
+                                              color: Colors.white,
+                                              borderRadius: BorderRadius.only(topLeft: Radius.circular(0), topRight: Radius.circular(0), bottomLeft: Radius.circular(10), bottomRight: Radius.circular(10))
+                                          ),
+                                          child: Column(
+                                            mainAxisAlignment: MainAxisAlignment.end,
+                                            children: [
+                                              Container(
+                                                width:
+                                                double.infinity,
+                                                child: FlatButton(
+                                                    color: Color(0xffFBDFD2),
+                                                    height: 0,
+                                                    padding: EdgeInsets.symmetric(vertical: 3),
+                                                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                                    shape: RoundedRectangleBorder(
+                                                      borderRadius: BorderRadius.only(topLeft: Radius.circular(0), topRight: Radius.circular(0), bottomLeft: Radius.circular(10), bottomRight: Radius.circular(10))
+                                                    ),
+                                                    onPressed: () {
+                                                      setState(() {
+                                                        widget.gabung[
+                                                        i] =
+                                                        false;
+                                                      });
+                                                    },
+                                                    child: Text(
+                                                        "MEMBER",
+                                                        style: TextStyle(
+                                                            fontFamily: 'Brandon',
+                                                            color: Colors
+                                                                .black))),
+                                              ),
+                                            ],
+                                          ),
+                                        )
+                                        : Container(
+                                      decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius: BorderRadius.only(topLeft: Radius.circular(0), topRight: Radius.circular(0), bottomLeft: Radius.circular(10), bottomRight: Radius.circular(10))
+                                      ),
+                                          child: Column(
+                                            mainAxisAlignment: MainAxisAlignment.end,
+                                            children: [
+                                              Container(
+                                                width:
+                                                double.infinity,
+                                                child: FlatButton(
+                                                    color: Color(
+                                                        0xffF48262),
+                                                    height: 0,
+                                                    padding: EdgeInsets.symmetric(vertical: 3),
+                                                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                                    shape: RoundedRectangleBorder(
+                                                        borderRadius: BorderRadius.only(topLeft: Radius.circular(0), topRight: Radius.circular(0), bottomLeft: Radius.circular(10), bottomRight: Radius.circular(10))
+                                                    ),
+                                                    onPressed: () {
+                                                      setState(() {
+                                                        widget.gabung[
+                                                        i] =
+                                                        true;
+                                                        idRuang = widget
+                                                            .listroom[
+                                                        i]["id"];
+                                                        index = i;
+                                                        addBoolToSF();
+                                                        addIntToSF();
+                                                        postData();
+                                                      });
+                                                    },
+                                                    child: Text(
+                                                        "GABUNG",
+                                                        style: TextStyle(
+                                                            fontFamily: 'Brandon',
+                                                            color: Colors
+                                                                .white))),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                  ),
+                                ]),
                               ),
                             ),
                           );
@@ -922,9 +946,9 @@ Widget listCategory(String tagCategory) {
       Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(20)),
-          color: Color(0xffF3C1B5),
+          color: Color(0xffFBDFD2),
         ),
-        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+        padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
         margin: EdgeInsets.symmetric(horizontal: 5),
         child: FittedBox(
           child: Text(
@@ -933,8 +957,6 @@ Widget listCategory(String tagCategory) {
             style: TextStyle(
               fontSize: 12,
               fontFamily: 'Brandon',
-              fontWeight: FontWeight.w800,
-              letterSpacing: 1,
             ),
           ),
         ),

@@ -27,150 +27,152 @@ class _ForumScreenState extends State<ForumScreen> {
       child: Scaffold(
           resizeToAvoidBottomInset: false,
           backgroundColor: Hexcolor('#FCF8F0'),
-          body: Column(
-            children: [
-              Container(
-                height: 35,
-                width: double.infinity,
-                decoration: BoxDecoration(color: Color(0xffF48262)),
-              ),
-              Container(
-                height: 80,
-                width: double.infinity,
-                decoration: BoxDecoration(color: Color(0xffF48262)),
-                child: TabBar(
-                  indicatorColor: Colors.white,
-                  tabs: [
-                    Text(
-                      "BERANDA",
-                      style: TextStyle(
-                          fontSize: 14,
-                          fontFamily: 'Brandon',
-                          fontWeight: FontWeight.w800,
-                          letterSpacing: 1,
-                          color: Colors.white),
-                    ),
-                    Text(
-                      "RUANG",
-                      style: TextStyle(
-                          fontSize: 14,
-                          fontFamily: 'Brandon',
-                          fontWeight: FontWeight.w800,
-                          letterSpacing: 1,
-                          color: Colors.white),
-                    ),
-                  ],
+          body: SafeArea(
+            child: Column(
+              children: [
+                Container(
+                  width: double.infinity,
+                  decoration: BoxDecoration(color: Color(0xffF48262)),
+                  child: TabBar(
+                    indicatorColor: Colors.white,
+                    tabs: [
+                      Container(
+                        padding: EdgeInsets.symmetric(vertical: 20),
+                        child: Text(
+                          "BERANDA",
+                          style: TextStyle(
+                              fontSize: 14,
+                              fontFamily: 'Brandon',
+                              fontWeight: FontWeight.w800,
+                              letterSpacing: 1,
+                              color: Colors.white),
+                        ),
+                      ),
+                      Container(
+                        padding: EdgeInsets.symmetric(vertical: 20),
+                        child: Text(
+                          "RUANG",
+                          style: TextStyle(
+                              fontSize: 14,
+                              fontFamily: 'Brandon',
+                              fontWeight: FontWeight.w800,
+                              letterSpacing: 1,
+                              color: Colors.white),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              Expanded(
-                child: TabBarView(
-                  children: [
-                    Column(
-                      children: [
-                        Expanded(
-                          flex: 1,
-                          child: Container(
-                            height: double.infinity,
-                            width: double.infinity,
-                            color: Color(0xffF3C1B5),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Flexible(
-                                  child: FittedBox(
-                                    fit: BoxFit.cover,
-                                    child: Text(
-                                      "PHOEBE BOARD",
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        color: Color(0xffF48262),
-                                        fontSize: 14,
-                                        fontFamily: 'Yeseva',
-                                        fontWeight: FontWeight.w800,
-                                        letterSpacing: 1,
+                Expanded(
+                  child: TabBarView(
+                    children: [
+                      Column(
+                        children: [
+                          Expanded(
+                            flex: 1,
+                            child: Container(
+                              height: double.infinity,
+                              width: double.infinity,
+                              color: Color(0xffF3C1B5),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Flexible(
+                                    child: FittedBox(
+                                      fit: BoxFit.cover,
+                                      child: Text(
+                                        "PHOEBE BOARD",
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          color: Color(0xffF48262),
+                                          fontSize: 14,
+                                          fontFamily: 'Yeseva',
+                                          fontWeight: FontWeight.w800,
+                                          letterSpacing: 1,
+                                        ),
                                       ),
                                     ),
                                   ),
-                                ),
-                                Flexible(
-                                  child: FittedBox(
-                                    child: Text(
-                                      "FORUM",
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        color: Color(0xffF48262),
-                                        fontSize: 24,
-                                        fontFamily: 'Brandon',
-                                        fontWeight: FontWeight.w800,
-                                        letterSpacing: 1,
+                                  Flexible(
+                                    child: FittedBox(
+                                      child: Text(
+                                        "FORUM",
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          color: Color(0xffF48262),
+                                          fontSize: 24,
+                                          fontFamily: 'Brandon',
+                                          fontWeight: FontWeight.w800,
+                                          letterSpacing: 1,
+                                        ),
                                       ),
                                     ),
                                   ),
-                                ),
-                                Text(
-                                  "Berbincang mengenai seputar skincare dan permasalahannya.",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    fontFamily: 'Brandon',
-                                    fontWeight: FontWeight.w800,
-                                    letterSpacing: 1,
+                                  Text(
+                                    "Berbincang mengenai seputar skincare dan permasalahannya.",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      fontFamily: 'Brandon',
+                                      fontWeight: FontWeight.w800,
+                                      letterSpacing: 1,
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                        Expanded(
-                          flex: 3,
-                          child: ListView.builder(
-                              itemCount:
-                                  widget.list == null ? 0 : widget.list.length,
-                              itemBuilder: (context, i) {
-                                return Column(
-                                  children: [
-                                    Container(
-                                      margin: EdgeInsets.only(top: 10),
-                                      height: 200,
-                                      width: double.infinity,
-                                      child: CachedNetworkImage(
-                                        imageUrl:
-                                            "http://via.placeholder.com/350x150",
-                                        placeholder: (context, url) =>
-                                            CircularProgressIndicator(),
-                                        errorWidget: (context, url, error) =>
-                                            Icon(Icons.error),
+                          Expanded(
+                            flex: 3,
+                            child: ListView.builder(
+                                itemCount:
+                                    widget.list == null ? 0 : widget.list.length,
+                                itemBuilder: (context, i) {
+                                  return Column(
+                                    children: [
+                                      Container(
+                                        margin: EdgeInsets.only(top: 10),
+                                        height: 200,
+                                        width: double.infinity,
+                                        child: CachedNetworkImage(
+                                          imageUrl:
+                                              "http://via.placeholder.com/350x150",
+                                          placeholder: (context, url) =>
+                                              CircularProgressIndicator(),
+                                          errorWidget: (context, url, error) =>
+                                              Icon(Icons.error),
+                                        ),
                                       ),
-                                    ),
-                                    Text(
-                                      widget.list[i]["title"],
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        fontFamily: "Brandon",
-                                        fontWeight: FontWeight.w500,
+                                      Text(
+                                        widget.list[i]["title"],
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          fontSize: 20,
+                                          fontFamily: "Brandon",
+                                          fontWeight: FontWeight.w500,
+                                        ),
                                       ),
-                                    ),
-                                    Text(
-                                      "Temukan topik yang kamu",
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        fontFamily: "Brandon",
-                                        fontWeight: FontWeight.w500,
+                                      Text(
+                                        "Temukan topik yang kamu",
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          fontFamily: "Brandon",
+                                          fontWeight: FontWeight.w500,
+                                        ),
                                       ),
-                                    ),
-                                  ],
-                                );
-                              }),
-                        ),
-                      ],
-                    ),
-                    RuangScreen()
-                  ],
+                                    ],
+                                  );
+                                }),
+                          ),
+                        ],
+                      ),
+                      RuangScreen()
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
           bottomNavigationBar: new PonnyBottomNavbar(selectedIndex: 3)),
     );

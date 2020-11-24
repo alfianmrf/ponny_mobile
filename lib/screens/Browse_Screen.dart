@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
@@ -44,7 +45,7 @@ class _BrowseState extends State<Browse> {
                   keyboardType: TextInputType.text,
                   textInputAction: TextInputAction.go,
                   decoration:
-                      new InputDecoration.collapsed(hintText: "Search..."),
+                      new InputDecoration.collapsed(),
                 ))
               ]),
             ),
@@ -66,7 +67,7 @@ class _BrowseState extends State<Browse> {
                   ),
                   Container(
                     child: Text(
-                      "Browse",
+                      "Pencarian",
                       style: TextStyle(
                         fontSize: 24,
                         fontFamily: "Yeseva",
@@ -88,9 +89,9 @@ class _BrowseState extends State<Browse> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
-                    margin: EdgeInsets.all(5),
+                    margin: EdgeInsets.all(3),
                     child: ButtonTheme(
-                      buttonColor: Hexcolor('#FCF8F0'),
+                      buttonColor: index == 0 ? Hexcolor('#F48262') : Colors.white,
                       minWidth: 60.0,
                       height: 30.0,
                       child: RaisedButton(
@@ -106,19 +107,18 @@ class _BrowseState extends State<Browse> {
                               fontFamily: 'Brandon',
                               fontWeight: FontWeight.w800,
                               letterSpacing: 1,
-                              color: Hexcolor('#F48262')),
+                              color: index == 0 ? Colors.white : Hexcolor('#F48262')),
                         ),
                       ),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5.0),
-                        side: BorderSide(color: Hexcolor('#F48262')),
+                        borderRadius: BorderRadius.only(topLeft: Radius.circular(5), bottomLeft: Radius.circular(5)),
                       ),
                     ),
                   ),
                   Container(
-                    margin: EdgeInsets.all(5),
+                    margin: EdgeInsets.all(3),
                     child: ButtonTheme(
-                      buttonColor: Hexcolor('#FCF8F0'),
+                      buttonColor: index == 1 ? Hexcolor('#F48262') : Colors.white,
                       minWidth: 60.0,
                       height: 30.0,
                       child: RaisedButton(
@@ -128,45 +128,41 @@ class _BrowseState extends State<Browse> {
                           });
                         },
                         child: Text(
-                          "CATEGORY",
+                          "KATEGORI",
                           style: TextStyle(
                               fontSize: 12,
                               fontFamily: 'Brandon',
                               fontWeight: FontWeight.w800,
                               letterSpacing: 1,
-                              color: Hexcolor('#F48262')),
+                              color: index == 1 ? Colors.white : Hexcolor('#F48262')),
                         ),
                       ),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5.0),
-                          side: BorderSide(color: Hexcolor('#F48262'))),
                     ),
                   ),
                   Container(
-                    margin: EdgeInsets.all(5),
+                    margin: EdgeInsets.all(3),
                     child: ButtonTheme(
-                      buttonColor: Hexcolor('#FCF8F0'),
+                      buttonColor: index == 2 ? Hexcolor('#F48262') : Colors.white,
                       minWidth: 60.0,
                       height: 30.0,
                       child: RaisedButton(
+                        padding: EdgeInsets.symmetric(horizontal: 5),
                         onPressed: () {
                           setState(() {
                             index = 2;
                           });
                         },
                         child: Text(
-                          "SKIN GURU",
+                          "BELAJAR BARENG",
                           style: TextStyle(
                               fontSize: 12,
                               fontFamily: 'Brandon',
                               fontWeight: FontWeight.w800,
-                              letterSpacing: 1,
-                              color: Hexcolor('#F48262')),
+                              color: index == 2 ? Colors.white : Hexcolor('#F48262')),
                         ),
                       ),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5.0),
-                        side: BorderSide(color: Hexcolor('#F48262')),
+                        borderRadius: BorderRadius.only(topRight: Radius.circular(5), bottomRight: Radius.circular(5)),
                       ),
                     ),
                   ),

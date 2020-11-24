@@ -9,6 +9,7 @@ import 'package:ponny/model/Cart.dart';
 import 'package:ponny/model/Product.dart';
 import 'package:ponny/model/Slider.dart';
 import 'package:ponny/model/User.dart';
+import 'package:ponny/screens/Blog_screen.dart';
 import 'package:ponny/screens/flash_sale_screen.dart';
 import 'package:ponny/model/WishProduct.dart';
 import 'package:ponny/screens/login.dart';
@@ -833,30 +834,39 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                           Expanded(
                             flex: 1,
-                            child: Column(
-                              children: [
-                                AspectRatio(
-                                  aspectRatio: 1,
-                                  child: Container(
-                                    margin: EdgeInsets.all(7),
-                                    padding: EdgeInsets.all(5),
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(10),
-                                      border: Border.all(width: 1, color: Color(0xffF48262),),
+                            child: InkWell(
+                              onTap: (){
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => Blog()),
+                                );
+                              },
+                              child: Column(
+                                children: [
+                                  AspectRatio(
+                                    aspectRatio: 1,
+                                    child: Container(
+                                      margin: EdgeInsets.all(7),
+                                      padding: EdgeInsets.all(5),
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(10),
+                                        border: Border.all(width: 1, color: Color(0xffF48262),),
+                                      ),
+                                      child: Image.asset('assets/images/home/blog.png'),
                                     ),
-                                    child: Image.asset('assets/images/home/blog.png'),
                                   ),
-                                ),
-                                Text(
-                                  'Blog',
-                                  style: TextStyle(
-                                    fontFamily: 'Brandon',
-                                    fontSize: 12,
+                                  Text(
+                                    'Blog',
+                                    style: TextStyle(
+                                      fontFamily: 'Brandon',
+                                      fontSize: 12,
+                                    ),
+                                    textAlign: TextAlign.center,
                                   ),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
                           Expanded(
