@@ -781,30 +781,36 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                                 Expanded(
                                   flex: 1,
-                                  child: Column(
-                                    children: [
-                                      AspectRatio(
-                                        aspectRatio: 1,
-                                        child: Container(
-                                          margin: EdgeInsets.all(7),
-                                          padding: EdgeInsets.all(5),
-                                          decoration: BoxDecoration(
-                                            color: Colors.white,
-                                            borderRadius: BorderRadius.circular(10),
-                                            border: Border.all(width: 1, color: Color(0xffF48262),),
+                                  child: InkWell(
+                                    onTap: (){
+                                      final skincare =snapshot.data.firstWhere((element) => element.id == 12 );
+                                      Navigator.push(context, MaterialPageRoute(builder: (context) => Skincare(category: skincare,) ));
+                                    },
+                                    child: Column(
+                                      children: [
+                                        AspectRatio(
+                                          aspectRatio: 1,
+                                          child: Container(
+                                            margin: EdgeInsets.all(7),
+                                            padding: EdgeInsets.all(5),
+                                            decoration: BoxDecoration(
+                                              color: Colors.white,
+                                              borderRadius: BorderRadius.circular(10),
+                                              border: Border.all(width: 1, color: Color(0xffF48262),),
+                                            ),
+                                            child: Image.asset('assets/images/home/masalah.png'),
                                           ),
-                                          child: Image.asset('assets/images/home/masalah.png'),
                                         ),
-                                      ),
-                                      Text(
-                                        'Masalah Kulit',
-                                        style: TextStyle(
-                                          fontFamily: 'Brandon',
-                                          fontSize: 12,
+                                        Text(
+                                          'Masalah Kulit',
+                                          style: TextStyle(
+                                            fontFamily: 'Brandon',
+                                            fontSize: 12,
+                                          ),
+                                          textAlign: TextAlign.center,
                                         ),
-                                        textAlign: TextAlign.center,
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ],

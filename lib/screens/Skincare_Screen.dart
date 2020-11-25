@@ -40,6 +40,7 @@ class _SkincareState extends State<Skincare> {
   var _currentSliderValue = RangeValues(0, 3000000);
   List<String> checked = [];
   bool LoadingBrand=true;
+  int subKategorysearch = 0;
 
   void initState() {
     super.initState();
@@ -80,23 +81,20 @@ class _SkincareState extends State<Skincare> {
       loadmore =false;
       dataProduct=[];
     });
-    var param ={
-      "keyword":_q,
+    var param =<String,dynamic>{
       "category_id":widget.category.id
     };
     if(_q.isNotEmpty){
 
-      param ={
-        "keyword":_q,
-        "category_id":widget.category.id
-      };
-      print(param);
-    }else{
-      param ={
-        "category_id":widget.category.id
-      };
+      param.addAll({
+        "keyword":_q
+      });
       print(param);
     }
+    if(subKategorysearch>0){
+      param.addAll({ "subcategory_id": subKategorysearch});
+    }
+
     Provider.of<ProductModel>(context).searchProduct(searchProductUrl, param).then((value){
 
       if(value != null){
@@ -114,6 +112,9 @@ class _SkincareState extends State<Skincare> {
       }
     });
   }
+
+
+
   loadMore(){
     if(NextUrl != null){
       setState(() {
@@ -124,7 +125,6 @@ class _SkincareState extends State<Skincare> {
           setState(() {
             NextUrl =value.nextUrl;
             dataProduct.addAll(value.products);
-            total = value.total;
             loadingProduct =false;
           });
         }else{
@@ -233,7 +233,7 @@ class _SkincareState extends State<Skincare> {
                       final sub = widget.category.subcategories[i];
                       return Container(
                           margin: EdgeInsets.all(10),
-                          child: rectanglebutton(context, sub.name,""));
+                          child: rectanglebutton(context, sub.name,sub.icon_mobile,sub.id));
                     },
                   ),
                 ),
@@ -248,7 +248,7 @@ class _SkincareState extends State<Skincare> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        '$total items',
+                        '$total Produk',
                         style: TextStyle(
                           fontFamily: 'Brandon',
                           fontSize: 16,
@@ -321,15 +321,26 @@ class _SkincareState extends State<Skincare> {
     );
   }
 
-  Widget rectanglebutton(context, String subtext, String subimg) {
+  Widget rectanglebutton(context, String subtext, String subimg,int id) {
     return ButtonTheme(
-      buttonColor: Colors.white,
+      buttonColor: subKategorysearch == id ? Color(0xffF3C1B5) : Colors.white,
       minWidth: 100.0,
       height: 100.0,
       padding: EdgeInsets.symmetric(horizontal: 0),
       child: RaisedButton(
         onPressed: () {
-          
+          if(subKategorysearch ==  0){
+            setState(() {
+              subKategorysearch=id;
+            });
+          }else if(subKategorysearch > 0 && subKategorysearch !=  id){
+            setState(() {
+              subKategorysearch=id;
+            });
+          }else{
+            subKategorysearch=0;
+          }
+          getProductSearch();
         },
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -338,13 +349,13 @@ class _SkincareState extends State<Skincare> {
               imageUrl:subimg != null?  img_url+subimg:"",
               placeholder: (context, url) => LoadingWidgetPulse(context),
               errorWidget: (context, url, error) => Image.asset('assets/images/basic.jpg'),
-              height: 55,
+              height: 50,
               width: 70,
-              fit: BoxFit.cover,
+              fit: BoxFit.contain,
             ),
             Container(height: 5,),
             Container(
-              width: 100,
+              width: 95,
               child:Text(
                 subtext,
                 style: TextStyle(
@@ -442,6 +453,7 @@ class _SkincareState extends State<Skincare> {
             setState(() {
               checked = [];
               listBrand.where((element) => element.value == true).forEach((element) { element.value =false;});
+              _currentSliderValue = RangeValues(0, 3000000);
             });
             getProductSearch();
           }
