@@ -7,6 +7,8 @@ import 'package:ponny/screens/Localpride_Screen.dart';
 import 'package:ponny/screens/ShopSale_Screen.dart';
 import 'package:ponny/screens/Promotion_screen.dart';
 
+import 'SkinConcern_Screen.dart';
+
 class Browse_Category extends StatefulWidget {
   Browse_Category({Key key}) : super(key: key);
 
@@ -146,7 +148,10 @@ class _Browse_CategoryState extends State<Browse_Category> {
                   minWidth: 150.0,
                   height: 150.0,
                   child: RaisedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => SkinConcern()));
+                    },
                     child: Text(
                       "SKIN CONCERN",
                       style: TextStyle(
