@@ -105,6 +105,7 @@ flutter:
   - assets/images/browse/skincare/
   - assets/images/browse/tools/
   - assets/images/browse/hair/
+  - assets/images/browse/concern/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
