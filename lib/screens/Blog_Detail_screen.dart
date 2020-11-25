@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_html/style.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:ponny/common/constant.dart';
+import 'package:ponny/model/Product.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
 import 'package:ponny/util/globalUrl.dart';
 import 'package:http/http.dart' as http;
@@ -19,6 +23,8 @@ class BlogDetailScreen extends StatefulWidget {
 }
 
 class _BlogDetailScreenState extends State<BlogDetailScreen> {
+  String currentTag;
+  int categoryId;
   bool onSearch = false;
 
   DateTime convertDateFromString(String strDate) {
@@ -36,6 +42,7 @@ class _BlogDetailScreenState extends State<BlogDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
+    categoryId = widget.title["category"]["id"];
     return WillPopScope(
       onWillPop: () {
         setState(() {
@@ -106,7 +113,7 @@ class _BlogDetailScreenState extends State<BlogDetailScreen> {
                               flex: 2,
                               child: Container(
                                   child: Image.asset(
-                                "assets/images/blog.png",
+                                "assets/images/blogTitle.png",
                                 color: Colors.white,
                               )),
                             ),
@@ -116,101 +123,152 @@ class _BlogDetailScreenState extends State<BlogDetailScreen> {
                       ),
                 Container(
                   width: double.infinity,
-                  color: Color(0xffF48262),
-                  child: TabBar(
-                    isScrollable: true,
-                    indicatorColor: Colors.transparent,
-                    tabs: [
-                      Container(
-                        padding: EdgeInsets.all(10),
-                        width: 50,
-                        child: Column(
-                          children: [
-                            Icon(
-                              Icons.ac_unit,
-                              color: Colors.white,
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: [
+                        InkWell(
+                          onTap: () {
+                            setState(() {
+                              currentTag = widget.title["category"]["title"];
+                              categoryId = widget.title["category"]["id"];
+                            });
+                          },
+                          child: Container(
+                            height: 50,
+                            padding: EdgeInsets.symmetric(horizontal: 15),
+                            alignment: Alignment.center,
+                            color: categoryId == 0 ? Color(0xffFBDFD2) : null,
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  "ALL",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontSize: 12,
+                                      fontFamily: "Brandon",
+                                      fontWeight: FontWeight.bold,
+                                      color: categoryId == 0 ? Colors.black : Color(0xffF48262)),
+                                ),
+                              ],
                             ),
-                            Text(
-                              "ALL",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontSize: 12,
-                                  fontFamily: "Brandon",
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.white),
-                            ),
-                          ],
+                          ),
                         ),
-                      ),
-                      Column(
-                        children: [
-                          Icon(
-                            Icons.ac_unit,
-                            color: Colors.white,
+                        InkWell(
+                          onTap: () {
+                            setState(() {
+                              currentTag = widget.title["category"]["title"];
+                              categoryId = widget.title["category"]["id"];
+                            });
+                          },
+                          child: Container(
+                            height: 50,
+                            padding: EdgeInsets.symmetric(horizontal: 15),
+                            alignment: Alignment.center,
+                            color: categoryId == 1 ? Color(0xffFBDFD2) : null,
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  "BASIC\nSKINCARE",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontSize: 12,
+                                      fontFamily: "Brandon",
+                                      fontWeight: FontWeight.bold,
+                                      color: categoryId == 1 ? Colors.black : Color(0xffF48262)),
+                                ),
+                              ],
+                            ),
                           ),
-                          Text(
-                            "BASIC SKINCARE",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                fontSize: 12,
-                                fontFamily: "Brandon",
-                                fontWeight: FontWeight.w500,
-                                color: Colors.white),
+                        ),
+                        InkWell(
+                          onTap: () {
+                            setState(() {
+                              currentTag = widget.title["category"]["title"];
+                              categoryId = widget.title["category"]["id"];
+                            });
+                          },
+                          child: Container(
+                            height: 50,
+                            padding: EdgeInsets.symmetric(horizontal: 15),
+                            alignment: Alignment.center,
+                            color: categoryId == 2 ? Color(0xffFBDFD2) : null,
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  "MASALAH\nKULIT",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontSize: 12,
+                                      fontFamily: "Brandon",
+                                      fontWeight: FontWeight.bold,
+                                      color: categoryId == 2 ? Colors.black : Color(0xffF48262)),
+                                ),
+                              ],
+                            ),
                           ),
-                        ],
-                      ),
-                      Column(
-                        children: [
-                          Icon(
-                            Icons.ac_unit,
-                            color: Colors.white,
+                        ),
+                        InkWell(
+                          onTap: () {
+                            setState(() {
+                              currentTag = widget.title["category"]["title"];
+                              categoryId = widget.title["category"]["id"];
+                            });
+                          },
+                          child: Container(
+                            height: 50,
+                            padding: EdgeInsets.symmetric(horizontal: 15),
+                            alignment: Alignment.center,
+                            color: categoryId == 3 ? Color(0xffFBDFD2) : null,
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  "SKINCARE\nROUTINE",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontSize: 12,
+                                      fontFamily: "Brandon",
+                                      fontWeight: FontWeight.bold,
+                                      color: categoryId == 3 ? Colors.black : Color(0xffF48262)),
+                                ),
+                              ],
+                            ),
                           ),
-                          Text(
-                            "SKIN CONCERN",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                fontSize: 12,
-                                fontFamily: "Brandon",
-                                fontWeight: FontWeight.w500,
-                                color: Colors.white),
+                        ),
+                        InkWell(
+                          onTap: () {
+                            setState(() {
+                              currentTag = widget.title["category"]["title"];
+                              categoryId = widget.title["category"]["id"];
+                            });
+                          },
+                          child: Container(
+                            height: 50,
+                            padding: EdgeInsets.symmetric(horizontal: 15),
+                            alignment: Alignment.center,
+                            color: categoryId == 4 ? Color(0xffFBDFD2) : null,
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  "MITOS\nATAU FAKTA",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontSize: 12,
+                                      fontFamily: "Brandon",
+                                      fontWeight: FontWeight.bold,
+                                      color: categoryId == 4 ? Colors.black : Color(0xffF48262)),
+                                ),
+                              ],
+                            ),
                           ),
-                        ],
-                      ),
-                      Column(
-                        children: [
-                          Icon(
-                            Icons.ac_unit,
-                            color: Colors.white,
-                          ),
-                          Text(
-                            "SKINCARE ROUTINE",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                fontSize: 12,
-                                fontFamily: "Brandon",
-                                fontWeight: FontWeight.w500,
-                                color: Colors.white),
-                          ),
-                        ],
-                      ),
-                      Column(
-                        children: [
-                          Icon(
-                            Icons.ac_unit,
-                            color: Colors.white,
-                          ),
-                          Text(
-                            "MITOS ATAU FAKTA",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                fontSize: 12,
-                                fontFamily: "Brandon",
-                                fontWeight: FontWeight.w500,
-                                color: Colors.white),
-                          ),
-                        ],
-                      ),
-                    ],
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 Expanded(
@@ -232,7 +290,7 @@ class _BlogDetailScreenState extends State<BlogDetailScreen> {
                                     height: 200,
                                     child: Image.asset(
                                       "assets/images/blogImage.png",
-                                      fit: BoxFit.fill,
+                                      fit: BoxFit.cover,
                                     )),
                                 Container(height: 10),
                                 Container(
@@ -266,7 +324,6 @@ class _BlogDetailScreenState extends State<BlogDetailScreen> {
                                     Expanded(
                                       flex: 5,
                                       child: ListTile(
-                                        tileColor: Colors.white,
                                         leading: Column(
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
@@ -301,13 +358,17 @@ class _BlogDetailScreenState extends State<BlogDetailScreen> {
                                 ),
                                 Container(
                                     height:
-                                        10), //HTML.toRichText(context, "<p>dsggsdgsdg</p>"),
-                                Text(widget.title["content"],
-                                    style: TextStyle(
-                                      fontSize: 15,
+                                        10), //HT
+                                Html(
+                                  data: widget.title["content"],
+                                  style: {
+                                    "html" :Style(
+                                      fontSize: FontSize.medium,
                                       fontFamily: "Brandon",
                                       fontWeight: FontWeight.w500,
-                                    )),
+                                    )
+                                  },
+                                ),
                                 /*Container(height: 30),
                                 Container(
                                   height: 400,
@@ -328,6 +389,7 @@ class _BlogDetailScreenState extends State<BlogDetailScreen> {
                                 ),*/
                                 Container(height: 30),
                                 Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
                                     Text(
                                       "SHARE",
@@ -338,18 +400,9 @@ class _BlogDetailScreenState extends State<BlogDetailScreen> {
                                         fontWeight: FontWeight.w800,
                                       ),
                                     ),
-                                    Container(
-                                      width: 5,
-                                    ),
                                     IconButton(
-                                        icon: Image.asset(
-                                            "assets/images/pinterestBlack.PNG")),
-                                    IconButton(
-                                        icon: Image.asset(
-                                            "assets/images/facebookBlack.PNG")),
-                                    IconButton(
-                                        icon: Image.asset(
-                                            "assets/images/twitterBlack.PNG"))
+                                      onPressed: (){},
+                                      icon: Icon(Icons.share, color: Color(0xffF48262),),),
                                   ],
                                 ),
                                 Container(height: 30),
@@ -359,7 +412,7 @@ class _BlogDetailScreenState extends State<BlogDetailScreen> {
                         ),
                         Container(
                           width: double.infinity,
-                          color: Color(0xffF3C1B5),
+                          color: Color(0xffFBDFD2),
                           padding: EdgeInsets.all(10),
                           child: Column(
                             children: [
@@ -436,145 +489,34 @@ class _BlogDetailDataState extends State<BlogDetailData> {
 }
 
 Widget recommendationSection(context, List list) {
-  // print(list[0]["name"]);
+  // print(list[0]);
   return Container(
     child: Row(
       children: [
         Expanded(
-            child: product(
-                context,
-                list[0]["data"][0]["name"],
-                list[0]["data"][0]["base_price"],
-                list[0]["data"][0]["rating"],
-                list[0]["data"][0]["discount"])),
-        Container(
-          width: 10,
-        ),
+          flex: 1,
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 5),
+              child: getProduct(context,
+                  Product.fromJson(list[0]["data"][0])),
+            )),
         Expanded(
-            child: product(
-                context,
-                list[0]["data"][1]["name"],
-                list[0]["data"][1]["base_price"],
-                list[0]["data"][1]["rating"],
-                list[0]["data"][1]["discount"])),
+          flex: 1,
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 5),
+              child: getProduct(context,
+                  Product.fromJson(list[0]["data"][1])),
+            )),
+        Expanded(
+            flex: 1,
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 5),
+              child: getProduct(context,
+                  Product.fromJson(list[0]["data"][1])),
+            )),
       ],
     ),
   );
 }
 
-Widget product(context, String productName, int productPrice, int ratingData,
-    int discount) {
-  return Column(
-    children: <Widget>[
-      Container(
-        child: Stack(
-          children: <Widget>[
-            GestureDetector(
-              onTap: () {},
-              child: Image.asset(
-                "assets/images/produk.png",
-                width: MediaQuery.of(context).size.width,
-                fit: BoxFit.cover,
-              ),
-            ),
-            (() {
-              if (discount == 0) {
-                return Container();
-              } else {
-                return Padding(
-                  padding: EdgeInsets.only(top: 10.0),
-                  child: Align(
-                      alignment: Alignment.topLeft,
-                      child: Container(
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 5.0),
-                          child: const Text(
-                            '35%',
-                            style: TextStyle(
-                                color: Colors.white, fontFamily: 'Brandon'),
-                          ),
-                        ),
-                        color: Color(0xffF48262),
-                      )),
-                );
-              }
-            }()),
-            Padding(
-              padding: EdgeInsets.all(5.0),
-              child: Align(
-                alignment: Alignment.topRight,
-                child: Icon(
-                  Icons.favorite_border,
-                  color: Color(0xffF48262),
-                  size: 20,
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-      Container(
-        alignment: Alignment.bottomCenter,
-        child: Container(
-          width: MediaQuery.of(context).size.width,
-          child: const Text(
-            'ADD TO BAG',
-            textAlign: TextAlign.center,
-            style: TextStyle(color: Colors.white, fontFamily: 'Brandon'),
-          ),
-          color: Color(0xffF3C1B5),
-        ),
-      ),
-      Padding(
-        padding: EdgeInsets.only(top: 7.0),
-        child: Text(
-          productName,
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontFamily: 'Yeseva',
-            fontSize: 16,
-          ),
-        ),
-      ),
-      Text(
-        'Acne Warrior',
-        textAlign: TextAlign.center,
-        style: TextStyle(
-          fontFamily: 'Brandon',
-          fontSize: 14,
-        ),
-      ),
-      Text(
-        productPrice.toString(),
-        textAlign: TextAlign.center,
-        style: TextStyle(
-          fontFamily: 'Brandon',
-          fontSize: 14,
-        ),
-      ),
-      Text.rich(TextSpan(children: <InlineSpan>[
-        WidgetSpan(
-          child: RatingBar(
-            initialRating: ratingData.toDouble(),
-            minRating: 1,
-            direction: Axis.horizontal,
-            allowHalfRating: true,
-            itemCount: 5,
-            itemSize: 14.0,
-            itemPadding: EdgeInsets.symmetric(horizontal: 1.0),
-            itemBuilder: (context, index) => Icon(
-              Icons.favorite,
-              color: Color(0xffF48262),
-            ),
-            unratedColor: Color(0xffFBD2CD),
-          ),
-        ),
-        TextSpan(
-            text: '(5)',
-            style: TextStyle(
-              fontSize: 12,
-            ))
-      ])),
-    ],
-  );
-}
+

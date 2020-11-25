@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:ponny/screens/Basic_SkinCare_screen.dart';
+import 'package:ponny/screens/Blog_screen.dart';
 import 'package:ponny/screens/Skinklopedia_Screen.dart';
 
 class Browse_Skin_Guru extends StatefulWidget {
@@ -77,7 +77,7 @@ class _Browse_Skin_GuruState extends State<Browse_Skin_Guru> {
             child: RaisedButton( 
                 onPressed: () {
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => BasicSkincare()));
+                      MaterialPageRoute(builder: (context) => Blog()));
                 },
                 
                 child: Image.asset("assets/images/blog.png")),

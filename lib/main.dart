@@ -11,6 +11,7 @@ import 'package:ponny/screens/Skinklopedia_Screen.dart';
 import 'package:ponny/screens/Detail_Brand_Screen.dart';
 import 'package:ponny/screens/bank_transfer_screen.dart';
 import 'package:ponny/screens/bank_transfer_detail_screen.dart';
+import 'package:ponny/screens/bantuan_screen.dart';
 import 'package:ponny/screens/konfirmasi_pembayaran_screen.dart';
 import 'package:ponny/screens/konsultasi_screen.dart';
 import 'package:ponny/screens/pesanan_berhasil_screen.dart';
@@ -92,7 +93,7 @@ import 'model/App.dart';
 import 'model/Order.dart';
 import 'package:firebase_core/firebase_core.dart';
 
-import 'package:ponny/screens/Basic_SkinCare_screen.dart';
+import 'package:ponny/screens/Blog_screen.dart';
 import 'model/WishProduct.dart';
 
 import 'package:ponny/screens/daftarLogin_screen.dart';
@@ -196,15 +197,15 @@ class MyApp extends StatelessWidget {
         AffiliateLogedIn.id: (context) => AffiliateLogedIn(),
         CairkanDanaScreen.id: (context) => CairkanDanaScreen(),
         HubungiKamiScreen.id: (context) => HubungiKamiScreen(),
-        BasicSkincare.id: (context) => BasicSkincare(),
+        Blog.id: (context) => Blog(),
         DetailBrand.id: (context) => DetailBrand(),
-        BasicSkincare.id: (context) => BasicSkincare(),
         DaftarLoginScreen.id: (context) => DaftarLoginScreen(),
         KartuScreen.id: (context) => KartuScreen(),
         KonsultasiScreen.id: (context) => KonsultasiScreen(),
         ForumData.id: (context) => ForumData(),
         UntungReward.id: (context) => UntungReward(),
-        RincianPoint.id: (context) => RincianPoint()
+        RincianPoint.id: (context) => RincianPoint(),
+        BantuanScreen.id: (context) => BantuanScreen()
       },
     );
   }

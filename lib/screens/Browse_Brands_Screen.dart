@@ -55,14 +55,14 @@ class _Browse_BrandsState extends State<Browse_Brands> {
       floatingActionButton: LoadingBrand?Container() :Container(
           decoration: BoxDecoration(
             color: Hexcolor('#F48262'),
-            borderRadius: BorderRadius.circular(50),
+            borderRadius: BorderRadius.circular(10),
           ),
-          width: 50.0,
-          height: 300.0,
+          width: 20.0,
+          height: 400.0,
           child: ListView.builder(
               itemCount: alphabetsUniq.length,
               itemBuilder: (context, i) {
-                return new RawMaterialButton(
+                return new FlatButton(
                     onPressed: () {
                       if(i==0){
                         return _animateToIndex(i);
@@ -71,15 +71,14 @@ class _Browse_BrandsState extends State<Browse_Brands> {
                       }
 
                     },
-                    shape: new CircleBorder(),
-                    elevation: 0.0,
+                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    padding: EdgeInsets.symmetric(vertical: 3),
+                    height: 0,
                     child: Text(
                       alphabetsUniq[i],
                       style: TextStyle(
                           fontSize: 12,
                           fontFamily: 'Brandon',
-                          fontWeight: FontWeight.w800,
-                          letterSpacing: 1,
                           color: Colors.white),
                     ));
               })),
@@ -97,11 +96,11 @@ class _Browse_BrandsState extends State<Browse_Brands> {
               children: [
                 Container(
                   width: double.infinity,
-                  height: 50,
+                  height: 35,
                   child: Align(
                     alignment: Alignment.centerLeft,
                     child: Container(
-                      margin: EdgeInsets.all(10),
+                      margin: EdgeInsets.only(left: 20),
                       child: Text(
                         alphabetsUniq[i],
                         style: TextStyle(
@@ -109,17 +108,17 @@ class _Browse_BrandsState extends State<Browse_Brands> {
                             fontFamily: 'Brandon',
                             fontWeight: FontWeight.w800,
                             letterSpacing: 1,
-                            color: Hexcolor('#F48262')),
+                            color: Colors.black),
                       ),
                     ),
                   ),
-                  color: Hexcolor('#FFC5AD'),
+                  color: Color(0xffFBDFD2),
                 ),
                 InkWell(
                   onTap: (){
-
                   },
                   child: Container(
+                    padding: EdgeInsets.symmetric(vertical: 10),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: listBrand.where((element) => element.name.startsWith(alphabetsUniq[i])).map((e){
@@ -134,14 +133,18 @@ class _Browse_BrandsState extends State<Browse_Brands> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Container(
-                                  child: Text(e.name),
-                                  margin: EdgeInsets.fromLTRB(25, 20, 0, 10),
+                                  child: Text(e.name,
+                                    style: TextStyle(
+                                      fontFamily: 'Brandon'
+                                    ),
+                                  ),
+                                  margin: EdgeInsets.fromLTRB(25, 10, 20, 5),
                                 ),
                                 Container(
-                                  color: Colors.black,
+                                  color: Colors.black26,
                                   height: 1,
                                   width: double.infinity,
-                                  margin: EdgeInsets.fromLTRB(20, 0, 20, 20),
+                                  margin: EdgeInsets.fromLTRB(20, 0, 20, 0),
                                 )
                               ],
                             ),

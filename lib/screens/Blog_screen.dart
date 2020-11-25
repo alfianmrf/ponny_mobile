@@ -8,17 +8,17 @@ import 'package:ponny/screens/Blog_Detail_screen.dart';
 import 'package:intl/intl.dart';
 import 'package:date_format/date_format.dart';
 
-class BasicSkincare extends StatefulWidget {
+class Blog extends StatefulWidget {
 
 
-  static const String id = "BasicSkincare";
+  static const String id = "Blog";
 
 
   @override
-  _BasicSkincareState createState() => _BasicSkincareState();
+  _BlogState createState() => _BlogState();
 }
 
-class _BasicSkincareState extends State<BasicSkincare> {
+class _BlogState extends State<Blog> {
   bool onSearch = false;
   String currentTag = "ALL";
   int categoryId = 0;
@@ -55,6 +55,7 @@ class _BasicSkincareState extends State<BasicSkincare> {
         setState(() {
           onSearch = false;
         });
+        Navigator.of(context).pop(true);
       },
       child: DefaultTabController(
         length: 5,
@@ -117,7 +118,7 @@ class _BasicSkincareState extends State<BasicSkincare> {
                               flex: 2,
                               child: Container(
                                   child: Image.asset(
-                                "assets/images/blog.png",
+                                "assets/images/blogTitle.png",
                                 color: Colors.white,
                               )),
                             ),
@@ -126,146 +127,160 @@ class _BasicSkincareState extends State<BasicSkincare> {
                         ),
                       ),
                 Container(
-                  alignment: Alignment.center,
                   width: double.infinity,
-                  color: Color(0xffF48262),
-                  child: TabBar(
-                    isScrollable: true,
-                    indicatorColor: Colors.transparent,
-                    tabs: [
-                      GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            currentTag = "ALL";
-                            categoryId = 0;
-                          });
-                        },
-                        child: Column(
-                          children: [
-                            Icon(
-                              Icons.ac_unit,
-                              color: Colors.white,
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: [
+                        InkWell(
+                          onTap: () {
+                            setState(() {
+                              currentTag = "ALL";
+                              categoryId = 0;
+                            });
+                          },
+                          child: Container(
+                            height: 50,
+                            padding: EdgeInsets.symmetric(horizontal: 15),
+                            alignment: Alignment.center,
+                            color: categoryId == 0 ? Color(0xffFBDFD2) : null,
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  "ALL",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontSize: 12,
+                                      fontFamily: "Brandon",
+                                      fontWeight: FontWeight.bold,
+                                      color: categoryId == 0 ? Colors.black : Color(0xffF48262)),
+                                ),
+                              ],
                             ),
-                            Text(
-                              "ALL",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontSize: 12,
-                                  fontFamily: "Brandon",
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.white),
-                            ),
-                          ],
+                          ),
                         ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            currentTag = "BASIC SKINCARE";
-                            categoryId = 1;
-                          });
-                        },
-                        child: Column(
-                          children: [
-                            Icon(
-                              Icons.ac_unit,
-                              color: Colors.white,
+                        InkWell(
+                          onTap: () {
+                            setState(() {
+                              currentTag = "BASIC SKINCARE";
+                              categoryId = 1;
+                            });
+                          },
+                          child: Container(
+                            height: 50,
+                            padding: EdgeInsets.symmetric(horizontal: 15),
+                            alignment: Alignment.center,
+                            color: categoryId == 1 ? Color(0xffFBDFD2) : null,
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  "BASIC\nSKINCARE",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontSize: 12,
+                                      fontFamily: "Brandon",
+                                      fontWeight: FontWeight.bold,
+                                      color: categoryId == 1 ? Colors.black : Color(0xffF48262)),
+                                ),
+                              ],
                             ),
-                            Text(
-                              "BASIC SKINCARE",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontSize: 12,
-                                  fontFamily: "Brandon",
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.white),
-                            ),
-                          ],
+                          ),
                         ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            currentTag = "SKIN CONCERN";
-                            categoryId = 2;
-                          });
-                        },
-                        child: Column(
-                          children: [
-                            Icon(
-                              Icons.ac_unit,
-                              color: Colors.white,
+                        InkWell(
+                          onTap: () {
+                            setState(() {
+                              currentTag = "SKIN CONCERN";
+                              categoryId = 2;
+                            });
+                          },
+                          child: Container(
+                            height: 50,
+                            padding: EdgeInsets.symmetric(horizontal: 15),
+                            alignment: Alignment.center,
+                            color: categoryId == 2 ? Color(0xffFBDFD2) : null,
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  "MASALAH\nKULIT",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontSize: 12,
+                                      fontFamily: "Brandon",
+                                      fontWeight: FontWeight.bold,
+                                      color: categoryId == 2 ? Colors.black : Color(0xffF48262)),
+                                ),
+                              ],
                             ),
-                            Text(
-                              "SKIN CONCERN",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontSize: 12,
-                                  fontFamily: "Brandon",
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.white),
-                            ),
-                          ],
+                          ),
                         ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            currentTag = "SKINCARE ROUTINE";
-                            categoryId = 3;
-                          });
-                        },
-                        child: Column(
-                          children: [
-                            Icon(
-                              Icons.ac_unit,
-                              color: Colors.white,
+                        InkWell(
+                          onTap: () {
+                            setState(() {
+                              currentTag = "SKINCARE ROUTINE";
+                              categoryId = 3;
+                            });
+                          },
+                          child: Container(
+                            height: 50,
+                            padding: EdgeInsets.symmetric(horizontal: 15),
+                            alignment: Alignment.center,
+                            color: categoryId == 3 ? Color(0xffFBDFD2) : null,
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  "SKINCARE\nROUTINE",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontSize: 12,
+                                      fontFamily: "Brandon",
+                                      fontWeight: FontWeight.bold,
+                                      color: categoryId == 3 ? Colors.black : Color(0xffF48262)),
+                                ),
+                              ],
                             ),
-                            Text(
-                              "SKINCARE ROUTINE",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontSize: 12,
-                                  fontFamily: "Brandon",
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.white),
-                            ),
-                          ],
+                          ),
                         ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            currentTag = "MITOS ATAU FAKTA";
-                            categoryId = 4;
-                          });
-                        },
-                        child: Column(
-                          children: [
-                            Icon(
-                              Icons.ac_unit,
-                              color: Colors.white,
+                        InkWell(
+                          onTap: () {
+                            setState(() {
+                              currentTag = "MITOS ATAU FAKTA";
+                              categoryId = 4;
+                            });
+                          },
+                          child: Container(
+                            height: 50,
+                            padding: EdgeInsets.symmetric(horizontal: 15),
+                            alignment: Alignment.center,
+                            color: categoryId == 4 ? Color(0xffFBDFD2) : null,
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  "MITOS\nATAU FAKTA",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontSize: 12,
+                                      fontFamily: "Brandon",
+                                      fontWeight: FontWeight.bold,
+                                      color: categoryId == 4 ? Colors.black : Color(0xffF48262)),
+                                ),
+                              ],
                             ),
-                            Text(
-                              "MITOS ATAU FAKTA",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontSize: 12,
-                                  fontFamily: "Brandon",
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.white),
-                            ),
-                          ],
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
                 Container(
                     alignment: Alignment.center,
                     padding: EdgeInsets.all(10),
                     width: double.infinity,
-                    color: Color(0xffF3C1B5),
+                    color: Color(0xffFACAC1),
                     child: Text(
                       currentTag,
                       style: TextStyle(color: Color(0xffF48262), fontSize: 20),
@@ -275,6 +290,7 @@ class _BasicSkincareState extends State<BasicSkincare> {
                     child: Column(
                       children: [
                         Container(
+                          padding: EdgeInsets.symmetric(horizontal: 10),
                             child: new FutureBuilder<List>(
                                 future: filterData(categoryId),
                                 builder: (context, snapshot) {
@@ -392,7 +408,7 @@ Widget categoryListBlog(context, List list, int categoryId) {
       shrinkWrap: true,
       itemCount: list == null ? 0 : list.length,
       gridDelegate:
-          SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+          SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, childAspectRatio: 0.7),
       itemBuilder: (BuildContext context, int i) {
         return GestureDetector(
           onTap: () {
@@ -420,6 +436,8 @@ Widget categoryListBlog(context, List list, int categoryId) {
                     fontFamily: "Brandon",
                     fontWeight: FontWeight.w500,
                   ),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                 ),
               )
             ]),

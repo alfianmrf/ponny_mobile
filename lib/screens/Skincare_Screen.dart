@@ -12,6 +12,7 @@ import 'package:ponny/util/globalUrl.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
 import 'package:ponny/screens/product_details_screen.dart';
 import 'package:grouped_buttons/grouped_buttons.dart';
+import 'package:waterfall_flow/waterfall_flow.dart';
 import 'package:provider/provider.dart';
 import 'package:waterfall_flow/waterfall_flow.dart';
 import 'package:http/http.dart' as http;
@@ -156,46 +157,50 @@ class _SkincareState extends State<Skincare> {
         child: Scaffold(
             resizeToAvoidBottomInset: false,
             backgroundColor: Hexcolor('#FCF8F0'),
-            body: Column(
-              children: [
-                Container(
-                  height: 35,
-                ),
-                Container(
+            appBar: AppBar(
+              automaticallyImplyLeading: false,
+              titleSpacing: 0.0,
+              elevation: 0.0,
+              title: Container(
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                    color: Colors.white),
+                padding: EdgeInsets.all(10),
+                margin: EdgeInsets.only(left: 10, top: 10, right: 10),
+                child: Row(children: [
+                  Icon(Icons.search, color: Color(0xffF48262)),
+                  Expanded(
+                      child: TextField(
+                        onTap: () {
+                          showSearch(context: null, delegate: Search());
+                        },
+                        cursorColor: Colors.black,
+                        keyboardType: TextInputType.text,
+                        textInputAction: TextInputAction.go,
+                        decoration:
+                        new InputDecoration.collapsed(hintText: ""),
+                      ))
+                ]),
+              ),
+              bottom: PreferredSize(
+                preferredSize: Size.fromHeight(50.0),
+                child: Container(
+                  padding: EdgeInsets.fromLTRB(5,5,5,0),
                   decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
-                      color: Colors.white),
-                  padding: EdgeInsets.all(10),
-                  margin: EdgeInsets.only(left: 10, top: 10, right: 10),
-                  child: Row(children: [
-                    Icon(Icons.search, color: Color(0xffF48262)),
-                    Expanded(
-                        child: TextField(
-                          controller: _seachcontroller,
-                      cursorColor: Colors.black,
-                      keyboardType: TextInputType.text,
-                      textInputAction: TextInputAction.go,
-                      onChanged: (String text) async {
-
-                        setState(() {
-                          _q = text;
-                        });
-                        getProductSearch();
-                      },
-                      decoration:
-                          new InputDecoration.collapsed(hintText: "Search..."),
-                    ))
-                  ]),
-                ),
-                Container(
-                  margin: EdgeInsets.all(5),
+                    border: Border(
+                      bottom: BorderSide(
+                        width: 1,
+                        color: Color(0xffF48262),
+                      ),
+                    ),
+                  ),
                   child: Row(
                     children: [
                       Container(
                         child: IconButton(
                             onPressed: () {
                               Navigator.of(context)
-                                  .pushReplacementNamed(Browse.id);
+                                  .pop();
                             },
                             icon: Icon(
                               Icons.arrow_back_ios,
@@ -217,119 +222,230 @@ class _SkincareState extends State<Skincare> {
                     ],
                   ),
                 ),
-                Container(
-                  height: 1,
-                  color: Color(0xffF3C1B5),
-                ),
-                Container(
-                  margin: EdgeInsets.all(10),
-                  height: 110,
-                  width: double.infinity,
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: widget.category.subcategories.length,
-                    itemBuilder: (context, i) {
-                      final sub = widget.category.subcategories[i];
-                      return Container(
-                          margin: EdgeInsets.all(10),
-                          child: rectanglebutton(context, sub.name));
-                    },
-                  ),
-                ),
-                Container(
-                  height: 1,
-                  color: Color(0xffF3C1B5),
-                ),
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        '$total items',
-                        style: TextStyle(
-                          fontFamily: 'Brandon',
-                          fontSize: 16,
+              ),
+            ),
+            body: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Container(
+                    width: double.infinity,
+                    height: 130,
+                    padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                    decoration: BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(
+                          width: 1,
+                          color: Color(0xffF48262),
                         ),
                       ),
-                      FlatButton(
-                        onPressed: (){
-                          _settingModalBottomSheet(context);
-                        },
-                        color: Color(0xffF48262),
-                        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                        height: 30,
-                        child: Row(
-                          children: [
-                            Icon(
-                              Icons.tune,
-                              color: Colors.white,
-                            ),
-                            Text(
-                              'Filter',
-                              style: TextStyle(
-                                fontFamily: 'Brandon',
-                                color: Colors.white,
-                              ),
-                            ),
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-
-                Expanded(
-                    child:SingleChildScrollView(
-                      controller: _scrollController,
-                    child: loadingProduct?Container(
-                      height:150,
-                      child: Center(
-                        child: LoadingWidgetFadingCircle(context),
+                    ),
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: [
+                          Container(
+                            margin: EdgeInsets.all(10),
+                            child: rectanglebutton(context, "CLEANSER", 'assets/images/browse/skincare/cleanser.png'),
+                          ),
+                          Container(
+                            margin: EdgeInsets.all(10),
+                            child: rectanglebutton(context, "EXFOLIATORS", 'assets/images/browse/skincare/exfoliators.png'),
+                          ),
+                          Container(
+                            margin: EdgeInsets.all(10),
+                            child: rectanglebutton(context, "TONER", 'assets/images/browse/skincare/toner.png'),
+                          ),
+                          Container(
+                            margin: EdgeInsets.all(10),
+                            child: rectanglebutton(context, "TREATMENTS", 'assets/images/browse/skincare/treatments.png'),
+                          ),
+                          Container(
+                            margin: EdgeInsets.all(10),
+                            child: rectanglebutton(context, "MASKS", 'assets/images/browse/skincare/masks.png'),
+                          ),
+                          Container(
+                            margin: EdgeInsets.all(10),
+                            child: rectanglebutton(context, "EYE CARE", 'assets/images/browse/skincare/eye care.png'),
+                          ),
+                          Container(
+                            margin: EdgeInsets.all(10),
+                            child: rectanglebutton(context, "MOISTURIZER", 'assets/images/browse/skincare/moisturizer.png'),
+                          ),
+                          Container(
+                            margin: EdgeInsets.all(10),
+                            child: rectanglebutton(context, "SUNSCREEN &\nSUNBLOCK", 'assets/images/browse/skincare/sunscreen.png'),
+                          ),
+                        ],
                       ),
-                    ) :
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    ),
+                  ),
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        WaterfallFlow.count(
-                          padding: EdgeInsets.fromLTRB(20.0, 0, 20.0, 10.0),
-                          shrinkWrap: true,
-                          crossAxisCount: 2,
-                          mainAxisSpacing: 10,
-                          crossAxisSpacing: 20,
-                          physics: ScrollPhysics(),
-                          children: [
-                            for( Product product in dataProduct)
-                              getProduct(context, product),
-                          ],
+                        Text(
+                          '457 produk',
+                          style: TextStyle(
+                            fontFamily: 'Brandon',
+                            fontSize: 16,
+                          ),
                         ),
-                        _buildProgressIndicator()
+                        FlatButton(
+                          onPressed: (){
+                            _settingModalBottomSheet(context);
+                          },
+                          color: Color(0xffF48262),
+                          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          height: 30,
+                          child: Row(
+                            children: [
+                              Image.asset(
+                                'assets/images/filter.png',
+                                height: 16,
+                              ),
+                              Container(width: 10,),
+                              Text(
+                                'Filter',
+                                style: TextStyle(
+                                  fontFamily: 'Brandon',
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ],
+                          ),
+                        )
                       ],
                     ),
-                  )
-                )
-
-              ],
+                  ),
+                  WaterfallFlow.count(
+                    padding: EdgeInsets.fromLTRB(20.0, 0, 20.0, 10.0),
+                    shrinkWrap: true,
+                    crossAxisCount: 2,
+                    mainAxisSpacing: 10,
+                    crossAxisSpacing: 20,
+                    physics: ScrollPhysics(),
+                    children: [
+                      product(context),
+                      product(context),
+                      product(context),
+                      product(context),
+                    ],
+                  ),
+                ],
+              ),
             ),
             bottomNavigationBar: new PonnyBottomNavbar(selectedIndex: 1)),
       ),
     );
   }
 
-  Widget rectanglebutton(context, String subtext) {
-    return ButtonTheme(
-      buttonColor: Hexcolor('#FCF8F0'),
-      minWidth: 100.0,
-      height: 100.0,
-      child: RaisedButton(
-        onPressed: () {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => Skincare()));
-        },
+Widget rectanglebutton(context, String subtext, String subimg) {
+  return ButtonTheme(
+    buttonColor: Colors.white,
+    minWidth: 100.0,
+    height: 100.0,
+    padding: EdgeInsets.symmetric(horizontal: 0),
+    child: RaisedButton(
+      onPressed: () {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => Skincare()));
+      },
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Image.asset(
+            subimg,
+            height: 55,
+            width: 70,
+            fit: BoxFit.contain,
+          ),
+          Container(height: 5,),
+          Text(
+            subtext,
+            style: TextStyle(
+              fontSize: 13,
+              fontFamily: 'Brandon',
+              height: 1,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
+    ),
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(10.0),
+      side: BorderSide(color: Hexcolor('#F48262')),
+    ),
+  );
+}
+
+Widget product(context) {
+  return Column(
+    children: <Widget>[
+      Container(
+        child: Stack(
+          children: <Widget>[
+            GestureDetector(
+              onTap: () {
+                Navigator.of(context)
+                    .pushReplacementNamed(ProductDetailsScreen.id);
+              },
+              child: Image.asset(
+                "assets/images/produk.png",
+                width: MediaQuery.of(context).size.width,
+                fit: BoxFit.cover,
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(top: 10.0),
+              child: Align(
+                  alignment: Alignment.topLeft,
+                  child: Container(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 5.0),
+                      child: const Text(
+                        '35%',
+                        style: TextStyle(
+                            color: Colors.white, fontFamily: 'Brandon'),
+                      ),
+                    ),
+                    color: Color(0xffF48262),
+                  )),
+            ),
+            Padding(
+              padding: EdgeInsets.all(5.0),
+              child: Align(
+                alignment: Alignment.topRight,
+                child: Icon(
+                  Icons.favorite_border,
+                  color: Color(0xffF48262),
+                  size: 20,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+      Container(
+        alignment: Alignment.bottomCenter,
+        child: Container(
+          width: MediaQuery.of(context).size.width,
+          padding: EdgeInsets.symmetric(vertical: 3),
+          child: const Text(
+            'TAMBAHKAN',
+            textAlign: TextAlign.center,
+            style: TextStyle(color: Colors.white, fontFamily: 'Brandon'),
+          ),
+          color: Color(0xffF3C1B5),
+        ),
+      ),
+      Padding(
+        padding: EdgeInsets.only(top: 7.0),
         child: Text(
           subtext,
           style: TextStyle(
@@ -340,9 +456,37 @@ class _SkincareState extends State<Skincare> {
               color: Hexcolor('#F48262')),
         ),
       ),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(5.0),
-        side: BorderSide(color: Hexcolor('#F48262')),
+      Text(
+        'Rp. 125.000',
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          fontFamily: 'Brandon',
+          fontSize: 14,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+      Center(
+        child: RichText(
+          text: TextSpan(
+              text: 'Rp. 125.000',
+              style: TextStyle(
+                color: Colors.black,
+                fontFamily: 'Brandon',
+                fontSize: 12,
+                decoration: TextDecoration.lineThrough,
+              ),
+              children: [
+                TextSpan(
+                  text: '(35%)',
+                  style: TextStyle(
+                    color: Color(0xffF48262),
+                    fontFamily: 'Brandon',
+                    fontSize: 12,
+                    decoration: TextDecoration.none,
+                  ),
+                ),
+              ]),
+        ),
       ),
     );
   }
