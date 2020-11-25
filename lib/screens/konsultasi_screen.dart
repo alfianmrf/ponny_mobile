@@ -361,45 +361,47 @@ class _KonsultasiState extends State<KonsultasiScreen> {
               ),
             ],
           ),
-          LayoutBuilder(
-            builder: (context, constraint) {
-              switch (_currentPage) {
-                case 0:
-                  {
+          Expanded(
+            child: LayoutBuilder(
+              builder: (context, constraint) {
+                switch (_currentPage) {
+                  case 0:
+                    {
 
-                    return tambah_beli();
-                   
-                  }
-                case 1:
-                  {
-                    return voucher_saya();
-                  }
-                case 2:
-                  {
+                      return tambah_beli();
 
-                    return riwayat();
-                  }
-                case 3:
-                  {
-                    return Container(
-                      height: MediaQuery.of(context).size.height*.46,
-                      child: SingleChildScrollView(
-                        child:  konsultasi(),
-                      ),
-                    );
-                  }
-                case 4:
-                  {
-                    return tambah_beli();
-                  }
-                default:
-                  {
-                    return Container(
-                      child: Text("Halaman tidak ada"),
-                    );
-                  }
-              }
-            },
+                    }
+                  case 1:
+                    {
+                      return voucher_saya();
+                    }
+                  case 2:
+                    {
+
+                      return riwayat();
+                    }
+                  case 3:
+                    {
+                      return Container(
+                        height: MediaQuery.of(context).size.height*.46,
+                        child: SingleChildScrollView(
+                          child:  konsultasi(),
+                        ),
+                      );
+                    }
+                  case 4:
+                    {
+                      return tambah_beli();
+                    }
+                  default:
+                    {
+                      return Container(
+                        child: Text("Halaman tidak ada"),
+                      );
+                    }
+                }
+              },
+            ),
           ),
         ],
       ),
