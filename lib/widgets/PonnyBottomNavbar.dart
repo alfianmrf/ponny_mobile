@@ -1,6 +1,11 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:intl/intl.dart';
+import 'package:ponny/common/constant.dart';
 import 'package:ponny/main.dart';
 import 'package:ponny/model/App.dart';
+import 'package:ponny/model/Product.dart';
 import 'package:ponny/model/User.dart';
 import 'package:ponny/screens/bantuan_screen.dart';
 import 'package:ponny/screens/home_screen.dart';
@@ -10,6 +15,8 @@ import 'package:ponny/screens/forums_screen.dart';
 import 'package:ponny/screens/Forum_screen.dart';
 import 'package:ponny/screens/konsultasi_screen.dart';
 import 'package:ponny/screens/login.dart';
+import 'package:ponny/screens/product_details_screen.dart';
+import 'package:ponny/util/globalUrl.dart';
 import 'package:provider/provider.dart';
 import 'package:ponny/screens/Browse_Screen.dart';
 
@@ -135,3 +142,5 @@ class PonnyBottomNavbar extends StatelessWidget {
     );
   }
 }
+
+

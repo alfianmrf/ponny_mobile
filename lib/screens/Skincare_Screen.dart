@@ -4,18 +4,25 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:ponny/common/constant.dart';
+import 'package:ponny/model/App.dart';
 import 'package:ponny/model/Brand.dart';
+import 'package:ponny/model/Cart.dart';
 import 'package:ponny/model/Category.dart';
 import 'package:ponny/model/Product.dart';
+import 'package:ponny/model/WishProduct.dart';
 import 'package:ponny/screens/Browse_Screen.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:ponny/util/globalUrl.dart';
+import 'package:ponny/widgets/MyProduct.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
 import 'package:ponny/screens/product_details_screen.dart';
 import 'package:grouped_buttons/grouped_buttons.dart';
 import 'package:provider/provider.dart';
+import 'package:uiblock/uiblock.dart';
 import 'package:waterfall_flow/waterfall_flow.dart';
 import 'package:http/http.dart' as http;
+
+import 'login.dart';
 
 class Skincare extends StatefulWidget {
   static const String id = "Skincare_Screen";
@@ -27,6 +34,7 @@ class Skincare extends StatefulWidget {
 }
 
 class _SkincareState extends State<Skincare> {
+  final scaffoldKey = GlobalKey<ScaffoldState>();
   bool loadingProduct=true;
   ScrollController _scrollController = new ScrollController();
   bool loadmore = false;
@@ -155,6 +163,7 @@ class _SkincareState extends State<Skincare> {
       child: DefaultTabController(
         length: 3,
         child: Scaffold(
+          key: scaffoldKey,
             resizeToAvoidBottomInset: false,
             backgroundColor: Hexcolor('#FCF8F0'),
             body: Column(
@@ -304,8 +313,40 @@ class _SkincareState extends State<Skincare> {
                             crossAxisSpacing: 20,
                             physics: ScrollPhysics(),
                             children: [
-                              for( Product product in dataProduct)
-                                getProduct(context, product),
+                              for( Product item_product in dataProduct)
+                                MyProduct(
+                                  product: item_product,
+                                  onFavorit: (){
+                                    if(Provider.of<AppModel>(context).loggedIn) {
+                                      UIBlock.block(context,customLoaderChild: LoadingWidget(context));
+                                      Provider.of<WishModel>(context).addProductToWish(item_product, Provider.of<AppModel>(context).auth.access_token).then((value){
+                                        UIBlock.unblock(context);
+                                        if(value){
+                                          showWishDialog(context,item_product);
+                                        }else{
+                                          scaffoldKey.currentState.showSnackBar(snackBarError);
+                                        }
+                                      });
+                                    }else{
+                                      Navigator.push(context,new MaterialPageRoute(
+                                        builder: (BuildContext context) => new LoginScreen(),
+                                      ));
+                                    }
+                                  },
+                                  onTobag: (){
+                                    if(Provider.of<AppModel>(context).loggedIn){
+                                      UIBlock.block(context,customLoaderChild: LoadingWidget(context));
+                                      Provider.of<CartModel>(context).addProductToCart(item_product,Provider.of<AppModel>(context).auth.access_token).then((value){
+                                        UIBlock.unblock(context);
+                                        showAlertDialog(context,item_product);
+                                      });
+                                    }else{
+                                      Navigator.push(context,new MaterialPageRoute(
+                                        builder: (BuildContext context) => new LoginScreen(),
+                                      ));
+                                    }
+                                  },
+                                ),
                             ],
                           ),
                           _buildProgressIndicator()
