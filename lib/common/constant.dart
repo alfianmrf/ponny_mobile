@@ -188,7 +188,6 @@ Widget getProduct(context,Product product) => Column(
               },
               child: Container(
                 color: Colors.white,
-                height: MediaQuery.of(context).size.width*0.35,
                 child: CachedNetworkImage(
                   imageUrl:product.thumbnail_image != null?  img_url+product.thumbnail_image:"",
                   placeholder: (context, url) => LoadingWidgetPulse(context),
