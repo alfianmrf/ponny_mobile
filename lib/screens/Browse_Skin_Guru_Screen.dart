@@ -80,7 +80,7 @@ class _Browse_Skin_GuruState extends State<Browse_Skin_Guru> {
                       MaterialPageRoute(builder: (context) => Blog()));
                 },
                 
-                child: Image.asset("assets/images/blog.png")),
+                child: Image.asset("assets/images/blogTitle.png")),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(5.0),
               side: BorderSide(color: Hexcolor('#F48262')),
