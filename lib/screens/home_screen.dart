@@ -12,7 +12,6 @@ import 'package:ponny/model/Product.dart';
 import 'package:ponny/model/Slider.dart';
 import 'package:ponny/model/User.dart';
 import 'package:ponny/screens/Blog_screen.dart';
-import 'package:ponny/screens/Basic_SkinCare_screen.dart';
 import 'package:ponny/screens/Browse_Screen.dart';
 import 'package:ponny/screens/Localpride_Screen.dart';
 import 'package:ponny/screens/Promotion_screen.dart';
@@ -76,6 +75,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Future<List<Category>> getCategory() async {
     List<Category> categoris = List<Category>();
     final res = await http.get(categoryList);
+    print(res.body);
     if(res.statusCode == 200){
       final responejson = json.decode(res.body);
       responejson.forEach((v) {
@@ -638,7 +638,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 child:  FutureBuilder<List<Category>>(
                 future: getCategory(),
                 builder: (BuildContext context, AsyncSnapshot<List<Category>> snapshot){
-                  if(snapshot.hasData){
+                  if(snapshot.hasData && snapshot.data != null){
+
                     return Column(
                       children: [
                         IntrinsicHeight(
@@ -646,138 +647,115 @@ class _HomeScreenState extends State<HomeScreen> {
                             children: [
                               Expanded(
                                 flex: 1,
-                                child: InkWell(
-                                  onTap: (){
-                                    final skincare =snapshot.data.firstWhere((element) => element.id == 9 );
-                                    Navigator.push(context, MaterialPageRoute(builder: (context) => Skincare(category: skincare,) ));
-                                  },
-                                  child:  Column(
-                                    children: [
-                                      AspectRatio(
-                                        aspectRatio: 1,
-                                        child: Container(
-                                          margin: EdgeInsets.all(7),
-                                          padding: EdgeInsets.all(5),
-                                          decoration: BoxDecoration(
-                                            color: Colors.white,
-                                            borderRadius: BorderRadius.circular(10),
-                                            border: Border.all(width: 1, color: Color(0xffF48262),),
-                                          ),
-                                          child: Image.asset('assets/images/home/skincare.png'),
+                                child: Column(
+                                  children: [
+                                    AspectRatio(
+                                      aspectRatio: 1,
+                                      child: Container(
+                                        margin: EdgeInsets.all(7),
+                                        padding: EdgeInsets.all(5),
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius: BorderRadius.circular(10),
+                                          border: Border.all(width: 1, color: Color(0xffF48262),),
                                         ),
+                                        child: Image.asset('assets/images/home/skincare.png'),
                                       ),
-                                      Text(
-                                        'Skincare',
-                                        style: TextStyle(
-                                          fontFamily: 'Brandon',
-                                          fontSize: 12,
-                                        ),
-                                        textAlign: TextAlign.center,
+                                    ),
+                                    Text(
+                                      'Skincare',
+                                      style: TextStyle(
+                                        fontFamily: 'Brandon',
+                                        fontSize: 12,
                                       ),
-                                    ],
-                                  ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ],
                                 ),
                               ),
                               Expanded(
                                 flex: 1,
-                                child: InkWell(
-                                  onTap: (){
-                                    final skincare =snapshot.data.firstWhere((element) => element.id == 10 );
-                                    Navigator.push(context, MaterialPageRoute(builder: (context) => Skincare(category: skincare,) ));
-                                  },
-                                 child: Column(
-                                   children: [
-                                     AspectRatio(
-                                       aspectRatio: 1,
-                                       child: Container(
-                                         margin: EdgeInsets.all(7),
-                                         padding: EdgeInsets.all(5),
-                                         decoration: BoxDecoration(
-                                           color: Colors.white,
-                                           borderRadius: BorderRadius.circular(10),
-                                           border: Border.all(width: 1, color: Color(0xffF48262),),
-                                         ),
-                                         child: Image.asset('assets/images/home/hair.png'),
-                                       ),
-                                     ),
-                                     Text(
-                                       'Hair & Makeup',
-                                       style: TextStyle(
-                                         fontFamily: 'Brandon',
-                                         fontSize: 12,
-                                       ),
-                                       textAlign: TextAlign.center,
-                                     ),
-                                   ],
-                                 ),
-                                ) ,
+                                child: Column(
+                                  children: [
+                                    AspectRatio(
+                                      aspectRatio: 1,
+                                      child: Container(
+                                        margin: EdgeInsets.all(7),
+                                        padding: EdgeInsets.all(5),
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius: BorderRadius.circular(10),
+                                          border: Border.all(width: 1, color: Color(0xffF48262),),
+                                        ),
+                                        child: Image.asset('assets/images/home/hair.png'),
+                                      ),
+                                    ),
+                                    Text(
+                                      'Hair & Makeup',
+                                      style: TextStyle(
+                                        fontFamily: 'Brandon',
+                                        fontSize: 12,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ],
+                                ),
                               ),
                               Expanded(
                                 flex: 1,
-                                child: InkWell(
-                                  onTap: (){
-                                    final skincare =snapshot.data.firstWhere((element) => element.id == 11 );
-                                    Navigator.push(context, MaterialPageRoute(builder: (context) => Skincare(category: skincare,) ));
-                                  },
-                                  child: Column(
-                                    children: [
-                                      AspectRatio(
-                                        aspectRatio: 1,
-                                        child: Container(
-                                          margin: EdgeInsets.all(7),
-                                          padding: EdgeInsets.all(5),
-                                          decoration: BoxDecoration(
-                                            color: Colors.white,
-                                            borderRadius: BorderRadius.circular(10),
-                                            border: Border.all(width: 1, color: Color(0xffF48262),),
-                                          ),
-                                          child: Image.asset('assets/images/home/peralatan.png'),
+                                child: Column(
+                                  children: [
+                                    AspectRatio(
+                                      aspectRatio: 1,
+                                      child: Container(
+                                        margin: EdgeInsets.all(7),
+                                        padding: EdgeInsets.all(5),
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius: BorderRadius.circular(10),
+                                          border: Border.all(width: 1, color: Color(0xffF48262),),
                                         ),
+                                        child: Image.asset('assets/images/home/peralatan.png'),
                                       ),
-                                      Text(
-                                        'Peralatan Kecantikan',
-                                        style: TextStyle(
-                                          fontFamily: 'Brandon',
-                                          fontSize: 12,
-                                        ),
-                                        textAlign: TextAlign.center,
+                                    ),
+                                    Text(
+                                      'Peralatan Kecantikan',
+                                      style: TextStyle(
+                                        fontFamily: 'Brandon',
+                                        fontSize: 12,
                                       ),
-                                    ],
-                                  ),
-                                ) ,
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ],
+                                ),
                               ),
                               Expanded(
                                 flex: 1,
-                                child: InkWell(
-                                  onTap: (){
-                                    Navigator.push(context, MaterialPageRoute(builder: (context) => LocalPride() ));
-                                  },
-                                  child: Column(
-                                    children: [
-                                      AspectRatio(
-                                        aspectRatio: 1,
-                                        child: Container(
-                                          margin: EdgeInsets.all(7),
-                                          padding: EdgeInsets.all(7),
-                                          decoration: BoxDecoration(
-                                            color: Colors.white,
-                                            borderRadius: BorderRadius.circular(10),
-                                            border: Border.all(width: 1, color: Color(0xffF48262),),
-                                          ),
-                                          child: Image.asset('assets/images/home/bangga.png'),
+                                child: Column(
+                                  children: [
+                                    AspectRatio(
+                                      aspectRatio: 1,
+                                      child: Container(
+                                        margin: EdgeInsets.all(7),
+                                        padding: EdgeInsets.all(7),
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius: BorderRadius.circular(10),
+                                          border: Border.all(width: 1, color: Color(0xffF48262),),
                                         ),
+                                        child: Image.asset('assets/images/home/bangga.png'),
                                       ),
-                                      Text(
-                                        'Bangga Produk Indonesia',
-                                        style: TextStyle(
-                                          fontFamily: 'Brandon',
-                                          fontSize: 12,
-                                        ),
-                                        textAlign: TextAlign.center,
+                                    ),
+                                    Text(
+                                      'Bangga Produk Indonesia',
+                                      style: TextStyle(
+                                        fontFamily: 'Brandon',
+                                        fontSize: 12,
                                       ),
-                                    ],
-                                  ),
-                                ) ,
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ],
+                                ),
                               ),
                               Expanded(
                                 flex: 1,
@@ -815,12 +793,96 @@ class _HomeScreenState extends State<HomeScreen> {
                             children: [
                               Expanded(
                                 flex: 1,
-                                child:InkWell(
+                                child: Column(
+                                  children: [
+                                    AspectRatio(
+                                      aspectRatio: 1,
+                                      child: Container(
+                                        margin: EdgeInsets.all(7),
+                                        padding: EdgeInsets.all(5),
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius: BorderRadius.circular(10),
+                                          border: Border.all(width: 1, color: Color(0xffF48262),),
+                                        ),
+                                        child: Image.asset('assets/images/home/promosi.png'),
+                                      ),
+                                    ),
+                                    Text(
+                                      'Promosi',
+                                      style: TextStyle(
+                                        fontFamily: 'Brandon',
+                                        fontSize: 12,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Expanded(
+                                flex: 1,
+                                child: Column(
+                                  children: [
+                                    AspectRatio(
+                                      aspectRatio: 1,
+                                      child: Container(
+                                        margin: EdgeInsets.all(7),
+                                        padding: EdgeInsets.all(5),
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius: BorderRadius.circular(10),
+                                          border: Border.all(width: 1, color: Color(0xffF48262),),
+                                        ),
+                                        child: Image.asset('assets/images/home/skinklopedia.png'),
+                                      ),
+                                    ),
+                                    Text(
+                                      'Skinklopedia',
+                                      style: TextStyle(
+                                        fontFamily: 'Brandon',
+                                        fontSize: 12,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Expanded(
+                                flex: 1,
+                                child: Column(
+                                  children: [
+                                    AspectRatio(
+                                      aspectRatio: 1,
+                                      child: Container(
+                                        margin: EdgeInsets.all(7),
+                                        padding: EdgeInsets.all(5),
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius: BorderRadius.circular(10),
+                                          border: Border.all(width: 1, color: Color(0xffF48262),),
+                                        ),
+                                        child: Image.asset('assets/images/home/jenis.png'),
+                                      ),
+                                    ),
+                                    Text(
+                                      'Jenis Kulit',
+                                      style: TextStyle(
+                                        fontFamily: 'Brandon',
+                                        fontSize: 12,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Expanded(
+                                flex: 1,
+                                child: InkWell(
                                   onTap: (){
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) => PromotionScreen()),
+                                          builder: (context) => Blog()),
                                     );
                                   },
                                   child: Column(
@@ -835,45 +897,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                             borderRadius: BorderRadius.circular(10),
                                             border: Border.all(width: 1, color: Color(0xffF48262),),
                                           ),
-                                          child: Image.asset('assets/images/home/promosi.png'),
+                                          child: Image.asset('assets/images/home/blog.png'),
                                         ),
                                       ),
                                       Text(
-                                        'Promosi',
-                                        style: TextStyle(
-                                          fontFamily: 'Brandon',
-                                          fontSize: 12,
-                                        ),
-                                        textAlign: TextAlign.center,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              Expanded(
-                                flex: 1,
-                                child: InkWell(
-                                  onTap: (){
-                                    Navigator.push(context,
-                                        MaterialPageRoute(builder: (context) => Skinklopedia()));
-                                  },
-                                  child:  Column(
-                                    children: [
-                                      AspectRatio(
-                                        aspectRatio: 1,
-                                        child: Container(
-                                          margin: EdgeInsets.all(7),
-                                          padding: EdgeInsets.all(5),
-                                          decoration: BoxDecoration(
-                                            color: Colors.white,
-                                            borderRadius: BorderRadius.circular(10),
-                                            border: Border.all(width: 1, color: Color(0xffF48262),),
-                                          ),
-                                          child: Image.asset('assets/images/home/skinklopedia.png'),
-                                        ),
-                                      ),
-                                      Text(
-                                        'Skinklopedia',
+                                        'Blog',
                                         style: TextStyle(
                                           fontFamily: 'Brandon',
                                           fontSize: 12,
@@ -898,111 +926,19 @@ class _HomeScreenState extends State<HomeScreen> {
                                           borderRadius: BorderRadius.circular(10),
                                           border: Border.all(width: 1, color: Color(0xffF48262),),
                                         ),
-                                        child: Image.asset('assets/images/home/jenis.png'),
+                                        child: Image.asset('assets/images/home/bantuan.png'),
                                       ),
                                     ),
-                                    child: Image.asset('assets/images/home/jenis.png'),
-                                  ),
+                                    Text(
+                                      'Butuh Bantuan?',
+                                      style: TextStyle(
+                                        fontFamily: 'Brandon',
+                                        fontSize: 12,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ],
                                 ),
-                                Text(
-                                  'Jenis Kulit',
-                                  style: TextStyle(
-                                    fontFamily: 'Brandon',
-                                    fontSize: 12,
-                                  ),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ],
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: InkWell(
-                              onTap: (){
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => Blog()),
-                                );
-                              },
-                              child: Column(
-                                children: [
-                                  AspectRatio(
-                                    aspectRatio: 1,
-                                    child: Container(
-                                      margin: EdgeInsets.all(7),
-                                      padding: EdgeInsets.all(5),
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(10),
-                                        border: Border.all(width: 1, color: Color(0xffF48262),),
-                                      ),
-                                      child: Image.asset('assets/images/home/blog.png'),
-                                    ),
-                                  ),
-                                  Text(
-                                    'Blog',
-                                    style: TextStyle(
-                                      fontFamily: 'Brandon',
-                                      fontSize: 12,
-                                    ),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Column(
-                              children: [
-                                AspectRatio(
-                                  aspectRatio: 1,
-                                  child: Container(
-                                    margin: EdgeInsets.all(7),
-                                    padding: EdgeInsets.all(5),
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(10),
-                                      border: Border.all(width: 1, color: Color(0xffF48262),),
-                                    ),
-                                    child: Image.asset('assets/images/home/bantuan.png'),
-                                  ),
-                                ) ,
-                              ),
-                              Expanded(
-                                flex: 1,
-                                child: InkWell(
-                                  onTap: (){
-                                    Navigator.push(context,
-                                        MaterialPageRoute(builder: (context) => KonsultasiScreen()));
-                                  },
-                                  child: Column(
-                                    children: [
-                                      AspectRatio(
-                                        aspectRatio: 1,
-                                        child: Container(
-                                          margin: EdgeInsets.all(7),
-                                          padding: EdgeInsets.all(5),
-                                          decoration: BoxDecoration(
-                                            color: Colors.white,
-                                            borderRadius: BorderRadius.circular(10),
-                                            border: Border.all(width: 1, color: Color(0xffF48262),),
-                                          ),
-                                          child: Image.asset('assets/images/home/bantuan.png'),
-                                        ),
-                                      ),
-                                      Text(
-                                        'Butuh Bantuan?',
-                                        style: TextStyle(
-                                          fontFamily: 'Brandon',
-                                          fontSize: 12,
-                                        ),
-                                        textAlign: TextAlign.center,
-                                      ),
-                                    ],
-                                  ),
-                                ) ,
                               ),
                             ],
                           ),
