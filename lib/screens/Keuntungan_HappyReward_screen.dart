@@ -1,14 +1,25 @@
+import 'dart:convert';
+
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:ponny/common/constant.dart';
+import 'package:ponny/model/App.dart';
+import 'package:ponny/model/Cart.dart';
+import 'package:ponny/model/FaqHeader.dart';
+import 'package:ponny/model/Product.dart';
+import 'package:ponny/model/ProductPoin.dart';
 import 'package:ponny/model/User.dart';
 import 'package:ponny/screens/account/happy_skin_reward_screen.dart';
+import 'package:ponny/util/globalUrl.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
 import 'package:ponny/screens/product_details_screen.dart';
 import 'package:gradient_text/gradient_text.dart';
 import 'package:provider/provider.dart';
+import 'package:http/http.dart' as http;
+import 'package:uiblock/uiblock.dart';
 
 class UntungReward extends StatefulWidget {
   static const String id = "UntungReward";
@@ -18,10 +29,151 @@ class UntungReward extends StatefulWidget {
 }
 
 class _UntungRewardState extends State<UntungReward> {
+  List<ProductPoin> reward=[];
+  bool loading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      getListOfProduct();
+    });
+  }
+  Future<void> getListOfProduct() async {
+    final respon =  await http.get(rdmProduk);
+    print(respon.body);
+    if(respon.statusCode == 200){
+      final responseJson = json.decode(respon.body);
+
+      setState(() {
+        for(Map item in responseJson["lessThan200"]){
+          reward.add(ProductPoin(item["id"],item["jml_point"],Product.fromJson(item["product"]["availability"]),1));
+        }
+        for(Map item in responseJson["200to500"]){
+          reward.add(ProductPoin(item["id"],item["jml_point"],Product.fromJson(item["product"]["availability"]),1));
+        }
+        for(Map item in responseJson["moreThan500"]){
+          reward.add(ProductPoin(item["id"],item["jml_point"],Product.fromJson(item["product"]["availability"]),1));
+        }
+        loading =false;
+      });
+    }
+
+  }
 
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<UserModel>(context).user;
+    int usepoin = Provider.of<CartModel>(context).gettotalPoin();
+    int mypoin = Provider.of<UserModel>(context).user.point;
+    int sisa = mypoin-usepoin;
+    final faq = Provider.of<AppModel>(context,listen: false).listFaq.firstWhere((element) => element.id == 6);
+    
+    Widget getProduct(productPoin){
+     return Container(
+        height: 330,
+        width: 160,
+        // color: Colors.red,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Container(
+              width: 160,
+              height: 210,
+              child: CachedNetworkImage(
+                imageUrl: img_url+productPoin.product.thumbnail_image,
+                placeholder: (context, url) => LoadingWidgetPulse(context),
+                errorWidget: (context, url, error) => Image.asset('assets/images/basic.jpg'),
+                width: MediaQuery.of(context).size.width,
+                fit: BoxFit.cover,
+              ),
+            ),
+            Container(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(
+                      top: 5,
+                    ),
+                    child: Text(
+                      productPoin.product.brand.name,
+                      style: TextStyle(
+                        fontFamily: "Yeseva",
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.only(
+                top: 5,
+              ),
+              child: Text(
+                productPoin.product.name.length > 20 ?productPoin.product.name.substring(0,20)+"..." : productPoin.product.name,
+                style: TextStyle(
+                  fontFamily: "Brandon",
+                  fontSize: 14,
+                ),
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.only(
+                top: 5,
+              ),
+              child: Text(
+                productPoin.jml_point.toString()+" POIN",
+                style: TextStyle(
+                  fontFamily: "Brandon",
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+            Container(
+              child:productPoin.jml_point <= sisa?
+              FlatButton(
+                color: Color(0xffF48262),
+                textColor: Colors.white,
+                disabledColor: Colors.grey,
+                disabledTextColor: Colors.black,
+                padding: EdgeInsets.all(8.0),
+                splashColor: Colors.blueAccent,
+                onPressed: () {
+                  UIBlock.block(context,customLoaderChild: LoadingWidget(context));
+                  Provider.of<CartModel>(context).addRedemToCart(productPoin, Provider.of<AppModel>(context,listen: false).auth.access_token).then((value) {
+                    UIBlock.unblock(context);
+                    showAlertDialog(context,productPoin.product);
+                  }).catchError((onError){
+                    UIBlock.unblock(context);
+                  });
+                },
+                child: Text(
+                  "Tukar",
+                  style: TextStyle(fontSize: 16.0),
+                ),
+              ):
+              FlatButton(
+                color: Colors.grey,
+                textColor: Colors.black,
+                disabledColor: Colors.grey,
+                disabledTextColor: Colors.black,
+                padding: EdgeInsets.all(8.0),
+                splashColor: Colors.blueAccent,
+                child: Text(
+                  "Tukar",
+                  style: TextStyle(fontSize: 16.0),
+                ),
+              )
+              ,
+            )
+          ],
+        ),
+      );
+    }
     return Scaffold(
         resizeToAvoidBottomInset: false,
         backgroundColor: Hexcolor('#FCF8F0'),
@@ -195,16 +347,26 @@ class _UntungRewardState extends State<UntungReward> {
                             fontWeight: FontWeight.w500),
                       ),
                     ),
+                    loading ? Container(
+                      child: Center(
+                        child: LoadingWidgetFadingCircle(context),
+                      ),
+                    ):
                     Row(
-                      children: [
-                        Flexible(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: 
+                      [
+                        Flexible(flex: 1,
                             child: Container(
                                 margin: EdgeInsets.all(20),
-                                child: product(context))),
+                                child: reward.elementAt(0) != null?
+                                getProduct(reward.elementAt(0)):Container() )),
                         Flexible(
+                            flex: 1,
                             child: Container(
                                 margin: EdgeInsets.all(20),
-                                child: product(context)))
+                                child: reward.elementAt(1) != null?
+                                getProduct(reward.elementAt(1)):Container()))
                       ],
                     ),
                     InkWell(
@@ -595,9 +757,8 @@ class _UntungRewardState extends State<UntungReward> {
                         ),
                       ),
                     ),
-                    faqCollapsed(),
-                    faqCollapsed(),
-                    faqCollapsed(),
+                    for(Faq item in faq.faq)
+                      faqCollapsed(item),
                     Container(
                       height: 20,
                     )
@@ -609,143 +770,10 @@ class _UntungRewardState extends State<UntungReward> {
         ),
         bottomNavigationBar: new PonnyBottomNavbar(selectedIndex: 4));
   }
+  
 }
 
-Widget product(context) {
-  return Column(
-    children: <Widget>[
-      Container(
-        child: Stack(
-          children: <Widget>[
-            GestureDetector(
-              onTap: () {
-                Navigator.of(context)
-                    .pushReplacementNamed(ProductDetailsScreen.id);
-              },
-              child: Image.asset(
-                "assets/images/produk.png",
-                width: MediaQuery.of(context).size.width,
-                fit: BoxFit.cover,
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(top: 10.0),
-              child: Align(
-                  alignment: Alignment.topLeft,
-                  child: Container(
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 5.0),
-                      child: const Text(
-                        '35%',
-                        style: TextStyle(
-                            color: Colors.white, fontFamily: 'Brandon'),
-                      ),
-                    ),
-                    color: Color(0xffF48262),
-                  )),
-            ),
-            Padding(
-              padding: EdgeInsets.all(5.0),
-              child: Align(
-                alignment: Alignment.topRight,
-                child: Icon(
-                  Icons.favorite_border,
-                  color: Color(0xffF48262),
-                  size: 20,
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-      Container(
-        alignment: Alignment.bottomCenter,
-        child: Container(
-          width: MediaQuery.of(context).size.width,
-          child: const Text(
-            'ADD TO BAG',
-            textAlign: TextAlign.center,
-            style: TextStyle(color: Colors.white, fontFamily: 'Brandon'),
-          ),
-          color: Color(0xffF3C1B5),
-        ),
-      ),
-      Padding(
-        padding: EdgeInsets.only(top: 7.0),
-        child: Text(
-          'Skin Game',
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontFamily: 'Yeseva',
-            fontSize: 16,
-          ),
-        ),
-      ),
-      Text(
-        'Acne Warrior',
-        textAlign: TextAlign.center,
-        style: TextStyle(
-          fontFamily: 'Brandon',
-          fontSize: 14,
-        ),
-      ),
-      Text(
-        'Rp. 125.000',
-        textAlign: TextAlign.center,
-        style: TextStyle(
-          fontFamily: 'Brandon',
-          fontSize: 14,
-        ),
-      ),
-      Center(
-        child: RichText(
-          text: TextSpan(
-              text: 'Rp. 125.000',
-              style: TextStyle(
-                color: Colors.black,
-                fontFamily: 'Brandon',
-                fontSize: 12,
-                decoration: TextDecoration.lineThrough,
-              ),
-              children: [
-                TextSpan(
-                  text: '(35%)',
-                  style: TextStyle(
-                    color: Color(0xffF48262),
-                    fontFamily: 'Brandon',
-                    fontSize: 12,
-                    decoration: TextDecoration.none,
-                  ),
-                ),
-              ]),
-        ),
-      ),
-      Text.rich(TextSpan(children: <InlineSpan>[
-        WidgetSpan(
-          child: RatingBar(
-            initialRating: 4,
-            minRating: 1,
-            direction: Axis.horizontal,
-            allowHalfRating: true,
-            itemCount: 5,
-            itemSize: 14.0,
-            itemPadding: EdgeInsets.symmetric(horizontal: 1.0),
-            itemBuilder: (context, index) => Icon(
-              Icons.favorite,
-              color: Color(0xffF48262),
-            ),
-            unratedColor: Color(0xffFBD2CD),
-          ),
-        ),
-        TextSpan(
-            text: '(5)',
-            style: TextStyle(
-              fontSize: 12,
-            ))
-      ])),
-    ],
-  );
-}
+
 
 Widget buttonGroups(String iconImg, String title, String subtitle) {
   return ButtonTheme(
@@ -799,7 +827,7 @@ Widget buttonGroups(String iconImg, String title, String subtitle) {
   );
 }
 
-Widget faqCollapsed() {
+Widget faqCollapsed(Faq item) {
   bool isCollapsed = true;
 
   return StatefulBuilder(
@@ -809,16 +837,20 @@ Widget faqCollapsed() {
           Container(
             margin: EdgeInsets.symmetric(horizontal: 30),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  "Apa itu Happy Skin Reward?",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontFamily: 'Brandon',
-                    letterSpacing: 1,
-                    fontWeight: FontWeight.w800,
+                Container(
+                  width: MediaQuery.of(context).size.width*.75,
+                  child: Text(
+                    item.ask,
+                    textAlign: TextAlign.left,
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontFamily: 'Brandon',
+                      letterSpacing: 1,
+                      fontWeight: FontWeight.w800,
+                    ),
                   ),
                 ),
                 IconButton(
@@ -843,8 +875,7 @@ Widget faqCollapsed() {
               : Container(
                   margin: EdgeInsets.symmetric(horizontal: 30),
                   child: Text(
-                    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-                    style: TextStyle(
+      item.ans,style: TextStyle(
                       fontSize: 14,
                       fontFamily: 'Brandon',
                       letterSpacing: 1,

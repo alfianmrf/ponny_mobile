@@ -280,7 +280,7 @@ class _BasicSkincareState extends State<BasicSkincare> {
                                 builder: (context, snapshot) {
                                   if (snapshot.hasError) print(snapshot.error);
                                   return snapshot.hasData
-                                      ? categoryList(
+                                      ? categoryListBlog(
                                           context, snapshot.data, categoryId)
                                       : Center(
                                           child:
@@ -386,7 +386,7 @@ DateTime convertDateFromString(String strDate){
 
 
 
-Widget categoryList(context, List list, int categoryId) {
+Widget categoryListBlog(context, List list, int categoryId) {
   return GridView.builder(
       primary: false,
       shrinkWrap: true,

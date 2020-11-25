@@ -1709,7 +1709,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                 children: [
                                   Container(
                                     child: Text(
-                                      "Affiliate with us",
+                                      "Jadi Rekan Phoebe",
                                       style: TextStyle(
                                         fontSize: 18,
                                         fontWeight: FontWeight.w200,

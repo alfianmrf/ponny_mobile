@@ -68,10 +68,62 @@ class _SyaratKetentuanScreenState extends State<SyaratKetentuanScreen> {
                       margin: EdgeInsets.only(top: 10, bottom: 20),
                       padding: EdgeInsets.all(10),
                       child: Column(children: [
-                        syaratKetentuanText(),
-                        syaratKetentuanText(),
-                        syaratKetentuanText(),
-                        syaratKetentuanText(),
+                        Container(
+                          child: Text(
+                            "Syarat & ketentuan yang ditetapkan di bawah ini mengatur pemakaian jasa yang ditawarkan oleh Ponny beaute terkait pembelian di situs www.ponnybeaute.co.id/. Dengan mendaftar dan/atau menggunakan situs www.ponnybeaute.co.id/, maka pengguna dianggap telah membaca, mengerti, memahami dan menyutujui semua isi dalam Syarat & ketentuan.",
+                            style: TextStyle(
+                              fontFamily: 'Brandon',
+                              fontSize: 14,
+                            ),
+                          ),
+                        ),
+                        Container(height: 10),
+                        Container(
+                          child: Text(
+                            "1. Ponnybeaute tidak memungut biaya pendaftaran kepada Pengguna.",
+                            style: TextStyle(
+                              fontFamily: 'Brandon',
+                              fontSize: 14,
+                            ),
+                          ),
+                        ),
+                        Container(
+                          child: Text(
+                            "2. Pembeli wajib bertransaksi melalui prosedur transaksi yang telah ditetapkan oleh Ponnybeaute. Pembeli melakukan pembayaran dengan menggunakan metode pembayaran yang sebelumnya telah dipilih oleh Pembeli.",
+                            style: TextStyle(
+                              fontFamily: 'Brandon',
+                              fontSize: 14,
+                            ),
+                          ),
+                        ),
+                        Container(
+                          child: Text(
+                            "3. Pembeli memahami dan mengerti bahwa Ponnybeaute telah melakukan usaha sebaik mungkin dalam memberikan informasi tarif pengiriman kepada Pembeli berdasarkan lokasi secara akurat, namun Kami tidak dapat menjamin keakuratan data tersebut dengan yang ada pada cabang setempat.",
+                            style: TextStyle(
+                              fontFamily: 'Brandon',
+                              fontSize: 14,
+                            ),
+                          ),
+                        ),
+                        Container(
+                          child: Text(
+                            "4. Pengiriman pesanan dilakukan 1 (satu) hari setelah pembayaran diselesaikan.",
+                            style: TextStyle(
+                              fontFamily: 'Brandon',
+                              fontSize: 14,
+                            ),
+                          ),
+                        ),
+                        Container(
+                          child: Text(
+                            "5. Pembeli menerima informasi nomor resi dalam kurun waktu 36 jam setelah pembayaran diselesaikan.",
+                            style: TextStyle(
+                              fontFamily: 'Brandon',
+                              fontSize: 14,
+                            ),
+                          ),
+                        ),
+
                       ]),
                     ),
                   ),

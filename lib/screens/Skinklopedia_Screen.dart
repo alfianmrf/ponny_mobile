@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_html/style.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
 import 'package:http/http.dart' as http;
@@ -382,13 +384,15 @@ class _PageAScreen extends State<page_a> {
                                     ),
                                     Container(
                                       margin: EdgeInsets.only(top: 5),
-                                      child: Text(
-                                        widget.list[i]["text"],
-                                        style: TextStyle(
+                                      child: Html(
+                                      data: widget.list[i]["text"],
+                                      style: {
+                                        "html": Style(
+                                          fontSize: FontSize.small,
                                           fontFamily: "Brandon",
                                           fontWeight: FontWeight.w300,
-                                          fontSize: 12,
-                                        ),
+                                          )
+                                        },
                                       ),
                                     ),
                                   ],
@@ -454,14 +458,16 @@ class _PageAScreen extends State<page_a> {
                                     ),
                                     Container(
                                       margin: EdgeInsets.only(top: 5),
-                                      child: Text(
-                                        widget.list[i]["text"],
-                                        style: TextStyle(
-                                          fontFamily: "Brandon",
-                                          fontWeight: FontWeight.w300,
-                                          fontSize: 12,
-                                        ),
-                                      ),
+                                      child: Html(
+                                        data: widget.list[i]["text"],
+                                        style: {
+                                          "html": Style(
+                                            fontSize: FontSize.small,
+                                            fontFamily: "Brandon",
+                                            fontWeight: FontWeight.w300,
+                                          )
+                                        },
+                                      )
                                     ),
                                   ],
                                 ),

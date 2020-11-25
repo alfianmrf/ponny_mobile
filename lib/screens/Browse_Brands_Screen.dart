@@ -64,7 +64,12 @@ class _Browse_BrandsState extends State<Browse_Brands> {
               itemBuilder: (context, i) {
                 return new RawMaterialButton(
                     onPressed: () {
-                      return _animateToIndex(i);
+                      if(i==0){
+                        return _animateToIndex(i);
+                      }else{
+                        return _animateToIndex(i+1);
+                      }
+
                     },
                     shape: new CircleBorder(),
                     elevation: 0.0,

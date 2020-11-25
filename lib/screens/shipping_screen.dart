@@ -82,117 +82,117 @@ class _ShippingScreenState extends State<ShippingScreen> {
       useRootNavigator: true,
       builder: (context, scrollController) => Container(
         child: ListView.builder(
-          scrollDirection: Axis.vertical,
-          itemCount: Provider.of<AddressModel>(context).listAdress.length,
-          itemBuilder: (BuildContext context, int index) {
-            final address = Provider.of<AddressModel>(context).listAdress[index];
-            return Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: new Container(
-                width: 160.0,
-                color: Colors.grey,
-                child: GestureDetector(
-                  onTap: (){
-                    UIBlock.block(context,customLoaderChild: LoadingWidget(context));
-                    Provider.of<AddressModel>(context).setDefaultAddress(address).then((value){
-                      Provider.of<AddressModel>(context).getListCourier(Provider.of<AppModel>(context).auth.access_token).then((value){
-                        UIBlock.unblock(context);
-                        setState(() {
-                          isloading=false;
+            scrollDirection: Axis.vertical,
+            itemCount: Provider.of<AddressModel>(context).listAdress.length,
+            itemBuilder: (BuildContext context, int index) {
+              final address = Provider.of<AddressModel>(context).listAdress[index];
+              return Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: new Container(
+                  width: 160.0,
+                  color: Colors.grey,
+                  child: GestureDetector(
+                    onTap: (){
+                      UIBlock.block(context,customLoaderChild: LoadingWidget(context));
+                      Provider.of<AddressModel>(context).setDefaultAddress(address).then((value){
+                        Provider.of<AddressModel>(context).getListCourier(Provider.of<AppModel>(context).auth.access_token).then((value){
+                          UIBlock.unblock(context);
+                          setState(() {
+                            isloading=false;
+                          });
+                          Navigator.of(context).pop(true);
                         });
-                        Navigator.of(context).pop(true);
                       });
-                    });
-                  },
-                  child: Card(
-                    child: Column(
-                      children: [
-                        Container(
-                          padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Container(
-                                margin: EdgeInsets.only(bottom: 7),
-                                child: Row(
-                                  children: <Widget>[
-                                    Icon(
-                                      Icons.place,
-                                      color: Color(0xffF48262),
-                                      size: 16,
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsets.only(left: 5),
-                                      child: Text(
-                                        'Alamat Pengiriman',
-                                        style: TextStyle(
-                                          fontFamily: 'Brandon',
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w600,
+                    },
+                    child: Card(
+                      child: Column(
+                        children: [
+                          Container(
+                            padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Container(
+                                  margin: EdgeInsets.only(bottom: 7),
+                                  child: Row(
+                                    children: <Widget>[
+                                      Icon(
+                                        Icons.place,
+                                        color: Color(0xffF48262),
+                                        size: 16,
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsets.only(left: 5),
+                                        child: Text(
+                                          'Alamat Pengiriman',
+                                          style: TextStyle(
+                                            fontFamily: 'Brandon',
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w600,
+                                          ),
                                         ),
                                       ),
+                                    ],
+                                  ),
+                                ),
+                                Divider(
+                                  color: Color(0xffF48262),
+                                  height: 1.0,
+                                  indent: 10,
+                                  //endIndent: 20,
+                                ),
+                                Container(
+                                  padding: EdgeInsets.only(left: 10,top: 5),
+                                  child:Text(
+                                    address.nama_depan+" "+address.nama_belakang,
+                                    style: TextStyle(
+                                      fontFamily: 'Brandon',
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w600,
                                     ),
-                                  ],
+                                  ) ,
                                 ),
-                              ),
-                              Divider(
-                                color: Color(0xffF48262),
-                                height: 1.0,
-                                indent: 10,
-                                //endIndent: 20,
-                              ),
-                              Container(
-                                padding: EdgeInsets.only(left: 10,top: 5),
-                                child:Text(
-                                  address.nama_depan+" "+address.nama_belakang,
-                                  style: TextStyle(
-                                    fontFamily: 'Brandon',
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ) ,
-                              ),
-                              Container(
-                                padding: EdgeInsets.only(left: 10),
-                                child:Text(
-                                  address.alamat_lengkap,
-                                  style: TextStyle(
-                                    fontFamily: 'Brandon',
-                                    fontSize: 14,
+                                Container(
+                                  padding: EdgeInsets.only(left: 10),
+                                  child:Text(
+                                    address.alamat_lengkap,
+                                    style: TextStyle(
+                                      fontFamily: 'Brandon',
+                                      fontSize: 14,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              Container(
-                                padding: EdgeInsets.only(left: 10),
-                                child:Text(
-                                  address.kecamatan+', '+address.city_name+','+address.province+','+address.postal_code,
-                                  style: TextStyle(
-                                    fontFamily: 'Brandon',
-                                    fontSize: 14,
+                                Container(
+                                  padding: EdgeInsets.only(left: 10),
+                                  child:Text(
+                                    address.kecamatan+', '+address.city_name+','+address.province+','+address.postal_code,
+                                    style: TextStyle(
+                                      fontFamily: 'Brandon',
+                                      fontSize: 14,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              Container(
-                                padding: EdgeInsets.only(left: 10),
-                                child:Text(
-                                  '+62'+address.nomor_hp,
-                                  style: TextStyle(
-                                    fontFamily: 'Brandon',
-                                    fontSize: 14,
+                                Container(
+                                  padding: EdgeInsets.only(left: 10),
+                                  child:Text(
+                                    '+62'+address.nomor_hp,
+                                    style: TextStyle(
+                                      fontFamily: 'Brandon',
+                                      fontSize: 14,
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
+                      margin: const EdgeInsets.all(0.0),
                     ),
-                    margin: const EdgeInsets.all(0.0),
                   ),
                 ),
-              ),
-            );
-          }
+              );
+            }
         ),
       ),
     );
@@ -947,6 +947,7 @@ class _ShippingScreenState extends State<ShippingScreen> {
                                   ],
                                 ),
                               ),
+                                      Provider.of<AddressModel>(context).listAdress.length > 0 ?
                               Container(
                                 height: MediaQuery.of(context).size.height*.8,
                                 child: Center(
@@ -967,7 +968,28 @@ class _ShippingScreenState extends State<ShippingScreen> {
                                     ),
                                   ),
                                 ),
-                              ),
+                              ):Container(
+                                        height: MediaQuery.of(context).size.height*.8,
+                                        child: Center(
+                                          child: FlatButton(
+                                            onPressed: (){
+                                              Navigator.push(context,
+                                                  MaterialPageRoute(builder: (context) => TambahAlamatScreen()));
+                                            },
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.circular(0.0),
+                                                side: BorderSide(color: Color(0xffF48262))
+                                            ),
+                                            child: Text(
+                                              '+ Tambah alamat Pengiriman',
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                fontFamily: 'Brandon',
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
                             ],
                         ),
                       ),

@@ -16,9 +16,11 @@ class ProductModel with ChangeNotifier {
   List<Product> PhoebeChoices = [];
   List<Product> Recomendasi = [];
   List<Product> Sample = [];
+  List<Product> news =[];
   bool loadingBestSale = true;
   bool loadingPhobe = true;
   bool loadingRekomendasi = true;
+  bool loadingNews =true;
   FlashDetail flashsale;
 
 
@@ -27,6 +29,7 @@ class ProductModel with ChangeNotifier {
     getPhoebe();
     getRekomendasi();
     getFlashSale();
+    getNews();
   }
 
   Future<void> getBestSell() async {
@@ -53,7 +56,7 @@ class ProductModel with ChangeNotifier {
       final result = await http.get(flashdealUrl);
       if (result.statusCode == 200) {
         final responseJson = json.decode(result.body);
-        print(responseJson);
+        // print(responseJson);
         if (responseJson["status"]) {
           flashsale = FlashDetail.fromJson(responseJson);
           notifyListeners();
@@ -95,6 +98,24 @@ class ProductModel with ChangeNotifier {
       notifyListeners();
     } catch (err) {
       loadingRekomendasi = false;
+      print("error." + err.toString());
+      notifyListeners();
+    }
+  }
+
+  Future<void> getNews() async {
+    try {
+      final result = await http.get(newProduct);
+      if (result.statusCode == 200) {
+        final responseJson = json.decode(result.body);
+        for (Map item in responseJson) {
+          news.add(Product.fromJson(item['availability']));
+        }
+      }
+      loadingNews = false;
+      notifyListeners();
+    } catch (err) {
+      loadingNews = false;
       print("error." + err.toString());
       notifyListeners();
     }

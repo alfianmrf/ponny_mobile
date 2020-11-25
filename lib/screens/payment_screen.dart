@@ -586,8 +586,9 @@ class _PaymentScreenState extends State<PaymentScreen> {
                               ),
                               InkWell(
                                 onTap: () {
-                                  Navigator.of(context)
-                                      .pushReplacementNamed(PembayaranGopayScreen.id);
+                                  Navigator.push(context,new MaterialPageRoute(
+                                    builder: (BuildContext context) => new PembayaranGopayScreen(method:PembayaranGopayScreen.gopay,),
+                                  ));
                                 },
                                 child: Container(
                                   width: MediaQuery.of(context).size.width,

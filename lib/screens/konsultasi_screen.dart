@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_html/style.dart';
 import 'package:ponny/common/constant.dart';
 import 'package:ponny/model/App.dart';
+import 'package:ponny/model/FaqHeader.dart';
 import 'package:ponny/model/Order.dart';
 import 'package:ponny/model/Voucher.dart';
 import 'package:ponny/screens/WaitingPage.dart';
@@ -565,7 +568,6 @@ class _KonsultasiState extends State<KonsultasiScreen> {
       );
     }else if(listMyvoucher.length>0){
       return
-        Flexible(child:
         Container(
           height: MediaQuery.of(context).size.height*.46,
         child: ListView.builder(
@@ -660,6 +662,7 @@ class _KonsultasiState extends State<KonsultasiScreen> {
                             ),
                           ),
                           SizedBox(width: 5),
+                          if(DateTime.now().isBefore(convertDateFromString(e.expDate)))
                           Expanded(
                             flex: 1,
                             child: Container(
@@ -735,8 +738,7 @@ class _KonsultasiState extends State<KonsultasiScreen> {
               }
 
             }),
-        )
-      );
+        );
     }else{
       return Container(
         child: Column(
@@ -1403,6 +1405,7 @@ class _Konsultasi extends State<konsultasi> {
 
   @override
   Widget build(BuildContext context) {
+    final faq = Provider.of<AppModel>(context,listen: false).listFaq.firstWhere((element) => element.id == 5);
     return Container(
       child: Column(
         children: [
@@ -1537,17 +1540,17 @@ class _Konsultasi extends State<konsultasi> {
               ),
             ),
           ),
+          for(Faq item in faq.faq)
           Padding(
             padding: EdgeInsets.only(left: 20, right: 20),
-            child: Flexible(
-              child: Card(
+            child: Card(
                 elevation: 0,
                 color: Colors.transparent,
                 child: ExpansionTile(
                   title: Padding(
                     padding: EdgeInsets.only(left: 0),
                     child: Text(
-                      "Bagaimana cara berkonsultasi ?",
+                      item.ask,
                       style: new TextStyle(
                         fontFamily: "Brandon",
                         fontSize: 16,
@@ -1578,15 +1581,18 @@ class _Konsultasi extends State<konsultasi> {
                         children: [
                           Container(
                             width: MediaQuery.of(context).size.width,
-                            child: Text(
-                              "Happy Skin Reward adalah program reward di mana Anda dapat menjadi anggota membership Pony Beaute. Sebagai Anggota, anda harus mempunyai akun, sehingga dapat mengumpulkan poin, menukarkan poin dengan hadiah, mendapat beragam keuntungan diskon dan promosi lainnya yang secara eksklusif diberikan untuk anggota, serta informasi kecantikan lainnya.",
-                              style: new TextStyle(
-                                fontFamily: "Brandon",
-                                fontSize: 16,
-                                fontWeight: FontWeight.w300,
-                                color: Colors.black,
-                              ),
-                            ),
+                            child:
+                            Html(
+                              data:item.ans,
+                              style: {
+                                "html": Style(
+                                  fontFamily: "Brandon",
+                                  fontSize: FontSize.medium,
+                                  fontWeight: FontWeight.w300,
+                                  color: Colors.black,
+                                )
+                              },
+                            )
                           ),
                         ],
                       ),
@@ -1594,131 +1600,6 @@ class _Konsultasi extends State<konsultasi> {
                   ],
                 ),
               ),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(left: 20, right: 20),
-            child: Flexible(
-              child: Card(
-                elevation: 0,
-                color: Colors.transparent,
-                shape: Border(
-                  top: BorderSide(color: Hexcolor("#F7866A"), width: 2),
-                ),
-                child: ExpansionTile(
-                  title: Padding(
-                    padding: EdgeInsets.only(left: 0),
-                    child: Text(
-                      "Apa itu Happy Skin Reward ?",
-                      style: new TextStyle(
-                        fontFamily: "Brandon",
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.black,
-                      ),
-                      textAlign: TextAlign.left,
-                    ),
-                  ),
-                  children: <Widget>[
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Colors.transparent,
-                        border: Border(
-                          top: BorderSide(
-                            color: Hexcolor("#F7866A"),
-                            width: 2.0,
-                          ),
-                        ),
-                      ),
-                      padding: EdgeInsets.only(
-                        left: 15,
-                        right: 15,
-                        top: 5,
-                        bottom: 5,
-                      ),
-                      child: Column(
-                        children: [
-                          Container(
-                            width: MediaQuery.of(context).size.width,
-                            child: Text(
-                              "Happy Skin Reward adalah program reward di mana Anda dapat menjadi anggota membership Pony Beaute. Sebagai Anggota, anda harus mempunyai akun, sehingga dapat mengumpulkan poin, menukarkan poin dengan hadiah, mendapat beragam keuntungan diskon dan promosi lainnya yang secara eksklusif diberikan untuk anggota, serta informasi kecantikan lainnya.",
-                              style: new TextStyle(
-                                fontFamily: "Brandon",
-                                fontSize: 16,
-                                fontWeight: FontWeight.w300,
-                                color: Colors.black,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(left: 20, right: 20),
-            child: Flexible(
-              child: Card(
-                elevation: 0,
-                color: Colors.transparent,
-                shape: Border(
-                  top: BorderSide(color: Hexcolor("#F7866A"), width: 2),
-                ),
-                child: ExpansionTile(
-                  title: Padding(
-                    padding: EdgeInsets.only(left: 0),
-                    child: Text(
-                      "Apa itu Happy Skin Reward ?",
-                      style: new TextStyle(
-                        fontFamily: "Brandon",
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.black,
-                      ),
-                      textAlign: TextAlign.left,
-                    ),
-                  ),
-                  children: <Widget>[
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Colors.transparent,
-                        border: Border(
-                          top: BorderSide(
-                            color: Hexcolor("#F7866A"),
-                            width: 2.0,
-                          ),
-                        ),
-                      ),
-                      padding: EdgeInsets.only(
-                        left: 15,
-                        right: 15,
-                        top: 5,
-                        bottom: 5,
-                      ),
-                      child: Column(
-                        children: [
-                          Container(
-                            width: MediaQuery.of(context).size.width,
-                            child: Text(
-                              "Happy Skin Reward adalah program reward di mana Anda dapat menjadi anggota membership Pony Beaute. Sebagai Anggota, anda harus mempunyai akun, sehingga dapat mengumpulkan poin, menukarkan poin dengan hadiah, mendapat beragam keuntungan diskon dan promosi lainnya yang secara eksklusif diberikan untuk anggota, serta informasi kecantikan lainnya.",
-                              style: new TextStyle(
-                                fontFamily: "Brandon",
-                                fontSize: 16,
-                                fontWeight: FontWeight.w300,
-                                color: Colors.black,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
           ),
           SizedBox(height: 20),
         ],
@@ -1886,6 +1767,7 @@ class tukar_screen extends StatelessWidget {
 class konsultasi_screen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+
     return Container(
       child: Column(
         children: [

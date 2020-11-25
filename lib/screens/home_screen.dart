@@ -1,16 +1,25 @@
 import 'dart:async';
 import 'dart:collection';
+import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_countdown_timer/flutter_countdown_timer.dart';
 import 'package:ponny/common/constant.dart';
 import 'package:ponny/model/App.dart';
 import 'package:ponny/model/Cart.dart';
+import 'package:ponny/model/Category.dart';
 import 'package:ponny/model/Product.dart';
 import 'package:ponny/model/Slider.dart';
 import 'package:ponny/model/User.dart';
+import 'package:ponny/screens/Basic_SkinCare_screen.dart';
+import 'package:ponny/screens/Browse_Screen.dart';
+import 'package:ponny/screens/Localpride_Screen.dart';
+import 'package:ponny/screens/Promotion_screen.dart';
+import 'package:ponny/screens/Skincare_Screen.dart';
+import 'package:ponny/screens/Skinklopedia_Screen.dart';
 import 'package:ponny/screens/flash_sale_screen.dart';
 import 'package:ponny/model/WishProduct.dart';
+import 'package:ponny/screens/konsultasi_screen.dart';
 import 'package:ponny/screens/login.dart';
 import 'package:ponny/screens/product_details_screen.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
@@ -22,9 +31,13 @@ import 'package:provider/provider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ponny/screens/cart_screen.dart';
 import 'package:uiblock/uiblock.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
+import 'package:http/http.dart' as http;
+import 'package:ponny/util/globalUrl.dart';
 
 import 'account/daftar_keinginan_screen.dart';
+import 'package:ponny/common/constant.dart';
 
 class HomeScreen extends StatefulWidget {
   static const String id = "home_screen";
@@ -44,19 +57,31 @@ class _HomeScreenState extends State<HomeScreen> {
   bool loading_flashdeal = false;
 
   static String videoId = YoutubePlayer.convertUrlToId("https://www.youtube.com/embed/5ou09YALCJw");
-  YoutubePlayerController _ytcontroller = YoutubePlayerController(
-    initialVideoId: videoId,
-    flags: YoutubePlayerFlags(
-      autoPlay: false,
-      mute: false,
-    ),
-  );
-
+  YoutubePlayerController _ytcontroller;
 
   showModal() {
     return _timer = Timer(Duration(seconds: 2), () {
       showAlertDialog(context);
     });
+  }
+  _launchURL(url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
+  Future<List<Category>> getCategory() async {
+    List<Category> categoris = List<Category>();
+    final res = await http.get(categoryList);
+    if(res.statusCode == 200){
+      final responejson = json.decode(res.body);
+      responejson.forEach((v) {
+        categoris.add(new Category.fromJson(v));
+      });
+    }
+    return categoris;
   }
 
 
@@ -71,6 +96,18 @@ class _HomeScreenState extends State<HomeScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       _getCartOfitem();
       _getWishListCount();
+    });
+    _ytcontroller = YoutubePlayerController(
+      initialVideoId: videoId,
+      flags: YoutubePlayerFlags(
+        autoPlay: false,
+        mute: false,
+      ),
+    )..addListener((){
+      print("on full screan");
+      if(_ytcontroller.value.isFullScreen){
+        print("on full screan");
+      }
     });
   }
 
@@ -277,9 +314,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
 
 
-
-
-
     return new WillPopScope(
       onWillPop: _onWillPop,
       child: Scaffold(
@@ -315,7 +349,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   backgroundColor: _color,
                   elevation: _elevation,
                   leading: IconButton(
-                    onPressed: (){},
+                    onPressed: (){
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => Browse()));
+                    },
                     icon: ImageIcon(
                       AssetImage('assets/images/home/search.png')
                     ),
@@ -453,7 +490,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         imageUrl: img_url+silder[index].photo,
                         placeholder: (context, url) => LoadingWidgetPulse(context),
                         errorWidget: (context, url, error) => Image.asset('assets/images/basic.jpg'),
-                        fit: BoxFit.cover,
+                        fit: BoxFit.fill,
                       );
                     },
                     itemCount: silder.length,
@@ -596,302 +633,363 @@ class _HomeScreenState extends State<HomeScreen> {
               Container(
                 width: MediaQuery.of(context).size.width,
                 padding: EdgeInsets.symmetric(vertical: 10),
-                child: Column(
-                  children: [
-                    IntrinsicHeight(
-                      child: Row(
-                        children: [
-                          Expanded(
-                            flex: 1,
-                            child: Column(
-                              children: [
-                                AspectRatio(
-                                  aspectRatio: 1,
-                                  child: Container(
-                                    margin: EdgeInsets.all(7),
-                                    padding: EdgeInsets.all(5),
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(10),
-                                      border: Border.all(width: 1, color: Color(0xffF48262),),
+                child:  FutureBuilder<List<Category>>(
+                future: getCategory(),
+                builder: (BuildContext context, AsyncSnapshot<List<Category>> snapshot){
+                  if(snapshot.hasData){
+                    return Column(
+                      children: [
+                        IntrinsicHeight(
+                          child: Row(
+                            children: [
+                              Expanded(
+                                flex: 1,
+                                child: InkWell(
+                                  onTap: (){
+                                    final skincare =snapshot.data.firstWhere((element) => element.id == 9 );
+                                    Navigator.push(context, MaterialPageRoute(builder: (context) => Skincare(category: skincare,) ));
+                                  },
+                                  child:  Column(
+                                    children: [
+                                      AspectRatio(
+                                        aspectRatio: 1,
+                                        child: Container(
+                                          margin: EdgeInsets.all(7),
+                                          padding: EdgeInsets.all(5),
+                                          decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius: BorderRadius.circular(10),
+                                            border: Border.all(width: 1, color: Color(0xffF48262),),
+                                          ),
+                                          child: Image.asset('assets/images/home/skincare.png'),
+                                        ),
+                                      ),
+                                      Text(
+                                        'Skincare',
+                                        style: TextStyle(
+                                          fontFamily: 'Brandon',
+                                          fontSize: 12,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                flex: 1,
+                                child: InkWell(
+                                  onTap: (){
+                                    final skincare =snapshot.data.firstWhere((element) => element.id == 10 );
+                                    Navigator.push(context, MaterialPageRoute(builder: (context) => Skincare(category: skincare,) ));
+                                  },
+                                 child: Column(
+                                   children: [
+                                     AspectRatio(
+                                       aspectRatio: 1,
+                                       child: Container(
+                                         margin: EdgeInsets.all(7),
+                                         padding: EdgeInsets.all(5),
+                                         decoration: BoxDecoration(
+                                           color: Colors.white,
+                                           borderRadius: BorderRadius.circular(10),
+                                           border: Border.all(width: 1, color: Color(0xffF48262),),
+                                         ),
+                                         child: Image.asset('assets/images/home/hair.png'),
+                                       ),
+                                     ),
+                                     Text(
+                                       'Hair & Makeup',
+                                       style: TextStyle(
+                                         fontFamily: 'Brandon',
+                                         fontSize: 12,
+                                       ),
+                                       textAlign: TextAlign.center,
+                                     ),
+                                   ],
+                                 ),
+                                ) ,
+                              ),
+                              Expanded(
+                                flex: 1,
+                                child: InkWell(
+                                  onTap: (){
+                                    final skincare =snapshot.data.firstWhere((element) => element.id == 11 );
+                                    Navigator.push(context, MaterialPageRoute(builder: (context) => Skincare(category: skincare,) ));
+                                  },
+                                  child: Column(
+                                    children: [
+                                      AspectRatio(
+                                        aspectRatio: 1,
+                                        child: Container(
+                                          margin: EdgeInsets.all(7),
+                                          padding: EdgeInsets.all(5),
+                                          decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius: BorderRadius.circular(10),
+                                            border: Border.all(width: 1, color: Color(0xffF48262),),
+                                          ),
+                                          child: Image.asset('assets/images/home/peralatan.png'),
+                                        ),
+                                      ),
+                                      Text(
+                                        'Peralatan Kecantikan',
+                                        style: TextStyle(
+                                          fontFamily: 'Brandon',
+                                          fontSize: 12,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ],
+                                  ),
+                                ) ,
+                              ),
+                              Expanded(
+                                flex: 1,
+                                child: InkWell(
+                                  onTap: (){
+                                    Navigator.push(context, MaterialPageRoute(builder: (context) => LocalPride() ));
+                                  },
+                                  child: Column(
+                                    children: [
+                                      AspectRatio(
+                                        aspectRatio: 1,
+                                        child: Container(
+                                          margin: EdgeInsets.all(7),
+                                          padding: EdgeInsets.all(7),
+                                          decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius: BorderRadius.circular(10),
+                                            border: Border.all(width: 1, color: Color(0xffF48262),),
+                                          ),
+                                          child: Image.asset('assets/images/home/bangga.png'),
+                                        ),
+                                      ),
+                                      Text(
+                                        'Bangga Produk Indonesia',
+                                        style: TextStyle(
+                                          fontFamily: 'Brandon',
+                                          fontSize: 12,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ],
+                                  ),
+                                ) ,
+                              ),
+                              Expanded(
+                                flex: 1,
+                                child: Column(
+                                  children: [
+                                    AspectRatio(
+                                      aspectRatio: 1,
+                                      child: Container(
+                                        margin: EdgeInsets.all(7),
+                                        padding: EdgeInsets.all(5),
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius: BorderRadius.circular(10),
+                                          border: Border.all(width: 1, color: Color(0xffF48262),),
+                                        ),
+                                        child: Image.asset('assets/images/home/masalah.png'),
+                                      ),
                                     ),
-                                    child: Image.asset('assets/images/home/skincare.png'),
-                                  ),
-                                ),
-                                Text(
-                                  'Skincare',
-                                  style: TextStyle(
-                                    fontFamily: 'Brandon',
-                                    fontSize: 12,
-                                  ),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ],
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Column(
-                              children: [
-                                AspectRatio(
-                                  aspectRatio: 1,
-                                  child: Container(
-                                    margin: EdgeInsets.all(7),
-                                    padding: EdgeInsets.all(5),
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(10),
-                                      border: Border.all(width: 1, color: Color(0xffF48262),),
+                                    Text(
+                                      'Masalah Kulit',
+                                      style: TextStyle(
+                                        fontFamily: 'Brandon',
+                                        fontSize: 12,
+                                      ),
+                                      textAlign: TextAlign.center,
                                     ),
-                                    child: Image.asset('assets/images/home/hair.png'),
-                                  ),
+                                  ],
                                 ),
-                                Text(
-                                  'Hair & Makeup',
-                                  style: TextStyle(
-                                    fontFamily: 'Brandon',
-                                    fontSize: 12,
-                                  ),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
-                          Expanded(
-                            flex: 1,
-                            child: Column(
-                              children: [
-                                AspectRatio(
-                                  aspectRatio: 1,
-                                  child: Container(
-                                    margin: EdgeInsets.all(7),
-                                    padding: EdgeInsets.all(5),
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(10),
-                                      border: Border.all(width: 1, color: Color(0xffF48262),),
+                        ),
+                        IntrinsicHeight(
+                          child: Row(
+                            children: [
+                              Expanded(
+                                flex: 1,
+                                child:InkWell(
+                                  onTap: (){
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => PromotionScreen()),
+                                    );
+                                  },
+                                  child: Column(
+                                    children: [
+                                      AspectRatio(
+                                        aspectRatio: 1,
+                                        child: Container(
+                                          margin: EdgeInsets.all(7),
+                                          padding: EdgeInsets.all(5),
+                                          decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius: BorderRadius.circular(10),
+                                            border: Border.all(width: 1, color: Color(0xffF48262),),
+                                          ),
+                                          child: Image.asset('assets/images/home/promosi.png'),
+                                        ),
+                                      ),
+                                      Text(
+                                        'Promosi',
+                                        style: TextStyle(
+                                          fontFamily: 'Brandon',
+                                          fontSize: 12,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                flex: 1,
+                                child: InkWell(
+                                  onTap: (){
+                                    Navigator.push(context,
+                                        MaterialPageRoute(builder: (context) => Skinklopedia()));
+                                  },
+                                  child:  Column(
+                                    children: [
+                                      AspectRatio(
+                                        aspectRatio: 1,
+                                        child: Container(
+                                          margin: EdgeInsets.all(7),
+                                          padding: EdgeInsets.all(5),
+                                          decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius: BorderRadius.circular(10),
+                                            border: Border.all(width: 1, color: Color(0xffF48262),),
+                                          ),
+                                          child: Image.asset('assets/images/home/skinklopedia.png'),
+                                        ),
+                                      ),
+                                      Text(
+                                        'Skinklopedia',
+                                        style: TextStyle(
+                                          fontFamily: 'Brandon',
+                                          fontSize: 12,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                flex: 1,
+                                child: Column(
+                                  children: [
+                                    AspectRatio(
+                                      aspectRatio: 1,
+                                      child: Container(
+                                        margin: EdgeInsets.all(7),
+                                        padding: EdgeInsets.all(5),
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius: BorderRadius.circular(10),
+                                          border: Border.all(width: 1, color: Color(0xffF48262),),
+                                        ),
+                                        child: Image.asset('assets/images/home/jenis.png'),
+                                      ),
                                     ),
-                                    child: Image.asset('assets/images/home/peralatan.png'),
-                                  ),
-                                ),
-                                Text(
-                                  'Peralatan Kecantikan',
-                                  style: TextStyle(
-                                    fontFamily: 'Brandon',
-                                    fontSize: 12,
-                                  ),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ],
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Column(
-                              children: [
-                                AspectRatio(
-                                  aspectRatio: 1,
-                                  child: Container(
-                                    margin: EdgeInsets.all(7),
-                                    padding: EdgeInsets.all(7),
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(10),
-                                      border: Border.all(width: 1, color: Color(0xffF48262),),
+                                    Text(
+                                      'Jenis Kulit',
+                                      style: TextStyle(
+                                        fontFamily: 'Brandon',
+                                        fontSize: 12,
+                                      ),
+                                      textAlign: TextAlign.center,
                                     ),
-                                    child: Image.asset('assets/images/home/bangga.png'),
-                                  ),
+                                  ],
                                 ),
-                                Text(
-                                  'Bangga Produk Indonesia',
-                                  style: TextStyle(
-                                    fontFamily: 'Brandon',
-                                    fontSize: 12,
+                              ),
+                              Expanded(
+                                flex: 1,
+                                child: InkWell(
+                                  onTap: (){
+                                    Navigator.push(context,
+                                        MaterialPageRoute(builder: (context) => BasicSkincare()));
+                                  },
+                                  child: Column(
+                                    children: [
+                                      AspectRatio(
+                                        aspectRatio: 1,
+                                        child: Container(
+                                          margin: EdgeInsets.all(7),
+                                          padding: EdgeInsets.all(5),
+                                          decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius: BorderRadius.circular(10),
+                                            border: Border.all(width: 1, color: Color(0xffF48262),),
+                                          ),
+                                          child: Image.asset('assets/images/home/blog.png'),
+                                        ),
+                                      ),
+                                      Text(
+                                        'Blog',
+                                        style: TextStyle(
+                                          fontFamily: 'Brandon',
+                                          fontSize: 12,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ],
                                   ),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ],
-                            ),
+                                ) ,
+                              ),
+                              Expanded(
+                                flex: 1,
+                                child: InkWell(
+                                  onTap: (){
+                                    Navigator.push(context,
+                                        MaterialPageRoute(builder: (context) => KonsultasiScreen()));
+                                  },
+                                  child: Column(
+                                    children: [
+                                      AspectRatio(
+                                        aspectRatio: 1,
+                                        child: Container(
+                                          margin: EdgeInsets.all(7),
+                                          padding: EdgeInsets.all(5),
+                                          decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius: BorderRadius.circular(10),
+                                            border: Border.all(width: 1, color: Color(0xffF48262),),
+                                          ),
+                                          child: Image.asset('assets/images/home/bantuan.png'),
+                                        ),
+                                      ),
+                                      Text(
+                                        'Butuh Bantuan?',
+                                        style: TextStyle(
+                                          fontFamily: 'Brandon',
+                                          fontSize: 12,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ],
+                                  ),
+                                ) ,
+                              ),
+                            ],
                           ),
-                          Expanded(
-                            flex: 1,
-                            child: Column(
-                              children: [
-                                AspectRatio(
-                                  aspectRatio: 1,
-                                  child: Container(
-                                    margin: EdgeInsets.all(7),
-                                    padding: EdgeInsets.all(5),
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(10),
-                                      border: Border.all(width: 1, color: Color(0xffF48262),),
-                                    ),
-                                    child: Image.asset('assets/images/home/masalah.png'),
-                                  ),
-                                ),
-                                Text(
-                                  'Masalah Kulit',
-                                  style: TextStyle(
-                                    fontFamily: 'Brandon',
-                                    fontSize: 12,
-                                  ),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    IntrinsicHeight(
-                      child: Row(
-                        children: [
-                          Expanded(
-                            flex: 1,
-                            child: Column(
-                              children: [
-                                AspectRatio(
-                                  aspectRatio: 1,
-                                  child: Container(
-                                    margin: EdgeInsets.all(7),
-                                    padding: EdgeInsets.all(5),
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(10),
-                                      border: Border.all(width: 1, color: Color(0xffF48262),),
-                                    ),
-                                    child: Image.asset('assets/images/home/promosi.png'),
-                                  ),
-                                ),
-                                Text(
-                                  'Promosi',
-                                  style: TextStyle(
-                                    fontFamily: 'Brandon',
-                                    fontSize: 12,
-                                  ),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ],
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Column(
-                              children: [
-                                AspectRatio(
-                                  aspectRatio: 1,
-                                  child: Container(
-                                    margin: EdgeInsets.all(7),
-                                    padding: EdgeInsets.all(5),
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(10),
-                                      border: Border.all(width: 1, color: Color(0xffF48262),),
-                                    ),
-                                    child: Image.asset('assets/images/home/skinklopedia.png'),
-                                  ),
-                                ),
-                                Text(
-                                  'Skinklopedia',
-                                  style: TextStyle(
-                                    fontFamily: 'Brandon',
-                                    fontSize: 12,
-                                  ),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ],
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Column(
-                              children: [
-                                AspectRatio(
-                                  aspectRatio: 1,
-                                  child: Container(
-                                    margin: EdgeInsets.all(7),
-                                    padding: EdgeInsets.all(5),
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(10),
-                                      border: Border.all(width: 1, color: Color(0xffF48262),),
-                                    ),
-                                    child: Image.asset('assets/images/home/jenis.png'),
-                                  ),
-                                ),
-                                Text(
-                                  'Jenis Kulit',
-                                  style: TextStyle(
-                                    fontFamily: 'Brandon',
-                                    fontSize: 12,
-                                  ),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ],
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Column(
-                              children: [
-                                AspectRatio(
-                                  aspectRatio: 1,
-                                  child: Container(
-                                    margin: EdgeInsets.all(7),
-                                    padding: EdgeInsets.all(5),
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(10),
-                                      border: Border.all(width: 1, color: Color(0xffF48262),),
-                                    ),
-                                    child: Image.asset('assets/images/home/blog.png'),
-                                  ),
-                                ),
-                                Text(
-                                  'Blog',
-                                  style: TextStyle(
-                                    fontFamily: 'Brandon',
-                                    fontSize: 12,
-                                  ),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ],
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Column(
-                              children: [
-                                AspectRatio(
-                                  aspectRatio: 1,
-                                  child: Container(
-                                    margin: EdgeInsets.all(7),
-                                    padding: EdgeInsets.all(5),
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(10),
-                                      border: Border.all(width: 1, color: Color(0xffF48262),),
-                                    ),
-                                    child: Image.asset('assets/images/home/bantuan.png'),
-                                  ),
-                                ),
-                                Text(
-                                  'Butuh Bantuan?',
-                                  style: TextStyle(
-                                    fontFamily: 'Brandon',
-                                    fontSize: 12,
-                                  ),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
+                        ),
+                      ],
+                    );
+                  }else{
+                    return Center(
+                      child: LoadingWidgetFadingCircle(context),
+                    );
+                  }
+                },
+              ),
               ),
               if(flashdeal != null && DateTime.now().millisecondsSinceEpoch < flashdeal.detail.endDate * 1000 && !loading_flashdeal)
               Container(
@@ -1227,7 +1325,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     Container(
                       padding: EdgeInsets.only(top: 30),
                       child: FlatButton(
-                        onPressed: (){},
+                        onPressed: (){
+                          _launchURL("https://www.youtube.com/c/PonnyBeaute");
+                        },
                         padding: EdgeInsets.symmetric(horizontal: 10),
                         materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                         shape: RoundedRectangleBorder(

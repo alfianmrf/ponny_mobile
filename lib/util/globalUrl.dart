@@ -28,6 +28,7 @@ const best_sale = base_url + "product/bestSeller";
 const phobe = base_url + "product/phoebeChoices";
 const rekomendasiProduk = base_url + "product/recommended";
 const flashdealUrl = base_url + "product/flashDeal";
+const newProduct = base_url+"product/news";
 
 //cart
 const listCarturl = base_url + "cart/get";
@@ -95,7 +96,9 @@ const removeAddressUrl = base_url + "shipping/delAddress";
 //browse
 const brandSearch = base_url+"product/brands?pageSize=all";
 const searchProductUrl =base_url+"product/search";
+const categoryList = base_url+"product/categories";
 
 //promotion
 const getpromo =base_url+"product/promotions";
+const localprideUrl = base_url+"product/localPride";
 

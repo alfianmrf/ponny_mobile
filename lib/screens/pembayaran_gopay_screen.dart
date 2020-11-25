@@ -1,29 +1,53 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:ponny/common/constant.dart';
+import 'package:ponny/model/Address.dart';
+import 'package:ponny/model/App.dart';
+import 'package:ponny/model/Cart.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
 import 'package:ponny/screens/pesanan_berhasil_screen.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_html/style.dart';
+import 'package:provider/provider.dart';
+import 'package:uiblock/uiblock.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class PembayaranGopayScreen extends StatefulWidget {
   static const String id = "pembayaran_gopay_screen";
+  static const String ovo ="ovo";
+  static const String gopay ="gopay";
+
+  String method;
+  PembayaranGopayScreen({Key key, this.method});
 
   @override
   _PembayaranGopayScreenState createState() => _PembayaranGopayScreenState();
 }
 
 class _PembayaranGopayScreenState extends State<PembayaranGopayScreen> {
+  final scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   void initState() {
     super.initState();
   }
 
+  _launchURL(url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final card = Provider.of<CartModel>(context,listen: false);
+
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
       body: Stack(children: <Widget>[
         Scaffold(
+          key: scaffoldKey,
           backgroundColor: Color(0xffFDF8F0),
           body: Container(
             margin: MediaQuery.of(context).padding,
@@ -76,7 +100,7 @@ class _PembayaranGopayScreenState extends State<PembayaranGopayScreen> {
                           ),
                         ),
                         Text(
-                          'Rp 469.000',
+                          card.summary.total,
                           style: TextStyle(
                             color: Colors.white,
                             fontFamily: 'Brandon',
@@ -142,8 +166,35 @@ class _PembayaranGopayScreenState extends State<PembayaranGopayScreen> {
                           borderRadius: BorderRadius.circular(7.0),
                         ),
                         onPressed: (){
-                          Navigator.of(context)
-                              .pushReplacementNamed(PesananBerhasilScreen.id);
+                          UIBlock.block(context,customLoaderChild: LoadingWidget(context));
+                          Provider.of<CartModel>(context).Checkout(Provider.of<AppModel>(context).auth.access_token, Provider.of<AddressModel>(context).useAddress, widget.method).then((value) {
+                            UIBlock.unblock(context);
+                            if(value!= null && value.success){
+                              print(value.mitransRequest.actions.length);
+                              final redirect = value.mitransRequest.actions.firstWhere((element) => element.name == "deeplink-redirect");
+                              print(redirect.name);
+                              if(redirect != null){
+                                _launchURL(redirect.url);
+                              }
+                            }else{
+                              UIBlock.unblock(context);
+                              print(value.message);
+                              final snackBar = SnackBar(
+                                content: Text('Terjadi kesalah Pada Server, Silakan coba kembali nanti!',style: TextStyle(color: Colors.white)),
+                                backgroundColor: Colors.redAccent,
+                              );
+                              scaffoldKey.currentState.showSnackBar(snackBar);
+                            }
+                          }).catchError((onError){
+                            UIBlock.unblock(context);
+                            final snackBar = SnackBar(
+                              content: Text('Terjadi kesalah Pada Server, Silakan coba kembali nanti!',style: TextStyle(color: Colors.white)),
+                              backgroundColor: Colors.redAccent,
+                            );
+                            scaffoldKey.currentState.showSnackBar(snackBar);
+                            print(onError);
+                          });
+
                         },
                       ),
                     ),

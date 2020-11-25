@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:ponny/model/User.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
+import 'package:provider/provider.dart';
 
 class RincianPoint extends StatefulWidget {
   static const String id = "RincianPoints";
@@ -12,6 +14,7 @@ class RincianPoint extends StatefulWidget {
 class _RincianPointState extends State<RincianPoint> {
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<UserModel>(context).user;
     return DefaultTabController(
       length: 3,
       child: Scaffold(
@@ -86,7 +89,7 @@ class _RincianPointState extends State<RincianPoint> {
                             children: [
                               FittedBox(
                                 child: Text(
-                                  "260 ",
+                                  user.point.toString(),
                                   style: TextStyle(
                                       fontSize: 18,
                                       fontFamily: "Brandon",
@@ -95,7 +98,7 @@ class _RincianPointState extends State<RincianPoint> {
                               ),
                               FittedBox(
                                 child: Text(
-                                  "POIN",
+                                  " POIN",
                                   style: TextStyle(
                                     fontSize: 18,
                                     fontFamily: "Brandon",
