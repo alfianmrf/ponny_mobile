@@ -445,7 +445,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: Column(
             children: <Widget>[
               Container(
-                height: MediaQuery.of(context).size.width * 0.65,
+                margin: EdgeInsets.only(top: 25),
+                height: MediaQuery.of(context).size.width * 0.45,
                 color: Colors.white,
                 child: Center(
                   child: new Swiper(
