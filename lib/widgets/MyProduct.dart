@@ -3,6 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:intl/intl.dart';
+import 'package:like_button/like_button.dart';
 import 'package:ponny/common/constant.dart';
 import 'package:ponny/main.dart';
 import 'package:ponny/model/App.dart';
@@ -74,23 +75,34 @@ class MyProduct extends StatelessWidget {
                         color: Color(0xffF48262),
                       )),
                 ),
-              Padding(
-                padding: EdgeInsets.all(5.0),
-                child: Align(
-                  alignment: Alignment.topRight,
-                  child: InkWell(
-                      onTap: (){
-                        this.onFavorit();
-                      },
-                      child: Icon(
-                      Icons.favorite_border,
-                      color: Color(0xffF48262),
-                      size: 20,
-                      ),
-
-                     )
-                  ),
-                ),
+              LikeButton(
+                mainAxisAlignment: MainAxisAlignment.end,
+                padding: EdgeInsets.all(0),
+                likeBuilder: (bool isLiked) {
+                  return Icon(
+                    isLiked ? Icons.favorite : Icons.favorite_border,
+                    color: Color(0xffF48262),
+                    size: 20,
+                  );
+                },
+              ),
+              // Padding(
+              //   padding: EdgeInsets.all(5.0),
+              //   child: Align(
+              //     alignment: Alignment.topRight,
+              //     child: InkWell(
+              //         onTap: (){
+              //           this.onFavorit();
+              //         },
+              //         child: Icon(
+              //         Icons.favorite_border,
+              //         color: Color(0xffF48262),
+              //         size: 20,
+              //         ),
+              //
+              //        )
+              //     ),
+              //   ),
             ],
           ),
         ),
@@ -113,22 +125,27 @@ class MyProduct extends StatelessWidget {
         ),
         Padding(
           padding: EdgeInsets.only(top: 7.0),
-          child: Text(
-            product.brand.name,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontFamily: 'Yeseva',
-              fontSize: 16,
+          child: MarqueeWidget(
+            direction: Axis.horizontal,
+            child: Text(
+              product.brand.name,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontFamily: 'Yeseva',
+                fontSize: 16,
+              ),
             ),
           ),
         ),
         Text(
-          product.name.length > 25 ? product.name.substring(0, 25)+'...' : product.name,
+          product.name,
           textAlign: TextAlign.center,
           style: TextStyle(
             fontFamily: 'Brandon',
             fontSize: 14,
           ),
+          maxLines: 2,
+          overflow: TextOverflow.ellipsis,
         ),
         Text(
           product.home_discounted_price,
