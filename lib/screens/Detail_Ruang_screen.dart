@@ -501,7 +501,8 @@ class _DetailForumState extends State<DetailForum> {
                                                         decoration: BoxDecoration(
                                                             border: Border.all(
                                                                 color: Color(
-                                                                    0xffF48262))),
+                                                                    0xffF48262)),
+                                                        borderRadius: BorderRadius.circular(10)),
                                                         child: Text(
                                                           "BATAL",
                                                           style: TextStyle(
@@ -535,8 +536,10 @@ class _DetailForumState extends State<DetailForum> {
                                                             padding:
                                                                 EdgeInsets.all(
                                                                     10),
-                                                            color: Color(
-                                                                0xffF48262),
+                                                                decoration: BoxDecoration(
+                                                                  color: Color(0xffF48262),
+                                                                  borderRadius: BorderRadius.circular(10),
+                                                                ),
                                                             child: Text(
                                                               "POST",
                                                               style: TextStyle(
@@ -1289,7 +1292,9 @@ void _mulaiObrolan(
                             alignment: Alignment.center,
                             padding: EdgeInsets.all(10),
                             decoration: BoxDecoration(
-                                border: Border.all(color: Color(0xffF48262))),
+                              border: Border.all(color: Color(0xffF48262)),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
                             child: Text(
                               "BATAL",
                               style: TextStyle(fontFamily: "Brandon"),
@@ -1308,7 +1313,10 @@ void _mulaiObrolan(
                                 margin: EdgeInsets.all(10),
                                 alignment: Alignment.center,
                                 padding: EdgeInsets.all(10),
-                                color: Color(0xffF48262),
+                                decoration: BoxDecoration(
+                                  color: Color(0xffF48262),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
                                 child: Text(
                                   "POST",
                                   style: TextStyle(

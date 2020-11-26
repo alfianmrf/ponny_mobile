@@ -42,6 +42,8 @@ import 'package:ponny/util/globalUrl.dart';
 import 'account/daftar_keinginan_screen.dart';
 import 'package:ponny/common/constant.dart';
 
+import 'bantuan_screen.dart';
+
 class HomeScreen extends StatefulWidget {
   static const String id = "home_screen";
 
@@ -968,7 +970,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   child: InkWell(
                                     onTap: (){
                                       Navigator.push(context,
-                                          MaterialPageRoute(builder: (context) => KonsultasiScreen()));
+                                          MaterialPageRoute(builder: (context) => BantuanScreen()));
                                     },
                                     child: Column(
                                       children: [

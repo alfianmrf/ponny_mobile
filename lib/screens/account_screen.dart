@@ -40,6 +40,7 @@ import 'package:http/http.dart' as http;
 import 'package:uiblock/uiblock.dart';
 import 'account/menunggu_pembayaran_sukses_screen.dart';
 import 'Keuntungan_HappyReward_screen.dart';
+import 'cart_screen.dart';
 import 'home_screen.dart';
 
 class AccountScreen extends StatefulWidget {
@@ -181,9 +182,17 @@ class _AccountScreenState extends State<AccountScreen> {
                               ]
                           ),
                           onPressed: () {
-                            Navigator.push(context,new MaterialPageRoute(
-                              builder: (BuildContext context) => new LoginScreen(),
-                            ));
+                            if(Provider.of<AppModel>(context).loggedIn){
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => CartScreen()),
+                              );
+                            }else{
+                              Navigator.push(context,new MaterialPageRoute(
+                                builder: (BuildContext context) => new LoginScreen(),
+                              ));
+                            }
                           },
                         ),
                       ),
@@ -197,7 +206,7 @@ class _AccountScreenState extends State<AccountScreen> {
                           child: Text(
                             "Hi, " + user.name,
                             style: TextStyle(
-                              fontSize: 26,
+                              fontSize: 24,
                               fontWeight: FontWeight.w500,
                               fontFamily: 'Yeseva',
                               color: Hexcolor("#F59379"),
@@ -497,8 +506,8 @@ class _AccountScreenState extends State<AccountScreen> {
                       Container(
                         margin: EdgeInsets.only(
                           top: 10,
-                          left: 30,
-                          right: 30,
+                          left: 20,
+                          right: 20,
                           bottom: 10,
                         ),
                         child: ListView(
@@ -830,7 +839,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                           Container(
                                             // width: 150,
                                             child: Text(
-                                              "Purchased Items",
+                                              "Pesanan yang telah diterima",
                                               textAlign: TextAlign.left,
                                               style: TextStyle(
                                                 fontFamily: "Brandon",
@@ -968,7 +977,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                           Container(
                                             // width: 150,
                                             child: Text(
-                                              "Purchased Items",
+                                              "Suka produknya? Tinggalkan ulasanmu, ya!",
                                               textAlign: TextAlign.left,
                                               style: TextStyle(
                                                 fontFamily: "Brandon",
@@ -1036,7 +1045,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                           Container(
                                             // width: 150,
                                             child: Text(
-                                              "Purchased Items",
+                                              "Produk kesayanganmu masih menunggu loh!",
                                               textAlign: TextAlign.left,
                                               style: TextStyle(
                                                 fontFamily: "Brandon",
@@ -1095,7 +1104,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                           Container(
                                             // width: 150,
                                             child: Text(
-                                              "Purchased Items",
+                                              "Kenalan, yuk!",
                                               textAlign: TextAlign.left,
                                               style: TextStyle(
                                                 fontFamily: "Brandon",
@@ -1123,8 +1132,8 @@ class _AccountScreenState extends State<AccountScreen> {
                       Container(
                         margin: EdgeInsets.only(
                           top: 10,
-                          left: 30,
-                          right: 30,
+                          left: 20,
+                          right: 20,
                           bottom: 10,
                         ),
                         child: ListView(
@@ -1169,7 +1178,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                           Container(
                                             margin: EdgeInsets.only(left: 0),
                                             child: Text(
-                                              "Beauty Profile",
+                                              "Profil Kecantikan",
                                               style: TextStyle(
                                                 fontFamily: "Brandon",
                                                 fontWeight: FontWeight.w700,
@@ -1180,7 +1189,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                           Container(
                                             // width: 150,
                                             child: Text(
-                                              "Purchased Items",
+                                              "Semua tentang kulit, rambut & kesukaanmu",
                                               textAlign: TextAlign.left,
                                               style: TextStyle(
                                                 fontFamily: "Brandon",
@@ -1237,7 +1246,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                           Container(
                                             margin: EdgeInsets.only(top: 0),
                                             child: Text(
-                                              "Happy Skin Reward",
+                                              "Happy Skin Rewards",
                                               style: TextStyle(
                                                 fontFamily: "Brandon",
                                                 fontWeight: FontWeight.w700,
@@ -1248,7 +1257,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                           Container(
                                             // width: 150,
                                             child: Text(
-                                              "Purchased Items",
+                                              "Tukar poinmu biar makin glowing!",
                                               textAlign: TextAlign.left,
                                               style: TextStyle(
                                                 fontFamily: "Brandon",
@@ -1314,7 +1323,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                           Container(
                                             // width: 150,
                                             child: Text(
-                                              "Purchased Items",
+                                              "Makin sering belanja, makin untung!",
                                               textAlign: TextAlign.left,
                                               style: TextStyle(
                                                 fontFamily: "Brandon",
@@ -1361,7 +1370,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                           Container(
                                             margin: EdgeInsets.only(left: 0),
                                             child: Text(
-                                              "Rincian Point",
+                                              "Rincian Poin",
                                               style: TextStyle(
                                                 fontFamily: "Brandon",
                                                 fontWeight: FontWeight.w700,
@@ -1372,7 +1381,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                           Container(
                                             // width: 150,
                                             child: Text(
-                                              "Purchased Items",
+                                              "Lihat riwayat poinmu",
                                               textAlign: TextAlign.left,
                                               style: TextStyle(
                                                 fontFamily: "Brandon",

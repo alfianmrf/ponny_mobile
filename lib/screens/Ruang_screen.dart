@@ -356,8 +356,10 @@ class _RoomScreenState extends State<RoomScreen> {
                                                 fontFamily: 'Brandon',
                                                 fontWeight:
                                                     FontWeight.w500,
-                                                letterSpacing: 1,
+                                                height: 1,
                                               ),
+                                              maxLines: 2,
+                                              overflow: TextOverflow.ellipsis,
                                             ),
                                           ),
                                         ],

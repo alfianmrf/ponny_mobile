@@ -3,6 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:sms_autofill/sms_autofill.dart';
 
+import 'Syarat_Ketentuan_screen.dart';
+
 class PhoneOTPScreen extends StatefulWidget {
   String nomorTfn;
   PhoneOTPScreen({Key Key, this.nomorTfn});
@@ -134,7 +136,8 @@ class _PhoneOTPScreenState extends State<PhoneOTPScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      InkWell(
+                      GestureDetector(
+                        onTap: () {},
                         child: Text(
                           "Kebijakan Privasi ",
                           style: TextStyle(
@@ -154,7 +157,15 @@ class _PhoneOTPScreenState extends State<PhoneOTPScreen> {
                             letterSpacing: 1,
                             color: Colors.grey),
                       ),
-                      InkWell(
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    SyaratKetentuanScreen()),
+                          );
+                        },
                         child: Text(
                           "Syarat dan Ketentuan",
                           style: TextStyle(

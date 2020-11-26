@@ -147,11 +147,14 @@ class _BeautyProfileStateScreen extends State<BeautyProfileScreen> {
             children: [
               Container(
                 alignment: Alignment.center,
-                child: Text("SEDIKIT LAGI UNTUK DAPATKAN BONUS POIN!",style: TextStyle( fontWeight: FontWeight.bold,fontSize: 18 ),textAlign: TextAlign.center,),
+                child: Text("SEDIKIT LAGI UNTUK DAPATKAN BONUS POIN!",style: TextStyle( fontWeight: FontWeight.bold,fontSize: 18,fontFamily: 'Brandon' ),textAlign: TextAlign.center,),
               ),
-              Text("Lengkapi halaman Beauty Profile dan dapatkan 50 poin rewards!",textAlign: TextAlign.center,),
+              Text("Lengkapi halaman Beauty Profile dan dapatkan 50 poin rewards!",textAlign: TextAlign.center,style: TextStyle(fontFamily: 'Brandon'),),
               FlatButton(
                 color: Color(0xffF48262),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
                 textColor: Colors.white,
                 disabledColor: Colors.grey,
                 disabledTextColor: Colors.black,
@@ -166,7 +169,7 @@ class _BeautyProfileStateScreen extends State<BeautyProfileScreen> {
                 },
                 child: Text(
                   "YUK, LENGKAPI!",
-                  style: TextStyle(fontSize: 20.0),
+                  style: TextStyle(fontSize: 20.0, fontFamily: 'Brandon'),
                 ),
               )
 
