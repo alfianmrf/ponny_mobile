@@ -806,13 +806,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                             child: Image.asset('assets/images/home/masalah.png'),
                                           ),
                                         ),
-                                        Text(
-                                          'Masalah Kulit',
-                                          style: TextStyle(
-                                            fontFamily: 'Brandon',
-                                            fontSize: 12,
-                                          ),
-                                          textAlign: TextAlign.center,
+                                      ),
+                                      Text(
+                                        'Masalah\nKulit',
+                                        style: TextStyle(
+                                          fontFamily: 'Brandon',
+                                          fontSize: 12,
                                         ),
                                       ],
                                     ),

@@ -92,49 +92,43 @@ class PonnyBottomNavbar extends StatelessWidget {
             icon: ImageIcon(
               AssetImage('assets/images/bottomNavbar/beranda.png'),
             ),
-            title: Text(
-              'Beranda',
-              style: TextStyle(fontSize: 11.0, fontFamily: 'Brandon'),
-            ),
+            label: 'Beranda',
           ),
           BottomNavigationBarItem(
             icon: ImageIcon(
               AssetImage('assets/images/bottomNavbar/cari.png'),
             ),
-            title: Text(
-              'Cari',
-              style: TextStyle(fontSize: 11.0, fontFamily: 'Brandon'),
-            ),
+            label: 'Cari',
           ),
           BottomNavigationBarItem(
             icon: ImageIcon(
               AssetImage('assets/images/bottomNavbar/bantuan.png'),
             ),
-            title: Text(
-              'Butuh Bantuan?',
-              style: TextStyle(fontSize: 11.0, fontFamily: 'Brandon'),
-            ),
+            label: 'Butuh Bantuan?',
           ),
           BottomNavigationBarItem(
             icon: ImageIcon(
               AssetImage('assets/images/bottomNavbar/forum.png'),
             ),
-            title: Text(
-              'Forum',
-              style: TextStyle(fontSize: 11.0, fontFamily: 'Brandon'),
-            ),
+            label: 'Forum',
           ),
           BottomNavigationBarItem(
             icon: ImageIcon(
               AssetImage('assets/images/bottomNavbar/akun.png'),
             ),
-            title: Text(
-              'Akun Saya',
-              style: TextStyle(fontSize: 11.0, fontFamily: 'Brandon'),
-            ),
+            label: 'Akun Saya',
           ),
         ],
         selectedItemColor: Colors.white,
+        selectedLabelStyle: TextStyle(
+          fontFamily: 'Brandon',
+          fontSize: 10,
+          fontWeight: FontWeight.bold,
+        ),
+        unselectedLabelStyle: TextStyle(
+          fontFamily: 'Brandon',
+          fontSize: 10,
+        ),
         type: BottomNavigationBarType.fixed,
         currentIndex: selectedIndex,
         onTap: _onItemTapped,
