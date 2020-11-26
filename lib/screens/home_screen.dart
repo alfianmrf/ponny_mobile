@@ -43,6 +43,8 @@ import 'package:ponny/util/globalUrl.dart';
 import 'account/daftar_keinginan_screen.dart';
 import 'package:ponny/common/constant.dart';
 
+import 'bantuan_screen.dart';
+
 class HomeScreen extends StatefulWidget {
   static const String id = "home_screen";
 
@@ -807,11 +809,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                             child: Image.asset('assets/images/home/masalah.png'),
                                           ),
                                         ),
-                                      Text(
-                                        'Masalah\nKulit',
-                                        style: TextStyle(
-                                          fontFamily: 'Brandon',
-                                          fontSize: 12,
+                                        Text(
+                                          'Masalah\nKulit',
+                                          style: TextStyle(
+                                            fontFamily: 'Brandon',
+                                            fontSize: 12,
+                                          ),
+                                          textAlign: TextAlign.center,
                                         ),
                                       )
                                       ],
@@ -934,7 +938,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   child: InkWell(
                                     onTap: (){
                                       Navigator.push(context,
-                                          MaterialPageRoute(builder: (context) => Blog()));
+                                          MaterialPageRoute(builder: (context) => Blog(category: 0,tag: "ALL",)));
                                     },
                                     child: Column(
                                       children: [

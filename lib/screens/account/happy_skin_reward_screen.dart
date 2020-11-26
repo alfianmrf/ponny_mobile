@@ -363,18 +363,24 @@ class _SeratusPointScreen extends State<seratus_point> {
                                 ),
                               ):
                               FlatButton(
-                                color: Colors.grey,
-                                textColor: Colors.black,
+                                color: Color(0xffF48262),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                textColor: Colors.white,
                                 disabledColor: Colors.grey,
                                 disabledTextColor: Colors.black,
-                                padding: EdgeInsets.all(8.0),
-                                splashColor: Colors.blueAccent,
+                                height: 0,
+                                minWidth: 0,
+                                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                                onPressed: () {
+                                },
                                 child: Text(
                                   "Tukar",
-                                  style: TextStyle(fontSize: 16.0),
+                                  style: TextStyle(fontSize: 16.0, fontFamily: 'Brandon'),
                                 ),
-                              )
-                              ,
+                              ),
                             )
                           ],
                         ),
@@ -502,15 +508,22 @@ class _LebihDuaRatusPointScreen extends State<lebih_duaratus_point> {
                                   ),
                                 ):
                                 FlatButton(
-                                  color: Colors.grey,
-                                  textColor: Colors.black,
+                                  color: Color(0xffF48262),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  textColor: Colors.white,
                                   disabledColor: Colors.grey,
                                   disabledTextColor: Colors.black,
-                                  padding: EdgeInsets.all(8.0),
-                                  splashColor: Colors.blueAccent,
+                                  height: 0,
+                                  minWidth: 0,
+                                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                  padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                                  onPressed: () {
+                                  },
                                   child: Text(
                                     "Tukar",
-                                    style: TextStyle(fontSize: 16.0),
+                                    style: TextStyle(fontSize: 16.0, fontFamily: 'Brandon'),
                                   ),
                                 )
                                 ,
@@ -641,15 +654,22 @@ class _LebihLimaRatusPointScreen extends State<lebih_500_point> {
                                   ),
                                 ):
                                 FlatButton(
-                                  color: Colors.grey,
-                                  textColor: Colors.black,
+                                  color: Color(0xffF48262),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  textColor: Colors.white,
                                   disabledColor: Colors.grey,
                                   disabledTextColor: Colors.black,
-                                  padding: EdgeInsets.all(8.0),
-                                  splashColor: Colors.blueAccent,
+                                  height: 0,
+                                  minWidth: 0,
+                                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                  padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                                  onPressed: () {
+                                  },
                                   child: Text(
                                     "Tukar",
-                                    style: TextStyle(fontSize: 16.0),
+                                    style: TextStyle(fontSize: 16.0, fontFamily: 'Brandon'),
                                   ),
                                 )
                                 ,

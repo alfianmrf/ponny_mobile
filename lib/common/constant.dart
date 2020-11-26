@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:intl/intl.dart';
+import 'package:like_button/like_button.dart';
 import 'package:lodash_dart/lodash_dart.dart';
 import 'package:ponny/model/FlashDeal.dart';
 import 'package:ponny/model/Product.dart';
@@ -44,16 +45,16 @@ Widget product(context) {
                     color: Color(0xffF48262),
                   )),
             ),
-            Padding(
-              padding: EdgeInsets.all(5.0),
-              child: Align(
-                alignment: Alignment.topRight,
-                child: Icon(
-                  Icons.favorite_border,
+            LikeButton(
+              mainAxisAlignment: MainAxisAlignment.end,
+              padding: EdgeInsets.all(0),
+              likeBuilder: (bool isLiked) {
+                return Icon(
+                  isLiked ? Icons.favorite : Icons.favorite_border,
                   color: Color(0xffF48262),
                   size: 20,
-                ),
-              ),
+                );
+              },
             ),
           ],
         ),
@@ -72,12 +73,15 @@ Widget product(context) {
       ),
       Padding(
         padding: EdgeInsets.only(top: 7.0),
-        child: Text(
-          'Skin Game',
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontFamily: 'Yeseva',
-            fontSize: 16,
+        child: MarqueeWidget(
+          direction: Axis.horizontal,
+          child: Text(
+            'Skin Game',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontFamily: 'Yeseva',
+              fontSize: 16,
+            ),
           ),
         ),
       ),
@@ -220,16 +224,16 @@ Widget getProduct(context,Product product) => Column(
                     color: Color(0xffF48262),
                   )),
             ),
-            Padding(
-              padding: EdgeInsets.all(5.0),
-              child: Align(
-                alignment: Alignment.topRight,
-                child: Icon(
-                  Icons.favorite_border,
+            LikeButton(
+              mainAxisAlignment: MainAxisAlignment.end,
+              padding: EdgeInsets.all(0),
+              likeBuilder: (bool isLiked) {
+                return Icon(
+                  isLiked ? Icons.favorite : Icons.favorite_border,
                   color: Color(0xffF48262),
                   size: 20,
-                ),
-              ),
+                );
+              },
             ),
           ],
         ),
@@ -248,22 +252,27 @@ Widget getProduct(context,Product product) => Column(
       ),
       Padding(
         padding: EdgeInsets.only(top: 7.0),
-        child: Text(
-           product.brand.name,
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontFamily: 'Yeseva',
-            fontSize: 16,
+        child: MarqueeWidget(
+          direction: Axis.horizontal,
+          child: Text(
+             product.brand.name,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontFamily: 'Yeseva',
+              fontSize: 16,
+            ),
           ),
         ),
       ),
       Text(
-        product.name.length > 25 ? product.name.substring(0, 25)+'...' : product.name,
+        product.name,
         textAlign: TextAlign.center,
         style: TextStyle(
           fontFamily: 'Brandon',
           fontSize: 14,
         ),
+        maxLines: 2,
+        overflow: TextOverflow.ellipsis,
       ),
       Text(
         product.home_discounted_price,
@@ -372,16 +381,16 @@ Widget getProductFlash(context,FlashSaleProduct productFlash) {
                     color: Color(0xffF48262),
                   )),
             ),
-          Padding(
-            padding: EdgeInsets.all(5.0),
-            child: Align(
-              alignment: Alignment.topRight,
-              child: Icon(
-                Icons.favorite_border,
+          LikeButton(
+            mainAxisAlignment: MainAxisAlignment.end,
+            padding: EdgeInsets.all(0),
+            likeBuilder: (bool isLiked) {
+              return Icon(
+                isLiked ? Icons.favorite : Icons.favorite_border,
                 color: Color(0xffF48262),
                 size: 20,
-              ),
-            ),
+              );
+            },
           ),
         ],
       ),
@@ -425,12 +434,15 @@ Widget getProductFlash(context,FlashSaleProduct productFlash) {
               children: [
                 Padding(
                   padding: EdgeInsets.only(top: 7.0),
-                  child: Text(
-                    product.brand.name,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontFamily: 'Yeseva',
-                      fontSize: 16,
+                  child: MarqueeWidget(
+                    direction: Axis.horizontal,
+                    child: Text(
+                      product.brand.name,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontFamily: 'Yeseva',
+                        fontSize: 16,
+                      ),
                     ),
                   ),
                 ),
@@ -789,10 +801,12 @@ void showAlertDialog(BuildContext context,Product product) {
                     ),
                   ),
                   Text(
-                    product.name.length > 20 ? product.name.substring(0, 20)+'...' : product.name,
+                    product.name,
                     style: TextStyle(
                         fontFamily: 'Brandon'
                     ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
                   ),
                   if(product.varian.isNotEmpty)
                     Text(
@@ -1011,14 +1025,16 @@ Widget getNewArival(context,List<Product> products){
                               fit: BoxFit.cover,
                             ),
                           ),
-                          Container(
-                            margin: EdgeInsets.only(top: 10, right: 5),
-                            alignment: Alignment.topRight,
-                            child: Icon(
-                              Icons.favorite_border,
-                              size: 20,
-                              color: Color(0xffF3C1B5),
-                            ),
+                          LikeButton(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            padding: EdgeInsets.all(0),
+                            likeBuilder: (bool isLiked) {
+                              return Icon(
+                                isLiked ? Icons.favorite : Icons.favorite_border,
+                                color: Color(0xffF48262),
+                                size: 20,
+                              );
+                            },
                           ),
                           Container(
                             margin: EdgeInsets.only(top: 15),
@@ -1193,14 +1209,16 @@ Widget getNewArival(context,List<Product> products){
                               fit: BoxFit.cover,
                             ),
                           ),
-                          Container(
-                            margin: EdgeInsets.only(top: 10, right: 5),
-                            alignment: Alignment.topRight,
-                            child: Icon(
-                              Icons.favorite_border,
-                              size: 20,
-                              color: Color(0xffF3C1B5),
-                            ),
+                          LikeButton(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            padding: EdgeInsets.all(0),
+                            likeBuilder: (bool isLiked) {
+                              return Icon(
+                                isLiked ? Icons.favorite : Icons.favorite_border,
+                                color: Color(0xffF48262),
+                                size: 20,
+                              );
+                            },
                           ),
                           // Container(
                           //   margin: EdgeInsets.only(top: 15),
@@ -1348,14 +1366,16 @@ Widget getNewArival(context,List<Product> products){
                               fit: BoxFit.cover,
                             ),
                           ),
-                          Container(
-                            margin: EdgeInsets.only(top: 10, right: 5),
-                            alignment: Alignment.topRight,
-                            child: Icon(
-                              Icons.favorite_border,
-                              size: 20,
-                              color: Color(0xffF3C1B5),
-                            ),
+                          LikeButton(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            padding: EdgeInsets.all(0),
+                            likeBuilder: (bool isLiked) {
+                              return Icon(
+                                isLiked ? Icons.favorite : Icons.favorite_border,
+                                color: Color(0xffF48262),
+                                size: 20,
+                              );
+                            },
                           ),
                           // Container(
                           //   margin: EdgeInsets.only(top: 15),
@@ -1493,6 +1513,64 @@ Widget getNewArival(context,List<Product> products){
       ],
     ),
   );
+}
+
+class MarqueeWidget extends StatefulWidget {
+  final Widget child;
+  final Axis direction;
+  final Duration animationDuration, backDuration, pauseDuration;
+
+  MarqueeWidget({
+    @required this.child,
+    this.direction: Axis.horizontal,
+    this.animationDuration: const Duration(milliseconds: 3000),
+    this.backDuration: const Duration(milliseconds: 800),
+    this.pauseDuration: const Duration(milliseconds: 800),
+  });
+
+  @override
+  _MarqueeWidgetState createState() => _MarqueeWidgetState();
+}
+
+class _MarqueeWidgetState extends State<MarqueeWidget> {
+  ScrollController scrollController;
+
+  @override
+  void initState() {
+    scrollController = ScrollController(initialScrollOffset: 50.0);
+    WidgetsBinding.instance.addPostFrameCallback(scroll);
+    super.initState();
+  }
+
+  @override
+  void dispose(){
+    scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: widget.child,
+      scrollDirection: widget.direction,
+      controller: scrollController,
+    );
+  }
+
+  void scroll(_) async {
+    while (scrollController.hasClients) {
+      await Future.delayed(widget.pauseDuration);
+      if(scrollController.hasClients)
+        await scrollController.animateTo(
+            scrollController.position.maxScrollExtent,
+            duration: widget.animationDuration,
+            curve: Curves.ease);
+      await Future.delayed(widget.pauseDuration);
+      if(scrollController.hasClients)
+        await scrollController.animateTo(0.0,
+            duration: widget.backDuration, curve: Curves.easeOut);
+    }
+  }
 }
 
 
