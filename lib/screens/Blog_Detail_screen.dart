@@ -12,6 +12,8 @@ import 'dart:convert';
 import 'package:css_text/css_text.dart';
 import 'package:intl/intl.dart';
 
+import 'Blog_screen.dart';
+
 class BlogDetailScreen extends StatefulWidget {
   final int i;
   final Map title;
@@ -129,10 +131,8 @@ class _BlogDetailScreenState extends State<BlogDetailScreen> {
                       children: [
                         InkWell(
                           onTap: () {
-                            setState(() {
-                              currentTag = widget.title["category"]["title"];
-                              categoryId = widget.title["category"]["id"];
-                            });
+                            Navigator.push(context,
+                                MaterialPageRoute(builder: (context) => Blog(category: 0, tag: "ALL",)));
                           },
                           child: Container(
                             height: 50,
@@ -157,10 +157,8 @@ class _BlogDetailScreenState extends State<BlogDetailScreen> {
                         ),
                         InkWell(
                           onTap: () {
-                            setState(() {
-                              currentTag = widget.title["category"]["title"];
-                              categoryId = widget.title["category"]["id"];
-                            });
+                            Navigator.push(context,
+                                MaterialPageRoute(builder: (context) => Blog(category: 1, tag: "BASIC SKINCARE",)));
                           },
                           child: Container(
                             height: 50,
@@ -185,10 +183,8 @@ class _BlogDetailScreenState extends State<BlogDetailScreen> {
                         ),
                         InkWell(
                           onTap: () {
-                            setState(() {
-                              currentTag = widget.title["category"]["title"];
-                              categoryId = widget.title["category"]["id"];
-                            });
+                            Navigator.push(context,
+                                MaterialPageRoute(builder: (context) => Blog(category: 2, tag: "MASALAH KULIT",)));
                           },
                           child: Container(
                             height: 50,
@@ -213,10 +209,8 @@ class _BlogDetailScreenState extends State<BlogDetailScreen> {
                         ),
                         InkWell(
                           onTap: () {
-                            setState(() {
-                              currentTag = widget.title["category"]["title"];
-                              categoryId = widget.title["category"]["id"];
-                            });
+                            Navigator.push(context,
+                                MaterialPageRoute(builder: (context) => Blog(category: 3, tag: "SKINCARE ROUTINE",)));
                           },
                           child: Container(
                             height: 50,
@@ -241,10 +235,8 @@ class _BlogDetailScreenState extends State<BlogDetailScreen> {
                         ),
                         InkWell(
                           onTap: () {
-                            setState(() {
-                              currentTag = widget.title["category"]["title"];
-                              categoryId = widget.title["category"]["id"];
-                            });
+                            Navigator.push(context,
+                                MaterialPageRoute(builder: (context) => Blog(category: 4, tag: "MITOS ATAU FAKTA",)));
                           },
                           child: Container(
                             height: 50,

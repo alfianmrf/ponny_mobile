@@ -936,7 +936,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   child: InkWell(
                                     onTap: (){
                                       Navigator.push(context,
-                                          MaterialPageRoute(builder: (context) => Blog()));
+                                          MaterialPageRoute(builder: (context) => Blog(category: 0,tag: "ALL",)));
                                     },
                                     child: Column(
                                       children: [

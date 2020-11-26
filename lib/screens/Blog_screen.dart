@@ -9,7 +9,10 @@ import 'package:intl/intl.dart';
 import 'package:date_format/date_format.dart';
 
 class Blog extends StatefulWidget {
+  final category;
+  final tag;
 
+  Blog({this.category, this.tag});
 
   static const String id = "Blog";
 
@@ -20,8 +23,8 @@ class Blog extends StatefulWidget {
 
 class _BlogState extends State<Blog> {
   bool onSearch = false;
-  String currentTag = "ALL";
-  int categoryId = 0;
+  String currentTag;
+  int categoryId;
   int lostData = 0;
   var categoryFilter;
 
@@ -45,10 +48,14 @@ class _BlogState extends State<Blog> {
     List<dynamic> data = map["other_articles"];
     return data;
   }
-
+  @override
+  void initState() {
+    // TODO: implement initState
+    categoryId=widget.category;
+    currentTag=widget.tag;
+  }
   @override
   Widget build(BuildContext context) {
-
 
     return WillPopScope(
       onWillPop: () {
@@ -191,7 +198,7 @@ class _BlogState extends State<Blog> {
                         InkWell(
                           onTap: () {
                             setState(() {
-                              currentTag = "SKIN CONCERN";
+                              currentTag = "MASALAH KULIT";
                               categoryId = 2;
                             });
                           },
