@@ -798,7 +798,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         ),
                                       ),
                                       Text(
-                                        'Masalah Kulit',
+                                        'Masalah\nKulit',
                                         style: TextStyle(
                                           fontFamily: 'Brandon',
                                           fontSize: 12,

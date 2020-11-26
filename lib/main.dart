@@ -135,6 +135,15 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      builder: (BuildContext context, Widget child){
+        final MediaQueryData data = MediaQuery.of(context);
+        return MediaQuery(
+          data: data.copyWith(
+              textScaleFactor: 1
+          ),
+          child: child,
+        );
+      },
       debugShowCheckedModeBanner: false,
       title: 'Ponny Beaute',
       theme: ThemeData(
