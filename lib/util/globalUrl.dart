@@ -97,6 +97,7 @@ const removeAddressUrl = base_url + "shipping/delAddress";
 const brandSearch = base_url+"product/brands?pageSize=all";
 const searchProductUrl =base_url+"product/search";
 const categoryList = base_url+"product/categories";
+const shopSalelist = base_url  +"product/shopSale";
 
 //promotion
 const getpromo =base_url+"product/promotions";
