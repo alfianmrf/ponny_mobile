@@ -46,7 +46,7 @@ class PonnyBottomNavbar extends StatelessWidget {
             );
           break;
         case 2:
-          if(ModalRoute.of(context).settings.name != "konsultasi_screen")
+          if(ModalRoute.of(context).settings.name != "bantuan_screen")
             Provider.of<AppModel>(context).loggedIn ? Navigator.pushNamedAndRemoveUntil(
                 context,
                 BantuanScreen.id,(_) => false

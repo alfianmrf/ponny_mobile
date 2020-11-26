@@ -52,7 +52,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                 ));
               }else{
                 UIBlock.unblock(context);
-                print(value.message);
+                // print(value.message);
                 final snackBar = SnackBar(
                   content: Text('Terjadi kesalah Pada Server, Silakan coba kembali nanti!',style: TextStyle(color: Colors.white)),
                   backgroundColor: Colors.redAccent,

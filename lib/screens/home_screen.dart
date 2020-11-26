@@ -18,6 +18,7 @@ import 'package:ponny/screens/Localpride_Screen.dart';
 import 'package:ponny/screens/Promotion_screen.dart';
 import 'package:ponny/screens/Skincare_Screen.dart';
 import 'package:ponny/screens/Skinklopedia_Screen.dart';
+import 'package:ponny/screens/bantuan_screen.dart';
 import 'package:ponny/screens/flash_sale_screen.dart';
 import 'package:ponny/model/WishProduct.dart';
 import 'package:ponny/screens/konsultasi_screen.dart';
@@ -95,7 +96,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    showModal();
+    // showModal();
     _controller = ScrollController();
     _controller.addListener(_scrollListener);
     WidgetsBinding.instance.addPostFrameCallback((_) async {
@@ -806,13 +807,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                             child: Image.asset('assets/images/home/masalah.png'),
                                           ),
                                         ),
-                                      ),
                                       Text(
                                         'Masalah\nKulit',
                                         style: TextStyle(
                                           fontFamily: 'Brandon',
                                           fontSize: 12,
                                         ),
+                                      )
                                       ],
                                     ),
                                   ),
@@ -967,7 +968,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   child: InkWell(
                                     onTap: (){
                                       Navigator.push(context,
-                                          MaterialPageRoute(builder: (context) => KonsultasiScreen()));
+                                          MaterialPageRoute(builder: (context) => BantuanScreen()));
                                     },
                                     child: Column(
                                       children: [

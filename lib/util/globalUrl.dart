@@ -103,3 +103,6 @@ const shopSalelist = base_url  +"product/shopSale";
 const getpromo =base_url+"product/promotions";
 const localprideUrl = base_url+"product/localPride";
 
+//contact
+const waContacturl=base_url+"contact/wa";
+

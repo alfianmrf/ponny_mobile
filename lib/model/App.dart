@@ -13,12 +13,14 @@ import 'package:http/http.dart' as http;
 
 class AppModel with ChangeNotifier{
   LoginAuth auth;
+  WaContact waContact;
   List<FaqHeader> listFaq =[];
   bool loggedIn =false;
   bool loadingFaq =true;
   AppModel(){
     getAuth();
     getFAQ();
+    getWA();
   }
 
   Future<void> getAuth() async {
@@ -69,6 +71,14 @@ class AppModel with ChangeNotifier{
     loadingFaq =false;
   }
 
+  Future<void> getWA() async {
+    final res = await http.get(waContacturl);
+    if(res.statusCode == 200){
+      var result = json.decode(res.body);
+      waContact = WaContact.fromJson(result);
+    }
+  }
+
   Future<bool> setAuthOtp(param) async {
     final res = await http.post(loginOtp,headers: { HttpHeaders.contentTypeHeader: 'application/json' },body: json.encode(param));
     final LocalStorage storage = LocalStorage("ponnystore");
@@ -88,7 +98,7 @@ class AppModel with ChangeNotifier{
 
   Future<bool> setAuthSocial(param) async {
     final res = await http.post(loginSocial,headers: { HttpHeaders.contentTypeHeader: 'application/json' },body: json.encode(param));
-    print(res.body);
+    // print(res.body);
     final LocalStorage storage = LocalStorage("ponnystore");
 
     if(res.statusCode == 200){
@@ -140,4 +150,26 @@ class LoginAuth {
     return LoginAuth(json["access_token"], json["token_type"], json["expires_at"]);
   }
 
+}
+
+class WaContact {
+  String link;
+  String text;
+  String phone;
+
+  WaContact({this.link, this.text, this.phone});
+
+  WaContact.fromJson(Map<String, dynamic> json) {
+    link = json['link'];
+    text = json['text'];
+    phone = json['phone'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['link'] = this.link;
+    data['text'] = this.text;
+    data['phone'] = this.phone;
+    return data;
+  }
 }

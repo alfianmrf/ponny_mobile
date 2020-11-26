@@ -441,7 +441,7 @@ class _SkincareState extends State<Skincare> {
     bool expandConcern = false;
     bool expandSkinType = false;
     bool expandPrice = false;
-    List<String> checked = [];
+
 
     showModalBottomSheet(
         backgroundColor: Hexcolor('#FCF8F0'),
@@ -493,6 +493,7 @@ class _SkincareState extends State<Skincare> {
           _reset(){
             setState(() {
               checked = [];
+              subKategorysearch=0;
               listBrand.where((element) => element.value == true).forEach((element) { element.value =false;});
               _currentSliderValue = RangeValues(0, 3000000);
             });
