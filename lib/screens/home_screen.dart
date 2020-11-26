@@ -817,7 +817,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                           ),
                                           textAlign: TextAlign.center,
                                         ),
-                                      )
                                       ],
                                     ),
                                   ),
