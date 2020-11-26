@@ -85,6 +85,7 @@ class Subcategories {
   String metaDescription;
   String createdAt;
   String updatedAt;
+  String icon_mobile;
   List<Subsubcategories> subsubcategories;
 
   Subcategories(
@@ -96,7 +97,8 @@ class Subcategories {
         this.metaDescription,
         this.createdAt,
         this.updatedAt,
-        this.subsubcategories});
+        this.subsubcategories,
+      this.icon_mobile});
 
   Subcategories.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -107,6 +109,7 @@ class Subcategories {
     metaDescription = json['meta_description'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
+    icon_mobile = json['icon_mobile'];
     if (json['subsubcategories'] != null) {
       subsubcategories = new List<Subsubcategories>();
       json['subsubcategories'].forEach((v) {

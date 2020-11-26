@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_countdown_timer/flutter_countdown_timer.dart';
+import 'package:lodash_dart/lodash_dart.dart';
 import 'package:ponny/common/constant.dart';
 import 'package:ponny/model/App.dart';
 import 'package:ponny/model/Cart.dart';
@@ -26,6 +27,7 @@ import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:ponny/screens/skin_type_screen.dart';
 import 'package:ponny/util/globalUrl.dart';
+import 'package:ponny/widgets/MyProduct.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
 import 'package:ponny/widgets/PonnyAppBar.dart';
 import 'package:provider/provider.dart';
@@ -56,13 +58,14 @@ class _HomeScreenState extends State<HomeScreen> {
   double _elevation = 0;
   ScrollController _controller;
   bool loading_flashdeal = false;
+  final scaffoldKey = GlobalKey<ScaffoldState>();
 
   static String videoId = YoutubePlayer.convertUrlToId("https://www.youtube.com/embed/5ou09YALCJw");
   YoutubePlayerController _ytcontroller;
 
   showModal() {
     return _timer = Timer(Duration(seconds: 2), () {
-      showAlertDialog(context);
+      showAlertDialogPromo(context);
     });
   }
   _launchURL(url) async {
@@ -165,7 +168,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  void showAlertDialog(BuildContext context) {
+  void showAlertDialogPromo(BuildContext context) {
     // set up the AlertDialog
     SimpleDialog alert = SimpleDialog(
       backgroundColor: Color(0xfffdf8f0),
@@ -322,6 +325,7 @@ class _HomeScreenState extends State<HomeScreen> {
       backgroundColor: Theme.of(context).primaryColor,
       body: Stack(children: <Widget>[
         Scaffold(
+          key: scaffoldKey,
           backgroundColor: Color(0xffFDF8F0),
           extendBodyBehindAppBar: true,
           appBar: PreferredSize(
@@ -339,8 +343,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       style: TextStyle(
                         color: Colors.white,
                         fontFamily: 'Brandon',
-                        fontSize: 12,
                       ),
+                      textScaleFactor: .8,
                     ),
                   ),
                 ),
@@ -782,30 +786,36 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                                 Expanded(
                                   flex: 1,
-                                  child: Column(
-                                    children: [
-                                      AspectRatio(
-                                        aspectRatio: 1,
-                                        child: Container(
-                                          margin: EdgeInsets.all(7),
-                                          padding: EdgeInsets.all(5),
-                                          decoration: BoxDecoration(
-                                            color: Colors.white,
-                                            borderRadius: BorderRadius.circular(10),
-                                            border: Border.all(width: 1, color: Color(0xffF48262),),
+                                  child: InkWell(
+                                    onTap: (){
+                                      final skincare =snapshot.data.firstWhere((element) => element.id == 12 );
+                                      Navigator.push(context, MaterialPageRoute(builder: (context) => Skincare(category: skincare,) ));
+                                    },
+                                    child: Column(
+                                      children: [
+                                        AspectRatio(
+                                          aspectRatio: 1,
+                                          child: Container(
+                                            margin: EdgeInsets.all(7),
+                                            padding: EdgeInsets.all(5),
+                                            decoration: BoxDecoration(
+                                              color: Colors.white,
+                                              borderRadius: BorderRadius.circular(10),
+                                              border: Border.all(width: 1, color: Color(0xffF48262),),
+                                            ),
+                                            child: Image.asset('assets/images/home/masalah.png'),
                                           ),
-                                          child: Image.asset('assets/images/home/masalah.png'),
                                         ),
-                                      ),
-                                      Text(
-                                        'Masalah\nKulit',
-                                        style: TextStyle(
-                                          fontFamily: 'Brandon',
-                                          fontSize: 12,
+                                        Text(
+                                          'Masalah\nKulit',
+                                          style: TextStyle(
+                                            fontFamily: 'Brandon',
+                                            fontSize: 12,
+                                          ),
+                                          textAlign: TextAlign.center,
                                         ),
-                                        textAlign: TextAlign.center,
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ],
@@ -1228,12 +1238,180 @@ class _HomeScreenState extends State<HomeScreen> {
                     if(value.loadingBestSale){
                       return LoadingWidgetFadingCircle(context);
                     }else{
-                      ListBestsale = getColumProduct(context,value.Best_sell,3);
+                      // ListBestsale = getColumProduct(context,value.Best_sell,3);
+                      var dataBest =Lodash().chunk(array: value.Best_sell,size: 3);
                       return  new Swiper(
                         itemBuilder: (BuildContext context, int index) {
-                          return ListBestsale[index];
+                          if(dataBest[index].length == 3){
+                            return Container(
+                                child: Row(
+                                    children: [
+                                      for(Product e in dataBest[index])
+                                        Expanded(
+                                          flex: 1,
+                                          child: Container(
+                                            padding: EdgeInsets.symmetric(horizontal: 7),
+                                            child: MyProduct(
+                                              product: e,
+                                              onFavorit: (){
+                                                if(Provider.of<AppModel>(context).loggedIn) {
+                                                  UIBlock.block(context,customLoaderChild: LoadingWidget(context));
+                                                  Provider.of<WishModel>(context).addProductToWish(e, Provider.of<AppModel>(context).auth.access_token).then((value){
+                                                    UIBlock.unblock(context);
+                                                    if(value){
+                                                      showWishDialog(context,e);
+                                                    }else{
+                                                      scaffoldKey.currentState.showSnackBar(snackBarError);
+                                                    }
+                                                  });
+                                                }else{
+                                                  Navigator.push(context,new MaterialPageRoute(
+                                                    builder: (BuildContext context) => new LoginScreen(),
+                                                  ));
+                                                }
+                                              },
+                                              onTobag: (){
+                                                if(Provider.of<AppModel>(context).loggedIn){
+                                                  UIBlock.block(context,customLoaderChild: LoadingWidget(context));
+                                                  Provider.of<CartModel>(context).addProductToCart(e,Provider.of<AppModel>(context).auth.access_token).then((value){
+                                                    UIBlock.unblock(context);
+                                                    showAlertDialog(context,e);
+                                                  });
+                                                }else{
+                                                  Navigator.push(context,new MaterialPageRoute(
+                                                    builder: (BuildContext context) => new LoginScreen(),
+                                                  ));
+                                                }
+                                              },
+                                            ),
+                                          ),
+                                        ),
+                                    ]
+                                )
+                            );
+                          }else if(dataBest[index].length ==2){
+                            return Container(
+                                child: Row(
+                                  children: [
+                                    for(Product e in dataBest[index])
+                                      Expanded(
+                                        flex: 1,
+                                        child: Container(
+                                          padding: EdgeInsets.symmetric(horizontal: 7),
+                                          child: MyProduct(
+                                            product: e,
+                                            onFavorit: (){
+                                              if(Provider.of<AppModel>(context).loggedIn) {
+                                                UIBlock.block(context,customLoaderChild: LoadingWidget(context));
+                                                Provider.of<WishModel>(context).addProductToWish(e, Provider.of<AppModel>(context).auth.access_token).then((value){
+                                                  UIBlock.unblock(context);
+                                                  if(value){
+                                                    showWishDialog(context,e);
+                                                  }else{
+                                                    scaffoldKey.currentState.showSnackBar(snackBarError);
+                                                  }
+                                                });
+                                              }else{
+                                                Navigator.push(context,new MaterialPageRoute(
+                                                  builder: (BuildContext context) => new LoginScreen(),
+                                                ));
+                                              }
+                                            },
+                                            onTobag: (){
+                                              if(Provider.of<AppModel>(context).loggedIn){
+                                                UIBlock.block(context,customLoaderChild: LoadingWidget(context));
+                                                Provider.of<CartModel>(context).addProductToCart(e,Provider.of<AppModel>(context).auth.access_token).then((value){
+                                                  UIBlock.unblock(context);
+                                                  showAlertDialog(context,e);
+                                                });
+                                              }else{
+                                                Navigator.push(context,new MaterialPageRoute(
+                                                  builder: (BuildContext context) => new LoginScreen(),
+                                                ));
+                                              }
+                                            },
+                                          ),
+                                        ),
+                                      ),
+                                    Expanded(
+                                      flex: 1,
+                                      child: Container(
+                                        padding: EdgeInsets.symmetric(horizontal: 7),
+
+                                      ),
+                                    )
+
+
+                                  ],
+                                )
+                            );
+                          }else{
+                            return Container(
+                                child: Row(
+                                  children: [
+                                    for(Product e in dataBest[index])
+                                      Expanded(
+                                        flex: 1,
+                                        child: Container(
+                                          padding: EdgeInsets.symmetric(horizontal: 7),
+                                          child: MyProduct(
+                                            product: e,
+                                            onFavorit: (){
+                                              if(Provider.of<AppModel>(context).loggedIn) {
+                                                UIBlock.block(context,customLoaderChild: LoadingWidget(context));
+                                                Provider.of<WishModel>(context).addProductToWish(e, Provider.of<AppModel>(context).auth.access_token).then((value){
+                                                  UIBlock.unblock(context);
+                                                  if(value){
+                                                    showWishDialog(context,e);
+                                                  }else{
+                                                    scaffoldKey.currentState.showSnackBar(snackBarError);
+                                                  }
+                                                });
+                                              }else{
+                                                Navigator.push(context,new MaterialPageRoute(
+                                                  builder: (BuildContext context) => new LoginScreen(),
+                                                ));
+                                              }
+                                            },
+                                            onTobag: (){
+                                              if(Provider.of<AppModel>(context).loggedIn){
+                                                UIBlock.block(context,customLoaderChild: LoadingWidget(context));
+                                                Provider.of<CartModel>(context).addProductToCart(e,Provider.of<AppModel>(context).auth.access_token).then((value){
+                                                  UIBlock.unblock(context);
+                                                  showAlertDialog(context,e);
+                                                });
+                                              }else{
+                                                Navigator.push(context,new MaterialPageRoute(
+                                                  builder: (BuildContext context) => new LoginScreen(),
+                                                ));
+                                              }
+                                            },
+                                          ),
+                                        ),
+                                      ),
+                                    Expanded(
+                                      flex: 1,
+                                      child: Container(
+                                        padding: EdgeInsets.symmetric(horizontal: 7),
+
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: 1,
+                                      child: Container(
+                                        padding: EdgeInsets.symmetric(horizontal: 7),
+
+                                      ),
+                                    )
+
+
+                                  ],
+                                )
+                            );
+
+                          }
                         },
-                        itemCount: ListBestsale.length,
+                        itemCount: dataBest.length,
                         pagination: null,
                         control: null,
                         autoplay: false,
@@ -1255,12 +1433,181 @@ class _HomeScreenState extends State<HomeScreen> {
                     if(value.loadingPhobe){
                       return LoadingWidgetFadingCircle(context);
                     }else{
-                      ListPhobe = getColumProduct(context,value.PhoebeChoices,3);
+                      // ListPhobe = getColumProduct(context,value.PhoebeChoices,3);
+                      var dataPhoby  =Lodash().chunk(array: value.PhoebeChoices,size: 3);
+
                       return  new Swiper(
                         itemBuilder: (BuildContext context, int index) {
-                          return ListPhobe[index];
+                          if(dataPhoby[index].length == 3){
+                            return Container(
+                                child: Row(
+                                    children: [
+                                      for(Product e in dataPhoby[index])
+                                        Expanded(
+                                          flex: 1,
+                                          child: Container(
+                                            padding: EdgeInsets.symmetric(horizontal: 7),
+                                            child: MyProduct(
+                                              product: e,
+                                              onFavorit: (){
+                                                if(Provider.of<AppModel>(context).loggedIn) {
+                                                  UIBlock.block(context,customLoaderChild: LoadingWidget(context));
+                                                  Provider.of<WishModel>(context).addProductToWish(e, Provider.of<AppModel>(context).auth.access_token).then((value){
+                                                    UIBlock.unblock(context);
+                                                    if(value){
+                                                      showWishDialog(context,e);
+                                                    }else{
+                                                      scaffoldKey.currentState.showSnackBar(snackBarError);
+                                                    }
+                                                  });
+                                                }else{
+                                                  Navigator.push(context,new MaterialPageRoute(
+                                                    builder: (BuildContext context) => new LoginScreen(),
+                                                  ));
+                                                }
+                                              },
+                                              onTobag: (){
+                                                if(Provider.of<AppModel>(context).loggedIn){
+                                                  UIBlock.block(context,customLoaderChild: LoadingWidget(context));
+                                                  Provider.of<CartModel>(context).addProductToCart(e,Provider.of<AppModel>(context).auth.access_token).then((value){
+                                                    UIBlock.unblock(context);
+                                                    showAlertDialog(context,e);
+                                                  });
+                                                }else{
+                                                  Navigator.push(context,new MaterialPageRoute(
+                                                    builder: (BuildContext context) => new LoginScreen(),
+                                                  ));
+                                                }
+                                              },
+                                            ),
+                                          ),
+                                        ),
+                                    ]
+                                )
+                            );
+                          }else if(dataPhoby[index].length ==2){
+                            return Container(
+                                child: Row(
+                                    children: [
+                                      for(Product e in dataPhoby[index])
+                                        Expanded(
+                                          flex: 1,
+                                          child: Container(
+                                            padding: EdgeInsets.symmetric(horizontal: 7),
+                                            child: MyProduct(
+                                              product: e,
+                                              onFavorit: (){
+                                                if(Provider.of<AppModel>(context).loggedIn) {
+                                                  UIBlock.block(context,customLoaderChild: LoadingWidget(context));
+                                                  Provider.of<WishModel>(context).addProductToWish(e, Provider.of<AppModel>(context).auth.access_token).then((value){
+                                                    UIBlock.unblock(context);
+                                                    if(value){
+                                                      showWishDialog(context,e);
+                                                    }else{
+                                                      scaffoldKey.currentState.showSnackBar(snackBarError);
+                                                    }
+                                                  });
+                                                }else{
+                                                  Navigator.push(context,new MaterialPageRoute(
+                                                    builder: (BuildContext context) => new LoginScreen(),
+                                                  ));
+                                                }
+                                              },
+                                              onTobag: (){
+                                                if(Provider.of<AppModel>(context).loggedIn){
+                                                  UIBlock.block(context,customLoaderChild: LoadingWidget(context));
+                                                  Provider.of<CartModel>(context).addProductToCart(e,Provider.of<AppModel>(context).auth.access_token).then((value){
+                                                    UIBlock.unblock(context);
+                                                    showAlertDialog(context,e);
+                                                  });
+                                                }else{
+                                                  Navigator.push(context,new MaterialPageRoute(
+                                                    builder: (BuildContext context) => new LoginScreen(),
+                                                  ));
+                                                }
+                                              },
+                                            ),
+                                          ),
+                                        ),
+                                      Expanded(
+                                        flex: 1,
+                                        child: Container(
+                                          padding: EdgeInsets.symmetric(horizontal: 7),
+
+                                        ),
+                                      )
+
+
+                                    ],
+                                )
+                            );
+                          }else{
+                            return Container(
+                                child: Row(
+                                  children: [
+                                    for(Product e in dataPhoby[index])
+                                      Expanded(
+                                        flex: 1,
+                                        child: Container(
+                                          padding: EdgeInsets.symmetric(horizontal: 7),
+                                          child: MyProduct(
+                                            product: e,
+                                            onFavorit: (){
+                                              if(Provider.of<AppModel>(context).loggedIn) {
+                                                UIBlock.block(context,customLoaderChild: LoadingWidget(context));
+                                                Provider.of<WishModel>(context).addProductToWish(e, Provider.of<AppModel>(context).auth.access_token).then((value){
+                                                  UIBlock.unblock(context);
+                                                  if(value){
+                                                    showWishDialog(context,e);
+                                                  }else{
+                                                    scaffoldKey.currentState.showSnackBar(snackBarError);
+                                                  }
+                                                });
+                                              }else{
+                                                Navigator.push(context,new MaterialPageRoute(
+                                                  builder: (BuildContext context) => new LoginScreen(),
+                                                ));
+                                              }
+                                            },
+                                            onTobag: (){
+                                              if(Provider.of<AppModel>(context).loggedIn){
+                                                UIBlock.block(context,customLoaderChild: LoadingWidget(context));
+                                                Provider.of<CartModel>(context).addProductToCart(e,Provider.of<AppModel>(context).auth.access_token).then((value){
+                                                  UIBlock.unblock(context);
+                                                  showAlertDialog(context,e);
+                                                });
+                                              }else{
+                                                Navigator.push(context,new MaterialPageRoute(
+                                                  builder: (BuildContext context) => new LoginScreen(),
+                                                ));
+                                              }
+                                            },
+                                          ),
+                                        ),
+                                      ),
+                                    Expanded(
+                                      flex: 1,
+                                      child: Container(
+                                        padding: EdgeInsets.symmetric(horizontal: 7),
+
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: 1,
+                                      child: Container(
+                                        padding: EdgeInsets.symmetric(horizontal: 7),
+
+                                      ),
+                                    )
+
+
+                                  ],
+                                )
+                            );
+
+                          }
                         },
-                        itemCount: ListPhobe.length,
+                        itemCount: dataPhoby.length,
                         pagination: null,
                         control: null,
                         autoplay: false,

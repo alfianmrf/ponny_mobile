@@ -1,14 +1,23 @@
+import 'dart:math';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:grouped_buttons/grouped_buttons.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:ponny/common/constant.dart';
+import 'package:ponny/model/App.dart';
 import 'package:ponny/model/Brand.dart';
+import 'package:ponny/model/Cart.dart';
 import 'package:ponny/model/Product.dart';
+import 'package:ponny/model/WishProduct.dart';
 import 'package:ponny/util/globalUrl.dart';
+import 'package:ponny/widgets/MyProduct.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
 import 'package:provider/provider.dart';
+import 'package:uiblock/uiblock.dart';
 import 'package:waterfall_flow/waterfall_flow.dart';
+
+import 'login.dart';
 
 class DetailBrand extends StatefulWidget {
   @required Brand brand;
@@ -370,7 +379,6 @@ class _DetailBrandScreen extends State<DetailBrand> {
 
   @override
   Widget build(BuildContext context) {
-
 
     return Scaffold(
       key: scafoldkey,
@@ -778,8 +786,40 @@ class _DetailBrandScreen extends State<DetailBrand> {
                   crossAxisSpacing: 20,
                   physics: ScrollPhysics(),
                   children: [
-                    for( Product product in dataProduct)
-                      getProduct(context, product),
+                    for( Product e in dataProduct)
+                      MyProduct(
+                        product: e,
+                        onFavorit: (){
+                          if(Provider.of<AppModel>(context).loggedIn) {
+                            UIBlock.block(context,customLoaderChild: LoadingWidget(context));
+                            Provider.of<WishModel>(context).addProductToWish(e, Provider.of<AppModel>(context).auth.access_token).then((value){
+                              UIBlock.unblock(context);
+                              if(value){
+                                showWishDialog(context,e);
+                              }else{
+                                scafoldkey.currentState.showSnackBar(snackBarError);
+                              }
+                            });
+                          }else{
+                            Navigator.push(context,new MaterialPageRoute(
+                              builder: (BuildContext context) => new LoginScreen(),
+                            ));
+                          }
+                        },
+                        onTobag: (){
+                          if(Provider.of<AppModel>(context).loggedIn){
+                            UIBlock.block(context,customLoaderChild: LoadingWidget(context));
+                            Provider.of<CartModel>(context).addProductToCart(e,Provider.of<AppModel>(context).auth.access_token).then((value){
+                              UIBlock.unblock(context);
+                              showAlertDialog(context,e);
+                            });
+                          }else{
+                            Navigator.push(context,new MaterialPageRoute(
+                              builder: (BuildContext context) => new LoginScreen(),
+                            ));
+                          }
+                        },
+                      ),
                   ],
                 ),
                 _buildProgressIndicator()

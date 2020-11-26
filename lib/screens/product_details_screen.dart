@@ -6,7 +6,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:intl/intl.dart';
+import 'package:lodash_dart/lodash_dart.dart';
 import 'package:ponny/common/constant.dart';
 import 'package:ponny/model/App.dart';
 import 'package:ponny/model/Cart.dart';
@@ -16,12 +18,16 @@ import 'package:ponny/model/WishProduct.dart';
 import 'package:ponny/screens/cart_screen.dart';
 import 'package:ponny/screens/review_screen.dart';
 import 'package:ponny/util/globalUrl.dart';
+import 'package:ponny/widgets/MyProduct.dart';
 import 'package:provider/provider.dart';
+import 'package:social_share/social_share.dart';
 import 'package:uiblock/uiblock.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'account/daftar_keinginan_screen.dart';
 import 'login.dart';
 import 'package:http/http.dart' as http;
+import 'package:ponny/common/constant.dart' as cost;
 
 class ProductDetailsScreen extends StatefulWidget {
   static const String id = "product_details_screen";
@@ -54,6 +60,14 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
         }
       });
     });
+  }
+
+  _launchURL(url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 
   Widget product() {
@@ -413,6 +427,90 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     }
   }
 
+  void _settingModalBottomSheet(context) {
+
+    showModalBottomSheet(
+        backgroundColor: Hexcolor('#FCF8F0'),
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(30), topRight: Radius.circular(30))),
+        context: context,
+
+        builder: (builder) {
+          return StatefulBuilder(builder: (BuildContext context, setState) {
+            return Container(
+              height: 200,
+              padding: EdgeInsets.all(10),
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Center(
+                      child: Icon(
+                        Icons.keyboard_arrow_up,
+                        color: Color(0xffF48262),
+                      ),
+                    ),
+                    Center(
+                      child: Container(
+                        margin: EdgeInsets.only(bottom: 10),
+                        child: Text(
+                          "Bagikan",
+                          style: TextStyle(
+                            fontSize: 24,
+                            fontFamily: "Yeseva",
+                            fontWeight: FontWeight.w500,
+                            color: Color(0xffF48262),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      height: 1,
+                      color: Color(0xffF3C1B5),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        IconButton(
+                          iconSize: 90,
+                          onPressed: () {
+                            String url = "mailto:info@example.com?&subject=&body="+urlGlobal+"product/"+widget.product.slug;
+                            _launchURL(url);
+                          },
+                          icon: Image.asset("assets/images/red-email.jpg"),
+                        ),
+                        IconButton(
+                          iconSize: 80,
+                          onPressed: () {
+                            String url = "https://twitter.com/share?url="+urlGlobal+"product/"+widget.product.slug;
+                            _launchURL(url);
+                          },
+                          icon: Image.asset("assets/images/twitter.png"),
+                        ),
+                        IconButton(
+                          iconSize: 80,
+                          onPressed: () {
+                            String url = "https://www.facebook.com/sharer/sharer.php?u="+urlGlobal+"product/"+widget.product.slug;
+                            _launchURL(url);
+                          },
+                          icon: Image.asset("assets/images/facebookLogo.png"),
+                        ),
+                        IconButton(
+                          iconSize: 80,
+                          onPressed: () {
+                            String url = "https://pinterest.com/pin/create/button/?url="+urlGlobal+"product/"+widget.product.slug+"&media="+img_url+widget.product.thumbnail_image;
+                            _launchURL(url);
+                          },
+                          icon: Image.asset("assets/images/pinterest.png"),
+                        )
+                      ],
+                    ),
+                  ])
+            );
+          });
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     List<String> listBahanAktif = widget.product.bahan_aktif != null? widget.product.bahan_aktif.split(',') : [];
@@ -567,6 +665,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                             ),
                             Row(
                               children: <Widget>[
+                                if(widget.product.nomer_bpom != null)
                                 Container(
                                   padding: EdgeInsets.symmetric(horizontal: 7, vertical: 3),
                                   margin: EdgeInsets.only(right: 10),
@@ -576,10 +675,15 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                       borderRadius: BorderRadius.circular(5),
                                   ),
                                 ),
-                                Icon(
+                                IconButton(icon: Icon(
                                   Icons.share,
                                   color: Color(0xffF48262),
-                                ),
+                                ), onPressed: (){
+                                  // _launchURL("https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fponnybeaute.co.id%2Fproduct%2FElsheSkin-Radiant-Skin-Serum-20ml-qjUU4");
+                                  // SocialShare.shareInstagramStory(img_url+widget.product.thumbnail_image,"#ffffff","#000000",
+                                  //     "https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fponnybeaute.co.id%2Fproduct%2FElsheSkin-Radiant-Skin-Serum-20ml-qjUU4");
+                                  _settingModalBottomSheet(context);
+                                })
                               ],
                             ),
                           ]
@@ -951,12 +1055,180 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                 if(value.loadingRekomendasi){
                                   return LoadingWidgetFadingCircle(context);
                                 }else{
-                                  ListRekomedasi = getColumProduct(context,value.Recomendasi,3);
+                                  // ListRekomedasi = getColumProduct(context,value.Recomendasi,3);
+                                  var dataRekomedasi  =Lodash().chunk(array: value.Recomendasi,size: 3);
                                   return  new Swiper(
                                     itemBuilder: (BuildContext context, int index) {
-                                      return ListRekomedasi[index];
+                                      if(dataRekomedasi[index].length == 3){
+                                        return Container(
+                                            child: Row(
+                                                children: [
+                                                  for(Product e in dataRekomedasi[index])
+                                                    Expanded(
+                                                      flex: 1,
+                                                      child: Container(
+                                                        padding: EdgeInsets.symmetric(horizontal: 7),
+                                                        child: MyProduct(
+                                                          product: e,
+                                                          onFavorit: (){
+                                                            if(Provider.of<AppModel>(context).loggedIn) {
+                                                              UIBlock.block(context,customLoaderChild: LoadingWidget(context));
+                                                              Provider.of<WishModel>(context).addProductToWish(e, Provider.of<AppModel>(context).auth.access_token).then((value){
+                                                                UIBlock.unblock(context);
+                                                                if(value){
+                                                                  cost.showWishDialog(context,e);
+                                                                }else{
+                                                                  scaffoldKey.currentState.showSnackBar(snackBarError);
+                                                                }
+                                                              });
+                                                            }else{
+                                                              Navigator.push(context,new MaterialPageRoute(
+                                                                builder: (BuildContext context) => new LoginScreen(),
+                                                              ));
+                                                            }
+                                                          },
+                                                          onTobag: (){
+                                                            if(Provider.of<AppModel>(context).loggedIn){
+                                                              UIBlock.block(context,customLoaderChild: LoadingWidget(context));
+                                                              Provider.of<CartModel>(context).addProductToCart(e,Provider.of<AppModel>(context).auth.access_token).then((value){
+                                                                UIBlock.unblock(context);
+                                                                cost.showAlertDialog(context,e);
+                                                              });
+                                                            }else{
+                                                              Navigator.push(context,new MaterialPageRoute(
+                                                                builder: (BuildContext context) => new LoginScreen(),
+                                                              ));
+                                                            }
+                                                          },
+                                                        ),
+                                                      ),
+                                                    ),
+                                                ]
+                                            )
+                                        );
+                                      }else if(dataRekomedasi[index].length ==2){
+                                        return Container(
+                                            child: Row(
+                                              children: [
+                                                for(Product e in dataRekomedasi[index])
+                                                  Expanded(
+                                                    flex: 1,
+                                                    child: Container(
+                                                      padding: EdgeInsets.symmetric(horizontal: 7),
+                                                      child: MyProduct(
+                                                        product: e,
+                                                        onFavorit: (){
+                                                          if(Provider.of<AppModel>(context).loggedIn) {
+                                                            UIBlock.block(context,customLoaderChild: LoadingWidget(context));
+                                                            Provider.of<WishModel>(context).addProductToWish(e, Provider.of<AppModel>(context).auth.access_token).then((value){
+                                                              UIBlock.unblock(context);
+                                                              if(value){
+                                                                cost.showWishDialog(context,e);
+                                                              }else{
+                                                                scaffoldKey.currentState.showSnackBar(snackBarError);
+                                                              }
+                                                            });
+                                                          }else{
+                                                            Navigator.push(context,new MaterialPageRoute(
+                                                              builder: (BuildContext context) => new LoginScreen(),
+                                                            ));
+                                                          }
+                                                        },
+                                                        onTobag: (){
+                                                          if(Provider.of<AppModel>(context).loggedIn){
+                                                            UIBlock.block(context,customLoaderChild: LoadingWidget(context));
+                                                            Provider.of<CartModel>(context).addProductToCart(e,Provider.of<AppModel>(context).auth.access_token).then((value){
+                                                              UIBlock.unblock(context);
+                                                              cost.showAlertDialog(context,e);
+                                                            });
+                                                          }else{
+                                                            Navigator.push(context,new MaterialPageRoute(
+                                                              builder: (BuildContext context) => new LoginScreen(),
+                                                            ));
+                                                          }
+                                                        },
+                                                      ),
+                                                    ),
+                                                  ),
+                                                Expanded(
+                                                  flex: 1,
+                                                  child: Container(
+                                                    padding: EdgeInsets.symmetric(horizontal: 7),
+
+                                                  ),
+                                                )
+
+
+                                              ],
+                                            )
+                                        );
+                                      }else{
+                                        return Container(
+                                            child: Row(
+                                              children: [
+                                                for(Product e in dataRekomedasi[index])
+                                                  Expanded(
+                                                    flex: 1,
+                                                    child: Container(
+                                                      padding: EdgeInsets.symmetric(horizontal: 7),
+                                                      child: MyProduct(
+                                                        product: e,
+                                                        onFavorit: (){
+                                                          if(Provider.of<AppModel>(context).loggedIn) {
+                                                            UIBlock.block(context,customLoaderChild: LoadingWidget(context));
+                                                            Provider.of<WishModel>(context).addProductToWish(e, Provider.of<AppModel>(context).auth.access_token).then((value){
+                                                              UIBlock.unblock(context);
+                                                              if(value){
+                                                                cost.showWishDialog(context,e);
+                                                              }else{
+                                                                scaffoldKey.currentState.showSnackBar(snackBarError);
+                                                              }
+                                                            });
+                                                          }else{
+                                                            Navigator.push(context,new MaterialPageRoute(
+                                                              builder: (BuildContext context) => new LoginScreen(),
+                                                            ));
+                                                          }
+                                                        },
+                                                        onTobag: (){
+                                                          if(Provider.of<AppModel>(context).loggedIn){
+                                                            UIBlock.block(context,customLoaderChild: LoadingWidget(context));
+                                                            Provider.of<CartModel>(context).addProductToCart(e,Provider.of<AppModel>(context).auth.access_token).then((value){
+                                                              UIBlock.unblock(context);
+                                                              cost.showAlertDialog(context,e);
+                                                            });
+                                                          }else{
+                                                            Navigator.push(context,new MaterialPageRoute(
+                                                              builder: (BuildContext context) => new LoginScreen(),
+                                                            ));
+                                                          }
+                                                        },
+                                                      ),
+                                                    ),
+                                                  ),
+                                                Expanded(
+                                                  flex: 1,
+                                                  child: Container(
+                                                    padding: EdgeInsets.symmetric(horizontal: 7),
+
+                                                  ),
+                                                ),
+                                                Expanded(
+                                                  flex: 1,
+                                                  child: Container(
+                                                    padding: EdgeInsets.symmetric(horizontal: 7),
+
+                                                  ),
+                                                )
+
+
+                                              ],
+                                            )
+                                        );
+
+                                      }
                                     },
-                                    itemCount: ListRekomedasi.length,
+                                    itemCount: dataRekomedasi.length,
                                     pagination: null,
                                     control: null,
                                     autoplay: false,

@@ -223,7 +223,7 @@ Widget _buildList() {
                   width: 85,
                   height: 135,
                   child: CachedNetworkImage(
-                    imageUrl: img_url+_result[index].product.thumbnail_image,
+                    imageUrl: _result[index].product.thumbnail_image != null ? img_url+_result[index].product.thumbnail_image :"",
                     placeholder: (context, url) => LoadingWidgetPulse(context),
                     errorWidget: (context, url, error) => Image.asset('assets/images/basic.jpg'),
                     width: MediaQuery.of(context).size.width,

@@ -176,6 +176,7 @@ class Product{
   String home_discounted_price;
   List<Varian> varian;
   String komposisi;
+  String slug;
 
 
 
@@ -205,7 +206,8 @@ class Product{
       this.bahan_aktif,
       this.home_discounted_price,
       this.varian,
-      this.komposisi
+      this.komposisi,
+      this.slug
       );
 
 
@@ -248,7 +250,8 @@ class Product{
         parsedJson["bahan_aktif"],
         parsedJson["home_discounted_price"],
         _var,
-        parsedJson['komposisi']
+        parsedJson['komposisi'],
+        parsedJson["slug"]
     );
   }
 }
