@@ -139,6 +139,7 @@ Widget product(context) {
               color: Color(0xffF48262),
             ),
             unratedColor: Color(0xffFBD2CD),
+            ignoreGestures: true,
           ),
         ),
         TextSpan(
@@ -322,6 +323,7 @@ Widget getProduct(context,Product product) => Column(
               color: Color(0xffF48262),
             ),
             unratedColor: Color(0xffFBD2CD),
+            ignoreGestures: true,
           ),
         ),
         TextSpan(
@@ -503,6 +505,7 @@ Widget getProductFlash(context,FlashSaleProduct productFlash) {
                         color: Color(0xffF48262),
                       ),
                       unratedColor: Color(0xffFBD2CD),
+                      ignoreGestures: true,
                     ),
                   ),
                   TextSpan(

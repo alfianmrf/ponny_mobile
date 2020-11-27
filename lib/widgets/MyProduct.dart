@@ -195,6 +195,7 @@ class MyProduct extends StatelessWidget {
                 color: Color(0xffF48262),
               ),
               unratedColor: Color(0xffFBD2CD),
+              ignoreGestures: true,
             ),
           ),
           TextSpan(

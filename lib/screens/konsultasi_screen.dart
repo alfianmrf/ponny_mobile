@@ -895,249 +895,250 @@ class _KonsultasiState extends State<KonsultasiScreen> {
             ],
           ),
         ),
-        Container(
-          height: MediaQuery.of(context).size.height*.375,
-          child: ListView.builder(
-              controller: _scrollController,
-              scrollDirection: Axis.vertical,
-              itemCount: riwayatVoucher.length + 1,
-              itemBuilder: (BuildContext context, int index) {
-                if (index == riwayatVoucher.length) {
-                  return _buildProgressIndicator();
-                }else{
-                  var item = riwayatVoucher[index];
-                  return Container(
-                    decoration: BoxDecoration(
-                      border: Border(
-                        bottom: BorderSide(
-                          color: Hexcolor("#F7866A"),
-                          width: 2,
+        Expanded(
+          child: Container(
+            child: ListView.builder(
+                controller: _scrollController,
+                scrollDirection: Axis.vertical,
+                itemCount: riwayatVoucher.length + 1,
+                itemBuilder: (BuildContext context, int index) {
+                  if (index == riwayatVoucher.length) {
+                    return _buildProgressIndicator();
+                  }else{
+                    var item = riwayatVoucher[index];
+                    return Container(
+                      decoration: BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(
+                            color: Hexcolor("#F7866A"),
+                            width: 2,
+                          ),
                         ),
                       ),
-                    ),
-                    margin: EdgeInsets.only(right: 25, left: 25),
-                    padding: EdgeInsets.only(top: 5, bottom: 5),
-                    child: Column(
-                      children: [
-                        Row(
-                          children: [
-                            Expanded(
-                              flex: 1,
-                              child: Container(
-                                child: Text(
-                                  "#"+item.code,
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    fontFamily: "Brandon",
-                                    fontSize: 12,
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            SizedBox(width: 10),
-                            Expanded(
-                              flex: 2,
-                              child: Container(
-                                child: Text(
-                                  item.date,
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    fontFamily: "Brandon",
-                                    fontSize: 12,
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            SizedBox(width: 10),
-                            Expanded(
-                              flex: 1,
-                              child: Container(
-                                child: Text(
-                                  item.status.param3,
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    fontFamily: "Brandon",
-                                    fontSize: 12,
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            SizedBox(width: 10),
-                            Expanded(
-                              flex: 2,
-                              child: Container(
-                                child: Text(
-                                  nm_format.format(item.grand_total),
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    fontFamily: "Brandon",
-                                    fontSize: 12,
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 5),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Container(
-                              padding: EdgeInsets.only(top: 5, bottom: 5),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text("Payment Method",
-                                      textAlign: TextAlign.left,
-                                      style: TextStyle(
-                                        fontFamily: "Brandon",
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w400,
-                                        color: Colors.black,
-                                      )
-                                  ),
-                                  Text(item.mitrans_val.mitrans_val,
-                                      textAlign: TextAlign.left,
-                                      style: TextStyle(
-                                        fontFamily: "Brandon",
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w400,
-                                        color: Colors.black,
-                                      )
-                                  )
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                        Container(
-                          child: Column(
-                            children: item.orderDetailVoucher.map((e){
-
-                              return  Container(
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(10),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.grey.withOpacity(0.5),
-                                      spreadRadius: 2,
-                                      blurRadius: 5,
-                                      offset: Offset(2, 1), // changes position of shadow
+                      margin: EdgeInsets.only(right: 25, left: 25),
+                      padding: EdgeInsets.only(top: 5, bottom: 5),
+                      child: Column(
+                        children: [
+                          Row(
+                            children: [
+                              Expanded(
+                                flex: 1,
+                                child: Container(
+                                  child: Text(
+                                    "#"+item.code,
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontFamily: "Brandon",
+                                      fontSize: 12,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w400,
                                     ),
-                                  ],
+                                  ),
                                 ),
-                                margin: EdgeInsets.only(top: 10, bottom: 10),
-                                padding: EdgeInsets.only(left: 10, right: 10, top: 20, bottom: 10),
-                                child: Column(
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Container(
-                                          width: 70,
-                                          height: 70,
-                                          child: ClipRRect(
-                                            borderRadius: BorderRadius.circular(50.0),
-                                            child: Image.asset(
-                                              "assets/images/doctor.png",
-                                              fit: BoxFit.cover,
-                                            ),
-                                          ),
-                                        ),
-                                        SizedBox(width: 10),
-                                        Expanded(
-                                          flex: 3,
-                                          child: Container(
-                                            height: 70,
-                                            child: Column(
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              mainAxisAlignment: MainAxisAlignment.start,
-                                              children: [
-                                                Container(
-                                                  child: Text(
-                                                    "VOUCHER KONSULTASI",
-                                                    style: TextStyle(
-                                                      fontFamily: "Brandon",
-                                                      fontSize: 13,
-                                                      fontWeight: FontWeight.w600,
-                                                    ),
-                                                  ),
-                                                ),
-                                                Container(
-                                                  child: Row(
-                                                    children: [
-                                                      Icon(
-                                                        Icons.alarm,
-                                                        color: Hexcolor("#F7866A"),
-                                                        size: 14,
-                                                      ),
-                                                      SizedBox(width: 4),
-                                                      Text(
-                                                          (e.durasi/60).round().toString()+" Menit",
-                                                        style: TextStyle(
-                                                          fontFamily: "Brandon",
-                                                          fontSize: 10,
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                                Container(
-                                                  child: Text(
-                                                    nm_format.format(e.harga),
-                                                    style: TextStyle(
-                                                      fontFamily: "Brandon",
-                                                      fontSize: 12,
-                                                      fontWeight: FontWeight.w500,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                        SizedBox(width: 5),
-                                        Expanded(
-                                          flex: 1,
-                                          child: Container(),
-                                        ),
-                                      ],
+                              ),
+                              SizedBox(width: 10),
+                              Expanded(
+                                flex: 2,
+                                child: Container(
+                                  child: Text(
+                                    item.date,
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontFamily: "Brandon",
+                                      fontSize: 12,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w400,
                                     ),
-                                    SizedBox(height: 15),
-                                    Row(
-                                      children: [
-                                        Text(
-                                          "Masa Berlaku "+e.masaBerlaku.toString()+" Hari",
-                                          style: TextStyle(
-                                            color: Hexcolor("#F7866A"),
-                                            fontFamily: "Brandon",
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
+                                  ),
                                 ),
-                              );
-
-                            }).toList(),
+                              ),
+                              SizedBox(width: 10),
+                              Expanded(
+                                flex: 1,
+                                child: Container(
+                                  child: Text(
+                                    item.status.param3,
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontFamily: "Brandon",
+                                      fontSize: 12,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(width: 10),
+                              Expanded(
+                                flex: 2,
+                                child: Container(
+                                  child: Text(
+                                    nm_format.format(item.grand_total),
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontFamily: "Brandon",
+                                      fontSize: 12,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                        )
-                      ],
-                    ),
-                  );
-                }
+                          SizedBox(height: 5),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Container(
+                                padding: EdgeInsets.only(top: 5, bottom: 5),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text("Payment Method",
+                                        textAlign: TextAlign.left,
+                                        style: TextStyle(
+                                          fontFamily: "Brandon",
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w400,
+                                          color: Colors.black,
+                                        )
+                                    ),
+                                    Text(item.mitrans_val.mitrans_val,
+                                        textAlign: TextAlign.left,
+                                        style: TextStyle(
+                                          fontFamily: "Brandon",
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w400,
+                                          color: Colors.black,
+                                        )
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                          Container(
+                            child: Column(
+                              children: item.orderDetailVoucher.map((e){
 
-              }),
+                                return  Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(10),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(0.5),
+                                        spreadRadius: 2,
+                                        blurRadius: 5,
+                                        offset: Offset(2, 1), // changes position of shadow
+                                      ),
+                                    ],
+                                  ),
+                                  margin: EdgeInsets.only(top: 10, bottom: 10),
+                                  padding: EdgeInsets.only(left: 10, right: 10, top: 20, bottom: 10),
+                                  child: Column(
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Container(
+                                            width: 70,
+                                            height: 70,
+                                            child: ClipRRect(
+                                              borderRadius: BorderRadius.circular(50.0),
+                                              child: Image.asset(
+                                                "assets/images/doctor.png",
+                                                fit: BoxFit.cover,
+                                              ),
+                                            ),
+                                          ),
+                                          SizedBox(width: 10),
+                                          Expanded(
+                                            flex: 3,
+                                            child: Container(
+                                              height: 70,
+                                              child: Column(
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                mainAxisAlignment: MainAxisAlignment.start,
+                                                children: [
+                                                  Container(
+                                                    child: Text(
+                                                      "VOUCHER KONSULTASI",
+                                                      style: TextStyle(
+                                                        fontFamily: "Brandon",
+                                                        fontSize: 13,
+                                                        fontWeight: FontWeight.w600,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Container(
+                                                    child: Row(
+                                                      children: [
+                                                        Icon(
+                                                          Icons.alarm,
+                                                          color: Hexcolor("#F7866A"),
+                                                          size: 14,
+                                                        ),
+                                                        SizedBox(width: 4),
+                                                        Text(
+                                                            (e.durasi/60).round().toString()+" Menit",
+                                                          style: TextStyle(
+                                                            fontFamily: "Brandon",
+                                                            fontSize: 10,
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  Container(
+                                                    child: Text(
+                                                      nm_format.format(e.harga),
+                                                      style: TextStyle(
+                                                        fontFamily: "Brandon",
+                                                        fontSize: 12,
+                                                        fontWeight: FontWeight.w500,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                          SizedBox(width: 5),
+                                          Expanded(
+                                            flex: 1,
+                                            child: Container(),
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(height: 15),
+                                      Row(
+                                        children: [
+                                          Text(
+                                            "Masa Berlaku "+e.masaBerlaku.toString()+" Hari",
+                                            style: TextStyle(
+                                              color: Hexcolor("#F7866A"),
+                                              fontFamily: "Brandon",
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                );
+
+                              }).toList(),
+                            ),
+                          )
+                        ],
+                      ),
+                    );
+                  }
+
+                }),
+          ),
         )
 
 
