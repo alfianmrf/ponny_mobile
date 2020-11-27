@@ -236,10 +236,10 @@ Widget _buildList() {
                   height: 150,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Container(
                         margin: EdgeInsets.only(top: 10),
-                        width: 120,
                         child: Text(
                           _result[index].product.brand.name,
                           textAlign: TextAlign.left,
@@ -251,7 +251,6 @@ Widget _buildList() {
                       ),
                       Container(
                         margin: EdgeInsets.only(top: 0),
-                        width: 120,
                         child: Text(
                           _result[index].product.name,
                           textAlign: TextAlign.left,
@@ -264,7 +263,6 @@ Widget _buildList() {
                       ),
                       Container(
                         margin: EdgeInsets.only(top: 0),
-                        width: 120,
                         child: Text(
                           _result[index].product.home_discounted_price,
                           textAlign: TextAlign.left,
@@ -276,7 +274,6 @@ Widget _buildList() {
                         ),
                       ),
                       Container(
-                        alignment: Alignment.centerLeft,
                         child: Text.rich(TextSpan(children: <InlineSpan>[
                           WidgetSpan(
                             child: RatingBar(
