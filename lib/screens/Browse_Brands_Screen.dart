@@ -52,6 +52,7 @@ class _Browse_BrandsState extends State<Browse_Brands> {
   Widget build(BuildContext context) {
     final alphabetsUniq = Lodash().uniq(array: alphabets);
     return Scaffold(
+      backgroundColor: Color(0xffFDF8F0),
       floatingActionButton: LoadingBrand?Container() :Container(
           decoration: BoxDecoration(
             color: Hexcolor('#F48262'),
