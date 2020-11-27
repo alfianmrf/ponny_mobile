@@ -52,47 +52,38 @@ class _DetailAkunStateScreen extends State<DetailAkunScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Hexcolor('#FCF8F0'),
+      appBar: AppBar(
+        elevation: 0,
+        titleSpacing: 0,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: Color(0xffF48262),
+            size: 26,
+          ),
+        ),
+        title:  Text(
+          "Detail Akun",
+          style: TextStyle(
+            fontSize: 24,
+            fontFamily: "Yeseva",
+            fontWeight: FontWeight.w500,
+            color: Color(0xffF48262),
+          ),
+        ),
+        bottom: PreferredSize(
+            child: Container(
+              color: Color(0xffF48262),
+              height: 1.0,
+            ),
+            preferredSize: Size.fromHeight(1.0)),
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
-            Container(
-              height: 70,
-            ),
-            Container(
-              padding: EdgeInsets.only(left: 15, bottom: 15),
-              child: Row(
-                children: [
-                  Container(
-                    margin: EdgeInsets.only(right: 14),
-                    child: GestureDetector(
-                      child: Icon(
-                        Icons.arrow_back_ios,
-                        color: Color(0xffF48262),
-                        size: 26,
-                      ),
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                    ),
-                  ),
-                  Container(
-                    child: Text(
-                      "Detail Akun",
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontFamily: "Yeseva",
-                        fontWeight: FontWeight.w500,
-                        color: Color(0xffF48262),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              height: 1,
-              color: Color(0xffF3C1B5),
-            ),
             Container(
               margin: EdgeInsets.only(left: 20, top: 20, right: 20),
               decoration: BoxDecoration(
@@ -511,83 +502,84 @@ class _DetailAkunStateScreen extends State<DetailAkunScreen> {
                             children: [
                               Container(
                                 child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Container(
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Container(
-                                            margin: EdgeInsets.only(top: 10),
-                                            child: Text(
-                                              "Alamat Pengiriman",
-                                              style: TextStyle(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w600,
-                                                fontFamily: "Brandon",
+                                    Expanded(
+                                      child: Container(
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Container(
+                                              margin: EdgeInsets.only(top: 10),
+                                              child: Text(
+                                                "Alamat Pengiriman",
+                                                style: TextStyle(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.w600,
+                                                  fontFamily: "Brandon",
+                                                ),
                                               ),
                                             ),
-                                          ),
-                                          Container(
-                                            child: Text(
-                                              address.nama_depan+" "+address.nama_belakang+",",
-                                              style: TextStyle(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w400,
-                                                fontFamily: "Brandon",
-                                                decoration: TextDecoration.underline,
+                                            Container(
+                                              child: Text(
+                                                address.nama_depan+" "+address.nama_belakang+",",
+                                                style: TextStyle(
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w400,
+                                                  fontFamily: "Brandon",
+                                                  decoration: TextDecoration.underline,
+                                                ),
                                               ),
                                             ),
-                                          ),
-                                          Container(
+                                            Container(
 
-                                            child: Text(
-                                              "+62"+address.nomor_hp,
-                                              style: TextStyle(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w400,
-                                                fontFamily: "Brandon",
+                                              child: Text(
+                                                "+62"+address.nomor_hp,
+                                                style: TextStyle(
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w400,
+                                                  fontFamily: "Brandon",
+                                                ),
                                               ),
                                             ),
-                                          ),
-                                          Container(
-                                            width: MediaQuery.of(context).size.width*.5,
-                                            child: Text(
-                                              address.alamat_lengkap,
-                                              style: TextStyle(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w400,
-                                                fontFamily: "Brandon",
+                                            Container(
+                                              width: MediaQuery.of(context).size.width*.5,
+                                              child: Text(
+                                                address.alamat_lengkap,
+                                                style: TextStyle(
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w400,
+                                                  fontFamily: "Brandon",
+                                                ),
                                               ),
                                             ),
-                                          ),
-                                          Container(
-                                            margin: EdgeInsets.only(top: 10),
-                                            child: Text(
-                                              "Area Pengiriman",
-                                              style: TextStyle(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w600,
-                                                fontFamily: "Brandon",
+                                            Container(
+                                              margin: EdgeInsets.only(top: 10),
+                                              child: Text(
+                                                "Area Pengiriman",
+                                                style: TextStyle(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.w600,
+                                                  fontFamily: "Brandon",
+                                                ),
                                               ),
                                             ),
-                                          ),
-                                          Container(
+                                            Container(
 
-                                            child: Text(
-                                              address.kecamatan+", "+address.city_name+", "+address.province+", "+address.postal_code,
-                                              style: TextStyle(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w400,
-                                                fontFamily: "Brandon",
+                                              child: Text(
+                                                address.kecamatan+", "+address.city_name+", "+address.province+", "+address.postal_code,
+                                                style: TextStyle(
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w400,
+                                                  fontFamily: "Brandon",
+                                                ),
                                               ),
                                             ),
-                                          ),
-                                        ],
+                                          ],
+                                        ),
                                       ),
                                     ),
                                     Container(
-                                      padding: EdgeInsets.only(left: 15, right: 20),
+                                      padding: EdgeInsets.only(left: 15, right: 15),
                                       height: 170,
                                       decoration: BoxDecoration(
                                         border: Border(

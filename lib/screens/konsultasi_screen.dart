@@ -1442,7 +1442,7 @@ class _Konsultasi extends State<konsultasi> {
                     ),
                   ),
                 ),
-                SizedBox(width: 10),
+                SizedBox(width: 5),
                 Expanded(
                   flex: 1,
                   child: GestureDetector(
@@ -1468,7 +1468,7 @@ class _Konsultasi extends State<konsultasi> {
                     ),
                   ),
                 ),
-                SizedBox(width: 10),
+                SizedBox(width: 5),
                 Expanded(
                   flex: 1,
                   child: GestureDetector(
@@ -1480,7 +1480,7 @@ class _Konsultasi extends State<konsultasi> {
                         borderRadius: BorderRadius.circular(5),
                         color: Hexcolor("#F7866A"),
                       ),
-                      padding: EdgeInsets.only(top: 5, bottom: 5),
+                      padding: EdgeInsets.only(top: 3, bottom: 3),
                       child: Text(
                         "KONSULTASI",
                         textAlign: TextAlign.center,

@@ -115,6 +115,9 @@ class _BeautyProfileStateScreen extends State<BeautyProfileScreen> {
         elevation: 0,
         titleSpacing: 0,
         leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
           icon: Icon(
             Icons.arrow_back_ios,
             color: Color(0xffF48262),
@@ -191,8 +194,8 @@ class _BeautyProfileStateScreen extends State<BeautyProfileScreen> {
                 // color: Colors.cyanAccent,
               ),
               margin: EdgeInsets.only(
-                left: 25,
-                right: 25,
+                left: 20,
+                right: 20,
                 top: 10,
               ),
               padding: EdgeInsets.only(top: 0, bottom: 20),
@@ -266,8 +269,8 @@ class _BeautyProfileStateScreen extends State<BeautyProfileScreen> {
                 // color: Colors.cyanAccent,
               ),
               margin: EdgeInsets.only(
-                left: 25,
-                right: 25,
+                left: 20,
+                right: 20,
                 top: 10,
               ),
               padding: EdgeInsets.only(top: 20, bottom: 20),
@@ -357,8 +360,8 @@ class _BeautyProfileStateScreen extends State<BeautyProfileScreen> {
                 // color: Colors.cyanAccent,
               ),
               margin: EdgeInsets.only(
-                left: 25,
-                right: 25,
+                left: 20,
+                right: 20,
                 top: 10,
               ),
               padding: EdgeInsets.only(top: 20, bottom: 20),
@@ -463,8 +466,8 @@ class _BeautyProfileStateScreen extends State<BeautyProfileScreen> {
                 // color: Colors.cyanAccent,
               ),
               margin: EdgeInsets.only(
-                left: 25,
-                right: 25,
+                left: 20,
+                right: 20,
                 top: 10,
               ),
               padding: EdgeInsets.only(top: 20, bottom: 20),
@@ -559,8 +562,8 @@ class _BeautyProfileStateScreen extends State<BeautyProfileScreen> {
             ),
             Container(
               margin: EdgeInsets.only(
-                left: 25,
-                right: 25,
+                left: 20,
+                right: 20,
                 top: 10,
               ),
               padding: EdgeInsets.only(top: 20, bottom: 20),

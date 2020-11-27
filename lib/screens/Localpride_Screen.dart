@@ -275,7 +275,7 @@ class _LocalPrideState extends State<LocalPride> {
                   ),
                 ),
                 Container(
-                  height: MediaQuery.of(context).size.width * .7,
+                  height: MediaQuery.of(context).size.width * 0.8,
                   child: Consumer<ProductModel>(
                     builder: (context,value,child){
                       if(value.loadingRekomendasi){
