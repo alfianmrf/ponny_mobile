@@ -1,21 +1,74 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:ponny/common/constant.dart';
+import 'package:ponny/model/App.dart';
+import 'package:ponny/model/User.dart';
 import 'package:ponny/screens/home_screen.dart';
 import 'package:ponny/screens/account_screen.dart';
 import 'package:ponny/screens/ubah_password_screen.dart';
+import 'package:ponny/util/globalUrl.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
+import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
+import 'package:uiblock/uiblock.dart';
 
 class UbahPasswordScreen extends StatefulWidget {
   static const String id = "ubah_password_Screen";
+
   @override
   _UbahPasswordStateScreen createState() => _UbahPasswordStateScreen();
 }
 
 class _UbahPasswordStateScreen extends State<UbahPasswordScreen> {
+  GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+  final passwordLama = TextEditingController();
+  final password = TextEditingController();
+  final konfirmasi_password = TextEditingController();
+
+  Future SavePassword() async {
+    FormState form = this.formKey.currentState;
+    if(form.validate()){
+      final token =Provider.of<AppModel>(context).auth.access_token;
+      FocusScope.of(context).requestFocus(new FocusNode());
+      UIBlock.block(context,customLoaderChild: LoadingWidget(context));
+      var param ={
+        "old_password":passwordLama.value.text,
+        "password":password.value.text,
+        "confirm_password":konfirmasi_password.value.text,
+      };
+      print(param);
+      http.post(changePassword,headers: { HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: "Bearer $token"},body: json.encode(param)).then((value){
+        UIBlock.unblock(context);
+        if(value.statusCode == 200){
+          final snackBar = SnackBar(
+            content: Text('Sukses sandi baru berhasil disimpan.',style: TextStyle(color: Colors.white)),
+            backgroundColor: Colors.green,
+          );
+          scaffoldKey.currentState.showSnackBar(snackBar);
+        }else{
+          final snackBar = SnackBar(
+            content: Text('Sandi lama anda salah!',style: TextStyle(color: Colors.white)),
+            backgroundColor: Colors.redAccent,
+          );
+          scaffoldKey.currentState.showSnackBar(snackBar);
+        }
+      }).catchError((onError){
+        UIBlock.unblock(context);
+        scaffoldKey.currentState.showSnackBar(snackBarError);
+
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: scaffoldKey,
       resizeToAvoidBottomInset: false,
       backgroundColor: Hexcolor('#FCF8F0'),
       body: SingleChildScrollView(
@@ -43,7 +96,7 @@ class _UbahPasswordStateScreen extends State<UbahPasswordScreen> {
                   ),
                   Container(
                     child: Text(
-                      "Change Password",
+                      "Ubah Sandi",
                       style: TextStyle(
                         fontSize: 24,
                         fontFamily: "Yeseva",
@@ -74,109 +127,128 @@ class _UbahPasswordStateScreen extends State<UbahPasswordScreen> {
                 top: 15,
                 bottom: 15,
               ),
-              child: Column(
-                children: [
-                  Container(
-                    padding: EdgeInsets.only(bottom: 8),
-                    decoration: BoxDecoration(
-                      border: Border(
-                        bottom: BorderSide(
-                          color: Color(0xffF48262),
-                          width: 1,
+              child: Form(
+                key: formKey,
+                child: Column(
+                  children: [
+                    Container(
+                      padding: EdgeInsets.only(bottom: 8),
+                      decoration: BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(
+                            color: Color(0xffF48262),
+                            width: 1,
+                          ),
                         ),
                       ),
-                    ),
-                    child: TextFormField(
-                      obscureText: true,
-                      style: TextStyle(
-                        fontFamily: "Brandon",
-                        fontSize: 17,
-                        fontWeight: FontWeight.w300,
-                      ),
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        hintText: 'Current Password',
-                        isDense: true,
-                      ),
-                      maxLines: 1,
-                      minLines: 1,
-                    ),
-                  ),
-                  Container(
-                    padding: EdgeInsets.only(bottom: 8),
-                    decoration: BoxDecoration(
-                      border: Border(
-                        bottom: BorderSide(
-                          color: Color(0xffF48262),
-                          width: 1,
-                        ),
-                      ),
-                    ),
-                    child: TextFormField(
-                      obscureText: true,
-                      style: TextStyle(
-                        fontFamily: "Brandon",
-                        fontSize: 17,
-                        fontWeight: FontWeight.w300,
-                      ),
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        hintText: 'New Password',
-                        isDense: true,
-                      ),
-                      maxLines: 1,
-                      minLines: 1,
-                    ),
-                  ),
-                  Container(
-                    padding: EdgeInsets.only(bottom: 8),
-                    decoration: BoxDecoration(
-                      border: Border(
-                        bottom: BorderSide(
-                          color: Color(0xffF48262),
-                          width: 1,
-                        ),
-                      ),
-                    ),
-                    child: TextFormField(
-                      obscureText: true,
-                      style: TextStyle(
-                        fontFamily: "Brandon",
-                        fontSize: 17,
-                        fontWeight: FontWeight.w300,
-                      ),
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        hintText: 'Retype new Password',
-                        isDense: true,
-                      ),
-                      maxLines: 1,
-                      minLines: 1,
-                    ),
-                  ),
-                  Container(
-                    padding: EdgeInsets.only(top: 15, bottom: 0),
-                    child: GestureDetector(
-                      onTap: () {
-                        // Navigator.push(
-                        //   context,
-                        //   MaterialPageRoute(
-                        //     builder: (context) => EditAkunScreen(),
-                        //   ),
-                        // );
-                      },
-                      child: Text(
-                        "Save",
+                      child: TextFormField(
+                        controller: passwordLama,
+                        obscureText: true,
                         style: TextStyle(
                           fontFamily: "Brandon",
-                          color: Color(0xffF48262),
                           fontSize: 17,
+                          fontWeight: FontWeight.w300,
+                        ),
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          hintText: 'Sandi Lama',
+                          isDense: true,
+                        ),
+                        maxLines: 1,
+                        minLines: 1,
+                        validator: (String value) {
+                          if (value.isEmpty) {
+                            return 'Sandi lama tidak boleh kosong';
+                          }
+                        }
+                      ),
+                    ),
+                    Container(
+                      padding: EdgeInsets.only(bottom: 8),
+                      decoration: BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(
+                            color: Color(0xffF48262),
+                            width: 1,
+                          ),
+                        ),
+                      ),
+                      child: TextFormField(
+                        controller: password,
+                        obscureText: true,
+                        style: TextStyle(
+                          fontFamily: "Brandon",
+                          fontSize: 17,
+                          fontWeight: FontWeight.w300,
+                        ),
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          hintText: 'Sandi Baru',
+                          isDense: true,
+                        ),
+                        maxLines: 1,
+                        minLines: 1,
+                        validator: (String value) {
+                          if (value.isEmpty) {
+                            return 'Sandi baru tidak boleh kosong';
+                          }
+                        }
+                      ),
+                    ),
+                    Container(
+                      padding: EdgeInsets.only(bottom: 8),
+                      decoration: BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(
+                            color: Color(0xffF48262),
+                            width: 1,
+                          ),
+                        ),
+                      ),
+                      child: TextFormField(
+                        controller: konfirmasi_password,
+                        obscureText: true,
+                        style: TextStyle(
+                          fontFamily: "Brandon",
+                          fontSize: 17,
+                          fontWeight: FontWeight.w300,
+                        ),
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          hintText: 'Konfirmasi Sandi Baru',
+                          isDense: true,
+                        ),
+                        maxLines: 1,
+                        minLines: 1,
+                        validator: (String value) {
+                          if (value.isEmpty) {
+                            return 'Konfirmasi sandi lama tidak boleh kosong';
+                          }else if(value != password.value.text){
+                            return 'Sandi baru dan konfirmasi sandi lama tidak cocok';
+                          }
+                        }
+                      ),
+                    ),
+                    Container(
+                      padding: EdgeInsets.only(top: 15, bottom: 0),
+                      child: GestureDetector(
+                        onTap: () {
+                          SavePassword();
+                        },
+                        child: Text(
+                          "Simpan",
+                          style: TextStyle(
+                            fontFamily: "Brandon",
+                            color: Color(0xffF48262),
+                            fontSize: 17,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
+
             ),
           ],
         ),

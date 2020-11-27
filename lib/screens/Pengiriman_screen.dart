@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:ponny/model/App.dart';
+import 'package:ponny/model/FaqHeader.dart';
+import 'package:ponny/screens/Keuntungan_HappyReward_screen.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
+import 'package:provider/provider.dart';
 
 class PengirimanScreen extends StatefulWidget {
   static const String id = "Pengiriman_screen";
@@ -12,6 +16,7 @@ class PengirimanScreen extends StatefulWidget {
 class _PengirimanScreenState extends State<PengirimanScreen> {
   @override
   Widget build(BuildContext context) {
+    final faq = Provider.of<AppModel>(context,listen: false).listFaq.firstWhere((element) => element.id == 3);
     return SafeArea(
       child: Scaffold(
           resizeToAvoidBottomInset: false,
@@ -110,106 +115,21 @@ class _PengirimanScreenState extends State<PengirimanScreen> {
                       ),
                     ),
                     Container(
-                      margin: EdgeInsets.only(top: 30, right: 20, left: 20),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            padding: EdgeInsets.only(left: 10),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  "Apa Itu Happy Skin Reward?",
-                                  style: TextStyle(
-                                      fontFamily: 'Brandon',
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w800),
-                                ),
-                                IconButton(
-                                  icon: Icon(
-                                    Icons.add,
-                                    color: Color(0xffF48262),
-                                  ),
-                                  onPressed: () {},
-                                )
-                              ],
-                            ),
-                          ),
-                          Container(
-                            height: 1,
-                            color: Color(0xffF48262),
-                          ),
-                          Container(
-                            padding:
-                                EdgeInsets.only(left: 10, bottom: 10, top: 10),
-                            child: Text(
-                              "Happy Skin Reward adalah program reward di mana Anda dapat menjadi anggota membership Ponny Beaute. Sebagai anggota, Anda harus mempunyai akun, sehingga dapat mengumpulkan poin, menukarkan poin dengan hadiah, mendapat beragam keuntungan diskon dan promosi lainnya yang secara eksklusif diberikan untuk",
-                              style: TextStyle(
-                                  fontFamily: 'Brandon',
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w500),
-                            ),
-                          ),
-                          Container(
-                            height: 1,
-                            color: Color(0xffF48262),
-                          ),
-                          Container(
-                            padding: EdgeInsets.only(left: 10),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  "Apa Itu Happy Skin Reward?",
-                                  style: TextStyle(
-                                      fontFamily: 'Brandon',
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w800),
-                                ),
-                                IconButton(
-                                  icon: Icon(
-                                    Icons.add,
-                                    color: Color(0xffF48262),
-                                  ),
-                                  onPressed: () {},
-                                )
-                              ],
-                            ),
-                          ),
-                          Container(
-                            height: 1,
-                            color: Color(0xffF48262),
-                          ),
-                          Container(
-                            padding: EdgeInsets.only(left: 10),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  "Apa Itu Happy Skin Reward?",
-                                  style: TextStyle(
-                                      fontFamily: 'Brandon',
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w800),
-                                ),
-                                IconButton(
-                                  icon: Icon(
-                                    Icons.add,
-                                    color: Color(0xffF48262),
-                                  ),
-                                  onPressed: () {},
-                                )
-                              ],
-                            ),
-                          ),
-                          Container(
-                            height: 1,
-                            color: Color(0xffF48262),
-                          ),
-                        ],
+                      margin: EdgeInsets.symmetric(vertical: 20),
+                      child: Text(
+                        "FAQs",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 24,
+                          fontFamily: "Yeseva",
+                        ),
                       ),
                     ),
+                    for(Faq item in faq.faq)
+                      faqCollapsed(item),
+                    Container(
+                      height: 20,
+                    )
                   ]),
                 ),
               ),

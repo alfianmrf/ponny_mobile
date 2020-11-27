@@ -60,6 +60,8 @@ const urlOrder = base_url + "account/orders";
 const urlUpdateProfile = base_url + "account/update";
 const updateBeauteProfile = base_url + "account/update_beauty";
 const faqUrl = base_url+"account/faqs";
+const changePassword = base_url+"account/password";
+const historyPointurl =base_url+"account/pointHistory";
 
 //Order
 const urlTracking = base_url + "checkout/tracking";

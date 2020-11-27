@@ -104,9 +104,14 @@ class _PaymentScreenState extends State<PaymentScreen> {
                       children: <Widget>[
                         Container(
                           margin: EdgeInsets.only(right: 10),
-                          child: Icon(
-                            Icons.arrow_back_ios,
-                            color: Color(0xffF48262),
+                          child: IconButton(
+                            onPressed: (){
+                             Navigator.pop(context);
+                            },
+                            icon: Icon(
+                              Icons.arrow_back_ios,
+                              color: Color(0xffF48262),
+                            ),
                           ),
                         ),
                         Text(
@@ -360,7 +365,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                           Padding(
                                             padding: EdgeInsets.only(left: 10),
                                             child: Text(
-                                              'Mandiri Virtual Account',
+                                              'Alfamart',
                                               style: TextStyle(
                                                 fontFamily: 'Brandon',
                                                 fontSize: 14,

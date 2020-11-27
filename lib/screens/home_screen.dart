@@ -111,12 +111,7 @@ class _HomeScreenState extends State<HomeScreen> {
         autoPlay: false,
         mute: false,
       ),
-    )..addListener((){
-      print("on full screan");
-      if(_ytcontroller.value.isFullScreen){
-        print("on full screan");
-      }
-    });
+    );
   }
 
   @override
@@ -1657,6 +1652,11 @@ class _HomeScreenState extends State<HomeScreen> {
                 padding: EdgeInsets.symmetric(horizontal: 30),
                 child: YoutubePlayer(
                   controller: _ytcontroller,
+                  bottomActions: [
+                    CurrentPosition(),
+                    ProgressBar(isExpanded: true),
+                    RemainingDuration(),
+                  ],
                 ),
               ),
               Container(
