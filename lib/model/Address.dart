@@ -59,7 +59,7 @@ class AddressModel with ChangeNotifier{
       listAdress=[];
       final responseJson = json.decode(res.body);
       for (Map item in responseJson) {
-        print(Address.fromJson(item).id);
+        // print(Address.fromJson(item).id);
         listAdress.add(Address.fromJson(item));
       }
       notifyListeners();

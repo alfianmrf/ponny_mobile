@@ -20,6 +20,7 @@ const skinkloUrl = base_url + "product/skinlopedia?keyword=&alphabet=";
 const userprofile = base_url + "auth/user";
 const loginOtp = base_url + "auth/login-otp";
 const loginSocial  = base_url+"auth/social-login";
+const passwordReset = base_url+"auth/password/create";
 
 //home
 const banner = base_url + "banners";

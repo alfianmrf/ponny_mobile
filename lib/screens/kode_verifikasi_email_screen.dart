@@ -26,9 +26,36 @@ class KodeVerifikasiEmailScreen extends StatefulWidget {
 }
 
 class _KodeVerifikasiEmailStateScreen extends State<KodeVerifikasiEmailScreen> {
+  final scafollKey = GlobalKey<ScaffoldState>();
+  final myemail = TextEditingController();
+
+  Future<bool> _reset(String email) async {
+    try {
+      final response = await http.post(passwordReset,headers: { HttpHeaders.contentTypeHeader: 'application/json'},body: json.encode( { "email" : email } ));
+      final responseJson = json.decode(response.body);
+      if(response.statusCode == 200){
+        final snackBar = SnackBar(
+          content: Text('Success, '+responseJson['message'],style: TextStyle(color: Colors.white)),
+          backgroundColor: Colors.green,
+        );
+        scafollKey.currentState.showSnackBar(snackBar);
+      }else{
+        final snackBar = SnackBar(
+          content: Text(responseJson['message'],style: TextStyle(color: Colors.white)),
+          backgroundColor: Colors.redAccent,
+        );
+        scafollKey.currentState.showSnackBar(snackBar);
+      }
+    } catch (err) {
+      print(err);
+    }
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: scafollKey,
       appBar: AppBar(
         automaticallyImplyLeading: false,
         elevation: 0.0,

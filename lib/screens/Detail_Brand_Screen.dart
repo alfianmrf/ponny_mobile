@@ -789,17 +789,19 @@ class _DetailBrandScreen extends State<DetailBrand> {
                     for( Product e in dataProduct)
                       MyProduct(
                         product: e,
+                        IsLiked: Provider.of<WishModel>(context).rawlist.firstWhere((element) => element.productId == e.id, orElse: () => null) != null ? true:false,
                         onFavorit: (){
                           if(Provider.of<AppModel>(context).loggedIn) {
-                            UIBlock.block(context,customLoaderChild: LoadingWidget(context));
-                            Provider.of<WishModel>(context).addProductToWish(e, Provider.of<AppModel>(context).auth.access_token).then((value){
-                              UIBlock.unblock(context);
-                              if(value){
-                                showWishDialog(context,e);
-                              }else{
-                                scafoldkey.currentState.showSnackBar(snackBarError);
-                              }
-                            });
+                            Provider.of<WishModel>(context).addProductToWish(e, Provider.of<AppModel>(context).auth.access_token);
+                          }else{
+                            Navigator.push(context,new MaterialPageRoute(
+                              builder: (BuildContext context) => new LoginScreen(),
+                            ));
+                          }
+                        },
+                        onUnFavorit: (){
+                          if(Provider.of<AppModel>(context).loggedIn) {
+                            Provider.of<WishModel>(context).removeProductFromWish(e, Provider.of<AppModel>(context).auth.access_token);
                           }else{
                             Navigator.push(context,new MaterialPageRoute(
                               builder: (BuildContext context) => new LoginScreen(),

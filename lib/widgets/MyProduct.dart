@@ -24,9 +24,24 @@ import 'package:ponny/screens/Browse_Screen.dart';
 
 class MyProduct extends StatelessWidget {
   final VoidCallback onFavorit;
-  final VoidCallback onTobag;// new code
+  final VoidCallback onUnFavorit;
+  final VoidCallback onTobag;
+
+  bool IsLiked = false;// new code
   Product product;
-  MyProduct({@required this.product,this.onFavorit,this.onTobag});
+  MyProduct({@required this.product,this.onFavorit,this.onTobag,this.IsLiked,this.onUnFavorit});
+
+  Future<bool> onclick(_bool) async {
+    print(_bool);
+    if(!_bool){
+      this.onFavorit();
+      return true;
+    }else{
+      this.onUnFavorit();
+      return false;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -78,7 +93,10 @@ class MyProduct extends StatelessWidget {
               LikeButton(
                 mainAxisAlignment: MainAxisAlignment.end,
                 padding: EdgeInsets.all(0),
+                isLiked: IsLiked,
+                onTap: onclick,
                 likeBuilder: (bool isLiked) {
+                  //
                   return Icon(
                     isLiked ? Icons.favorite : Icons.favorite_border,
                     color: Color(0xffF48262),
