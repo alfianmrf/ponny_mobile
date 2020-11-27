@@ -56,14 +56,17 @@ class MyProduct extends StatelessWidget {
                     builder: (BuildContext context) => new ProductDetailsScreen(product: product,),
                   ));
                 },
-                child: Container(
-                  color: Colors.white,
-                  child: CachedNetworkImage(
-                    imageUrl:product.thumbnail_image != null?  img_url+product.thumbnail_image:"",
-                    placeholder: (context, url) => LoadingWidgetPulse(context),
-                    errorWidget: (context, url, error) => Image.asset('assets/images/basic.jpg'),
-                    width: MediaQuery.of(context).size.width,
-                    fit: BoxFit.cover,
+                child: AspectRatio(
+                  aspectRatio: 0.7888,
+                  child: Container(
+                    color: Colors.white,
+                    child: CachedNetworkImage(
+                      imageUrl:product.thumbnail_image != null?  img_url+product.thumbnail_image:"",
+                      placeholder: (context, url) => LoadingWidgetPulse(context),
+                      errorWidget: (context, url, error) => Image.asset('assets/images/basic.jpg'),
+                      width: MediaQuery.of(context).size.width,
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
               ),
