@@ -26,9 +26,36 @@ class LupaPasswordScreen extends StatefulWidget {
 }
 
 class _LupaPasswordStateScreen extends State<LupaPasswordScreen> {
+  final scafollKey = GlobalKey<ScaffoldState>();
+  GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  final myemail = TextEditingController();
+
+  Future<bool> _reset() async {
+    try {
+      String email = myemail.value.text;
+      final response = await http.post(passwordReset,headers: { HttpHeaders.contentTypeHeader: 'application/json'},body: json.encode( { "email" : email } ));
+      final responseJson = json.decode(response.body);
+      if(response.statusCode == 200){
+        final snackBar = SnackBar(
+          content: Text('Success, '+responseJson['message'],style: TextStyle(color: Colors.white)),
+          backgroundColor: Colors.green,
+        );
+        scafollKey.currentState.showSnackBar(snackBar);
+      }else{
+        final snackBar = SnackBar(
+          content: Text(responseJson['message'],style: TextStyle(color: Colors.white)),
+          backgroundColor: Colors.redAccent,
+        );
+        scafollKey.currentState.showSnackBar(snackBar);
+      }
+    } catch (err) {
+      print(err);
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: scafollKey,
       appBar: AppBar(
         automaticallyImplyLeading: false,
         elevation: 0.0,
@@ -57,6 +84,7 @@ class _LupaPasswordStateScreen extends State<LupaPasswordScreen> {
               Container(
                 margin: EdgeInsets.only(left: 20.0, right: 20.0, top: 40.0),
                 child: Form(
+                  key: formKey,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
@@ -71,7 +99,7 @@ class _LupaPasswordStateScreen extends State<LupaPasswordScreen> {
                         ),
                       ),
                       Text(
-                        'Nomor Ponsel atau Email',
+                        'Email',
                         style: TextStyle(
                           fontFamily: 'Brandon',
                         ),
@@ -79,6 +107,7 @@ class _LupaPasswordStateScreen extends State<LupaPasswordScreen> {
                       Container(
                         margin: EdgeInsets.only(top: 5, bottom: 40),
                         child: TextFormField(
+                          controller: myemail,
                           cursorColor: Color(0xffF48262),
                           decoration: InputDecoration(
                             filled: true,
@@ -100,6 +129,13 @@ class _LupaPasswordStateScreen extends State<LupaPasswordScreen> {
                               ),
                             ),
                           ),
+                          validator: (String value) {
+                            if (value.isEmpty) {
+                              return 'Email tidak boleh kosong';
+                            } else if (!value.contains('@')) {
+                              return 'Email tidak valid';
+                            }
+                          },
                         ),
                       ),
                       Center(
@@ -107,16 +143,25 @@ class _LupaPasswordStateScreen extends State<LupaPasswordScreen> {
                           padding: EdgeInsets.symmetric(vertical: 10, horizontal: 70),
                           child: FlatButton(
                             onPressed: (){
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => MetodeVerifikasiScreen(),
-                                ),
-                              );
+                              FocusScope.of(context).requestFocus(new FocusNode());
+                              if(formKey.currentState.validate()){
+                                UIBlock.block(context,customLoaderChild: LoadingWidget(context));
+                                _reset().then((value) {
+                                  UIBlock.unblock(context);
+                                }).catchError((onError){
+                                  UIBlock.unblock(context);
+                                });
+                              }
+                              // Navigator.push(
+                              //   context,
+                              //   MaterialPageRoute(
+                              //     builder: (context) => MetodeVerifikasiScreen(),
+                              //   ),
+                              // );
                             },
                             color: Color(0xffF48262),
                             child: Text(
-                              "LANJUT",
+                              "Kirim",
                               style: TextStyle(
                                   fontSize: 18,
                                   fontFamily: 'Brandon',

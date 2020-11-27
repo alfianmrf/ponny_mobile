@@ -227,8 +227,13 @@ class _Browse_CategoryState extends State<Browse_Category> {
                 side: BorderSide(color: Hexcolor('#F48262')),
               ),
             ),
-            ButtonTheme(
+            Container(
+              width: 150.0,
+              height: 150.0,
+              child: Container(
+                child: Container(),
               ),
+            ),
           ],
         ),
       ));

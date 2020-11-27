@@ -163,9 +163,11 @@ Widget _buildProgressIndicator() {
     if(response.statusCode == 200)
     {
       final responseJson = json.decode(response.body);
+      print(responseJson['data']);
 
       setState(() {
         for (Map item in responseJson['data']){
+          if(item != null)
           _result.add(Wish.fromJson(item));
         }
         isLoading =false;
