@@ -42,7 +42,7 @@ class AddressModel with ChangeNotifier{
     final ready = await storage.ready;
     if (ready) {
       final json = storage.getItem("useAddress");
-      print(json);
+      // print(json);
       if (json != null) {
         useAddress = Address.fromJson(json);
         notifyListeners();
@@ -84,14 +84,14 @@ class AddressModel with ChangeNotifier{
 
   Future<void> getListCourier(token) async {
     var param="?address_id="+useAddress.id.toString();
-    print(CostShipping+param);
+    // print(CostShipping+param);
     final res = await http.get(CostShipping+param,headers: { HttpHeaders.contentTypeHeader: 'application/json',HttpHeaders.authorizationHeader: "Bearer $token"  });
     final responseJson = json.decode(res.body);
 
     if(res.statusCode == 200){
       listCourier=[];
       for (Map item in responseJson) {
-        print(Courier.fromJson(item));
+        // print(Courier.fromJson(item));
         listCourier.add(Courier.fromJson(item));
       }
       notifyListeners();
@@ -104,7 +104,7 @@ class AddressModel with ChangeNotifier{
     if(res.statusCode == 200){
       final responseJson = json.decode(res.body);
       await getListAddress(token);
-      if(param['id']!=null  && param['id'] == useAddress.id){
+      if(param['id'] !=null ){
         useAddress = listAdress.firstWhere((element) => element.id == param['id']);
         await getListCourier(token);
         notifyListeners();

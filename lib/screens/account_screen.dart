@@ -33,6 +33,7 @@ import 'package:ponny/screens/account/beauty_profile_screen.dart';
 import 'package:ponny/screens/account/happy_skin_reward_screen.dart';
 import 'package:ponny/screens/account/affiliate_us_screen.dart';
 import 'package:ponny/util/globalUrl.dart';
+import 'Pengiriman_screen.dart';
 import 'RincianPoint_screen.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
 import 'package:provider/provider.dart';
@@ -1478,7 +1479,9 @@ class _AccountScreenState extends State<AccountScreen> {
                               ),
                             ),
                             InkWell(
-                              onTap: () {},
+                              onTap: () {
+                                Navigator.push(context, MaterialPageRoute(builder: (context)=> PengirimanScreen()));
+                              },
                               child: Container(
                                 padding: EdgeInsets.only(bottom: 15, top: 15),
                                 decoration: new BoxDecoration(

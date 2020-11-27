@@ -42,6 +42,7 @@ class _ChatEmailStateScreen extends State<ChatEmailScreen> {
 
   Future<bool> kirimEmail(BuildContext context) async {
     bool result = false;
+    FocusScope.of(context).requestFocus(new FocusNode());
     UIBlock.block(context, customLoaderChild: LoadingWidget(context));
     var param = {
       "name": nama.text,
@@ -61,9 +62,11 @@ class _ChatEmailStateScreen extends State<ChatEmailScreen> {
         content: Text(
             'SUKSES',
             style: TextStyle(color: Colors.white)),
-        backgroundColor: Colors.redAccent,
+        backgroundColor: Colors.green,
       );
       scaffoldKey.currentState.showSnackBar(snackBar);
+     result =true;
+
     } else {
       UIBlock.unblock(context);
       final snackBar = SnackBar(

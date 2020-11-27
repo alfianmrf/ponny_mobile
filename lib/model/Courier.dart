@@ -46,7 +46,7 @@ class MapCost{
   MapCost(this.index,this.code, this.services, this.cost);
 
   factory MapCost.fromJson(Map<String, dynamic> parsedJson){
-    print(parsedJson);
+    // print(parsedJson);
     return MapCost(-1, parsedJson["code"],parsedJson["services"],int.parse(parsedJson["cost"].toString()));
   }
 

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:ponny/common/constant.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -128,6 +129,7 @@ class _ForumScreenState extends State<ForumScreen> {
                                 itemCount:
                                     widget.list == null ? 0 : widget.list.length,
                                 itemBuilder: (context, i) {
+                                  String gambar = widget.list[i]["thumbnail"].toString();
                                   return Column(
                                     children: [
                                       Container(
@@ -135,13 +137,12 @@ class _ForumScreenState extends State<ForumScreen> {
                                         height: 200,
                                         width: double.infinity,
                                         child: CachedNetworkImage(
-                                          imageUrl:
-                                              "http://via.placeholder.com/350x150",
-                                          placeholder: (context, url) =>
-                                              CircularProgressIndicator(),
-                                          errorWidget: (context, url, error) =>
-                                              Icon(Icons.error),
-                                        ),
+                                        imageUrl: img_url+gambar,
+                                          placeholder: (context, url) => LoadingWidgetPulse(context),
+                                          errorWidget: (context, url, error) => Image.asset('assets/images/new-placeholder-rect.png'),
+                                          width: MediaQuery.of(context).size.width,
+                                          fit: BoxFit.cover,
+                                        )
                                       ),
                                       Text(
                                         widget.list[i]["title"],
@@ -189,7 +190,6 @@ class ForumData extends StatefulWidget {
 class _ForumDataState extends State<ForumData> {
   Future<List> forumData() async {
     final response = await http.get(forumUrl);
-
     return json.decode(response.body);
   }
 
@@ -203,7 +203,13 @@ class _ForumDataState extends State<ForumData> {
               ? ForumScreen(
                   list: snapshot.data,
                 )
-              : Center(child: new CircularProgressIndicator());
+              : Scaffold(
+            body: Container(
+              child: Center(child: LoadingWidgetFadingCircle(context)),
+
+            ),
+              bottomNavigationBar: new PonnyBottomNavbar(selectedIndex: 3)
+          );
         });
   }
 }

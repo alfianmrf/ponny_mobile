@@ -18,6 +18,7 @@ import 'package:ponny/screens/Localpride_Screen.dart';
 import 'package:ponny/screens/Promotion_screen.dart';
 import 'package:ponny/screens/Skincare_Screen.dart';
 import 'package:ponny/screens/Skinklopedia_Screen.dart';
+import 'package:ponny/screens/bantuan_screen.dart';
 import 'package:ponny/screens/flash_sale_screen.dart';
 import 'package:ponny/model/WishProduct.dart';
 import 'package:ponny/screens/konsultasi_screen.dart';
@@ -97,7 +98,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    showModal();
+    // showModal();
     _controller = ScrollController();
     _controller.addListener(_scrollListener);
     WidgetsBinding.instance.addPostFrameCallback((_) async {
@@ -110,12 +111,7 @@ class _HomeScreenState extends State<HomeScreen> {
         autoPlay: false,
         mute: false,
       ),
-    )..addListener((){
-      print("on full screan");
-      if(_ytcontroller.value.isFullScreen){
-        print("on full screan");
-      }
-    });
+    );
   }
 
   @override
@@ -1656,6 +1652,11 @@ class _HomeScreenState extends State<HomeScreen> {
                 padding: EdgeInsets.symmetric(horizontal: 30),
                 child: YoutubePlayer(
                   controller: _ytcontroller,
+                  bottomActions: [
+                    CurrentPosition(),
+                    ProgressBar(isExpanded: true),
+                    RemainingDuration(),
+                  ],
                 ),
               ),
               Container(

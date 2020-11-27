@@ -60,6 +60,8 @@ const urlOrder = base_url + "account/orders";
 const urlUpdateProfile = base_url + "account/update";
 const updateBeauteProfile = base_url + "account/update_beauty";
 const faqUrl = base_url+"account/faqs";
+const changePassword = base_url+"account/password";
+const historyPointurl =base_url+"account/pointHistory";
 
 //Order
 const urlTracking = base_url + "checkout/tracking";
@@ -97,8 +99,12 @@ const removeAddressUrl = base_url + "shipping/delAddress";
 const brandSearch = base_url+"product/brands?pageSize=all";
 const searchProductUrl =base_url+"product/search";
 const categoryList = base_url+"product/categories";
+const shopSalelist = base_url  +"product/shopSale";
 
 //promotion
 const getpromo =base_url+"product/promotions";
 const localprideUrl = base_url+"product/localPride";
+
+//contact
+const waContacturl=base_url+"contact/wa";
 

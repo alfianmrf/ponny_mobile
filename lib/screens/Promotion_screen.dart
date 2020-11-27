@@ -41,7 +41,7 @@ class _PromotionScreenState extends State<PromotionScreen> {
          loading =false;
        });
 
-       print(result.coupons.length);
+       // print(result.coupons.length);
       }
     }catch(e){
       print(e.toString());

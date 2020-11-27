@@ -91,7 +91,14 @@ class _BantuanState extends State<BantuanScreen> {
                         border: Border.all(width: 1, color: Color(0xffF48262)),
                       ),
                       child: InkWell(
-                        onTap: () => _launch("https://wa.me/6285890009909?text=Halo%20Phoebe's"),
+                        onTap: (){
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => HubungiKamiScreen(),
+                            ),
+                          );
+                        },
                         borderRadius: BorderRadius.circular(15),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.end,

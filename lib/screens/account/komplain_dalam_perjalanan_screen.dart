@@ -63,7 +63,7 @@ class _KomplainDalamPerjalananStateScreen extends State<KomplainDalamPerjalananS
     final res = await http.get(listParamKompain+"/"+"66", headers: { HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: "Bearer $token"});
     if(res.statusCode == 200){
       final responseJson = json.decode(res.body);
-      print(res.body);
+      // print(res.body);
       setState(() {
       for (Map item in responseJson["masalah"]) {
           _masalah.add(

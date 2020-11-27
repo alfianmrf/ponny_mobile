@@ -41,9 +41,9 @@ class CartModel with ChangeNotifier{
          "qty": 1
        };
        final res = await http.post(addtocart, headers: { HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: "Bearer $token"}, body: json.encode(param));
-       print(res.body);
+       // print(res.body);
        if (res.statusCode == 200) {
-         print(res.body);
+         // print(res.body);
          listCardOfitem.add(Cart(1, product));
          await getSummary(token);
          notifyListeners();
@@ -72,9 +72,9 @@ class CartModel with ChangeNotifier{
     element.id == product.id);
     if (index < 0) {
       final res = await http.post(addSample+"/"+product.id.toString(), headers: { HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: "Bearer $token"});
-      print(res.body);
+      // print(res.body);
       if (res.statusCode == 200) {
-        print(res.body);
+        // print(res.body);
         listUseSample.add(product);
         notifyListeners();
       }
@@ -91,7 +91,7 @@ class CartModel with ChangeNotifier{
       };
       final res = await http.post(rendemProduct+"/"+product.product.id.toString(), headers: { HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: "Bearer $token"},body: json.encode(param));
       if (res.statusCode == 200) {
-        print(res.body);
+        // print(res.body);
         listProductPoin.add(product);
         notifyListeners();
       }
@@ -102,7 +102,7 @@ class CartModel with ChangeNotifier{
       };
       final res = await http.post(rendemProduct+"/"+product.product.id.toString(), headers: { HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: "Bearer $token"},body: json.encode(param));
       if (res.statusCode == 200) {
-        print(res.body);
+        // print(res.body);
         listProductPoin.elementAt(index).qty++;
         notifyListeners();
       }
@@ -113,7 +113,7 @@ class CartModel with ChangeNotifier{
   Future<void> RemoveProductToCart(Product product,String token) async
   {
     int index = listCardOfitem.indexWhere((element) => element.product.id == product.id);
-    print(index);
+    // print(index);
     if(listCardOfitem.elementAt(index).quantity > 1){
       int quantity= listCardOfitem.elementAt(index).quantity;
       var param = {
@@ -149,7 +149,7 @@ class CartModel with ChangeNotifier{
   Future<void> DeleteProductSample(Product product,String token) async
   {
     final res = await http.get(removeProductSample+"/"+product.id.toString(), headers: { HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: "Bearer $token"});
-    print(res.body);
+    // print(res.body);
     if (res.statusCode == 200) {
       int index = listUseSample.indexWhere((element) => element.id == product.id);
       listUseSample.removeAt(index);
@@ -198,7 +198,7 @@ class CartModel with ChangeNotifier{
         for (Map item in responseJson["sampleProduct_used"]) {
           listUseSample.add(Product.fromJson(item["product"]["availability"]));
         }
-        print(responseJson["productPoint_used"]);
+        // print(responseJson["productPoint_used"]);
         for (Map item in responseJson["productPoint_used"]) {
           if(item["product"]!=null)
           listProductPoin.add(ProductPoin(item["id"], item["product_point"]!= null ? item["product_point"]["jml_point"]:null, item["product"]!=null?  Product.fromJson(item["product"]["availability"]) :null,item["qty"]));
@@ -262,7 +262,7 @@ class CartModel with ChangeNotifier{
     print(res.body);
     if (res.statusCode == 200) {
       final responseJson = json.decode(res.body);
-      print(responseJson);
+      // print(responseJson);
       summary = Summary.fromJson(responseJson);
       notifyListeners();
     }
@@ -332,7 +332,7 @@ class CartModel with ChangeNotifier{
    if (res.statusCode == 200) {
      final responseJson = json.decode(res.body);
      result= OrderResult.fromJson(responseJson);
-     print(responseJson);
+     // print(responseJson);
      listCardOfitem=[];
      notifyListeners();
      return result;

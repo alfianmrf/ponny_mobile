@@ -32,7 +32,7 @@ class _HubungiKamiStateScreen extends State<HubungiKamiScreen> {
   final VoidCallback onError = null;
   void _launch(String url) async {
     if (await Launcher.canLaunch(url)) {
-      await Launcher.launch(url, forceWebView: true,);
+      await Launcher.launch(url, forceWebView: false,);
     } else {
       if (onError != null) {
         onError();
@@ -42,6 +42,7 @@ class _HubungiKamiStateScreen extends State<HubungiKamiScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final wa = Provider.of<AppModel>(context).waContact;
     return Scaffold(
       appBar: AppBar(
         titleSpacing: 0.0,
@@ -151,7 +152,11 @@ class _HubungiKamiStateScreen extends State<HubungiKamiScreen> {
                       alignment: Alignment.center,
                       child: InkWell(
                         borderRadius: BorderRadius.circular(10),
-                        onTap: () => _launch("https://wa.me/6285890009909?text=Halo%20Phoebe's"),
+                        onTap: (){
+                          if(wa != null){
+                            _launch(wa.link);
+                          }
+                        },
                         child: Container(
                           width: 225,
                           decoration: BoxDecoration(

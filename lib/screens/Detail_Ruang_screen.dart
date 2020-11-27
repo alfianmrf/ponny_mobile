@@ -70,7 +70,7 @@ class _DetailForumState extends State<DetailForum> {
     setState(() {
       if (result != null) {
         _image = File(result.files.single.path);
-        print(_image.path);
+        // print(_image.path);
       } else {
         print('No image selected.');
       }

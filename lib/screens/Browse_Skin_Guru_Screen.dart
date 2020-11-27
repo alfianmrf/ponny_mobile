@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:ponny/screens/Blog_screen.dart';
 import 'package:ponny/screens/Skinklopedia_Screen.dart';
+import 'package:ponny/screens/skin_type_screen.dart';
 
 class Browse_Skin_Guru extends StatefulWidget {
   Browse_Skin_Guru({Key key}) : super(key: key);
@@ -50,7 +51,10 @@ class _Browse_Skin_GuruState extends State<Browse_Skin_Guru> {
               minWidth: 150.0,
               height: 150.0,
               child: RaisedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => SkinTypeScreen()));
+                },
                 child: Text(
                   "SKIN TYPE",
                   style: TextStyle(
