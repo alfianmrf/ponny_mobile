@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:ponny/common/constant.dart';
 import 'package:ponny/model/App.dart';
+import 'package:ponny/screens/search_faq_screen.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
 import 'package:ponny/screens/FAQ_TopQuestion_screen.dart';
 import 'package:provider/provider.dart';
@@ -113,8 +114,10 @@ class _FAQScreenState extends State<FAQScreen> {
                               child: Row(children: [
                                 Expanded(
                                   child: TextField(
+                                    readOnly: true,
                                     onTap: () {
-                                      // showSearch(context: null, delegate: Search());
+                                      Navigator.push(context,
+                                          MaterialPageRoute(builder: (context) => SearchFaqScreen()));
                                     },
                                     cursorColor: Colors.black,
                                     keyboardType: TextInputType.text,

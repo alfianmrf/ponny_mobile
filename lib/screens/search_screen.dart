@@ -143,6 +143,7 @@ class _SearchState extends State<SearchScreen> {
                     Icon(Icons.search, color: Color(0xffF48262)),
                     Expanded(
                         child: TextField(
+                          autofocus: true,
                           onTap: () {
                             showSearch(context: null, delegate: Search());
                           },
