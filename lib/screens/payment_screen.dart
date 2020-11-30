@@ -138,7 +138,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                         child: IntrinsicHeight(
                           child: Column(
                             children: <Widget>[
-                              Container(
+                              /*Container(
                                 color: Color(0xffFDEDE4),
                                 width: MediaQuery.of(context).size.width,
                                 padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
@@ -381,7 +381,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                     ],
                                   ),
                                 ),
-                              ),
+                              ),*/
                               Container(
                                 color: Color(0xffFDEDE4),
                                 width: MediaQuery.of(context).size.width,
@@ -537,7 +537,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                 ),
                               ),
 
-
+                            /*
                               Container(
                                 color: Color(0xffFDEDE4),
                                 width: MediaQuery.of(context).size.width,
@@ -716,7 +716,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                     ),
                                   ],
                                 ),
-                              ),
+                              ),*/
                             ],
                           ),
                         ),

@@ -18,7 +18,7 @@
     <application
         android:name="io.flutter.app.FlutterApplication"
         android:label="Ponny Beaute"
-        android:icon="@mipmap/ic_launcher_ponny">
+        android:icon="@mipmap/ic_launcher_ponny_baru">
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
