@@ -12,6 +12,7 @@ class IntroScreen extends StatefulWidget {
 
 class _IntroScreenState extends State<IntroScreen> {
   List<Slide> slides = new List();
+  Function goToTab;
 
   @override
   void initState(){
@@ -19,13 +20,13 @@ class _IntroScreenState extends State<IntroScreen> {
 
     slides.add(
       new Slide(
-        title: "PENGIRIMAN KILAT",
+        title: "100% ASLI",
         styleTitle: TextStyle(
             color: Color(0xffF48262),
             fontSize: 18.0,
             fontWeight: FontWeight.bold,
             fontFamily: 'Brandon'),
-        description: "Allow miles wound place the leave had. To sitting subject no improve studied limited",
+        description: "Semua produk di Ponny Beaute pasti asli.\nNo tipu-tipu. Anti kaleng-kaleng",
         styleDescription: TextStyle(
             color: Color(0xff231F20),
             fontSize: 14.0,
@@ -36,13 +37,13 @@ class _IntroScreenState extends State<IntroScreen> {
     );
     slides.add(
       new Slide(
-        title: "PRODUK TERDAFTAR BPOM",
+        title: "PRODUK BER-BPOM",
         styleTitle: TextStyle(
             color: Color(0xffF48262),
             fontSize: 18.0,
             fontWeight: FontWeight.bold,
             fontFamily: 'Brandon'),
-        description: "Ye indulgence unreserved connection alteration appearance",
+        description: "Percayalah produknya sudah punya izin edar.\nCek aja di situs BPOM / Kemenkes.",
         styleDescription: TextStyle(
             color: Color(0xff231F20),
             fontSize: 14.0,
@@ -60,7 +61,7 @@ class _IntroScreenState extends State<IntroScreen> {
             fontWeight: FontWeight.bold,
             fontFamily: 'Brandon'),
         description:
-        "Much evil soon high in hope do view. Out may few northward believing attempted. Yet timed being songs marry one defer men our. Although finished blessing do of",
+        "Butuh teman curhat?\nPhoebe siap mendengarkan dan membantu.",
         styleDescription: TextStyle(
             color: Color(0xff231F20),
             fontSize: 14.0,
@@ -77,7 +78,7 @@ class _IntroScreenState extends State<IntroScreen> {
             fontSize: 18.0,
             fontWeight: FontWeight.bold,
             fontFamily: 'Brandon'),
-        description: "Allow miles wound place the leave had. To sitting subject no improve studied limited",
+        description: "PAKEEETTTT!!\nPhoebe mau kamu terima produk ini\nseutuhnya, selamat, tanpa cacat.\n#antibocorbocorclub",
         styleDescription: TextStyle(
             color: Color(0xff231F20),
             fontSize: 14.0,
@@ -94,6 +95,62 @@ class _IntroScreenState extends State<IntroScreen> {
     Navigator.of(context).pushReplacementNamed(HomeScreen.id);
   }
 
+  List<Widget> renderListCustomTabs() {
+    List<Widget> tabs = new List();
+    for (int i = 0; i < slides.length; i++) {
+      Slide currentSlide = slides[i];
+      tabs.add(Container(
+        width: double.infinity,
+        height: double.infinity,
+        child: Center(
+          child: Container(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image.asset(
+                  currentSlide.pathImage,
+                  width: 300.0,
+                  height: 300.0,
+                  fit: BoxFit.contain,
+                ),
+                Container(
+                  child: Text(
+                    currentSlide.title,
+                    style: currentSlide.styleTitle,
+                    textAlign: TextAlign.center,
+                  ),
+                  margin: EdgeInsets.only(top: 5.0),
+                ),
+                Container(
+                  child: Text(
+                    currentSlide.description,
+                    style: currentSlide.styleDescription,
+                    textAlign: TextAlign.center,
+                    maxLines: 5,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  margin: EdgeInsets.only(top: 15.0),
+                ),
+                i == 2 ? Container(
+                  child: Text(
+                    '(untuk informasi produk aja, bukan masalah sama pasangan yhaaa)',
+                    style: TextStyle(
+                        color: Color(0xff231F20),
+                        fontSize: 10.0,
+                        fontFamily: 'Brandon'),
+                    textAlign: TextAlign.center,
+                  ),
+                  margin: EdgeInsets.only(top: 5.0),
+                ) : Container(),
+              ],
+            ),
+          ),
+        ),
+      ));
+    }
+    return tabs;
+  }
+
   @override
   Widget build(BuildContext context) {
     return new IntroSlider(
@@ -101,6 +158,8 @@ class _IntroScreenState extends State<IntroScreen> {
       onDonePress: this.onDonePress,
       colorDot: Color(0xffE6E7E9),
       colorActiveDot: Color(0xffF3795D),
+      sizeDot: 12,
+      isShowNextBtn: false,
       styleNameSkipBtn: TextStyle(
         color: Color(0xff231F20),
       ),
@@ -110,6 +169,11 @@ class _IntroScreenState extends State<IntroScreen> {
       styleNamePrevBtn: TextStyle(
         color: Color(0xff231F20),
       ),
+      listCustomTabs: this.renderListCustomTabs(),
+      backgroundColorAllSlides: Colors.white,
+      refFuncGoToTab: (refFunc) {
+        this.goToTab = refFunc;
+      },
     );
   }
 }
