@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:ponny/screens/search_screen.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
 import 'package:ponny/screens/Browse_Category_Screen.dart';
 import 'package:ponny/screens/Browse_Skin_Guru_Screen.dart';
@@ -38,8 +39,10 @@ class _BrowseState extends State<Browse> {
                 Icon(Icons.search, color: Color(0xffF48262)),
                 Expanded(
                     child: TextField(
+                      readOnly: true,
                   onTap: () {
-                    showSearch(context: null, delegate: Search());
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => SearchScreen()));
                   },
                   cursorColor: Colors.black,
                   keyboardType: TextInputType.text,
