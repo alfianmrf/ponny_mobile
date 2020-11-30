@@ -14,6 +14,7 @@ import 'package:ponny/model/WishProduct.dart';
 import 'package:ponny/screens/home_screen.dart';
 import 'package:ponny/screens/account_screen.dart';
 import 'package:ponny/screens/account/daftar_keinginan_sukses_screen.dart';
+import 'package:ponny/screens/product_details_screen.dart';
 import 'package:ponny/util/globalUrl.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
 import 'package:provider/provider.dart';
@@ -220,90 +221,101 @@ Widget _buildList() {
             children: [
               Container(
                 width: 75,
-                child: CachedNetworkImage(
-                  imageUrl: _result[index].product.thumbnail_image != null ? img_url+_result[index].product.thumbnail_image :"",
-                  placeholder: (context, url) => LoadingWidgetPulse(context),
-                  errorWidget: (context, url, error) => Image.asset('assets/images/basic.jpg'),
-                  width: MediaQuery.of(context).size.width,
-                  fit: BoxFit.cover,
-                ),
-              ),
-              Expanded(
-                child:  Container(
-                  padding: EdgeInsets.only(
-                    left: 5,
-                    right: 5
-                  ),
-                  width: 90,
-                  height: 150,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        margin: EdgeInsets.only(top: 10),
-                        child: Text(
-                          _result[index].product.brand.name,
-                          textAlign: TextAlign.left,
-                          style: TextStyle(
-                            fontFamily: "Yeseva",
-                            fontSize: 12,
-                          ),
-                        ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(top: 0),
-                        child: Text(
-                          _result[index].product.name,
-                          textAlign: TextAlign.left,
-                          style: TextStyle(
-                            fontFamily: "Brandon",
-                            fontWeight: FontWeight.w200,
-                            fontSize: 10,
-                          ),
-                        ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(top: 0),
-                        child: Text(
-                          _result[index].product.home_discounted_price,
-                          textAlign: TextAlign.left,
-                          style: TextStyle(
-                            fontFamily: "Brandon",
-                            fontWeight: FontWeight.w600,
-                            fontSize: 12,
-                          ),
-                        ),
-                      ),
-                      Container(
-                        child: Text.rich(TextSpan(children: <InlineSpan>[
-                          WidgetSpan(
-                            child: RatingBar(
-                              initialRating: _result[index].product.rating,
-                              minRating: 0,
-                              direction: Axis.horizontal,
-                              allowHalfRating: true,
-                              itemCount: 5,
-                              itemSize: 12.0,
-                              itemPadding: EdgeInsets.symmetric(horizontal: 1.0),
-                              itemBuilder: (context, index) => Icon(
-                                Icons.favorite,
-                                color: Color(0xffF48262),
-                              ),
-                              unratedColor: Color(0xffFBD2CD),
-                            ),
-                          ),
-                          TextSpan(
-                              text: '('+_result[index].product.review_count.toString()+')',
-                              style: TextStyle(
-                                fontSize: 12,
-                              ))
-                        ])),
-                      )
-                      ,
-                    ],
+                child: InkWell(
+                  onTap: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => ProductDetailsScreen(product: _result[index].product,)));
+                  },
+                  child: CachedNetworkImage(
+                    imageUrl: _result[index].product.thumbnail_image != null ? img_url+_result[index].product.thumbnail_image :"",
+                    placeholder: (context, url) => LoadingWidgetPulse(context),
+                    errorWidget: (context, url, error) => Image.asset('assets/images/basic.jpg'),
+                    width: MediaQuery.of(context).size.width,
+                    fit: BoxFit.cover,
                   ),
                 ) ,
+              ),
+              Expanded(
+                child: InkWell(
+                  onTap: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => ProductDetailsScreen(product: _result[index].product,)));
+                  },
+                  child:  Container(
+                    padding: EdgeInsets.only(
+                        left: 5,
+                        right: 5
+                    ),
+                    width: 90,
+                    height: 150,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          margin: EdgeInsets.only(top: 10),
+                          child: Text(
+                            _result[index].product.brand.name,
+                            textAlign: TextAlign.left,
+                            style: TextStyle(
+                              fontFamily: "Yeseva",
+                              fontSize: 12,
+                            ),
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(top: 0),
+                          child: Text(
+                            _result[index].product.name,
+                            textAlign: TextAlign.left,
+                            style: TextStyle(
+                              fontFamily: "Brandon",
+                              fontWeight: FontWeight.w200,
+                              fontSize: 10,
+                            ),
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(top: 0),
+                          child: Text(
+                            _result[index].product.home_discounted_price,
+                            textAlign: TextAlign.left,
+                            style: TextStyle(
+                              fontFamily: "Brandon",
+                              fontWeight: FontWeight.w600,
+                              fontSize: 12,
+                            ),
+                          ),
+                        ),
+                        Container(
+                          child: Text.rich(TextSpan(children: <InlineSpan>[
+                            WidgetSpan(
+                              child: RatingBar(
+                                initialRating: _result[index].product.rating,
+                                minRating: 0,
+                                direction: Axis.horizontal,
+                                allowHalfRating: true,
+                                itemCount: 5,
+                                itemSize: 12.0,
+                                itemPadding: EdgeInsets.symmetric(horizontal: 1.0),
+                                itemBuilder: (context, index) => Icon(
+                                  Icons.favorite,
+                                  color: Color(0xffF48262),
+                                ),
+                                unratedColor: Color(0xffFBD2CD),
+                              ),
+                            ),
+                            TextSpan(
+                                text: '('+_result[index].product.review_count.toString()+')',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                ))
+                          ])),
+                        )
+                        ,
+                      ],
+                    ),
+                  ) ,
+                )
+                 ,
               ),
               Container(
                 child: Row(
@@ -311,7 +323,7 @@ Widget _buildList() {
                     GestureDetector(
                       onTap: (){
                         UIBlock.block(context,customLoaderChild: LoadingWidget(context));
-                        Provider.of<CartModel>(context).addProductToCart(_result[index].product, Provider.of<AppModel>(context).auth.access_token).then((value){
+                        Provider.of<CartModel>(context).addProductToCart(_result[index].product, Provider.of<AppModel>(context).auth.access_token,null).then((value){
                           UIBlock.unblock(context);
                           showAlertDialog(context, _result[index].product);
 

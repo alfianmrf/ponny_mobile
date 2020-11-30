@@ -811,7 +811,7 @@ class _DetailBrandScreen extends State<DetailBrand> {
                         onTobag: (){
                           if(Provider.of<AppModel>(context).loggedIn){
                             UIBlock.block(context,customLoaderChild: LoadingWidget(context));
-                            Provider.of<CartModel>(context).addProductToCart(e,Provider.of<AppModel>(context).auth.access_token).then((value){
+                            Provider.of<CartModel>(context).addProductToCart(e,Provider.of<AppModel>(context).auth.access_token,null).then((value){
                               UIBlock.unblock(context);
                               showAlertDialog(context,e);
                             });

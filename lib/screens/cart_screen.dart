@@ -246,7 +246,7 @@ class _CartScreenState extends State<CartScreen> {
                                               ),
                                             ),
                                             Text(
-                                              NumberFormat.simpleCurrency(locale: "id_ID",decimalDigits: 0 ).format(item.product.base_discounted_price),
+                                              NumberFormat.simpleCurrency(locale: "id_ID",decimalDigits: 0 ).format(item.price),
                                               style: TextStyle(
                                                 fontFamily: 'Brandon',
                                                 fontSize: 15,
@@ -327,7 +327,7 @@ class _CartScreenState extends State<CartScreen> {
                                                         ),
                                                         onPressed: (){
                                                           UIBlock.block(context,customLoaderChild: LoadingWidget(context));
-                                                          value.addProductToCart(item.product,Provider.of<AppModel>(context).auth.access_token).then((value){
+                                                          value.addProductToCart(item.product,Provider.of<AppModel>(context).auth.access_token,null).then((value){
                                                             UIBlock.unblock(context);
                                                           });
 
@@ -360,7 +360,7 @@ class _CartScreenState extends State<CartScreen> {
                                                     ),
                                                   ),
                                                   Text(
-                                                    NumberFormat.simpleCurrency(locale: "id_ID",decimalDigits: 0 ).format((item.product.base_discounted_price*item.quantity)),
+                                                    NumberFormat.simpleCurrency(locale: "id_ID",decimalDigits: 0 ).format((item.price*item.quantity)),
                                                     style: TextStyle(
                                                         fontFamily: 'Brandon',
                                                         fontSize: 14,

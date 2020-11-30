@@ -1228,7 +1228,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     onTobag: (){
                                                       if(Provider.of<AppModel>(context).loggedIn){
                                                         UIBlock.block(context,customLoaderChild: LoadingWidget(context));
-                                                        Provider.of<CartModel>(context).addProductToCart(e.product,Provider.of<AppModel>(context).auth.access_token).then((value){
+                                                        Provider.of<CartModel>(context).addProductToCart(e.product,Provider.of<AppModel>(context).auth.access_token,null).then((value){
                                                           UIBlock.unblock(context);
                                                           showAlertDialog(context,e.product);
                                                         });
@@ -1277,7 +1277,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   onTobag: (){
                                                     if(Provider.of<AppModel>(context).loggedIn){
                                                       UIBlock.block(context,customLoaderChild: LoadingWidget(context));
-                                                      Provider.of<CartModel>(context).addProductToCart(e.product,Provider.of<AppModel>(context).auth.access_token).then((value){
+                                                      Provider.of<CartModel>(context).addProductToCart(e.product,Provider.of<AppModel>(context).auth.access_token,null).then((value){
                                                         UIBlock.unblock(context);
                                                         showAlertDialog(context,e.product);
                                                       });
@@ -1335,7 +1335,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   onTobag: (){
                                                     if(Provider.of<AppModel>(context).loggedIn){
                                                       UIBlock.block(context,customLoaderChild: LoadingWidget(context));
-                                                      Provider.of<CartModel>(context).addProductToCart(e.product,Provider.of<AppModel>(context).auth.access_token).then((value){
+                                                      Provider.of<CartModel>(context).addProductToCart(e.product,Provider.of<AppModel>(context).auth.access_token,null).then((value){
                                                         UIBlock.unblock(context);
                                                         showAlertDialog(context,e.product);
                                                       });
@@ -1450,7 +1450,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                               onTobag: (){
                                                 if(Provider.of<AppModel>(context).loggedIn){
                                                   UIBlock.block(context,customLoaderChild: LoadingWidget(context));
-                                                  Provider.of<CartModel>(context).addProductToCart(e,Provider.of<AppModel>(context).auth.access_token).then((value){
+                                                  Provider.of<CartModel>(context).addProductToCart(e,Provider.of<AppModel>(context).auth.access_token,null).then((value){
                                                     UIBlock.unblock(context);
                                                     showAlertDialog(context,e);
                                                   });
@@ -1499,7 +1499,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                             onTobag: (){
                                               if(Provider.of<AppModel>(context).loggedIn){
                                                 UIBlock.block(context,customLoaderChild: LoadingWidget(context));
-                                                Provider.of<CartModel>(context).addProductToCart(e,Provider.of<AppModel>(context).auth.access_token).then((value){
+                                                Provider.of<CartModel>(context).addProductToCart(e,Provider.of<AppModel>(context).auth.access_token,null).then((value){
                                                   UIBlock.unblock(context);
                                                   showAlertDialog(context,e);
                                                 });
@@ -1557,7 +1557,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                             onTobag: (){
                                               if(Provider.of<AppModel>(context).loggedIn){
                                                 UIBlock.block(context,customLoaderChild: LoadingWidget(context));
-                                                Provider.of<CartModel>(context).addProductToCart(e,Provider.of<AppModel>(context).auth.access_token).then((value){
+                                                Provider.of<CartModel>(context).addProductToCart(e,Provider.of<AppModel>(context).auth.access_token,null).then((value){
                                                   UIBlock.unblock(context);
                                                   showAlertDialog(context,e);
                                                 });
@@ -1652,7 +1652,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                               onTobag: (){
                                                 if(Provider.of<AppModel>(context).loggedIn){
                                                   UIBlock.block(context,customLoaderChild: LoadingWidget(context));
-                                                  Provider.of<CartModel>(context).addProductToCart(e,Provider.of<AppModel>(context).auth.access_token).then((value){
+                                                  Provider.of<CartModel>(context).addProductToCart(e,Provider.of<AppModel>(context).auth.access_token,null).then((value){
                                                     UIBlock.unblock(context);
                                                     showAlertDialog(context,e);
                                                   });
@@ -1701,7 +1701,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                               onTobag: (){
                                                 if(Provider.of<AppModel>(context).loggedIn){
                                                   UIBlock.block(context,customLoaderChild: LoadingWidget(context));
-                                                  Provider.of<CartModel>(context).addProductToCart(e,Provider.of<AppModel>(context).auth.access_token).then((value){
+                                                  Provider.of<CartModel>(context).addProductToCart(e,Provider.of<AppModel>(context).auth.access_token,null).then((value){
                                                     UIBlock.unblock(context);
                                                     showAlertDialog(context,e);
                                                   });
@@ -1759,7 +1759,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                             onTobag: (){
                                               if(Provider.of<AppModel>(context).loggedIn){
                                                 UIBlock.block(context,customLoaderChild: LoadingWidget(context));
-                                                Provider.of<CartModel>(context).addProductToCart(e,Provider.of<AppModel>(context).auth.access_token).then((value){
+                                                Provider.of<CartModel>(context).addProductToCart(e,Provider.of<AppModel>(context).auth.access_token,null).then((value){
                                                   UIBlock.unblock(context);
                                                   showAlertDialog(context,e);
                                                 });

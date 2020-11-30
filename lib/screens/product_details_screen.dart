@@ -46,6 +46,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   int current_page=0;
   int last_page =0;
   String NextPage;
+  List<ChoiceOptionsValue> option=[];
+  VarianResult varian;
 
 
   @override
@@ -59,6 +61,16 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
           _getMoreData();
         }
       });
+
+      if(widget.product.varian.length >0){
+        print(widget.product.varian.length);
+        for(Varian item in widget.product.varian ){
+          option.add(ChoiceOptionsValue(atributId: item.attribute_id,value: item.values[0]));
+        }
+        if(option.length>0)
+        _getPriceVarian();
+      }
+
     });
   }
 
@@ -70,140 +82,27 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     }
   }
 
-  Widget product() {
-    return Column(
-      children: <Widget>[
-        Container(
-          child: Stack(
-            children: <Widget>[
-              GestureDetector(
-                onTap: (){
-                  Navigator.of(context).pushReplacementNamed(ProductDetailsScreen.id);
-                },
-                child: Image.asset(
-                  "assets/images/produk.png",
-                  width: MediaQuery.of(context).size.width,
-                  fit: BoxFit.cover,
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(top: 10.0),
-                child: Align(
-                    alignment: Alignment.topLeft,
-                    child: Container(
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 5.0),
-                        child: const Text(
-                          '35%',
-                          style: TextStyle(
-                              color: Colors.white, fontFamily: 'Brandon'),
-                        ),
-                      ),
-                      color: Color(0xffF48262),
-                    )),
-              ),
-              Padding(
-                padding: EdgeInsets.all(5.0),
-                child: Align(
-                  alignment: Alignment.topRight,
-                  child: Icon(
-                    Icons.favorite_border,
-                    color: Color(0xffF48262),
-                    size: 20,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-        Container(
-          alignment: Alignment.bottomCenter,
-          child: Container(
-            width: MediaQuery.of(context).size.width,
-            child: const Text(
-              'ADD TO BAG',
-              textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.white, fontFamily: 'Brandon'),
-            ),
-            color: Color(0xffF3C1B5),
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.only(top: 7.0),
-          child: Text(
-            'Skin Game',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontFamily: 'Yeseva',
-              fontSize: 16,
-            ),
-          ),
-        ),
-        Text(
-          'Acne Warrior',
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontFamily: 'Brandon',
-            fontSize: 14,
-          ),
-        ),
-        Text(
-          'Rp. 125.000',
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontFamily: 'Brandon',
-            fontSize: 14,
-          ),
-        ),
-        Center(
-          child: RichText(
-            text: TextSpan(
-                text: 'Rp. 125.000',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontFamily: 'Brandon',
-                  fontSize: 12,
-                  decoration: TextDecoration.lineThrough,
-                ),
-                children: [
-                  TextSpan(
-                    text: '(35%)',
-                    style: TextStyle(
-                      color: Color(0xffF48262),
-                      fontFamily: 'Brandon',
-                      fontSize: 12,
-                      decoration: TextDecoration.none,
-                    ),
-                  ),
-                ]),
-          ),
-        ),
-        Text.rich(TextSpan(children: <InlineSpan>[
-          WidgetSpan(
-            child: RatingBar(
-              initialRating: 4,
-              minRating: 1,
-              direction: Axis.horizontal,
-              allowHalfRating: true,
-              itemCount: 5,
-              itemSize: 14.0,
-              itemPadding: EdgeInsets.symmetric(horizontal: 1.0),
-              itemBuilder: (context, index) => Icon(
-                Icons.favorite,
-                color: Color(0xffF48262),
-              ),
-              unratedColor: Color(0xffFBD2CD),
-            ),
-          ),
-          TextSpan(
-              text: '(5)',
-              style: TextStyle(
-                fontSize: 12,
-              ))
-        ])),
-      ],
-    );
+  void _getPriceVarian(){
+    var param =<String,dynamic>{
+      "id": widget.product.id,
+      "quantity":1
+    };
+    option.forEach((element) {
+      param.addAll({"attribute_id_"+element.atributId : element.value });
+    });
+    UIBlock.block(context,customLoaderChild: LoadingWidget(context));
+    Provider.of<ProductModel>(context).getValueVariant(param).then((value){
+      UIBlock.unblock(context);
+      setState(() {
+        varian =value;
+        print(varian.varian);
+      });
+    }).catchError((onError){
+      UIBlock.unblock(context);
+      print(onError);
+    });
   }
+
 
   void showAlertDialog(BuildContext context) {
     // set up the AlertDialog
@@ -471,38 +370,42 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        IconButton(
-                          iconSize: 90,
+                        Expanded(child: IconButton(
+                          iconSize: 60,
                           onPressed: () {
                             String url = "mailto:info@example.com?&subject=&body="+urlGlobal+"product/"+widget.product.slug;
                             _launchURL(url);
                           },
                           icon: Image.asset("assets/images/red-email.jpg"),
-                        ),
-                        IconButton(
-                          iconSize: 80,
+                        )),
+                        Expanded(child:IconButton(
+                          iconSize: 50,
                           onPressed: () {
                             String url = "https://twitter.com/share?url="+urlGlobal+"product/"+widget.product.slug;
                             _launchURL(url);
                           },
                           icon: Image.asset("assets/images/twitter.png"),
-                        ),
-                        IconButton(
-                          iconSize: 80,
+                        )),
+                        Expanded(child: IconButton(
+                          iconSize: 50,
                           onPressed: () {
                             String url = "https://www.facebook.com/sharer/sharer.php?u="+urlGlobal+"product/"+widget.product.slug;
                             _launchURL(url);
                           },
                           icon: Image.asset("assets/images/facebookLogo.png"),
-                        ),
-                        IconButton(
-                          iconSize: 80,
-                          onPressed: () {
-                            String url = "https://pinterest.com/pin/create/button/?url="+urlGlobal+"product/"+widget.product.slug+"&media="+img_url+widget.product.thumbnail_image;
-                            _launchURL(url);
-                          },
-                          icon: Image.asset("assets/images/pinterest.png"),
+                        )),
+                        Expanded(
+                            child: IconButton(
+                              iconSize: 50,
+                              onPressed: () {
+                                String url = "https://pinterest.com/pin/create/button/?url="+urlGlobal+"product/"+widget.product.slug+"&media="+img_url+widget.product.thumbnail_image;
+                                _launchURL(url);
+                              },
+                              icon: Image.asset("assets/images/pinterest.png"),
+                            )
+
                         )
+
                       ],
                     ),
                   ])
@@ -517,6 +420,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     final cardData = Provider.of<CartModel>(context);
     int  jmlCard= Provider.of<CartModel>(context).getCountOfquantity();
     List<Widget> ListRekomedasi;
+
     
     return Scaffold(
       key: scaffoldKey,
@@ -637,8 +541,11 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                       height: MediaQuery.of(context).size.width * 1.2,
                       child: new Swiper(
                         itemBuilder: (BuildContext context, int index) {
-                          return new Image.network(
-                            img_url+widget.product.photos[index],
+                          return new CachedNetworkImage(
+                            imageUrl:  img_url+widget.product.photos[index] != null ?  img_url+widget.product.photos[index] :"",
+                            placeholder: (context, url) => LoadingWidgetPulse(context),
+                            errorWidget: (context, url, error) => Image.asset('assets/images/basic.jpg'),
+                            width: MediaQuery.of(context).size.width,
                             fit: BoxFit.cover,
                           );
                         },
@@ -741,7 +648,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                 children: <Widget>[
 
                                   Text(
-                                    widget.product.home_discounted_price,
+                                    varian != null ? NumberFormat.simpleCurrency(locale: "id_ID",decimalDigits: 0 ).format(varian.price ) :widget.product.home_discounted_price,
                                     style: TextStyle(
                                       color: Colors.black,
                                       fontFamily: 'Brandon',
@@ -753,7 +660,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                   Padding(
                                     padding: EdgeInsets.symmetric(horizontal: 10),
                                     child: Text(
-                                      NumberFormat.simpleCurrency(locale: "id_ID",decimalDigits: 0 ).format(widget.product.base_discounted_price),
+                                       varian != null ?  NumberFormat.simpleCurrency(locale: "id_ID",decimalDigits: 0 ).format(varian.price ) :  NumberFormat.simpleCurrency(locale: "id_ID",decimalDigits: 0 ).format(widget.product.base_discounted_price),
                                       style: TextStyle(
                                         color: Color(0xffF48262),
                                         fontFamily: 'Brandon',
@@ -796,21 +703,31 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                 children: <Widget>[
                                   Text(item.atribut_name+" :"),
                                   for(String xitem in item.values)(
-                                      Container(
-                                        margin: EdgeInsets.symmetric(horizontal: 7),
-                                        padding: EdgeInsets.symmetric(horizontal: 7),
-                                        child: Text(
-                                          xitem,
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontFamily: 'Brandon'
+                                      InkWell(
+                                        onTap: (){
+                                          setState(() {
+                                            option.firstWhere((element) => element.atributId == item.attribute_id).value = xitem;
+                                          });
+                                          _getPriceVarian();
+                                        },
+                                        child: Container(
+                                          margin: EdgeInsets.symmetric(horizontal: 7),
+                                          padding: EdgeInsets.symmetric(horizontal: 7),
+                                          child: Text(
+                                            xitem,
+                                            style: TextStyle(
+                                                color: Colors.black,
+                                                fontFamily: 'Brandon'
+                                            ),
+                                          ),
+                                          decoration: BoxDecoration(
+                                            border: Border.all(color: Color(0xffF48262)),
+                                            color: option.isNotEmpty && option.firstWhere((element) => element.atributId == item.attribute_id).value == xitem ?  Color(0xffF3C1B5) : Colors.white,
+                                            borderRadius: BorderRadius.circular(5),
                                           ),
                                         ),
-                                        decoration: BoxDecoration(
-                                          border: Border.all(color: Color(0xffF48262)),
-                                          borderRadius: BorderRadius.circular(5),
-                                        ),
                                       )
+
                                   )
                                 ],
                               ),
@@ -1092,7 +1009,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                                           onTobag: (){
                                                             if(Provider.of<AppModel>(context).loggedIn){
                                                               UIBlock.block(context,customLoaderChild: LoadingWidget(context));
-                                                              Provider.of<CartModel>(context).addProductToCart(e,Provider.of<AppModel>(context).auth.access_token).then((value){
+                                                              Provider.of<CartModel>(context).addProductToCart(e,Provider.of<AppModel>(context).auth.access_token,null).then((value){
                                                                 UIBlock.unblock(context);
                                                                 cost.showAlertDialog(context,e);
                                                               });
@@ -1139,7 +1056,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                                         onTobag: (){
                                                           if(Provider.of<AppModel>(context).loggedIn){
                                                             UIBlock.block(context,customLoaderChild: LoadingWidget(context));
-                                                            Provider.of<CartModel>(context).addProductToCart(e,Provider.of<AppModel>(context).auth.access_token).then((value){
+                                                            Provider.of<CartModel>(context).addProductToCart(e,Provider.of<AppModel>(context).auth.access_token,null).then((value){
                                                               UIBlock.unblock(context);
                                                               cost.showAlertDialog(context,e);
                                                             });
@@ -1195,7 +1112,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                                         onTobag: (){
                                                           if(Provider.of<AppModel>(context).loggedIn){
                                                             UIBlock.block(context,customLoaderChild: LoadingWidget(context));
-                                                            Provider.of<CartModel>(context).addProductToCart(e,Provider.of<AppModel>(context).auth.access_token).then((value){
+                                                            Provider.of<CartModel>(context).addProductToCart(e,Provider.of<AppModel>(context).auth.access_token,null).then((value){
                                                               UIBlock.unblock(context);
                                                               cost.showAlertDialog(context,e);
                                                             });
@@ -1463,7 +1380,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                             borderRadius: BorderRadius.circular(7.0),
                           ),
                           child: Text(
-                            'MASUKKAN KERANJANG',
+                             'MASUKKAN KERANJANG',
                             style: TextStyle(
                               fontFamily: 'Brandon',
                               fontWeight: FontWeight.w700,
@@ -1474,7 +1391,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                           onPressed: () {
                             if(Provider.of<AppModel>(context).loggedIn){
                               UIBlock.block(context,customLoaderChild: LoadingWidget(context));
-                              cardData.addProductToCart(widget.product,Provider.of<AppModel>(context).auth.access_token).then((value){
+                              cardData.addProductToCart(widget.product,Provider.of<AppModel>(context).auth.access_token,varian != null ? varian:null).then((value){
                                 UIBlock.unblock(context);
                                 showAlertDialog(context);
                               });
@@ -1496,4 +1413,10 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
       ),
     );
   }
+}
+
+class ChoiceOptionsValue{
+  String atributId;
+  dynamic value;
+  ChoiceOptionsValue({this.atributId,this.value});
 }

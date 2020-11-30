@@ -29,31 +29,40 @@ class CartModel with ChangeNotifier{
 
   CartModel();
 
-  Future<void> addProductToCart(Product product, String token) async
+  Future<void> addProductToCart(Product product, String token,VarianResult variant) async
   {
      int index = listCardOfitem.indexWhere((element) =>
      element.product.id == product.id);
-
+      var param=<String,dynamic>{};
 
      if (index < 0) {
-       var param = {
+       if(variant != null){
+         param.addAll({"variant":variant.varian});
+       }
+       print(variant);
+
+       param.addAll({
          "product_id": product.id,
          "qty": 1
-       };
+       });
+       print(param);
        final res = await http.post(addtocart, headers: { HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: "Bearer $token"}, body: json.encode(param));
        // print(res.body);
        if (res.statusCode == 200) {
          // print(res.body);
-         listCardOfitem.add(Cart(1, product));
+         listCardOfitem.add(Cart(1, product,variant.varian,variant.price));
          await getSummary(token);
          notifyListeners();
        }
      } else {
        int quantity= listCardOfitem.elementAt(index).quantity;
-       var param = {
+       param.addAll({
          "product_id": product.id,
          "qty": quantity+1
-       };
+       });
+       if(listCardOfitem.elementAt(index).variant != null){
+         param.addAll({"variant":listCardOfitem.elementAt(index).variant});
+       }
        final res = await http.post(addtocart, headers: { HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: "Bearer $token"}, body: json.encode(param));
        if (res.statusCode == 200) {
          listCardOfitem.elementAt(index).quantity = quantity+1;
@@ -116,10 +125,13 @@ class CartModel with ChangeNotifier{
     // print(index);
     if(listCardOfitem.elementAt(index).quantity > 1){
       int quantity= listCardOfitem.elementAt(index).quantity;
-      var param = {
+      var param = <String,dynamic>{
         "product_id": product.id,
         "qty": quantity-1
       };
+      if(listCardOfitem.elementAt(index).variant != null){
+        param.addAll({"variant":listCardOfitem.elementAt(index).variant});
+      }
       final res = await http.post(addtocart, headers: { HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: "Bearer $token"}, body: json.encode(param));
       if (res.statusCode == 200) {
         listCardOfitem.elementAt(index).quantity--;
@@ -401,11 +413,16 @@ class CartModel with ChangeNotifier{
 class Cart{
   int quantity;
   Product product;
-  Cart(this.quantity, this.product);
+  String variant;
+  int price;
+
+  Cart(this.quantity, this.product,this.variant,this.price);
   factory Cart.fromJson(Map<String, dynamic> parsedJson){
     Product  _product = Product.fromJson(parsedJson["product"]["availability"]);
     int _quantity = parsedJson['quantity'];
-    return Cart(_quantity, _product);
+    String _variant = parsedJson["variation"];
+    int _price =parsedJson["price"];
+    return Cart(_quantity, _product,_variant,_price);
   }
 
 }

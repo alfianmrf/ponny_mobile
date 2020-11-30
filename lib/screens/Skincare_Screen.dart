@@ -338,7 +338,7 @@ class _SkincareState extends State<Skincare> {
                                   onTobag: (){
                                     if(Provider.of<AppModel>(context).loggedIn){
                                       UIBlock.block(context,customLoaderChild: LoadingWidget(context));
-                                      Provider.of<CartModel>(context).addProductToCart(item_product,Provider.of<AppModel>(context).auth.access_token).then((value){
+                                      Provider.of<CartModel>(context).addProductToCart(item_product,Provider.of<AppModel>(context).auth.access_token,null).then((value){
                                         UIBlock.unblock(context);
                                         showAlertDialog(context,item_product);
                                       });

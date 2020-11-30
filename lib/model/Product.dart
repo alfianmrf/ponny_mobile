@@ -146,6 +146,20 @@ class ProductModel with ChangeNotifier {
     // }
     return resultSearch;
   }
+  Future<VarianResult> getValueVariant(param) async {
+    VarianResult result;
+    try {
+      final result = await http.post(varianPriceUrl, headers: { HttpHeaders.contentTypeHeader: 'application/json'},body: json.encode(param));
+      if (result.statusCode == 200) {
+        final responseJson = json.decode(result.body);
+        return VarianResult.fromJson(responseJson);
+      }
+    } catch (err) {
+      print("error." + err.toString());
+
+    }
+    return result;
+  }
 
 
 
@@ -280,4 +294,29 @@ class SearchResult{
   SearchResult({this.products,this.nextUrl,this.total});
 
 }
+class VarianResult {
+  int productId;
+  String varian;
+  int price;
+  int stock_quantity;
+
+  VarianResult({this.productId, this.varian, this.price, this.stock_quantity});
+
+  VarianResult.fromJson(Map<String, dynamic> json) {
+    productId = json['product_id'];
+    varian = json['varian'];
+    price = json['price'];
+    stock_quantity = json['quantity'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['product_id'] = this.productId;
+    data['varian_id'] = this.varian;
+    data['price'] = this.price;
+    data['quantity'] = this.stock_quantity;
+    return data;
+  }
+}
+
 

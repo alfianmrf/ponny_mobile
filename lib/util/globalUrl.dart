@@ -54,6 +54,7 @@ const listOfwishlist = base_url + "product/wishlist";
 const addToWishlist = base_url + "product/addToWishlist";
 const removeToWishlist = base_url + "product/delFromWishlist";
 const countOfwishlist = base_url + "product/wishlist/count";
+const varianPriceUrl = base_url+"product/variantPrice";
 
 //Account
 const urlAddress = base_url + "shipping/address";
