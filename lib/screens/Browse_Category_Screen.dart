@@ -241,7 +241,7 @@ class _Browse_CategoryState extends State<Browse_Category> {
 
     _tmp.add(
       Container(
-        margin: EdgeInsets.only(top: 10, bottom: 40),
+        margin: EdgeInsets.only(top: 10, bottom: 40, left: 15, right: 15),
         child: ButtonTheme(
           buttonColor: Hexcolor('#FCF8F0'),
           minWidth: 380.0,

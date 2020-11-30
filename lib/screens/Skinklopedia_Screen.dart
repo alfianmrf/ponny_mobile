@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_html/style.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:ponny/screens/search_skinklopedia_screen.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
 import 'package:http/http.dart' as http;
 import 'package:ponny/util/globalUrl.dart';
@@ -173,12 +174,14 @@ class _SkinklopediaState extends State<Skinklopedia> {
                     children: [
                       Expanded(
                         child: TextField(
+                          readOnly: true,
+                          onTap: () {
+                            Navigator.push(context,
+                                MaterialPageRoute(builder: (context) => SearchSkinklopediaScreen()));
+                          },
                           style: TextStyle(
                             fontSize: 13,
                           ),
-                          onTap: () {
-                            // showSearch(context: null, delegate: Search());
-                          },
                           cursorColor: Colors.black,
                           keyboardType: TextInputType.text,
                           textInputAction: TextInputAction.go,
@@ -251,7 +254,7 @@ class _SkinklopediaState extends State<Skinklopedia> {
                     })),
           ],
         ),
-        bottomNavigationBar: new PonnyBottomNavbar(selectedIndex: 4),
+        bottomNavigationBar: new PonnyBottomNavbar(selectedIndex: 0),
       ),
     );
   }
