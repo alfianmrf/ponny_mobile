@@ -182,10 +182,8 @@ class _CartScreenState extends State<CartScreen> {
                     );
                   }else{
                     if(value.listCardOfitem.isEmpty){
-                     return new Container( height: MediaQuery.of(context).size.height, child: Center(child: Text("Kerajang Belaja Kosong"),),);
+                     return new Container( height: MediaQuery.of(context).size.height, child: Center(child: Text("Keranjang Belanja Kosong"),),);
                     }else {
-
-
                       return new Column(
                         children: <Widget>[
                           for(final item in value.listCardOfitem)(

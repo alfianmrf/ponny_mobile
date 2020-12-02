@@ -1706,7 +1706,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) =>
-                                          WebViewScreen(titile: "Kebijakan Privasi", url:" https://www.ponnybeaute.co.id/kebijakan-privasi" ,)),
+                                          WebViewScreen(titile: "Kebijakan Privasi", url:"https://www.ponnybeaute.co.id/kebijakan-privasi" ,)),
                                 );
                               },
                               child: Container(

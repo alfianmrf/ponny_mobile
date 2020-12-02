@@ -93,6 +93,10 @@ class _DetailBrandScreen extends State<DetailBrand> {
               loadingProduct =false;
             });
           }
+    }).catchError((onError){
+      setState(() {
+        loadingProduct =false;
+      });
     });
   }
   loadMore(){
@@ -112,6 +116,10 @@ class _DetailBrandScreen extends State<DetailBrand> {
             loadingProduct =false;
           });
         }
+      }).catchError((onError){
+        setState(() {
+          loadingProduct =false;
+        });
       });
     }
 
@@ -400,7 +408,7 @@ class _DetailBrandScreen extends State<DetailBrand> {
                   onTap: () {
 
                   },
-                  onChanged: onSearchTextChanged,
+                  onSubmitted: onSearchTextChanged,
                   cursorColor: Colors.black,
                   keyboardType: TextInputType.text,
                   textInputAction: TextInputAction.go,

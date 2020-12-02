@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:ponny/common/constant.dart';
@@ -24,17 +25,17 @@ import 'package:url_launcher/url_launcher.dart' as Launcher;
 import 'package:ponny/util/globalUrl.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
-class WebViewScreen extends StatefulWidget {
-  static const String id = "web_view_Screen";
-  @required String titile;
-  @required String url;
-  WebViewScreen({this.titile,this.url});
+class QrisScreen extends StatefulWidget {
+  static const String id = "qris_view_Screen";
+  @required String title;
+  @required String urlQR;
+  QrisScreen({this.urlQR});
 
   @override
-  _WebViewStateScreen createState() => _WebViewStateScreen();
+  _QrisStateScreen createState() => _QrisStateScreen();
 }
 
-class _WebViewStateScreen extends State<WebViewScreen> {
+class _QrisStateScreen extends State<QrisScreen> {
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +55,7 @@ class _WebViewStateScreen extends State<WebViewScreen> {
           ),
         ),
         title: Text(
-          widget.titile,
+          widget.title,
           style: TextStyle(
             fontSize: 24,
             fontFamily: 'Yeseva',
@@ -70,23 +71,19 @@ class _WebViewStateScreen extends State<WebViewScreen> {
       ),
       resizeToAvoidBottomInset: false,
       backgroundColor: Hexcolor('#FCF8F0'),
-      body:InAppWebView(
-        initialUrl: widget.url,
-        initialHeaders: {},
-        onWebViewCreated: (InAppWebViewController controller) {
-          webView = controller;
-          UIBlock.block(context,customLoaderChild: LoadingWidgetFadingCircle(context));
-        },
-        onLoadStart: (InAppWebViewController controller, String url) {
-
-
-        },
-        onLoadStop: (InAppWebViewController controller, String url) async {
-
-          // inject javascript file from assets folder
-          await controller.injectJavascriptFileFromAsset ( assetFilePath: "assets/js/mywebview.js");
-          UIBlock.unblock(context);
-        },
+      body:Column(
+        children: [
+          Container(
+            child: Text("Pembayaran melaui QRIS"),
+          ),
+          Container(
+            width: 200,
+            height: 200,
+            child: Image.network(widget.urlQR,
+            fit: BoxFit.fill,
+            ),
+          )
+        ],
       ),
       bottomNavigationBar: new PonnyBottomNavbar(selectedIndex: 4),
     );

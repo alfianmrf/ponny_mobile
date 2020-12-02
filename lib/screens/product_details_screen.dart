@@ -648,7 +648,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                 children: <Widget>[
 
                                   Text(
-                                    varian != null ? NumberFormat.simpleCurrency(locale: "id_ID",decimalDigits: 0 ).format(varian.price ) :widget.product.home_discounted_price,
+                                    varian != null ? NumberFormat.simpleCurrency(locale: "id_ID",decimalDigits: 0 ).format(varian.base_price ) : widget.product.home_discounted_price,
                                     style: TextStyle(
                                       color: Colors.black,
                                       fontFamily: 'Brandon',

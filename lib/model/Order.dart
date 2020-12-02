@@ -96,6 +96,7 @@ class Order {
   String confrimCourier;
   String confrimResi;
   String deliveryStatus;
+  MidtransRaw mitransVal;
 
   Order(
       this.id,
@@ -119,7 +120,8 @@ class Order {
       this.confrimCourier,
       this.confrimResi,
       this.deliveryStatus,
-      this.orderDetailVoucher
+      this.orderDetailVoucher,
+      this.mitransVal,
       );
 
   factory Order.fromJson(Map<String, dynamic> parsedJson){
@@ -127,6 +129,7 @@ class Order {
     Address _user_order_address = parsedJson["user_order_address"] != null ? Address.fromJson(parsedJson["user_order_address"]) :null;
     MapCost _shipping_info = parsedJson["shipping_info"] != null ?  MapCost.fromJson(parsedJson["shipping_info"]) :null;
     Midtrans _mitrans_val = parsedJson["mitrans_val"] != null ? Midtrans.fromJson(parsedJson["mitrans_val"]) : null;
+    MidtransRaw _mitrans_raw = parsedJson["mitrans_val"] != null ? MidtransRaw.fromJson(parsedJson["mitrans_val"]) : null;
     List<OrderDetailSample> _orderDetailSample=[];
     List<OrderDetailPoint> _orderDetailPoint=[];
     List<OrderDetailVoucher> _orderDetailVoucher=[];
@@ -167,7 +170,8 @@ class Order {
       parsedJson["confrim_courier"],
       parsedJson["confrim_resi"],
       parsedJson["delivery_status"],
-        _orderDetailVoucher
+        _orderDetailVoucher,
+        _mitrans_raw
     );
   }
 
@@ -195,7 +199,7 @@ class Midtrans{
     }else if( parsedJson != null && parsedJson["payment_type"] == "echannel"){
       _va_numbers= "Mandiri Bill Payment"+"\nBill key: "+parsedJson["bill_key"]+"\nBiller Code: "+parsedJson["biller_code"];
       return Midtrans(parsedJson["payment_type"],_va_numbers);
-    }
+    }else
     return null;
   }
 }
@@ -368,6 +372,97 @@ class StatusOrder {
     return data;
   }
 }
+
+class MidtransRaw {
+  String statusCode;
+  String statusMessage;
+  String transactionId;
+  String orderId;
+  String merchantId;
+  String grossAmount;
+  String currency;
+  String paymentType;
+  String transactionTime;
+  String transactionStatus;
+  String fraudStatus;
+  List<Actions> actions;
+
+  MidtransRaw(
+      {this.statusCode,
+        this.statusMessage,
+        this.transactionId,
+        this.orderId,
+        this.merchantId,
+        this.grossAmount,
+        this.currency,
+        this.paymentType,
+        this.transactionTime,
+        this.transactionStatus,
+        this.fraudStatus,
+        this.actions});
+
+  MidtransRaw.fromJson(Map<String, dynamic> json) {
+    statusCode = json['status_code'];
+    statusMessage = json['status_message'];
+    transactionId = json['transaction_id'];
+    orderId = json['order_id'];
+    merchantId = json['merchant_id'];
+    grossAmount = json['gross_amount'];
+    currency = json['currency'];
+    paymentType = json['payment_type'];
+    transactionTime = json['transaction_time'];
+    transactionStatus = json['transaction_status'];
+    fraudStatus = json['fraud_status'];
+    if (json['actions'] != null) {
+      actions = new List<Actions>();
+      json['actions'].forEach((v) {
+        actions.add(new Actions.fromJson(v));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['status_code'] = this.statusCode;
+    data['status_message'] = this.statusMessage;
+    data['transaction_id'] = this.transactionId;
+    data['order_id'] = this.orderId;
+    data['merchant_id'] = this.merchantId;
+    data['gross_amount'] = this.grossAmount;
+    data['currency'] = this.currency;
+    data['payment_type'] = this.paymentType;
+    data['transaction_time'] = this.transactionTime;
+    data['transaction_status'] = this.transactionStatus;
+    data['fraud_status'] = this.fraudStatus;
+    if (this.actions != null) {
+      data['actions'] = this.actions.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
+
+class Actions {
+  String name;
+  String method;
+  String url;
+
+  Actions({this.name, this.method, this.url});
+
+  Actions.fromJson(Map<String, dynamic> json) {
+    name = json['name'];
+    method = json['method'];
+    url = json['url'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['name'] = this.name;
+    data['method'] = this.method;
+    data['url'] = this.url;
+    return data;
+  }
+}
+
 
 
 

@@ -7,6 +7,8 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:ponny/common/constant.dart';
 import 'package:ponny/model/App.dart';
 import 'package:ponny/screens/Phone_OTP_screen.dart';
+import 'package:ponny/screens/Syarat_Ketentuan_screen.dart';
+import 'package:ponny/screens/WebView_screen.dart';
 import 'package:ponny/screens/home_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:sms_autofill/sms_autofill.dart';
@@ -31,6 +33,8 @@ class _LoginOTPScreen extends State<LoginOTP> {
   final phoneNumber = TextEditingController();
   String code;
   String VerifiCode;
+  bool invalidotp =false;
+  String pesan;
 
 
   void validateInput() {
@@ -105,8 +109,23 @@ class _LoginOTPScreen extends State<LoginOTP> {
                         child: PinFieldAutoFill(
                           controller: phoneCode,
                           codeLength: 6,
+
+                          onCodeSubmitted: ( String a){
+                            sendOtp();
+                          },
                         ),
                       ),
+                      if(invalidotp)
+                      Container(
+                        padding: EdgeInsets.symmetric(vertical: 5),
+                        child: Text(pesan,
+                      style: TextStyle(
+                        fontSize: 15,
+                        color: Colors.red,
+                        fontFamily: 'Brandon',
+                        letterSpacing: 1,
+                      ),
+                      ),),
                       Container(height: 20),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -132,36 +151,47 @@ class _LoginOTPScreen extends State<LoginOTP> {
                                 if(phoneCode.value.text.length == 6){
                                   UIBlock.block(context,customLoaderChild: LoadingWidget(context));
                                   PhoneAuthCredential phoneAuthCredential = PhoneAuthProvider.credential(verificationId: verificationId, smsCode: phoneCode.value.text);
-                                   final crediatial =  await  FirebaseAuth.instance.signInWithCredential(phoneAuthCredential);
-                                   if(crediatial !=null){
-                                     var param ={
-                                       "uid":crediatial.user.uid,
-                                       "phone":crediatial.user.phoneNumber
-                                     };
-                                     Provider.of<AppModel>(context).setAuthOtp(param).then((value){
-                                       UIBlock.unblock(context);
-                                       if(value){
-                                         Navigator.pushReplacement(context,new MaterialPageRoute(
-                                           builder: (BuildContext context) =>  new HomeScreen(),
-                                         ));
-                                       }else{
-                                         final snackBar = SnackBar(
-                                           content: Text('Terjadi kesalahan pada server!',style: TextStyle(color: Colors.white)),
-                                           backgroundColor: Colors.redAccent,
-                                         );
-                                         scaffoldKey2.currentState.showSnackBar(snackBar);
-                                       }
+                                  FirebaseAuth.instance.signInWithCredential(phoneAuthCredential).then((crediatial){
+                                    if(crediatial !=null){
+                                      var param ={
+                                        "uid":crediatial.user.uid,
+                                        "phone":crediatial.user.phoneNumber
+                                      };
+                                      Provider.of<AppModel>(context).setAuthOtp(param).then((value){
+                                        UIBlock.unblock(context);
+                                        if(value){
+                                          Navigator.pushReplacement(context,new MaterialPageRoute(
+                                            builder: (BuildContext context) =>  new HomeScreen(),
+                                          ));
+                                        }else{
+                                          setState(() {
+                                            pesan = 'Terjadi kesalahan pada server!';
+                                            invalidotp = true;
+                                          });
+                                        }
 
-                                     });
-                                   }else{
-                                     UIBlock.unblock(context);
-                                     final snackBar = SnackBar(
-                                       content: Text('Kode yang anda masukan salah!',style: TextStyle(color: Colors.white)),
-                                       backgroundColor: Colors.redAccent,
-                                     );
-                                     scaffoldKey2.currentState.showSnackBar(snackBar);
-                                   }
+                                      }).catchError((onError){
+                                        UIBlock.unblock(context);
+                                        setState(() {
+                                          pesan = 'Terjadi kesalahan pada server atau kode yang anda masukan salah!';
+                                          invalidotp = true;
+                                        });
+                                      });
+                                    }else{
+                                      UIBlock.unblock(context);
+                                      setState(() {
+                                        pesan = 'Terjadi kesalahan pada server atau kode yang anda masukan salah!';
+                                        invalidotp = true;
+                                      });
+                                    }
 
+                                  }).catchError((onError){
+                                    UIBlock.unblock(context);
+                                    setState(() {
+                                      pesan = 'Terjadi kesalahan pada server atau kode yang anda masukan salah!';
+                                      invalidotp = true;
+                                    });
+                                  });
                                 }
                               },
                               child: Text(
@@ -219,6 +249,9 @@ class _LoginOTPScreen extends State<LoginOTP> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           InkWell(
+                            onTap: (){
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => WebViewScreen(titile: "Kebijakan Privasi",url: "https://www.ponnybeaute.co.id/kebijakan-privasi",)));
+                            },
                             child: Text(
                               "Kebijakan Privasi ",
                               style: TextStyle(
@@ -239,6 +272,9 @@ class _LoginOTPScreen extends State<LoginOTP> {
                                 color: Colors.grey),
                           ),
                           InkWell(
+                            onTap: (){
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => SyaratKetentuanScreen()));
+                            },
                             child: Text(
                               "Syarat dan Ketentuan",
                               style: TextStyle(
@@ -264,7 +300,7 @@ class _LoginOTPScreen extends State<LoginOTP> {
   }
 
   Future<void> sendOtp() async {
-    FocusScope.of(context).requestFocus(new FocusNode());
+    // FocusScope.of(context).requestFocus(new FocusNode());
 
     FormState form = this.formKey.currentState;
     if(form.validate()){
@@ -460,6 +496,14 @@ class _LoginOTPScreen extends State<LoginOTP> {
                               ),
                             ),
                           ),
+                          // InkWell(
+                          //   onTap: (){
+                          //       showInputCode("sdsd", 0);
+                          //   },
+                          //   child: Container(
+                          //     child: Text("OK"),
+                          //   ),
+                          // ),
                           Container(
                             decoration: BoxDecoration(
                               color: Hexcolor('#F48262'),

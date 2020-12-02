@@ -545,7 +545,7 @@ class _LoginStateScreen extends State<LoginScreen> {
                           ],
                         ),
                       ),
-                      Container(
+                      /*Container(
                         margin: EdgeInsets.symmetric(vertical: 5),
                         child: Row(
                           children: [
@@ -627,7 +627,7 @@ class _LoginStateScreen extends State<LoginScreen> {
                             Expanded(flex: 1, child: Container()),
                           ],
                         ),
-                      ),
+                      ),*/
                       Container(
                         margin: EdgeInsets.symmetric(vertical: 5),
                         child: Row(

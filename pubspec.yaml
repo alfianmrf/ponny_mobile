@@ -68,6 +68,7 @@ dependencies:
   flutter_webview_plugin: ^0.3.11
   social_share: ^2.0.5
   like_button: ^1.0.4
+  flutter_inappwebview: ^4.0.0+4
 
 
 
@@ -109,6 +110,7 @@ flutter:
   - assets/images/browse/hair/
   - assets/images/browse/concern/
   - assets/images/kulit/
+  - assets/js/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

@@ -19,6 +19,7 @@ import 'package:ponny/util/globalUrl.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
 import 'package:provider/provider.dart';
 import 'package:uiblock/uiblock.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'bank_transfer_detail_screen.dart';
 
@@ -60,6 +61,13 @@ class _OrderScreenState extends State<OrderScreen> {
         }
       });
     });
+  }
+  _launchURL(url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 
   Widget _buildProgressIndicator() {
@@ -819,6 +827,26 @@ class _OrderScreenState extends State<OrderScreen> {
                           MaterialPageRoute(
                             builder: (context) => BankTransferDetailScreen(order_id: order.id,), ),
                         );
+                      },
+                    ) ,
+                  ),
+                if(order.payment_status == 'unpaid' && order.payment_type == "gopay")
+                  Container(
+                    margin: EdgeInsets.only(left: 10),
+                    alignment: Alignment.centerLeft,
+                    child: FlatButton(
+                      color:  Color(0xffF48262),
+                      textColor: Colors.white,
+                      disabledColor: Colors.grey,
+                      disabledTextColor: Colors.black,
+                      child:  Text("BAYAR SEKARANG"),
+                      onPressed: (){
+                        // Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(
+                        //     builder: (context) => BankTransferDetailScreen(order_id: order.id,), ),
+                        // );
+                        _launchURL(order.mitransVal.actions.firstWhere((element) => element.name == "deeplink-redirect").url);
                       },
                     ) ,
                   ),

@@ -1,9 +1,20 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_twitter_login/flutter_twitter_login.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:ponny/common/constant.dart';
+import 'package:ponny/model/App.dart';
 import 'package:ponny/screens/home_screen.dart';
 import 'package:ponny/screens/login.dart';
+import 'package:ponny/screens/login_otp.dart';
 import 'package:ponny/screens/register.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart' as FirebasePakage;
+import 'package:google_sign_in/google_sign_in.dart' as google;
+import 'package:ponny/util/AppId.dart';
+import 'package:provider/provider.dart';
+import 'package:uiblock/uiblock.dart';
 
 class PraDaftarScreen extends StatefulWidget {
   static const String id = "pradaftar_Screen";
@@ -12,9 +23,87 @@ class PraDaftarScreen extends StatefulWidget {
 }
 
 class _PraDaftarScreen extends State<PraDaftarScreen> {
+  final FirebasePakage.FirebaseAuth _auth = FirebasePakage.FirebaseAuth.instance;
+  final google.GoogleSignIn googleSignIn = google.GoogleSignIn();
+  GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+
+  Future<bool> signInWithGoogle() async {
+    await Firebase.initializeApp();
+    bool result =false;
+
+    final google.GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
+    final google.GoogleSignInAuthentication googleSignInAuthentication = await googleSignInAccount.authentication;
+
+    final FirebasePakage.AuthCredential credential = FirebasePakage.GoogleAuthProvider.credential(
+      accessToken: googleSignInAuthentication.accessToken,
+      idToken: googleSignInAuthentication.idToken,
+    );
+
+    final FirebasePakage.UserCredential authResult = await _auth.signInWithCredential(credential);
+    final FirebasePakage.User user = authResult.user;
+
+    if (user != null ) {
+      var param = {
+        "email" : user.email,
+        "name":user.displayName,
+        "provider_id":user.uid
+      };
+      result = await Provider.of<AppModel>(context).setAuthSocial(param);
+
+      print('signInWithGoogle succeeded: $user');
+
+      return result;
+    }
+    return result;
+  }
+
+  Future<bool> signInWithTwitter() async {
+    // Create a TwitterLogin instance
+    bool result =false;
+    final TwitterLogin twitterLogin = new TwitterLogin(
+      consumerKey: TWITTER_CLIENT_ID,
+      consumerSecret: TWITTER_CLIENT_SECRET,
+    );
+    final twitterStatus =await twitterLogin.isSessionActive;
+    if(twitterStatus) await twitterLogin.logOut();
+    // Trigger the sign-in flow
+    final TwitterLoginResult loginResult = await twitterLogin.authorize();
+    print(loginResult.errorMessage);
+
+    // Get the Logged In session
+    final TwitterSession twitterSession = loginResult.session;
+
+    // Create a credential from the access token
+    final AuthCredential twitterAuthCredential =
+    TwitterAuthProvider.credential(accessToken: twitterSession.token, secret: twitterSession.secret);
+
+    // Once signed in, return the UserCredential
+    final users = await FirebaseAuth.instance.signInWithCredential(twitterAuthCredential);
+    var user = users.user.providerData[0];
+
+    print('$user');
+    if (user != null ) {
+      var param = {
+        "email" : user.email,
+        "name":user.displayName,
+        "provider_id":user.uid
+      };
+      print(param);
+      result = await Provider.of<AppModel>(context).setAuthSocial(param);
+
+      print('signInWithGoogle succeeded: $user');
+
+      return result;
+    }
+
+
+    return result;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: scaffoldKey,
       backgroundColor: Hexcolor('#FCF8F0'),
       appBar: AppBar(
         titleSpacing: 20.0,
@@ -264,68 +353,85 @@ class _PraDaftarScreen extends State<PraDaftarScreen> {
               ),
             ),
             Container(
-              margin: EdgeInsets.symmetric(vertical: 5),
-              child: Row(
-                children: [
-                  Expanded(flex: 1, child: Container()),
-                  Expanded(
-                    flex: 3,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: Hexcolor('#F48262'),
-                        ),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: IntrinsicHeight(
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            Expanded(
-                              flex: 1,
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  border: Border(
-                                    right: BorderSide(
-                                      width: 1,
-                                      color: Hexcolor('#F48262'),
-                                    ),
-                                  ),
-                                ),
-                                child: IconButton(
-                                  onPressed: () {},
-                                  icon: Image.asset("assets/images/googleLogo.png"),
+          margin: EdgeInsets.symmetric(vertical: 5),
+          child: Row(
+            children: [
+              Expanded(flex: 1, child: Container()),
+              Expanded(
+                flex: 3,
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Hexcolor('#F48262'),
+                    ),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: IntrinsicHeight(
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              border: Border(
+                                right: BorderSide(
+                                  width: 1,
+                                  color: Hexcolor('#F48262'),
                                 ),
                               ),
                             ),
-                            Expanded(
-                              flex: 2,
-                              child: FlatButton(
-                                onPressed: () {},
-                                child: SizedBox(
-                                  width: double.infinity,
-                                  child: Text(
-                                    "GOOGLE",
-                                    textAlign: TextAlign.left,
-                                    style: TextStyle(
-                                        fontSize: 18,
-                                        fontFamily: 'Brandon',
-                                        fontWeight: FontWeight.w800,
-                                        color: Hexcolor('#F48262')),
-                                  ),
-                                ),
-                              ),
-                            )
-                          ],
+                            child: IconButton(
+                              onPressed: () {},
+                              icon: Image.asset("assets/images/googleLogo.png"),
+                            ),
+                          ),
                         ),
-                      ),
+                        Expanded(
+                          flex: 2,
+                          child: FlatButton(
+                            onPressed: ()  {
+                              UIBlock.block(context,customLoaderChild: LoadingWidgetFadingCircle(context));
+                              signInWithGoogle().then((value) {
+                                UIBlock.unblock(context);
+                                if(value){
+                                  Navigator.pushNamedAndRemoveUntil(
+                                      context,
+                                      HomeScreen.id,(_) => false
+                                  );
+                                }else{
+                                  scaffoldKey.currentState.showSnackBar(snackBarError);
+                                }
+                              }).catchError((onError){
+                                UIBlock.unblock(context);
+                                scaffoldKey.currentState.showSnackBar(snackBarError);
+                              });
+
+                            },
+                            child: SizedBox(
+                              width: double.infinity,
+                              child: Text(
+                                "GOOGLE",
+                                textAlign: TextAlign.left,
+                                style: TextStyle(
+                                    fontSize: 18,
+                                    fontFamily: 'Brandon',
+                                    fontWeight: FontWeight.w800,
+                                    color: Hexcolor('#F48262')),
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
                     ),
                   ),
-                  Expanded(flex: 1, child: Container()),
-                ],
+                ),
               ),
-            ),
-            Container(
+              Expanded(flex: 1, child: Container()),
+            ],
+          ),
+        ),
+            /*Container(
               margin: EdgeInsets.symmetric(vertical: 5),
               child: Row(
                 children: [
@@ -386,6 +492,85 @@ class _PraDaftarScreen extends State<PraDaftarScreen> {
                   Expanded(flex: 1, child: Container()),
                 ],
               ),
+            ),*/
+            Container(
+              margin: EdgeInsets.symmetric(vertical: 5),
+              child: Row(
+                children: [
+                  Expanded(flex: 1, child: Container()),
+                  Expanded(
+                    flex: 3,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Hexcolor('#F48262'),
+                        ),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: IntrinsicHeight(
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            Expanded(
+                              flex: 1,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  border: Border(
+                                    right: BorderSide(
+                                      width: 1,
+                                      color: Hexcolor('#F48262'),
+                                    ),
+                                  ),
+                                ),
+                                child: IconButton(
+                                  onPressed: () {},
+                                  icon: Image.asset("assets/images/twitter.png"),
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              flex: 2,
+                              child: FlatButton(
+                                onPressed: () {
+                                  UIBlock.block(context,customLoaderChild: LoadingWidgetFadingCircle(context));
+                                  signInWithTwitter().then((value) {
+                                    UIBlock.unblock(context);
+                                    if(value){
+                                      Navigator.pushNamedAndRemoveUntil(
+                                          context,
+                                          HomeScreen.id,(_) => false
+                                      );
+                                    }else{
+                                      scaffoldKey.currentState.showSnackBar(snackBarError);
+                                    }
+                                  }).catchError((onError){
+                                    UIBlock.unblock(context);
+                                    scaffoldKey.currentState.showSnackBar(snackBarError);
+                                  });
+
+                                },
+                                child: SizedBox(
+                                  width: double.infinity,
+                                  child: Text(
+                                    "TWITTER",
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(
+                                        fontSize: 18,
+                                        fontFamily: 'Brandon',
+                                        fontWeight: FontWeight.w800,
+                                        color: Hexcolor('#F48262')),
+                                  ),
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  Expanded(flex: 1, child: Container()),
+                ],
+              ),
             ),
             Container(
               margin: EdgeInsets.symmetric(vertical: 5),
@@ -428,7 +613,14 @@ class _PraDaftarScreen extends State<PraDaftarScreen> {
                             Expanded(
                               flex: 2,
                               child: FlatButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => LoginOTP(),
+                                    ),
+                                  );
+                                },
                                 child: SizedBox(
                                   width: double.infinity,
                                   child: Text(
