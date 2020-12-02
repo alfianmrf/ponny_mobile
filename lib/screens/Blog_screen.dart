@@ -423,7 +423,7 @@ Widget categoryListBlog(context, List list, int categoryId) {
       shrinkWrap: true,
       itemCount: list == null ? 0 : list.length,
       gridDelegate:
-          SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, childAspectRatio: 0.7),
+          SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, childAspectRatio: 1),
       itemBuilder: (BuildContext context, int i) {
         return GestureDetector(
           onTap: () {
@@ -442,7 +442,7 @@ Widget categoryListBlog(context, List list, int categoryId) {
                         placeholder: (context, url) => LoadingWidgetPulse(context),
                         errorWidget: (context, url, error) => Image.asset('assets/images/basic.jpg'),
                         width: MediaQuery.of(context).size.width,
-                        fit: BoxFit.cover,
+                        fit: BoxFit.contain,
                       )
                   )
               ),

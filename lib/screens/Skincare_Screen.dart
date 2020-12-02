@@ -305,7 +305,8 @@ class _SkincareState extends State<Skincare> {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          WaterfallFlow.count(
+                          GridView.count(
+                            childAspectRatio: 0.45,
                             padding: EdgeInsets.fromLTRB(20.0, 0, 20.0, 10.0),
                             shrinkWrap: true,
                             crossAxisCount: 2,

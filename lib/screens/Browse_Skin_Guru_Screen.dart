@@ -28,14 +28,20 @@ class _Browse_Skin_GuruState extends State<Browse_Skin_Guru> {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => Skinklopedia()));
                 },
-                child: Text(
-                  "SKINKLOPEDIA",
-                  style: TextStyle(
-                      fontSize: 14,
-                      fontFamily: 'Brandon',
-                      fontWeight: FontWeight.w800,
-                      letterSpacing: 1,
-                      color: Hexcolor('#F48262')),
+                child: Column(
+                  children: [
+                    Image.asset("assets/images/bb-skinklopedia.png", width: 80,),
+                    Container(height: 10,),
+                    Text(
+                      "SKINKLOPEDIA",
+                      style: TextStyle(
+                          fontSize: 14,
+                          fontFamily: 'Brandon',
+                          fontWeight: FontWeight.w800,
+                          letterSpacing: 1,
+                          color: Hexcolor('#F48262')),
+                    ),
+                  ],
                 ),
               ),
               shape: RoundedRectangleBorder(
@@ -55,14 +61,20 @@ class _Browse_Skin_GuruState extends State<Browse_Skin_Guru> {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => SkinTypeScreen()));
                 },
-                child: Text(
-                  "SKIN TYPE",
-                  style: TextStyle(
-                      fontSize: 14,
-                      fontFamily: 'Brandon',
-                      fontWeight: FontWeight.w800,
-                      letterSpacing: 1,
-                      color: Hexcolor('#F48262')),
+                child: Column(
+                  children: [
+                    Image.asset("assets/images/bb-jenis kulit.png", width: 80,),
+                    Container(height: 10,),
+                    Text(
+                      "JENIS KULIT",
+                      style: TextStyle(
+                          fontSize: 14,
+                          fontFamily: 'Brandon',
+                          fontWeight: FontWeight.w800,
+                          letterSpacing: 1,
+                          color: Hexcolor('#F48262')),
+                    ),
+                  ],
                 ),
               ),
               shape: RoundedRectangleBorder(
@@ -77,14 +89,14 @@ class _Browse_Skin_GuruState extends State<Browse_Skin_Guru> {
           child: ButtonTheme(
             buttonColor: Hexcolor('#FCF8F0'),
             minWidth: 380.0,
-            height: 180.0,
+            height: 150.0,
             child: RaisedButton( 
                 onPressed: () {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => Blog(category: 0,tag: "ALL",)));
                 },
                 
-                child: Image.asset("assets/images/blogTitle.png")),
+                child: Container(padding: EdgeInsets.symmetric(horizontal: 50), child: Image.asset("assets/images/blogTitle.png"))),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(5.0),
               side: BorderSide(color: Hexcolor('#F48262')),

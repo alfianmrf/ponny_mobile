@@ -142,16 +142,12 @@ class _OrderScreenState extends State<OrderScreen> {
               children: [
                 Container(
                   height: 1,
-                  color: Color(0xffF3C1B5),
+                  color: Color(0xffF48262),
                 ),
                 Container(
                   margin: EdgeInsets.only(
                     top: 20,
-                    left: 15,
-                    right: 15,
                   ),
-
-                  // height: 50,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -209,41 +205,25 @@ class _OrderScreenState extends State<OrderScreen> {
                           ),
                         ),
                       ),
-                      Container(
-                        padding: EdgeInsets.only(
-                          top: 5,
-                          bottom: 5,
-                        ),
-                        child: Icon(
-                          Icons.keyboard_arrow_up,
-                          size: 26,
-                          color: Color(0xffF48262),
-                        ),
-                      ),
                     ],
                   ),
                 ),
                 Container(
                   margin: EdgeInsets.only(
                     top: 10,
-                    left: 15,
-                    right: 15,
                   ),
                   height: 1,
-                  color: Color(0xffF3C1B5),
+                  color: Color(0xffF48262),
                 ),
                 Container(
                   // color: Colors.greenAccent,
                   margin: EdgeInsets.only(
                     top: 20,
-                    left: 15,
-                    right: 15,
                   ),
                   // color: Colors.greenAccent,
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-
                       Expanded(
                         flex: 2,
                         child:Column(
@@ -252,13 +232,14 @@ class _OrderScreenState extends State<OrderScreen> {
                               for(OrderDetail e in order.order_details)(
                                   Container(
                                     alignment: Alignment.topCenter,
-                                    padding: EdgeInsets.only(bottom: 10),
+                                    padding: EdgeInsets.only(bottom: 10, right: 10),
                                     child:  Row(
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Expanded(
                                           child: Container(
                                             alignment: Alignment.topCenter,
+                                            padding: EdgeInsets.only(right: 10),
                                             height: MediaQuery.of(context).size.width*0.35,
                                             child: CachedNetworkImage(
                                               imageUrl: img_url+e.product.thumbnail_image,
@@ -316,8 +297,11 @@ class _OrderScreenState extends State<OrderScreen> {
                                                 if(order.deliveryStatus == OrderScreen.completed && e.reviewed == 0)
                                                 Container(
                                                   margin:EdgeInsets.only(top: 4),
-                                                  child: RaisedButton(
-                                                    color: Color(0xffF48262),
+                                                  child: FlatButton(
+                                                    shape: RoundedRectangleBorder(
+                                                      borderRadius: BorderRadius.circular(10),
+                                                      side: BorderSide(width: 1, color: Color(0xffF48262),),
+                                                    ),
                                                     onPressed: () {
                                                       Navigator.push(
                                                         context,
@@ -330,10 +314,9 @@ class _OrderScreenState extends State<OrderScreen> {
                                                       });
                                                     },
                                                     child: Text(
-                                                      "Review",
+                                                      "ULAS",
                                                       style: TextStyle(
-                                                          color: Colors.white,
-                                                          fontSize: 12,
+                                                          color: Color(0xffF48262),
                                                           fontFamily:
                                                           "Brandon"),
                                                     ),
@@ -1299,29 +1282,35 @@ class _OrderScreenState extends State<OrderScreen> {
     // TODO: implement build
     return Scaffold(
       key: _scaffoldKey,
-      appBar: AppBar(title: Text(
-        title,
-        style: TextStyle(
-          fontSize: 22,
-          fontFamily: "Yeseva",
-          fontWeight: FontWeight.w500,
-          color: Color(0xffF48262),
-        ),
-      ),
-        leading: Container(
-          margin: EdgeInsets.only(right: 14),
-          child: GestureDetector(
-            child: Icon(
-              Icons.arrow_back_ios,
-              color: Color(0xffF48262),
-              size: 26,
-            ),
-            onTap: () {
-              Navigator.pop(context);
-            },
+      backgroundColor: Hexcolor('#FCF8F0'),
+      appBar: AppBar(
+        elevation: 0,
+        titleSpacing: 0,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: Color(0xffF48262),
+            size: 26,
           ),
         ),
-        toolbarHeight: 70,
+        title:  Text(
+          title,
+          style: TextStyle(
+            fontSize: 24,
+            fontFamily: "Yeseva",
+            fontWeight: FontWeight.w500,
+            color: Color(0xffF48262),
+          ),
+        ),
+        bottom: PreferredSize(
+            child: Container(
+              color: Color(0xffF48262),
+              height: 1.0,
+            ),
+            preferredSize: Size.fromHeight(1.0)),
       ),
       body: Container(
         child: Column(

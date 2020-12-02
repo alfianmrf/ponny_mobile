@@ -544,7 +544,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                           bottom: 5, left: 15, right: 15),
                                       child: Icon(
                                         Icons.watch_later,
-                                        size: 35,
+                                        size: 30,
                                         color: Hexcolor("#F59379"),
                                       ),
                                     ),
@@ -568,13 +568,13 @@ class _AccountScreenState extends State<AccountScreen> {
                                           Container(
                                             // width: 150,
                                             child: Text(
-                                              "Purchased Items",
+                                              "Yuk dibayar, yuk ^_^",
                                               textAlign: TextAlign.left,
                                               style: TextStyle(
                                                 fontFamily: "Brandon",
                                                 fontWeight: FontWeight.w500,
                                                 color: Colors.grey,
-                                                fontSize: 14,
+                                                fontSize: 12,
                                               ),
                                             ),
                                           ),
@@ -612,7 +612,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                           bottom: 5, left: 15, right: 15),
                                       child: Icon(
                                         Icons.shopping_cart,
-                                        size: 35,
+                                        size: 30,
                                         color: Hexcolor("#F59379"),
                                       ),
                                     ),
@@ -636,13 +636,13 @@ class _AccountScreenState extends State<AccountScreen> {
                                           Container(
                                             // width: 150,
                                             child: Text(
-                                              "Purchased Items",
+                                              "Asik! Transaksimu berhasil!",
                                               textAlign: TextAlign.left,
                                               style: TextStyle(
                                                 fontFamily: "Brandon",
                                                 fontWeight: FontWeight.w500,
                                                 color: Colors.grey,
-                                                fontSize: 14,
+                                                fontSize: 12,
                                               ),
                                             ),
                                           ),
@@ -681,6 +681,8 @@ class _AccountScreenState extends State<AccountScreen> {
                                       child: Image.asset(
                                         'assets/images/Asset 7.png',
                                         width: 30,
+                                        height: 30,
+                                        fit: BoxFit.contain,
                                       ),
                                     ),
                                     Container(
@@ -703,13 +705,13 @@ class _AccountScreenState extends State<AccountScreen> {
                                           Container(
                                             // width: 150,
                                             child: Text(
-                                              "Purchased Items",
+                                              "Mari tengok keberadaan paketmu.",
                                               textAlign: TextAlign.left,
                                               style: TextStyle(
                                                 fontFamily: "Brandon",
                                                 fontWeight: FontWeight.w500,
                                                 color: Colors.grey,
-                                                fontSize: 14,
+                                                fontSize: 12,
                                               ),
                                             ),
                                           ),
@@ -747,7 +749,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                           bottom: 5, left: 15, right: 15),
                                       child: Icon(
                                         Icons.directions_car,
-                                        size: 35,
+                                        size: 30,
                                         color: Hexcolor("#F59379"),
                                       ),
                                     ),
@@ -771,13 +773,13 @@ class _AccountScreenState extends State<AccountScreen> {
                                           Container(
                                             // width: 150,
                                             child: Text(
-                                              "Purchased Items",
+                                              "Hore! Paketmu udah diantar jasa kurir pilihanmu.",
                                               textAlign: TextAlign.left,
                                               style: TextStyle(
                                                 fontFamily: "Brandon",
                                                 fontWeight: FontWeight.w500,
                                                 color: Colors.grey,
-                                                fontSize: 14,
+                                                fontSize: 12,
                                               ),
                                             ),
                                           ),
@@ -818,7 +820,9 @@ class _AccountScreenState extends State<AccountScreen> {
                                           top: 10),
                                       child: Image.asset(
                                         'assets/images/Asset 8.png',
-                                        width: 32,
+                                        width: 30,
+                                        height: 30,
+                                        fit: BoxFit.contain,
                                       ),
                                     ),
                                     Container(
@@ -847,7 +851,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                                 fontFamily: "Brandon",
                                                 fontWeight: FontWeight.w500,
                                                 color: Colors.grey,
-                                                fontSize: 14,
+                                                fontSize: 12,
                                               ),
                                             ),
                                           ),
@@ -888,7 +892,9 @@ class _AccountScreenState extends State<AccountScreen> {
                                           top: 10),
                                       child: Image.asset(
                                         'assets/images/komplain.png',
-                                        width: 32,
+                                        width: 30,
+                                        height: 30,
+                                        fit: BoxFit.contain,
                                       ),
                                     ),
                                     Container(
@@ -911,13 +917,13 @@ class _AccountScreenState extends State<AccountScreen> {
                                           Container(
                                             // width: 150,
                                             child: Text(
-                                              "Purchased Items",
+                                              "Mohon maaf, ada yang bisa Phobe bantu?",
                                               textAlign: TextAlign.left,
                                               style: TextStyle(
                                                 fontFamily: "Brandon",
                                                 fontWeight: FontWeight.w500,
                                                 color: Colors.grey,
-                                                fontSize: 14,
+                                                fontSize: 12,
                                               ),
                                             ),
                                           ),
@@ -956,7 +962,9 @@ class _AccountScreenState extends State<AccountScreen> {
                                           top: 10),
                                       child: Image.asset(
                                         'assets/images/Asset 9.png',
-                                        width: 34,
+                                        width: 30,
+                                        height: 30,
+                                        fit: BoxFit.contain,
                                       ),
                                     ),
                                     Container(
@@ -985,7 +993,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                                 fontFamily: "Brandon",
                                                 fontWeight: FontWeight.w500,
                                                 color: Colors.grey,
-                                                fontSize: 14,
+                                                fontSize: 12,
                                               ),
                                             ),
                                           ),
@@ -1025,6 +1033,8 @@ class _AccountScreenState extends State<AccountScreen> {
                                       child: Image.asset(
                                         'assets/images/Asset 10.png',
                                         width: 30,
+                                        height: 30,
+                                        fit: BoxFit.contain,
                                       ),
                                     ),
                                     Container(
@@ -1053,7 +1063,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                                 fontFamily: "Brandon",
                                                 fontWeight: FontWeight.w500,
                                                 color: Colors.grey,
-                                                fontSize: 14,
+                                                fontSize: 12,
                                               ),
                                             ),
                                           ),
@@ -1084,6 +1094,8 @@ class _AccountScreenState extends State<AccountScreen> {
                                       child: Image.asset(
                                         'assets/images/Asset 11.png',
                                         width: 30,
+                                        height: 30,
+                                        fit: BoxFit.contain,
                                       ),
                                     ),
                                     Container(
@@ -1112,7 +1124,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                                 fontFamily: "Brandon",
                                                 fontWeight: FontWeight.w500,
                                                 color: Colors.grey,
-                                                fontSize: 14,
+                                                fontSize: 12,
                                               ),
                                             ),
                                           ),
@@ -1169,6 +1181,8 @@ class _AccountScreenState extends State<AccountScreen> {
                                       child: Image.asset(
                                         'assets/images/Asset 12.png',
                                         width: 30,
+                                        height: 30,
+                                        fit: BoxFit.contain,
                                       ),
                                     ),
                                     Container(
@@ -1197,7 +1211,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                                 fontFamily: "Brandon",
                                                 fontWeight: FontWeight.w500,
                                                 color: Colors.grey,
-                                                fontSize: 14,
+                                                fontSize: 12,
                                               ),
                                             ),
                                           ),
@@ -1237,6 +1251,8 @@ class _AccountScreenState extends State<AccountScreen> {
                                       child: Image.asset(
                                         'assets/images/Asset 13.png',
                                         width: 30,
+                                        height: 30,
+                                        fit: BoxFit.contain,
                                       ),
                                     ),
                                     Container(
@@ -1265,7 +1281,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                                 fontFamily: "Brandon",
                                                 fontWeight: FontWeight.w500,
                                                 color: Colors.grey,
-                                                fontSize: 14,
+                                                fontSize: 12,
                                               ),
                                             ),
                                           ),
@@ -1303,6 +1319,8 @@ class _AccountScreenState extends State<AccountScreen> {
                                       child: Image.asset(
                                         'assets/images/Asset 14.png',
                                         width: 30,
+                                        height: 30,
+                                        fit: BoxFit.contain,
                                       ),
                                     ),
                                     Container(
@@ -1331,7 +1349,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                                 fontFamily: "Brandon",
                                                 fontWeight: FontWeight.w500,
                                                 color: Colors.grey,
-                                                fontSize: 14,
+                                                fontSize: 12,
                                               ),
                                             ),
                                           ),
@@ -1361,6 +1379,8 @@ class _AccountScreenState extends State<AccountScreen> {
                                       child: Image.asset(
                                         'assets/images/Asset 15.png',
                                         width: 30,
+                                        height: 30,
+                                        fit: BoxFit.contain,
                                       ),
                                     ),
                                     Container(
@@ -1389,7 +1409,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                                 fontFamily: "Brandon",
                                                 fontWeight: FontWeight.w500,
                                                 color: Colors.grey,
-                                                fontSize: 14,
+                                                fontSize: 12,
                                               ),
                                             ),
                                           ),
