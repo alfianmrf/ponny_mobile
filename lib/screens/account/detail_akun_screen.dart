@@ -116,7 +116,7 @@ class _DetailAkunStateScreen extends State<DetailAkunScreen> {
                       children: [
                         Container(
                           child: Text(
-                            "Account",
+                            "Akun",
                             style: TextStyle(
                               fontFamily: "Brandon",
                               fontSize: 15,
@@ -152,7 +152,7 @@ class _DetailAkunStateScreen extends State<DetailAkunScreen> {
                       children: [
                         Container(
                           child: Text(
-                            "First Name",
+                            "Nama Depan",
                             style: TextStyle(
                               fontFamily: "Brandon",
                               fontSize: 15,
@@ -188,7 +188,7 @@ class _DetailAkunStateScreen extends State<DetailAkunScreen> {
                       children: [
                         Container(
                           child: Text(
-                            "Last Name",
+                            "Nama Belakang",
                             style: TextStyle(
                               fontFamily: "Brandon",
                               fontSize: 15,
@@ -224,7 +224,7 @@ class _DetailAkunStateScreen extends State<DetailAkunScreen> {
                       children: [
                         Container(
                           child: Text(
-                            "Gender",
+                            "Jenis Kelamin",
                             style: TextStyle(
                               fontFamily: "Brandon",
                               fontSize: 15,
@@ -261,7 +261,7 @@ class _DetailAkunStateScreen extends State<DetailAkunScreen> {
                       children: [
                         Container(
                           child: Text(
-                            "Date of Birth",
+                            "Tanggal Lahir",
                             style: TextStyle(
                               fontFamily: "Brandon",
                               fontSize: 15,
@@ -297,7 +297,7 @@ class _DetailAkunStateScreen extends State<DetailAkunScreen> {
                       children: [
                         Container(
                           child: Text(
-                            "Phone Number",
+                            "Nomor Telepon",
                             style: TextStyle(
                               fontFamily: "Brandon",
                               fontSize: 15,
@@ -330,7 +330,7 @@ class _DetailAkunStateScreen extends State<DetailAkunScreen> {
                         );
                       },
                       child: Text(
-                        "Edit Akun",
+                        "Ubah Akun",
                         style: TextStyle(
                           fontFamily: "Brandon",
                           color: Color(0xffF48262),
@@ -461,7 +461,7 @@ class _DetailAkunStateScreen extends State<DetailAkunScreen> {
               alignment: Alignment.centerLeft,
               margin: EdgeInsets.only(right: 20, left: 20, top: 25, bottom: 10),
               child: Text(
-                "SAVED ADDRESSES",
+                "ALAMAT TERSIMPAN",
                 style: TextStyle(
                   fontFamily: "Brandon",
                   fontWeight: FontWeight.w800,
@@ -607,7 +607,7 @@ class _DetailAkunStateScreen extends State<DetailAkunScreen> {
                                               child: Container(
                                                 margin: EdgeInsets.only(bottom: 30),
                                                 child: Text(
-                                                  "EDIT",
+                                                  "UBAH",
                                                   style: TextStyle(
                                                     fontFamily: "Brandon",
                                                     fontWeight: FontWeight.w700,
@@ -626,7 +626,7 @@ class _DetailAkunStateScreen extends State<DetailAkunScreen> {
                                             },
                                             child: Container(
                                               child: Text(
-                                                "DELETE",
+                                                "HAPUS",
                                                 style: TextStyle(
                                                   fontFamily: "Brandon",
                                                   fontWeight: FontWeight.w700,

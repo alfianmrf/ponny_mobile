@@ -47,6 +47,7 @@ class PilihSampleState extends State<PilihSample>{
           SliverPadding(
             padding: const EdgeInsets.all(15),
             sliver: SliverGrid.count(
+              childAspectRatio: 0.75,
               crossAxisSpacing: 10,
               mainAxisSpacing: 10,
               crossAxisCount: 2,

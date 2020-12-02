@@ -157,47 +157,38 @@ class _EditAlamatStateScreen extends State<EditAlamatScreen> {
       key: scaffoldKey,
       resizeToAvoidBottomInset: false,
       backgroundColor: Hexcolor('#FCF8F0'),
+      appBar: AppBar(
+        elevation: 0,
+        titleSpacing: 0,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: Color(0xffF48262),
+            size: 26,
+          ),
+        ),
+        title:  Text(
+          "Ubah Alamat",
+          style: TextStyle(
+            fontSize: 24,
+            fontFamily: "Yeseva",
+            fontWeight: FontWeight.w500,
+            color: Color(0xffF48262),
+          ),
+        ),
+        bottom: PreferredSize(
+            child: Container(
+              color: Color(0xffF48262),
+              height: 1.0,
+            ),
+            preferredSize: Size.fromHeight(1.0)),
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
-            Container(
-              height: 70,
-            ),
-            Container(
-              padding: EdgeInsets.only(left: 15, bottom: 15),
-              child: Row(
-                children: [
-                  Container(
-                    margin: EdgeInsets.only(right: 14),
-                    child: GestureDetector(
-                      child: Icon(
-                        Icons.arrow_back_ios,
-                        color: Color(0xffF48262),
-                        size: 26,
-                      ),
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                    ),
-                  ),
-                  Container(
-                    child: Text(
-                      "Ubah Alamat",
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontFamily: "Yeseva",
-                        fontWeight: FontWeight.w500,
-                        color: Color(0xffF48262),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              height: 1,
-              color: Color(0xffF3C1B5),
-            ),
             Container(
               margin: EdgeInsets.only(left: 20, top: 20, right: 20),
               decoration: BoxDecoration(
@@ -399,7 +390,7 @@ class _EditAlamatStateScreen extends State<EditAlamatScreen> {
                             },
                             validator: (MasterAddress value){
                               if (value == null) {
-                                return "Province tidak boleh kosong";
+                                return "Provinsi tidak boleh kosong";
                               }
                             },
 
@@ -474,7 +465,7 @@ class _EditAlamatStateScreen extends State<EditAlamatScreen> {
                             },
                             validator: (MasterAddress value){
                               if (value == null) {
-                                return "City tidak boleh kosong";
+                                return "Kota / Kabupaten tidak boleh kosong";
                               }
                             },
                           )
@@ -545,7 +536,7 @@ class _EditAlamatStateScreen extends State<EditAlamatScreen> {
                             },
                             validator: (MasterAddress value){
                               if (value == null) {
-                                return "Distrik tidak boleh kosong";
+                                return "Kecamatan tidak boleh kosong";
                               }
                             },
                           ),
@@ -585,7 +576,7 @@ class _EditAlamatStateScreen extends State<EditAlamatScreen> {
                         minLines: 1,
                         validator: (String val){
                           if(val.isEmpty){
-                            return "Postal Code tidak boleh kosong";
+                            return "Kode Pos tidak boleh kosong";
                           }
                         },
 

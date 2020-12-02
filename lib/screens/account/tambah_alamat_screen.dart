@@ -155,47 +155,38 @@ class _TambahAlamatStateScreen extends State<TambahAlamatScreen> {
       key: scaffoldKey,
       // resizeToAvoidBottomInset: false,
       backgroundColor: Hexcolor('#FCF8F0'),
+      appBar: AppBar(
+        elevation: 0,
+        titleSpacing: 0,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: Color(0xffF48262),
+            size: 26,
+          ),
+        ),
+        title:  Text(
+          "Tambah Alamat Baru",
+          style: TextStyle(
+            fontSize: 24,
+            fontFamily: "Yeseva",
+            fontWeight: FontWeight.w500,
+            color: Color(0xffF48262),
+          ),
+        ),
+        bottom: PreferredSize(
+            child: Container(
+              color: Color(0xffF48262),
+              height: 1.0,
+            ),
+            preferredSize: Size.fromHeight(1.0)),
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
-            Container(
-              height: 70,
-            ),
-            Container(
-              padding: EdgeInsets.only(left: 15, bottom: 15),
-              child: Row(
-                children: [
-                  Container(
-                    margin: EdgeInsets.only(right: 14),
-                    child: GestureDetector(
-                      child: Icon(
-                        Icons.arrow_back_ios,
-                        color: Color(0xffF48262),
-                        size: 26,
-                      ),
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                    ),
-                  ),
-                  Container(
-                    child: Text(
-                      "Tambah Alamat Baru",
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontFamily: "Yeseva",
-                        fontWeight: FontWeight.w500,
-                        color: Color(0xffF48262),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              height: 1,
-              color: Color(0xffF3C1B5),
-            ),
             Container(
               margin: EdgeInsets.only(left: 20, top: 20, right: 20),
               decoration: BoxDecoration(
@@ -237,7 +228,7 @@ class _TambahAlamatStateScreen extends State<TambahAlamatScreen> {
 
                       decoration: InputDecoration(
                         border: InputBorder.none,
-                        labelText: 'Frist Name',
+                        labelText: 'Nama Depan',
                         hintText: 'Nama Depan',
                         labelStyle: TextStyle(color: Colors.black),
                         isDense: true,
@@ -247,7 +238,7 @@ class _TambahAlamatStateScreen extends State<TambahAlamatScreen> {
                       minLines: 1,
                       validator: (String value){
                         if (value.isEmpty) {
-                          return "Nama Lengkap tidak boleh kosong";
+                          return "Nama Depan tidak boleh kosong";
                         }
                       },
                     ),
@@ -272,7 +263,7 @@ class _TambahAlamatStateScreen extends State<TambahAlamatScreen> {
 
                       decoration: InputDecoration(
                         border: InputBorder.none,
-                        labelText: 'Last Name',
+                        labelText: 'Nama Belakang',
                         hintText: 'Nama Belakang',
                         labelStyle: TextStyle(color: Colors.black),
                         isDense: true,
@@ -306,7 +297,7 @@ class _TambahAlamatStateScreen extends State<TambahAlamatScreen> {
                       ),
                       decoration: InputDecoration(
                         border: InputBorder.none,
-                        labelText: 'Address',
+                        labelText: 'Alamat',
                         hintText: 'Alamat Anda',
                         labelStyle: TextStyle(color: Colors.black),
                         isDense: true,
@@ -331,8 +322,11 @@ class _TambahAlamatStateScreen extends State<TambahAlamatScreen> {
                             FocusScope.of(context).requestFocus(new FocusNode());
                           },
                           decoration: InputDecoration(
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Color(0xffF48262)),
+                            ),
                             border: UnderlineInputBorder(
-                              borderSide: new BorderSide(color: Colors.red),
+                              borderSide: BorderSide(color: Color(0xffF48262)),
                             ),
                           ),
                           isExpanded: true,
@@ -344,10 +338,10 @@ class _TambahAlamatStateScreen extends State<TambahAlamatScreen> {
                           iconEnabledColor: Color(0xffF48262),
                           iconDisabledColor: Color(0xffF48262),
                           hint: Text(
-                            "Province",
+                            "Provinsi",
                             style: TextStyle(
                               fontFamily: "Brandon",
-                              fontSize: 15,
+                              fontSize: 17,
                               fontWeight: FontWeight.w300,
                             ),
                           ),
@@ -375,7 +369,7 @@ class _TambahAlamatStateScreen extends State<TambahAlamatScreen> {
                           },
                           validator: (MasterAddress value){
                             if (value == null) {
-                              return "Province tidak boleh kosong";
+                              return "Provinsi tidak boleh kosong";
                             }
                           },
                         )
@@ -392,8 +386,11 @@ class _TambahAlamatStateScreen extends State<TambahAlamatScreen> {
                             FocusScope.of(context).requestFocus(new FocusNode());
                           },
                           decoration: InputDecoration(
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Color(0xffF48262)),
+                            ),
                             border: UnderlineInputBorder(
-                              borderSide: new BorderSide(color: Colors.red),
+                              borderSide: BorderSide(color: Color(0xffF48262)),
                             ),
                           ),
                           isExpanded: true,
@@ -403,10 +400,10 @@ class _TambahAlamatStateScreen extends State<TambahAlamatScreen> {
                           iconEnabledColor: Color(0xffF48262),
                           iconDisabledColor: Color(0xffF48262),
                           hint: Text(
-                            "City",
+                            "Kota / Kabupaten",
                             style: TextStyle(
                               fontFamily: "Brandon",
-                              fontSize: 15,
+                              fontSize: 17,
                               fontWeight: FontWeight.w300,
                             ),
                           ),
@@ -433,7 +430,7 @@ class _TambahAlamatStateScreen extends State<TambahAlamatScreen> {
                           },
                           validator: (MasterAddress value){
                             if (value == null) {
-                              return "City tidak boleh kosong";
+                              return "Kota / Kabupaten tidak boleh kosong";
                             }
                           },
                         )
@@ -450,8 +447,11 @@ class _TambahAlamatStateScreen extends State<TambahAlamatScreen> {
                             FocusScope.of(context).requestFocus(new FocusNode());
                           },
                           decoration: InputDecoration(
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Color(0xffF48262)),
+                            ),
                             border: UnderlineInputBorder(
-                              borderSide: new BorderSide(color: Colors.red),
+                              borderSide: BorderSide(color: Color(0xffF48262)),
                             ),
                           ),
                           isExpanded: true,
@@ -461,7 +461,7 @@ class _TambahAlamatStateScreen extends State<TambahAlamatScreen> {
                           iconEnabledColor: Color(0xffF48262),
                           iconDisabledColor: Color(0xffF48262),
                           hint: Text(
-                            "District",
+                            "Kecamatan",
                             style: TextStyle(
                               fontFamily: "Brandon",
                               fontSize: 15,
@@ -488,7 +488,7 @@ class _TambahAlamatStateScreen extends State<TambahAlamatScreen> {
                           },
                           validator: (MasterAddress value){
                             if (value == null) {
-                              return "Distrik tidak boleh kosong";
+                              return "Kecamatan tidak boleh kosong";
                             }
                           },
                         ),
@@ -514,7 +514,7 @@ class _TambahAlamatStateScreen extends State<TambahAlamatScreen> {
                       ),
                       decoration: InputDecoration(
                         border: InputBorder.none,
-                        labelText: 'Postal Code',
+                        labelText: 'Kode Pos',
                         hintText: 'Kode Pos',
                         labelStyle: TextStyle(color: Colors.black),
                         isDense: true,
@@ -528,7 +528,7 @@ class _TambahAlamatStateScreen extends State<TambahAlamatScreen> {
                       minLines: 1,
                       validator: (String val){
                         if(val.isEmpty){
-                          return "Postal Code tidak boleh kosong";
+                          return "Kode Pos tidak boleh kosong";
                         }
                       },
 
@@ -554,7 +554,7 @@ class _TambahAlamatStateScreen extends State<TambahAlamatScreen> {
                       decoration: InputDecoration(
                         prefixText: "+62",
                         border: InputBorder.none,
-                        labelText: 'Contact Number',
+                        labelText: 'Nomor Telepon',
                         hintText: 'Nomor Telepon',
                         labelStyle: TextStyle(color: Colors.black),
                         isDense: true,
@@ -643,7 +643,7 @@ class _TambahAlamatStateScreen extends State<TambahAlamatScreen> {
                 padding: EdgeInsets.only(top: 15, bottom: 15),
                 child: Center(
                   child: Text(
-                    "SAVE",
+                    "SIMPAN",
                     style: TextStyle(
                       fontFamily: "Brandon",
                       fontWeight: FontWeight.w700,

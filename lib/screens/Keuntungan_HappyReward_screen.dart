@@ -569,7 +569,7 @@ class _UntungRewardState extends State<UntungReward> {
                                       Flexible(
                                           fit: FlexFit.loose,
                                           child: Image.asset(
-                                              "assets/images/Asset 11.png")),
+                                              "assets/images/happySkin/buat-akun.png", width: 70, height: 70, fit: BoxFit.contain,)),
                                       Flexible(
                                         fit: FlexFit.loose,
                                         child: FittedBox(
@@ -611,7 +611,7 @@ class _UntungRewardState extends State<UntungReward> {
                                       Flexible(
                                           fit: FlexFit.loose,
                                           child: Image.asset(
-                                              "assets/images/Asset 11.png")),
+                                            "assets/images/happySkin/kumpulkan-koin.png", width: 70, height: 70, fit: BoxFit.contain,)),
                                       Flexible(
                                         fit: FlexFit.loose,
                                         child: FittedBox(
@@ -661,7 +661,7 @@ class _UntungRewardState extends State<UntungReward> {
                                       Flexible(
                                           fit: FlexFit.loose,
                                           child: Image.asset(
-                                              "assets/images/Asset 11.png")),
+                                            "assets/images/happySkin/dapatkan-hadiah.png", width: 70, height: 70, fit: BoxFit.contain,)),
                                       Flexible(
                                         fit: FlexFit.loose,
                                         child: FittedBox(
@@ -703,7 +703,7 @@ class _UntungRewardState extends State<UntungReward> {
                                       Flexible(
                                           fit: FlexFit.loose,
                                           child: Image.asset(
-                                              "assets/images/Asset 11.png")),
+                                            "assets/images/happySkin/naik-tingkat.png", width: 70, height: 70, fit: BoxFit.contain,)),
                                       Flexible(
                                         fit: FlexFit.loose,
                                         child: FittedBox(
