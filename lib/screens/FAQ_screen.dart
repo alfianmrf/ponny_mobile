@@ -114,10 +114,9 @@ class _FAQScreenState extends State<FAQScreen> {
                               child: Row(children: [
                                 Expanded(
                                   child: TextField(
-                                    readOnly: true,
-                                    onTap: () {
+                                    onSubmitted: (String q){
                                       Navigator.push(context,
-                                          MaterialPageRoute(builder: (context) => SearchFaqScreen()));
+                                          MaterialPageRoute(builder: (context) => SearchFaqScreen(q: q,)));
                                     },
                                     cursorColor: Colors.black,
                                     keyboardType: TextInputType.text,

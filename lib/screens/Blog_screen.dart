@@ -1,5 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:ponny/common/constant.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -369,9 +371,15 @@ DateTime convertDateFromString(String strDate){
           return Container(
               margin: EdgeInsets.only(bottom: 10),
               child: ListTile(
-                leading: Image.asset(
-                  "assets/images/blogImage.png",
-                  fit: BoxFit.cover,
+                leading: Container(
+                  width: 100,
+                  child: CachedNetworkImage(
+                    imageUrl:img_url+"blog/thumbnail/"+widget.list[i]["thumbnail"].toString(),
+                    placeholder: (context, url) => LoadingWidgetPulse(context),
+                    errorWidget: (context, url, error) => Image.asset('assets/images/basic.jpg'),
+                    width: MediaQuery.of(context).size.width,
+                    fit: BoxFit.cover,
+                  ),
                 ),
                 title: Text(
                   widget.list[i]["title"],
@@ -429,10 +437,15 @@ Widget categoryListBlog(context, List list, int categoryId) {
                   flex: 3,
                   child: Container(
                       width: double.infinity,
-                      child: Image.asset(
-                        "assets/images/blogImage.png",
+                      child: CachedNetworkImage(
+                        imageUrl:img_url+"blog/thumbnail/"+list[i]["thumbnail"].toString(),
+                        placeholder: (context, url) => LoadingWidgetPulse(context),
+                        errorWidget: (context, url, error) => Image.asset('assets/images/basic.jpg'),
+                        width: MediaQuery.of(context).size.width,
                         fit: BoxFit.cover,
-                      ))),
+                      )
+                  )
+              ),
               Container(height: 5),
               Expanded(
                 flex: 1,

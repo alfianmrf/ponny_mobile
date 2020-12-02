@@ -138,7 +138,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                         child: IntrinsicHeight(
                           child: Column(
                             children: <Widget>[
-                              /*Container(
+                              Container(
                                 color: Color(0xffFDEDE4),
                                 width: MediaQuery.of(context).size.width,
                                 padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
@@ -310,42 +310,42 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                   ),
                                 ),
                               ),
-                              InkWell(
-                                onTap: () {
-                                  chekOut(context,"Indomaret");
-                                },
-                                child: Container(
-                                  width: MediaQuery.of(context).size.width,
-                                  padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Row(
-                                        children: [
-                                          Image.asset(
-                                            'assets/images/payment/indomaret-02.png',
-                                            height: 40,
-                                          ),
-                                          Padding(
-                                            padding: EdgeInsets.only(left: 10),
-                                            child: Text(
-                                              'Indomaret',
-                                              style: TextStyle(
-                                                fontFamily: 'Brandon',
-                                                fontSize: 14,
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      Icon(
-                                        Icons.chevron_right,
-                                        color: Color(0xffF48262),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
+                              // InkWell(
+                              //   onTap: () {
+                              //     chekOut(context,"Indomaret");
+                              //   },
+                              //   child: Container(
+                              //     width: MediaQuery.of(context).size.width,
+                              //     padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                              //     child: Row(
+                              //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              //       children: [
+                              //         Row(
+                              //           children: [
+                              //             Image.asset(
+                              //               'assets/images/payment/indomaret-02.png',
+                              //               height: 40,
+                              //             ),
+                              //             Padding(
+                              //               padding: EdgeInsets.only(left: 10),
+                              //               child: Text(
+                              //                 'Indomaret',
+                              //                 style: TextStyle(
+                              //                   fontFamily: 'Brandon',
+                              //                   fontSize: 14,
+                              //                 ),
+                              //               ),
+                              //             ),
+                              //           ],
+                              //         ),
+                              //         Icon(
+                              //           Icons.chevron_right,
+                              //           color: Color(0xffF48262),
+                              //         ),
+                              //       ],
+                              //     ),
+                              //   ),
+                              // ),
                               InkWell(
                                 onTap: () {
                                   chekOut(context,"alfamart");
@@ -381,7 +381,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                     ],
                                   ),
                                 ),
-                              ),*/
+                              ),
                               Container(
                                 color: Color(0xffFDEDE4),
                                 width: MediaQuery.of(context).size.width,
@@ -537,7 +537,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                 ),
                               ),
 
-                            /*
+
                               Container(
                                 color: Color(0xffFDEDE4),
                                 width: MediaQuery.of(context).size.width,
@@ -552,7 +552,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                   ),
                                 ),
                               ),
-                              InkWell(
+                              /*InkWell(
                                 onTap: () {
                                   Navigator.of(context)
                                       .pushReplacementNamed(PembayaranOvoScreen.id);
@@ -588,7 +588,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                     ],
                                   ),
                                 ),
-                              ),
+                              ),*/
                               InkWell(
                                 onTap: () {
                                   Navigator.push(context,new MaterialPageRoute(
@@ -627,6 +627,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                   ),
                                 ),
                               ),
+                              /*
                               Container(
                                 color: Color(0xffFDEDE4),
                                 width: MediaQuery.of(context).size.width,
@@ -675,7 +676,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                     ),
                                   ],
                                 ),
-                              ),
+                              ),*/
+                              /*
                               Container(
                                 color: Color(0xffFDEDE4),
                                 width: MediaQuery.of(context).size.width,

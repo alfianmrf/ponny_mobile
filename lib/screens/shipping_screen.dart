@@ -254,7 +254,7 @@ class _ShippingScreenState extends State<ShippingScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                courier.code.toUpperCase()+" "+layanan.service,
+                                courier.code.toUpperCase()+" "+cost.label,
                                 style: TextStyle(
                                   fontFamily: 'Brandon',
                                   fontWeight: FontWeight.w600,

@@ -1,7 +1,9 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_html/style.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:ponny/common/constant.dart';
 import 'package:ponny/screens/search_skinklopedia_screen.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
 import 'package:http/http.dart' as http;
@@ -174,10 +176,9 @@ class _SkinklopediaState extends State<Skinklopedia> {
                     children: [
                       Expanded(
                         child: TextField(
-                          readOnly: true,
-                          onTap: () {
+                          onSubmitted: (String q){
                             Navigator.push(context,
-                                MaterialPageRoute(builder: (context) => SearchSkinklopediaScreen()));
+                                MaterialPageRoute(builder: (context) => SearchSkinklopediaScreen(q: q,)));
                           },
                           style: TextStyle(
                             fontSize: 13,
@@ -332,7 +333,13 @@ class _PageAScreen extends State<page_a> {
                             ),
                             child: Container(
                               height: 140,
-                              color: Colors.grey,
+                              child:  CachedNetworkImage(
+                                imageUrl:img_url+"skinlopedia/img/"+widget.list[i]["img"].toString(),
+                                placeholder: (context, url) => LoadingWidgetPulse(context),
+                                errorWidget: (context, url, error) => Image.asset('assets/images/basic.jpg'),
+                                width: MediaQuery.of(context).size.width,
+                                fit: BoxFit.cover,
+                              ),
                             ),
                           ),
                         ),
@@ -494,7 +501,13 @@ class _PageAScreen extends State<page_a> {
                                 ),
                             child: Container(
                               height: 140,
-                              color: Colors.grey,
+                              child: CachedNetworkImage(
+                                imageUrl:img_url+"skinlopedia/img/"+widget.list[i]["img"].toString(),
+                                placeholder: (context, url) => LoadingWidgetPulse(context),
+                                errorWidget: (context, url, error) => Image.asset('assets/images/basic.jpg'),
+                                width: MediaQuery.of(context).size.width,
+                                fit: BoxFit.cover,
+                                )
                             ),
                           ),
                         ),

@@ -81,7 +81,7 @@ class _Browse_Skin_GuruState extends State<Browse_Skin_Guru> {
             child: RaisedButton( 
                 onPressed: () {
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => Blog()));
+                      MaterialPageRoute(builder: (context) => Blog(category: 0,tag: "ALL",)));
                 },
                 
                 child: Image.asset("assets/images/blogTitle.png")),

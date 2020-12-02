@@ -1,34 +1,68 @@
 import 'package:flutter/material.dart';
 import 'package:ponny/common/constant.dart';
 import 'package:ponny/model/App.dart';
+import 'package:ponny/model/Brand.dart';
+import 'package:ponny/model/Category.dart';
+import 'package:ponny/model/ItemBlog.dart';
 import 'package:ponny/model/Order.dart';
+import 'package:ponny/model/Product.dart';
 import 'package:ponny/model/Voucher.dart';
 import 'package:ponny/model/WishProduct.dart';
+import 'package:ponny/screens/Blog_screen.dart';
+import 'package:ponny/screens/Detail_Brand_Screen.dart';
+import 'package:ponny/screens/Skincare_Screen.dart';
 import 'package:ponny/screens/WaitingPage.dart';
 import 'package:ponny/screens/konsultasi_screen.dart';
 import 'package:ponny/screens/payment_voucher_screen.dart';
+import 'package:ponny/screens/product_details_screen.dart';
 import 'package:ponny/util/globalUrl.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart' as Launcher;
 
-import 'Browse_Screen.dart';
+import 'Browse_Screen.dart' as b;
 import 'account/daftar_keinginan_screen.dart';
 import 'account/hubungi_kami_screen.dart';
 import 'login.dart';
 
 class SearchScreen extends StatefulWidget {
   static const String id = "search_screen";
+  String q;
+  SearchScreen({this.q});
   @override
   _SearchState createState() => _SearchState();
 }
 
 class _SearchState extends State<SearchScreen> {
+  bool loading =true;
+  SearchGlobalResult result;
+  final _search = TextEditingController();
 
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      setState(() {
+        _search.text = widget.q;
+      });
+      _searchData();
+
+    });
+  }
+  void _searchData(){
+    if(_search.text.isNotEmpty){
+      var param={
+        "q":_search.value.text
+      };
+      Provider.of<AppModel>(context).search(param).then((value){
+        setState(() {
+          result = value;
+          loading =false;
+        });
+      });
+    }
+
   }
 
   @override
@@ -67,7 +101,7 @@ class _SearchState extends State<SearchScreen> {
                   leading: IconButton(
                     onPressed: (){
                       Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => Browse()));
+                          MaterialPageRoute(builder: (context) => b.Browse()));
                     },
                     icon: ImageIcon(
                         AssetImage('assets/images/home/search.png')
@@ -143,23 +177,43 @@ class _SearchState extends State<SearchScreen> {
                     Icon(Icons.search, color: Color(0xffF48262)),
                     Expanded(
                         child: TextField(
-                          autofocus: true,
                           onTap: () {
-                            showSearch(context: null, delegate: Search());
+                            showSearch(context: null, delegate: b.Search());
                           },
+                          onSubmitted: (String q){
+                            FocusScope.of(context).requestFocus(new FocusNode());
+                            setState(() {
+                              loading=true;
+                            });
+                            _searchData();
+                          },
+                          controller: _search,
                           cursorColor: Colors.black,
                           keyboardType: TextInputType.text,
                           textInputAction: TextInputAction.go,
                           decoration:
                           new InputDecoration.collapsed(),
                         )),
-                    Icon(Icons.close, color: Color(0xffF48262)),
+                    InkWell(
+                      onTap: (){
+                        Navigator.pushNamedAndRemoveUntil(
+                            context,
+                            b.Browse.id,(_) => false
+                        );
+                      },
+                      child: Icon(Icons.close, color: Color(0xffF48262)),
+                    )
+                    ,
                   ]),
                 ),
               ],
             ),
           ),
-          body: Container(
+          body: loading ?  Container(
+            child: Center(
+              child: LoadingWidgetFadingCircle(context),
+            ),
+          ) :Container(
             child: SingleChildScrollView(
               child: Column(
                 children: [
@@ -175,26 +229,40 @@ class _SearchState extends State<SearchScreen> {
                       ),
                     ),
                   ),
-                  Container(
-                    width: double.infinity,
-                    padding: EdgeInsets.symmetric(vertical: 5, horizontal: 20),
-                    child: Text(
-                      'Skincare',
-                      style: TextStyle(
-                        fontFamily: 'Brandon',
+                  for(Product item in result.products)
+                  InkWell(
+                    onTap: (){
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => ProductDetailsScreen(product: item)));
+                    },
+                    child: Container(
+                      width: double.infinity,
+                      padding: EdgeInsets.symmetric(vertical: 5, horizontal: 20),
+                      child: Text(
+                        item.name,
+                        style: TextStyle(
+                          fontFamily: 'Brandon',
+                        ),
                       ),
                     ),
-                  ),
-                  Container(
-                    width: double.infinity,
-                    padding: EdgeInsets.symmetric(vertical: 5, horizontal: 20),
-                    child: Text(
-                      'Skin Game',
-                      style: TextStyle(
-                        fontFamily: 'Brandon',
+                  ) ,
+                  for(Brand item in result.brands)
+                  InkWell(
+                    onTap: (){
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => DetailBrand(brand: item)));
+                    },
+                    child: Container(
+                      width: double.infinity,
+                      padding: EdgeInsets.symmetric(vertical: 5, horizontal: 20),
+                      child: Text(
+                        item.name,
+                        style: TextStyle(
+                          fontFamily: 'Brandon',
+                        ),
                       ),
                     ),
-                  ),
+                  ) ,
                   Container(
                     width: double.infinity,
                     color: Color(0xffFBDFD2),
@@ -207,26 +275,24 @@ class _SearchState extends State<SearchScreen> {
                       ),
                     ),
                   ),
-                  Container(
-                    width: double.infinity,
-                    padding: EdgeInsets.symmetric(vertical: 5, horizontal: 20),
-                    child: Text(
-                      'SK II',
-                      style: TextStyle(
-                        fontFamily: 'Brandon',
-                      ),
+                  for(Category item in result.categorys)
+                    InkWell(
+                      onTap: (){
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) => Skincare(category: item)));
+                      },
+                     child:  Container(
+                       width: double.infinity,
+                       padding: EdgeInsets.symmetric(vertical: 5, horizontal: 20),
+                       child: Text(
+                         item.name,
+                         style: TextStyle(
+                           fontFamily: 'Brandon',
+                         ),
+                       ),
+                     ),
                     ),
-                  ),
-                  Container(
-                    width: double.infinity,
-                    padding: EdgeInsets.symmetric(vertical: 5, horizontal: 20),
-                    child: Text(
-                      'Skinoia',
-                      style: TextStyle(
-                        fontFamily: 'Brandon',
-                      ),
-                    ),
-                  ),
+
                   Container(
                     width: double.infinity,
                     color: Color(0xffFBDFD2),
@@ -239,26 +305,23 @@ class _SearchState extends State<SearchScreen> {
                       ),
                     ),
                   ),
-                  Container(
-                    width: double.infinity,
-                    padding: EdgeInsets.symmetric(vertical: 5, horizontal: 20),
-                    child: Text(
-                      'BASIC SKINCARE: Skincare Routine untuk kulit kering',
-                      style: TextStyle(
-                        fontFamily: 'Brandon',
+                  for(ItemBlog item in result.blogs)
+                    InkWell(
+                      onTap: (){
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) => Blog()));
+                      },
+                      child: Container(
+                        width: double.infinity,
+                        padding: EdgeInsets.symmetric(vertical: 5, horizontal: 20),
+                        child: Text(
+                          item.title,
+                          style: TextStyle(
+                            fontFamily: 'Brandon',
+                          ),
+                        ),
                       ),
                     ),
-                  ),
-                  Container(
-                    width: double.infinity,
-                    padding: EdgeInsets.symmetric(vertical: 5, horizontal: 20),
-                    child: Text(
-                      'BASIC SKINCARE: Skincare Routine untuk kulit kering',
-                      style: TextStyle(
-                        fontFamily: 'Brandon',
-                      ),
-                    ),
-                  ),
                 ],
               ),
             ),

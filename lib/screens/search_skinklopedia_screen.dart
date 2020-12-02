@@ -9,8 +9,10 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:ponny/common/constant.dart';
 import 'package:ponny/model/App.dart';
 import 'package:ponny/model/Cart.dart';
+import 'package:ponny/model/ItemSkinklopedia.dart';
 import 'package:ponny/model/Product.dart';
 import 'package:ponny/model/WishProduct.dart';
+import 'package:ponny/screens/Skinklopedia_Screen.dart';
 import 'package:ponny/screens/home_screen.dart';
 import 'package:ponny/screens/account_screen.dart';
 import 'package:ponny/screens/account/daftar_keinginan_sukses_screen.dart';
@@ -22,16 +24,45 @@ import 'package:uiblock/uiblock.dart';
 
 class SearchSkinklopediaScreen extends StatefulWidget {
   static const String id = "search_skinklopedia_Screen";
+  String q;
+  SearchSkinklopediaScreen({this.q});
   @override
   _SearchSkinklopediaStateScreen createState() => _SearchSkinklopediaStateScreen();
 }
 
 class _SearchSkinklopediaStateScreen extends State<SearchSkinklopediaScreen>{
+  List<ItemSkinklopedia> result;
+  bool loading=true;
+  final _search = TextEditingController();
 
-@override
-void initState() {
-  super.initState();
-}
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      setState(() {
+        _search.text = widget.q;
+      });
+      _searchData();
+
+    });
+  }
+  void _searchData(){
+    if(_search.text.isNotEmpty){
+      setState(() {
+        loading =true;
+      });
+      var param={
+        "q":_search.value.text
+      };
+      Provider.of<AppModel>(context).searchSkinklopedia(param).then((value){
+        setState(() {
+          result = value;
+          loading =false;
+        });
+      });
+    }
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -77,20 +108,38 @@ void initState() {
               Icon(Icons.search, color: Color(0xffF48262)),
               Expanded(
                   child: TextField(
-                    autofocus: true,
-                    onTap: () {},
+                    controller: _search,
+                    onSubmitted: (String q){
+                      FocusScope.of(context).requestFocus(new FocusNode());
+                      setState(() {
+                        loading=true;
+                      });
+                      _searchData();
+                    },
                     cursorColor: Colors.black,
                     keyboardType: TextInputType.text,
                     textInputAction: TextInputAction.go,
                     decoration:
                     new InputDecoration.collapsed(),
                   )),
-              Icon(Icons.close, color: Color(0xffF48262)),
+              InkWell(
+                onTap: (){
+                  Navigator.pushNamedAndRemoveUntil(
+                      context,
+                      Skinklopedia.id,(_) => false
+                  );
+                },
+                child: Icon(Icons.close, color: Color(0xffF48262)),
+              ),
             ]),
           ),
           Expanded(
             child: SingleChildScrollView(
-              child: Column(
+              child: loading ?  Container(
+                child: Center(
+                  child: LoadingWidgetFadingCircle(context),
+                ),
+              ) : Column(
                 children: [
                   Container(
                     width: double.infinity,
@@ -104,63 +153,16 @@ void initState() {
                       ),
                     ),
                   ),
-                  Container(
-                    width: double.infinity,
-                    padding: EdgeInsets.symmetric(vertical: 5, horizontal: 20),
-                    child: Text(
-                      'Skincare',
-                      style: TextStyle(
-                        fontFamily: 'Brandon',
-                      ),
-                    ),
-                  ),
-                  Container(
-                    width: double.infinity,
-                    padding: EdgeInsets.symmetric(vertical: 5, horizontal: 20),
-                    child: Text(
-                      'Skin Game',
-                      style: TextStyle(
-                        fontFamily: 'Brandon',
-                      ),
-                    ),
-                  ),
-                  Container(
-                    width: double.infinity,
-                    padding: EdgeInsets.symmetric(vertical: 5, horizontal: 20),
-                    child: Text(
-                      'SK II',
-                      style: TextStyle(
-                        fontFamily: 'Brandon',
-                      ),
-                    ),
-                  ),
-                  Container(
-                    width: double.infinity,
-                    padding: EdgeInsets.symmetric(vertical: 5, horizontal: 20),
-                    child: Text(
-                      'Skin Dewi',
-                      style: TextStyle(
-                        fontFamily: 'Brandon',
-                      ),
-                    ),
-                  ),
-                  Container(
-                    width: double.infinity,
-                    padding: EdgeInsets.symmetric(vertical: 5, horizontal: 20),
-                    child: Text(
-                      'Skinoia',
-                      style: TextStyle(
-                        fontFamily: 'Brandon',
-                      ),
-                    ),
-                  ),
-                  Container(
-                    width: double.infinity,
-                    padding: EdgeInsets.symmetric(vertical: 5, horizontal: 20),
-                    child: Text(
-                      'Skinaz',
-                      style: TextStyle(
-                        fontFamily: 'Brandon',
+                  for(ItemSkinklopedia item in result)
+                  InkWell(
+                    child: Container(
+                      width: double.infinity,
+                      padding: EdgeInsets.symmetric(vertical: 5, horizontal: 20),
+                      child: Text(
+                        item.title,
+                        style: TextStyle(
+                          fontFamily: 'Brandon',
+                        ),
                       ),
                     ),
                   ),

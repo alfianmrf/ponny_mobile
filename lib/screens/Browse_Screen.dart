@@ -39,14 +39,14 @@ class _BrowseState extends State<Browse> {
                 Icon(Icons.search, color: Color(0xffF48262)),
                 Expanded(
                     child: TextField(
-                      readOnly: true,
-                  onTap: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => SearchScreen()));
-                  },
                   cursorColor: Colors.black,
                   keyboardType: TextInputType.text,
                   textInputAction: TextInputAction.go,
+                      onSubmitted: (String q){
+                        FocusScope.of(context).requestFocus(new FocusNode());
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) => SearchScreen(q: q,)));
+                      },
                   decoration:
                       new InputDecoration.collapsed(),
                 ))

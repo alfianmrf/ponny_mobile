@@ -246,7 +246,7 @@ class _CartScreenState extends State<CartScreen> {
                                               ),
                                             ),
                                             Text(
-                                              NumberFormat.simpleCurrency(locale: "id_ID",decimalDigits: 0 ).format(item.price),
+                                              NumberFormat.simpleCurrency(locale: "id_ID",decimalDigits: 0 ).format(item != null ? item.price: 0 ),
                                               style: TextStyle(
                                                 fontFamily: 'Brandon',
                                                 fontSize: 15,

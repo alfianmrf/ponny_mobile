@@ -1,3 +1,5 @@
+import 'package:flutter/cupertino.dart';
+
 const base_url = "https://ponnybeaute.co.id/api/v1/";
 const img_url = "https://ponnybeaute.co.id/public/";
 const urlGlobal = "https://ponnybeaute.co.id/";
@@ -30,6 +32,9 @@ const phobe = base_url + "product/phoebeChoices";
 const rekomendasiProduk = base_url + "product/recommended";
 const flashdealUrl = base_url + "product/flashDeal";
 const newProduct = base_url+"product/news";
+const globalSearch = base_url+"global-search";
+const faqSearch = base_url+"global-faq";
+const skinklopediaSearch = base_url+"global-skinklopedia";
 
 //cart
 const listCarturl = base_url + "cart/get";

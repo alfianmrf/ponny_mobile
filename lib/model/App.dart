@@ -6,7 +6,12 @@ import 'package:flutter_twitter_login/flutter_twitter_login.dart';
 // import 'package:flutter_twitter_login/flutter_twitter_login.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:localstorage/localstorage.dart';
+import 'package:ponny/model/Brand.dart';
+import 'package:ponny/model/Category.dart';
 import 'package:ponny/model/FaqHeader.dart';
+import 'package:ponny/model/ItemBlog.dart';
+import 'package:ponny/model/ItemSkinklopedia.dart';
+import 'package:ponny/model/Product.dart';
 import 'package:ponny/util/AppId.dart';
 import 'package:ponny/util/globalUrl.dart';
 import 'package:http/http.dart' as http;
@@ -115,6 +120,40 @@ class AppModel with ChangeNotifier{
     return false;
   }
 
+  Future<SearchGlobalResult> search(param) async {
+    final res = await http.post(globalSearch,headers: { HttpHeaders.contentTypeHeader: 'application/json' },body: json.encode(param));
+
+    if(res.statusCode == 200){
+      var result = json.decode(res.body);
+      return SearchGlobalResult.fromJson(result);
+    }
+    return null;
+  }
+
+  Future<List<Faq>> searchFaqData(param) async {
+    final res = await http.post(faqSearch,headers: { HttpHeaders.contentTypeHeader: 'application/json' },body: json.encode(param));
+    List<Faq> _result=[];
+    if(res.statusCode == 200){
+      var result = json.decode(res.body);
+      result.forEach((v) {
+        _result.add(new Faq.fromJson(v));
+      });
+    }
+    return _result;
+  }
+
+  Future<List<ItemSkinklopedia>> searchSkinklopedia(param) async {
+    final res = await http.post(skinklopediaSearch,headers: { HttpHeaders.contentTypeHeader: 'application/json' },body: json.encode(param));
+    List<ItemSkinklopedia> _result=[];
+    if(res.statusCode == 200){
+      var result = json.decode(res.body);
+      result.forEach((v) {
+        _result.add(new ItemSkinklopedia.fromJson(v));
+      });
+    }
+    return _result;
+  }
+
   Future<void> logout() async {
     final GoogleSignIn googleSignIn = GoogleSignIn();
     final TwitterLogin twitterLogin = TwitterLogin(consumerKey: TWITTER_CLIENT_ID, consumerSecret: TWITTER_CLIENT_SECRET);
@@ -171,5 +210,29 @@ class WaContact {
     data['text'] = this.text;
     data['phone'] = this.phone;
     return data;
+  }
+}
+
+class SearchGlobalResult{
+  List<Product> products=[];
+  List<Brand> brands=[];
+  List<Category> categorys=[];
+  List<ItemBlog> blogs = [];
+  SearchGlobalResult(this.products,this.brands,this.categorys,this.blogs);
+  SearchGlobalResult.fromJson(Map<String, dynamic> json) {
+
+    json['products'].forEach((v) {
+      products.add(new Product.fromJson(v['availability']));
+    });
+    json['categorys'].forEach((v) {
+      categorys.add(new Category.fromJson(v));
+    });
+    json['blog'].forEach((v) {
+      blogs.add(new ItemBlog.fromJson(v));
+    });
+    json['brand'].forEach((v) {
+      brands.add(new Brand.fromJson(v));
+    });
+
   }
 }

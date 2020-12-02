@@ -1,9 +1,9 @@
 class Dashboards {
   String happySkinLabel;
   String membershipTitle;
-  int totalOrder;
+  double totalOrder;
   String next;
-  int toNext;
+  double toNext;
   double percent;
   Log log;
 
@@ -17,11 +17,12 @@ class Dashboards {
         this.log});
 
   Dashboards.fromJson(Map<String, dynamic> json) {
+    print(json);
     happySkinLabel = json['happy_skin_label'];
     membershipTitle = json['membership_title'];
-    totalOrder = json['totalOrder'];
+    totalOrder = double.parse(json['totalOrder'].toString());
     next = json['next'];
-    toNext = json['to_next'];
+    toNext =  double.parse(json['to_next'].toString());
     percent = double.parse(json['percent'].toString());
     log = json['log'] != null ? new Log.fromJson(json['log']) : null;
   }

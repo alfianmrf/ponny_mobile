@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:math';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
@@ -9,8 +10,11 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:ponny/common/constant.dart';
 import 'package:ponny/model/App.dart';
 import 'package:ponny/model/Cart.dart';
+import 'package:ponny/model/FaqHeader.dart';
 import 'package:ponny/model/Product.dart';
 import 'package:ponny/model/WishProduct.dart';
+import 'package:ponny/screens/FAQ_PengembalianBarang_screen.dart';
+import 'package:ponny/screens/FAQ_screen.dart';
 import 'package:ponny/screens/home_screen.dart';
 import 'package:ponny/screens/account_screen.dart';
 import 'package:ponny/screens/account/daftar_keinginan_sukses_screen.dart';
@@ -22,16 +26,47 @@ import 'package:uiblock/uiblock.dart';
 
 class SearchFaqScreen extends StatefulWidget {
   static const String id = "search_faq_Screen";
+  String q;
+  SearchFaqScreen({this.q});
   @override
   _SearchFaqStateScreen createState() => _SearchFaqStateScreen();
 }
 
 class _SearchFaqStateScreen extends State<SearchFaqScreen>{
+  List<Faq> result;
+  bool loading=true;
+  final _search = TextEditingController();
+
+
 
 @override
 void initState() {
   super.initState();
+  WidgetsBinding.instance.addPostFrameCallback((_) async {
+    setState(() {
+      _search.text = widget.q;
+    });
+    _searchData();
+
+  });
 }
+  void _searchData(){
+    if(_search.text.isNotEmpty){
+      setState(() {
+        loading=true;
+      });
+      var param={
+        "q":_search.value.text
+      };
+      Provider.of<AppModel>(context).searchFaqData(param).then((value){
+        setState(() {
+          result = value;
+          loading =false;
+        });
+      });
+    }
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -77,20 +112,36 @@ void initState() {
               Icon(Icons.search, color: Color(0xffF48262)),
               Expanded(
                   child: TextField(
-                    autofocus: true,
-                    onTap: () {},
+                    controller: _search,
                     cursorColor: Colors.black,
                     keyboardType: TextInputType.text,
                     textInputAction: TextInputAction.go,
+                    onSubmitted: (String q){
+                      FocusScope.of(context).requestFocus(new FocusNode());
+
+                      _searchData();
+                    },
                     decoration:
                     new InputDecoration.collapsed(),
                   )),
-              Icon(Icons.close, color: Color(0xffF48262)),
+              InkWell(
+                onTap: (){
+                  Navigator.pushNamedAndRemoveUntil(
+                      context,
+                      FAQScreen.id,(_) => false
+                  );
+                },
+                child: Icon(Icons.close, color: Color(0xffF48262)),
+              ),
             ]),
           ),
           Expanded(
             child: SingleChildScrollView(
-              child: Column(
+              child: loading ?  Container(
+                child: Center(
+                  child: LoadingWidgetFadingCircle(context),
+                ),
+              ) :Column(
                 children: [
                   Container(
                     width: double.infinity,
@@ -104,26 +155,26 @@ void initState() {
                       ),
                     ),
                   ),
-                  Container(
-                    width: double.infinity,
-                    padding: EdgeInsets.symmetric(vertical: 5, horizontal: 20),
-                    child: Text(
-                      'Akun Saya',
-                      style: TextStyle(
-                        fontFamily: 'Brandon',
+                  for(Faq item in result)
+                    InkWell(
+                      onTap: (){
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>PengembalianBarang(faq: item,)),
+                        );
+                      },
+                      child: Container(
+                        width: double.infinity,
+                        padding: EdgeInsets.symmetric(vertical: 5, horizontal: 20),
+                        child: Text(
+                          item.ask,
+                          style: TextStyle(
+                            fontFamily: 'Brandon',
+                          ),
+                        ),
                       ),
                     ),
-                  ),
-                  Container(
-                    width: double.infinity,
-                    padding: EdgeInsets.symmetric(vertical: 5, horizontal: 20),
-                    child: Text(
-                      'Tentang Akunku',
-                      style: TextStyle(
-                        fontFamily: 'Brandon',
-                      ),
-                    ),
-                  ),
                 ],
               ),
             ),

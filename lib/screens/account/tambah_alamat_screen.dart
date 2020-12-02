@@ -153,7 +153,7 @@ class _TambahAlamatStateScreen extends State<TambahAlamatScreen> {
 
     return Scaffold(
       key: scaffoldKey,
-      resizeToAvoidBottomInset: false,
+      // resizeToAvoidBottomInset: false,
       backgroundColor: Hexcolor('#FCF8F0'),
       body: SingleChildScrollView(
         child: Column(

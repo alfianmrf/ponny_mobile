@@ -161,9 +161,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                           fontFamily: 'Brandon'
                       ),
                     ),
-                    if(widget.product.varian.isNotEmpty)
+                    if(varian !=null)
                     Text(
-                      '120ml',
+                      varian.varian,
                       style: TextStyle(
                           fontFamily: 'Brandon'
                       ),

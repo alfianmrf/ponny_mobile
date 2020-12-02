@@ -23,6 +23,7 @@ class _Browse_BrandsState extends State<Browse_Brands> {
   bool LoadingBrand = true;
   List<Brand> listBrand =[];
   var alphabets = [];
+  var p;
 
   void initState() {
     super.initState();
@@ -65,11 +66,9 @@ class _Browse_BrandsState extends State<Browse_Brands> {
               itemBuilder: (context, i) {
                 return new FlatButton(
                     onPressed: () {
-                      if(i==0){
-                        return _animateToIndex(i);
-                      }else{
-                        return _animateToIndex(i+1);
-                      }
+                      print(i);
+                      return _animateToIndex(i);
+
 
                     },
                     materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,

@@ -30,10 +30,11 @@ class Cost{
   int value;
   String etd;
   String etd_text;
-  Cost(this.value, this.etd,this.etd_text);
+  String label;
+  Cost(this.value, this.etd,this.etd_text,this.label);
 
   factory Cost.fromJson(Map<String, dynamic> parsedJson){
-    return Cost(parsedJson["value"], parsedJson["etd"],parsedJson["etd_text"]);
+    return Cost(parsedJson["value"], parsedJson["etd"],parsedJson["etd_text"],parsedJson["label"]);
   }
 }
 

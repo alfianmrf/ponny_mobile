@@ -365,7 +365,7 @@ class _UntungRewardState extends State<UntungReward> {
                             flex: 1,
                             child: Container(
                                 margin: EdgeInsets.all(20),
-                                child: (reward.length>0 && reward.elementAt(1) != null)?
+                                child: (reward.length>1 && reward.elementAt(1) != null)?
                                 getProduct(reward.elementAt(1)):Container()))
                       ],
                     ),

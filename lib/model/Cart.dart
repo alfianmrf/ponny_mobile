@@ -50,7 +50,13 @@ class CartModel with ChangeNotifier{
        // print(res.body);
        if (res.statusCode == 200) {
          // print(res.body);
-         listCardOfitem.add(Cart(1, product,variant.varian,variant.price));
+         if(variant != null){
+           param.addAll({"variant":variant.varian});
+           listCardOfitem.add(Cart(1, product,variant.varian,variant.price));
+         }else{
+           listCardOfitem.add(Cart(1, product,null,null));
+         }
+
          await getSummary(token);
          notifyListeners();
        }
