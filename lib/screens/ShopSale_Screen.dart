@@ -80,14 +80,13 @@ class _ShopSaleState extends State<ShopSale> {
           Expanded(
                         child: Container(
               child: GridView.count(
+                childAspectRatio: 0.45,
+                padding: EdgeInsets.fromLTRB(20.0, 0, 20.0, 10.0),
                 shrinkWrap: true,
-                primary: false,
-                padding: const EdgeInsets.symmetric(horizontal: 5),
-                crossAxisSpacing: 10,
-       
-       
-                childAspectRatio: 0.4,
                 crossAxisCount: 2,
+                mainAxisSpacing: 10,
+                crossAxisSpacing: 20,
+                physics: ScrollPhysics(),
                 children: [
                   product(context),
                   product(context),

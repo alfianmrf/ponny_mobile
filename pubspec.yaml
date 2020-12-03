@@ -112,6 +112,7 @@ flutter:
   - assets/images/kulit/
   - assets/images/happySkin/
   - assets/js/
+  - assets/images/promosi/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

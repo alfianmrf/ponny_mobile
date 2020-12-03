@@ -58,6 +58,7 @@ class _PromotionScreenState extends State<PromotionScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        backgroundColor: Hexcolor('#FCF8F0'),
         appBar: AppBar(
           titleSpacing: 0.0,
           elevation: 0.0,
@@ -96,11 +97,7 @@ class _PromotionScreenState extends State<PromotionScreen> {
           Column(
             children: [
               Container(
-                height: 1,
-                color: Color(0xffF3C1B5),
-              ),
-              Container(
-                padding: EdgeInsets.all(10),
+                padding: EdgeInsets.all(20),
                 child: Text(
                   "Kupon Diskon",
                   style: TextStyle(
@@ -156,15 +153,18 @@ class _PromotionScreenState extends State<PromotionScreen> {
                         margin:
                             EdgeInsets.symmetric(horizontal: 35, vertical: 10),
                         decoration: BoxDecoration(
-                            border: Border.all(color: Color(0xffF3C1B5)),
-                            borderRadius: BorderRadius.circular(3)),
+                            border: Border.all(color: Color(0xffF48262),),
+                            borderRadius: BorderRadius.circular(10)),
                         child: Column(
                           children: [
                             Container(
-                                child: Image.network(
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.only(topRight: Radius.circular(10), topLeft: Radius.circular(10)),
+                                  child: Image.network(
                               img_url+kupon.banner,
                               fit: BoxFit.cover,
-                            )),
+                            ),
+                                )),
                             Container(
                               padding: EdgeInsets.all(20),
                               child: Text(
@@ -172,7 +172,7 @@ class _PromotionScreenState extends State<PromotionScreen> {
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                   fontSize: 12,
-                                  fontFamily: "Yeseva",
+                                  fontFamily: "Brandon",
                                   fontWeight: FontWeight.w500,
                                 ),
                               ),
@@ -186,7 +186,7 @@ class _PromotionScreenState extends State<PromotionScreen> {
               )
             ],
           ),
-          bottomNavigationBar: new PonnyBottomNavbar(selectedIndex: 1)),
+          bottomNavigationBar: new PonnyBottomNavbar(selectedIndex: 1),),
     );
   }
 }
