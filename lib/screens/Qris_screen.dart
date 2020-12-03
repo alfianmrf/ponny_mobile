@@ -29,7 +29,7 @@ class QrisScreen extends StatefulWidget {
   static const String id = "qris_view_Screen";
   @required String title;
   @required String urlQR;
-  QrisScreen({this.urlQR});
+  QrisScreen({this.urlQR,this.title});
 
   @override
   _QrisStateScreen createState() => _QrisStateScreen();
@@ -71,19 +71,42 @@ class _QrisStateScreen extends State<QrisScreen> {
       ),
       resizeToAvoidBottomInset: false,
       backgroundColor: Hexcolor('#FCF8F0'),
-      body:Column(
-        children: [
-          Container(
-            child: Text("Pembayaran melaui QRIS"),
+      body:Container(
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                child: Text("Pembayaran melaui "+widget.title,
+                style: TextStyle(
+                  fontSize: 23,
+                  fontFamily: 'Yeseva',
+                ),
+                ),
+
+              ),
+              Container(
+                margin: EdgeInsets.symmetric(vertical: 20),
+                width: MediaQuery.of(context).size.width *.6,
+                height: MediaQuery.of(context).size.width *.6,
+                child: Image.network(widget.urlQR,
+                  fit: BoxFit.fill,
+                ),
+              ),
+              Container(
+                width: MediaQuery.of(context).size.width *.8,
+                child: Text("Buka aplikasi yang mendukukung pemabayara QRIS seperti GO-JEK,Link Aja, OVO. Scan QR yang tertera di layar lalu konfirmasi pembelian kamu",
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontFamily: 'Yeseva',
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              )
+            ],
           ),
-          Container(
-            width: 200,
-            height: 200,
-            child: Image.network(widget.urlQR,
-            fit: BoxFit.fill,
-            ),
-          )
-        ],
+        ),
       ),
       bottomNavigationBar: new PonnyBottomNavbar(selectedIndex: 4),
     );

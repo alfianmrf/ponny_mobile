@@ -138,7 +138,7 @@ class ProductModel with ChangeNotifier {
 
         print(_tmp.length);
 
-        return SearchResult(products: _tmp,nextUrl: responseJson["links"]["next"],total: responseJson["meta"]["total"]);
+        return SearchResult(products: _tmp,nextUrl: responseJson["links"]["next"],total: responseJson["meta"]["total"], meta: Meta.fromJson(responseJson["meta"]));
       }
 
     // } catch (err) {
@@ -291,9 +291,51 @@ class SearchResult{
   List<Product> products;
   String nextUrl;
   int total;
-  SearchResult({this.products,this.nextUrl,this.total});
+  Meta meta;
+  SearchResult({this.products,this.nextUrl,this.total,this.meta});
 
 }
+class Meta {
+  int currentPage;
+  int from;
+  int lastPage;
+  String path;
+  int perPage;
+  int to;
+  int total;
+
+  Meta(
+      {this.currentPage,
+        this.from,
+        this.lastPage,
+        this.path,
+        this.perPage,
+        this.to,
+        this.total});
+
+  Meta.fromJson(Map<String, dynamic> json) {
+    currentPage = json['current_page'];
+    from = json['from'];
+    lastPage = json['last_page'];
+    path = json['path'];
+    perPage = json['per_page'];
+    to = json['to'];
+    total = json['total'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['current_page'] = this.currentPage;
+    data['from'] = this.from;
+    data['last_page'] = this.lastPage;
+    data['path'] = this.path;
+    data['per_page'] = this.perPage;
+    data['to'] = this.to;
+    data['total'] = this.total;
+    return data;
+  }
+}
+
 class VarianResult {
   int productId;
   String varian;
@@ -320,5 +362,6 @@ class VarianResult {
     return data;
   }
 }
+
 
 

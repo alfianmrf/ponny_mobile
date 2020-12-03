@@ -12,6 +12,7 @@ import 'package:ponny/model/App.dart';
 import 'package:ponny/model/LacakResult.dart';
 import 'package:ponny/model/Order.dart';
 import 'package:http/http.dart' as http;
+import 'package:ponny/screens/Qris_screen.dart';
 import 'package:ponny/screens/account/komplain_dalam_perjalanan_screen.dart';
 import 'package:ponny/screens/konfirmasi_pembayaran_screen.dart';
 import 'package:ponny/screens/review_screen.dart';
@@ -830,6 +831,25 @@ class _OrderScreenState extends State<OrderScreen> {
                         //     builder: (context) => BankTransferDetailScreen(order_id: order.id,), ),
                         // );
                         _launchURL(order.mitransVal.actions.firstWhere((element) => element.name == "deeplink-redirect").url);
+                      },
+                    ) ,
+                  ),
+                if(order.payment_status == 'unpaid' && order.payment_type == "qris")
+                  Container(
+                    margin: EdgeInsets.only(left: 10),
+                    alignment: Alignment.centerLeft,
+                    child: FlatButton(
+                      color:  Color(0xffF48262),
+                      textColor: Colors.white,
+                      disabledColor: Colors.grey,
+                      disabledTextColor: Colors.black,
+                      child:  Text("BAYAR SEKARANG"),
+                      onPressed: (){
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => QrisScreen(title: "QRIS", urlQR: order.mitransVal.actions.firstWhere((element) => element.name == "generate-qr-code").url,), ),
+                        );
                       },
                     ) ,
                   ),

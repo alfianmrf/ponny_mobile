@@ -41,6 +41,8 @@ class _SkincareState extends State<Skincare> {
   List<Product> dataProduct=[];
   List<Brandcheked> listBrand =[];
   String NextUrl;
+  int current_page=1;
+  int last_page =1;
   String filter;
   String _q ="";
   TextEditingController _seachcontroller = new TextEditingController();
@@ -109,6 +111,8 @@ class _SkincareState extends State<Skincare> {
 
         setState(() {
           NextUrl =value.nextUrl;
+          current_page = value.meta.currentPage;
+          last_page = value.meta.lastPage;
           dataProduct.addAll(value.products);
           total = value.total;
           loadingProduct =false;
@@ -124,11 +128,33 @@ class _SkincareState extends State<Skincare> {
 
 
   loadMore(){
-    if(NextUrl != null){
+    if(current_page < last_page){
       setState(() {
         loadmore =true;
+        current_page++;
       });
-      Provider.of<ProductModel>(context).searchProduct(NextUrl, null).then((value){
+      var param=<String,dynamic>{ "category_id":widget.category.id, "min_price": _currentSliderValue.start.round().toString(),
+        "max_price": _currentSliderValue.end.round().toString(),"page":current_page};
+      if(_q.isNotEmpty){
+
+        param.addAll({
+          "keyword":_q
+        });
+        print(param);
+      }
+      if(subKategorysearch>0){
+        param.addAll({ "subcategory_id": subKategorysearch});
+      }
+      List<int> _brandSelect = [];
+      listBrand.where((element) => element.value == true).forEach((element) { _brandSelect.add(element.brand.id); });
+      if(_brandSelect.length>0){
+        param.addAll({"brand_id": "["+_brandSelect.join(',')+"]"});
+      }
+
+      if(checked.length > 0){
+        param.addAll({"scope": getOrdering()});
+      }
+      Provider.of<ProductModel>(context).searchProduct(searchProductUrl, param).then((value){
         if(value != null){
           setState(() {
             NextUrl =value.nextUrl;

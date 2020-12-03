@@ -7,6 +7,7 @@ import 'package:ponny/model/Address.dart';
 import 'package:ponny/model/App.dart';
 import 'package:ponny/model/Cart.dart';
 import 'package:ponny/model/Order.dart';
+import 'package:ponny/screens/Qris_screen.dart';
 import 'package:ponny/screens/account/menunggu_pembayaran_sukses_screen.dart';
 import 'package:ponny/screens/home_screen.dart';
 import 'package:ponny/screens/pesanan_berhasil_screen.dart';
@@ -47,9 +48,15 @@ class _PaymentScreenState extends State<PaymentScreen> {
             UIBlock.block(context,customLoaderChild: LoadingWidget(context));
             Provider.of<CartModel>(context).Checkout(Provider.of<AppModel>(context).auth.access_token, Provider.of<AddressModel>(context).useAddress, method).then((value) {
               if(value!= null && value.success){
-                Navigator.pushReplacement(context,new MaterialPageRoute(
-                  builder: (BuildContext context) => new PesananBerhasilScreen(code: value.orderCode,),
-                ));
+                if(method == "qris"){
+                  Navigator.pushReplacement(context,new MaterialPageRoute(
+                    builder: (BuildContext context) => new QrisScreen(title: "QRIS",urlQR: value.mitransRequest.actions.firstWhere((element) => element.name == "generate-qr-code").url,),
+                  ));
+                }else{
+                  Navigator.pushReplacement(context,new MaterialPageRoute(
+                    builder: (BuildContext context) => new PesananBerhasilScreen(code: value.orderCode,),
+                  ));
+                }
               }else{
                 UIBlock.unblock(context);
                 // print(value.message);
@@ -677,7 +684,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                   ],
                                 ),
                               ),*/
-                              /*
+
                               Container(
                                 color: Color(0xffFDEDE4),
                                 width: MediaQuery.of(context).size.width,
@@ -692,33 +699,38 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                   ),
                                 ),
                               ),
-                              Container(
-                                width: MediaQuery.of(context).size.width,
-                                padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Padding(
-                                          padding: EdgeInsets.only(left: 5),
-                                          child: Text(
-                                            'Credit Card / Debit Card',
-                                            style: TextStyle(
-                                              fontFamily: 'Brandon',
-                                              fontSize: 14,
+                              InkWell(
+                                onTap: (){
+                                  chekOut(context,"qris");
+                                },
+                                child:Container(
+                                  width: MediaQuery.of(context).size.width,
+                                  padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Padding(
+                                            padding: EdgeInsets.only(left: 5),
+                                            child: Text(
+                                              'QRIS',
+                                              style: TextStyle(
+                                                fontFamily: 'Brandon',
+                                                fontSize: 14,
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                    Icon(
-                                      Icons.chevron_right,
-                                      color: Color(0xffF48262),
-                                    ),
-                                  ],
-                                ),
-                              ),*/
+                                        ],
+                                      ),
+                                      Icon(
+                                        Icons.chevron_right,
+                                        color: Color(0xffF48262),
+                                      ),
+                                    ],
+                                  ),
+                                ) ,
+                              ),
                             ],
                           ),
                         ),
