@@ -801,10 +801,13 @@ class _OrderScreenState extends State<OrderScreen> {
                     alignment: Alignment.centerLeft,
                     child: FlatButton(
                       color:  Color(0xffF48262),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
                       textColor: Colors.white,
                       disabledColor: Colors.grey,
                       disabledTextColor: Colors.black,
-                      child:  Text("BAYAR SEKARANG"),
+                      child:  Text("BAYAR SEKARANG", style: TextStyle(fontFamily: 'Brandon'),),
                       onPressed: (){
                         Navigator.push(
                           context,
@@ -1074,85 +1077,94 @@ class _OrderScreenState extends State<OrderScreen> {
                   ),
                 if(order.payment_status == 'paid' && order.deliveryStatus != "komplain" && order.deliveryStatus != "completed" && order.deliveryStatus != "pending")
                   Container(
-                    margin: EdgeInsets.only(top: 30, left: 15, right: 15),
-                    padding: EdgeInsets.only(left: 15, right: 15),
+                    margin: EdgeInsets.only(top: 30),
                     width: MediaQuery.of(context).size.width,
                     height: 50,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        GestureDetector(
-                          onTap: () {
-                            showAlertDialog(context,order);
-
-                          },
+                        Expanded(
+                          flex: 1,
                           child: Container(
-                            decoration: BoxDecoration(
-                              // border: Border.all(
-                              //   color: Colors.red[500],
-                              // ),
-                              color: Color(0xffF3C1B5),
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(5),
-                              ),
-                            ),
-                            width: 160,
-                            height: 35,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Container(
-                                  child: Text(
-                                    "Terima Barang",
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      fontFamily: "Brandon",
-                                      color: Colors.white,
-                                      fontSize: 15,
-                                    ),
+                            margin: EdgeInsets.only(right: 7.5),
+                            child: GestureDetector(
+                              onTap: () {
+                                showAlertDialog(context,order);
+
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  // border: Border.all(
+                                  //   color: Colors.red[500],
+                                  // ),
+                                  color: Color(0xffF48262),
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(5),
                                   ),
                                 ),
-                              ],
+                                height: 35,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                      child: Text(
+                                        "Terima Barang",
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          fontFamily: "Brandon",
+                                          color: Colors.white,
+                                          fontSize: 15,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
                             ),
                           ),
                         ),
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      KomplainDalamPerjalananScreen(order: order, )),
-                            ).then((_value){
-                              _getData();
-                            });
-                          },
+                        Expanded(
+                          flex: 1,
                           child: Container(
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                color: Color(0xffF3C1B5),
-                              ),
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(5),
-                              ),
-                            ),
-                            width: 160,
-                            height: 35,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Container(
-                                  child: Text(
-                                    "Komplain",
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      fontFamily: "Brandon",
-                                      color: Colors.black,
-                                      fontSize: 15,
-                                    ),
+                            margin: EdgeInsets.only(left: 7.5),
+                            child: GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          KomplainDalamPerjalananScreen(order: order, )),
+                                ).then((_value){
+                                  _getData();
+                                });
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: Color(0xffF48262),
+                                  ),
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(5),
                                   ),
                                 ),
-                              ],
+                                height: 35,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                      child: Text(
+                                        "Komplain",
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          fontFamily: "Brandon",
+                                          color: Colors.black,
+                                          fontSize: 15,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
                             ),
                           ),
                         ),
