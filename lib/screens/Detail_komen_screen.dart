@@ -556,8 +556,11 @@ void _settingModalBottomSheet(
                           onTap: () {
                             setState(() async {
                               final result = await kirimPostdanComment(context);
-
-                              Navigator.pop(context, true);
+                              if(result)
+                              {
+                                Navigator.pop(context, true);
+                              }
+                              
                             });
                           },
                           child: FittedBox(
@@ -581,7 +584,7 @@ void _settingModalBottomSheet(
                   ),
                   Container(
                     margin: EdgeInsets.all(10),
-                    child: TextField(
+                    child: TextField(controller: text,
                       keyboardType: TextInputType.multiline,
                       maxLines: null,
                       cursorColor: Colors.black,

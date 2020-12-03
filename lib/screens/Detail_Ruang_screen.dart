@@ -985,8 +985,10 @@ Widget listCategory(String tagCategory) {
 void _settingModalBottomSheet(context, List list, int index, int type,
     int postIndex, int postId, roomRefresh, roomData) {
   TextEditingController text = new TextEditingController();
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   Future<bool> kirimPostdanComment(BuildContext context) async {
+
     bool result = false;
     UIBlock.block(context, customLoaderChild: LoadingWidget(context));
     // var paramPost = {};
@@ -1001,13 +1003,20 @@ void _settingModalBottomSheet(context, List list, int index, int type,
         ? await Provider.of<PostandComment>(context)
             .posts(Provider.of<AppModel>(context).auth.access_token, paramPost)
         :*/
-    final value = await Provider.of<PostandComment>(context).comment(
-        Provider.of<AppModel>(context).auth.access_token, paramComment);
+    String accessToken =
+        Provider.of<AppModel>(context).auth.access_token == null
+            ? "abc"
+            : Provider.of<AppModel>(context).auth.access_token;
 
+    final value = await Provider.of<PostandComment>(context)
+        .comment(accessToken, paramComment);
     if (value) {
       UIBlock.unblock(context);
       result = value;
+    } else {
+      _scaffoldKey.currentState.showSnackBar(snackBarError);
     }
+
     return result;
   }
 
@@ -1068,7 +1077,12 @@ void _settingModalBottomSheet(context, List list, int index, int type,
                           onTap: () async {
                             setState(() async {
                               final result = await kirimPostdanComment(context);
-                            
+                              if (result) {
+                                print("success");
+                              } else {
+                                print("failed");
+                              }
+                              // roomRefresh();
                               Navigator.pop(context, true);
                             });
                           },
