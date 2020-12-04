@@ -136,7 +136,7 @@ class MyProduct extends StatelessWidget {
             child: Container(
               width: MediaQuery.of(context).size.width,
               child: const Text(
-                'ADD TO BAG',
+                'TAMBAHKAN',
                 textAlign: TextAlign.center,
                 style: TextStyle(color: Colors.white, fontFamily: 'Brandon'),
               ),
