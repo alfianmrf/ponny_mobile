@@ -68,15 +68,14 @@ class _UntungRewardState extends State<UntungReward> {
     int mypoin = Provider.of<UserModel>(context).user.point;
     int sisa = mypoin-usepoin;
     final faq = Provider.of<AppModel>(context,listen: false).listFaq.firstWhere((element) => element.id == 6);
-    
+
     Widget getProduct(productPoin){
-     return Container(
+      return Container(
         // color: Colors.red,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Container(
-              height: 35,
               width: 160,
               height: 210,
               child: CachedNetworkImage(
@@ -88,38 +87,13 @@ class _UntungRewardState extends State<UntungReward> {
               ),
             ),
             Container(
-              margin: EdgeInsets.all(5),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Flexible(
-                    child: Container(
-                      child: IconButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          icon: Icon(
-                            Icons.arrow_back_ios,
-                            color: Color(0xffF48262),
-                            size: 26,
-                          )),
                   Container(
                     margin: EdgeInsets.only(
                       top: 5,
                     ),
-                  ),
-                  Flexible(
-                    flex: 4,
-                    child: FittedBox(
-                      fit: BoxFit.scaleDown,
-                      child: Text(
-                        "Keuntungan Happy Skin Reward",
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontFamily: "Yeseva",
-                          fontWeight: FontWeight.w500,
-                          color: Color(0xffF48262),
-                        ),
                     child: Text(
                       productPoin.product.brand.name,
                       style: TextStyle(
@@ -133,8 +107,6 @@ class _UntungRewardState extends State<UntungReward> {
               ),
             ),
             Container(
-              height: 1,
-              color: Color(0xffF3C1B5),
               margin: EdgeInsets.only(
                 top: 5,
               ),
@@ -308,8 +280,8 @@ class _UntungRewardState extends State<UntungReward> {
                             fit: BoxFit.fitWidth,
                             child: Text(
                               "Belanja "+
-                                nm_format
-                                .format(user.dashboard.toNext) +" lagi untuk naik tingkat ke " + user.dashboard.next + " Skin",
+                                  nm_format
+                                      .format(user.dashboard.toNext) +" lagi untuk naik tingkat ke " + user.dashboard.next + " Skin",
                               style: TextStyle(
                                   fontSize: 10,
                                   fontFamily: "Brandon",
@@ -325,7 +297,7 @@ class _UntungRewardState extends State<UntungReward> {
               Container(
                 alignment: Alignment.center,
                 margin:
-                    EdgeInsets.symmetric(vertical: 20, horizontal: 40),
+                EdgeInsets.symmetric(vertical: 20, horizontal: 40),
                 child: Text(
                   "Wujudkan impian happy skin dan dapatkan keuntungan menarik lainnya melalui poin yang kamu dapatkan",
                   textAlign: TextAlign.center,
@@ -439,28 +411,28 @@ class _UntungRewardState extends State<UntungReward> {
                         children: [
                           Expanded(
                               child: Align(
-                            child: AspectRatio(
-                              aspectRatio: 1 / 1,
-                              child: Container(
-                                  margin: EdgeInsets.all(3),
-                                  child: buttonGroups(
-                                      "assets/images/keuntunganHappySkin/belanja.png",
-                                      "Belanja",
-                                      "Dapatkan 10 poin setiap pembelanjaan senilai Rp.25.000")),
-                            ),
-                          )),
+                                child: AspectRatio(
+                                  aspectRatio: 1 / 1,
+                                  child: Container(
+                                      margin: EdgeInsets.all(3),
+                                      child: buttonGroups(
+                                          "assets/images/keuntunganHappySkin/belanja.png",
+                                          "Belanja",
+                                          "Dapatkan 10 poin setiap pembelanjaan senilai Rp.25.000")),
+                                ),
+                              )),
                           Expanded(
                               child: Align(
-                            child: AspectRatio(
-                              aspectRatio: 1 / 1,
-                              child: Container(
-                                  margin: EdgeInsets.all(3),
-                                  child: buttonGroups(
-                                      "assets/images/keuntunganHappySkin/daftar-akun.png",
-                                      "Daftar Akun",
-                                      "Dapatkan 50 poin dengan membuat akun")),
-                            ),
-                          )),
+                                child: AspectRatio(
+                                  aspectRatio: 1 / 1,
+                                  child: Container(
+                                      margin: EdgeInsets.all(3),
+                                      child: buttonGroups(
+                                          "assets/images/keuntunganHappySkin/daftar-akun.png",
+                                          "Daftar Akun",
+                                          "Dapatkan 50 poin dengan membuat akun")),
+                                ),
+                              )),
                         ],
                       ),
                     ),
@@ -562,7 +534,7 @@ class _UntungRewardState extends State<UntungReward> {
               ),
               Container(
                 margin:
-                    EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+                EdgeInsets.symmetric(vertical: 20, horizontal: 20),
                 height: 1,
                 color: Color(0xffF3C1B5),
               ),
@@ -582,7 +554,7 @@ class _UntungRewardState extends State<UntungReward> {
               tableLevelReward(context),
               Container(
                 margin:
-                    EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+                EdgeInsets.symmetric(vertical: 20, horizontal: 20),
                 height: 1,
                 color: Color(0xffF3C1B5),
               ),
@@ -617,7 +589,7 @@ class _UntungRewardState extends State<UntungReward> {
                                 Flexible(
                                     fit: FlexFit.loose,
                                     child: Image.asset(
-                                        "assets/images/happySkin/buat-akun.png", width: 70, height: 70, fit: BoxFit.contain,)),
+                                      "assets/images/happySkin/buat-akun.png", width: 70, height: 70, fit: BoxFit.contain,)),
                                 Flexible(
                                   fit: FlexFit.loose,
                                   child: FittedBox(
@@ -790,7 +762,7 @@ class _UntungRewardState extends State<UntungReward> {
               ),
               Container(
                 margin:
-                    EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+                EdgeInsets.symmetric(vertical: 20, horizontal: 20),
                 height: 1,
                 color: Color(0xffF3C1B5),
               ),
@@ -815,7 +787,7 @@ class _UntungRewardState extends State<UntungReward> {
         ),
         bottomNavigationBar: new PonnyBottomNavbar(selectedIndex: 4));
   }
-  
+
 }
 
 
@@ -823,8 +795,8 @@ class _UntungRewardState extends State<UntungReward> {
 Widget buttonGroups(String iconImg, String title, String subtitle) {
   return Container(
     decoration: BoxDecoration(
-      borderRadius: BorderRadius.circular(10),
-      border: Border.all(width: 1, color: Color(0xffF48262),)
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(width: 1, color: Color(0xffF48262),)
     ),
     padding: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
     child: Column(
@@ -906,10 +878,10 @@ Widget faqCollapsed(Faq item) {
             margin: EdgeInsets.symmetric(horizontal: 20),
             padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
             child: Text(
-      item.ans,style: TextStyle(
-                fontSize: 14,
-                fontFamily: 'Brandon',
-              ),
+              item.ans,style: TextStyle(
+              fontSize: 14,
+              fontFamily: 'Brandon',
+            ),
             ),
           ),
         ],
