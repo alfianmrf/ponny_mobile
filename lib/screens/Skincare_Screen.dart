@@ -164,8 +164,14 @@ class _SkincareState extends State<Skincare> {
         }else{
           setState(() {
             loadingProduct =false;
+            loadmore =false;
           });
         }
+      }).catchError((onError){
+        setState(() {
+          loadingProduct =false;
+          loadmore =false;
+        });
       });
     }
 

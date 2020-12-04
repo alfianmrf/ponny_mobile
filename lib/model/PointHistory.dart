@@ -10,7 +10,7 @@ class PointHistory {
 
   PointHistory.fromJson(Map<String, dynamic> json) {
     userId = json['user_id'];
-    points = json['points'];
+    points = json['points'].round();
     createdAt = json['created_at'];
     keterangan = json['keterangan'];
     status = json['status'];

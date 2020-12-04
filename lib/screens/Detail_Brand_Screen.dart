@@ -38,6 +38,8 @@ class _DetailBrandScreen extends State<DetailBrand> {
   List<Product> dataProduct=[];
   String NextUrl;
   String filter;
+  int current_page=1;
+  int last_page =1;
   String _q ="";
   TextEditingController _seachcontroller = new TextEditingController();
   int total=0;
@@ -64,19 +66,18 @@ class _DetailBrandScreen extends State<DetailBrand> {
       loadingProduct =true;
       dataProduct=[];
     });
-    var param ={
+    var param =<String,dynamic>{
       "keyword":_q,
-      "brand_id":widget.brand.id.toString()
+      "brand_id":widget.brand.id.toString(),"min_price": _currentSliderValue.start.round().toString(),
+      "max_price": _currentSliderValue.end.round().toString()
     };
     if(_q.isNotEmpty){
-      param ={
+      param.addAll({
         "keyword":_q,
-        "brand_id":widget.brand.id.toString()
-        };
-    }else{
-      param ={
-        "brand_id":widget.brand.id.toString()
-      };
+      });
+    }
+    if(checked.length > 0){
+      param.addAll({"scope": getOrdering()});
     }
     Provider.of<ProductModel>(context).searchProduct(searchProductUrl, param).then((value){
 
@@ -84,6 +85,8 @@ class _DetailBrandScreen extends State<DetailBrand> {
 
             setState(() {
               NextUrl =value.nextUrl;
+              current_page = value.meta.currentPage;
+              last_page = value.meta.lastPage;
               dataProduct.addAll(value.products);
               total = value.total;
               loadingProduct =false;
@@ -100,11 +103,25 @@ class _DetailBrandScreen extends State<DetailBrand> {
     });
   }
   loadMore(){
-    if(NextUrl != null){
+    if(current_page < last_page){
       setState(() {
         loadmore =true;
+        current_page++;
       });
-      Provider.of<ProductModel>(context).searchProduct(NextUrl, null).then((value){
+      var param =<String,dynamic>{
+        "keyword":_q,
+        "brand_id":widget.brand.id.toString(),"min_price": _currentSliderValue.start.round().toString(),
+        "max_price": _currentSliderValue.end.round().toString(),"page":current_page
+      };
+      if(_q.isNotEmpty){
+        param.addAll({
+          "keyword":_q,
+        });
+      }
+      if(checked.length > 0){
+        param.addAll({"scope": getOrdering()});
+      }
+      Provider.of<ProductModel>(context).searchProduct(searchProductUrl, param).then((value){
         if(value != null){
           setState(() {
             NextUrl =value.nextUrl;

@@ -76,7 +76,7 @@ class _RegisterScreen extends State<RegisterScreen> {
           "password": password.value.text,
           "phone":no_telepon.value.text,
           "gender":JenisKelamin,
-          "tgl_lahir":TglLahir
+          "tgl_lahir":DateFormat("y-M-d").format(date)
       };
       final res = await http.post(register,headers: { HttpHeaders.contentTypeHeader: 'application/json' },body: json.encode(param));
       UIBlock.unblock(context);
@@ -115,7 +115,6 @@ class _RegisterScreen extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomPadding: false,
       backgroundColor: Hexcolor('#FCF8F0'),
       appBar: AppBar(
         titleSpacing: 0.0,
@@ -353,6 +352,9 @@ class _RegisterScreen extends State<RegisterScreen> {
                             if (value.isEmpty) {
                               return 'Password tidak boleh kosong';
                             }
+                            if (value.length<8) {
+                              return 'Password minimal 8 karakter';
+                            }
                           },
                         ),
                         Padding(
@@ -402,6 +404,9 @@ class _RegisterScreen extends State<RegisterScreen> {
                           validator: (String value) {
                             if (value.isEmpty) {
                               return 'Konfirmasi Password tidak boleh kosong';
+                            }
+                            if (value.length<8) {
+                              return 'Password minimal 8 karakter';
                             }
                           },
                         ),

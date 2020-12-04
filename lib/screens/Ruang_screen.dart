@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ponny/common/constant.dart';
 import 'Detail_Ruang_screen.dart';
 import 'package:ponny/util/globalUrl.dart';
 import 'package:hexcolor/hexcolor.dart';
@@ -284,7 +285,14 @@ class _RoomScreenState extends State<RoomScreen> {
                                     ),
                                     width: double.infinity,
                                     height: 100,
-                                    child: ClipRRect(borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10)),child: Image.network("http://via.placeholder.com/350x150",fit: BoxFit.cover,)),
+                                    child: ClipRRect(borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10)),
+                                        child: CachedNetworkImage(
+                                          imageUrl:widget.listroom[i]["img"] != null?  img_url+widget.listroom[i]["img"].toString():"",
+                                          placeholder: (context, url) => LoadingWidgetPulse(context),
+                                          errorWidget: (context, url, error) => Image.asset('assets/images/1366x615.png'),
+                                          fit: BoxFit.fill,
+                                        )
+                                    ),
                                   ),
                                   Container(
                                       color: Colors.white,

@@ -223,7 +223,7 @@ class _HappySkinRewardStateScreen extends State<HappySkinRewardScreen>
                     ),
                     Tab(
                       child: Text(
-                         "< 500 POIN ",
+                         "500+ POIN ",
                         style: TextStyle(
                           fontFamily: "Brandon",
                           fontWeight: FontWeight.w600,

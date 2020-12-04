@@ -953,6 +953,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                               ],
                             ),
                           ),
+                          if(Provider.of<ProductModel>(context).Recomendasi.length>0)
                           Container(
                             margin: EdgeInsets.only(bottom: 20),
                             alignment: Alignment.centerLeft,
@@ -965,6 +966,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                               ),
                             ),
                           ),
+                          if(Provider.of<ProductModel>(context).Recomendasi.length>0)
                           Container(
                             height: MediaQuery.of(context).size.width * .7,
                             child: Consumer<ProductModel>(

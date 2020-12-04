@@ -253,7 +253,7 @@ class _OrderScreenState extends State<OrderScreen> {
                                             child: CachedNetworkImage(
                                               imageUrl: img_url+e.product.thumbnail_image,
                                               placeholder: (context, url) => LoadingWidgetPulse(context),
-                                              errorWidget: (context, url, error) => Image.asset('assets/images/basic.jpg'),
+                                              errorWidget: (context, url, error) => Image.asset('assets/images/210x265.png'),
                                               width: MediaQuery.of(context).size.width,
                                               fit: BoxFit.cover,
                                             ),
@@ -354,7 +354,7 @@ class _OrderScreenState extends State<OrderScreen> {
                                             child: CachedNetworkImage(
                                               imageUrl: img_url+e.product.thumbnail_image,
                                               placeholder: (context, url) => LoadingWidgetPulse(context),
-                                              errorWidget: (context, url, error) => Image.asset('assets/images/basic.jpg'),
+                                              errorWidget: (context, url, error) => Image.asset('assets/images/210x265.png'),
                                               width: MediaQuery.of(context).size.width,
                                               fit: BoxFit.cover,
                                             ),
@@ -453,7 +453,7 @@ class _OrderScreenState extends State<OrderScreen> {
                                             child: CachedNetworkImage(
                                               imageUrl: img_url+e.product.thumbnail_image,
                                               placeholder: (context, url) => LoadingWidgetPulse(context),
-                                              errorWidget: (context, url, error) => Image.asset('assets/images/basic.jpg'),
+                                              errorWidget: (context, url, error) => Image.asset('assets/images/210x265.png'),
                                               width: MediaQuery.of(context).size.width,
                                               fit: BoxFit.cover,
                                             ),

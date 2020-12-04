@@ -70,108 +70,128 @@ class _UntungRewardState extends State<UntungReward> {
     final faq = Provider.of<AppModel>(context,listen: false).listFaq.firstWhere((element) => element.id == 6);
     
     Widget getProduct(productPoin){
-     return Container(
+     return  Container(
         height: 330,
         width: 160,
         // color: Colors.red,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Container(
-              width: 160,
-              height: 210,
-              child: CachedNetworkImage(
-                imageUrl: img_url+productPoin.product.thumbnail_image,
-                placeholder: (context, url) => LoadingWidgetPulse(context),
-                errorWidget: (context, url, error) => Image.asset('assets/images/basic.jpg'),
-                width: MediaQuery.of(context).size.width,
-                fit: BoxFit.cover,
-              ),
-            ),
-            Container(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    margin: EdgeInsets.only(
-                      top: 5,
-                    ),
-                    child: Text(
-                      productPoin.product.brand.name,
-                      style: TextStyle(
-                        fontFamily: "Yeseva",
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              margin: EdgeInsets.only(
-                top: 5,
-              ),
-              child: Text(
-                productPoin.product.name.length > 20 ?productPoin.product.name.substring(0,20)+"..." : productPoin.product.name,
-                style: TextStyle(
-                  fontFamily: "Brandon",
-                  fontSize: 14,
-                ),
-              ),
-            ),
-            Container(
-              margin: EdgeInsets.only(
-                top: 5,
-              ),
-              child: Text(
-                productPoin.jml_point.toString()+" POIN",
-                style: TextStyle(
-                  fontFamily: "Brandon",
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ),
-            Container(
-              child:productPoin.jml_point <= sisa?
-              FlatButton(
-                color: Color(0xffF48262),
-                textColor: Colors.white,
-                disabledColor: Colors.grey,
-                disabledTextColor: Colors.black,
-                padding: EdgeInsets.all(8.0),
-                splashColor: Colors.blueAccent,
-                onPressed: () {
-                  UIBlock.block(context,customLoaderChild: LoadingWidget(context));
-                  Provider.of<CartModel>(context).addRedemToCart(productPoin, Provider.of<AppModel>(context,listen: false).auth.access_token).then((value) {
-                    UIBlock.unblock(context);
-                    showAlertDialog(context,productPoin.product);
-                  }).catchError((onError){
-                    UIBlock.unblock(context);
-                  });
-                },
-                child: Text(
-                  "Tukar",
-                  style: TextStyle(fontSize: 16.0),
-                ),
-              ):
-              FlatButton(
-                color: Colors.grey,
-                textColor: Colors.black,
-                disabledColor: Colors.grey,
-                disabledTextColor: Colors.black,
-                padding: EdgeInsets.all(8.0),
-                splashColor: Colors.blueAccent,
-                child: Text(
-                  "Tukar",
-                  style: TextStyle(fontSize: 16.0),
-                ),
-              )
-              ,
-            )
-          ],
-        ),
+        child: Consumer<AppModel>(
+         builder: (context,value,child) {
+           if (value.loadingFaq) {
+             return Center(
+               child: LoadingWidgetFadingCircle(context),
+             );
+           } else {
+             return Column(
+               crossAxisAlignment: CrossAxisAlignment.center,
+               children: [
+                 Container(
+                   width: 160,
+                   height: 210,
+                   child: CachedNetworkImage(
+                     imageUrl: img_url + productPoin.product.thumbnail_image,
+                     placeholder: (context, url) => LoadingWidgetPulse(context),
+                     errorWidget: (context, url, error) =>
+                         Image.asset('assets/images/basic.jpg'),
+                     width: MediaQuery
+                         .of(context)
+                         .size
+                         .width,
+                     fit: BoxFit.cover,
+                   ),
+                 ),
+                 Container(
+                   child: Row(
+                     mainAxisAlignment: MainAxisAlignment.center,
+                     children: [
+                       Container(
+                         margin: EdgeInsets.only(
+                           top: 5,
+                         ),
+                         child: Text(
+                           productPoin.product.brand.name,
+                           style: TextStyle(
+                             fontFamily: "Yeseva",
+                             fontSize: 14,
+                             fontWeight: FontWeight.w600,
+                           ),
+                         ),
+                       ),
+                     ],
+                   ),
+                 ),
+                 Container(
+                   margin: EdgeInsets.only(
+                     top: 5,
+                   ),
+                   child: Text(
+                     productPoin.product.name.length > 20 ? productPoin.product
+                         .name.substring(0, 20) + "..." : productPoin.product
+                         .name,
+                     style: TextStyle(
+                       fontFamily: "Brandon",
+                       fontSize: 14,
+                     ),
+                   ),
+                 ),
+                 Container(
+                   margin: EdgeInsets.only(
+                     top: 5,
+                   ),
+                   child: Text(
+                     productPoin.jml_point.toString() + " POIN",
+                     style: TextStyle(
+                       fontFamily: "Brandon",
+                       fontSize: 14,
+                       fontWeight: FontWeight.w600,
+                     ),
+                   ),
+                 ),
+                 Container(
+                   child: productPoin.jml_point <= sisa ?
+                   FlatButton(
+                     color: Color(0xffF48262),
+                     textColor: Colors.white,
+                     disabledColor: Colors.grey,
+                     disabledTextColor: Colors.black,
+                     padding: EdgeInsets.all(8.0),
+                     splashColor: Colors.blueAccent,
+                     onPressed: () {
+                       UIBlock.block(context, customLoaderChild: LoadingWidget(
+                           context));
+                       Provider.of<CartModel>(context).addRedemToCart(
+                           productPoin, Provider
+                           .of<AppModel>(context, listen: false)
+                           .auth
+                           .access_token).then((value) {
+                         UIBlock.unblock(context);
+                         showAlertDialog(context, productPoin.product);
+                       }).catchError((onError) {
+                         UIBlock.unblock(context);
+                       });
+                     },
+                     child: Text(
+                       "Tukar",
+                       style: TextStyle(fontSize: 16.0),
+                     ),
+                   ) :
+                   FlatButton(
+                     color: Colors.grey,
+                     textColor: Colors.black,
+                     disabledColor: Colors.grey,
+                     disabledTextColor: Colors.black,
+                     padding: EdgeInsets.all(8.0),
+                     splashColor: Colors.blueAccent,
+                     child: Text(
+                       "Tukar",
+                       style: TextStyle(fontSize: 16.0),
+                     ),
+                   )
+                   ,
+                 )
+               ],
+             );
+           }
+         })
       );
     }
     return Scaffold(
