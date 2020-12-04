@@ -82,44 +82,57 @@ class PonnyBottomNavbar extends StatelessWidget {
     return new Theme(
       data: Theme.of(context).copyWith(
           canvasColor: Color(0xffF48262),
-          primaryColor: Colors.white,
           textTheme: Theme.of(context)
               .textTheme
               .copyWith(caption: new TextStyle(color: Colors.white))),
       child: new BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
+            activeIcon: ImageIcon(
+              AssetImage('assets/images/bottomNavbar/beranda-aktif.png'),
+            ),
             icon: ImageIcon(
               AssetImage('assets/images/bottomNavbar/beranda.png'),
             ),
             label: 'Beranda',
           ),
           BottomNavigationBarItem(
+            activeIcon: ImageIcon(
+              AssetImage('assets/images/bottomNavbar/cari-aktif.png'),
+            ),
             icon: ImageIcon(
               AssetImage('assets/images/bottomNavbar/cari.png'),
             ),
             label: 'Cari',
           ),
           BottomNavigationBarItem(
+            activeIcon: ImageIcon(
+              AssetImage('assets/images/bottomNavbar/bantuan-aktif.png'),
+            ),
             icon: ImageIcon(
               AssetImage('assets/images/bottomNavbar/bantuan.png'),
             ),
             label: 'Butuh Bantuan?',
           ),
           BottomNavigationBarItem(
+            activeIcon: ImageIcon(
+              AssetImage('assets/images/bottomNavbar/forum-aktif.png'),
+            ),
             icon: ImageIcon(
               AssetImage('assets/images/bottomNavbar/forum.png'),
             ),
             label: 'Forum',
           ),
           BottomNavigationBarItem(
+            activeIcon: ImageIcon(
+              AssetImage('assets/images/bottomNavbar/akun-aktif.png'),
+            ),
             icon: ImageIcon(
               AssetImage('assets/images/bottomNavbar/akun.png'),
             ),
             label: 'Akun Saya',
           ),
         ],
-        selectedItemColor: Colors.white,
         selectedLabelStyle: TextStyle(
           fontFamily: 'Brandon',
           fontSize: 10,

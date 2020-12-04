@@ -64,7 +64,7 @@ Widget product(context) {
         child: Container(
           width: MediaQuery.of(context).size.width,
           child: const Text(
-            'ADD TO BAG',
+            'TAMBAHKAN',
             textAlign: TextAlign.center,
             style: TextStyle(color: Colors.white, fontFamily: 'Brandon'),
           ),
@@ -247,7 +247,7 @@ Widget getProduct(context,Product product) => Column(
         child: Container(
           width: MediaQuery.of(context).size.width,
           child: const Text(
-            'ADD TO BAG',
+            'TAMBAHKAN',
             textAlign: TextAlign.center,
             style: TextStyle(color: Colors.white, fontFamily: 'Brandon'),
           ),
@@ -407,7 +407,7 @@ Widget getProductFlash(context,FlashSaleProduct productFlash) {
       child: Container(
         width: MediaQuery.of(context).size.width,
         child: const Text(
-          'ADD TO BAG',
+          'TAMBAHKAN',
           textAlign: TextAlign.center,
           style: TextStyle(color: Colors.white, fontFamily: 'Brandon'),
         ),
@@ -1072,7 +1072,7 @@ Widget getNewArival(context,List<Product> products){
                       width: 120,
                       color: Color(0xffF3C1B5),
                       child: Text(
-                        "ADD TO BAG",
+                        "TAMBAHKAN",
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           color: Colors.white,
@@ -1256,7 +1256,7 @@ Widget getNewArival(context,List<Product> products){
                       width: 120,
                       color: Color(0xffF3C1B5),
                       child: Text(
-                        "ADD TO BAG",
+                        "TAMBAHKAN",
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           color: Colors.white,
@@ -1413,7 +1413,7 @@ Widget getNewArival(context,List<Product> products){
                       width: 120,
                       color: Color(0xffF3C1B5),
                       child: Text(
-                        "ADD TO BAG",
+                        "TAMBAHKAN",
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           color: Colors.white,

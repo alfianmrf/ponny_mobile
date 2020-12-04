@@ -447,6 +447,7 @@ class _SkincareState extends State<Skincare> {
 
 
     showModalBottomSheet(
+        isScrollControlled: true,
         backgroundColor: Hexcolor('#FCF8F0'),
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.only(

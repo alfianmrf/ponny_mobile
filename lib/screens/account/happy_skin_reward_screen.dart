@@ -223,7 +223,7 @@ class _HappySkinRewardStateScreen extends State<HappySkinRewardScreen>
                     ),
                     Tab(
                       child: Text(
-                         "< 500 POIN ",
+                         "> 500 POIN ",
                         style: TextStyle(
                           fontFamily: "Brandon",
                           fontWeight: FontWeight.w600,
@@ -271,118 +271,123 @@ class _SeratusPointScreen extends State<seratus_point> {
           children:Lodash().chunk(array: widget.products, size: 2).map((e){
             return Container(
               margin: EdgeInsets.only(top: 30),
-              padding: EdgeInsets.only(left: 25, right: 25, top: 0, bottom: 0),
+              padding: EdgeInsets.only(left: 15, right: 15, top: 0, bottom: 0),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   for(ProductPoin productPoin in e)(
-                      Container(
-                        height: 330,
-                        width: 160,
-                        // color: Colors.red,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Container(
-                              width: 160,
-                              height: 210,
-                              child: CachedNetworkImage(
-                                imageUrl: img_url+productPoin.product.thumbnail_image,
-                                placeholder: (context, url) => LoadingWidgetPulse(context),
-                                errorWidget: (context, url, error) => Image.asset('assets/images/basic.jpg'),
-                                width: MediaQuery.of(context).size.width,
-                                fit: BoxFit.cover,
+                      Flexible(
+                        flex: 1,
+                        fit:FlexFit.tight,
+                        child: Container(
+                          padding: EdgeInsets.symmetric(horizontal: 10),
+                          child: Column(
+                            children: [
+                              AspectRatio(
+                                aspectRatio: 0.7888,
+                                child: Container(
+                                  child: CachedNetworkImage(
+                                    imageUrl: img_url+productPoin.product.thumbnail_image,
+                                    placeholder: (context, url) => LoadingWidgetPulse(context),
+                                    errorWidget: (context, url, error) => Image.asset('assets/images/basic.jpg'),
+                                    width: MediaQuery.of(context).size.width,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
                               ),
-                            ),
-                            Container(
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Container(
-                                    margin: EdgeInsets.only(
-                                      top: 5,
-                                    ),
-                                    child: Text(
-                                      productPoin.product.brand.name,
-                                      style: TextStyle(
-                                        fontFamily: "Yeseva",
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w600,
+                              Container(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                      margin: EdgeInsets.only(
+                                        top: 5,
+                                      ),
+                                      child: Text(
+                                        productPoin.product.brand.name,
+                                        style: TextStyle(
+                                          fontFamily: "Yeseva",
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w600,
+                                        ),
                                       ),
                                     ),
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                margin: EdgeInsets.only(
+                                  top: 5,
+                                ),
+                                child: Text(
+                                  productPoin.product.name,
+                                  style: TextStyle(
+                                    fontFamily: "Brandon",
+                                    fontSize: 14,
                                   ),
-                                ],
-                              ),
-                            ),
-                            Container(
-                              margin: EdgeInsets.only(
-                                top: 5,
-                              ),
-                              child: Text(
-                                productPoin.product.name.length > 20 ?productPoin.product.name.substring(0,20)+"..." : productPoin.product.name,
-                                style: TextStyle(
-                                  fontFamily: "Brandon",
-                                  fontSize: 14,
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                  textAlign: TextAlign.center,
                                 ),
                               ),
-                            ),
-                            Container(
-                              margin: EdgeInsets.only(
-                                top: 5,
-                              ),
-                              child: Text(
-                                productPoin.jml_point.toString()+" POIN",
-                                style: TextStyle(
-                                  fontFamily: "Brandon",
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w600,
+                              Container(
+                                margin: EdgeInsets.only(
+                                  top: 5,
                                 ),
-                              ),
-                            ),
-                            Container(
-                              child:productPoin.jml_point <= sisa?
-                              FlatButton(
-                                color: Color(0xffF48262),
-                                textColor: Colors.white,
-                                disabledColor: Colors.grey,
-                                disabledTextColor: Colors.black,
-                                padding: EdgeInsets.all(8.0),
-                                splashColor: Colors.blueAccent,
-                                onPressed: () {
-                                  UIBlock.block(context,customLoaderChild: LoadingWidget(context));
-                                  Provider.of<CartModel>(context).addRedemToCart(productPoin, Provider.of<AppModel>(context,listen: false).auth.access_token).then((value) {
-                                    UIBlock.unblock(context);
-                                    showAlertDialog(context,productPoin.product);
-                                  }).catchError((onError){
-                                    UIBlock.unblock(context);
-                                  });
-                                },
                                 child: Text(
-                                  "Tukar",
-                                  style: TextStyle(fontSize: 16.0),
-                                ),
-                              ):
-                              FlatButton(
-                                color: Color(0xffF48262),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                textColor: Colors.white,
-                                disabledColor: Colors.grey,
-                                disabledTextColor: Colors.black,
-                                height: 0,
-                                minWidth: 0,
-                                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                                padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-                                onPressed: () {
-                                },
-                                child: Text(
-                                  "Tukar",
-                                  style: TextStyle(fontSize: 16.0, fontFamily: 'Brandon'),
+                                  productPoin.jml_point.toString()+" POIN",
+                                  style: TextStyle(
+                                    fontFamily: "Brandon",
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w600,
+                                  ),
                                 ),
                               ),
-                            )
-                          ],
+                              Container(
+                                child:productPoin.jml_point <= sisa?
+                                FlatButton(
+                                  color: Color(0xffF48262),
+                                  textColor: Colors.white,
+                                  disabledColor: Colors.grey,
+                                  disabledTextColor: Colors.black,
+                                  padding: EdgeInsets.all(8.0),
+                                  splashColor: Colors.blueAccent,
+                                  onPressed: () {
+                                    UIBlock.block(context,customLoaderChild: LoadingWidget(context));
+                                    Provider.of<CartModel>(context).addRedemToCart(productPoin, Provider.of<AppModel>(context,listen: false).auth.access_token).then((value) {
+                                      UIBlock.unblock(context);
+                                      showAlertDialog(context,productPoin.product);
+                                    }).catchError((onError){
+                                      UIBlock.unblock(context);
+                                    });
+                                  },
+                                  child: Text(
+                                    "Tukar",
+                                    style: TextStyle(fontSize: 16.0),
+                                  ),
+                                ):
+                                FlatButton(
+                                  color: Color(0xffF48262),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  textColor: Colors.white,
+                                  disabledColor: Colors.grey,
+                                  disabledTextColor: Colors.black,
+                                  height: 0,
+                                  minWidth: 0,
+                                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                  padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                                  onPressed: () {
+                                  },
+                                  child: Text(
+                                    "Tukar",
+                                    style: TextStyle(fontSize: 16.0, fontFamily: 'Brandon'),
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
                         ),
                       )
                   ),
@@ -415,120 +420,125 @@ class _LebihDuaRatusPointScreen extends State<lebih_duaratus_point> {
             children:Lodash().chunk(array: widget.products, size: 2).map((e){
               return Container(
                 margin: EdgeInsets.only(top: 30),
-                padding: EdgeInsets.only(left: 25, right: 25, top: 0, bottom: 0),
+                padding: EdgeInsets.only(left: 15, right: 15, top: 0, bottom: 0),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     for(ProductPoin productPoin in e)(
-                        Container(
-                          height: 330,
-                          width: 160,
-                          // color: Colors.red,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Container(
-                                width: 160,
-                                height: 210,
-                                child: CachedNetworkImage(
-                                  imageUrl: img_url+productPoin.product.thumbnail_image,
-                                  placeholder: (context, url) => LoadingWidgetPulse(context),
-                                  errorWidget: (context, url, error) => Image.asset('assets/images/basic.jpg'),
-                                  width: MediaQuery.of(context).size.width,
-                                  fit: BoxFit.cover,
+                        Flexible(
+                          flex: 1,
+                          fit:FlexFit.tight,
+                          child: Container(
+                            padding: EdgeInsets.symmetric(horizontal: 10),
+                            child: Column(
+                              children: [
+                                AspectRatio(
+                                  aspectRatio: 0.7888,
+                                  child: Container(
+                                    child: CachedNetworkImage(
+                                      imageUrl: img_url+productPoin.product.thumbnail_image,
+                                      placeholder: (context, url) => LoadingWidgetPulse(context),
+                                      errorWidget: (context, url, error) => Image.asset('assets/images/basic.jpg'),
+                                      width: MediaQuery.of(context).size.width,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
                                 ),
-                              ),
-                              Container(
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      margin: EdgeInsets.only(
-                                        top: 5,
-                                      ),
-                                      child: Text(
-                                        productPoin.product.brand.name,
-                                        style: TextStyle(
-                                          fontFamily: "Yeseva",
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w600,
+                                Container(
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Container(
+                                        margin: EdgeInsets.only(
+                                          top: 5,
+                                        ),
+                                        child: Text(
+                                          productPoin.product.brand.name,
+                                          style: TextStyle(
+                                            fontFamily: "Yeseva",
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w600,
+                                          ),
                                         ),
                                       ),
+                                    ],
+                                  ),
+                                ),
+                                Container(
+                                  margin: EdgeInsets.only(
+                                    top: 5,
+                                  ),
+                                  child: Text(
+                                    productPoin.product.name,
+                                    style: TextStyle(
+                                      fontFamily: "Brandon",
+                                      fontSize: 14,
                                     ),
-                                  ],
-                                ),
-                              ),
-                              Container(
-                                margin: EdgeInsets.only(
-                                  top: 5,
-                                ),
-                                child: Text(
-                                  productPoin.product.name.length > 20 ?productPoin.product.name.substring(0,20)+"..." : productPoin.product.name,
-                                  style: TextStyle(
-                                    fontFamily: "Brandon",
-                                    fontSize: 14,
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                    textAlign: TextAlign.center,
                                   ),
                                 ),
-                              ),
-                              Container(
-                                margin: EdgeInsets.only(
-                                  top: 5,
-                                ),
-                                child: Text(
-                                  productPoin.jml_point.toString()+" POIN",
-                                  style: TextStyle(
-                                    fontFamily: "Brandon",
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w600,
+                                Container(
+                                  margin: EdgeInsets.only(
+                                    top: 5,
                                   ),
-                                ),
-                              ),
-                              Container(
-                                child:productPoin.jml_point <= sisa?
-                                FlatButton(
-                                  color: Color(0xffF48262),
-                                  textColor: Colors.white,
-                                  disabledColor: Colors.grey,
-                                  disabledTextColor: Colors.black,
-                                  padding: EdgeInsets.all(8.0),
-                                  splashColor: Colors.blueAccent,
-                                  onPressed: () {
-                                    /*...*/
-                                    UIBlock.block(context,customLoaderChild: LoadingWidget(context));
-                                    Provider.of<CartModel>(context).addRedemToCart(productPoin, Provider.of<AppModel>(context,listen: false).auth.access_token).then((value) {
-                                      UIBlock.unblock(context);
-                                      showAlertDialog(context,productPoin.product);
-                                    }).catchError((onError){
-                                      UIBlock.unblock(context);
-                                    });
-                                  },
                                   child: Text(
-                                    "Tukar",
-                                    style: TextStyle(fontSize: 16.0),
+                                    productPoin.jml_point.toString()+" POIN",
+                                    style: TextStyle(
+                                      fontFamily: "Brandon",
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w600,
+                                    ),
                                   ),
-                                ):
-                                FlatButton(
-                                  color: Color(0xffF48262),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  textColor: Colors.white,
-                                  disabledColor: Colors.grey,
-                                  disabledTextColor: Colors.black,
-                                  height: 0,
-                                  minWidth: 0,
-                                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                                  padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-                                  onPressed: () {
-                                  },
-                                  child: Text(
-                                    "Tukar",
-                                    style: TextStyle(fontSize: 16.0, fontFamily: 'Brandon'),
-                                  ),
+                                ),
+                                Container(
+                                  child:productPoin.jml_point <= sisa?
+                                  FlatButton(
+                                    color: Color(0xffF48262),
+                                    textColor: Colors.white,
+                                    disabledColor: Colors.grey,
+                                    disabledTextColor: Colors.black,
+                                    padding: EdgeInsets.all(8.0),
+                                    splashColor: Colors.blueAccent,
+                                    onPressed: () {
+                                      /*...*/
+                                      UIBlock.block(context,customLoaderChild: LoadingWidget(context));
+                                      Provider.of<CartModel>(context).addRedemToCart(productPoin, Provider.of<AppModel>(context,listen: false).auth.access_token).then((value) {
+                                        UIBlock.unblock(context);
+                                        showAlertDialog(context,productPoin.product);
+                                      }).catchError((onError){
+                                        UIBlock.unblock(context);
+                                      });
+                                    },
+                                    child: Text(
+                                      "Tukar",
+                                      style: TextStyle(fontSize: 16.0),
+                                    ),
+                                  ):
+                                  FlatButton(
+                                    color: Color(0xffF48262),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    textColor: Colors.white,
+                                    disabledColor: Colors.grey,
+                                    disabledTextColor: Colors.black,
+                                    height: 0,
+                                    minWidth: 0,
+                                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                    padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                                    onPressed: () {
+                                    },
+                                    child: Text(
+                                      "Tukar",
+                                      style: TextStyle(fontSize: 16.0, fontFamily: 'Brandon'),
+                                    ),
+                                  )
+                                  ,
                                 )
-                                ,
-                              )
-                            ],
+                              ],
+                            ),
                           ),
                         )
                     ),
@@ -561,120 +571,124 @@ class _LebihLimaRatusPointScreen extends State<lebih_500_point> {
             children:Lodash().chunk(array: widget.products, size: 2).map((e){
               return Container(
                 margin: EdgeInsets.only(top: 30),
-                padding: EdgeInsets.only(left: 25, right: 25, top: 0, bottom: 0),
+                padding: EdgeInsets.only(left: 15, right: 15, top: 0, bottom: 0),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     for(ProductPoin productPoin in e)(
-                        Container(
-                          height: 330,
-                          width: 160,
-                          // color: Colors.red,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Container(
-                                width: 160,
-                                height: 210,
-                                child: CachedNetworkImage(
-                                  imageUrl: img_url+productPoin.product.thumbnail_image,
-                                  placeholder: (context, url) => LoadingWidgetPulse(context),
-                                  errorWidget: (context, url, error) => Image.asset('assets/images/basic.jpg'),
-                                  width: MediaQuery.of(context).size.width,
-                                  fit: BoxFit.cover,
+                        Flexible(
+                          flex: 1,
+                          child: Container(
+                            padding: EdgeInsets.symmetric(horizontal: 10),
+                            child: Column(
+                              children: [
+                                AspectRatio(
+                                  aspectRatio: 0.7888,
+                                  child: Container(
+                                    child: CachedNetworkImage(
+                                      imageUrl: img_url+productPoin.product.thumbnail_image,
+                                      placeholder: (context, url) => LoadingWidgetPulse(context),
+                                      errorWidget: (context, url, error) => Image.asset('assets/images/basic.jpg'),
+                                      width: MediaQuery.of(context).size.width,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
                                 ),
-                              ),
-                              Container(
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      margin: EdgeInsets.only(
-                                        top: 5,
-                                      ),
-                                      child: Text(
-                                        productPoin.product.brand.name,
-                                        style: TextStyle(
-                                          fontFamily: "Yeseva",
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w600,
+                                Container(
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Container(
+                                        margin: EdgeInsets.only(
+                                          top: 5,
+                                        ),
+                                        child: Text(
+                                          productPoin.product.brand.name,
+                                          style: TextStyle(
+                                            fontFamily: "Yeseva",
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w600,
+                                          ),
                                         ),
                                       ),
+                                    ],
+                                  ),
+                                ),
+                                Container(
+                                  margin: EdgeInsets.only(
+                                    top: 5,
+                                  ),
+                                  child: Text(
+                                    productPoin.product.name,
+                                    style: TextStyle(
+                                      fontFamily: "Brandon",
+                                      fontSize: 14,
                                     ),
-                                  ],
-                                ),
-                              ),
-                              Container(
-                                margin: EdgeInsets.only(
-                                  top: 5,
-                                ),
-                                child: Text(
-                                  productPoin.product.name.length > 20 ?productPoin.product.name.substring(0,20)+"..." : productPoin.product.name,
-                                  style: TextStyle(
-                                    fontFamily: "Brandon",
-                                    fontSize: 14,
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                    textAlign: TextAlign.center,
                                   ),
                                 ),
-                              ),
-                              Container(
-                                margin: EdgeInsets.only(
-                                  top: 5,
-                                ),
-                                child: Text(
-                                  productPoin.jml_point.toString()+" POIN",
-                                  style: TextStyle(
-                                    fontFamily: "Brandon",
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w600,
+                                Container(
+                                  margin: EdgeInsets.only(
+                                    top: 5,
                                   ),
-                                ),
-                              ),
-                              Container(
-                                child:productPoin.jml_point <= sisa?
-                                FlatButton(
-                                  color: Color(0xffF48262),
-                                  textColor: Colors.white,
-                                  disabledColor: Colors.grey,
-                                  disabledTextColor: Colors.black,
-                                  padding: EdgeInsets.all(8.0),
-                                  splashColor: Colors.blueAccent,
-                                  onPressed: () {
-                                    /*...*/
-                                    UIBlock.block(context,customLoaderChild: LoadingWidget(context));
-                                    Provider.of<CartModel>(context).addRedemToCart(productPoin, Provider.of<AppModel>(context,listen: false).auth.access_token).then((value) {
-                                      UIBlock.unblock(context);
-                                      showAlertDialog(context,productPoin.product);
-                                    }).catchError((onError){
-                                      UIBlock.unblock(context);
-                                    });
-                                  },
                                   child: Text(
-                                    "Tukar",
-                                    style: TextStyle(fontSize: 16.0),
+                                    productPoin.jml_point.toString()+" POIN",
+                                    style: TextStyle(
+                                      fontFamily: "Brandon",
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w600,
+                                    ),
                                   ),
-                                ):
-                                FlatButton(
-                                  color: Color(0xffF48262),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  textColor: Colors.white,
-                                  disabledColor: Colors.grey,
-                                  disabledTextColor: Colors.black,
-                                  height: 0,
-                                  minWidth: 0,
-                                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                                  padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-                                  onPressed: () {
-                                  },
-                                  child: Text(
-                                    "Tukar",
-                                    style: TextStyle(fontSize: 16.0, fontFamily: 'Brandon'),
-                                  ),
+                                ),
+                                Container(
+                                  child:productPoin.jml_point <= sisa?
+                                  FlatButton(
+                                    color: Color(0xffF48262),
+                                    textColor: Colors.white,
+                                    disabledColor: Colors.grey,
+                                    disabledTextColor: Colors.black,
+                                    padding: EdgeInsets.all(8.0),
+                                    splashColor: Colors.blueAccent,
+                                    onPressed: () {
+                                      /*...*/
+                                      UIBlock.block(context,customLoaderChild: LoadingWidget(context));
+                                      Provider.of<CartModel>(context).addRedemToCart(productPoin, Provider.of<AppModel>(context,listen: false).auth.access_token).then((value) {
+                                        UIBlock.unblock(context);
+                                        showAlertDialog(context,productPoin.product);
+                                      }).catchError((onError){
+                                        UIBlock.unblock(context);
+                                      });
+                                    },
+                                    child: Text(
+                                      "Tukar",
+                                      style: TextStyle(fontSize: 16.0),
+                                    ),
+                                  ):
+                                  FlatButton(
+                                    color: Color(0xffF48262),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    textColor: Colors.white,
+                                    disabledColor: Colors.grey,
+                                    disabledTextColor: Colors.black,
+                                    height: 0,
+                                    minWidth: 0,
+                                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                    padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                                    onPressed: () {
+                                    },
+                                    child: Text(
+                                      "Tukar",
+                                      style: TextStyle(fontSize: 16.0, fontFamily: 'Brandon'),
+                                    ),
+                                  )
+                                  ,
                                 )
-                                ,
-                              )
-                            ],
+                              ],
+                            ),
                           ),
                         )
                     ),
