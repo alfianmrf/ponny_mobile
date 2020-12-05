@@ -54,7 +54,7 @@ class CartModel with ChangeNotifier{
            param.addAll({"variant":variant.varian});
            listCardOfitem.add(Cart(1, product,variant.varian,variant.price));
          }else{
-           listCardOfitem.add(Cart(1, product,null,null));
+           listCardOfitem.add(Cart(1, product,null,product.base_discounted_price));
          }
 
          await getSummary(token);
