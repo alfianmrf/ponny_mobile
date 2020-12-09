@@ -12,6 +12,7 @@ import 'package:ponny/model/FaqHeader.dart';
 import 'package:ponny/model/ItemBlog.dart';
 import 'package:ponny/model/ItemSkinklopedia.dart';
 import 'package:ponny/model/Product.dart';
+import 'package:ponny/model/User.dart';
 import 'package:ponny/util/AppId.dart';
 import 'package:ponny/util/globalUrl.dart';
 import 'package:http/http.dart' as http;
@@ -47,22 +48,26 @@ class AppModel with ChangeNotifier{
     }
   }
 
-  Future<bool> setAuth(param) async {
+  Future<LoginResult> setAuth(param) async {
+    LoginResult _result = LoginResult(status: 500,message: "Terjadi kesalahan pada server, mohon ulangi beberapa saat lagi." );
     final res = await http.post(loginUrl,headers: { HttpHeaders.contentTypeHeader: 'application/json' },body: json.encode(param));
     final LocalStorage storage = LocalStorage("ponnystore");
+    var result = json.decode(res.body);
+    _result = LoginResult(status: res.statusCode,message:result['message'] );
     if(res.statusCode == 200){
-      var result = json.decode(res.body);
       auth = LoginAuth.fromLocalJson(result);
       loggedIn =true;
+      _result = LoginResult(status: res.statusCode,message: result['message']);
       final ready = await storage.ready;
       if (ready) {
         await storage.setItem("auth", result);
         notifyListeners();
-        return true;
+        return _result;
       }
     }
-    return false;
+    return _result;
   }
+
 
   Future<void> getFAQ() async {
     listFaq =[];
@@ -84,21 +89,23 @@ class AppModel with ChangeNotifier{
     }
   }
 
-  Future<bool> setAuthOtp(param) async {
+  Future<User> setAuthOtp(param) async {
+    User _result;
     final res = await http.post(loginOtp,headers: { HttpHeaders.contentTypeHeader: 'application/json' },body: json.encode(param));
     final LocalStorage storage = LocalStorage("ponnystore");
     if(res.statusCode == 200){
       var result = json.decode(res.body);
       auth = LoginAuth.fromLocalJson(result);
+      _result = User.fromLocalJson(result['user']);
       loggedIn =true;
       final ready = await storage.ready;
       if (ready) {
         await storage.setItem("auth", result);
         notifyListeners();
-        return true;
+        return _result;
       }
     }
-    return false;
+    return _result;
   }
 
   Future<bool> setAuthSocial(param) async {
@@ -235,4 +242,9 @@ class SearchGlobalResult{
     });
 
   }
+}
+class LoginResult{
+  int status;
+  String message;
+  LoginResult({this.status,this.message});
 }

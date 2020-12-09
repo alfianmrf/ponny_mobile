@@ -4,6 +4,8 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
+import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_html/style.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:ponny/common/constant.dart';
@@ -27,9 +29,14 @@ import 'package:webview_flutter/webview_flutter.dart';
 
 class QrisScreen extends StatefulWidget {
   static const String id = "qris_view_Screen";
+  static const String qris = "qris";
+  static const String ovo ="ovo";
+  static const String shopee="shopee";
+
   @required String title;
   @required String urlQR;
-  QrisScreen({this.urlQR,this.title});
+  @required String type;
+  QrisScreen({this.urlQR,this.title,this.type});
 
   @override
   _QrisStateScreen createState() => _QrisStateScreen();
@@ -94,6 +101,7 @@ class _QrisStateScreen extends State<QrisScreen> {
                   fit: BoxFit.fill,
                 ),
               ),
+              if(widget.type == QrisScreen.qris)
               Container(
                 width: MediaQuery.of(context).size.width *.8,
                 child: Text("Buka aplikasi yang mendukukung pemabayara QRIS seperti GO-JEK,Link Aja, OVO. Scan QR yang tertera di layar lalu konfirmasi pembelian kamu",
@@ -103,7 +111,63 @@ class _QrisStateScreen extends State<QrisScreen> {
                   ),
                   textAlign: TextAlign.center,
                 ),
-              )
+              ),
+              if(widget.type == QrisScreen.ovo)
+                Container(
+                  alignment: Alignment.centerLeft,
+                  width: MediaQuery.of(context).size.width*0.9,
+                  child: Html(
+                    data: """
+                      <div>
+                        <p>Cara Pembayaran Melalui OVO</p>
+                        <ol>
+                          <li>Screenshot layar ponsel anda yang terdapat QR code.</li>
+                          <li>Buka aplikasi OVO pada layar ponsel anda.</li>
+                          <li>Tekan tombol SCAN/PINDAI pada aplikasi OVO anda.</li>
+                          <li>Lalu tekan tombol "add photo" lalu pilih screenshot QR code anda.</li>
+                          <li>Sistem OVO dengan otomatis akan membaca QR code anda.</li>
+                          <li>Konfirmasi rincian pesanan anda. Jika sudah sesuai, klik Konfirmasi untuk melanjutkan.</li>
+                          <li>Masukan pin OVO anda.</li>
+                          <li>Transaksi selesai.</li>
+                        </ol>
+                      </div>
+                    """,
+                    style: {
+                      "div": Style(
+                        fontFamily: 'Brandon',
+                        textAlign: TextAlign.justify,
+                      ),
+                    },
+                  ),
+                ),
+              if(widget.type == QrisScreen.shopee)
+                Container(
+                  alignment: Alignment.centerLeft,
+                  width: MediaQuery.of(context).size.width*0.9,
+                  child: Html(
+                    data: """
+                      <div>
+                        <p>Cara Pembayaran Melalui SHOPEEPAY</p>
+                        <ol>
+                          <li>Screenshot layar ponsel anda yang terdapat QR code.</li>
+                          <li>Buka aplikasi SHOPEE pada layar ponsel anda.</li>
+                          <li>Tekan tombol SCAN/PINDAI pada aplikasi OVO anda.</li>
+                          <li>Lalu tekan tombol "add photo" lalu pilih screenshot QR code anda.</li>
+                          <li>Sistem SHOPEE dengan otomatis akan membaca QR code anda.</li>
+                          <li>Konfirmasi rincian pesanan anda. Jika sudah sesuai, klik Konfirmasi untuk melanjutkan.</li>
+                          <li>Masukan pin SHOPEE anda.</li>
+                          <li>Transaksi selesai.</li>
+                        </ol>
+                      </div>
+                    """,
+                    style: {
+                      "div": Style(
+                        fontFamily: 'Brandon',
+                        textAlign: TextAlign.justify,
+                      ),
+                    },
+                  ),
+                ),
             ],
           ),
         ),

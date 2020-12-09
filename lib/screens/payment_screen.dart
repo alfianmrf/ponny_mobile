@@ -49,13 +49,22 @@ class _PaymentScreenState extends State<PaymentScreen> {
             Provider.of<CartModel>(context).Checkout(Provider.of<AppModel>(context).auth.access_token, Provider.of<AddressModel>(context).useAddress, method).then((value) {
               if(value!= null && value.success){
                 if(method == "qris"){
-                  Navigator.pushReplacement(context,new MaterialPageRoute(
-                    builder: (BuildContext context) => new QrisScreen(title: "QRIS",urlQR: value.mitransRequest.actions.firstWhere((element) => element.name == "generate-qr-code").url,),
-                  ));
-                }else{
-                  Navigator.pushReplacement(context,new MaterialPageRoute(
+                  Navigator.pushAndRemoveUntil(context,new MaterialPageRoute(
+                    builder: (BuildContext context) => new QrisScreen(title: "QRIS",urlQR: value.mitransRequest.actions.firstWhere((element) => element.name == "generate-qr-code").url,type:QrisScreen.qris),
+                  ),(_) => false);
+                }else if(method == "ovo"){
+                  Navigator.pushAndRemoveUntil(context,new MaterialPageRoute(
+                    builder: (BuildContext context) => new QrisScreen(title: "OVO",urlQR: value.mitransRequest.actions.firstWhere((element) => element.name == "generate-qr-code").url, type:QrisScreen.ovo),
+                  ),(_) => false);
+                }else if(method == "shopeepay"){
+                  Navigator.pushAndRemoveUntil(context,new MaterialPageRoute(
+                    builder: (BuildContext context) => new QrisScreen(title: "SHOPEEPAY",urlQR: value.mitransRequest.actions.firstWhere((element) => element.name == "generate-qr-code").url,type:QrisScreen.shopee),
+                  ),(_) => false);
+                }
+                else{
+                  Navigator.pushAndRemoveUntil(context,new MaterialPageRoute(
                     builder: (BuildContext context) => new PesananBerhasilScreen(code: value.orderCode,),
-                  ));
+                  ),(_) => false);
                 }
               }else{
                 UIBlock.unblock(context);
@@ -251,6 +260,42 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                             padding: EdgeInsets.only(left: 10),
                                             child: Text(
                                               'BNI Virtual Account',
+                                              style: TextStyle(
+                                                fontFamily: 'Brandon',
+                                                fontSize: 14,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      Icon(
+                                        Icons.chevron_right,
+                                        color: Color(0xffF48262),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              InkWell(
+                                onTap: () {
+                                  chekOut(context,"mt_tf_bri");
+                                },
+                                child: Container(
+                                  width: MediaQuery.of(context).size.width,
+                                  padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Image.asset(
+                                            'assets/images/payment/bri-02.png',
+                                            height: 40,
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.only(left: 10),
+                                            child: Text(
+                                              'BRI Virtual Account (BRIVA)',
                                               style: TextStyle(
                                                 fontFamily: 'Brandon',
                                                 fontSize: 14,
@@ -559,10 +604,9 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                   ),
                                 ),
                               ),
-                              /*InkWell(
+                              InkWell(
                                 onTap: () {
-                                  Navigator.of(context)
-                                      .pushReplacementNamed(PembayaranOvoScreen.id);
+                                  chekOut(context,"ovo");
                                 },
                                 child: Container(
                                   width: MediaQuery.of(context).size.width,
@@ -595,7 +639,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                     ],
                                   ),
                                 ),
-                              ),*/
+                              ),
                               InkWell(
                                 onTap: () {
                                   Navigator.push(context,new MaterialPageRoute(
@@ -618,6 +662,42 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                             padding: EdgeInsets.only(left: 10),
                                             child: Text(
                                               'GOPAY',
+                                              style: TextStyle(
+                                                fontFamily: 'Brandon',
+                                                fontSize: 14,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      Icon(
+                                        Icons.chevron_right,
+                                        color: Color(0xffF48262),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              InkWell(
+                                onTap: () {
+                                  chekOut(context,"shopeepay");
+                                },
+                                child: Container(
+                                  width: MediaQuery.of(context).size.width,
+                                  padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Image.asset(
+                                            'assets/images/payment/shopee_pay.png',
+                                            height: 25,
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.only(left: 10),
+                                            child: Text(
+                                              'SHOPEEPAY',
                                               style: TextStyle(
                                                 fontFamily: 'Brandon',
                                                 fontSize: 14,

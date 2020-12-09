@@ -15,6 +15,7 @@ import 'package:url_launcher/url_launcher.dart';
 class PembayaranGopayScreen extends StatefulWidget {
   static const String id = "pembayaran_gopay_screen";
   static const String ovo ="ovo";
+  static const String shopeepay ="shopeepay";
   static const String gopay ="gopay";
 
   String method;
@@ -123,6 +124,7 @@ class _PembayaranGopayScreenState extends State<PembayaranGopayScreen> {
                     ),
                   ),
                 ),
+                if(widget.method == PembayaranGopayScreen.gopay)
                 Container(
                   alignment: Alignment.centerLeft,
                   width: MediaQuery.of(context).size.width*0.9,
@@ -132,9 +134,7 @@ class _PembayaranGopayScreenState extends State<PembayaranGopayScreen> {
                         <p>Cara Pembayaran Melalui GOPAY</p>
                         <ol>
                           <li>Pastikan kamu sudah login di aplikasi GOPAY</li>
-                          <li>Kamu akan dialihkan ke halaman Midtrans untuk menyelesaikan proses pembayaran</li>
-                          <li>Buka aplikasi GOJEK di smartphone kamu, pilih Pay dan arahkan kamera ke kode QR. Periksa terlebih dahulu nominal pembayaran kamu di aplikasi GOJEK dan pilih Pay</li>
-                          <li>Pembayaranmu diverifikasi secara otomatis, kamu akan langsung menerima konfirmasi di layar gadget-mu jika pembayaran dengan GOPAY berhasil</li>
+                          <li>Kamu akan dialihkan ke aplikasi GOJEK. untuk menyelesaikan proses pembayaran</li>
                         </ol>
                       </div>
                     """,
@@ -146,6 +146,62 @@ class _PembayaranGopayScreenState extends State<PembayaranGopayScreen> {
                     },
                   ),
                 ),
+                if(widget.method == PembayaranGopayScreen.ovo)
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    width: MediaQuery.of(context).size.width*0.9,
+                    child: Html(
+                      data: """
+                       <div>
+                        <p>Cara Pembayaran Melalui OVO</p>
+                        <ol>
+                          <li>Screenshot layar ponsel anda yang terdapat QR code.</li>
+                          <li>Buka aplikasi OVO pada layar ponsel anda.</li>
+                          <li>Tekan tombol SCAN/PINDAI pada aplikasi OVO anda.</li>
+                          <li>Lalu tekan tombol "add photo" lalu pilih screenshot QR code anda.</li>
+                          <li>Sistem OVO dengan otomatis akan membaca QR code anda.</li>
+                          <li>Konfirmasi rincian pesanan anda. Jika sudah sesuai, klik Konfirmasi untuk melanjutkan.</li>
+                          <li>Masukan pin OVO anda.</li>
+                          <li>Transaksi selesai.</li>
+                        </ol>
+                      </div>
+                    """,
+                      style: {
+                        "div": Style(
+                          fontFamily: 'Brandon',
+                          textAlign: TextAlign.justify,
+                        ),
+                      },
+                    ),
+                  ),
+                if(widget.method == PembayaranGopayScreen.shopeepay)
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    width: MediaQuery.of(context).size.width*0.9,
+                    child: Html(
+                      data: """
+                       <div>
+                        <p>Cara Pembayaran Melalui SHOPEEPAY</p>
+                        <ol>
+                          <li>Screenshot layar ponsel anda yang terdapat QR code.</li>
+                          <li>Buka aplikasi SHOPEE pada layar ponsel anda.</li>
+                          <li>Tekan tombol SCAN/PINDAI pada aplikasi SHOPEE anda.</li>
+                          <li>Lalu tekan tombol "add photo" lalu pilih screenshot QR code anda.</li>
+                          <li>Sistem OVO dengan otomatis akan membaca QR code anda.</li>
+                          <li>Konfirmasi rincian pesanan anda. Jika sudah sesuai, klik Konfirmasi untuk melanjutkan.</li>
+                          <li>Masukan pin SHOPEE anda.</li>
+                          <li>Transaksi selesai.</li>
+                        </ol>
+                      </div>
+                    """,
+                      style: {
+                        "div": Style(
+                          fontFamily: 'Brandon',
+                          textAlign: TextAlign.justify,
+                        ),
+                      },
+                    ),
+                  ),
                 Expanded(
                   child: Align(
                     alignment: FractionalOffset.bottomCenter,
@@ -170,12 +226,16 @@ class _PembayaranGopayScreenState extends State<PembayaranGopayScreen> {
                           Provider.of<CartModel>(context).Checkout(Provider.of<AppModel>(context).auth.access_token, Provider.of<AddressModel>(context).useAddress, widget.method).then((value) {
                             UIBlock.unblock(context);
                             if(value!= null && value.success){
-                              print(value.mitransRequest.actions.length);
-                              final redirect = value.mitransRequest.actions.firstWhere((element) => element.name == "deeplink-redirect");
-                              print(redirect.name);
-                              if(redirect != null){
-                                _launchURL(redirect.url);
+                              if(widget.method == PembayaranGopayScreen.gopay){
+                                print(value.mitransRequest.actions.length);
+                                final redirect = value.mitransRequest.actions.firstWhere((element) => element.name == "deeplink-redirect");
+                                print(redirect.name);
+                                if(redirect != null){
+                                  _launchURL(redirect.url);
+                                }
+
                               }
+
                             }else{
                               UIBlock.unblock(context);
                               print(value.message);

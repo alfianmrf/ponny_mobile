@@ -133,7 +133,7 @@ class Order {
     List<OrderDetailSample> _orderDetailSample=[];
     List<OrderDetailPoint> _orderDetailPoint=[];
     List<OrderDetailVoucher> _orderDetailVoucher=[];
-    StatusOrder _status = StatusOrder.fromJson(parsedJson["statusOrder"]);
+    StatusOrder _status = parsedJson["statusOrder"] != null ? StatusOrder.fromJson(parsedJson["statusOrder"]) : null;
     StatusOrder _payment= StatusOrder.fromJson(parsedJson["typePayment"]);
     
     for(Map item in parsedJson["orderDetails"]){
@@ -351,7 +351,7 @@ class StatusOrder {
   set isDeleted(int isDeleted) => _isDeleted = isDeleted;
 
   StatusOrder.fromJson(Map<String, dynamic> json) {
-    _id = json['id'];
+    _id = json['id'] ;
     _param1 = json['param_1'];
     _param2 = json['param_2'];
     _param3 = json['param_3'];

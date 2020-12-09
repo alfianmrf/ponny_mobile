@@ -68,17 +68,46 @@ class _LoginStateScreen extends State<LoginScreen> {
 
       Provider.of<AppModel>(context).setAuth(param).then((value){
         UIBlock.unblock(context);
-        if(value){
+        if(value.status == 200){
           Navigator.pushReplacement(context,new MaterialPageRoute(
             builder: (BuildContext context) =>  new AccountScreen(),
           ));
+        }else if(value.status == 401){
+          showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  content: Text(value.message),
+                  actions:<Widget> [
+                    FlatButton (
+                      child: Text('Kirim Ulang verifikasi'),
+                      onPressed: () {
+                        UIBlock.block(context,customLoaderChild: LoadingWidget(context));
+                        http.post(kirimUlangVerifikasi,headers: { HttpHeaders.contentTypeHeader: 'application/json' },body: json.encode({ "email":myemail.text })).then((value){
+                          UIBlock.unblock(context);
+                          if(value.statusCode == 200){
+                            UIBlock.unblock(context);
+                            // Navigator.pop(context);
+                            scaffoldKey.currentState.showSnackBar(snackBarSuccess);
+                          }
+                        }).catchError((onError){
+                          UIBlock.unblock(context);
+                          scaffoldKey.currentState.showSnackBar(snackBarError);
+                        });
+                      },
+                    ),
+                  ],
+                );
+              });
         }else{
           final snackBar = SnackBar(
-            content: Text('Email atau password salah!',style: TextStyle(color: Colors.white)),
+            content: Text(value.message,style: TextStyle(color: Colors.white)),
             backgroundColor: Colors.redAccent,
           );
           scaffoldKey.currentState.showSnackBar(snackBar);
         }
+      }).catchError((onError){
+        scaffoldKey.currentState.showSnackBar(snackBarError);
       });
     }
   }

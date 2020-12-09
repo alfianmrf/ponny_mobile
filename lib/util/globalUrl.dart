@@ -1,8 +1,14 @@
 import 'package:flutter/cupertino.dart';
 
-const base_url = "https://ponnybeaute.co.id/api/v1/";
-const img_url = "https://ponnybeaute.co.id/public/";
-const urlGlobal = "https://ponnybeaute.co.id/";
+//prod
+// const base_url = "https://ponnybeaute.co.id/api/v1/";
+// const img_url = "https://ponnybeaute.co.id/public/";
+// const urlGlobal = "https://ponnybeaute.co.id/";
+
+//dev
+const base_url = "https://ponnybeaute.revoapps.id/api/v1/";
+const img_url = "https://ponnybeaute.revoapps.id/public/";
+const urlGlobal = "https://ponnybeaute.revoapps.id//";
 
 //Auth
 const loginUrl = base_url + "auth/login";
@@ -69,6 +75,7 @@ const updateBeauteProfile = base_url + "account/update_beauty";
 const faqUrl = base_url+"account/faqs";
 const changePassword = base_url+"account/password";
 const historyPointurl =base_url+"account/pointHistory";
+const kirimUlangVerifikasi = base_url+"auth/resend/emailverification";
 
 //Order
 const urlTracking = base_url + "checkout/tracking";

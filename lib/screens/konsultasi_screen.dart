@@ -6,12 +6,14 @@ import 'package:ponny/model/App.dart';
 import 'package:ponny/model/FaqHeader.dart';
 import 'package:ponny/model/Order.dart';
 import 'package:ponny/model/Voucher.dart';
+import 'package:ponny/screens/Qris_screen.dart';
 import 'package:ponny/screens/WaitingPage.dart';
 import 'package:ponny/screens/payment_voucher_screen.dart';
 import 'package:ponny/util/globalUrl.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class KonsultasiScreen extends StatefulWidget {
   static const String id = "konsultasi_screen";
@@ -64,6 +66,14 @@ class _KonsultasiState extends State<KonsultasiScreen> {
       });
     });
 
+  }
+
+  _launchURL(url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 
 
@@ -973,7 +983,7 @@ class _KonsultasiState extends State<KonsultasiScreen> {
                                 flex: 2,
                                 child: Container(
                                   child: Text(
-                                    nm_format.format(item.grand_total),
+                                      item.grand_total != null ?  nm_format.format(item.grand_total) : "Rp. 0",
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
                                       fontFamily: "Brandon",
@@ -1004,18 +1014,124 @@ class _KonsultasiState extends State<KonsultasiScreen> {
                                           color: Colors.black,
                                         )
                                     ),
-                                    Text(item.mitrans_val.mitrans_val,
-                                        textAlign: TextAlign.left,
-                                        style: TextStyle(
-                                          fontFamily: "Brandon",
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w400,
-                                          color: Colors.black,
-                                        )
-                                    )
+                                    if(item.payment_type == "mt_tf_bca" || item.payment_type == "mt_tf_bni" || item.payment_type == "mt_tf_permata" || item.payment_type == "alfamart" || item.payment_type=="Indomaret" ||item.payment_type=="mt_tf_mdr"|| item.payment_type=="mt_tf_bri")
+                                      Container(
+                                        width: 100,
+                                        child: Text(
+                                          item.mitrans_val != null ? item.mitrans_val.mitrans_val : "",
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w400,
+                                            fontFamily: "Brandon",
+                                          ),
+                                        ),
+                                      )else
+
+                                      Container(
+                                        width: 100,
+                                        child: Text(
+                                          item.typePayment,
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w400,
+                                            fontFamily: "Brandon",
+                                          ),
+                                        ),
+                                      ),
                                   ],
                                 ),
                               ),
+                              if(item.payment_status == 'unpaid' && item.payment_type == "ovo")
+                                Positioned(
+                                    left: 0,
+                                    child: Container(
+                                      child: FlatButton(
+                                        color:  Color(0xffF48262),
+                                        textColor: Colors.white,
+                                        disabledColor: Colors.grey,
+                                        disabledTextColor: Colors.black,
+                                        child:  Text("BAYAR SEKARANG"),
+                                        onPressed: (){
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) => QrisScreen(title: "OVO", urlQR: item.mitransVal.actions.firstWhere((element) => element.name == "generate-qr-code").url,type: QrisScreen.ovo,), ),
+                                          );
+                                        },
+                                      ) ,
+                                    )
+                                ),
+
+                              if(item.payment_status == 'unpaid' && item.payment_type == "shopeepay")
+                                Positioned(
+                                    left: 0,
+                                    child: Container(
+                                      margin: EdgeInsets.only(left: 10),
+                                      alignment: Alignment.centerLeft,
+                                      child: FlatButton(
+                                        color:  Color(0xffF48262),
+                                        textColor: Colors.white,
+                                        disabledColor: Colors.grey,
+                                        disabledTextColor: Colors.black,
+                                        child:  Text("BAYAR SEKARANG"),
+                                        onPressed: (){
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) => QrisScreen(title: "SHOPEEPAY", urlQR: item.mitransVal.actions.firstWhere((element) => element.name == "generate-qr-code").url,type: QrisScreen.shopee), ),
+                                          );
+                                        },
+                                      ) ,
+                                    )
+                                )
+                                ,
+                              if(item.payment_status == 'unpaid' && item.payment_type == "gopay")
+                                Positioned(
+                                    left: 0,
+                                    child: Container(
+                                      margin: EdgeInsets.only(left: 10),
+                                      alignment: Alignment.centerLeft,
+                                      child: FlatButton(
+                                        color:  Color(0xffF48262),
+                                        textColor: Colors.white,
+                                        disabledColor: Colors.grey,
+                                        disabledTextColor: Colors.black,
+                                        child:  Text("BAYAR SEKARANG"),
+                                        onPressed: (){
+                                          // Navigator.push(
+                                          //   context,
+                                          //   MaterialPageRoute(
+                                          //     builder: (context) => BankTransferDetailScreen(order_id: order.id,), ),
+                                          // );
+                                          _launchURL(item.mitransVal.actions.firstWhere((element) => element.name == "deeplink-redirect").url);
+                                        },
+                                      ) ,
+                                    )
+                                ),
+                              if(item.payment_status == 'unpaid' && item.payment_type == "qris")
+                                Positioned(
+                                    left: 0,
+                                    child: Container(
+                                      margin: EdgeInsets.only(left: 10),
+                                      alignment: Alignment.centerLeft,
+                                      child: FlatButton(
+                                        color:  Color(0xffF48262),
+                                        textColor: Colors.white,
+                                        disabledColor: Colors.grey,
+                                        disabledTextColor: Colors.black,
+                                        child:  Text("BAYAR SEKARANG"),
+                                        onPressed: (){
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) => QrisScreen(title: "QRIS", urlQR: item.mitransVal.actions.firstWhere((element) => element.name == "generate-qr-code").url,type: QrisScreen.qris), ),
+                                          );
+                                        },
+                                      ) ,
+                                    )
+                                ),
+
+
                             ],
                           ),
                           Container(

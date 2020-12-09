@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:ponny/model/Order.dart';
+import 'package:ponny/model/OrderResult.dart';
 import 'package:ponny/util/globalUrl.dart';
 
 class VoucherModel with ChangeNotifier{
@@ -21,12 +22,13 @@ class VoucherModel with ChangeNotifier{
     return result;
   }
 
-  Future<bool> checkOut(String token,param) async {
+  Future<OrderResult> checkOut(String token,param) async {
     final res = await http.post(voucherCheckout, headers: { HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: "Bearer $token"},body: json.encode(param));
     print(res.statusCode);
-    bool result =false;
+    OrderResult result;
     if(res.statusCode == 200){
-      result =true;
+      final _w = json.decode(res.body);
+      result = OrderResult.fromJson(_w);
     }
     return result;
   }

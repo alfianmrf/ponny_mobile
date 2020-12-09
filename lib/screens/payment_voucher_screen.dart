@@ -8,6 +8,7 @@ import 'package:ponny/model/App.dart';
 import 'package:ponny/model/Cart.dart';
 import 'package:ponny/model/Order.dart';
 import 'package:ponny/model/Voucher.dart';
+import 'package:ponny/screens/Qris_screen.dart';
 import 'package:ponny/screens/account/menunggu_pembayaran_sukses_screen.dart';
 import 'package:ponny/screens/home_screen.dart';
 import 'package:ponny/screens/pesanan_berhasil_screen.dart';
@@ -34,6 +35,7 @@ class _PaymentVoucherScreenState extends State<PaymentVoucherScreen> {
   void initState() {
     super.initState();
   }
+
   Future<bool> chekOut(BuildContext context,String method) async {
     bool result =false;
     UIBlock.block(context,customLoaderChild: LoadingWidget(context));
@@ -41,10 +43,30 @@ class _PaymentVoucherScreenState extends State<PaymentVoucherScreen> {
       "qty" : widget.qty,
       "payment":method
     };
+
     final value = await Provider.of<VoucherModel>(context).checkOut(Provider.of<AppModel>(context).auth.access_token,  param);
-      if(value){
+      if(value != null){
         UIBlock.unblock(context);
-        result =value;
+        result =true;
+          if(method == "qris"){
+            Navigator.pushAndRemoveUntil(context,new MaterialPageRoute(
+              builder: (BuildContext context) => new QrisScreen(title: "QRIS",urlQR: value.mitransRequest.actions.firstWhere((element) => element.name == "generate-qr-code").url,type:QrisScreen.qris),
+            ),(_) => false);
+          }else if(method == "ovo"){
+            Navigator.pushAndRemoveUntil(context,new MaterialPageRoute(
+              builder: (BuildContext context) => new QrisScreen(title: "OVO",urlQR: value.mitransRequest.actions.firstWhere((element) => element.name == "generate-qr-code").url, type:QrisScreen.ovo),
+            ),(_) => false);
+          }else if(method == "shopeepay"){
+            Navigator.pushAndRemoveUntil(context,new MaterialPageRoute(
+              builder: (BuildContext context) => new QrisScreen(title: "SHOPEEPAY",urlQR: value.mitransRequest.actions.firstWhere((element) => element.name == "generate-qr-code").url,type:QrisScreen.shopee),
+            ),(_) => false);
+          }
+          else{
+            Navigator.pushAndRemoveUntil(context,new MaterialPageRoute(
+              builder: (BuildContext context) => new PesananBerhasilScreen(code: value.orderCode,),
+            ),(_) => false);
+          }
+
       }else{
         final snackBar = SnackBar(
           content: Text('Terjadi kesalah Pada Server, Silakan coba kembali nanti!',style: TextStyle(color: Colors.white)),
@@ -245,6 +267,42 @@ class _PaymentVoucherScreenState extends State<PaymentVoucherScreen> {
                                 ),
                               ),
                               InkWell(
+                                onTap: () {
+                                  chekOut(context,"mt_tf_bri");
+                                },
+                                child: Container(
+                                  width: MediaQuery.of(context).size.width,
+                                  padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Image.asset(
+                                            'assets/images/payment/bri-02.png',
+                                            height: 40,
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.only(left: 10),
+                                            child: Text(
+                                              'BRI Virtual Account (BRIVA)',
+                                              style: TextStyle(
+                                                fontFamily: 'Brandon',
+                                                fontSize: 14,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      Icon(
+                                        Icons.chevron_right,
+                                        color: Color(0xffF48262),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              InkWell(
                                 onTap: () async {
                                   final result = await chekOut(context,"mt_tf_permata");
                                   if(result){
@@ -297,6 +355,7 @@ class _PaymentVoucherScreenState extends State<PaymentVoucherScreen> {
                                   ),
                                 ),
                               ),
+                              /*
                               InkWell(
                                 onTap: () {
                                   chekOut(context,"Indomaret");
@@ -332,7 +391,7 @@ class _PaymentVoucherScreenState extends State<PaymentVoucherScreen> {
                                     ],
                                   ),
                                 ),
-                              ),
+                              ),*/
                               InkWell(
                                 onTap: () {
                                   chekOut(context,"alfamart");
@@ -352,7 +411,7 @@ class _PaymentVoucherScreenState extends State<PaymentVoucherScreen> {
                                           Padding(
                                             padding: EdgeInsets.only(left: 10),
                                             child: Text(
-                                              'Mandiri Virtual Account',
+                                              'Alfamart',
                                               style: TextStyle(
                                                 fontFamily: 'Brandon',
                                                 fontSize: 14,
@@ -386,8 +445,7 @@ class _PaymentVoucherScreenState extends State<PaymentVoucherScreen> {
                               ),
                               InkWell(
                                 onTap: () {
-                                  Navigator.of(context)
-                                      .pushReplacementNamed(PembayaranOvoScreen.id);
+                                  chekOut(context,"ovo");
                                 },
                                 child: Container(
                                   width: MediaQuery.of(context).size.width,
@@ -423,8 +481,9 @@ class _PaymentVoucherScreenState extends State<PaymentVoucherScreen> {
                               ),
                               InkWell(
                                 onTap: () {
-                                  Navigator.of(context)
-                                      .pushReplacementNamed(PembayaranGopayScreen.id);
+                                  Navigator.push(context,new MaterialPageRoute(
+                                    builder: (BuildContext context) => new PembayaranGopayScreen(method:PembayaranGopayScreen.gopay,),
+                                  ));
                                 },
                                 child: Container(
                                   width: MediaQuery.of(context).size.width,
@@ -458,7 +517,43 @@ class _PaymentVoucherScreenState extends State<PaymentVoucherScreen> {
                                   ),
                                 ),
                               ),
-                              Container(
+                              InkWell(
+                                onTap: () {
+                                  chekOut(context,"shopeepay");
+                                },
+                                child: Container(
+                                  width: MediaQuery.of(context).size.width,
+                                  padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Image.asset(
+                                            'assets/images/payment/shopee_pay.png',
+                                            height: 25,
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.only(left: 10),
+                                            child: Text(
+                                              'SHOPEEPAY',
+                                              style: TextStyle(
+                                                fontFamily: 'Brandon',
+                                                fontSize: 14,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      Icon(
+                                        Icons.chevron_right,
+                                        color: Color(0xffF48262),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              /*Container(
                                 color: Color(0xffFDEDE4),
                                 width: MediaQuery.of(context).size.width,
                                 padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
@@ -506,7 +601,7 @@ class _PaymentVoucherScreenState extends State<PaymentVoucherScreen> {
                                     ),
                                   ],
                                 ),
-                              ),
+                              ),*/
                               Container(
                                 color: Color(0xffFDEDE4),
                                 width: MediaQuery.of(context).size.width,
@@ -521,32 +616,37 @@ class _PaymentVoucherScreenState extends State<PaymentVoucherScreen> {
                                   ),
                                 ),
                               ),
-                              Container(
-                                width: MediaQuery.of(context).size.width,
-                                padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Padding(
-                                          padding: EdgeInsets.only(left: 5),
-                                          child: Text(
-                                            'Credit Card / Debit Card',
-                                            style: TextStyle(
-                                              fontFamily: 'Brandon',
-                                              fontSize: 14,
+                              InkWell(
+                                onTap: (){
+                                  chekOut(context,"qris");
+                                },
+                                child:Container(
+                                  width: MediaQuery.of(context).size.width,
+                                  padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Padding(
+                                            padding: EdgeInsets.only(left: 5),
+                                            child: Text(
+                                              'QRIS',
+                                              style: TextStyle(
+                                                fontFamily: 'Brandon',
+                                                fontSize: 14,
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                    Icon(
-                                      Icons.chevron_right,
-                                      color: Color(0xffF48262),
-                                    ),
-                                  ],
-                                ),
+                                        ],
+                                      ),
+                                      Icon(
+                                        Icons.chevron_right,
+                                        color: Color(0xffF48262),
+                                      ),
+                                    ],
+                                  ),
+                                ) ,
                               ),
                             ],
                           ),

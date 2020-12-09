@@ -7,6 +7,7 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:ponny/common/constant.dart';
 import 'package:ponny/model/App.dart';
 import 'package:ponny/screens/Phone_OTP_screen.dart';
+import 'package:ponny/screens/RegisterOtp.dart';
 import 'package:ponny/screens/Syarat_Ketentuan_screen.dart';
 import 'package:ponny/screens/WebView_screen.dart';
 import 'package:ponny/screens/home_screen.dart';
@@ -159,10 +160,17 @@ class _LoginOTPScreen extends State<LoginOTP> {
                                       };
                                       Provider.of<AppModel>(context).setAuthOtp(param).then((value){
                                         UIBlock.unblock(context);
-                                        if(value){
-                                          Navigator.pushReplacement(context,new MaterialPageRoute(
-                                            builder: (BuildContext context) =>  new HomeScreen(),
-                                          ));
+                                        if(value!= null){
+                                          if(value.name == value.phone){
+                                            Navigator.pushReplacement(context,new MaterialPageRoute(
+                                              builder: (BuildContext context) =>  new RegisterOtpScreen(user: value,),
+                                            ));
+                                          }else{
+                                            Navigator.pushReplacement(context,new MaterialPageRoute(
+                                              builder: (BuildContext context) =>  new HomeScreen(),
+                                            ));
+                                          }
+
                                         }else{
                                           setState(() {
                                             pesan = 'Terjadi kesalahan pada server!';
@@ -514,6 +522,7 @@ class _LoginOTPScreen extends State<LoginOTP> {
                             child: FlatButton(
                               onPressed: () async {
                                 sendOtp();
+
                               },
                               child: Text(
                                 "LOGIN",
