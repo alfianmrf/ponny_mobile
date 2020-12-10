@@ -138,7 +138,7 @@ class _UlasanProdukSuksesStateScreen extends State<UlasanProdukSuksesScreen> {
                   margin: EdgeInsets.symmetric(vertical: 5),
                   child: Text.rich(TextSpan(children: <InlineSpan>[
                     WidgetSpan(
-                      child:  RatingBar(
+                      child:  RatingBar.builder(
                         initialRating: listReview[index].rating,
                         minRating: 0,
                         direction: Axis.horizontal,

@@ -248,7 +248,7 @@ class _ReviewStateScreen extends State<ReviewScreen> {
                                     'Buka produk ini ribet nggak, sih?',
                                     style: TextStyle(fontFamily: 'Brandon'),
                                   ),
-                                  RatingBar(
+                                  RatingBar.builder(
                                     initialRating: 0,
                                     minRating: 1,
                                     direction: Axis.horizontal,
@@ -286,7 +286,7 @@ class _ReviewStateScreen extends State<ReviewScreen> {
                                     'Produk ini bekerja optimal nggak?',
                                     style: TextStyle(fontFamily: 'Brandon'),
                                   ),
-                                  RatingBar(
+                                  RatingBar.builder(
                                     initialRating: 0,
                                     minRating: 1,
                                     direction: Axis.horizontal,
@@ -332,7 +332,7 @@ class _ReviewStateScreen extends State<ReviewScreen> {
                                     'Apa kamu dapat hasil yang cocok dengan kulitmu?',
                                     style: TextStyle(fontFamily: 'Brandon'),
                                   ),
-                                  RatingBar(
+                                  RatingBar.builder(
                                     initialRating: 0,
                                     minRating: 1,
                                     direction: Axis.horizontal,
@@ -370,7 +370,7 @@ class _ReviewStateScreen extends State<ReviewScreen> {
                                     'Sesuai dengan kualitasnya, harga produk ini...',
                                     style: TextStyle(fontFamily: 'Brandon'),
                                   ),
-                                  RatingBar(
+                                  RatingBar.builder(
                                     initialRating: 0,
                                     minRating: 1,
                                     direction: Axis.horizontal,

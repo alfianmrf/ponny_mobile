@@ -615,7 +615,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                             child: Text.rich(
                                 TextSpan(children: <InlineSpan>[
                                   WidgetSpan(
-                                    child: RatingBar(
+                                    child: RatingBar.builder(
                                       initialRating: widget.product.rating,
                                       minRating: 0,
                                       direction: Axis.horizontal,
@@ -1248,7 +1248,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                           margin: EdgeInsets.symmetric(vertical: 5),
                                           child: Text.rich(TextSpan(children: <InlineSpan>[
                                             WidgetSpan(
-                                              child:  RatingBar(
+                                              child:  RatingBar.builder(
                                                 initialRating: review.rating,
                                                 minRating: 0,
                                                 direction: Axis.horizontal,

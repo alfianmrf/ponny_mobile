@@ -126,7 +126,7 @@ Widget product(context) {
       ),
       Text.rich(TextSpan(children: <InlineSpan>[
         WidgetSpan(
-          child: RatingBar(
+          child: RatingBar.builder(
             initialRating: 4,
             minRating: 1,
             direction: Axis.horizontal,
@@ -313,7 +313,7 @@ Widget getProduct(context,Product product) => Column(
       ),
       Text.rich(TextSpan(children: <InlineSpan>[
         WidgetSpan(
-          child: RatingBar(
+          child: RatingBar.builder(
             initialRating: product.rating,
             minRating: 0,
             direction: Axis.horizontal,
@@ -498,7 +498,7 @@ Widget getProductFlash(context,FlashSaleProduct productFlash) {
                   ),
                 Text.rich(TextSpan(children: <InlineSpan>[
                   WidgetSpan(
-                    child: RatingBar(
+                    child: RatingBar.builder(
                       initialRating: product.rating,
                       minRating: 0,
                       direction: Axis.horizontal,

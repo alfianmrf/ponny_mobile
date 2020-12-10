@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_countdown_timer/current_remaining_time.dart';
 import 'package:flutter_countdown_timer/flutter_countdown_timer.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:hexcolor/hexcolor.dart';
@@ -427,7 +428,7 @@ class _FlashSaleStateScreen extends State<FlashSaleScreen> {
                                 ),
                                 Text.rich(TextSpan(children: <InlineSpan>[
                                   WidgetSpan(
-                                    child: RatingBar(
+                                    child: RatingBar.builder(
                                       initialRating: productflash.product.rating,
                                       minRating: 0,
                                       direction: Axis.horizontal,

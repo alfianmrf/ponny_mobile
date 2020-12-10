@@ -291,7 +291,7 @@ Widget _buildList() {
                         Container(
                           child: Text.rich(TextSpan(children: <InlineSpan>[
                             WidgetSpan(
-                              child: RatingBar(
+                              child: RatingBar.builder(
                                 initialRating: _result[index].product.rating,
                                 minRating: 0,
                                 direction: Axis.horizontal,

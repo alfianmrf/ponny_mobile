@@ -460,8 +460,8 @@ class _RoomScreenState extends State<RoomScreen> {
                             ),
                           );
                         },
-                      ), //RUANG SAYA
-                      new FutureBuilder<List>(
+                      ), Container()//RUANG SAYA
+                     /* new FutureBuilder<List>(
                           future: myRoomData(widget.category),
                           builder: (context, snapshot) {
                             if (snapshot.hasError) print(snapshot.error);
@@ -895,7 +895,7 @@ class _RoomScreenState extends State<RoomScreen> {
                                   )
                                 : Center(
                                     child: new CircularProgressIndicator());
-                          })
+                          })*/
                     ],
                   ),
                 ),
