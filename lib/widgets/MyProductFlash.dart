@@ -219,7 +219,7 @@ class MyProductFlash extends StatelessWidget {
                       ),
                     Text.rich(TextSpan(children: <InlineSpan>[
                       WidgetSpan(
-                        child: RatingBar(
+                        child: RatingBar.builder(
                           initialRating: product.rating,
                           minRating: 0,
                           direction: Axis.horizontal,

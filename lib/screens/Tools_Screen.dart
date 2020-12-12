@@ -359,7 +359,7 @@ Widget product(context) {
       ),
       Text.rich(TextSpan(children: <InlineSpan>[
         WidgetSpan(
-          child: RatingBar(
+          child: RatingBar.builder(
             initialRating: 4,
             minRating: 1,
             direction: Axis.horizontal,
