@@ -226,7 +226,8 @@ class _PaymentVoucherScreenState extends State<PaymentVoucherScreen> {
                                   ),
                                 ),
                               ),
-                              InkWell(
+
+                              /*InkWell(
                                 onTap: () async {
 
                                   final result = await chekOut(context,"mt_tf_bni");
@@ -265,7 +266,7 @@ class _PaymentVoucherScreenState extends State<PaymentVoucherScreen> {
                                     ],
                                   ),
                                 ),
-                              ),
+                              ), */
                               InkWell(
                                 onTap: () {
                                   chekOut(context,"mt_tf_bri");

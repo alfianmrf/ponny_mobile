@@ -6,13 +6,18 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:intl/intl.dart';
 import 'package:ponny/common/constant.dart';
+import 'package:ponny/model/App.dart';
+import 'package:ponny/model/Cart.dart';
 import 'package:ponny/model/FlashDeal.dart';
 import 'package:ponny/model/Product.dart';
 import 'package:ponny/model/ProductFlashDeal.dart';
+import 'package:ponny/model/WishProduct.dart';
 import 'package:ponny/screens/account_screen.dart';
 import 'package:percent_indicator/percent_indicator.dart';
+import 'package:ponny/screens/login.dart';
 import 'package:ponny/screens/product_details_screen.dart';
 import 'package:ponny/util/globalUrl.dart';
+import 'package:ponny/widgets/MyProductFlash.dart';
 import 'package:provider/provider.dart';
 import 'package:uiblock/uiblock.dart';
 import 'package:waterfall_flow/waterfall_flow.dart';
@@ -89,8 +94,11 @@ class _FlashSaleStateScreen extends State<FlashSaleScreen> {
             Container(
               width: MediaQuery.of(context).size.width,
               height: 120,
-              child: Image.network(img_url+flashdeal.detail.banner,
-              fit: BoxFit.cover,
+              child: CachedNetworkImage(
+                imageUrl:flashdeal.detail.banner != null ? img_url+flashdeal.detail.banner : "",
+                placeholder: (context, url) => LoadingWidgetPulse(context),
+                errorWidget: (context, url, error) => Image.asset('assets/images/1680x600.png'),
+                fit: BoxFit.cover,
               ),
             ),
             Container(
@@ -238,250 +246,62 @@ class _FlashSaleStateScreen extends State<FlashSaleScreen> {
               ),
             ),
             Expanded(
-              child: Container(
-                // color: Colors.green,
-                margin: EdgeInsets.only(left: 20, right: 20, bottom: 5),
-                child: WaterfallFlow.count(
-                  crossAxisCount: 3,
-                  crossAxisSpacing: 15,
-                  mainAxisSpacing: 10,
-                  children: [
-                    for(FlashSaleProduct productflash in flashdeal.flash_products)
-                    Container(
-                      // width: (screenWidth - 50) / 3,
-                      // color: Colors.purpleAccent,
-                      child: Column(
-                        children: [
-                          Stack(
-                            children: [
-                              GestureDetector(
-                                onTap: (){
-                                  Navigator.push(context, new MaterialPageRoute(
-                                    builder: (BuildContext context) => new ProductDetailsScreen(product: productflash.product,),
-                                  ));
-                                },
-                                child:CachedNetworkImage(
-                                  imageUrl: img_url+productflash.product.thumbnail_image,
-                                  placeholder: (context, url) => LoadingWidgetPulse(context),
-                                  errorWidget: (context, url, error) => Image.asset('assets/images/basic.jpg'),
-                                  width: MediaQuery.of(context).size.width,
-                                  fit: BoxFit.cover,
-                                ) ,
-                              ),
-                              Positioned(
-                                top: 12,
-                                child: Container(
-                                  height: 25,
-                                  width: 60,
-                                  color: Color(0xffF48262),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Container(
-                                        child: Text(
-                                          productflash.product.is_flash_deal.discount_type == "amount" ? "- "+NumberFormat.simpleCurrency(locale: "id_ID",decimalDigits: 0 ).format(productflash.product.is_flash_deal.discount) :productflash.product.is_flash_deal.discount.toString()+'%' ,
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                            fontFamily: "Brandon",
-                                            fontSize: 11,
-                                            fontWeight: FontWeight.w600,
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              Positioned(
-                                top: 5,
-                                right: 5,
-                                child: Icon(
-                                  Icons.favorite_border,
-                                  size: 16,
-                                  color: Color(0xffF48262),
-                                ),
-                              ),
-                            ],
+              child: SingleChildScrollView( child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                    GridView.count(
+                    childAspectRatio: 0.38,
+                    padding: EdgeInsets.fromLTRB(20.0, 0, 20.0, 10.0),
+                    shrinkWrap: true,
+                    crossAxisCount: 3,
+                    crossAxisSpacing: 5,
+                    mainAxisSpacing: 15,
+                      physics: ScrollPhysics(),
+                    children: [
+                      for(FlashSaleProduct e in flashdeal.flash_products)
+                        Container(
+                          child: MyProductFlash(
+                            productFlash: e,
+                            IsLiked: Provider.of<WishModel>(context).rawlist.firstWhere((element) => element.productId == e.product.id, orElse: () => null) != null ? true:false,
+                            onFavorit: (){
+                              if(Provider.of<AppModel>(context).loggedIn) {
+                                Provider.of<WishModel>(context).addProductToWish(e.product, Provider.of<AppModel>(context).auth.access_token);
+                              }else{
+                                Navigator.push(context,new MaterialPageRoute(
+                                  builder: (BuildContext context) => new LoginScreen(),
+                                ));
+                              }
+                            },
+                            onUnFavorit: (){
+                              if(Provider.of<AppModel>(context).loggedIn) {
+                                Provider.of<WishModel>(context).removeProductFromWish(e.product, Provider.of<AppModel>(context).auth.access_token);
+                              }else{
+                                Navigator.push(context,new MaterialPageRoute(
+                                  builder: (BuildContext context) => new LoginScreen(),
+                                ));
+                              }
+                            },
+                            onTobag: (){
+                              if(Provider.of<AppModel>(context).loggedIn){
+                                UIBlock.block(context,customLoaderChild: LoadingWidget(context));
+                                Provider.of<CartModel>(context).addProductToCart(e.product,Provider.of<AppModel>(context).auth.access_token,null).then((value){
+                                  UIBlock.unblock(context);
+                                  showAlertDialog(context,e.product);
+                                });
+                              }else{
+                                Navigator.push(context,new MaterialPageRoute(
+                                  builder: (BuildContext context) => new LoginScreen(),
+                                ));
+                              }
+                            },
                           ),
-                          Container(
-                            padding: EdgeInsets.only(top: 2, bottom: 2),
-                            color: Hexcolor('#FACAC3'),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                InkWell(
-                                  onTap: (){
-                                    Navigator.push(context, new MaterialPageRoute(
-                                      builder: (BuildContext context) => new ProductDetailsScreen(product: productflash.product,),
-                                    ));
-                                  },
-                                  child: Container(
-                                    child: Text(
-                                      "ADD TO BAG",
-                                      style: TextStyle(
-                                        fontFamily: "Brandon",
-                                        fontWeight: FontWeight.w700,
-                                        fontSize: 12,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  ),
-                                )
-                                ,
-                              ],
-                            ),
-                          ),
-                          Container(
-                            padding: EdgeInsets.only(top: 10, bottom: 5),
-                            // color: Colors.red,
-                            child: Column(
-                              children: [
-                                Container(
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Container(
-                                        child: Text(
-                                          productflash.product.brand.name,
-                                          style: TextStyle(
-                                            fontFamily: "Yeseva",
-                                            fontSize: 13,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Container(
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Container(
-                                        width: 100,
-                                        child: Text(
-                                          productflash.product.name.length > 25 ? productflash.product.name.substring(0, 23)+'...' : productflash.product.name,
-                                          style: TextStyle(
-                                            fontFamily: "Brandon",
-                                            fontSize: 13,
-                                            fontWeight: FontWeight.w300,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Container(
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Container(
-                                        child: Text(
-                                          productflash.product.home_discounted_price,
-                                          style: TextStyle(
-                                            fontFamily: "Brandon",
-                                            fontSize: 13,
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                if(productflash.product.is_flash_deal != null)
-                                Container(
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Container(
-                                        child: RichText(
-                                          text: TextSpan(
-                                            children: <TextSpan>[
-                                              TextSpan(
-                                                text: NumberFormat.simpleCurrency(locale: "id_ID",decimalDigits: 0 ).format(productflash.product.base_price),
-                                                style: TextStyle(
-                                                  fontFamily: "Brandon",
-                                                  fontSize: 11,
-                                                  fontWeight: FontWeight.w400,
-                                                  decoration: TextDecoration
-                                                      .lineThrough,
-                                                  color: Colors.black,
-                                                ),
-                                              ),
-                                              if(productflash.product.is_flash_deal.discount_type == 'percent')
-                                              TextSpan(
-                                                text: '('+productflash.product.is_flash_deal.discount.toString()+'%)',
-                                                style: TextStyle(
-                                                  fontFamily: "Brandon",
-                                                  fontSize: 11,
-                                                  fontWeight: FontWeight.w400,
-                                                  color: Color(0xffF48262),
-                                                ),
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Text.rich(TextSpan(children: <InlineSpan>[
-                                  WidgetSpan(
-                                    child: RatingBar.builder(
-                                      initialRating: productflash.product.rating,
-                                      minRating: 0,
-                                      direction: Axis.horizontal,
-                                      allowHalfRating: true,
-                                      itemCount: 5,
-                                      itemSize: 14.0,
-                                      itemBuilder: (context, index) => Icon(
-                                        Icons.favorite,
-                                        color: Color(0xffF48262),
-                                      ),
-                                      unratedColor: Color(0xffFBD2CD),
-                                    ),
-                                  ),
-                                  TextSpan(
-                                      text: '('+productflash.product.review_count.toString()+')',
-                                      style: TextStyle(
-                                        fontSize: 12,
-                                      ))
-                                ])),
-                                Container(
-                                  margin: EdgeInsets.only(top: 6, bottom: 4),
-                                  child: LinearPercentIndicator(
-                                    lineHeight: 8.0,
-                                    percent: productflash.percentase/100,
-                                    progressColor: Color(0xffF48262),
-                                  ),
-                                ),
-                                Container(
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Container(
-                                        child: Text(
-                                          "Tersisa "+productflash.qty.toString(),
-                                          style: TextStyle(
-                                            fontFamily: "Brandon",
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w300,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+                        )
+                    ],
+                  ),
+                ]
             ),
+            ),
+            )
           ],
         ),
       ),

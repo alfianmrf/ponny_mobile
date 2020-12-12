@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 
 //prod
-const base_url = "https://ponnybeaute.co.id/api/v1/";
-const img_url = "https://ponnybeaute.co.id/public/";
-const urlGlobal = "https://ponnybeaute.co.id/";
+const base_url = "http://ponnybeaute.co.id/api/v1/";
+const img_url = "http://ponnybeaute.co.id/public/";
+const urlGlobal = "http://ponnybeaute.co.id/";
 
 
 //dev
