@@ -109,22 +109,32 @@ class MyProductFlash extends StatelessWidget {
             ],
           ),
         ),
+
         Container(
           alignment: Alignment.bottomCenter,
           child: InkWell(
             onTap: (){
-              this.onTobag();
+              if(productFlash.qty>0 && product.varian.length == 0){
+                this.onTobag();
+              }else if(product.varian.length > 0){
+                Navigator.push(context, new MaterialPageRoute(
+                  builder: (BuildContext context) => new ProductDetailsScreen(product: product,),
+                ));
+              }
+              // if(productFlash.qty >0)
+              // this.onTobag();
             },
             child: Container(
             width: MediaQuery.of(context).size.width,
-            child: const Text(
-              'ADD TO BAG',
+            child: Text(
+              productFlash.qty > 0 ? "TAMBAHKAN" : "STOK HABIS" ,
               textAlign: TextAlign.center,
               style: TextStyle(color: Colors.white, fontFamily: 'Brandon'),
             ),
             color: Color(0xffF3C1B5),
           ),)
         ),
+        /*
         Container(
           alignment: Alignment.bottomCenter,
           child: Container(
@@ -136,7 +146,7 @@ class MyProductFlash extends StatelessWidget {
             ),
             color: Color(0xffC0AFA0),
           ),
-        ),
+        ),*/
         Expanded(
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 5),

@@ -90,12 +90,13 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     option.forEach((element) {
       param.addAll({"attribute_id_"+element.atributId : element.value });
     });
+    print(param);
     UIBlock.block(context,customLoaderChild: LoadingWidget(context));
     Provider.of<ProductModel>(context).getValueVariant(param).then((value){
       UIBlock.unblock(context);
       setState(() {
         varian =value;
-        print(varian.varian);
+        print(varian.stock_quantity);
       });
     }).catchError((onError){
       UIBlock.unblock(context);
@@ -138,8 +139,10 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
             children: <Widget>[
               Container(
                 margin: EdgeInsets.symmetric(horizontal: 5),
-                child: Image.network(
-                  img_url+widget.product.thumbnail_image,
+                child: CachedNetworkImage(
+                  imageUrl:  widget.product.thumbnail_image != null ? img_url+widget.product.thumbnail_image : "",
+                  placeholder: (context, url) => LoadingWidgetPulse(context),
+                  errorWidget: (context, url, error) => Image.asset('assets/images/210x265.png'),
                   width: MediaQuery.of(context).size.width*0.2,
                 ),
               ),
@@ -220,10 +223,12 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
             children: <Widget>[
               Container(
                 margin: EdgeInsets.symmetric(horizontal: 5),
-                child: Image.network(
-                  img_url+widget.product.thumbnail_image,
-                  width: MediaQuery.of(context).size.width*0.2,
-                ),
+                child: CachedNetworkImage(
+                    imageUrl:  widget.product.thumbnail_image != null ? img_url+ widget.product.thumbnail_image : "",
+                    placeholder: (context, url) => LoadingWidgetPulse(context),
+                    errorWidget: (context, url, error) => Image.asset('assets/images/210x265.png'),
+                    width: MediaQuery.of(context).size.width*0.2,
+                  )
               ),
               Container(
                 margin: EdgeInsets.symmetric(horizontal: 5),
@@ -539,12 +544,12 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   children: <Widget>[
                     Container(
                       height: MediaQuery.of(context).size.width * 1.2,
-                      child: new Swiper(
+                      child: widget.product.photos.length >0 ? new Swiper(
                         itemBuilder: (BuildContext context, int index) {
                           return new CachedNetworkImage(
                             imageUrl:  img_url+widget.product.photos[index] != null ?  img_url+widget.product.photos[index] :"",
                             placeholder: (context, url) => LoadingWidgetPulse(context),
-                            errorWidget: (context, url, error) => Image.asset('assets/images/basic.jpg'),
+                            errorWidget: (context, url, error) => Image.asset('assets/images/210x265.png'),
                             width: MediaQuery.of(context).size.width,
                             fit: BoxFit.cover,
                           );
@@ -556,7 +561,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                 color: Color(0xffE6E7E9), activeColor: Color(0xffF48262))),
                         control: null,
                         autoplay: false,
-                      ),
+                      ): Image.asset('assets/images/210x265.png',fit:BoxFit.cover ,),
                     ),
                     Padding(
                       padding: EdgeInsets.only(top: 10, left: 15, right: 15),
@@ -653,7 +658,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                       color: Colors.black,
                                       fontFamily: 'Brandon',
                                       fontSize: 16,
-                                      decoration: widget.product.is_flash_deal != null ? TextDecoration.lineThrough :null,
+                                      decoration: widget.product.is_flash_deal != null || widget.product.discount>0 ? TextDecoration.lineThrough :null,
                                     ),
                                   ),
                                   if(widget.product.is_flash_deal != null)
@@ -669,6 +674,19 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                       ),
                                     ),
                                   ),
+                                  if(widget.product.discount != null && widget.product.discount > 0 && widget.product.is_flash_deal == null)
+                                    Padding(
+                                      padding: EdgeInsets.symmetric(horizontal: 10),
+                                      child: Text(
+                                        varian != null ?  NumberFormat.simpleCurrency(locale: "id_ID",decimalDigits: 0 ).format(varian.price ) :  NumberFormat.simpleCurrency(locale: "id_ID",decimalDigits: 0 ).format(widget.product.base_discounted_price),
+                                        style: TextStyle(
+                                          color: Color(0xffF48262),
+                                          fontFamily: 'Brandon',
+                                          fontSize: 18,
+                                          decoration: TextDecoration.none,
+                                        ),
+                                      ),
+                                    ),
                                   if(widget.product.is_flash_deal != null)
                                   Container(
                                     padding: EdgeInsets.symmetric(horizontal: 7),
@@ -690,6 +708,28 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                       borderRadius: BorderRadius.circular(3),
                                     ),
                                   ),
+                                  if(widget.product.discount != null && widget.product.discount > 0 && widget.product.is_flash_deal == null)
+                                    Container(
+                                      padding: EdgeInsets.symmetric(horizontal: 7),
+                                      child:  widget.product.discount_type == "percent"? Text(
+                                        '('+widget.product.discount.toString()+'%)',
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontFamily: 'Brandon'
+                                        ),
+                                      ) : Text(
+                                        "- "+NumberFormat.simpleCurrency(locale: "id_ID",decimalDigits: 0 ).format(widget.product.discount),
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontFamily: 'Brandon'
+                                        ),
+                                      ),
+                                      decoration: BoxDecoration(
+                                        color: Color(0xffF48262),
+                                        borderRadius: BorderRadius.circular(3),
+                                      ),
+                                    ),
+
                                 ],
                               ),
                             ),
@@ -1381,8 +1421,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(7.0),
                           ),
-                          child: Text(
-                             'MASUKKAN KERANJANG',
+                          child:  Text(
+                              widget.product.currentStock >0 ||  varian != null && varian.stock_quantity > 0 ? 'MASUKKAN KERANJANG' : "STOK KOSONG ",
                             style: TextStyle(
                               fontFamily: 'Brandon',
                               fontWeight: FontWeight.w700,
@@ -1391,16 +1431,18 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                           ),
                           color: Color(0xffF48262),
                           onPressed: () {
-                            if(Provider.of<AppModel>(context).loggedIn){
-                              UIBlock.block(context,customLoaderChild: LoadingWidget(context));
-                              cardData.addProductToCart(widget.product,Provider.of<AppModel>(context).auth.access_token,varian != null ? varian:null).then((value){
-                                UIBlock.unblock(context);
-                                showAlertDialog(context);
-                              });
-                            }else{
-                              Navigator.push(context,new MaterialPageRoute(
-                                builder: (BuildContext context) => new LoginScreen(),
-                              ));
+                            if(widget.product.currentStock>0 || varian != null && varian.stock_quantity>0){
+                              if(Provider.of<AppModel>(context).loggedIn){
+                                UIBlock.block(context,customLoaderChild: LoadingWidget(context));
+                                cardData.addProductToCart(widget.product,Provider.of<AppModel>(context).auth.access_token,varian != null ? varian:null).then((value){
+                                  UIBlock.unblock(context);
+                                  showAlertDialog(context);
+                                });
+                              }else{
+                                Navigator.push(context,new MaterialPageRoute(
+                                  builder: (BuildContext context) => new LoginScreen(),
+                                ));
+                              }
                             }
                           },
                         ),

@@ -212,9 +212,9 @@ class _CartScreenState extends State<CartScreen> {
                                             .width * 0.25,
                                         padding: EdgeInsets.only(right: 7),
                                         child: CachedNetworkImage(
-                                          imageUrl: img_url+ item.product.thumbnail_image,
+                                          imageUrl:  item.product.thumbnail_image != null ? img_url+item.product.thumbnail_image:"",
                                           placeholder: (context, url) => LoadingWidgetPulse(context),
-                                          errorWidget: (context, url, error) => Image.asset('assets/images/basic.jpg'),
+                                          errorWidget: (context, url, error) => Image.asset('assets/images/210x265.png'),
                                           width: MediaQuery.of(context).size.width,
                                           fit: BoxFit.cover,
                                         ),
@@ -324,9 +324,17 @@ class _CartScreenState extends State<CartScreen> {
                                                           ),
                                                         ),
                                                         onPressed: (){
+
                                                           UIBlock.block(context,customLoaderChild: LoadingWidget(context));
                                                           value.addProductToCart(item.product,Provider.of<AppModel>(context).auth.access_token,null).then((value){
                                                             UIBlock.unblock(context);
+                                                            if(value != null && value.statusCode != 200){
+                                                              final snackBar = SnackBar(
+                                                                content: Text(value.message,style: TextStyle(color: Colors.white)),
+                                                                backgroundColor: Colors.redAccent,
+                                                              );
+                                                              scaffoldKey.currentState.showSnackBar(snackBar);
+                                                            }
                                                           });
 
                                                         },

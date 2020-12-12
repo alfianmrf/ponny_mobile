@@ -191,6 +191,7 @@ class Product{
   List<Varian> varian;
   String komposisi;
   String slug;
+  int currentStock;
 
 
 
@@ -221,7 +222,8 @@ class Product{
       this.home_discounted_price,
       this.varian,
       this.komposisi,
-      this.slug
+      this.slug,
+      this.currentStock
       );
 
 
@@ -265,7 +267,8 @@ class Product{
         parsedJson["home_discounted_price"],
         _var,
         parsedJson['komposisi'],
-        parsedJson["slug"]
+        parsedJson["slug"],
+        parsedJson["current_stock"]
     );
   }
 }
@@ -349,7 +352,7 @@ class VarianResult {
     productId = json['product_id'];
     varian = json['varian'];
     price = json['price'];
-    stock_quantity = json['quantity'];
+    stock_quantity = json['stock_quantity'];
     base_price = json["base_price"];
   }
 

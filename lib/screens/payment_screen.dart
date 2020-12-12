@@ -45,6 +45,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
         ),
         new FlatButton(
           onPressed: (){
+
             UIBlock.block(context,customLoaderChild: LoadingWidget(context));
             Provider.of<CartModel>(context).Checkout(Provider.of<AppModel>(context).auth.access_token, Provider.of<AddressModel>(context).useAddress, method).then((value) {
               if(value!= null && value.success){
@@ -69,20 +70,22 @@ class _PaymentScreenState extends State<PaymentScreen> {
               }else{
                 UIBlock.unblock(context);
                 // print(value.message);
+                Navigator.pop(context);
                 final snackBar = SnackBar(
-                  content: Text('Terjadi kesalah Pada Server, Silakan coba kembali nanti!',style: TextStyle(color: Colors.white)),
+                  content: Text(value.message,style: TextStyle(color: Colors.white)),
                   backgroundColor: Colors.redAccent,
                 );
                 scaffoldKey.currentState.showSnackBar(snackBar);
               }
             }).catchError((onError){
+              // print(onError);
               UIBlock.unblock(context);
               final snackBar = SnackBar(
-                content: Text('Terjadi kesalah Pada Server, Silakan coba kembali nanti!',style: TextStyle(color: Colors.white)),
+                content: Text(onError,style: TextStyle(color: Colors.white)),
                 backgroundColor: Colors.redAccent,
               );
               scaffoldKey.currentState.showSnackBar(snackBar);
-              print(onError);
+              // print(onError);
             });
           },
           child: new Text('Yes'),

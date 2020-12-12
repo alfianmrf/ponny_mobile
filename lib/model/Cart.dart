@@ -29,11 +29,12 @@ class CartModel with ChangeNotifier{
 
   CartModel();
 
-  Future<void> addProductToCart(Product product, String token,VarianResult variant) async
+  Future<CartResult> addProductToCart(Product product, String token,VarianResult variant) async
   {
+    CartResult result;
      int index = listCardOfitem.indexWhere((element) =>
      element.product.id == product.id);
-      var param=<String,dynamic>{};
+     var param=<String,dynamic>{};
 
      if (index < 0) {
        if(variant != null){
@@ -48,6 +49,8 @@ class CartModel with ChangeNotifier{
        print(param);
        final res = await http.post(addtocart, headers: { HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: "Bearer $token"}, body: json.encode(param));
        // print(res.body);
+       final jsonData =json.decode(res.body);
+       result = CartResult(message: jsonData["message"],statusCode: res.statusCode);
        if (res.statusCode == 200) {
          // print(res.body);
          if(variant != null){
@@ -56,10 +59,10 @@ class CartModel with ChangeNotifier{
          }else{
            listCardOfitem.add(Cart(1, product,null,product.base_discounted_price));
          }
-
          await getSummary(token);
          notifyListeners();
        }
+
      } else {
        int quantity= listCardOfitem.elementAt(index).quantity;
        param.addAll({
@@ -75,10 +78,11 @@ class CartModel with ChangeNotifier{
          await getSummary(token);
          notifyListeners();
        }
+       final jsonData =json.decode(res.body);
+       result = CartResult(message: jsonData["message"],statusCode: res.statusCode);
 
      }
-
-
+    return result;
  }
 
   Future<void> addSampleToCart(Product product, String token) async
@@ -347,9 +351,9 @@ class CartModel with ChangeNotifier{
      };
    }
    final res = await http.post(cartChekouturl, headers: { HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: "Bearer $token"},body: json.encode(param));
+   final responseJson = json.decode(res.body);
+   result= OrderResult.fromJson(responseJson);
    if (res.statusCode == 200) {
-     final responseJson = json.decode(res.body);
-     result= OrderResult.fromJson(responseJson);
      // print(responseJson);
      listCardOfitem=[];
      notifyListeners();
@@ -447,4 +451,10 @@ class Summary{
   factory Summary.fromJson(Map<String, dynamic> parsedJson){
     return Summary(parsedJson["subtotal"], parsedJson["free_shipping"], parsedJson["discount"], parsedJson["shipping"], parsedJson["total"], parsedJson["earnPoint"]);
   }
+}
+
+class CartResult{
+  String message;
+  int statusCode;
+  CartResult({this.message,this.statusCode});
 }

@@ -1,14 +1,15 @@
 import 'package:flutter/cupertino.dart';
 
 //prod
-// const base_url = "https://ponnybeaute.co.id/api/v1/";
-// const img_url = "https://ponnybeaute.co.id/public/";
-// const urlGlobal = "https://ponnybeaute.co.id/";
+const base_url = "https://ponnybeaute.co.id/api/v1/";
+const img_url = "https://ponnybeaute.co.id/public/";
+const urlGlobal = "https://ponnybeaute.co.id/";
+
 
 //dev
-const base_url = "https://ponnybeaute.revoapps.id/api/v1/";
-const img_url = "https://ponnybeaute.revoapps.id/public/";
-const urlGlobal = "https://ponnybeaute.revoapps.id//";
+// const base_url = "https://ponnybeaute.revoapps.id/api/v1/";
+// const img_url = "https://ponnybeaute.revoapps.id/public/";
+// const urlGlobal = "https://ponnybeaute.revoapps.id/";
 
 //Auth
 const loginUrl = base_url + "auth/login";

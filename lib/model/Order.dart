@@ -187,7 +187,7 @@ class Midtrans{
 
   factory Midtrans.fromJson(Map<String, dynamic> parsedJson){
     String _va_numbers;
-    if(parsedJson != null && parsedJson["payment_type"] == "bank_transfer"){
+    if(parsedJson != null && parsedJson["payment_type"] == "bank_transfer" && parsedJson["va_numbers"] != null){
       for(Map item in parsedJson["va_numbers"]){
         _va_numbers= item["bank"].toString().toUpperCase()+" Virtual \nCode: "+item["va_number"];
 

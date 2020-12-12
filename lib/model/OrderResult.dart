@@ -14,8 +14,8 @@ class OrderResult {
 
   OrderResult.fromJson(Map<String, dynamic> json) {
     message = json['message'];
-    success = json['success'];
-    emailSuccess = json['email_success'];
+    success = json['success'] != null ? json['success'] :false;
+    emailSuccess = json['email_success'] != null ? json['email_success'] :false ;
     mitransRequest = json['mitrans_request'] != null
         ? new MitransRequest.fromJson(json['mitrans_request'])
         : null;

@@ -93,6 +93,29 @@ class MyProduct extends StatelessWidget {
                         color: Color(0xffF48262),
                       )),
                 ),
+              if(product.is_flash_deal == null && product.discount>0)
+                Padding(
+                  padding: EdgeInsets.only(top: 10.0),
+                  child: Align(
+                      alignment: Alignment.topLeft,
+                      child: Container(
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 5.0),
+                          child:
+                          product.discount_type == "amount" ?
+                          Text(
+                            "- "+NumberFormat.simpleCurrency(locale: "id_ID",decimalDigits: 0 ).format(product.discount),
+                            style: TextStyle(
+                                color: Colors.white, fontFamily: 'Brandon'),
+                          ): Text(
+                            product.discount.toString()+'%',
+                            style: TextStyle(
+                                color: Colors.white, fontFamily: 'Brandon'),
+                          ),
+                        ),
+                        color: Color(0xffF48262),
+                      )),
+                ),
               LikeButton(
                 mainAxisAlignment: MainAxisAlignment.end,
                 padding: EdgeInsets.all(0),
@@ -127,16 +150,24 @@ class MyProduct extends StatelessWidget {
             ],
           ),
         ),
+
         Container(
           alignment: Alignment.bottomCenter,
           child: InkWell(
             onTap: (){
-              this.onTobag();
+              if(product.currentStock>0 && product.varian.length == 0){
+                this.onTobag();
+              }else if(product.varian.length > 0){
+                Navigator.push(context, new MaterialPageRoute(
+                  builder: (BuildContext context) => new ProductDetailsScreen(product: product,),
+                ));
+              }
+
             },
             child: Container(
               width: MediaQuery.of(context).size.width,
-              child: const Text(
-                'TAMBAHKAN',
+              child: Text(
+                product.currentStock>0 || product.varian.length>0?'TAMBAHKAN' : "STOK HABIS",
                 textAlign: TextAlign.center,
                 style: TextStyle(color: Colors.white, fontFamily: 'Brandon'),
               ),
@@ -191,6 +222,31 @@ class MyProduct extends StatelessWidget {
                     if(product.is_flash_deal.discount_type == 'percent')
                       TextSpan(
                         text: '('+product.is_flash_deal.discount.toString()+'%)',
+                        style: TextStyle(
+                          color: Color(0xffF48262),
+                          fontFamily: 'Brandon',
+                          fontSize: 12,
+                          decoration: TextDecoration.none,
+                        ),
+                      ),
+                  ]),
+            ),
+          ),
+        if(product.is_flash_deal == null && product.discount>0)
+          Center(
+            child: RichText(
+              text: TextSpan(
+                  text: NumberFormat.simpleCurrency(locale: "id_ID",decimalDigits: 0 ).format(product.base_price),
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontFamily: 'Brandon',
+                    fontSize: 12,
+                    decoration: TextDecoration.lineThrough,
+                  ),
+                  children: [
+                    if(product.discount_type == 'percent')
+                      TextSpan(
+                        text: '('+product.discount.toString()+'%)',
                         style: TextStyle(
                           color: Color(0xffF48262),
                           fontFamily: 'Brandon',

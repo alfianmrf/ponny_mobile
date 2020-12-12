@@ -251,7 +251,7 @@ class _OrderScreenState extends State<OrderScreen> {
                                             padding: EdgeInsets.only(right: 10),
                                             height: MediaQuery.of(context).size.width*0.35,
                                             child: CachedNetworkImage(
-                                              imageUrl: img_url+e.product.thumbnail_image,
+                                              imageUrl: e.product.thumbnail_image != null ? img_url+ e.product.thumbnail_image :"",
                                               placeholder: (context, url) => LoadingWidgetPulse(context),
                                               errorWidget: (context, url, error) => Image.asset('assets/images/210x265.png'),
                                               width: MediaQuery.of(context).size.width,
@@ -700,7 +700,7 @@ class _OrderScreenState extends State<OrderScreen> {
                               Container(
                                 width: 100,
                                 child: Text(
-                                  order.mitrans_val.mitrans_val,
+                                  order.mitrans_val != null ? order.mitrans_val.mitrans_val : "",
                                   style: TextStyle(
                                     fontSize: 12,
                                     fontWeight: FontWeight.w400,
