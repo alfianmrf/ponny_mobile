@@ -51,18 +51,36 @@ class _Browse_CategoryState extends State<Browse_Category> {
                 minWidth: 150.0,
                 height: 150.0,
                 child: RaisedButton(
+                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  padding: EdgeInsets.all(0),
+                  color: Colors.white,
                   onPressed: () {
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) => Skincare(category: e,)));
                   },
-                  child: Text(
-                    e.name,
-                    style: TextStyle(
-                        fontSize: 14,
-                        fontFamily: 'Brandon',
-                        fontWeight: FontWeight.w800,
-                        letterSpacing: 1,
-                        color: Hexcolor('#F48262')),
+                  child: Column(
+                    children: [
+                      Image.asset(
+                        e.id==11?'assets/images/category/kategori-peralatan.png':e.id==9?'assets/images/category/kategori-skincare.png':e.id==10?'assets/images/category/kategori-hair n makeup.png':e.id==15?'assets/images/category/kategori-masalah kulit.png':'',
+                        height: 70,
+                        width: 75,
+                        fit: BoxFit.contain,
+                      ),
+                      Container(height: 10,),
+                      Container(
+                        width: 150,
+                        child: Text(
+                          e.id==11?'PERALATAN KECANTIKAN':e.id==9?'SKINCARE':e.id==10?'HAIR & MAKE UP':e.id==15?'MASALAH KULIT':'',
+                          style: TextStyle(
+                              fontSize: 14,
+                              fontFamily: 'Brandon',
+                              fontWeight: FontWeight.w800,
+                              letterSpacing: 1,
+                              color: Hexcolor('#F48262')),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
                 shape: RoundedRectangleBorder(
@@ -84,6 +102,9 @@ class _Browse_CategoryState extends State<Browse_Category> {
                 minWidth: 150.0,
                 height: 150.0,
                 child: RaisedButton(
+                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  padding: EdgeInsets.all(0),
+                  color: Colors.white,
                   onPressed: () {
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) => Skincare()));
@@ -108,20 +129,27 @@ class _Browse_CategoryState extends State<Browse_Category> {
                 minWidth: 150.0,
                 height: 150.0,
                 child: RaisedButton(
+                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  padding: EdgeInsets.all(0),
+                  color: Colors.white,
                   onPressed: () {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
                             builder: (context) => LocalPride()));
                   },
-                  child: Text(
-                    "LOCAL PRIDE",
-                    style: TextStyle(
-                        fontSize: 13,
-                        fontFamily: 'Brandon',
-                        fontWeight: FontWeight.w800,
-                        letterSpacing: 1,
-                        color: Hexcolor('#F48262')),
+                  child: Column(
+                    children: [
+                      Text(
+                        "LOCAL PRIDE",
+                        style: TextStyle(
+                            fontSize: 13,
+                            fontFamily: 'Brandon',
+                            fontWeight: FontWeight.w800,
+                            letterSpacing: 1,
+                            color: Hexcolor('#F48262')),
+                      ),
+                    ],
                   ),
                 ),
                 shape: RoundedRectangleBorder(
@@ -146,18 +174,36 @@ class _Browse_CategoryState extends State<Browse_Category> {
               minWidth: 150.0,
               height: 150.0,
               child: RaisedButton(
+                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                padding: EdgeInsets.all(0),
+                color: Colors.white,
                 onPressed: () {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => LocalPride()));
                 },
-                child: Text(
-                  "LOCAL PRIDE",
-                  style: TextStyle(
-                      fontSize: 14,
-                      fontFamily: 'Brandon',
-                      fontWeight: FontWeight.w800,
-                      letterSpacing: 1,
-                      color: Hexcolor('#F48262')),
+                child: Column(
+                  children: [
+                    Image.asset(
+                      'assets/images/category/kategori-bangga.png',
+                      height: 70,
+                      width: 75,
+                      fit: BoxFit.contain,
+                    ),
+                    Container(height: 10,),
+                    Container(
+                      width: 150,
+                      child: Text(
+                        "BANGGA PRODUK INDONESIA",
+                        style: TextStyle(
+                            fontSize: 14,
+                            fontFamily: 'Brandon',
+                            fontWeight: FontWeight.w800,
+                            letterSpacing: 1,
+                            color: Hexcolor('#F48262')),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ],
                 ),
               ),
               shape: RoundedRectangleBorder(
@@ -170,20 +216,38 @@ class _Browse_CategoryState extends State<Browse_Category> {
               minWidth: 150.0,
               height: 150.0,
               child: RaisedButton(
+                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                padding: EdgeInsets.all(0),
+                color: Colors.white,
                 onPressed: () {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (context) => ShopSale()));
                 },
-                child: Text(
-                  "SHOP SALE",
-                  style: TextStyle(
-                      fontSize: 13,
-                      fontFamily: 'Brandon',
-                      fontWeight: FontWeight.w800,
-                      letterSpacing: 1,
-                      color: Hexcolor('#F48262')),
+                child: Column(
+                  children: [
+                    Image.asset(
+                      'assets/images/category/kategori-diskon.png',
+                      height: 70,
+                      width: 75,
+                      fit: BoxFit.contain,
+                    ),
+                    Container(height: 10,),
+                    Container(
+                      width: 150,
+                      child: Text(
+                        "DISKON",
+                        style: TextStyle(
+                            fontSize: 13,
+                            fontFamily: 'Brandon',
+                            fontWeight: FontWeight.w800,
+                            letterSpacing: 1,
+                            color: Hexcolor('#F48262')),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ],
                 ),
               ),
               shape: RoundedRectangleBorder(
@@ -206,6 +270,9 @@ class _Browse_CategoryState extends State<Browse_Category> {
               minWidth: 150.0,
               height: 150.0,
               child: RaisedButton(
+                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                padding: EdgeInsets.all(0),
+                color: Colors.white,
                 onPressed: () {
                   Navigator.push(
                       context,
@@ -247,21 +314,16 @@ class _Browse_CategoryState extends State<Browse_Category> {
           minWidth: 380.0,
           height: 60.0,
           child: RaisedButton(
+            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+            padding: EdgeInsets.all(0),
+            color: Colors.white,
             onPressed: () {
               Navigator.push(
                   context,
                   MaterialPageRoute(
                       builder: (context) => PromotionScreen()));
             },
-            child: Text(
-              "PROMOTION",
-              style: TextStyle(
-                  fontSize: 15,
-                  fontFamily: 'Brandon',
-                  fontWeight: FontWeight.w800,
-                  letterSpacing: 1,
-                  color: Hexcolor('#F48262')),
-            ),
+            child: Image.asset('assets/images/category/kategori-promosi.png', width: 110,)
           ),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(5.0),
