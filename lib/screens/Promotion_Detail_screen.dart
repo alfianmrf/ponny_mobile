@@ -33,9 +33,8 @@ class _PromotionDetailScreenState extends State<PromotionDetailScreen> {
               Navigator.pop(context);
             },
             icon: Icon(
-              Icons.arrow_back_ios,
+              Icons.arrow_back_ios_rounded,
               color: Color(0xffF48262),
-              size: 26,
             ),
           ),
           title:  Text(
