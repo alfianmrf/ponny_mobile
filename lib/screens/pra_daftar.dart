@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +16,9 @@ import 'package:firebase_auth/firebase_auth.dart' as FirebasePakage;
 import 'package:google_sign_in/google_sign_in.dart' as google;
 import 'package:ponny/util/AppId.dart';
 import 'package:provider/provider.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:uiblock/uiblock.dart';
+import 'package:http/http.dart' as http;
 
 class PraDaftarScreen extends StatefulWidget {
   static const String id = "pradaftar_Screen";
@@ -55,6 +59,58 @@ class _PraDaftarScreen extends State<PraDaftarScreen> {
       return result;
     }
     return result;
+  }
+    Future<bool> signInWithApple() async {
+    await Firebase.initializeApp();
+    bool result = false;
+   
+    final credential = await SignInWithApple.getAppleIDCredential(
+      scopes: [
+        AppleIDAuthorizationScopes.email,
+        AppleIDAuthorizationScopes.fullName,
+      ],
+      webAuthenticationOptions: WebAuthenticationOptions(
+        // TODO: Set the `clientId` and `redirectUri` arguments to the values you entered in the Apple Developer portal during the setup
+        clientId: 'app.jcurve.ponny-beaute-indonesia',
+        redirectUri: Uri.parse(
+          'https://myponnybeaute.firebaseapp.com/__/auth/handler',
+        ),
+      ),
+    );
+
+    // This is the endpoint that will convert an authorization code obtained
+    // via Sign in with Apple into a session in your system
+    final signInWithAppleEndpoint = Uri(
+      scheme: 'https',
+      host: 'myponnybeaute.firebaseapp.com',
+      path: '/__/auth/handler',
+      queryParameters: <String, String>{
+        'code': credential.authorizationCode,
+        'firstName': credential.givenName,
+        'lastName': credential.familyName,
+        'useBundleId': Platform.isIOS || Platform.isMacOS ? 'true' : 'false',
+        if (credential.state != null) 'state': credential.state,
+      },
+    );
+
+    final session = await http.Client().post(
+      signInWithAppleEndpoint,
+    );
+
+    // If we got this far, a session based on the Apple ID credential has been created in your system,
+    // and you can now set this as the app's session
+    if(session.statusCode==200){
+       var param = {
+        "email": credential.email,
+        "name": "${credential.givenName} ${credential.familyName}",
+        "provider_id": credential.authorizationCode,
+      };
+      result = await Provider.of<AppModel>(context).setAuthSocial(param);
+
+      print('signInWithApple succeeded: ${session.statusCode}');
+
+      return result;
+    }
   }
 
   Future<bool> signInWithTwitter() async {
@@ -644,6 +700,35 @@ class _PraDaftarScreen extends State<PraDaftarScreen> {
                 ],
               ),
             ),
+            Platform.isIOS
+                          ? Container(
+                              margin: EdgeInsets.symmetric(
+                                  vertical: 5, horizontal: 75),
+                              child: SignInWithAppleButton(
+                                onPressed: () async {
+                                  UIBlock.block(context,
+                                      customLoaderChild:
+                                          LoadingWidgetFadingCircle(context));
+                                  signInWithApple().then((value) {
+                                    UIBlock.unblock(context);
+                                    if (value) {
+                                      Navigator.pushNamedAndRemoveUntil(
+                                          context, HomeScreen.id, (_) => false);
+                                    } else {
+                                      scaffoldKey.currentState
+                                          .showSnackBar(snackBarError);
+                                    }
+                                  }).catchError((onError) {
+                                    UIBlock.unblock(context);
+                                    scaffoldKey.currentState
+                                        .showSnackBar(snackBarError);
+                                  });
+                                },
+                              ),
+                            )
+                          : Container(
+                              height: 50,
+                            ),
             Container(
               height: 50,
             ),
