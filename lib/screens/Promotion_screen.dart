@@ -65,7 +65,7 @@ class _PromotionScreenState extends State<PromotionScreen> {
         elevation: 0.0,
         leading: IconButton(
           onPressed: (){
-            Navigator.pop(context,false);
+            Navigator.pop(context);
           },
           icon: Icon(
             Icons.arrow_back_ios_rounded,
