@@ -28,6 +28,7 @@ class _Browse_Skin_GuruState extends State<Browse_Skin_Guru> {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => Skinklopedia()));
                 },
+                color: Colors.white,
                 child: Column(
                   children: [
                     Image.asset("assets/images/bb-skinklopedia.png", width: 80,),
@@ -61,6 +62,7 @@ class _Browse_Skin_GuruState extends State<Browse_Skin_Guru> {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => SkinTypeScreen()));
                 },
+                color: Colors.white,
                 child: Column(
                   children: [
                     Image.asset("assets/images/bb-jenis kulit.png", width: 80,),
@@ -95,7 +97,7 @@ class _Browse_Skin_GuruState extends State<Browse_Skin_Guru> {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => Blog(category: 0,tag: "ALL",)));
                 },
-                
+                color: Colors.white,
                 child: Container(padding: EdgeInsets.symmetric(horizontal: 50), child: Image.asset("assets/images/blogTitle.png"))),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(5.0),
