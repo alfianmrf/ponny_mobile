@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_twitter_login/flutter_twitter_login.dart';
 import 'package:google_sign_in/google_sign_in.dart' as google;
 import 'package:hexcolor/hexcolor.dart';
@@ -26,8 +25,7 @@ import 'package:uiblock/uiblock.dart';
 import 'package:ponny/util/globalUrl.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart' as FirebasePakage;
-
-
+import 'package:firebase_auth/firebase_auth.dart';
 
 class LoginScreen extends StatefulWidget {
   static const String id = "login_Screen";
@@ -39,7 +37,8 @@ class _LoginStateScreen extends State<LoginScreen> {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   bool _validate = false;
-  final FirebasePakage.FirebaseAuth _auth = FirebasePakage.FirebaseAuth.instance;
+  final FirebasePakage.FirebaseAuth _auth =
+      FirebasePakage.FirebaseAuth.instance;
   final google.GoogleSignIn googleSignIn = google.GoogleSignIn();
 
   final myemail = TextEditingController();
@@ -60,38 +59,46 @@ class _LoginStateScreen extends State<LoginScreen> {
       setState(() {
         _validate = false;
       });
-    }else{
-      UIBlock.block(context,customLoaderChild: LoadingWidget(context));
-      var param ={
-        "email":myemail.text,
-        "password":mypass.text
-      };
+    } else {
+      UIBlock.block(context, customLoaderChild: LoadingWidget(context));
+      var param = {"email": myemail.text, "password": mypass.text};
 
-      Provider.of<AppModel>(context).setAuth(param).then((value){
+      Provider.of<AppModel>(context).setAuth(param).then((value) {
         UIBlock.unblock(context);
-        if(value.status == 200){
-          Navigator.pushReplacement(context,new MaterialPageRoute(
-            builder: (BuildContext context) =>  new AccountScreen(),
-          ));
-        }else if(value.status == 401){
+        if (value.status == 200) {
+          Navigator.pushReplacement(
+              context,
+              new MaterialPageRoute(
+                builder: (BuildContext context) => new AccountScreen(),
+              ));
+        } else if (value.status == 401) {
           showDialog(
               context: context,
               builder: (BuildContext context) {
                 return AlertDialog(
                   content: Text(value.message),
-                  actions:<Widget> [
-                    FlatButton (
+                  actions: <Widget>[
+                    FlatButton(
                       child: Text('Kirim Ulang verifikasi'),
                       onPressed: () {
-                        UIBlock.block(context,customLoaderChild: LoadingWidget(context));
-                        http.post(kirimUlangVerifikasi,headers: { HttpHeaders.contentTypeHeader: 'application/json' },body: json.encode({ "email":myemail.text })).then((value){
+                        UIBlock.block(context,
+                            customLoaderChild: LoadingWidget(context));
+                        http
+                            .post(kirimUlangVerifikasi,
+                                headers: {
+                                  HttpHeaders.contentTypeHeader:
+                                      'application/json'
+                                },
+                                body: json.encode({"email": myemail.text}))
+                            .then((value) {
                           UIBlock.unblock(context);
-                          if(value.statusCode == 200){
+                          if (value.statusCode == 200) {
                             UIBlock.unblock(context);
                             // Navigator.pop(context);
-                            scaffoldKey.currentState.showSnackBar(snackBarSuccess);
+                            scaffoldKey.currentState
+                                .showSnackBar(snackBarSuccess);
                           }
-                        }).catchError((onError){
+                        }).catchError((onError) {
                           UIBlock.unblock(context);
                           scaffoldKey.currentState.showSnackBar(snackBarError);
                         });
@@ -100,14 +107,14 @@ class _LoginStateScreen extends State<LoginScreen> {
                   ],
                 );
               });
-        }else{
+        } else {
           final snackBar = SnackBar(
-            content: Text(value.message,style: TextStyle(color: Colors.white)),
+            content: Text(value.message, style: TextStyle(color: Colors.white)),
             backgroundColor: Colors.redAccent,
           );
           scaffoldKey.currentState.showSnackBar(snackBar);
         }
-      }).catchError((onError){
+      }).catchError((onError) {
         scaffoldKey.currentState.showSnackBar(snackBarError);
       });
     }
@@ -115,24 +122,28 @@ class _LoginStateScreen extends State<LoginScreen> {
 
   Future<bool> signInWithGoogle() async {
     await Firebase.initializeApp();
-    bool result =false;
+    bool result = false;
 
-    final google.GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
-    final google.GoogleSignInAuthentication googleSignInAuthentication = await googleSignInAccount.authentication;
+    final google.GoogleSignInAccount googleSignInAccount =
+        await googleSignIn.signIn();
+    final google.GoogleSignInAuthentication googleSignInAuthentication =
+        await googleSignInAccount.authentication;
 
-    final FirebasePakage.AuthCredential credential = FirebasePakage.GoogleAuthProvider.credential(
+    final FirebasePakage.AuthCredential credential =
+        FirebasePakage.GoogleAuthProvider.credential(
       accessToken: googleSignInAuthentication.accessToken,
       idToken: googleSignInAuthentication.idToken,
     );
 
-    final FirebasePakage.UserCredential authResult = await _auth.signInWithCredential(credential);
+    final FirebasePakage.UserCredential authResult =
+        await _auth.signInWithCredential(credential);
     final FirebasePakage.User user = authResult.user;
 
-    if (user != null ) {
+    if (user != null) {
       var param = {
-        "email" : user.email,
-        "name":user.displayName,
-        "provider_id":user.uid
+        "email": user.email,
+        "name": user.displayName,
+        "provider_id": user.uid
       };
       result = await Provider.of<AppModel>(context).setAuthSocial(param);
 
@@ -143,15 +154,96 @@ class _LoginStateScreen extends State<LoginScreen> {
     return result;
   }
 
+  Future<bool> signInWithApple() async {
+    await Firebase.initializeApp();
+    bool result = false;
+    // final appleIdCredential = await SignInWithApple.getAppleIDCredential(
+    //   scopes: [
+    //     AppleIDAuthorizationScopes.email,
+    //     AppleIDAuthorizationScopes.fullName,
+    //   ],
+    // );
+    // final oAuthProvider = OAuthProvider('apple.com');
+    // final credential = oAuthProvider.credential(
+    //   idToken: appleIdCredential.identityToken,
+    //   accessToken: appleIdCredential.authorizationCode,
+    // );
+    // final FirebasePakage.UserCredential authResult =
+    //     await FirebaseAuth.instance.signInWithCredential(credential);
+    // print(authResult);
+    // final FirebasePakage.User user = authResult.user;
+    // if (user != null) {
+    //   var param = {
+    //     "email": user.email,
+    //     "name": user.displayName,
+    //     "provider_id": user.uid
+    //   };
+    //   result = await Provider.of<AppModel>(context).setAuthSocial(param);
+
+    //   print('signInWithApple succeeded: $user');
+
+    //   return result;
+    // }
+
+    // return result;
+    final credential = await SignInWithApple.getAppleIDCredential(
+      scopes: [
+        AppleIDAuthorizationScopes.email,
+        AppleIDAuthorizationScopes.fullName,
+      ],
+      webAuthenticationOptions: WebAuthenticationOptions(
+        // TODO: Set the `clientId` and `redirectUri` arguments to the values you entered in the Apple Developer portal during the setup
+        clientId: 'app.jcurve.ponny-beaute-indonesia',
+        redirectUri: Uri.parse(
+          'https://myponnybeaute.firebaseapp.com/__/auth/handler',
+        ),
+      ),
+    );
+
+    // This is the endpoint that will convert an authorization code obtained
+    // via Sign in with Apple into a session in your system
+    final signInWithAppleEndpoint = Uri(
+      scheme: 'https',
+      host: 'myponnybeaute.firebaseapp.com',
+      path: '/__/auth/handler',
+      queryParameters: <String, String>{
+        'code': credential.authorizationCode,
+        'firstName': credential.givenName,
+        'lastName': credential.familyName,
+        'useBundleId': Platform.isIOS || Platform.isMacOS ? 'true' : 'false',
+        if (credential.state != null) 'state': credential.state,
+      },
+    );
+
+    final session = await http.Client().post(
+      signInWithAppleEndpoint,
+    );
+
+    // If we got this far, a session based on the Apple ID credential has been created in your system,
+    // and you can now set this as the app's session
+    if(session.statusCode==200){
+       var param = {
+        "email": credential.email,
+        "name": "${credential.givenName} ${credential.familyName}",
+        "provider_id": credential.authorizationCode,
+      };
+      result = await Provider.of<AppModel>(context).setAuthSocial(param);
+
+      print('signInWithApple succeeded: ${session.statusCode}');
+
+      return result;
+    }
+  }
+
   Future<bool> signInWithTwitter() async {
     // Create a TwitterLogin instance
-    bool result =false;
+    bool result = false;
     final TwitterLogin twitterLogin = new TwitterLogin(
       consumerKey: TWITTER_CLIENT_ID,
       consumerSecret: TWITTER_CLIENT_SECRET,
     );
-    final twitterStatus =await twitterLogin.isSessionActive;
-    if(twitterStatus) await twitterLogin.logOut();
+    final twitterStatus = await twitterLogin.isSessionActive;
+    if (twitterStatus) await twitterLogin.logOut();
     // Trigger the sign-in flow
     final TwitterLoginResult loginResult = await twitterLogin.authorize();
     print(loginResult.errorMessage);
@@ -160,19 +252,20 @@ class _LoginStateScreen extends State<LoginScreen> {
     final TwitterSession twitterSession = loginResult.session;
 
     // Create a credential from the access token
-    final AuthCredential twitterAuthCredential =
-    TwitterAuthProvider.credential(accessToken: twitterSession.token, secret: twitterSession.secret);
+    final AuthCredential twitterAuthCredential = TwitterAuthProvider.credential(
+        accessToken: twitterSession.token, secret: twitterSession.secret);
 
     // Once signed in, return the UserCredential
-     final users = await FirebaseAuth.instance.signInWithCredential(twitterAuthCredential);
-     var user = users.user.providerData[0];
+    final users =
+        await FirebaseAuth.instance.signInWithCredential(twitterAuthCredential);
+    var user = users.user.providerData[0];
 
     print('$user');
-    if (user != null ) {
+    if (user != null) {
       var param = {
-        "email" : user.email,
-        "name":user.displayName,
-        "provider_id":user.uid
+        "email": user.email,
+        "name": user.displayName,
+        "provider_id": user.uid
       };
       print(param);
       result = await Provider.of<AppModel>(context).setAuthSocial(param);
@@ -182,10 +275,8 @@ class _LoginStateScreen extends State<LoginScreen> {
       return result;
     }
 
-
     return result;
   }
-
 
   Future<void> signOutGoogle() async {
     await googleSignIn.signOut();
@@ -193,41 +284,42 @@ class _LoginStateScreen extends State<LoginScreen> {
     print("User Signed Out");
   }
 
-  Future<void> signInWithFacebook() async {
-    //Trigger the sign-in flow
-    final  result = await FacebookAuth.instance.login();
+  // Future<void> signInWithFacebook() async {
+  //   //Trigger the sign-in flow
+  //   final result = await FacebookAuth.instance.login();
 
-    // Create a credential from the access token
-    final FacebookAuthCredential facebookAuthCredential =
-    FacebookAuthProvider.credential(result.token);
-    final Facebookuser = await FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
-    print(Facebookuser.user.uid);
-    // Once signed in, return the UserCredential
-    // return Facebookuser;
-    // final FacebookLoginResult result = await facebookSignIn.logIn(['email']);
-    //
-    // switch (result.status) {
-    //   case FacebookLoginStatus.loggedIn:
-    //     final FacebookAccessToken accessToken = result.accessToken;
-    //     print('''
-    //      Logged in!
-    //
-    //      Token: ${accessToken.token}
-    //      User id: ${accessToken.userId}
-    //      Expires: ${accessToken.expires}
-    //      Permissions: ${accessToken.permissions}
-    //      Declined permissions: ${accessToken.declinedPermissions}
-    //      ''');
-    //     break;
-    //   case FacebookLoginStatus.cancelledByUser:
-    //     print('Login cancelled by the user.');
-    //     break;
-    //   case FacebookLoginStatus.error:
-    //     print('Something went wrong with the login process.\n'
-    //         'Here\'s the error Facebook gave us: ${result.errorMessage}');
-    //     break;
-    // }
-  }
+  //   // Create a credential from the access token
+  //   final FacebookAuthCredential facebookAuthCredential =
+  //       FacebookAuthProvider.credential(result.token);
+  //   final Facebookuser = await FirebaseAuth.instance
+  //       .signInWithCredential(facebookAuthCredential);
+  //   print(Facebookuser.user.uid);
+  //   // Once signed in, return the UserCredential
+  //   // return Facebookuser;
+  //   // final FacebookLoginResult result = await facebookSignIn.logIn(['email']);
+  //   //
+  //   // switch (result.status) {
+  //   //   case FacebookLoginStatus.loggedIn:
+  //   //     final FacebookAccessToken accessToken = result.accessToken;
+  //   //     print('''
+  //   //      Logged in!
+  //   //
+  //   //      Token: ${accessToken.token}
+  //   //      User id: ${accessToken.userId}
+  //   //      Expires: ${accessToken.expires}
+  //   //      Permissions: ${accessToken.permissions}
+  //   //      Declined permissions: ${accessToken.declinedPermissions}
+  //   //      ''');
+  //   //     break;
+  //   //   case FacebookLoginStatus.cancelledByUser:
+  //   //     print('Login cancelled by the user.');
+  //   //     break;
+  //   //   case FacebookLoginStatus.error:
+  //   //     print('Something went wrong with the login process.\n'
+  //   //         'Here\'s the error Facebook gave us: ${result.errorMessage}');
+  //   //     break;
+  //   // }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -331,7 +423,10 @@ class _LoginStateScreen extends State<LoginScreen> {
                   child: Column(
                     children: <Widget>[
                       Container(
-                        margin: EdgeInsets.only(left: 20.0, right: 20.0,),
+                        margin: EdgeInsets.only(
+                          left: 20.0,
+                          right: 20.0,
+                        ),
                         child: TextFormField(
                           controller: myemail,
                           decoration: InputDecoration(
@@ -368,7 +463,10 @@ class _LoginStateScreen extends State<LoginScreen> {
                         height: 20.0,
                       ),
                       Container(
-                        margin: EdgeInsets.only(left: 20.0, right: 20.0,),
+                        margin: EdgeInsets.only(
+                          left: 20.0,
+                          right: 20.0,
+                        ),
                         child: TextFormField(
                           controller: mypass,
                           obscureText: true,
@@ -438,10 +536,13 @@ class _LoginStateScreen extends State<LoginScreen> {
                       Container(
                         margin: EdgeInsets.only(top: 10.0),
                         child: GestureDetector(
-                          onTap: (){
-                            Navigator.push(context, new MaterialPageRoute(
-                              builder: (BuildContext context) => new LupaPasswordScreen(),
-                            ));
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                new MaterialPageRoute(
+                                  builder: (BuildContext context) =>
+                                      new LupaPasswordScreen(),
+                                ));
                           },
                           child: Text(
                             'Lupa Password ?',
@@ -512,7 +613,8 @@ class _LoginStateScreen extends State<LoginScreen> {
                                 ),
                                 child: IntrinsicHeight(
                                   child: Row(
-                                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.stretch,
                                     children: [
                                       Expanded(
                                         flex: 1,
@@ -527,30 +629,37 @@ class _LoginStateScreen extends State<LoginScreen> {
                                           ),
                                           child: IconButton(
                                             onPressed: () {},
-                                            icon: Image.asset("assets/images/googleLogo.png"),
+                                            icon: Image.asset(
+                                                "assets/images/googleLogo.png"),
                                           ),
                                         ),
                                       ),
                                       Expanded(
                                         flex: 2,
                                         child: FlatButton(
-                                          onPressed: ()  {
-                                            UIBlock.block(context,customLoaderChild: LoadingWidgetFadingCircle(context));
+                                          onPressed: () {
+                                            UIBlock.block(context,
+                                                customLoaderChild:
+                                                    LoadingWidgetFadingCircle(
+                                                        context));
                                             signInWithGoogle().then((value) {
                                               UIBlock.unblock(context);
-                                              if(value){
-                                                Navigator.pushNamedAndRemoveUntil(
-                                                    context,
-                                                    HomeScreen.id,(_) => false
-                                                );
-                                              }else{
-                                                scaffoldKey.currentState.showSnackBar(snackBarError);
+                                              if (value) {
+                                                Navigator
+                                                    .pushNamedAndRemoveUntil(
+                                                        context,
+                                                        HomeScreen.id,
+                                                        (_) => false);
+                                              } else {
+                                                scaffoldKey.currentState
+                                                    .showSnackBar(
+                                                        snackBarError);
                                               }
-                                            }).catchError((onError){
+                                            }).catchError((onError) {
                                               UIBlock.unblock(context);
-                                              scaffoldKey.currentState.showSnackBar(snackBarError);
+                                              scaffoldKey.currentState
+                                                  .showSnackBar(snackBarError);
                                             });
-
                                           },
                                           child: SizedBox(
                                             width: double.infinity,
@@ -575,89 +684,89 @@ class _LoginStateScreen extends State<LoginScreen> {
                           ],
                         ),
                       ),
-                      /*Container(
-                        margin: EdgeInsets.symmetric(vertical: 5),
-                        child: Row(
-                          children: [
-                            Expanded(flex: 1, child: Container()),
-                            Expanded(
-                              flex: 3,
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                    color: Hexcolor('#F48262'),
-                                  ),
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: IntrinsicHeight(
-                                  child: Row(
-                                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                                    children: [
-                                      Expanded(
-                                        flex: 1,
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            border: Border(
-                                              right: BorderSide(
-                                                width: 1,
-                                                color: Hexcolor('#F48262'),
-                                              ),
-                                            ),
-                                          ),
-                                          child: IconButton(
-                                            onPressed: () {},
-                                            icon: Image.asset("assets/images/facebookLogo.png"),
-                                          ),
-                                        ),
-                                      ),
-                                      Expanded(
-                                        flex: 2,
-                                        child: FlatButton(
-                                          onPressed: () async {
-                                            // final  result = await FacebookAuth.instance.login();
-                                            FacebookAuth.instance.login().then((value){
-                                              print(value);
+                      // /*Container(
+                      //   margin: EdgeInsets.symmetric(vertical: 5),
+                      //   child: Row(
+                      //     children: [
+                      //       Expanded(flex: 1, child: Container()),
+                      //       Expanded(
+                      //         flex: 3,
+                      //         child: Container(
+                      //           decoration: BoxDecoration(
+                      //             border: Border.all(
+                      //               color: Hexcolor('#F48262'),
+                      //             ),
+                      //             borderRadius: BorderRadius.circular(10),
+                      //           ),
+                      //           child: IntrinsicHeight(
+                      //             child: Row(
+                      //               crossAxisAlignment: CrossAxisAlignment.stretch,
+                      //               children: [
+                      //                 Expanded(
+                      //                   flex: 1,
+                      //                   child: Container(
+                      //                     decoration: BoxDecoration(
+                      //                       border: Border(
+                      //                         right: BorderSide(
+                      //                           width: 1,
+                      //                           color: Hexcolor('#F48262'),
+                      //                         ),
+                      //                       ),
+                      //                     ),
+                      //                     child: IconButton(
+                      //                       onPressed: () {},
+                      //                       icon: Image.asset("assets/images/facebookLogo.png"),
+                      //                     ),
+                      //                   ),
+                      //                 ),
+                      //                 Expanded(
+                      //                   flex: 2,
+                      //                   child: FlatButton(
+                      //                     onPressed: () async {
+                      //                       // final  result = await FacebookAuth.instance.login();
+                      //                       FacebookAuth.instance.login().then((value){
+                      //                         print(value);
 
-                                            }).catchError((onError){
-                                              print(onError);
-                                            });
+                      //                       }).catchError((onError){
+                      //                         print(onError);
+                      //                       });
 
-                                            // Create a credential from the access token
-                                            // final FacebookAuthCredential facebookAuthCredential =
-                                            // FacebookAuthProvider.credential(result.token);
-                                            // final Facebookuser = await FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
-                                            // print(Facebookuser.user.uid);
-                                            // print("facebook");
-                                            // UIBlock.block(context,customLoaderChild: LoadingWidgetFadingCircle(context));
-                                            // signInWithFacebook().then((value) {
-                                            //   UIBlock.unblock(context);
-                                            // }).catchError((onError){
-                                            //   UIBlock.unblock(context);
-                                            // });
-                                          },
-                                          child: SizedBox(
-                                            width: double.infinity,
-                                            child: Text(
-                                              "FACEBOOK",
-                                              textAlign: TextAlign.left,
-                                              style: TextStyle(
-                                                  fontSize: 18,
-                                                  fontFamily: 'Brandon',
-                                                  fontWeight: FontWeight.w800,
-                                                  color: Hexcolor('#F48262')),
-                                            ),
-                                          ),
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Expanded(flex: 1, child: Container()),
-                          ],
-                        ),
-                      ),*/
+                      //                       // Create a credential from the access token
+                      //                       // final FacebookAuthCredential facebookAuthCredential =
+                      //                       // FacebookAuthProvider.credential(result.token);
+                      //                       // final Facebookuser = await FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
+                      //                       // print(Facebookuser.user.uid);
+                      //                       // print("facebook");
+                      //                       // UIBlock.block(context,customLoaderChild: LoadingWidgetFadingCircle(context));
+                      //                       // signInWithFacebook().then((value) {
+                      //                       //   UIBlock.unblock(context);
+                      //                       // }).catchError((onError){
+                      //                       //   UIBlock.unblock(context);
+                      //                       // });
+                      //                     },
+                      //                     child: SizedBox(
+                      //                       width: double.infinity,
+                      //                       child: Text(
+                      //                         "FACEBOOK",
+                      //                         textAlign: TextAlign.left,
+                      //                         style: TextStyle(
+                      //                             fontSize: 18,
+                      //                             fontFamily: 'Brandon',
+                      //                             fontWeight: FontWeight.w800,
+                      //                             color: Hexcolor('#F48262')),
+                      //                       ),
+                      //                     ),
+                      //                   ),
+                      //                 )
+                      //               ],
+                      //             ),
+                      //           ),
+                      //         ),
+                      //       ),
+                      //       Expanded(flex: 1, child: Container()),
+                      //     ],
+                      //   ),
+                      // ),*/
                       Container(
                         margin: EdgeInsets.symmetric(vertical: 5),
                         child: Row(
@@ -674,7 +783,8 @@ class _LoginStateScreen extends State<LoginScreen> {
                                 ),
                                 child: IntrinsicHeight(
                                   child: Row(
-                                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.stretch,
                                     children: [
                                       Expanded(
                                         flex: 1,
@@ -689,7 +799,8 @@ class _LoginStateScreen extends State<LoginScreen> {
                                           ),
                                           child: IconButton(
                                             onPressed: () {},
-                                            icon: Image.asset("assets/images/twitter.png"),
+                                            icon: Image.asset(
+                                                "assets/images/twitter.png"),
                                           ),
                                         ),
                                       ),
@@ -697,22 +808,28 @@ class _LoginStateScreen extends State<LoginScreen> {
                                         flex: 2,
                                         child: FlatButton(
                                           onPressed: () {
-                                            UIBlock.block(context,customLoaderChild: LoadingWidgetFadingCircle(context));
+                                            UIBlock.block(context,
+                                                customLoaderChild:
+                                                    LoadingWidgetFadingCircle(
+                                                        context));
                                             signInWithTwitter().then((value) {
                                               UIBlock.unblock(context);
-                                              if(value){
-                                                Navigator.pushNamedAndRemoveUntil(
-                                                    context,
-                                                    HomeScreen.id,(_) => false
-                                                );
-                                              }else{
-                                                scaffoldKey.currentState.showSnackBar(snackBarError);
+                                              if (value) {
+                                                Navigator
+                                                    .pushNamedAndRemoveUntil(
+                                                        context,
+                                                        HomeScreen.id,
+                                                        (_) => false);
+                                              } else {
+                                                scaffoldKey.currentState
+                                                    .showSnackBar(
+                                                        snackBarError);
                                               }
-                                            }).catchError((onError){
+                                            }).catchError((onError) {
                                               UIBlock.unblock(context);
-                                              scaffoldKey.currentState.showSnackBar(snackBarError);
+                                              scaffoldKey.currentState
+                                                  .showSnackBar(snackBarError);
                                             });
-
                                           },
                                           child: SizedBox(
                                             width: double.infinity,
@@ -737,7 +854,7 @@ class _LoginStateScreen extends State<LoginScreen> {
                           ],
                         ),
                       ),
-                      
+
                       Container(
                         margin: EdgeInsets.symmetric(vertical: 5),
                         child: Row(
@@ -754,7 +871,8 @@ class _LoginStateScreen extends State<LoginScreen> {
                                 ),
                                 child: IntrinsicHeight(
                                   child: Row(
-                                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.stretch,
                                     children: [
                                       Expanded(
                                         flex: 1,
@@ -772,7 +890,8 @@ class _LoginStateScreen extends State<LoginScreen> {
                                               Navigator.push(
                                                 context,
                                                 MaterialPageRoute(
-                                                  builder: (context) => LoginOTP(),
+                                                  builder: (context) =>
+                                                      LoginOTP(),
                                                 ),
                                               );
                                             },
@@ -790,7 +909,8 @@ class _LoginStateScreen extends State<LoginScreen> {
                                             Navigator.push(
                                               context,
                                               MaterialPageRoute(
-                                                builder: (context) => LoginOTP(),
+                                                builder: (context) =>
+                                                    LoginOTP(),
                                               ),
                                             );
                                           },
@@ -817,66 +937,35 @@ class _LoginStateScreen extends State<LoginScreen> {
                           ],
                         ),
                       ),
-                      
-                      Container(
-                        margin: EdgeInsets.symmetric(vertical: 5,horizontal:75),
-                        child: SignInWithAppleButton(
-                          onPressed: () async {
-                            final credential =
-                                await SignInWithApple.getAppleIDCredential(
-                              scopes: [
-                                AppleIDAuthorizationScopes.email,
-                                AppleIDAuthorizationScopes.fullName,
-                              ],
-                              webAuthenticationOptions:
-                                  WebAuthenticationOptions(
-                                // TODO: Set the `clientId` and `redirectUri` arguments to the values you entered in the Apple Developer portal during the setup
-                                clientId:
-                                    'com.aboutyou.dart_packages.sign_in_with_apple.example',
-                                redirectUri: Uri.parse(
-                                  'https://flutter-sign-in-with-apple-example.glitch.me/callbacks/sign_in_with_apple',
-                                ),
+                      Platform.isIOS
+                          ? Container(
+                              margin: EdgeInsets.symmetric(
+                                  vertical: 5, horizontal: 75),
+                              child: SignInWithAppleButton(
+                                onPressed: () async {
+                                  UIBlock.block(context,
+                                      customLoaderChild:
+                                          LoadingWidgetFadingCircle(context));
+                                  signInWithApple().then((value) {
+                                    UIBlock.unblock(context);
+                                    if (value) {
+                                      Navigator.pushNamedAndRemoveUntil(
+                                          context, HomeScreen.id, (_) => false);
+                                    } else {
+                                      scaffoldKey.currentState
+                                          .showSnackBar(snackBarError);
+                                    }
+                                  }).catchError((onError) {
+                                    UIBlock.unblock(context);
+                                    scaffoldKey.currentState
+                                        .showSnackBar(snackBarError);
+                                  });
+                                },
                               ),
-                              // TODO: Remove these if you have no need for them
-                              nonce: 'example-nonce',
-                              state: 'example-state',
-                            );
-
-                            print(credential);
-
-                            // This is the endpoint that will convert an authorization code obtained
-                            // via Sign in with Apple into a session in your system
-                            final signInWithAppleEndpoint = Uri(
-                              scheme: 'https',
-                              host:
-                                  'flutter-sign-in-with-apple-example.glitch.me',
-                              path: '/sign_in_with_apple',
-                              queryParameters: <String, String>{
-                                'code': credential.authorizationCode,
-                                'firstName': credential.givenName,
-                                'lastName': credential.familyName,
-                                'useBundleId':
-                                    Platform.isIOS || Platform.isMacOS
-                                        ? 'true'
-                                        : 'false',
-                                if (credential.state != null)
-                                  'state': credential.state,
-                              },
-                            );
-
-                            final session = await http.Client().post(
-                              signInWithAppleEndpoint,
-                            );
-
-                            // If we got this far, a session based on the Apple ID credential has been created in your system,
-                            // and you can now set this as the app's session
-                            print(session.statusCode);
-                          },
-                        ),
-                      ),
-                      Container(
-                        height: 50,
-                      ),
+                            )
+                          : Container(
+                              height: 50,
+                            ),
                     ],
                   ),
                 ),
@@ -888,4 +977,3 @@ class _LoginStateScreen extends State<LoginScreen> {
     );
   }
 }
-

@@ -109,6 +109,8 @@ import 'package:ponny/screens/account/hubungi_kami_screen.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  
+
   runApp(
     MultiProvider(
       providers: [
@@ -123,6 +125,7 @@ Future<void> main() async {
         ChangeNotifierProvider(create: (context) => VoucherModel()),
         ChangeNotifierProvider(create: (context) => ChatEmail()),
         ChangeNotifierProvider(create: (context) => PostandComment()),
+       
       ],
       child: MyApp(),
     ),
@@ -135,12 +138,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      builder: (BuildContext context, Widget child){
+      builder: (BuildContext context, Widget child) {
         final MediaQueryData data = MediaQuery.of(context);
         return MediaQuery(
-          data: data.copyWith(
-              textScaleFactor: 1
-          ),
+          data: data.copyWith(textScaleFactor: 1),
           child: child,
         );
       },
