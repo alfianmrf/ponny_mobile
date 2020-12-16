@@ -243,7 +243,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                   ),
                                 ),
                               ),
-                              /*InkWell(
+                              InkWell(
                                 onTap: () {
                                   chekOut(context,"mt_tf_bni");
                                 },
@@ -278,7 +278,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                     ],
                                   ),
                                 ),
-                              ), */
+                              ),
                               InkWell(
                                 onTap: () {
                                   chekOut(context,"mt_tf_bri");
