@@ -331,154 +331,155 @@ class _HomeScreenState extends State<HomeScreen> {
           extendBodyBehindAppBar: true,
           appBar: PreferredSize(
             preferredSize: Size.fromHeight(100.0),
-            child: Column(
-              children: [
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  padding: EdgeInsets.symmetric(vertical: 5),
-                  margin: EdgeInsets.only(top:MediaQuery.of(context).size.height*0.05),
-                  color: Color(0xffF48262),
-                  child: Center(
-                    child: Text(
-                      'GRATIS ONGKIR DENGAN PEMBELANJAAN RP 250.000',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontFamily: 'Brandon',
-                      ),
-                      textScaleFactor: .8,
-                    ),
-                  ),
-                ),
-                new AppBar(
-                  primary: false,
-                  title: Image.asset('assets/images/PonnyBeaute.png', fit: BoxFit.contain, height: 46),
-                  centerTitle: true,
-                  backgroundColor: _color,
-                  elevation: _elevation,
-                  leading: IconButton(
-                    onPressed: (){
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => Browse()));
-                    },
-                    icon: ImageIcon(
-                      AssetImage('assets/images/home/search.png')
-                    ),
-                  ),
-                  iconTheme: IconThemeData(
+            child: SafeArea(
+              child: Column(
+                children: [
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    padding: EdgeInsets.symmetric(vertical: 5),
                     color: Color(0xffF48262),
+                    child: Center(
+                      child: Text(
+                        'GRATIS ONGKIR DENGAN PEMBELANJAAN RP 250.000',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontFamily: 'Brandon',
+                        ),
+                        textScaleFactor: .8,
+                      ),
+                    ),
                   ),
-                  actions: <Widget>[
-                    IconButton(
-                      icon: new Stack(
-                          children: <Widget>[
-                            Provider.of<AppModel>(context).loggedIn?
-                            new Container(
-                              padding: EdgeInsets.all(5),
-                              child: Provider.of<WishModel>(context).loading ? LoadingRing(context) : ImageIcon(
-                                AssetImage('assets/images/home/wishlist.png'),
+                  new AppBar(
+                    primary: false,
+                    title: Image.asset('assets/images/PonnyBeaute.png', fit: BoxFit.contain, height: 46),
+                    centerTitle: true,
+                    backgroundColor: _color,
+                    elevation: _elevation,
+                    leading: IconButton(
+                      onPressed: (){
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) => Browse()));
+                      },
+                      icon: ImageIcon(
+                        AssetImage('assets/images/home/search.png')
+                      ),
+                    ),
+                    iconTheme: IconThemeData(
+                      color: Color(0xffF48262),
+                    ),
+                    actions: <Widget>[
+                      IconButton(
+                        icon: new Stack(
+                            children: <Widget>[
+                              Provider.of<AppModel>(context).loggedIn?
+                              new Container(
+                                padding: EdgeInsets.all(5),
+                                child: Provider.of<WishModel>(context).loading ? LoadingRing(context) : ImageIcon(
+                                  AssetImage('assets/images/home/wishlist.png'),
+                                ),
+                              ):new Container(
+                                padding: EdgeInsets.all(5),
+                                child: ImageIcon(
+                                  AssetImage('assets/images/home/wishlist.png'),
+                                ),
                               ),
-                            ):new Container(
-                              padding: EdgeInsets.all(5),
-                              child: ImageIcon(
-                                AssetImage('assets/images/home/wishlist.png'),
+                              if(Provider.of<WishModel>(context).countwishlist > 0 && Provider.of<AppModel>(context).loggedIn)
+                              new Positioned(  // draw a red marble
+                                top: 0.0,
+                                right: 0.0,
+                                child: Container(
+                                  width: 12,
+                                  height: 12,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(40),
+                                      color: Colors.redAccent,
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      Provider.of<WishModel>(context).countwishlist.toString(),
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontFamily: 'Brandon',
+                                        fontSize: 8,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              )
+                            ]
+                        ),
+                        onPressed: () {
+                          if(Provider.of<AppModel>(context).loggedIn){
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>  DaftarKeinginanScreen()),
+                            );
+                          }else{
+                            Navigator.push(context,new MaterialPageRoute(
+                              builder: (BuildContext context) => new LoginScreen(),
+                            ));
+                          }
+                        },
+                      ),
+                      IconButton(
+                        icon: new Stack(
+                            children: <Widget>[
+                              Provider.of<AppModel>(context).loggedIn?
+                              new Container(
+                                padding: EdgeInsets.all(5),
+                                child: Provider.of<CartModel>(context).loadingCard? LoadingRing(context):  ImageIcon(
+                                  AssetImage('assets/images/home/cart.png'),
+                                ),
+                              ):new Container(
+                                padding: EdgeInsets.all(5),
+                                child: ImageIcon(
+                                  AssetImage('assets/images/home/cart.png'),
+                                ),
                               ),
-                            ),
-                            if(Provider.of<WishModel>(context).countwishlist > 0 && Provider.of<AppModel>(context).loggedIn)
-                            new Positioned(  // draw a red marble
-                              top: 0.0,
-                              right: 0.0,
-                              child: Container(
-                                width: 12,
-                                height: 12,
-                                decoration: BoxDecoration(
+                              if(jmlCard>0)
+                              new Positioned(  // draw a red marble
+                                top: 0.0,
+                                right: 0.0,
+                                child: Container(
+                                  width: 12,
+                                  height: 12,
+                                  decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(40),
                                     color: Colors.redAccent,
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    Provider.of<WishModel>(context).countwishlist.toString(),
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontFamily: 'Brandon',
-                                      fontSize: 8,
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      jmlCard.toString(),
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontFamily: 'Brandon',
+                                        fontSize: 8,
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                            )
-                          ]
+                              )
+                            ]
+                        ),
+                        onPressed: () {
+                          if(Provider.of<AppModel>(context).loggedIn){
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => CartScreen()),
+                            );
+                          }else{
+                            Navigator.push(context,new MaterialPageRoute(
+                              builder: (BuildContext context) => new LoginScreen(),
+                            ));
+                          }
+                        },
                       ),
-                      onPressed: () {
-                        if(Provider.of<AppModel>(context).loggedIn){
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>  DaftarKeinginanScreen()),
-                          );
-                        }else{
-                          Navigator.push(context,new MaterialPageRoute(
-                            builder: (BuildContext context) => new LoginScreen(),
-                          ));
-                        }
-                      },
-                    ),
-                    IconButton(
-                      icon: new Stack(
-                          children: <Widget>[
-                            Provider.of<AppModel>(context).loggedIn?
-                            new Container(
-                              padding: EdgeInsets.all(5),
-                              child: Provider.of<CartModel>(context).loadingCard? LoadingRing(context):  ImageIcon(
-                                AssetImage('assets/images/home/cart.png'),
-                              ),
-                            ):new Container(
-                              padding: EdgeInsets.all(5),
-                              child: ImageIcon(
-                                AssetImage('assets/images/home/cart.png'),
-                              ),
-                            ),
-                            if(jmlCard>0)
-                            new Positioned(  // draw a red marble
-                              top: 0.0,
-                              right: 0.0,
-                              child: Container(
-                                width: 12,
-                                height: 12,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(40),
-                                  color: Colors.redAccent,
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    jmlCard.toString(),
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontFamily: 'Brandon',
-                                      fontSize: 8,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            )
-                          ]
-                      ),
-                      onPressed: () {
-                        if(Provider.of<AppModel>(context).loggedIn){
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => CartScreen()),
-                          );
-                        }else{
-                          Navigator.push(context,new MaterialPageRoute(
-                            builder: (BuildContext context) => new LoginScreen(),
-                          ));
-                        }
-                      },
-                    ),
-                  ],
-                ),
-              ],
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
           body: new Container(
