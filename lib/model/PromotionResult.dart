@@ -131,13 +131,15 @@ class Promotions {
   int id;
   String banner;
   String caption;
+  String meta_description;
 
-  Promotions({this.id, this.banner, this.caption});
+  Promotions({this.id, this.banner, this.caption, this.meta_description});
 
   Promotions.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     banner = json['banner'];
     caption = json['caption'];
+    meta_description = json['meta_description'];
   }
 
   Map<String, dynamic> toJson() {
@@ -145,6 +147,7 @@ class Promotions {
     data['id'] = this.id;
     data['banner'] = this.banner;
     data['caption'] = this.caption;
+    data['meta_description'] = this.meta_description;
     return data;
   }
 }

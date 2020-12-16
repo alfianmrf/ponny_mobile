@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_html/style.dart';
@@ -280,9 +281,12 @@ class _BlogDetailScreenState extends State<BlogDetailScreen> {
                                 Container(
                                     width: double.infinity,
                                     height: 200,
-                                    child: Image.asset(
-                                      "assets/images/blogImage.png",
-                                      fit: BoxFit.cover,
+                                    child: CachedNetworkImage(
+                                      imageUrl:img_url+"blog/thumbnail/"+widget.title["thumbnail"].toString(),
+                                      placeholder: (context, url) => LoadingWidgetPulse(context),
+                                      errorWidget: (context, url, error) => Image.asset('assets/images/basic.jpg'),
+                                      width: MediaQuery.of(context).size.width,
+                                      fit: BoxFit.contain,
                                     )),
                                 Container(height: 10),
                                 Container(

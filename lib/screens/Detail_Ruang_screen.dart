@@ -17,7 +17,7 @@ import 'package:http_parser/http_parser.dart';
 import 'Ruang_screen.dart';
 import 'package:ponny/util/globalUrl.dart';
 import 'package:ponny/model/PostandComment.dart';
-import 'package:ponny/common/constant.dart';
+
 import 'package:ponny/model/App.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -89,6 +89,29 @@ class _DetailForumState extends State<DetailForum> {
     );
   }
 
+  Future<bool> postData(int idRuang) async {
+    bool result = false;
+    UIBlock.block(context, customLoaderChild: LoadingWidget(context));
+
+    var paramComment = {
+      "room_id": idRuang.toString(),
+    };
+
+    String accessToken =
+        Provider.of<AppModel>(context).auth.access_token == null
+            ? "abc"
+            : Provider.of<AppModel>(context).auth.access_token;
+
+    final value = await Provider.of<PostandComment>(context)
+        .postRoomModel(accessToken, paramComment);
+    if (value) {
+      UIBlock.unblock(context);
+      result = value;
+    }
+
+    return result;
+  }
+
   Future<List> roomData() async {
     final response = await http.get(roomUrl);
 
@@ -150,6 +173,7 @@ class _DetailForumState extends State<DetailForum> {
 
   @override
   void initState() {
+    print(widget.filters);
     _users = widget.list;
     // TODO: implement initState
     hours = DateTime.now()
@@ -329,7 +353,13 @@ class _DetailForumState extends State<DetailForum> {
                                                               BorderRadius
                                                                   .circular(5),
                                                         ),
-                                                        onPressed: () {
+                                                        onPressed: () async {
+                                                          final result =
+                                                              await postData(widget
+                                                                          .list[
+                                                                      widget
+                                                                          .index]
+                                                                  ["id"]);
                                                           setState(() {
                                                             widget.gabung =
                                                                 true;
@@ -822,12 +852,11 @@ class _DetailForumState extends State<DetailForum> {
                                                                   roomRefresh,
                                                                 );
                                                               },
-                                                              child:
-                                                                  Text(
-                                                                      "Balas",
-                                                                      style: TextStyle(
-                                                                          fontFamily:
-                                                                              "Brandon")),
+                                                              child: Text(
+                                                                  "Balas",
+                                                                  style: TextStyle(
+                                                                      fontFamily:
+                                                                          "Brandon")),
                                                             ),
                                                             Container(
                                                                 width: 10),
@@ -837,7 +866,17 @@ class _DetailForumState extends State<DetailForum> {
                                                                         "Brandon")),
                                                             Container(
                                                                 width: 10),
-                                                            Text("39 Balasan",
+                                                            Text(
+                                                                widget
+                                                                        .list[
+                                                                            widget.index]
+                                                                            [
+                                                                            "posts"]
+                                                                            [i][
+                                                                            "reply"]
+                                                                        .length
+                                                                        .toString() +
+                                                                    " Balasan",
                                                                 style: TextStyle(
                                                                     fontFamily:
                                                                         "Brandon")),

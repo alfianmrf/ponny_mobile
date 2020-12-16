@@ -12,24 +12,26 @@ const urlGlobal = "https://ponnybeaute.co.id/";
 // const urlGlobal = "https://ponnybeaute.revoapps.id/";
 
 //Auth
+const filterTrend = base_url + "forum/rooms/";
 const loginUrl = base_url + "auth/login";
 const register = base_url + "auth/signup";
 const blogUrl = base_url + "blog";
 const forumUrl = base_url + "forum";
 const roomUrl = forumUrl + "/rooms";
-const myRoomUrl = forumUrl + "/rooms";
+const myRoomUrl = forumUrl + "/myrooms";
 const newPost = base_url + "forum/store";
 const newComment = base_url + "forum/comment";
 const contactUsUrl = base_url + "contact/wa";
 const contactEmail = base_url + "contact/mail";
 const postRoom = base_url + "forum/joinRoom";
+const leaveRoom = base_url + "forum/leaveRoom";
 const blogDetailUrl = base_url + "blog/23";
 const recomProduct = base_url + "product/recommended?chunk=3";
 const skinkloUrl = base_url + "product/skinlopedia?keyword=&alphabet=";
 const userprofile = base_url + "auth/user";
 const loginOtp = base_url + "auth/login-otp";
-const loginSocial  = base_url+"auth/social-login";
-const passwordReset = base_url+"auth/password/create";
+const loginSocial = base_url + "auth/social-login";
+const passwordReset = base_url + "auth/password/create";
 
 //home
 const banner = base_url + "banners";
@@ -38,10 +40,10 @@ const best_sale = base_url + "product/bestSeller";
 const phobe = base_url + "product/phoebeChoices";
 const rekomendasiProduk = base_url + "product/recommended";
 const flashdealUrl = base_url + "product/flashDeal";
-const newProduct = base_url+"product/news";
-const globalSearch = base_url+"global-search";
-const faqSearch = base_url+"global-faq";
-const skinklopediaSearch = base_url+"global-skinklopedia";
+const newProduct = base_url + "product/news";
+const globalSearch = base_url + "global-search";
+const faqSearch = base_url + "global-faq";
+const skinklopediaSearch = base_url + "global-skinklopedia";
 
 //cart
 const listCarturl = base_url + "cart/get";
@@ -66,7 +68,7 @@ const listOfwishlist = base_url + "product/wishlist";
 const addToWishlist = base_url + "product/addToWishlist";
 const removeToWishlist = base_url + "product/delFromWishlist";
 const countOfwishlist = base_url + "product/wishlist/count";
-const varianPriceUrl = base_url+"product/variantPrice";
+const varianPriceUrl = base_url + "product/variantPrice";
 
 //Account
 const urlAddress = base_url + "shipping/address";
@@ -109,17 +111,15 @@ const urlKec = base_url + "shipping/subDistricts";
 const saveAddressUrl = base_url + "shipping/saveAddress";
 const removeAddressUrl = base_url + "shipping/delAddress";
 
-
 //browse
-const brandSearch = base_url+"product/brands?pageSize=all";
-const searchProductUrl =base_url+"product/search";
-const categoryList = base_url+"product/categories";
-const shopSalelist = base_url  +"product/shopSale";
+const brandSearch = base_url + "product/brands?pageSize=all";
+const searchProductUrl = base_url + "product/search";
+const categoryList = base_url + "product/categories";
+const shopSalelist = base_url + "product/shopSale";
 
 //promotion
-const getpromo =base_url+"product/promotions";
-const localprideUrl = base_url+"product/localPride";
+const getpromo = base_url + "product/promotions";
+const localprideUrl = base_url + "product/localPride";
 
 //contact
-const waContacturl=base_url+"contact/wa";
-
+const waContacturl = base_url + "contact/wa";

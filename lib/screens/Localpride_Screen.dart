@@ -76,7 +76,7 @@ class _LocalPrideState extends State<LocalPride> {
                       Container(
                         child: IconButton(
                             onPressed: () {
-                              Navigator.of(context).pushReplacementNamed(Browse.id);
+                              Navigator.pop(context);
                             },
                             icon: Icon(
                               Icons.arrow_back_ios,
