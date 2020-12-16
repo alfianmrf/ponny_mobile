@@ -818,7 +818,7 @@ class _LoginStateScreen extends State<LoginScreen> {
                         ),
                       ),
                       
-                      Container(
+                      /*Container(
                         margin: EdgeInsets.symmetric(vertical: 5,horizontal:75),
                         child: SignInWithAppleButton(
                           onPressed: () async {
@@ -873,7 +873,7 @@ class _LoginStateScreen extends State<LoginScreen> {
                             print(session.statusCode);
                           },
                         ),
-                      ),
+                      ),*/
                       Container(
                         height: 50,
                       ),
