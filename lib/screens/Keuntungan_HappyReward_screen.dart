@@ -299,10 +299,9 @@ class _UntungRewardState extends State<UntungReward> {
                 margin:
                 EdgeInsets.symmetric(vertical: 20, horizontal: 40),
                 child: Text(
-                  "Wujudkan impian happy skin dan dapatkan keuntungan menarik lainnya melalui poin yang kamu dapatkan",
+                  "Wujudkan happy skin kamu dan dapatkan keuntungan menarik lainnya melalui poin rewards",
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    fontSize: 16,
                     fontFamily: "Brandon",
                   ),
                 ),
@@ -362,10 +361,10 @@ class _UntungRewardState extends State<UntungReward> {
                 child: Container(
                   margin: EdgeInsets.only(bottom: 20),
                   alignment: Alignment.center,
-                  child: Text("Lihat Semua Rewards",
+                  child: Text("Lihat Selengkapnya",
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                          fontSize: 18,
+                          fontSize: 16,
                           fontFamily: "Brandon",
                           fontWeight: FontWeight.w500,
                           color: Color(0xffF48262))),
@@ -418,7 +417,7 @@ class _UntungRewardState extends State<UntungReward> {
                                       child: buttonGroups(
                                           "assets/images/keuntunganHappySkin/belanja.png",
                                           "Belanja",
-                                          "Dapatkan 10 poin setiap pembelanjaan senilai Rp.25.000")),
+                                          "Setiap belanja Rp 15.000 dapat 1 poin. Makin rajin belanja, bisa dapat 1 poin per transaksi Rp 7.500!")),
                                 ),
                               )),
                           Expanded(
@@ -449,7 +448,7 @@ class _UntungRewardState extends State<UntungReward> {
                                       child: buttonGroups(
                                           "assets/images/keuntunganHappySkin/ulang-tahun.png",
                                           "Ulang Tahun",
-                                          "Dapatkan poin hingga 2% ekstra lebih banyak saat belanja di hari ulang tahun")),
+                                          "Dapatkan diskon sebesar 5% di hari ulang tahun")),
                                 ),
                               )),
                           Expanded(
@@ -511,7 +510,7 @@ class _UntungRewardState extends State<UntungReward> {
                                       child: buttonGroups(
                                           "assets/images/keuntunganHappySkin/kode-referal.png",
                                           "Kode Referal",
-                                          "Bagikan kode referalmu dan dapatkan 50.000 poin untuk kamu")),
+                                          "Bagikan kode referalmu dan dapatkan 50 poin untuk kamu")),
                                 ),
                               )),
                           Expanded(
@@ -810,6 +809,7 @@ Widget buttonGroups(String iconImg, String title, String subtitle) {
             fontSize: 12,
             fontFamily: 'Brandon',
             fontWeight: FontWeight.w800,
+            height: 1.2,
           ),
         ),
         Text(
@@ -818,6 +818,7 @@ Widget buttonGroups(String iconImg, String title, String subtitle) {
           style: TextStyle(
             fontSize: 12,
             fontFamily: 'Brandon',
+            height: 1.2,
           ),
         ),
       ],
@@ -903,25 +904,25 @@ Widget tableLevelReward(context) {
               "Pembelanjaan dalam 1 tahun",
             ),
             styledText(
+              "Dapatkan 1 poin per transaksi",
+            ),
+            styledText(
+              "GRATIS pengiriman standar*",
+            ),
+            styledText(
               "Menukar poin dengan hadiah",
-            ),
-            styledText(
-              "Poin ekstra di Hari Ulang Tahun",
-            ),
-            styledText(
-              "Gratis Pengiriman Standar",
             ),
             styledText(
               "Kupon Ulang Tahun",
             ),
             styledText(
-              "Ekstra poin untuk member",
+              "Prioritas utama tentang diskon",
             ),
             styledText(
               "Ekstra diskon 5% untuk member*",
             ),
             styledText(
-              "Prioritas utama tentang diskon",
+              "Akses produk special",
             ),
             Alignment.centerLeft,
             Color(0xffF48262),
@@ -931,21 +932,25 @@ Widget tableLevelReward(context) {
             3,
             "DEWY",
             styledText(
-              "3 juta",
+              "Gratis",
+            ),
+            styledText(
+              "Rp 15.000",
+            ),
+            styledText(
+              "Rp 20.000",
             ),
             Icon(Icons.favorite, color: Color(0xffF48262), size: 18,),
-            styledText(
-              "0,5%",
-            ),
             Icon(Icons.favorite, color: Color(0xffF48262), size: 18,),
             styledText(
               " ",
             ),
             styledText(
-              "0,5%",
+              " ",
             ),
-            Icon(Icons.favorite, color: Color(0xffF48262), size: 18,),
-            Icon(Icons.favorite, color: Color(0xffF48262), size: 18,),
+            styledText(
+              " ",
+            ),
             Alignment.center,
             Color(0xffF48262),
             Color(0xffF48262)),
@@ -954,19 +959,25 @@ Widget tableLevelReward(context) {
             4,
             "HEALTHY",
             styledText(
-              "6 juta",
+              "Rp 3 juta",
             ),
+            styledText(
+              "Rp 12.500",
+            ),
+            styledText(
+              "Rp 25.000",
+            ),
+            Icon(Icons.favorite, color: Color(0xffF48262), size: 18,),
             Icon(Icons.favorite, color: Color(0xffF48262), size: 18,),
             styledText(
-              "1%",
+              " ",
             ),
-            Icon(Icons.favorite, color: Color(0xffF48262), size: 18,),
-            Icon(Icons.favorite, color: Color(0xffF48262), size: 18,),
             styledText(
-              "0,75%",
+              " ",
             ),
-            Icon(Icons.favorite, color: Color(0xffF48262), size: 18,),
-            Icon(Icons.favorite, color: Color(0xffF48262), size: 18,),
+            styledText(
+              " ",
+            ),
             Alignment.center,
             Hexcolor("#4a0a07"),
             Hexcolor("#4a0a07")),
@@ -975,17 +986,17 @@ Widget tableLevelReward(context) {
             4,
             "GLOWING",
             styledText(
-              "8 juta",
+              "Rp 8 juta",
             ),
-            Icon(Icons.favorite, color: Color(0xffF48262), size: 18,),
             styledText(
-              "1,5%",
+              "Rp 10.000",
             ),
-            Icon(Icons.favorite, color: Color(0xffF48262), size: 18,),
-            Icon(Icons.favorite, color: Color(0xffF48262), size: 18,),
             styledText(
-              "1%",
+              "Rp 30.000",
             ),
+            Icon(Icons.favorite, color: Color(0xffF48262), size: 18,),
+            Icon(Icons.favorite, color: Color(0xffF48262), size: 18,),
+            Icon(Icons.favorite, color: Color(0xffF48262), size: 18,),
             Icon(Icons.favorite, color: Color(0xffF48262), size: 18,),
             Icon(Icons.favorite, color: Color(0xffF48262), size: 18,),
             Alignment.center,
@@ -996,17 +1007,17 @@ Widget tableLevelReward(context) {
             4,
             "OH HAPPY",
             styledText(
-              ">10 juta",
+              "Rp 10 juta",
             ),
-            Icon(Icons.favorite, color: Color(0xffF48262), size: 18,),
             styledText(
-              "2%",
+              "Rp 7.500",
             ),
-            Icon(Icons.favorite, color: Color(0xffF48262), size: 18,),
-            Icon(Icons.favorite, color: Color(0xffF48262), size: 18,),
             styledText(
-              "1,25%",
+              "Rp 35.000",
             ),
+            Icon(Icons.favorite, color: Color(0xffF48262), size: 18,),
+            Icon(Icons.favorite, color: Color(0xffF48262), size: 18,),
+            Icon(Icons.favorite, color: Color(0xffF48262), size: 18,),
             Icon(Icons.favorite, color: Color(0xffF48262), size: 18,),
             Icon(Icons.favorite, color: Color(0xffF48262), size: 18,),
             Alignment.center,
