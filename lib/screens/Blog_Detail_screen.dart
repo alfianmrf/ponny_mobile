@@ -487,30 +487,32 @@ class _BlogDetailDataState extends State<BlogDetailData> {
 Widget recommendationSection(context, List list) {
   // print(list[0]);
   return Container(
-    child: Row(
-      children: [
-        Expanded(
-          flex: 1,
-            child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 5),
-              child: getProduct(context,
-                  Product.fromJson(list[0]["data"][0])),
-            )),
-        Expanded(
-          flex: 1,
-            child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 5),
-              child: getProduct(context,
-                  Product.fromJson(list[0]["data"][1])),
-            )),
-        Expanded(
+    child: IntrinsicHeight(
+      child: Row(
+        children: [
+          Expanded(
             flex: 1,
-            child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 5),
-              child: getProduct(context,
-                  Product.fromJson(list[0]["data"][1])),
-            )),
-      ],
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 5),
+                child: getProduct(context,
+                    Product.fromJson(list[0]["data"][0])),
+              )),
+          Expanded(
+            flex: 1,
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 5),
+                child: getProduct(context,
+                    Product.fromJson(list[0]["data"][1])),
+              )),
+          Expanded(
+              flex: 1,
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 5),
+                child: getProduct(context,
+                    Product.fromJson(list[0]["data"][2])),
+              )),
+        ],
+      ),
     ),
   );
 }

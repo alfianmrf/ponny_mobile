@@ -141,7 +141,7 @@ class _LocalPrideState extends State<LocalPride> {
                         },
                         child:  Container(
                           child: Image.network(img_url+snapshot.data.brands[index].logo,
-                            fit: BoxFit.fill,
+                            fit: BoxFit.contain,
                           ),
                           height: 70,
                           width: 70,
@@ -178,10 +178,10 @@ class _LocalPrideState extends State<LocalPride> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Container(
-                              height: 80,
-                              width: 80,
+                              height: 60,
+                              width: 60,
                               child: Image.network(img_url+"frontend/images/local-pride/sesuai-kulit.png",
-                                fit: BoxFit.fill,
+                                fit: BoxFit.contain,
                               )
                           ),
                           Text(
@@ -201,10 +201,10 @@ class _LocalPrideState extends State<LocalPride> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Container(
-                            height: 80,
-                            width: 80,
+                            height: 60,
+                            width: 60,
                             child: Image.network(img_url+"frontend/images/local-pride/harga.png",
-                              fit: BoxFit.fill,
+                              fit: BoxFit.contain,
                             ),
                           ),
                           Text(
@@ -225,10 +225,10 @@ class _LocalPrideState extends State<LocalPride> {
                         children: [
                           Container(
                             child: Image.network(img_url+"frontend/images/local-pride/dukung.png",
-                              fit: BoxFit.fill,
+                              fit: BoxFit.contain,
                             ),
-                            height: 80,
-                            width: 80,
+                            height: 60,
+                            width: 60,
                           ),
                           Text(
                             'Dukung Kreasi Anak Bangsa',
