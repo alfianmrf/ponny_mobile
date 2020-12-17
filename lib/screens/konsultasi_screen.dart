@@ -217,10 +217,9 @@ class _KonsultasiState extends State<KonsultasiScreen> {
                   color: Hexcolor("#FFF9EF"),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.grey.withOpacity(0.5),
-                      spreadRadius: 2,
-                      blurRadius: 5,
-                      offset: Offset(2, 1), // changes position of shadow
+                      color: Colors.grey.withOpacity(0.2),
+                      spreadRadius: 1,
+                      blurRadius: 1,
                     ),
                   ],
                 ),
@@ -392,11 +391,8 @@ class _KonsultasiState extends State<KonsultasiScreen> {
                     }
                   case 3:
                     {
-                      return Container(
-                        height: MediaQuery.of(context).size.height*.46,
-                        child: SingleChildScrollView(
-                          child:  konsultasi(),
-                        ),
+                      return SingleChildScrollView(
+                        child:  konsultasi(),
                       );
                     }
                   case 4:
@@ -436,10 +432,9 @@ class _KonsultasiState extends State<KonsultasiScreen> {
                 borderRadius: BorderRadius.circular(10),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    spreadRadius: 2,
-                    blurRadius: 5,
-                    offset: Offset(2, 1), // changes position of shadow
+                    color: Colors.grey.withOpacity(0.2),
+                    spreadRadius: 1,
+                    blurRadius: 1,
                   ),
                 ],
               ),
@@ -597,10 +592,9 @@ class _KonsultasiState extends State<KonsultasiScreen> {
                     borderRadius: BorderRadius.circular(10),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.grey.withOpacity(0.5),
-                        spreadRadius: 2,
-                        blurRadius: 5,
-                        offset: Offset(2, 1), // changes position of shadow
+                        color: Colors.grey.withOpacity(0.2),
+                        spreadRadius: 1,
+                        blurRadius: 1,
                       ),
                     ],
                   ),
@@ -767,10 +761,9 @@ class _KonsultasiState extends State<KonsultasiScreen> {
                     borderRadius: BorderRadius.circular(10),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.grey.withOpacity(0.5),
-                        spreadRadius: 2,
-                        blurRadius: 5,
-                        offset: Offset(2, 1), // changes position of shadow
+                        color: Colors.grey.withOpacity(0.2),
+                        spreadRadius: 1,
+                        blurRadius: 1,
                       ),
                     ],
                   ),
@@ -842,9 +835,10 @@ class _KonsultasiState extends State<KonsultasiScreen> {
               Expanded(
                 flex: 1,
                 child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 3),
                   child: Text(
                     "ORDER",
-                    textAlign: TextAlign.center,
+                    textAlign: TextAlign.left,
                     style: TextStyle(
                       fontFamily: "Brandon",
                       fontSize: 12,
@@ -854,29 +848,13 @@ class _KonsultasiState extends State<KonsultasiScreen> {
                   ),
                 ),
               ),
-              SizedBox(width: 10),
-              Expanded(
-                flex: 2,
-                child: Container(
-                  child: Text(
-                    "TANGGAL",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontFamily: "Brandon",
-                      fontSize: 12,
-                      color: Colors.white,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(width: 10),
               Expanded(
                 flex: 1,
                 child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 3),
                   child: Text(
-                    "STATUS",
-                    textAlign: TextAlign.center,
+                    "TANGGAL",
+                    textAlign: TextAlign.left,
                     style: TextStyle(
                       fontFamily: "Brandon",
                       fontSize: 12,
@@ -886,13 +864,29 @@ class _KonsultasiState extends State<KonsultasiScreen> {
                   ),
                 ),
               ),
-              SizedBox(width: 10),
               Expanded(
-                flex: 2,
+                flex: 1,
                 child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 3),
+                  child: Text(
+                    "STATUS",
+                    textAlign: TextAlign.left,
+                    style: TextStyle(
+                      fontFamily: "Brandon",
+                      fontSize: 12,
+                      color: Colors.white,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ),
+              Expanded(
+                flex: 1,
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 3),
                   child: Text(
                     "TOTAL",
-                    textAlign: TextAlign.center,
+                    textAlign: TextAlign.left,
                     style: TextStyle(
                       fontFamily: "Brandon",
                       fontSize: 12,
@@ -908,6 +902,7 @@ class _KonsultasiState extends State<KonsultasiScreen> {
         Expanded(
           child: Container(
             child: ListView.builder(
+              padding: EdgeInsets.zero,
                 controller: _scrollController,
                 scrollDirection: Axis.vertical,
                 itemCount: riwayatVoucher.length + 1,
@@ -921,7 +916,7 @@ class _KonsultasiState extends State<KonsultasiScreen> {
                         border: Border(
                           bottom: BorderSide(
                             color: Hexcolor("#F7866A"),
-                            width: 2,
+                            width: 1,
                           ),
                         ),
                       ),
@@ -929,325 +924,436 @@ class _KonsultasiState extends State<KonsultasiScreen> {
                       padding: EdgeInsets.only(top: 5, bottom: 5),
                       child: Column(
                         children: [
-                          Row(
-                            children: [
-                              Expanded(
-                                flex: 1,
-                                child: Container(
-                                  child: Text(
-                                    "#"+item.code,
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      fontFamily: "Brandon",
-                                      fontSize: 12,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.w400,
+                          IntrinsicHeight(
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Expanded(
+                                  flex: 1,
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(horizontal: 3),
+                                    child: Text(
+                                      "#"+item.code,
+                                      textAlign: TextAlign.left,
+                                      style: TextStyle(
+                                        fontFamily: "Brandon",
+                                        fontSize: 12,
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w400,
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                              SizedBox(width: 10),
-                              Expanded(
-                                flex: 2,
-                                child: Container(
-                                  child: Text(
-                                    item.date,
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      fontFamily: "Brandon",
-                                      fontSize: 12,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.w400,
+                                Expanded(
+                                  flex: 1,
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(horizontal: 3),
+                                    child: Text(
+                                      item.date,
+                                      textAlign: TextAlign.left,
+                                      style: TextStyle(
+                                        fontFamily: "Brandon",
+                                        fontSize: 12,
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w400,
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                              SizedBox(width: 10),
-                              Expanded(
-                                flex: 1,
-                                child: Container(
-                                  child: Text(
-                                    item.status.param3,
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      fontFamily: "Brandon",
-                                      fontSize: 12,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.w400,
+                                Expanded(
+                                  flex: 1,
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(horizontal: 3),
+                                    child: Text(
+                                      item.status.param3,
+                                      textAlign: TextAlign.left,
+                                      style: TextStyle(
+                                        fontFamily: "Brandon",
+                                        fontSize: 12,
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w400,
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                              SizedBox(width: 10),
-                              Expanded(
-                                flex: 2,
-                                child: Container(
-                                  child: Text(
-                                      item.grand_total != null ?  nm_format.format(item.grand_total) : "Rp. 0",
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      fontFamily: "Brandon",
-                                      fontSize: 12,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.w400,
+                                Expanded(
+                                  flex: 1,
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(horizontal: 3),
+                                    child: Text(
+                                        item.grand_total != null ?  nm_format.format(item.grand_total) : "Rp. 0",
+                                      textAlign: TextAlign.left,
+                                      style: TextStyle(
+                                        fontFamily: "Brandon",
+                                        fontSize: 12,
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w400,
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                           SizedBox(height: 5),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Container(
-                                padding: EdgeInsets.only(top: 5, bottom: 5),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text("Payment Method",
-                                        textAlign: TextAlign.left,
-                                        style: TextStyle(
-                                          fontFamily: "Brandon",
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w400,
-                                          color: Colors.black,
-                                        )
+                          IntrinsicHeight(
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                if(item == riwayatVoucher[0])
+                                Expanded(
+                                  flex: 3,
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(horizontal: 3),
+                                    child: Container(
+                                      height: 20,
+                                      child: Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: SizedBox(
+                                          width: 120,
+                                          height: 20,
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.circular(20),
+                                              color: Color(0xffFFE8DB),
+                                            ),
+                                            child: Center(
+                                              child: Text(
+                                                'BELUM TERPAKAI',
+                                                style: TextStyle(
+                                                  fontFamily: 'Brandon',
+                                                  color: Hexcolor("#F7866A"),
+                                                  fontSize: 12,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
                                     ),
-                                    if(item.payment_type == "mt_tf_bca" || item.payment_type == "mt_tf_bni" || item.payment_type == "mt_tf_permata" || item.payment_type == "alfamart" || item.payment_type=="Indomaret" ||item.payment_type=="mt_tf_mdr"|| item.payment_type=="mt_tf_bri")
-                                      Container(
-                                        width: 100,
-                                        child: Text(
-                                          item.mitrans_val != null ? item.mitrans_val.mitrans_val : "",
-                                          style: TextStyle(
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w400,
-                                            fontFamily: "Brandon",
-                                          ),
-                                        ),
-                                      )else
-
-                                      Container(
-                                        width: 100,
-                                        child: Text(
-                                          item.typePayment,
-                                          style: TextStyle(
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w400,
-                                            fontFamily: "Brandon",
-                                          ),
-                                        ),
-                                      ),
-                                  ],
-                                ),
-                              ),
-                              if(item.payment_status == 'unpaid' && item.payment_type == "ovo")
-                                Positioned(
-                                    left: 0,
-                                    child: Container(
-                                      child: FlatButton(
-                                        color:  Color(0xffF48262),
-                                        textColor: Colors.white,
-                                        disabledColor: Colors.grey,
-                                        disabledTextColor: Colors.black,
-                                        child:  Text("BAYAR SEKARANG"),
-                                        onPressed: (){
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) => QrisScreen(title: "OVO", urlQR: item.mitransVal.actions.firstWhere((element) => element.name == "generate-qr-code").url,type: QrisScreen.ovo,), ),
-                                          );
-                                        },
-                                      ) ,
-                                    )
-                                ),
-
-                              if(item.payment_status == 'unpaid' && item.payment_type == "shopeepay")
-                                Positioned(
-                                    left: 0,
-                                    child: Container(
-                                      margin: EdgeInsets.only(left: 10),
-                                      alignment: Alignment.centerLeft,
-                                      child: FlatButton(
-                                        color:  Color(0xffF48262),
-                                        textColor: Colors.white,
-                                        disabledColor: Colors.grey,
-                                        disabledTextColor: Colors.black,
-                                        child:  Text("BAYAR SEKARANG"),
-                                        onPressed: (){
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) => QrisScreen(title: "SHOPEEPAY", urlQR: item.mitransVal.actions.firstWhere((element) => element.name == "generate-qr-code").url,type: QrisScreen.shopee), ),
-                                          );
-                                        },
-                                      ) ,
-                                    )
-                                )
-                                ,
-                              if(item.payment_status == 'unpaid' && item.payment_type == "gopay")
-                                Positioned(
-                                    left: 0,
-                                    child: Container(
-                                      margin: EdgeInsets.only(left: 10),
-                                      alignment: Alignment.centerLeft,
-                                      child: FlatButton(
-                                        color:  Color(0xffF48262),
-                                        textColor: Colors.white,
-                                        disabledColor: Colors.grey,
-                                        disabledTextColor: Colors.black,
-                                        child:  Text("BAYAR SEKARANG"),
-                                        onPressed: (){
-                                          // Navigator.push(
-                                          //   context,
-                                          //   MaterialPageRoute(
-                                          //     builder: (context) => BankTransferDetailScreen(order_id: order.id,), ),
-                                          // );
-                                          _launchURL(item.mitransVal.actions.firstWhere((element) => element.name == "deeplink-redirect").url);
-                                        },
-                                      ) ,
-                                    )
-                                ),
-                              if(item.payment_status == 'unpaid' && item.payment_type == "qris")
-                                Positioned(
-                                    left: 0,
-                                    child: Container(
-                                      margin: EdgeInsets.only(left: 10),
-                                      alignment: Alignment.centerLeft,
-                                      child: FlatButton(
-                                        color:  Color(0xffF48262),
-                                        textColor: Colors.white,
-                                        disabledColor: Colors.grey,
-                                        disabledTextColor: Colors.black,
-                                        child:  Text("BAYAR SEKARANG"),
-                                        onPressed: (){
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) => QrisScreen(title: "QRIS", urlQR: item.mitransVal.actions.firstWhere((element) => element.name == "generate-qr-code").url,type: QrisScreen.qris), ),
-                                          );
-                                        },
-                                      ) ,
-                                    )
-                                ),
-
-
-                            ],
-                          ),
-                          Container(
-                            child: Column(
-                              children: item.orderDetailVoucher.map((e){
-
-                                return  Container(
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(10),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.grey.withOpacity(0.5),
-                                        spreadRadius: 2,
-                                        blurRadius: 5,
-                                        offset: Offset(2, 1), // changes position of shadow
-                                      ),
-                                    ],
                                   ),
-                                  margin: EdgeInsets.only(top: 10, bottom: 10),
-                                  padding: EdgeInsets.only(left: 10, right: 10, top: 20, bottom: 10),
-                                  child: Column(
-                                    children: [
-                                      Row(
-                                        children: [
-                                          Container(
-                                            width: 70,
-                                            height: 70,
-                                            child: ClipRRect(
-                                              borderRadius: BorderRadius.circular(50.0),
-                                              child: Image.asset(
-                                                "assets/images/doctor.png",
-                                                fit: BoxFit.cover,
+                                )
+                                else if(item == riwayatVoucher[1])
+                                Expanded(
+                                  flex: 3,
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(horizontal: 3),
+                                    child: Container(
+                                      height: 20,
+                                      child: Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: SizedBox(
+                                          width: 120,
+                                          height: 20,
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.circular(20),
+                                              color: Color(0xffE2E2E2),
+                                            ),
+                                            child: Center(
+                                              child: Text(
+                                                'EXPIRED',
+                                                style: TextStyle(
+                                                  fontFamily: 'Brandon',
+                                                  fontSize: 12,
+                                                ),
                                               ),
                                             ),
                                           ),
-                                          SizedBox(width: 10),
-                                          Expanded(
-                                            flex: 3,
-                                            child: Container(
-                                              height: 70,
-                                              child: Column(
-                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                                mainAxisAlignment: MainAxisAlignment.start,
-                                                children: [
-                                                  Container(
-                                                    child: Text(
-                                                      "VOUCHER KONSULTASI",
-                                                      style: TextStyle(
-                                                        fontFamily: "Brandon",
-                                                        fontSize: 13,
-                                                        fontWeight: FontWeight.w600,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  Container(
-                                                    child: Row(
-                                                      children: [
-                                                        Icon(
-                                                          Icons.alarm,
-                                                          color: Hexcolor("#F7866A"),
-                                                          size: 14,
-                                                        ),
-                                                        SizedBox(width: 4),
-                                                        Text(
-                                                            (e.durasi/60).round().toString()+" Menit",
-                                                          style: TextStyle(
-                                                            fontFamily: "Brandon",
-                                                            fontSize: 10,
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                  Container(
-                                                    child: Text(
-                                                      nm_format.format(e.harga),
-                                                      style: TextStyle(
-                                                        fontFamily: "Brandon",
-                                                        fontSize: 12,
-                                                        fontWeight: FontWeight.w500,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                          SizedBox(width: 5),
-                                          Expanded(
-                                            flex: 1,
-                                            child: Container(),
-                                          ),
-                                        ],
+                                        ),
                                       ),
-                                      SizedBox(height: 15),
-                                      Row(
-                                        children: [
-                                          Text(
-                                            "Masa Berlaku "+e.masaBerlaku.toString()+" Hari",
+                                    ),
+                                  ),
+                                )
+                                else if(item == riwayatVoucher[2])
+                                Expanded(
+                                  flex: 3,
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(horizontal: 3),
+                                    child: Container(
+                                      height: 20,
+                                      child: Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: SizedBox(
+                                          width: 120,
+                                          height: 20,
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.circular(20),
+                                              color: Color(0xffECF2D1),
+                                            ),
+                                            child: Center(
+                                              child: Text(
+                                                'SUDAH DIPAKAI',
+                                                style: TextStyle(
+                                                  fontFamily: 'Brandon',
+                                                  fontSize: 12,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                )
+                                else
+                                Expanded(
+                                  flex: 3,
+                                  child: Container(),
+                                ),
+                                Expanded(
+                                  flex: 1,
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(horizontal: 3),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text("Payment Method",
+                                            textAlign: TextAlign.left,
                                             style: TextStyle(
-                                              color: Hexcolor("#F7866A"),
                                               fontFamily: "Brandon",
                                               fontSize: 12,
-                                              fontWeight: FontWeight.w500,
+                                              fontWeight: FontWeight.w400,
+                                              color: Colors.black,
+                                            )
+                                        ),
+                                        if(item.payment_type == "mt_tf_bca" || item.payment_type == "mt_tf_bni" || item.payment_type == "mt_tf_permata" || item.payment_type == "alfamart" || item.payment_type=="Indomaret" ||item.payment_type=="mt_tf_mdr"|| item.payment_type=="mt_tf_bri")
+                                          Container(
+                                            width: 100,
+                                            child: Text(
+                                              item.mitrans_val != null ? item.mitrans_val.mitrans_val : "",
+                                              style: TextStyle(
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.w400,
+                                                fontFamily: "Brandon",
+                                              ),
+                                            ),
+                                          )else
+
+                                          Container(
+                                            width: 100,
+                                            child: Text(
+                                              item.typePayment,
+                                              style: TextStyle(
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.w400,
+                                                fontFamily: "Brandon",
+                                              ),
                                             ),
                                           ),
-                                        ],
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
-                                );
+                                ),
+                                // if(item.payment_status == 'unpaid' && item.payment_type == "ovo")
+                                //   Positioned(
+                                //       left: 0,
+                                //       child: Container(
+                                //         child: FlatButton(
+                                //           color:  Color(0xffF48262),
+                                //           textColor: Colors.white,
+                                //           disabledColor: Colors.grey,
+                                //           disabledTextColor: Colors.black,
+                                //           child:  Text("BAYAR SEKARANG"),
+                                //           onPressed: (){
+                                //             Navigator.push(
+                                //               context,
+                                //               MaterialPageRoute(
+                                //                 builder: (context) => QrisScreen(title: "OVO", urlQR: item.mitransVal.actions.firstWhere((element) => element.name == "generate-qr-code").url,type: QrisScreen.ovo,), ),
+                                //             );
+                                //           },
+                                //         ) ,
+                                //       )
+                                //   ),
+                                //
+                                // if(item.payment_status == 'unpaid' && item.payment_type == "shopeepay")
+                                //   Positioned(
+                                //       left: 0,
+                                //       child: Container(
+                                //         margin: EdgeInsets.only(left: 10),
+                                //         alignment: Alignment.centerLeft,
+                                //         child: FlatButton(
+                                //           color:  Color(0xffF48262),
+                                //           textColor: Colors.white,
+                                //           disabledColor: Colors.grey,
+                                //           disabledTextColor: Colors.black,
+                                //           child:  Text("BAYAR SEKARANG"),
+                                //           onPressed: (){
+                                //             Navigator.push(
+                                //               context,
+                                //               MaterialPageRoute(
+                                //                 builder: (context) => QrisScreen(title: "SHOPEEPAY", urlQR: item.mitransVal.actions.firstWhere((element) => element.name == "generate-qr-code").url,type: QrisScreen.shopee), ),
+                                //             );
+                                //           },
+                                //         ) ,
+                                //       )
+                                //   )
+                                //   ,
+                                // if(item.payment_status == 'unpaid' && item.payment_type == "gopay")
+                                //   Positioned(
+                                //       left: 0,
+                                //       child: Container(
+                                //         margin: EdgeInsets.only(left: 10),
+                                //         alignment: Alignment.centerLeft,
+                                //         child: FlatButton(
+                                //           color:  Color(0xffF48262),
+                                //           textColor: Colors.white,
+                                //           disabledColor: Colors.grey,
+                                //           disabledTextColor: Colors.black,
+                                //           child:  Text("BAYAR SEKARANG"),
+                                //           onPressed: (){
+                                //             // Navigator.push(
+                                //             //   context,
+                                //             //   MaterialPageRoute(
+                                //             //     builder: (context) => BankTransferDetailScreen(order_id: order.id,), ),
+                                //             // );
+                                //             _launchURL(item.mitransVal.actions.firstWhere((element) => element.name == "deeplink-redirect").url);
+                                //           },
+                                //         ) ,
+                                //       )
+                                //   ),
+                                // if(item.payment_status == 'unpaid' && item.payment_type == "qris")
+                                //   Positioned(
+                                //       left: 0,
+                                //       child: Container(
+                                //         margin: EdgeInsets.only(left: 10),
+                                //         alignment: Alignment.centerLeft,
+                                //         child: FlatButton(
+                                //           color:  Color(0xffF48262),
+                                //           textColor: Colors.white,
+                                //           disabledColor: Colors.grey,
+                                //           disabledTextColor: Colors.black,
+                                //           child:  Text("BAYAR SEKARANG"),
+                                //           onPressed: (){
+                                //             Navigator.push(
+                                //               context,
+                                //               MaterialPageRoute(
+                                //                 builder: (context) => QrisScreen(title: "QRIS", urlQR: item.mitransVal.actions.firstWhere((element) => element.name == "generate-qr-code").url,type: QrisScreen.qris), ),
+                                //             );
+                                //           },
+                                //         ) ,
+                                //       )
+                                //   ),
 
-                              }).toList(),
+
+                              ],
                             ),
-                          )
+                          ),
+                          SizedBox(height: 5),
+                          // Container(
+                          //   child: Column(
+                          //     children: item.orderDetailVoucher.map((e){
+                          //
+                          //       return  Container(
+                          //         decoration: BoxDecoration(
+                          //           color: Colors.white,
+                          //           borderRadius: BorderRadius.circular(10),
+                          //           boxShadow: [
+                          //             BoxShadow(
+                          //               color: Colors.grey.withOpacity(0.2),
+                          //               spreadRadius: 1,
+                          //               blurRadius: 1,
+                          //             ),
+                          //           ],
+                          //         ),
+                          //         margin: EdgeInsets.only(top: 10, bottom: 10),
+                          //         padding: EdgeInsets.only(left: 10, right: 10, top: 20, bottom: 10),
+                          //         child: Column(
+                          //           children: [
+                          //             Row(
+                          //               children: [
+                          //                 Container(
+                          //                   width: 70,
+                          //                   height: 70,
+                          //                   child: ClipRRect(
+                          //                     borderRadius: BorderRadius.circular(50.0),
+                          //                     child: Image.asset(
+                          //                       "assets/images/doctor.png",
+                          //                       fit: BoxFit.cover,
+                          //                     ),
+                          //                   ),
+                          //                 ),
+                          //                 SizedBox(width: 10),
+                          //                 Expanded(
+                          //                   flex: 3,
+                          //                   child: Container(
+                          //                     height: 70,
+                          //                     child: Column(
+                          //                       crossAxisAlignment: CrossAxisAlignment.start,
+                          //                       mainAxisAlignment: MainAxisAlignment.start,
+                          //                       children: [
+                          //                         Container(
+                          //                           child: Text(
+                          //                             "VOUCHER KONSULTASI",
+                          //                             style: TextStyle(
+                          //                               fontFamily: "Brandon",
+                          //                               fontSize: 13,
+                          //                               fontWeight: FontWeight.w600,
+                          //                             ),
+                          //                           ),
+                          //                         ),
+                          //                         Container(
+                          //                           child: Row(
+                          //                             children: [
+                          //                               Icon(
+                          //                                 Icons.alarm,
+                          //                                 color: Hexcolor("#F7866A"),
+                          //                                 size: 14,
+                          //                               ),
+                          //                               SizedBox(width: 4),
+                          //                               Text(
+                          //                                   (e.durasi/60).round().toString()+" Menit",
+                          //                                 style: TextStyle(
+                          //                                   fontFamily: "Brandon",
+                          //                                   fontSize: 10,
+                          //                                 ),
+                          //                               ),
+                          //                             ],
+                          //                           ),
+                          //                         ),
+                          //                         Container(
+                          //                           child: Text(
+                          //                             nm_format.format(e.harga),
+                          //                             style: TextStyle(
+                          //                               fontFamily: "Brandon",
+                          //                               fontSize: 12,
+                          //                               fontWeight: FontWeight.w500,
+                          //                             ),
+                          //                           ),
+                          //                         ),
+                          //                       ],
+                          //                     ),
+                          //                   ),
+                          //                 ),
+                          //                 SizedBox(width: 5),
+                          //                 Expanded(
+                          //                   flex: 1,
+                          //                   child: Container(),
+                          //                 ),
+                          //               ],
+                          //             ),
+                          //             SizedBox(height: 15),
+                          //             Row(
+                          //               children: [
+                          //                 Text(
+                          //                   "Masa Berlaku "+e.masaBerlaku.toString()+" Hari",
+                          //                   style: TextStyle(
+                          //                     color: Hexcolor("#F7866A"),
+                          //                     fontFamily: "Brandon",
+                          //                     fontSize: 12,
+                          //                     fontWeight: FontWeight.w500,
+                          //                   ),
+                          //                 ),
+                          //               ],
+                          //             ),
+                          //           ],
+                          //         ),
+                          //       );
+                          //
+                          //     }).toList(),
+                          //   ),
+                          // )
                         ],
                       ),
                     );
@@ -1294,10 +1400,9 @@ class _KonsultasiState extends State<KonsultasiScreen> {
                 borderRadius: BorderRadius.circular(10),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    spreadRadius: 2,
-                    blurRadius: 5,
-                    offset: Offset(2, 1), // changes position of shadow
+                    color: Colors.grey.withOpacity(0.2),
+                    spreadRadius: 1,
+                    blurRadius: 1,
                   ),
                 ],
               ),
@@ -1526,93 +1631,94 @@ class _Konsultasi extends State<konsultasi> {
   Widget build(BuildContext context) {
     final faq = Provider.of<AppModel>(context,listen: false).listFaq.firstWhere((element) => element.id == 5);
     return Container(
+      padding: EdgeInsets.only(top: 20),
       child: Column(
         children: [
-          Container(
-            margin: EdgeInsets.only(right: 40, left: 40),
-            padding: EdgeInsets.only(top: 15, bottom: 15),
-            child: Row(
-              children: [
-                Expanded(
-                  flex: 1,
-                  child: GestureDetector(
-                    onTap: () {
-                      setState(() => _konsultasiPage = 0);
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
-                        color: Hexcolor("#F7866A"),
-                      ),
-                      padding: EdgeInsets.only(top: 3, bottom: 3),
-                      child: Text(
-                        "BELI",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontFamily: "Brandon",
-                          fontWeight: FontWeight.w600,
-                          fontSize: 13,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(width: 5),
-                Expanded(
-                  flex: 1,
-                  child: GestureDetector(
-                    onTap: () {
-                      setState(() => _konsultasiPage = 1);
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
-                        color: Hexcolor("#F7866A"),
-                      ),
-                      padding: EdgeInsets.only(top: 3, bottom: 3),
-                      child: Text(
-                        "TUKAR",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontFamily: "Brandon",
-                          fontWeight: FontWeight.w600,
-                          fontSize: 13,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(width: 5),
-                Expanded(
-                  flex: 1,
-                  child: GestureDetector(
-                    onTap: () {
-                      setState(() => _konsultasiPage = 2);
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
-                        color: Hexcolor("#F7866A"),
-                      ),
-                      padding: EdgeInsets.only(top: 3, bottom: 3),
-                      child: Text(
-                        "KONSULTASI",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontFamily: "Brandon",
-                          fontWeight: FontWeight.w600,
-                          fontSize: 13,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
+          // Container(
+          //   margin: EdgeInsets.only(right: 40, left: 40),
+          //   padding: EdgeInsets.only(top: 15, bottom: 15),
+          //   child: Row(
+          //     children: [
+          //       Expanded(
+          //         flex: 1,
+          //         child: GestureDetector(
+          //           onTap: () {
+          //             setState(() => _konsultasiPage = 0);
+          //           },
+          //           child: Container(
+          //             decoration: BoxDecoration(
+          //               borderRadius: BorderRadius.circular(5),
+          //               color: Hexcolor("#F7866A"),
+          //             ),
+          //             padding: EdgeInsets.only(top: 3, bottom: 3),
+          //             child: Text(
+          //               "BELI",
+          //               textAlign: TextAlign.center,
+          //               style: TextStyle(
+          //                 color: Colors.white,
+          //                 fontFamily: "Brandon",
+          //                 fontWeight: FontWeight.w600,
+          //                 fontSize: 13,
+          //               ),
+          //             ),
+          //           ),
+          //         ),
+          //       ),
+          //       SizedBox(width: 5),
+          //       Expanded(
+          //         flex: 1,
+          //         child: GestureDetector(
+          //           onTap: () {
+          //             setState(() => _konsultasiPage = 1);
+          //           },
+          //           child: Container(
+          //             decoration: BoxDecoration(
+          //               borderRadius: BorderRadius.circular(5),
+          //               color: Hexcolor("#F7866A"),
+          //             ),
+          //             padding: EdgeInsets.only(top: 3, bottom: 3),
+          //             child: Text(
+          //               "TUKAR",
+          //               textAlign: TextAlign.center,
+          //               style: TextStyle(
+          //                 color: Colors.white,
+          //                 fontFamily: "Brandon",
+          //                 fontWeight: FontWeight.w600,
+          //                 fontSize: 13,
+          //               ),
+          //             ),
+          //           ),
+          //         ),
+          //       ),
+          //       SizedBox(width: 5),
+          //       Expanded(
+          //         flex: 1,
+          //         child: GestureDetector(
+          //           onTap: () {
+          //             setState(() => _konsultasiPage = 2);
+          //           },
+          //           child: Container(
+          //             decoration: BoxDecoration(
+          //               borderRadius: BorderRadius.circular(5),
+          //               color: Hexcolor("#F7866A"),
+          //             ),
+          //             padding: EdgeInsets.only(top: 3, bottom: 3),
+          //             child: Text(
+          //               "KONSULTASI",
+          //               textAlign: TextAlign.center,
+          //               style: TextStyle(
+          //                 color: Colors.white,
+          //                 fontFamily: "Brandon",
+          //                 fontWeight: FontWeight.w600,
+          //                 fontSize: 13,
+          //               ),
+          //             ),
+          //           ),
+          //         ),
+          //       ),
+          //     ],
+          //   ),
+          // ),
           LayoutBuilder(
             builder: (context, constraint) {
               switch (_konsultasiPage) {
@@ -1635,92 +1741,92 @@ class _Konsultasi extends State<konsultasi> {
               }
             },
           ),
-          SizedBox(height: 70),
-          Container(
-            decoration: BoxDecoration(
-              border: Border(
-                top: BorderSide(
-                  color: Hexcolor("#F7866A"),
-                  width: 2,
-                ),
-              ),
-            ),
-            margin: EdgeInsets.only(left: 20, right: 20),
-            padding: EdgeInsets.only(top: 15),
-            width: MediaQuery.of(context).size.width,
-            child: Text(
-              "FAQs",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontFamily: "Yeseva",
-                color: Colors.black,
-                fontSize: 20,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-          ),
-          for(Faq item in faq.faq)
-          Padding(
-            padding: EdgeInsets.only(left: 20, right: 20),
-            child: Card(
-                elevation: 0,
-                color: Colors.transparent,
-                child: ExpansionTile(
-                  title: Padding(
-                    padding: EdgeInsets.only(left: 0),
-                    child: Text(
-                      item.ask,
-                      style: new TextStyle(
-                        fontFamily: "Brandon",
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.black,
-                      ),
-                      textAlign: TextAlign.left,
-                    ),
-                  ),
-                  children: <Widget>[
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Colors.transparent,
-                        border: Border(
-                          top: BorderSide(
-                            color: Hexcolor("#F7866A"),
-                            width: 2.0,
-                          ),
-                        ),
-                      ),
-                      padding: EdgeInsets.only(
-                        left: 15,
-                        right: 15,
-                        top: 5,
-                        bottom: 5,
-                      ),
-                      child: Column(
-                        children: [
-                          Container(
-                            width: MediaQuery.of(context).size.width,
-                            child:
-                            Html(
-                              data:item.ans,
-                              style: {
-                                "html": Style(
-                                  fontFamily: "Brandon",
-                                  fontSize: FontSize.medium,
-                                  fontWeight: FontWeight.w300,
-                                  color: Colors.black,
-                                )
-                              },
-                            )
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-          ),
-          SizedBox(height: 20),
+          // SizedBox(height: 70),
+          // Container(
+          //   decoration: BoxDecoration(
+          //     border: Border(
+          //       top: BorderSide(
+          //         color: Hexcolor("#F7866A"),
+          //         width: 2,
+          //       ),
+          //     ),
+          //   ),
+          //   margin: EdgeInsets.only(left: 20, right: 20),
+          //   padding: EdgeInsets.only(top: 15),
+          //   width: MediaQuery.of(context).size.width,
+          //   child: Text(
+          //     "FAQs",
+          //     textAlign: TextAlign.center,
+          //     style: TextStyle(
+          //       fontFamily: "Yeseva",
+          //       color: Colors.black,
+          //       fontSize: 20,
+          //       fontWeight: FontWeight.w500,
+          //     ),
+          //   ),
+          // ),
+          // for(Faq item in faq.faq)
+          // Padding(
+          //   padding: EdgeInsets.only(left: 20, right: 20),
+          //   child: Card(
+          //       elevation: 0,
+          //       color: Colors.transparent,
+          //       child: ExpansionTile(
+          //         title: Padding(
+          //           padding: EdgeInsets.only(left: 0),
+          //           child: Text(
+          //             item.ask,
+          //             style: new TextStyle(
+          //               fontFamily: "Brandon",
+          //               fontSize: 16,
+          //               fontWeight: FontWeight.w600,
+          //               color: Colors.black,
+          //             ),
+          //             textAlign: TextAlign.left,
+          //           ),
+          //         ),
+          //         children: <Widget>[
+          //           Container(
+          //             decoration: BoxDecoration(
+          //               color: Colors.transparent,
+          //               border: Border(
+          //                 top: BorderSide(
+          //                   color: Hexcolor("#F7866A"),
+          //                   width: 2.0,
+          //                 ),
+          //               ),
+          //             ),
+          //             padding: EdgeInsets.only(
+          //               left: 15,
+          //               right: 15,
+          //               top: 5,
+          //               bottom: 5,
+          //             ),
+          //             child: Column(
+          //               children: [
+          //                 Container(
+          //                   width: MediaQuery.of(context).size.width,
+          //                   child:
+          //                   Html(
+          //                     data:item.ans,
+          //                     style: {
+          //                       "html": Style(
+          //                         fontFamily: "Brandon",
+          //                         fontSize: FontSize.medium,
+          //                         fontWeight: FontWeight.w300,
+          //                         color: Colors.black,
+          //                       )
+          //                     },
+          //                   )
+          //                 ),
+          //               ],
+          //             ),
+          //           ),
+          //         ],
+          //       ),
+          //     ),
+          // ),
+          // SizedBox(height: 20),
         ],
       ),
     );
@@ -1740,65 +1846,437 @@ class beli_screen extends StatelessWidget {
               borderRadius: BorderRadius.circular(10),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.grey.withOpacity(0.5),
-                  spreadRadius: 2,
-                  blurRadius: 5,
-                  offset: Offset(2, 1), // changes position of shadow
+                  color: Colors.grey.withOpacity(0.2),
+                  spreadRadius: 1,
+                  blurRadius: 1,
                 ),
               ],
             ),
-            margin: EdgeInsets.only(left: 40, right: 40),
+            margin: EdgeInsets.only(left: 20, right: 20, bottom: 20),
             padding: EdgeInsets.only(left: 15, right: 15, top: 10, bottom: 10),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(
-                  child: Text(
-                    "Beli",
-                    style: TextStyle(
-                      fontFamily: "Brandon",
-                      fontWeight: FontWeight.w600,
-                      fontSize: 15,
+                Row(
+                  children: [
+                    Container(
+                      width: 60.0,
+                      height: 60.0,
+                      margin: EdgeInsets.only(right: 10),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        image: DecorationImage(
+                            fit: BoxFit.cover,
+                            image: AssetImage(
+                                "assets/images/basic.jpg")
+                        ),
+                      ),
                     ),
+                    Expanded(
+                      child: IntrinsicHeight(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Nama Dokter',
+                                  style: TextStyle(
+                                    fontFamily: 'Brandon',
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 15,
+                                  ),
+                                ),
+                                Text(
+                                  'Bidang',
+                                  style: TextStyle(
+                                    fontFamily: 'Brandon',
+                                    fontSize: 15,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Container(
+                              margin: EdgeInsets.symmetric(vertical: 3),
+                              child: Row(
+                                children: [
+                                  Container(
+                                    width: 10,
+                                    height: 10,
+                                    margin: EdgeInsets.only(right: 5),
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: Color(0xff4CBC43),
+                                    ),
+                                  ),
+                                  Text(
+                                    'Sedang Online',
+                                    style: TextStyle(
+                                      fontFamily: 'Brandon',
+                                      fontSize: 12,
+                                      color: Color(0xff4CBC43),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                Container(
+                  padding: EdgeInsets.only(top: 5),
+                  child: Row(
+                    children: [
+                      Image.asset(
+                        'assets/images/konsultasi/tempat-praktek.png',
+                        height: 40,
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Tempat Praktek',
+                            style: TextStyle(
+                              fontFamily: 'Brandon',
+                              fontSize: 11,
+                            ),
+                          ),
+                          Text(
+                            'Nama Tempat',
+                            style: TextStyle(
+                              fontFamily: 'Brandon',
+                              fontSize: 13,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
                 ),
-                SizedBox(height: 10),
                 Container(
-                  child: Text(
-                    "Dolor enim sit amet ex pariatur ullamco adipisicing consequat occaecat irure officia dolor. Voluptate ad nostrud pariatur sit dolor irure incididunt proident. Non anim amet voluptate sint officia ut anim et magna aute cupidatat nisi eiusmod anim. Eu consectetur nostrud excepteur eu est cupidatat cillum irure mollit cillum. Minim sunt commodo in pariatur commodo qui adipisicing culpa.",
-                    style: TextStyle(
-                      fontFamily: "Brandon",
-                      fontWeight: FontWeight.w400,
-                      fontSize: 14,
+                  padding: EdgeInsets.only(top: 5),
+                  child: Row(
+                    children: [
+                      Image.asset(
+                        'assets/images/konsultasi/pengalaman.png',
+                        height: 40,
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Pengalaman',
+                            style: TextStyle(
+                              fontFamily: 'Brandon',
+                              fontSize: 11,
+                            ),
+                          ),
+                          Text(
+                            '5 Tahun',
+                            style: TextStyle(
+                              fontFamily: 'Brandon',
+                              fontSize: 13,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  padding: EdgeInsets.only(top: 5),
+                  child: Row(
+                    children: [
+                      Image.asset(
+                        'assets/images/konsultasi/izin-praktek.png',
+                        height: 40,
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Nomor Izin Praktek',
+                            style: TextStyle(
+                              fontFamily: 'Brandon',
+                              fontSize: 11,
+                            ),
+                          ),
+                          Text(
+                            'Nomor Izin',
+                            style: TextStyle(
+                              fontFamily: 'Brandon',
+                              fontSize: 13,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: Container(
+                    margin: EdgeInsets.only(top: 15),
+                    child: FlatButton(
+                      onPressed: (){},
+                      padding: EdgeInsets.symmetric(horizontal: 10),
+                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        side: BorderSide(
+                          width: 1.0,
+                          color: Color(0xffF48262),
+                        ),
+                      ),
+                      child: Text(
+                        'KONSULTASI SEKARANG',
+                        style: TextStyle(
+                          fontFamily: 'Brandon',
+                          color: Color(0xffF48262),
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
                     ),
                   ),
                 ),
               ],
             ),
           ),
-          SizedBox(height: 10),
-          GestureDetector(
-            onTap: () {},
-            child: Container(
-              decoration: BoxDecoration(
-                color: Hexcolor("#F7866A"),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              padding: EdgeInsets.only(top: 8, bottom: 8),
-              margin: EdgeInsets.only(right: 40, left: 40),
-              width: MediaQuery.of(context).size.width,
-              child: Text(
-                "Yuk, Mulai Konsultasi",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 14,
-                  fontFamily: "Brandon",
-                  color: Colors.white,
-                  fontWeight: FontWeight.w600,
+          Container(
+            width: MediaQuery.of(context).size.width,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.2),
+                  spreadRadius: 1,
+                  blurRadius: 1,
                 ),
-              ),
+              ],
+            ),
+            margin: EdgeInsets.only(left: 20, right: 20, bottom: 20),
+            padding: EdgeInsets.only(left: 15, right: 15, top: 10, bottom: 10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Container(
+                      width: 60.0,
+                      height: 60.0,
+                      margin: EdgeInsets.only(right: 10),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        image: DecorationImage(
+                            fit: BoxFit.cover,
+                            image: AssetImage(
+                                "assets/images/basic.jpg")
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: IntrinsicHeight(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Nama Dokter',
+                                  style: TextStyle(
+                                    fontFamily: 'Brandon',
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 15,
+                                  ),
+                                ),
+                                Text(
+                                  'Bidang',
+                                  style: TextStyle(
+                                    fontFamily: 'Brandon',
+                                    fontSize: 15,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Container(
+                              margin: EdgeInsets.symmetric(vertical: 3),
+                              child: Row(
+                                children: [
+                                  Container(
+                                    width: 10,
+                                    height: 10,
+                                    margin: EdgeInsets.only(right: 5),
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: Color(0xff4CBC43),
+                                    ),
+                                  ),
+                                  Text(
+                                    'Sedang Online',
+                                    style: TextStyle(
+                                      fontFamily: 'Brandon',
+                                      fontSize: 12,
+                                      color: Color(0xff4CBC43),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                Container(
+                  padding: EdgeInsets.only(top: 5),
+                  child: Row(
+                    children: [
+                      Image.asset(
+                        'assets/images/konsultasi/tempat-praktek.png',
+                        height: 40,
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Tempat Praktek',
+                            style: TextStyle(
+                              fontFamily: 'Brandon',
+                              fontSize: 11,
+                            ),
+                          ),
+                          Text(
+                            'Nama Tempat',
+                            style: TextStyle(
+                              fontFamily: 'Brandon',
+                              fontSize: 13,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  padding: EdgeInsets.only(top: 5),
+                  child: Row(
+                    children: [
+                      Image.asset(
+                        'assets/images/konsultasi/pengalaman.png',
+                        height: 40,
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Pengalaman',
+                            style: TextStyle(
+                              fontFamily: 'Brandon',
+                              fontSize: 11,
+                            ),
+                          ),
+                          Text(
+                            '5 Tahun',
+                            style: TextStyle(
+                              fontFamily: 'Brandon',
+                              fontSize: 13,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  padding: EdgeInsets.only(top: 5),
+                  child: Row(
+                    children: [
+                      Image.asset(
+                        'assets/images/konsultasi/izin-praktek.png',
+                        height: 40,
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Nomor Izin Praktek',
+                            style: TextStyle(
+                              fontFamily: 'Brandon',
+                              fontSize: 11,
+                            ),
+                          ),
+                          Text(
+                            'Nomor Izin',
+                            style: TextStyle(
+                              fontFamily: 'Brandon',
+                              fontSize: 13,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: Container(
+                    margin: EdgeInsets.only(top: 15),
+                    child: FlatButton(
+                      onPressed: (){},
+                      padding: EdgeInsets.symmetric(horizontal: 10),
+                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        side: BorderSide(
+                          width: 1.0,
+                          color: Color(0xffF48262),
+                        ),
+                      ),
+                      child: Text(
+                        'KONSULTASI SEKARANG',
+                        style: TextStyle(
+                          fontFamily: 'Brandon',
+                          color: Color(0xffF48262),
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
+          // GestureDetector(
+          //   onTap: () {},
+          //   child: Container(
+          //     decoration: BoxDecoration(
+          //       color: Hexcolor("#F7866A"),
+          //       borderRadius: BorderRadius.circular(10),
+          //     ),
+          //     padding: EdgeInsets.only(top: 8, bottom: 8),
+          //     margin: EdgeInsets.only(right: 40, left: 40),
+          //     width: MediaQuery.of(context).size.width,
+          //     child: Text(
+          //       "Yuk, Mulai Konsultasi",
+          //       textAlign: TextAlign.center,
+          //       style: TextStyle(
+          //         fontSize: 14,
+          //         fontFamily: "Brandon",
+          //         color: Colors.white,
+          //         fontWeight: FontWeight.w600,
+          //       ),
+          //     ),
+          //   ),
+          // ),
         ],
       ),
     );
@@ -1818,10 +2296,9 @@ class tukar_screen extends StatelessWidget {
               borderRadius: BorderRadius.circular(10),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.grey.withOpacity(0.5),
-                  spreadRadius: 2,
-                  blurRadius: 5,
-                  offset: Offset(2, 1), // changes position of shadow
+                  color: Colors.grey.withOpacity(0.2),
+                  spreadRadius: 1,
+                  blurRadius: 1,
                 ),
               ],
             ),
@@ -1897,10 +2374,9 @@ class konsultasi_screen extends StatelessWidget {
               borderRadius: BorderRadius.circular(10),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.grey.withOpacity(0.5),
-                  spreadRadius: 2,
-                  blurRadius: 5,
-                  offset: Offset(2, 1), // changes position of shadow
+                  color: Colors.grey.withOpacity(0.2),
+                  spreadRadius: 1,
+                  blurRadius: 1,
                 ),
               ],
             ),

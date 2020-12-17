@@ -41,6 +41,7 @@ class ProductDetailsScreen extends StatefulWidget {
 class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   ScrollController _scrollController = new ScrollController();
+  ScrollController _controller;
   List<Review> listReview =[];
   bool isLoading =true;
   int current_page=0;
@@ -48,11 +49,17 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   String NextPage;
   List<ChoiceOptionsValue> option=[];
   VarianResult varian;
+  final double targetElevation = 3;
+  final targetColor = Color(0xfffdf8f0);
+  var _color = Colors.transparent;
+  double _elevation = 0;
 
 
   @override
   void initState() {
     super.initState();
+    _controller = ScrollController();
+    _controller.addListener(_scrollListener);
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       _getData();
       _scrollController.addListener(() {
@@ -72,6 +79,28 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
       }
 
     });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _controller?.removeListener(_scrollListener);
+    _controller?.dispose();
+  }
+
+  void _scrollListener() {
+    double newElevation = _controller.offset > 1 ? targetElevation : 0;
+    final newColor = _controller.offset > 1 ? targetColor : Colors.transparent;
+    if (_elevation != newElevation) {
+      setState(() {
+        _elevation = newElevation;
+      });
+    }
+    if (_color != newColor) {
+      setState(() {
+        _color = newColor;
+      });
+    }
   }
 
   _launchURL(url) async {
@@ -436,8 +465,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
             backgroundColor: Color(0xffFDF8F0),
             extendBodyBehindAppBar: true,
             appBar: AppBar(
-              backgroundColor: Colors.transparent,
-              elevation: 0.0,
+              backgroundColor: _color,
+              elevation: _elevation,
               leading:IconButton(
                 icon: Icon(Icons.arrow_back_ios),
                 onPressed: () =>Navigator.pop(context),
@@ -539,7 +568,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
             body: Container(
               margin: MediaQuery.of(context).padding,
               child: SingleChildScrollView(
-                controller: _scrollController,
+                controller: _controller,
                 child: Column(
                   children: <Widget>[
                     Container(
@@ -1008,7 +1037,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                           ),
                           if(Provider.of<ProductModel>(context).Recomendasi.length>0)
                           Container(
-                            height: MediaQuery.of(context).size.width * .7,
+                            height: MediaQuery.of(context).size.width * .75,
                             child: Consumer<ProductModel>(
                               builder: (context,value,child){
                                 if(value.loadingRekomendasi){
@@ -1026,7 +1055,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                                     Expanded(
                                                       flex: 1,
                                                       child: Container(
-                                                        padding: EdgeInsets.symmetric(horizontal: 7),
+                                                        padding: EdgeInsets.symmetric(horizontal: 5),
                                                         child: MyProduct(
                                                           product: e,
                                                           IsLiked: Provider.of<WishModel>(context).rawlist.firstWhere((element) => element.productId == e.id, orElse: () => null) != null ? true:false,

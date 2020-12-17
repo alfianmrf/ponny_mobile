@@ -245,14 +245,15 @@ class _SkinklopediaState extends State<Skinklopedia> {
               ),
             ),
             Expanded(
-                child: new FutureBuilder<List>(
-                    future: filterSkin(alphaBets),
-                    builder: (context, snapshot) {
-                      if (snapshot.hasError) print(snapshot.error);
-                      return snapshot.hasData
-                          ? pageAlphaBets(snapshot.data)
-                          : Center(child: new CircularProgressIndicator());
-                    })),
+              child: new FutureBuilder<List>(
+                  future: filterSkin(alphaBets),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasError) print(snapshot.error);
+                    return snapshot.hasData
+                        ? pageAlphaBets(snapshot.data)
+                        : Center(child: new CircularProgressIndicator());
+                  }),
+            ),
           ],
         ),
         bottomNavigationBar: new PonnyBottomNavbar(selectedIndex: 0),
@@ -306,20 +307,22 @@ class _PageAScreen extends State<page_a> {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
+      padding: EdgeInsets.symmetric(vertical: 20),
       itemCount: widget.list.length,
       itemBuilder: (context, i) {
         return Column(
           children: [
             i % 2 == 0
                 ? Container(
-                    margin: EdgeInsets.only(left: 25, right: 25, top: 20),
+                    margin: EdgeInsets.only(left: 25, right: 25),
                     child: Row(
                       children: [
                         Expanded(
                           flex: 1,
                           child: Container(
                             padding: EdgeInsets.only(
-                              top: 20,
+                              top: 10,
+                              bottom: 10,
                               left: 20,
                             ),
                             decoration: BoxDecoration(
@@ -347,7 +350,8 @@ class _PageAScreen extends State<page_a> {
                           flex: 1,
                           child: Container(
                             padding: EdgeInsets.only(
-                              top: 20,
+                              top: 10,
+                              bottom: 10,
                               left: 20,
                             ),
 
@@ -424,7 +428,8 @@ class _PageAScreen extends State<page_a> {
                           flex: 1,
                           child: Container(
                             padding: EdgeInsets.only(
-                              top: 20,
+                              top: 10,
+                              bottom: 10,
                               left: 20,
                             ),
 
@@ -491,7 +496,8 @@ class _PageAScreen extends State<page_a> {
                           flex: 1,
                           child: Container(
                             padding: EdgeInsets.only(
-                              top: 20,
+                              top: 10,
+                              bottom: 10,
                               right: 20,
                             ),
                             decoration: BoxDecoration(
