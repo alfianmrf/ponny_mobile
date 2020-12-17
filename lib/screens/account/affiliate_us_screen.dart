@@ -29,47 +29,38 @@ class _AffiliateUsStateScreen extends State<AffiliateUsScreen> {
       key: scaffoldkey,
       resizeToAvoidBottomInset: false,
       backgroundColor: Hexcolor('#FCF8F0'),
+      appBar: AppBar(
+        elevation: 0,
+        titleSpacing: 0,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: Color(0xffF48262),
+            size: 26,
+          ),
+        ),
+        title:  Text(
+          'Affiliate',
+          style: TextStyle(
+            fontSize: 24,
+            fontFamily: "Yeseva",
+            fontWeight: FontWeight.w500,
+            color: Color(0xffF48262),
+          ),
+        ),
+        bottom: PreferredSize(
+            child: Container(
+              color: Color(0xffF48262),
+              height: 1.0,
+            ),
+            preferredSize: Size.fromHeight(1.0)),
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
-            Container(
-              height: 70,
-            ),
-            Container(
-              padding: EdgeInsets.only(left: 15, bottom: 15),
-              child: Row(
-                children: [
-                  Container(
-                    margin: EdgeInsets.only(right: 14),
-                    child: GestureDetector(
-                      child: Icon(
-                        Icons.arrow_back_ios,
-                        color: Color(0xffF48262),
-                        size: 26,
-                      ),
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                    ),
-                  ),
-                  Container(
-                    child: Text(
-                      "Dalam Perjalanan",
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontFamily: "Yeseva",
-                        fontWeight: FontWeight.w500,
-                        color: Color(0xffF48262),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              height: 1,
-              color: Color(0xffF3C1B5),
-            ),
             Stack(
               children: [
                 Container(
@@ -184,21 +175,17 @@ class _AffiliateUsStateScreen extends State<AffiliateUsScreen> {
                     ),
                     margin: EdgeInsets.only(right: 30, left: 30),
                     padding: EdgeInsets.only(left: 15, top: 5, bottom: 5),
-                    child: Row(
-                      children: [
-                        Container(
-                          width:MediaQuery.of(context).size.width*.8,
-                          child: Text(
-                            afiliateUrl,
-                            style: TextStyle(
-                              fontFamily: "Brandon",
-                              fontWeight: FontWeight.w500,
-                              fontSize: 13,
-                              color: Colors.grey,
-                            ),
-                          ),
-                        )
-                      ],
+                    child: Container(
+                      width:MediaQuery.of(context).size.width*.8,
+                      child: Text(
+                        afiliateUrl,
+                        style: TextStyle(
+                          fontFamily: "Brandon",
+                          fontWeight: FontWeight.w500,
+                          fontSize: 13,
+                          color: Colors.grey,
+                        ),
+                      ),
                     ),
                   ),
                 ],
@@ -219,19 +206,15 @@ class _AffiliateUsStateScreen extends State<AffiliateUsScreen> {
                     ),
                     margin: EdgeInsets.only(right: 30, left: 30),
                     padding: EdgeInsets.only(left: 10, top: 5, bottom: 5),
-                    child: Row(
-                      children: [
-                        Container(
-                          child: Text(
-                            "Salin tautan di bawah ini untuk digunakan di website mu",
-                            style: TextStyle(
-                              fontFamily: "Brandon",
-                              fontWeight: FontWeight.w600,
-                              fontSize: 13,
-                            ),
-                          ),
-                        )
-                      ],
+                    child: Container(
+                      child: Text(
+                        "Salin tautan di bawah ini untuk digunakan di website mu",
+                        style: TextStyle(
+                          fontFamily: "Brandon",
+                          fontWeight: FontWeight.w600,
+                          fontSize: 13,
+                        ),
+                      ),
                     ),
                   ),
                   Container(
@@ -253,21 +236,17 @@ class _AffiliateUsStateScreen extends State<AffiliateUsScreen> {
                     ),
                     margin: EdgeInsets.only(right: 30, left: 30),
                     padding: EdgeInsets.only(left: 15, top: 5, bottom: 5),
-                    child: Row(
-                      children: [
-                        Container(
-                          width:MediaQuery.of(context).size.width*.8,
-                          child: Text(
-                            link?ringkasUrl:afiliateUrl,
-                            style: TextStyle(
-                              fontFamily: "Brandon",
-                              fontWeight: FontWeight.w500,
-                              fontSize: 13,
-                              color: Colors.grey,
-                            ),
-                          ),
-                        )
-                      ],
+                    child: Container(
+                      width:MediaQuery.of(context).size.width*.8,
+                      child: Text(
+                        link?ringkasUrl:afiliateUrl,
+                        style: TextStyle(
+                          fontFamily: "Brandon",
+                          fontWeight: FontWeight.w500,
+                          fontSize: 13,
+                          color: Colors.grey,
+                        ),
+                      ),
                     ),
                   ),
                 ],
@@ -342,8 +321,8 @@ class _AffiliateUsStateScreen extends State<AffiliateUsScreen> {
                   ],
                 ),
               ),
-            )
-            ,
+            ),
+            Container(height: 30,)
           ],
         ),
       ),
