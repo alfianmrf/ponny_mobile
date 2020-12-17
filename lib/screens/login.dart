@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:flutter_twitter_login/flutter_twitter_login.dart';
 import 'package:google_sign_in/google_sign_in.dart' as google;
 import 'package:hexcolor/hexcolor.dart';
@@ -25,7 +26,6 @@ import 'package:uiblock/uiblock.dart';
 import 'package:ponny/util/globalUrl.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart' as FirebasePakage;
-import 'package:firebase_auth/firebase_auth.dart';
 
 class LoginScreen extends StatefulWidget {
   static const String id = "login_Screen";
@@ -157,39 +157,12 @@ class _LoginStateScreen extends State<LoginScreen> {
   Future<bool> signInWithApple() async {
     await Firebase.initializeApp();
     bool result = false;
-    // final appleIdCredential = await SignInWithApple.getAppleIDCredential(
-    //   scopes: [
-    //     AppleIDAuthorizationScopes.email,
-    //     AppleIDAuthorizationScopes.fullName,
-    //   ],
-    // );
-    // final oAuthProvider = OAuthProvider('apple.com');
-    // final credential = oAuthProvider.credential(
-    //   idToken: appleIdCredential.identityToken,
-    //   accessToken: appleIdCredential.authorizationCode,
-    // );
-    // final FirebasePakage.UserCredential authResult =
-    //     await FirebaseAuth.instance.signInWithCredential(credential);
-    // print(authResult);
-    // final FirebasePakage.User user = authResult.user;
-    // if (user != null) {
-    //   var param = {
-    //     "email": user.email,
-    //     "name": user.displayName,
-    //     "provider_id": user.uid
-    //   };
-    //   result = await Provider.of<AppModel>(context).setAuthSocial(param);
 
-    //   print('signInWithApple succeeded: $user');
-
-    //   return result;
-    // }
-
-    // return result;
     final credential = await SignInWithApple.getAppleIDCredential(
       scopes: [
         AppleIDAuthorizationScopes.email,
         AppleIDAuthorizationScopes.fullName,
+        
       ],
       webAuthenticationOptions: WebAuthenticationOptions(
         // TODO: Set the `clientId` and `redirectUri` arguments to the values you entered in the Apple Developer portal during the setup
@@ -218,11 +191,19 @@ class _LoginStateScreen extends State<LoginScreen> {
     final session = await http.Client().post(
       signInWithAppleEndpoint,
     );
+    final AuthCredential credentials = OAuthProvider('apple.com').credential(
+        accessToken: credential.authorizationCode,
+        idToken: credential.identityToken,
+      );
 
+      final users =
+        await FirebaseAuth.instance.signInWithCredential(credentials);
+      FirebasePakage.User user = users.user;
+      print(user);
     // If we got this far, a session based on the Apple ID credential has been created in your system,
     // and you can now set this as the app's session
-    if(session.statusCode==200){
-       var param = {
+    if (session.statusCode == 200) {
+      var param = {
         "email": credential.email,
         "name": "${credential.givenName} ${credential.familyName}",
         "provider_id": credential.authorizationCode,
@@ -284,42 +265,68 @@ class _LoginStateScreen extends State<LoginScreen> {
     print("User Signed Out");
   }
 
-  // Future<void> signInWithFacebook() async {
-  //   //Trigger the sign-in flow
-  //   final result = await FacebookAuth.instance.login();
+  Future<bool> signInWithFacebook() async {
+    bool result = false;
+    final FirebaseAuth _auth = FirebaseAuth.instance;
+    final FacebookLogin facebookSignIn = new FacebookLogin();
+    final FacebookLoginResult results = await facebookSignIn.logIn(['email']);
 
-  //   // Create a credential from the access token
-  //   final FacebookAuthCredential facebookAuthCredential =
-  //       FacebookAuthProvider.credential(result.token);
-  //   final Facebookuser = await FirebaseAuth.instance
-  //       .signInWithCredential(facebookAuthCredential);
-  //   print(Facebookuser.user.uid);
-  //   // Once signed in, return the UserCredential
-  //   // return Facebookuser;
-  //   // final FacebookLoginResult result = await facebookSignIn.logIn(['email']);
-  //   //
-  //   // switch (result.status) {
-  //   //   case FacebookLoginStatus.loggedIn:
-  //   //     final FacebookAccessToken accessToken = result.accessToken;
-  //   //     print('''
-  //   //      Logged in!
-  //   //
-  //   //      Token: ${accessToken.token}
-  //   //      User id: ${accessToken.userId}
-  //   //      Expires: ${accessToken.expires}
-  //   //      Permissions: ${accessToken.permissions}
-  //   //      Declined permissions: ${accessToken.declinedPermissions}
-  //   //      ''');
-  //   //     break;
-  //   //   case FacebookLoginStatus.cancelledByUser:
-  //   //     print('Login cancelled by the user.');
-  //   //     break;
-  //   //   case FacebookLoginStatus.error:
-  //   //     print('Something went wrong with the login process.\n'
-  //   //         'Here\'s the error Facebook gave us: ${result.errorMessage}');
-  //   //     break;
-  //   // }
-  // }
+    switch (results.status) {
+      case FacebookLoginStatus.loggedIn:
+        final FacebookAccessToken accessToken = results.accessToken;
+        print(results.accessToken.token);
+        final FacebookAuthCredential credential =
+            FacebookAuthProvider.credential(accessToken.token);
+        //  final FirebasePakage.User user = await FirebaseAuth.instance.signInWithCredential(credential);
+        
+        print(credential);
+        var graphResponse = await http.get(
+            'https://graph.facebook.com/v2.12/me?fields=name,first_name,last_name,email&access_token=${results.accessToken.token}');
+
+        var profile = json.decode(graphResponse.body);
+        print(profile.toString());
+        var param = {
+          "email": profile['email'],
+          "name": profile['first_name'],
+          "provider_id": profile['id'],
+        };
+        print(param);
+        result = await Provider.of<AppModel>(context).setAuthSocial(param);
+
+        print('signInWithGoogle succeeded: ${profile['name']}');
+
+        print('''
+         Logged in!
+         
+         Token: ${accessToken.token}
+         User id: ${accessToken.userId}
+         Expires: ${accessToken.expires}
+         Permissions: ${accessToken.permissions}
+         Declined permissions: ${accessToken.declinedPermissions}
+         ''');
+        return result;
+        break;
+      case FacebookLoginStatus.cancelledByUser:
+        print('Login cancelled by the user.');
+        break;
+        return result;
+      case FacebookLoginStatus.error:
+        print('Something went wrong with the login process.\n'
+            'Here\'s the error Facebook gave us: ${results.errorMessage}');
+        break;
+        return result;
+    }
+    // _showMessage('''
+    //  Logged in!
+
+    //  Token: ${accessToken.token}
+    //  User id: ${accessToken.userId}
+    //  Expires: ${accessToken.expires}
+    //  Permissions: ${accessToken.permissions}
+    //  Declined permissions: ${accessToken.declinedPermissions}
+    //  ''');
+       return result;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -684,7 +691,7 @@ class _LoginStateScreen extends State<LoginScreen> {
                           ],
                         ),
                       ),
-                      // /*Container(
+                      // Container(
                       //   margin: EdgeInsets.symmetric(vertical: 5),
                       //   child: Row(
                       //     children: [
@@ -700,7 +707,8 @@ class _LoginStateScreen extends State<LoginScreen> {
                       //           ),
                       //           child: IntrinsicHeight(
                       //             child: Row(
-                      //               crossAxisAlignment: CrossAxisAlignment.stretch,
+                      //               crossAxisAlignment:
+                      //                   CrossAxisAlignment.stretch,
                       //               children: [
                       //                 Expanded(
                       //                   flex: 1,
@@ -715,7 +723,8 @@ class _LoginStateScreen extends State<LoginScreen> {
                       //                     ),
                       //                     child: IconButton(
                       //                       onPressed: () {},
-                      //                       icon: Image.asset("assets/images/facebookLogo.png"),
+                      //                       icon: Image.asset(
+                      //                           "assets/images/facebookLogo.png"),
                       //                     ),
                       //                   ),
                       //                 ),
@@ -723,12 +732,28 @@ class _LoginStateScreen extends State<LoginScreen> {
                       //                   flex: 2,
                       //                   child: FlatButton(
                       //                     onPressed: () async {
-                      //                       // final  result = await FacebookAuth.instance.login();
-                      //                       FacebookAuth.instance.login().then((value){
-                      //                         print(value);
+                      //                       UIBlock.block(context,
+                      //                           customLoaderChild:
+                      //                               LoadingWidgetFadingCircle(
+                      //                                   context));
 
-                      //                       }).catchError((onError){
-                      //                         print(onError);
+                      //                       signInWithFacebook().then((value) {
+                      //                         UIBlock.unblock(context);
+                      //                         if (value) {
+                      //                           Navigator
+                      //                               .pushNamedAndRemoveUntil(
+                      //                                   context,
+                      //                                   HomeScreen.id,
+                      //                                   (_) => false);
+                      //                         } else {
+                      //                           scaffoldKey.currentState
+                      //                               .showSnackBar(
+                      //                                   snackBarError);
+                      //                         }
+                      //                       }).catchError((onError) {
+                      //                         UIBlock.unblock(context);
+                      //                         scaffoldKey.currentState
+                      //                             .showSnackBar(snackBarError);
                       //                       });
 
                       //                       // Create a credential from the access token
@@ -766,95 +791,94 @@ class _LoginStateScreen extends State<LoginScreen> {
                       //       Expanded(flex: 1, child: Container()),
                       //     ],
                       //   ),
-                      // ),*/
-                      Container(
-                        margin: EdgeInsets.symmetric(vertical: 5),
-                        child: Row(
-                          children: [
-                            Expanded(flex: 1, child: Container()),
-                            Expanded(
-                              flex: 3,
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                    color: Hexcolor('#F48262'),
-                                  ),
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: IntrinsicHeight(
-                                  child: Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.stretch,
-                                    children: [
-                                      Expanded(
-                                        flex: 1,
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            border: Border(
-                                              right: BorderSide(
-                                                width: 1,
-                                                color: Hexcolor('#F48262'),
-                                              ),
-                                            ),
-                                          ),
-                                          child: IconButton(
-                                            onPressed: () {},
-                                            icon: Image.asset(
-                                                "assets/images/twitter.png"),
-                                          ),
-                                        ),
-                                      ),
-                                      Expanded(
-                                        flex: 2,
-                                        child: FlatButton(
-                                          onPressed: () {
-                                            UIBlock.block(context,
-                                                customLoaderChild:
-                                                    LoadingWidgetFadingCircle(
-                                                        context));
-                                            signInWithTwitter().then((value) {
-                                              UIBlock.unblock(context);
-                                              if (value) {
-                                                Navigator
-                                                    .pushNamedAndRemoveUntil(
-                                                        context,
-                                                        HomeScreen.id,
-                                                        (_) => false);
-                                              } else {
-                                                scaffoldKey.currentState
-                                                    .showSnackBar(
-                                                        snackBarError);
-                                              }
-                                            }).catchError((onError) {
-                                              UIBlock.unblock(context);
-                                              scaffoldKey.currentState
-                                                  .showSnackBar(snackBarError);
-                                            });
-                                          },
-                                          child: SizedBox(
-                                            width: double.infinity,
-                                            child: Text(
-                                              "TWITTER",
-                                              textAlign: TextAlign.left,
-                                              style: TextStyle(
-                                                  fontSize: 18,
-                                                  fontFamily: 'Brandon',
-                                                  fontWeight: FontWeight.w800,
-                                                  color: Hexcolor('#F48262')),
-                                            ),
-                                          ),
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Expanded(flex: 1, child: Container()),
-                          ],
-                        ),
-                      ),
-
+                      // ),
+                      // Container(
+                      //   margin: EdgeInsets.symmetric(vertical: 5),
+                      //   child: Row(
+                      //     children: [
+                      //       Expanded(flex: 1, child: Container()),
+                      //       Expanded(
+                      //         flex: 3,
+                      //         child: Container(
+                      //           decoration: BoxDecoration(
+                      //             border: Border.all(
+                      //               color: Hexcolor('#F48262'),
+                      //             ),
+                      //             borderRadius: BorderRadius.circular(10),
+                      //           ),
+                      //           child: IntrinsicHeight(
+                      //             child: Row(
+                      //               crossAxisAlignment:
+                      //                   CrossAxisAlignment.stretch,
+                      //               children: [
+                      //                 Expanded(
+                      //                   flex: 1,
+                      //                   child: Container(
+                      //                     decoration: BoxDecoration(
+                      //                       border: Border(
+                      //                         right: BorderSide(
+                      //                           width: 1,
+                      //                           color: Hexcolor('#F48262'),
+                      //                         ),
+                      //                       ),
+                      //                     ),
+                      //                     child: IconButton(
+                      //                       onPressed: () {},
+                      //                       icon: Image.asset(
+                      //                           "assets/images/twitter.png"),
+                      //                     ),
+                      //                   ),
+                      //                 ),
+                      //                 Expanded(
+                      //                   flex: 2,
+                      //                   child: FlatButton(
+                      //                     onPressed: () {
+                      //                       UIBlock.block(context,
+                      //                           customLoaderChild:
+                      //                               LoadingWidgetFadingCircle(
+                      //                                   context));
+                      //                       signInWithTwitter().then((value) {
+                      //                         UIBlock.unblock(context);
+                      //                         if (value) {
+                      //                           Navigator
+                      //                               .pushNamedAndRemoveUntil(
+                      //                                   context,
+                      //                                   HomeScreen.id,
+                      //                                   (_) => false);
+                      //                         } else {
+                      //                           scaffoldKey.currentState
+                      //                               .showSnackBar(
+                      //                                   snackBarError);
+                      //                         }
+                      //                       }).catchError((onError) {
+                      //                         UIBlock.unblock(context);
+                      //                         scaffoldKey.currentState
+                      //                             .showSnackBar(snackBarError);
+                      //                       });
+                      //                     },
+                      //                     child: SizedBox(
+                      //                       width: double.infinity,
+                      //                       child: Text(
+                      //                         "TWITTER",
+                      //                         textAlign: TextAlign.left,
+                      //                         style: TextStyle(
+                      //                             fontSize: 18,
+                      //                             fontFamily: 'Brandon',
+                      //                             fontWeight: FontWeight.w800,
+                      //                             color: Hexcolor('#F48262')),
+                      //                       ),
+                      //                     ),
+                      //                   ),
+                      //                 )
+                      //               ],
+                      //             ),
+                      //           ),
+                      //         ),
+                      //       ),
+                      //       Expanded(flex: 1, child: Container()),
+                      //     ],
+                      //   ),
+                      // ),
                       Container(
                         margin: EdgeInsets.symmetric(vertical: 5),
                         child: Row(
