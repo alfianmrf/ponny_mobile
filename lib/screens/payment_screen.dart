@@ -33,66 +33,66 @@ class _PaymentScreenState extends State<PaymentScreen> {
     super.initState();
   }
   Future<void> chekOut(BuildContext context,String method){
-     final card = Provider.of<CartModel>(context,listen: false);
-     showDialog(
-        context: context,
-        builder: (context) => new AlertDialog(
-      title: new Text('Konfirmasi Pesanan'),
-      content:  Text("Total Pembayaran: "+card.summary.total),
-      actions: <Widget>[
-        new FlatButton(
-          onPressed: () => Navigator.of(context).pop(false),
-          child: new Text('No'),
-        ),
-        new FlatButton(
-          onPressed: (){
+    final card = Provider.of<CartModel>(context,listen: false);
+    showDialog(
+      context: context,
+      builder: (context) => new AlertDialog(
+        title: new Text('Konfirmasi Pesanan'),
+        content:  Text("Total Pembayaran: "+card.summary.total),
+        actions: <Widget>[
+          new FlatButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: new Text('No'),
+          ),
+          new FlatButton(
+            onPressed: (){
 
-            UIBlock.block(context,customLoaderChild: LoadingWidget(context));
-            Provider.of<CartModel>(context).Checkout(Provider.of<AppModel>(context).auth.access_token, Provider.of<AddressModel>(context).useAddress, method).then((value) {
-              if(value!= null && value.success){
-                if(method == "qris"){
-                  Navigator.pushAndRemoveUntil(context,new MaterialPageRoute(
-                    builder: (BuildContext context) => new QrisScreen(title: "QRIS",urlQR: value.mitransRequest.actions.firstWhere((element) => element.name == "generate-qr-code").url,type:QrisScreen.qris),
-                  ),(_) => false);
-                }else if(method == "ovo"){
-                  Navigator.pushAndRemoveUntil(context,new MaterialPageRoute(
-                    builder: (BuildContext context) => new QrisScreen(title: "OVO",urlQR: value.mitransRequest.actions.firstWhere((element) => element.name == "generate-qr-code").url, type:QrisScreen.ovo),
-                  ),(_) => false);
-                }else if(method == "shopeepay"){
-                  Navigator.pushAndRemoveUntil(context,new MaterialPageRoute(
-                    builder: (BuildContext context) => new QrisScreen(title: "SHOPEEPAY",urlQR: value.mitransRequest.actions.firstWhere((element) => element.name == "generate-qr-code").url,type:QrisScreen.shopee),
-                  ),(_) => false);
+              UIBlock.block(context,customLoaderChild: LoadingWidget(context));
+              Provider.of<CartModel>(context).Checkout(Provider.of<AppModel>(context).auth.access_token, Provider.of<AddressModel>(context).useAddress, method).then((value) {
+                if(value!= null && value.success){
+                  if(method == "qris"){
+                    Navigator.pushAndRemoveUntil(context,new MaterialPageRoute(
+                      builder: (BuildContext context) => new QrisScreen(title: "QRIS",urlQR: value.mitransRequest.actions.firstWhere((element) => element.name == "generate-qr-code").url,type:QrisScreen.qris),
+                    ),(_) => false);
+                  }else if(method == "ovo"){
+                    Navigator.pushAndRemoveUntil(context,new MaterialPageRoute(
+                      builder: (BuildContext context) => new QrisScreen(title: "OVO",urlQR: value.mitransRequest.actions.firstWhere((element) => element.name == "generate-qr-code").url, type:QrisScreen.ovo),
+                    ),(_) => false);
+                  }else if(method == "shopeepay"){
+                    Navigator.pushAndRemoveUntil(context,new MaterialPageRoute(
+                      builder: (BuildContext context) => new QrisScreen(title: "SHOPEEPAY",urlQR: value.mitransRequest.actions.firstWhere((element) => element.name == "generate-qr-code").url,type:QrisScreen.shopee),
+                    ),(_) => false);
+                  }
+                  else{
+                    Navigator.pushAndRemoveUntil(context,new MaterialPageRoute(
+                      builder: (BuildContext context) => new PesananBerhasilScreen(code: value.orderCode,),
+                    ),(_) => false);
+                  }
+                }else{
+                  UIBlock.unblock(context);
+                  // print(value.message);
+                  Navigator.pop(context);
+                  final snackBar = SnackBar(
+                    content: Text(value.message,style: TextStyle(color: Colors.white)),
+                    backgroundColor: Colors.redAccent,
+                  );
+                  scaffoldKey.currentState.showSnackBar(snackBar);
                 }
-                else{
-                  Navigator.pushAndRemoveUntil(context,new MaterialPageRoute(
-                    builder: (BuildContext context) => new PesananBerhasilScreen(code: value.orderCode,),
-                  ),(_) => false);
-                }
-              }else{
+              }).catchError((onError){
+                // print(onError);
                 UIBlock.unblock(context);
-                // print(value.message);
-                Navigator.pop(context);
                 final snackBar = SnackBar(
-                  content: Text(value.message,style: TextStyle(color: Colors.white)),
+                  content: Text(onError,style: TextStyle(color: Colors.white)),
                   backgroundColor: Colors.redAccent,
                 );
                 scaffoldKey.currentState.showSnackBar(snackBar);
-              }
-            }).catchError((onError){
-              // print(onError);
-              UIBlock.unblock(context);
-              final snackBar = SnackBar(
-                content: Text(onError,style: TextStyle(color: Colors.white)),
-                backgroundColor: Colors.redAccent,
-              );
-              scaffoldKey.currentState.showSnackBar(snackBar);
-              // print(onError);
-            });
-          },
-          child: new Text('Yes'),
-        ),
-      ],
-    ),
+                // print(onError);
+              });
+            },
+            child: new Text('Yes'),
+          ),
+        ],
+      ),
     );
   }
 
@@ -636,65 +636,42 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                     ),
                                   ),
                                 ),
-                              ),
-                              /*InkWell(
-                                onTap: () {
-                                  chekOut(context,"shopeepay");
-                                },
-                                child: Container(
-                                  width: MediaQuery.of(context).size.width,
-                                  padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Row(
-                                        children: [
-                                          Image.asset(
-                                            'assets/images/payment/shopee_pay.png',
-                                            height: 25,
-                                          ),
-                                          Padding(
-                                            padding: EdgeInsets.only(left: 10),
-                                            child: Text(
-                                              'SHOPEEPAY',
-                                              style: TextStyle(
-                                                fontFamily: 'Brandon',
-                                                fontSize: 14,
+                                InkWell(
+                                  onTap: () {
+                                    Navigator.push(context,new MaterialPageRoute(
+                                      builder: (BuildContext context) => new PembayaranGopayScreen(method:PembayaranGopayScreen.gopay,),
+                                    ));
+                                  },
+                                  child: Container(
+                                    width: MediaQuery.of(context).size.width,
+                                    padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Image.asset(
+                                              'assets/images/payment/gopay-02.png',
+                                              height: 40,
+                                            ),
+                                            Padding(
+                                              padding: EdgeInsets.only(left: 10),
+                                              child: Text(
+                                                'GOPAY',
+                                                style: TextStyle(
+                                                  fontFamily: 'Brandon',
+                                                  fontSize: 14,
+                                                ),
                                               ),
                                             ),
-                                          ),
-                                        ],
-                                      ),
-                                      Icon(
-                                        Icons.chevron_right,
-                                        color: Color(0xffF48262),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-
-                              Container(
-                                color: Color(0xffFDEDE4),
-                                width: MediaQuery.of(context).size.width,
-                                padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                                child: Text(
-                                  'KARTU KREDIT/DEBIT',
-                                  style: TextStyle(
-                                    fontFamily: 'Brandon',
-                                    fontSize: 14,
-                                    color: Color(0xffF48262),
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ),
-                              Container(
-                                width: MediaQuery.of(context).size.width,
-                                padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Row(
+                                          ],
+                                        ),
+                                        Icon(
+                                          Icons.chevron_right,
+                                          color: Color(0xffF48262),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
                                 InkWell(
