@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
 import 'package:ponny/screens/home_screen.dart';
+import 'package:hexcolor/hexcolor.dart';
+import 'package:ponny/screens/Order_Screen.dart';
 
 class PesananBerhasilScreen extends StatefulWidget {
   static const String id = "pesanan_berhasil_screen";
@@ -21,45 +23,48 @@ class _PesananBerhasilScreenState extends State<PesananBerhasilScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).primaryColor,
+      appBar: AppBar(
+        titleSpacing: 0.0,
+        elevation: 0.0,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => OrderScreen(
+                  type: OrderScreen.unpaid,
+                ),
+              ),
+            );
+          },
+          icon: Icon(
+            Icons.arrow_back_ios_rounded,
+            color: Color(0xffF48262),
+          ),
+        ),
+        title: Text(
+          'Pesanan Berhasil',
+          style: TextStyle(
+            fontSize: 24,
+            fontFamily: 'Yeseva',
+            color: Hexcolor('#F48262'),
+          ),
+        ),
+        bottom: PreferredSize(
+            child: Container(
+              color: Color(0xffF48262),
+              height: 1.0,
+            ),
+            preferredSize: Size.fromHeight(1.0)),
+      ),
+      resizeToAvoidBottomInset: false,
+      backgroundColor: Hexcolor('#FCF8F0'),
       body: Stack(children: <Widget>[
         Scaffold(
           backgroundColor: Color(0xffFDF8F0),
           body: Container(
-            margin: MediaQuery.of(context).padding,
             child: Column(
               children: <Widget>[
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 30),
-                  decoration: BoxDecoration(
-                    border: Border(
-                      bottom: BorderSide(
-                        color: Color(0xffF48262),
-                        width: 1.0,
-                      ),
-                    ),
-                  ),
-                  child: Row(
-                    children: <Widget>[
-                      Container(
-                        margin: EdgeInsets.only(right: 10),
-                        child: Icon(
-                          Icons.arrow_back_ios,
-                          color: Color(0xffF48262),
-                        ),
-                      ),
-                      Text(
-                        'Pesanan Berhasil',
-                        style: TextStyle(
-                          fontFamily: 'Yeseva',
-                          fontSize: 22,
-                          color: Color(0xffF48262),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
                 Container(
                   margin: EdgeInsets.only(top: 30),
                   child: Icon(

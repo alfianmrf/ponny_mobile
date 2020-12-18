@@ -538,47 +538,70 @@ class _AccountScreenState extends State<AccountScreen> {
                                   ),
                                 ),
                                 child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Container(
-                                      margin: EdgeInsets.only(
-                                          bottom: 5, left: 15, right: 15),
-                                      child: Icon(
-                                        Icons.watch_later,
-                                        size: 30,
-                                        color: Hexcolor("#F59379"),
-                                      ),
+                                    Row(
+                                      children: [
+                                        Container(
+                                          margin: EdgeInsets.only(
+                                              bottom: 5, left: 15, right: 15),
+                                          child: Icon(
+                                            Icons.watch_later,
+                                            size: 30,
+                                            color: Hexcolor("#F59379"),
+                                          ),
+                                        ),
+                                        Container(
+                                          margin: EdgeInsets.only(bottom: 5),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                            children: [
+                                              Container(
+                                                margin: EdgeInsets.only(left: 0),
+                                                child: Text(
+                                                  "Menunggu Pembayaran",
+                                                  style: TextStyle(
+                                                    fontFamily: "Brandon",
+                                                    fontWeight: FontWeight.w700,
+                                                    fontSize: 17,
+                                                  ),
+                                                ),
+                                              ),
+                                              Container(
+                                                // width: 150,
+                                                child: Text(
+                                                  "Yuk dibayar, yuk ^_^",
+                                                  textAlign: TextAlign.left,
+                                                  style: TextStyle(
+                                                    fontFamily: "Brandon",
+                                                    fontWeight: FontWeight.w500,
+                                                    color: Colors.grey,
+                                                    fontSize: 12,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                     Container(
-                                      margin: EdgeInsets.only(bottom: 5),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Container(
-                                            margin: EdgeInsets.only(left: 0),
-                                            child: Text(
-                                              "Menunggu Pembayaran",
-                                              style: TextStyle(
-                                                fontFamily: "Brandon",
-                                                fontWeight: FontWeight.w700,
-                                                fontSize: 17,
-                                              ),
-                                            ),
+                                      width: 15,
+                                      height: 15,
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: Hexcolor("#F59379"),
+                                      ),
+                                      child: Center(
+                                        child: Text(
+                                          '1',
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontFamily: 'Brandon',
+                                            fontSize: 10,
                                           ),
-                                          Container(
-                                            // width: 150,
-                                            child: Text(
-                                              "Yuk dibayar, yuk ^_^",
-                                              textAlign: TextAlign.left,
-                                              style: TextStyle(
-                                                fontFamily: "Brandon",
-                                                fontWeight: FontWeight.w500,
-                                                color: Colors.grey,
-                                                fontSize: 12,
-                                              ),
-                                            ),
-                                          ),
-                                        ],
+                                        ),
                                       ),
                                     ),
                                   ],
@@ -606,47 +629,70 @@ class _AccountScreenState extends State<AccountScreen> {
                                   ),
                                 ),
                                 child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Container(
-                                      margin: EdgeInsets.only(
-                                          bottom: 5, left: 15, right: 15),
-                                      child: Icon(
-                                        Icons.shopping_cart,
-                                        size: 30,
-                                        color: Hexcolor("#F59379"),
-                                      ),
+                                    Row(
+                                      children: [
+                                        Container(
+                                          margin: EdgeInsets.only(
+                                              bottom: 5, left: 15, right: 15),
+                                          child: Icon(
+                                            Icons.shopping_cart,
+                                            size: 30,
+                                            color: Hexcolor("#F59379"),
+                                          ),
+                                        ),
+                                        Container(
+                                          margin: EdgeInsets.only(top: 5, bottom: 5),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Container(
+                                                margin: EdgeInsets.only(left: 0),
+                                                child: Text(
+                                                  "Pembayaran Diterima",
+                                                  style: TextStyle(
+                                                    fontFamily: "Brandon",
+                                                    fontWeight: FontWeight.w700,
+                                                    fontSize: 17,
+                                                  ),
+                                                ),
+                                              ),
+                                              Container(
+                                                // width: 150,
+                                                child: Text(
+                                                  "Asik! Transaksimu berhasil!",
+                                                  textAlign: TextAlign.left,
+                                                  style: TextStyle(
+                                                    fontFamily: "Brandon",
+                                                    fontWeight: FontWeight.w500,
+                                                    color: Colors.grey,
+                                                    fontSize: 12,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                     Container(
-                                      margin: EdgeInsets.only(top: 5, bottom: 5),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Container(
-                                            margin: EdgeInsets.only(left: 0),
-                                            child: Text(
-                                              "Pembayaran Diterima",
-                                              style: TextStyle(
-                                                fontFamily: "Brandon",
-                                                fontWeight: FontWeight.w700,
-                                                fontSize: 17,
-                                              ),
-                                            ),
+                                      width: 15,
+                                      height: 15,
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: Hexcolor("#F59379"),
+                                      ),
+                                      child: Center(
+                                        child: Text(
+                                          '1',
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontFamily: 'Brandon',
+                                            fontSize: 10,
                                           ),
-                                          Container(
-                                            // width: 150,
-                                            child: Text(
-                                              "Asik! Transaksimu berhasil!",
-                                              textAlign: TextAlign.left,
-                                              style: TextStyle(
-                                                fontFamily: "Brandon",
-                                                fontWeight: FontWeight.w500,
-                                                color: Colors.grey,
-                                                fontSize: 12,
-                                              ),
-                                            ),
-                                          ),
-                                        ],
+                                        ),
                                       ),
                                     ),
                                   ],
@@ -674,6 +720,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                   ),
                                 ),
                                 child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     Container(
                                       margin: EdgeInsets.only(
@@ -702,20 +749,58 @@ class _AccountScreenState extends State<AccountScreen> {
                                               ),
                                             ),
                                           ),
-                                          Container(
-                                            // width: 150,
-                                            child: Text(
-                                              "Mari tengok keberadaan paketmu.",
-                                              textAlign: TextAlign.left,
-                                              style: TextStyle(
-                                                fontFamily: "Brandon",
-                                                fontWeight: FontWeight.w500,
-                                                color: Colors.grey,
-                                                fontSize: 12,
+                                        ),
+                                        Container(
+                                          margin: EdgeInsets.only(top: 5, bottom: 5),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Container(
+                                                margin: EdgeInsets.only(left: 0),
+                                                child: Text(
+                                                  "Dalam Perjalanan",
+                                                  style: TextStyle(
+                                                    fontFamily: "Brandon",
+                                                    fontWeight: FontWeight.w700,
+                                                    fontSize: 17,
+                                                  ),
+                                                ),
                                               ),
-                                            ),
+                                              Container(
+                                                // width: 150,
+                                                child: Text(
+                                                  "Mari tengok keberadaan paketmu.",
+                                                  textAlign: TextAlign.left,
+                                                  style: TextStyle(
+                                                    fontFamily: "Brandon",
+                                                    fontWeight: FontWeight.w500,
+                                                    color: Colors.grey,
+                                                    fontSize: 12,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
                                           ),
-                                        ],
+                                        ),
+                                      ],
+                                    ),
+                                    Container(
+                                      width: 15,
+                                      height: 15,
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: Hexcolor("#F59379"),
+                                      ),
+                                      child: Center(
+                                        child: Text(
+                                          '1',
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontFamily: 'Brandon',
+                                            fontSize: 10,
+                                          ),
+                                        ),
                                       ),
                                     ),
                                   ],
@@ -743,47 +828,70 @@ class _AccountScreenState extends State<AccountScreen> {
                                   ),
                                 ),
                                 child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Container(
-                                      margin: EdgeInsets.only(
-                                          bottom: 5, left: 15, right: 15),
-                                      child: Icon(
-                                        Icons.directions_car,
-                                        size: 30,
-                                        color: Hexcolor("#F59379"),
-                                      ),
+                                    Row(
+                                      children: [
+                                        Container(
+                                          margin: EdgeInsets.only(
+                                              bottom: 5, left: 15, right: 15),
+                                          child: Icon(
+                                            Icons.directions_car,
+                                            size: 30,
+                                            color: Hexcolor("#F59379"),
+                                          ),
+                                        ),
+                                        Container(
+                                          margin: EdgeInsets.only(top: 5, bottom: 5),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Container(
+                                                margin: EdgeInsets.only(left: 0),
+                                                child: Text(
+                                                  "Terkirim",
+                                                  style: TextStyle(
+                                                    fontFamily: "Brandon",
+                                                    fontWeight: FontWeight.w700,
+                                                    fontSize: 17,
+                                                  ),
+                                                ),
+                                              ),
+                                              Container(
+                                                // width: 150,
+                                                child: Text(
+                                                  "Hore! Paketmu udah diantar jasa kurir pilihanmu.",
+                                                  textAlign: TextAlign.left,
+                                                  style: TextStyle(
+                                                    fontFamily: "Brandon",
+                                                    fontWeight: FontWeight.w500,
+                                                    color: Colors.grey,
+                                                    fontSize: 12,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                     Container(
-                                      margin: EdgeInsets.only(top: 5, bottom: 5),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Container(
-                                            margin: EdgeInsets.only(left: 0),
-                                            child: Text(
-                                              "Terkirim",
-                                              style: TextStyle(
-                                                fontFamily: "Brandon",
-                                                fontWeight: FontWeight.w700,
-                                                fontSize: 17,
-                                              ),
-                                            ),
+                                      width: 15,
+                                      height: 15,
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: Hexcolor("#F59379"),
+                                      ),
+                                      child: Center(
+                                        child: Text(
+                                          '1',
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontFamily: 'Brandon',
+                                            fontSize: 10,
                                           ),
-                                          Container(
-                                            // width: 150,
-                                            child: Text(
-                                              "Hore! Paketmu udah diantar jasa kurir pilihanmu.",
-                                              textAlign: TextAlign.left,
-                                              style: TextStyle(
-                                                fontFamily: "Brandon",
-                                                fontWeight: FontWeight.w500,
-                                                color: Colors.grey,
-                                                fontSize: 12,
-                                              ),
-                                            ),
-                                          ),
-                                        ],
+                                        ),
                                       ),
                                     ),
                                   ],
@@ -811,51 +919,74 @@ class _AccountScreenState extends State<AccountScreen> {
                                   ),
                                 ),
                                 child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Container(
-                                      margin: EdgeInsets.only(
-                                          bottom: 10,
-                                          left: 15,
-                                          right: 15,
-                                          top: 10),
-                                      child: Image.asset(
-                                        'assets/images/Asset 8.png',
-                                        width: 30,
-                                        height: 30,
-                                        fit: BoxFit.contain,
-                                      ),
+                                    Row(
+                                      children: [
+                                        Container(
+                                          margin: EdgeInsets.only(
+                                              bottom: 10,
+                                              left: 15,
+                                              right: 15,
+                                              top: 10),
+                                          child: Image.asset(
+                                            'assets/images/Asset 8.png',
+                                            width: 30,
+                                            height: 30,
+                                            fit: BoxFit.contain,
+                                          ),
+                                        ),
+                                        Container(
+                                          margin: EdgeInsets.only(bottom: 5, top: 5),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Container(
+                                                margin: EdgeInsets.only(top: 0),
+                                                child: Text(
+                                                  "Pesanan Selesai",
+                                                  style: TextStyle(
+                                                    fontFamily: "Brandon",
+                                                    fontWeight: FontWeight.w700,
+                                                    fontSize: 17,
+                                                  ),
+                                                ),
+                                              ),
+                                              Container(
+                                                // width: 150,
+                                                child: Text(
+                                                  "Pesanan yang telah diterima",
+                                                  textAlign: TextAlign.left,
+                                                  style: TextStyle(
+                                                    fontFamily: "Brandon",
+                                                    fontWeight: FontWeight.w500,
+                                                    color: Colors.grey,
+                                                    fontSize: 12,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                     Container(
-                                      margin: EdgeInsets.only(bottom: 5, top: 5),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Container(
-                                            margin: EdgeInsets.only(top: 0),
-                                            child: Text(
-                                              "Pesanan Selesai",
-                                              style: TextStyle(
-                                                fontFamily: "Brandon",
-                                                fontWeight: FontWeight.w700,
-                                                fontSize: 17,
-                                              ),
-                                            ),
+                                      width: 15,
+                                      height: 15,
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: Hexcolor("#F59379"),
+                                      ),
+                                      child: Center(
+                                        child: Text(
+                                          '1',
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontFamily: 'Brandon',
+                                            fontSize: 10,
                                           ),
-                                          Container(
-                                            // width: 150,
-                                            child: Text(
-                                              "Pesanan yang telah diterima",
-                                              textAlign: TextAlign.left,
-                                              style: TextStyle(
-                                                fontFamily: "Brandon",
-                                                fontWeight: FontWeight.w500,
-                                                color: Colors.grey,
-                                                fontSize: 12,
-                                              ),
-                                            ),
-                                          ),
-                                        ],
+                                        ),
                                       ),
                                     ),
                                   ],
@@ -955,51 +1086,74 @@ class _AccountScreenState extends State<AccountScreen> {
                                   ),
                                 ),
                                 child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Container(
-                                      margin: EdgeInsets.only(
-                                          bottom: 10,
-                                          left: 15,
-                                          right: 15,
-                                          top: 10),
-                                      child: Image.asset(
-                                        'assets/images/komplain.png',
-                                        width: 30,
-                                        height: 30,
-                                        fit: BoxFit.contain,
-                                      ),
+                                    Row(
+                                      children: [
+                                        Container(
+                                          margin: EdgeInsets.only(
+                                              bottom: 10,
+                                              left: 15,
+                                              right: 15,
+                                              top: 10),
+                                          child: Image.asset(
+                                            'assets/images/komplain.png',
+                                            width: 30,
+                                            height: 30,
+                                            fit: BoxFit.contain,
+                                          ),
+                                        ),
+                                        Container(
+                                          margin: EdgeInsets.only(bottom: 5, top: 5),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Container(
+                                                margin: EdgeInsets.only(top: 0),
+                                                child: Text(
+                                                  "Sedang Komplain",
+                                                  style: TextStyle(
+                                                    fontFamily: "Brandon",
+                                                    fontWeight: FontWeight.w700,
+                                                    fontSize: 17,
+                                                  ),
+                                                ),
+                                              ),
+                                              Container(
+                                                // width: 150,
+                                                child: Text(
+                                                  "Mohon maaf, ada yang bisa Phobe bantu?",
+                                                  textAlign: TextAlign.left,
+                                                  style: TextStyle(
+                                                    fontFamily: "Brandon",
+                                                    fontWeight: FontWeight.w500,
+                                                    color: Colors.grey,
+                                                    fontSize: 12,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                     Container(
-                                      margin: EdgeInsets.only(bottom: 5, top: 5),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Container(
-                                            margin: EdgeInsets.only(top: 0),
-                                            child: Text(
-                                              "Sedang Komplain",
-                                              style: TextStyle(
-                                                fontFamily: "Brandon",
-                                                fontWeight: FontWeight.w700,
-                                                fontSize: 17,
-                                              ),
-                                            ),
+                                      width: 15,
+                                      height: 15,
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: Hexcolor("#F59379"),
+                                      ),
+                                      child: Center(
+                                        child: Text(
+                                          '1',
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontFamily: 'Brandon',
+                                            fontSize: 10,
                                           ),
-                                          Container(
-                                            // width: 150,
-                                            child: Text(
-                                              "Mohon maaf, ada yang bisa Phobe bantu?",
-                                              textAlign: TextAlign.left,
-                                              style: TextStyle(
-                                                fontFamily: "Brandon",
-                                                fontWeight: FontWeight.w500,
-                                                color: Colors.grey,
-                                                fontSize: 12,
-                                              ),
-                                            ),
-                                          ),
-                                        ],
+                                        ),
                                       ),
                                     ),
                                   ],

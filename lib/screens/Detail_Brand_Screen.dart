@@ -473,12 +473,11 @@ class _DetailBrandScreen extends State<DetailBrand> {
         child: Column(
           children: [
             Container(
-              height: MediaQuery.of(context).size.width,
-              color: Colors.white,
               child: CachedNetworkImage(
                 imageUrl: img_url+widget.brand.logo,
                 placeholder: (context, url) => LoadingWidgetPulse(context),
                 errorWidget: (context, url, error) => Image.asset('assets/images/basic.jpg'),
+                width: MediaQuery.of(context).size.width*0.5,
                 fit: BoxFit.contain,
               ),
             ),

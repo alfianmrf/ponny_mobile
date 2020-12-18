@@ -21,6 +21,7 @@ import 'package:ponny/widgets/PonnyBottomNavbar.dart';
 import 'package:provider/provider.dart';
 import 'package:uiblock/uiblock.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:ponny/screens/account_screen.dart';
 
 import 'bank_transfer_detail_screen.dart';
 
@@ -1362,6 +1363,15 @@ class _OrderScreenState extends State<OrderScreen> {
     );
   }
 
+  Future<bool> _onWillPop() async {
+    return Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => AccountScreen(),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     String title ="";
@@ -1381,53 +1391,61 @@ class _OrderScreenState extends State<OrderScreen> {
       title = "Pesanan Dibatalkan";
     }
     // TODO: implement build
-    return Scaffold(
-      key: _scaffoldKey,
-      backgroundColor: Hexcolor('#FCF8F0'),
-      appBar: AppBar(
-        elevation: 0,
-        titleSpacing: 0,
-        leading: IconButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          icon: Icon(
-            Icons.arrow_back_ios,
-            color: Color(0xffF48262),
-            size: 26,
-          ),
-        ),
-        title:  Text(
-          title,
-          style: TextStyle(
-            fontSize: 24,
-            fontFamily: "Yeseva",
-            fontWeight: FontWeight.w500,
-            color: Color(0xffF48262),
-          ),
-        ),
-        bottom: PreferredSize(
-            child: Container(
+    return WillPopScope(
+      onWillPop: _onWillPop,
+      child: Scaffold(
+        key: _scaffoldKey,
+        backgroundColor: Hexcolor('#FCF8F0'),
+        appBar: AppBar(
+          elevation: 0,
+          titleSpacing: 0,
+          leading: IconButton(
+            onPressed: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => AccountScreen(),
+                ),
+              );
+            },
+            icon: Icon(
+              Icons.arrow_back_ios,
               color: Color(0xffF48262),
-              height: 1.0,
+              size: 26,
             ),
-            preferredSize: Size.fromHeight(1.0)),
-      ),
-      body: Container(
-        child: Column(
-          children: <Widget>[
-            new Expanded(
-                child:
-                RefreshIndicator(
-                  key: refreshKey,
-                  child:  _buildList(),
-                  onRefresh: _getData,
-                )
+          ),
+          title:  Text(
+            title,
+            style: TextStyle(
+              fontSize: 24,
+              fontFamily: "Yeseva",
+              fontWeight: FontWeight.w500,
+              color: Color(0xffF48262),
             ),
-          ],
+          ),
+          bottom: PreferredSize(
+              child: Container(
+                color: Color(0xffF48262),
+                height: 1.0,
+              ),
+              preferredSize: Size.fromHeight(1.0)),
         ),
+        body: Container(
+          child: Column(
+            children: <Widget>[
+              new Expanded(
+                  child:
+                  RefreshIndicator(
+                    key: refreshKey,
+                    child:  _buildList(),
+                    onRefresh: _getData,
+                  )
+              ),
+            ],
+          ),
+        ),
+        bottomNavigationBar: new PonnyBottomNavbar(selectedIndex: 4),
       ),
-      bottomNavigationBar: new PonnyBottomNavbar(selectedIndex: 4),
     );
   }
 
