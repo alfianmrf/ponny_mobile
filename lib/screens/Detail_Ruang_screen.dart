@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'dart:io';
 import 'package:readmore/readmore.dart';
@@ -78,6 +79,19 @@ class _DetailForumState extends State<DetailForum> {
       }
     });
   }
+  // final picker = ImagePicker();
+  // Future getImage() async {
+  //   final pickedFile = await picker.getImage(source: ImageSource.gallery);
+
+  //   setState(() {
+  //     if (pickedFile != null) {
+  //       _image = File(pickedFile.path);
+  //       print(pickedFile.path);
+  //     } else {
+  //       print('No image selected.');
+  //     }
+  //   });
+  // }
 
   Widget _imageFile() {
     return InkWell(
@@ -186,724 +200,743 @@ class _DetailForumState extends State<DetailForum> {
     return FutureBuilder(
         future: roomData(),
         builder: (context, snapshot) {
-          if (snapshot.hasError) print(snapshot.error);
+          if (snapshot.hasError) {
+            print(snapshot.error);
+          }
           widget.list = snapshot.data;
-          return snapshot.hasData
-              ? WillPopScope(
-                  onWillPop: () {
-                    setState(() {});
-                  },
-                  child: Scaffold(
-                    resizeToAvoidBottomInset: false,
-                    body: Column(
-                      children: [
-                        Container(
-                            color: Hexcolor('#FCF8F0'),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+          if (snapshot.hasData) {
+            return WillPopScope(
+              onWillPop: () {
+                setState(() {});
+              },
+              child: Scaffold(
+                resizeToAvoidBottomInset: false,
+                body: Column(
+                  children: [
+                    Container(
+                        color: Hexcolor('#FCF8F0'),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(height: 20),
+                            Row(
                               children: [
-                                Container(height: 20),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      flex: 4,
-                                      child: Container(
-                                        width: double.infinity,
-                                        alignment: Alignment.centerRight,
-                                        padding: EdgeInsets.only(right: 20),
-                                        child: Container(
-                                          height: 80,
-                                          width: 80,
-                                          decoration: BoxDecoration(
-                                            shape: BoxShape.circle,
-                                            color: Colors.white,
-                                            image: DecorationImage(
-                                                fit: BoxFit.cover,
-                                                image: NetworkImage(
-                                                    "http://via.placeholder.com/350x150")),
-                                          ),
-                                        ),
+                                Expanded(
+                                  flex: 4,
+                                  child: Container(
+                                    width: double.infinity,
+                                    alignment: Alignment.centerRight,
+                                    padding: EdgeInsets.only(right: 20),
+                                    child: Container(
+                                      height: 80,
+                                      width: 80,
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: Colors.white,
+                                        image: DecorationImage(
+                                            fit: BoxFit.cover,
+                                            image: NetworkImage(img_url +
+                                                widget.list[widget.index]
+                                                    ['img'])),
                                       ),
-                                    ),
-                                    Expanded(
-                                      flex: 7,
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            widget.filters
-                                                ? widget.listFilter[
-                                                    widget.indexFilter]["title"]
-                                                : widget.list[widget.index]
-                                                    ["title"],
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                              fontSize: 16,
-                                              fontFamily: 'Yeseva',
-                                              fontWeight: FontWeight.w800,
-                                              letterSpacing: 1,
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding: EdgeInsets.symmetric(
-                                                vertical: 5),
-                                            child: Row(
-                                              children: [
-                                                Image.asset(
-                                                  'assets/images/forum/member.png',
-                                                  height: 16,
-                                                ),
-                                                Container(width: 5),
-                                                Text(
-                                                  widget.list[widget.index]
-                                                          ["total_user"]
-                                                      .toString(),
-                                                  style: TextStyle(
-                                                      color: Color(0xffF48262),
-                                                      fontSize: 14),
-                                                ),
-                                                Container(width: 20),
-                                                Image.asset(
-                                                  'assets/images/forum/komen.png',
-                                                  height: 16,
-                                                ),
-                                                Container(width: 5),
-                                                Text(
-                                                    widget
-                                                        .list[widget.index]
-                                                            ["posts"]
-                                                        .length
-                                                        .toString(),
-                                                    style: TextStyle(
-                                                        color:
-                                                            Color(0xffF48262),
-                                                        fontSize: 14))
-                                              ],
-                                            ),
-                                          ),
-                                          Text(
-                                            widget.filters
-                                                ? widget.listFilter[widget
-                                                    .indexFilter]["sub_title"]
-                                                : widget.list[widget.index]
-                                                    ["sub_title"],
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                              fontFamily: 'Brandon',
-                                              fontWeight: FontWeight.w600,
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding: EdgeInsets.only(top: 5),
-                                            child: Row(
-                                              children: [
-                                                widget.gabung
-                                                    ? FlatButton(
-                                                        color:
-                                                            Color(0xffFBDFD2),
-                                                        materialTapTargetSize:
-                                                            MaterialTapTargetSize
-                                                                .shrinkWrap,
-                                                        minWidth: 85,
-                                                        height: 0,
-                                                        padding: EdgeInsets
-                                                            .symmetric(
-                                                                vertical: 3,
-                                                                horizontal: 15),
-                                                        shape:
-                                                            RoundedRectangleBorder(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(5),
-                                                        ),
-                                                        onPressed: () {
-                                                          setState(() {
-                                                            widget.gabung =
-                                                                false;
-                                                            addBoolToSF();
-                                                            addIntToSF();
-                                                          });
-                                                        },
-                                                        child: Text(
-                                                          "Member",
-                                                          style: TextStyle(
-                                                            color: Colors.black,
-                                                            fontFamily:
-                                                                "Brandon",
-                                                            fontSize: 12,
-                                                          ),
-                                                        ),
-                                                      )
-                                                    : FlatButton(
-                                                        color:
-                                                            Color(0xffF48262),
-                                                        materialTapTargetSize:
-                                                            MaterialTapTargetSize
-                                                                .shrinkWrap,
-                                                        minWidth: 85,
-                                                        height: 0,
-                                                        padding: EdgeInsets
-                                                            .symmetric(
-                                                                vertical: 3,
-                                                                horizontal: 15),
-                                                        shape:
-                                                            RoundedRectangleBorder(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(5),
-                                                        ),
-                                                        onPressed: () async {
-                                                          final result =
-                                                              await postData(widget
-                                                                          .list[
-                                                                      widget
-                                                                          .index]
-                                                                  ["id"]);
-                                                          setState(() {
-                                                            widget.gabung =
-                                                                true;
-                                                            addBoolToSF();
-                                                            addIntToSF();
-                                                          });
-                                                        },
-                                                        child: Text(
-                                                          "Bergabung",
-                                                          style: TextStyle(
-                                                            color: Colors.white,
-                                                            fontFamily:
-                                                                "Brandon",
-                                                            fontSize: 12,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                Container(width: 5),
-                                                FlatButton(
-                                                  materialTapTargetSize:
-                                                      MaterialTapTargetSize
-                                                          .shrinkWrap,
-                                                  minWidth: 85,
-                                                  height: 0,
-                                                  padding: EdgeInsets.symmetric(
-                                                      vertical: 3),
-                                                  shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            5),
-                                                    side: BorderSide(
-                                                        width: 1,
-                                                        color:
-                                                            Color(0xffF48262)),
-                                                  ),
-                                                  onPressed: () {
-                                                    setState(() {
-                                                      mulaiObrolan(
-                                                        context,
-                                                        widget.list,
-                                                        widget.index,
-                                                      );
-                                                    });
-                                                  },
-                                                  child: Text(
-                                                    "Mulai Obrolan",
-                                                    style: TextStyle(
-                                                      fontFamily: "Brandon",
-                                                      fontSize: 12,
-                                                    ),
-                                                  ),
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    )
-                                  ],
-                                ),
-                                Container(
-                                  margin: EdgeInsets.only(top: 20),
-                                  height: 1,
-                                  color: Color(0xffF48262),
-                                ),
-                                Container(
-                                  margin: EdgeInsets.all(10),
-                                  child: SingleChildScrollView(
-                                    scrollDirection: Axis.horizontal,
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        listCategory("Trending"),
-                                        listCategory("Popular"),
-                                        listCategory("Terbaru"),
-                                      ],
                                     ),
                                   ),
                                 ),
-                              ],
-                            )),
-                        Expanded(
-                          //Revise this
-                          child: ListView.builder(
-                              itemCount:
-                                  widget.list[widget.index]["posts"].length == 0
-                                      ? 0
-                                      : widget
-                                          .list[widget.index]["posts"].length,
-                              itemBuilder: (context, i) {
-                                return GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                DetailKomenScreen(
-                                                  list: widget.list,
-                                                  index: i,
-                                                  roomIdx: widget.index,
-                                                )));
-                                  },
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      color: Hexcolor('#FCF8F0'),
-                                      border: Border(
-                                          top: BorderSide(
-                                              width: 7, color: Colors.white)),
-                                    ),
-                                    padding: EdgeInsets.all(10),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Row(
-                                          children: [
-                                            Text(
-                                              "Balasan terbaru di ",
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(
-                                                fontSize: 10,
-                                                fontFamily: 'Brandon',
-                                                fontWeight: FontWeight.w500,
-                                              ),
-                                            ),
-                                            Text(
-                                              widget.list[widget.index]
-                                                  ["title"],
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(
-                                                fontSize: 10,
-                                                fontFamily: 'Brandon',
-                                                fontWeight: FontWeight.w800,
-                                              ),
-                                            ),
-                                          ],
+                                Expanded(
+                                  flex: 7,
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        widget.filters
+                                            ? widget.listFilter[
+                                                widget.indexFilter]["title"]
+                                            : widget.list[widget.index]
+                                                ["title"],
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          fontFamily: 'Yeseva',
+                                          fontWeight: FontWeight.w800,
+                                          letterSpacing: 1,
                                         ),
-                                        InkWell(
-                                          onTap: () {
-                                            Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        DetailKomenScreen(
-                                                          list: widget.list,
-                                                          index: i,
-                                                          roomIdx: widget.index,
-                                                        )));
-                                          },
-                                          child: Text(
-                                            widget.list[widget.index]["posts"]
-                                                [i]["title"],
-                                            style: TextStyle(
-                                              fontSize: 14,
-                                              fontFamily: 'Yeseva',
-                                              fontWeight: FontWeight.w800,
-                                              letterSpacing: 1,
-                                            ),
-                                          ),
-                                        ),
-                                        Row(
+                                      ),
+                                      Padding(
+                                        padding:
+                                            EdgeInsets.symmetric(vertical: 5),
+                                        child: Row(
                                           children: [
-                                            Text(
-                                              "Posted " +
-                                                  DateFormat('dd MMMM yyyy')
-                                                      .format(
-                                                          convertDateFromString(
-                                                              widget.list[widget
-                                                                      .index][
-                                                                  "created_at"])),
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(
-                                                fontSize: 10,
-                                                fontFamily: 'Brandon',
-                                                color: Colors.grey,
-                                              ),
-                                            ),
-                                            Container(width: 10),
-                                            Text(
-                                              DateFormat('Hm').format(
-                                                  convertDateFromString(
-                                                      widget.list[widget.index]
-                                                          ["created_at"])),
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(
-                                                fontSize: 10,
-                                                fontFamily: 'Brandon',
-                                                color: Colors.grey,
-                                              ),
+                                            Image.asset(
+                                              'assets/images/forum/member.png',
+                                              height: 16,
                                             ),
                                             Container(width: 5),
                                             Text(
-                                              "|",
-                                              textAlign: TextAlign.center,
+                                              widget.list[widget.index]
+                                                      ["total_user"]
+                                                  .toString(),
                                               style: TextStyle(
-                                                fontSize: 10,
-                                                fontFamily: 'Brandon',
-                                                color: Colors.grey,
-                                              ),
+                                                  color: Color(0xffF48262),
+                                                  fontSize: 14),
                                             ),
-                                            Container(width: 10),
+                                            Container(width: 20),
+                                            Image.asset(
+                                              'assets/images/forum/komen.png',
+                                              height: 16,
+                                            ),
+                                            Container(width: 5),
                                             Text(
-                                              "Diupdate " +
-                                                  hours.toString() +
-                                                  " jam yang lalu",
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(
-                                                fontSize: 10,
-                                                fontFamily: 'Brandon',
-                                                color: Colors.grey,
-                                              ),
-                                            ),
+                                                widget
+                                                    .list[widget.index]["posts"]
+                                                    .length
+                                                    .toString(),
+                                                style: TextStyle(
+                                                    color: Color(0xffF48262),
+                                                    fontSize: 14))
                                           ],
                                         ),
-                                        Container(height: 5),
-                                        Row(
+                                      ),
+                                      Text(
+                                        widget.filters
+                                            ? widget.listFilter[
+                                                widget.indexFilter]["sub_title"]
+                                            : widget.list[widget.index]
+                                                ["sub_title"],
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          fontFamily: 'Brandon',
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsets.only(top: 5),
+                                        child: Row(
                                           children: [
-                                            Container(
-                                              height: 35,
-                                              width: 35,
-                                              decoration: BoxDecoration(
-                                                  shape: BoxShape.circle,
-                                                  color: Color(0xffF48262)),
-                                            ),
-                                            Container(
-                                              width: 5,
-                                            ),
-                                            Text(
-                                              "Phobe",
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(
-                                                fontSize: 14,
-                                                fontFamily: 'Brandon',
-                                                fontWeight: FontWeight.w800,
-                                              ),
-                                            ),
-                                            Container(
-                                              width: 5,
-                                            ),
-                                            Container(
+                                            widget.gabung
+                                                ? FlatButton(
+                                                    color: Color(0xffFBDFD2),
+                                                    materialTapTargetSize:
+                                                        MaterialTapTargetSize
+                                                            .shrinkWrap,
+                                                    minWidth: 85,
+                                                    height: 0,
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                            vertical: 3,
+                                                            horizontal: 15),
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              5),
+                                                    ),
+                                                    onPressed: () {
+                                                      setState(() {
+                                                        widget.gabung = false;
+                                                        addBoolToSF();
+                                                        addIntToSF();
+                                                      });
+                                                    },
+                                                    child: Text(
+                                                      "Member",
+                                                      style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontFamily: "Brandon",
+                                                        fontSize: 12,
+                                                      ),
+                                                    ),
+                                                  )
+                                                : FlatButton(
+                                                    color: Color(0xffF48262),
+                                                    materialTapTargetSize:
+                                                        MaterialTapTargetSize
+                                                            .shrinkWrap,
+                                                    minWidth: 85,
+                                                    height: 0,
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                            vertical: 3,
+                                                            horizontal: 15),
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              5),
+                                                    ),
+                                                    onPressed: () async {
+                                                      final result =
+                                                          await postData(widget
+                                                                      .list[
+                                                                  widget.index]
+                                                              ["id"]);
+                                                      setState(() {
+                                                        widget.gabung = true;
+                                                        addBoolToSF();
+                                                        addIntToSF();
+                                                      });
+                                                    },
+                                                    child: Text(
+                                                      "Bergabung",
+                                                      style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontFamily: "Brandon",
+                                                        fontSize: 12,
+                                                      ),
+                                                    ),
+                                                  ),
+                                            Container(width: 5),
+                                            FlatButton(
+                                              materialTapTargetSize:
+                                                  MaterialTapTargetSize
+                                                      .shrinkWrap,
+                                              minWidth: 85,
+                                              height: 0,
                                               padding: EdgeInsets.symmetric(
-                                                  horizontal: 3),
-                                              decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(5),
-                                                  color: Color(0xffF48262)),
+                                                  vertical: 3),
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(5),
+                                                side: BorderSide(
+                                                    width: 1,
+                                                    color: Color(0xffF48262)),
+                                              ),
+                                              onPressed: () {
+                                                setState(() {
+                                                  mulaiObrolan(
+                                                    context,
+                                                    widget.list,
+                                                    widget.index,
+                                                  );
+                                                });
+                                              },
                                               child: Text(
-                                                "Dewy Skin",
-                                                textAlign: TextAlign.center,
+                                                "Mulai Obrolan",
                                                 style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 10,
-                                                  fontFamily: 'Brandon',
+                                                  fontFamily: "Brandon",
+                                                  fontSize: 12,
                                                 ),
                                               ),
-                                            ),
+                                            )
                                           ],
                                         ),
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(top: 20),
+                              height: 1,
+                              color: Color(0xffF48262),
+                            ),
+                            Container(
+                              margin: EdgeInsets.all(10),
+                              child: SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    listCategory("Trending"),
+                                    listCategory("Popular"),
+                                    listCategory("Terbaru"),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        )),
+                    Expanded(
+                      //Revise this
+                      child: ListView.builder(
+                          itemCount:
+                              widget.list[widget.index]["posts"].length == 0
+                                  ? 0
+                                  : widget.list[widget.index]["posts"].length,
+                          itemBuilder: (context, i) {
+                            return GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => DetailKomenScreen(
+                                              list: widget.list,
+                                              index: i,
+                                              roomIdx: widget.index,
+                                            )));
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Hexcolor('#FCF8F0'),
+                                  border: Border(
+                                      top: BorderSide(
+                                          width: 7, color: Colors.white)),
+                                ),
+                                padding: EdgeInsets.all(10),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Text(
+                                          "Balasan terbaru di ",
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontSize: 10,
+                                            fontFamily: 'Brandon',
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ),
+                                        Text(
+                                          widget.list[widget.index]["title"],
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontSize: 10,
+                                            fontFamily: 'Brandon',
+                                            fontWeight: FontWeight.w800,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    InkWell(
+                                      onTap: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    DetailKomenScreen(
+                                                      list: widget.list,
+                                                      index: i,
+                                                      roomIdx: widget.index,
+                                                    )));
+                                      },
+                                      child: Text(
+                                        widget.list[widget.index]["posts"][i]
+                                            ["title"],
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          fontFamily: 'Yeseva',
+                                          fontWeight: FontWeight.w800,
+                                          letterSpacing: 1,
+                                        ),
+                                      ),
+                                    ),
+                                    Row(
+                                      children: [
+                                        Text(
+                                          "Posted " +
+                                              DateFormat('dd MMMM yyyy').format(
+                                                  convertDateFromString(
+                                                      widget.list[widget.index]
+                                                          ["created_at"])),
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontSize: 10,
+                                            fontFamily: 'Brandon',
+                                            color: Colors.grey,
+                                          ),
+                                        ),
+                                        Container(width: 10),
+                                        Text(
+                                          DateFormat('Hm').format(
+                                              convertDateFromString(
+                                                  widget.list[widget.index]
+                                                      ["created_at"])),
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontSize: 10,
+                                            fontFamily: 'Brandon',
+                                            color: Colors.grey,
+                                          ),
+                                        ),
+                                        Container(width: 5),
+                                        Text(
+                                          "|",
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontSize: 10,
+                                            fontFamily: 'Brandon',
+                                            color: Colors.grey,
+                                          ),
+                                        ),
+                                        Container(width: 10),
+                                        Text(
+                                          "Diupdate " +
+                                              hours.toString() +
+                                              " jam yang lalu",
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontSize: 10,
+                                            fontFamily: 'Brandon',
+                                            color: Colors.grey,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Container(height: 5),
+                                    Row(
+                                      children: [
+                                        ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(100),
+                                            child: Image.network(
+                                              widget.list[widget.index]['posts']
+                                                              [i]['user']
+                                                              ["avatar_original"]
+                                                          ==
+                                                      null
+                                                  ? 'https://www.tenforums.com/geek/gars/images/2/types/thumb_15951118880user.png'
+                                                  : img_url +
+                                                      widget.list[widget.index]
+                                                              ['posts'][i]
+                                                              ['user']["avatar_original"]
+                                                          .toString(),
+                                              height: 35,
+                                              width: 35,
+                                              fit: BoxFit.cover,
+                                            )),
                                         Container(
-                                          height: 5,
+                                          width: 5,
                                         ),
-                                        ReadMoreText(
-                                          widget.list[widget.index]["posts"][i]
-                                              ["text"],
-                                          style:
-                                              TextStyle(fontFamily: "Brandon"),
-                                          trimLines: 2,
-                                          colorClickableText: Colors.blue,
-                                          trimMode: TrimMode.Line,
-                                          trimCollapsedText:
-                                              '...baca selengkapnya',
-                                          trimExpandedText: ' show less',
+                                        Text(
+                                          widget.list[widget.index]['posts'][i]
+                                              ['user']['name'],
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontSize: 14,
+                                            fontFamily: 'Brandon',
+                                            fontWeight: FontWeight.w800,
+                                          ),
                                         ),
                                         Container(
-                                          height: 5,
+                                          width: 5,
                                         ),
-                                        ListView.builder(
-                                            primary: false,
-                                            itemCount: widget
-                                                        .list[widget.index]
-                                                            ["posts"][i]
-                                                            ["reply"]
-                                                        .length ==
-                                                    0
-                                                ? 0
-                                                : widget
+                                        Container(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 3),
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(5),
+                                              color: Color(0xffF48262)),
+                                          child: Text(
+                                            "Dewy Skin",
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 10,
+                                              fontFamily: 'Brandon',
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Container(
+                                      height: 5,
+                                    ),
+                                    ReadMoreText(
+                                      widget.list[widget.index]["posts"][i]
+                                          ["text"],
+                                      style: TextStyle(fontFamily: "Brandon"),
+                                      trimLines: 2,
+                                      colorClickableText: Colors.blue,
+                                      trimMode: TrimMode.Line,
+                                      trimCollapsedText: '...baca selengkapnya',
+                                      trimExpandedText: ' show less',
+                                    ),
+                                    Container(
+                                      height: 5,
+                                    ),
+                                    ListView.builder(
+                                        primary: false,
+                                        itemCount: widget
                                                     .list[widget.index]["posts"]
                                                         [i]["reply"]
-                                                    .length,
-                                            shrinkWrap: true,
-                                            itemBuilder: (context, idx) {
-                                              return Column(
-                                                children: [
-                                                  Container(
-                                                    margin: EdgeInsets.only(
-                                                        top: 10),
-                                                    decoration: BoxDecoration(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(5),
-                                                        border: Border.all(
-                                                            color: Color(
-                                                                0xffF48262))),
-                                                    padding: EdgeInsets.all(5),
-                                                    child: Column(
+                                                    .length ==
+                                                0
+                                            ? 0
+                                            : widget
+                                                .list[widget.index]["posts"][i]
+                                                    ["reply"]
+                                                .length,
+                                        shrinkWrap: true,
+                                        itemBuilder: (context, idx) {
+                                          return Column(
+                                            children: [
+                                              Container(
+                                                margin:
+                                                    EdgeInsets.only(top: 10),
+                                                decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            5),
+                                                    border: Border.all(
+                                                        color:
+                                                            Color(0xffF48262))),
+                                                padding: EdgeInsets.all(5),
+                                                child: Column(
+                                                  children: [
+                                                    Row(
                                                       children: [
-                                                        Row(
-                                                          children: [
-                                                            Container(
+                                                        ClipRRect(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        100),
+                                                            child:
+                                                                Image.network(
+                                                              widget.list[widget.index]
+                                                                              ["posts"]
+                                                                              [i]
+                                                                              ["reply"]
+                                                                              [idx]
+                                                                              ["user"][
+                                                                              "avatar_original"]
+                                                                          .toString() !=
+                                                                      null|| widget.list[widget.index]
+                                                                              ["posts"]
+                                                                              [i]
+                                                                              ["reply"]
+                                                                              [idx]
+                                                                              ["user"][
+                                                                              "avatar_original"]
+                                                                          .toString() !=
+                                                      ''
+                                                                  ?img_url +
+                                                                      widget
+                                                                          .list[
+                                                                              widget.index]
+                                                                              ["posts"]
+                                                                              [i]
+                                                                              ["reply"]
+                                                                              [idx]
+                                                                              ["user"]
+                                                                              ["avatar_original"]
+                                                                          .toString() :'https://www.tenforums.com/geek/gars/images/2/types/thumb_15951118880user.png'
+                                                                  ,
                                                               height: 35,
                                                               width: 35,
-                                                              decoration: BoxDecoration(
-                                                                  shape: BoxShape
-                                                                      .circle,
-                                                                  color: Color(
-                                                                      0xffF48262)),
-                                                            ),
-                                                            Container(
-                                                              width: 5,
-                                                            ),
-                                                            Text(
-                                                              "Phobe",
-                                                              textAlign:
-                                                                  TextAlign
-                                                                      .center,
-                                                              style: TextStyle(
-                                                                fontSize: 14,
-                                                                fontFamily:
-                                                                    'Brandon',
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w800,
-                                                              ),
-                                                            ),
-                                                            Container(
-                                                              width: 5,
-                                                            ),
-                                                            Container(
-                                                              padding: EdgeInsets
-                                                                  .symmetric(
-                                                                      horizontal:
-                                                                          3),
-                                                              decoration: BoxDecoration(
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                              5),
-                                                                  color: Color(
-                                                                      0xffF48262)),
-                                                              child: Text(
-                                                                "Dewy Skin",
-                                                                textAlign:
-                                                                    TextAlign
-                                                                        .center,
-                                                                style:
-                                                                    TextStyle(
-                                                                  color: Colors
-                                                                      .white,
-                                                                  fontSize: 10,
-                                                                  fontFamily:
-                                                                      'Brandon',
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ],
+                                                              fit: BoxFit.cover,
+                                                            )),
+                                                        Container(
+                                                          width: 5,
+                                                        ),
+                                                        Text(
+                                                          widget.list[widget
+                                                                          .index]
+                                                                      [
+                                                                      "posts"][i]
+                                                                  ["reply"][idx]
+                                                              ["user"]["name"],
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                          style: TextStyle(
+                                                            fontSize: 14,
+                                                            fontFamily:
+                                                                'Brandon',
+                                                            fontWeight:
+                                                                FontWeight.w800,
+                                                          ),
                                                         ),
                                                         Container(
-                                                          height: 5,
+                                                          width: 5,
                                                         ),
-                                                        Row(
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .start,
-                                                          children: [
-                                                            Text(
-                                                              "Reply: ",
-                                                              style: TextStyle(
-                                                                  fontFamily:
-                                                                      "Brandon",
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold),
+                                                        Container(
+                                                          padding: EdgeInsets
+                                                              .symmetric(
+                                                                  horizontal:
+                                                                      3),
+                                                          decoration: BoxDecoration(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          5),
+                                                              color: Color(
+                                                                  0xffF48262)),
+                                                          child: Text(
+                                                            "Dewy Skin",
+                                                            textAlign: TextAlign
+                                                                .center,
+                                                            style: TextStyle(
+                                                              color:
+                                                                  Colors.white,
+                                                              fontSize: 10,
+                                                              fontFamily:
+                                                                  'Brandon',
                                                             ),
-                                                            Expanded(
-                                                              child:
-                                                                  ReadMoreText(
-                                                                widget.list[widget.index]
-                                                                            [
-                                                                            "posts"][i]
-                                                                        [
-                                                                        "reply"]
-                                                                    [
-                                                                    idx]["text"],
-                                                                style: TextStyle(
-                                                                    fontFamily:
-                                                                        "Brandon"),
-                                                                trimLines: 2,
-                                                                colorClickableText:
-                                                                    Colors.blue,
-                                                                trimMode:
-                                                                    TrimMode
-                                                                        .Line,
-                                                                trimCollapsedText:
-                                                                    '...baca selengkapnya',
-                                                                trimExpandedText:
-                                                                    ' show less',
-                                                              ),
-                                                            ),
-                                                          ],
+                                                          ),
                                                         ),
                                                       ],
                                                     ),
-                                                  ),
-                                                  Padding(
-                                                    padding:
-                                                        EdgeInsets.symmetric(
-                                                            vertical: 10),
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
+                                                    Container(
+                                                      height: 5,
+                                                    ),
+                                                    Row(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
                                                       children: [
-                                                        Row(
-                                                          children: [
-                                                            GestureDetector(
-                                                              onTap: () {},
-                                                              child: Icon(
-                                                                Icons
-                                                                    .favorite_border,
-                                                                color: Color(
-                                                                    0xffF48262),
-                                                                size: 20,
-                                                              ),
-                                                            ),
-                                                            Container(width: 5),
-                                                            Text(
-                                                                widget
+                                                        Text(
+                                                          "Reply: ",
+                                                          style: TextStyle(
+                                                              fontFamily:
+                                                                  "Brandon",
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold),
+                                                        ),
+                                                        Expanded(
+                                                          child: ReadMoreText(
+                                                            widget.list[widget
+                                                                            .index]
+                                                                        [
+                                                                        "posts"]
+                                                                    [i]["reply"]
+                                                                [idx]["text"],
+                                                            style: TextStyle(
+                                                                fontFamily:
+                                                                    "Brandon"),
+                                                            trimLines: 2,
+                                                            colorClickableText:
+                                                                Colors.blue,
+                                                            trimMode:
+                                                                TrimMode.Line,
+                                                            trimCollapsedText:
+                                                                '...baca selengkapnya',
+                                                            trimExpandedText:
+                                                                ' show less',
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              
+                                                ],
+                                          );
+                                          
+                                        })
+                                  ,Padding(
+                                                padding: EdgeInsets.symmetric(
+                                                    vertical: 10),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    Row(
+                                                      children: [
+                                                        GestureDetector(
+                                                          onTap: () {},
+                                                          child: Icon(
+                                                            Icons
+                                                                .favorite_border,
+                                                            color: Color(
+                                                                0xffF48262),
+                                                            size: 20,
+                                                          ),
+                                                        ),
+                                                        Container(width: 5),
+                                                        Text(
+                                                            widget
+                                                                .list[widget
+                                                                        .index]
+                                                                    ["posts"][i]
+                                                                    ["like"]
+                                                                .length
+                                                                .toString(),
+                                                            style: TextStyle(
+                                                                fontFamily:
+                                                                    "Brandon")),
+                                                        Container(width: 10),
+                                                        GestureDetector(
+                                                          child: Image.asset(
+                                                            'assets/images/forum/balas.png',
+                                                            height: 14,
+                                                          ),
+                                                          onTap: () {
+                                                            replyIndex = i;
+                                                            _settingModalBottomSheet(
+                                                              context,
+                                                              widget.list,
+                                                              widget.index,
+                                                              2,
+                                                              i,
+                                                              widget.list[widget
+                                                                          .index]
+                                                                      ["posts"]
+                                                                  [i]["id"],
+                                                              roomRefresh,
+                                                            );
+                                                          },
+                                                        ),
+                                                        Container(width: 5),
+                                                        GestureDetector(
+                                                          onTap: () {
+                                                            replyIndex = i;
+                                                            _settingModalBottomSheet(
+                                                              context,
+                                                              widget.list,
+                                                              widget.index,
+                                                              2,
+                                                              i,
+                                                              widget.list[widget
+                                                                          .index]
+                                                                      ["posts"]
+                                                                  [i]["id"],
+                                                              roomRefresh,
+                                                            );
+                                                          },
+                                                          child: Text("Balas",
+                                                              style: TextStyle(
+                                                                  fontFamily:
+                                                                      "Brandon")),
+                                                        ),
+                                                        Container(width: 10),
+                                                        Text("|",
+                                                            style: TextStyle(
+                                                                fontFamily:
+                                                                    "Brandon")),
+                                                        Container(width: 10),
+                                                        Text(
+                                                            widget
                                                                     .list[widget
                                                                             .index]
                                                                         [
                                                                         "posts"]
-                                                                        [i]
-                                                                        ["like"]
+                                                                        [i][
+                                                                        "reply"]
                                                                     .length
-                                                                    .toString(),
-                                                                style: TextStyle(
-                                                                    fontFamily:
-                                                                        "Brandon")),
-                                                            Container(
-                                                                width: 10),
-                                                            GestureDetector(
-                                                              child:
-                                                                  Image.asset(
-                                                                'assets/images/forum/balas.png',
-                                                                height: 14,
-                                                              ),
-                                                              onTap: () {
-                                                                replyIndex = i;
-                                                                _settingModalBottomSheet(
-                                                                  context,
-                                                                  widget.list,
-                                                                  widget.index,
-                                                                  2,
-                                                                  idx,
-                                                                  widget.list[widget
-                                                                              .index]
-                                                                          [
-                                                                          "posts"]
-                                                                      [i]["id"],
-                                                                  roomRefresh,
-                                                                );
-                                                              },
-                                                            ),
-                                                            Container(width: 5),
-                                                            GestureDetector(
-                                                              onTap: () {
-                                                                replyIndex = i;
-                                                                _settingModalBottomSheet(
-                                                                  context,
-                                                                  widget.list,
-                                                                  widget.index,
-                                                                  2,
-                                                                  idx,
-                                                                  widget.list[widget
-                                                                              .index]
-                                                                          [
-                                                                          "posts"]
-                                                                      [i]["id"],
-                                                                  roomRefresh,
-                                                                );
-                                                              },
-                                                              child: Text(
-                                                                  "Balas",
-                                                                  style: TextStyle(
-                                                                      fontFamily:
-                                                                          "Brandon")),
-                                                            ),
-                                                            Container(
-                                                                width: 10),
-                                                            Text("|",
-                                                                style: TextStyle(
-                                                                    fontFamily:
-                                                                        "Brandon")),
-                                                            Container(
-                                                                width: 10),
-                                                            Text(
-                                                                widget
-                                                                        .list[
-                                                                            widget.index]
-                                                                            [
-                                                                            "posts"]
-                                                                            [i][
-                                                                            "reply"]
-                                                                        .length
-                                                                        .toString() +
-                                                                    " Balasan",
-                                                                style: TextStyle(
-                                                                    fontFamily:
-                                                                        "Brandon")),
-                                                          ],
-                                                        ),
-                                                        GestureDetector(
-                                                          onTap: () {},
-                                                          child: Image.asset(
-                                                              "assets/images/shareIcon.PNG"),
-                                                        ),
+                                                                    .toString() +
+                                                                " Balasan",
+                                                            style: TextStyle(
+                                                                fontFamily:
+                                                                    "Brandon")),
                                                       ],
                                                     ),
-                                                  )
-                                                ],
-                                              );
-                                            })
-                                      ],
-                                    ),
-                                  ),
-                                );
-                              }),
-                        )
-                      ],
-                    ),
-                  ),
-                )
-              : CircularProgressIndicator();
+                                                    GestureDetector(
+                                                      onTap: () {},
+                                                      child: Image.asset(
+                                                          "assets/images/shareIcon.PNG"),
+                                                    ),
+                                                  ],
+                                                ),
+                                              )
+                                          
+                                  ],
+                                ),
+                              ),
+                              
+                            );
+                          }),
+                    )
+                  ],
+                ),
+              ),
+            );
+          }
+          return LoadingWidgetFadingCircle(context);
         });
   }
 
@@ -1115,7 +1148,6 @@ class _DetailForumState extends State<DetailForum> {
                 'image',
                 'jpeg',
               ));
-
       request.files.add(multipartFile);
 
       request.fields["title"] = title.text;
@@ -1162,7 +1194,7 @@ class _DetailForumState extends State<DetailForum> {
             builder: (BuildContext context, StateSetter setState) {
               return Container(
                   padding: EdgeInsets.all(10),
-                  height: MediaQuery.of(context).size.height * 0.75,
+                  height: MediaQuery.of(context).size.height*0.90,
                   child: SingleChildScrollView(
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
@@ -1220,15 +1252,17 @@ class _DetailForumState extends State<DetailForum> {
                         ClipRRect(
                           borderRadius: BorderRadius.circular(5),
                           child: Container(
-                            padding: EdgeInsets.symmetric(vertical: 30),
+                            padding: EdgeInsets.symmetric(vertical: 10),
                             child: Column(
                               children: [
                                 InkWell(
                                   onTap: () {},
                                   child: Container(
-                                    padding: EdgeInsets.only(bottom: 10),
+                                    
                                     child: _image != null
-                                        ? _imageFile()
+                                        ? Container(
+                                          height: 80,width:40,
+                                          child:Image.file(_image))
                                         : _iconUpload(),
                                   ),
                                 ),
@@ -1280,6 +1314,7 @@ class _DetailForumState extends State<DetailForum> {
                               ),
                             ),
                             Container(width: 10),
+                             _image != null?
                             InkWell(
                                 onTap: () async {
                                   final result = await kirimPost(context);
@@ -1309,7 +1344,7 @@ class _DetailForumState extends State<DetailForum> {
                                         fontFamily: "Brandon",
                                         color: Colors.white),
                                   ),
-                                )),
+                                )):Container(),
                           ],
                         )
                       ],
