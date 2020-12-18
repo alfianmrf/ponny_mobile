@@ -47,12 +47,15 @@ class _UntungRewardState extends State<UntungReward> {
 
       setState(() {
         for(Map item in responseJson["lessThan200"]){
+          if(item["product"]!= null)
           reward.add(ProductPoin(item["id"],item["jml_point"],Product.fromJson(item["product"]["availability"]),1));
         }
         for(Map item in responseJson["200to500"]){
+          if(item["product"]!= null)
           reward.add(ProductPoin(item["id"],item["jml_point"],Product.fromJson(item["product"]["availability"]),1));
         }
         for(Map item in responseJson["moreThan500"]){
+          if(item["product"]!= null)
           reward.add(ProductPoin(item["id"],item["jml_point"],Product.fromJson(item["product"]["availability"]),1));
         }
         loading =false;

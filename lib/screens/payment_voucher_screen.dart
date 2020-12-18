@@ -518,7 +518,7 @@ class _PaymentVoucherScreenState extends State<PaymentVoucherScreen> {
                                   ),
                                 ),
                               ),
-                              InkWell(
+                              /*InkWell(
                                 onTap: () {
                                   chekOut(context,"shopeepay");
                                 },
@@ -554,7 +554,7 @@ class _PaymentVoucherScreenState extends State<PaymentVoucherScreen> {
                                   ),
                                 ),
                               ),
-                              /*Container(
+                              Container(
                                 color: Color(0xffFDEDE4),
                                 width: MediaQuery.of(context).size.width,
                                 padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),

@@ -32,6 +32,7 @@ class OrderScreen extends StatefulWidget {
   static const String delivered ="delivered";
   static const String completed ="completed";
   static const String komplain ="komplain";
+  static const String dibatalkan="dibatalkan";
   String type;
   OrderScreen({Key key,this.type});
 
@@ -1376,6 +1377,8 @@ class _OrderScreenState extends State<OrderScreen> {
       title = "Pesanan Selesai";
     } else if(widget.type == OrderScreen.komplain){
       title = "Sedang Komplain";
+    }else{
+      title = "Pesanan Dibatalkan";
     }
     // TODO: implement build
     return Scaffold(

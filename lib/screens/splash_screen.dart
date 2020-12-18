@@ -16,13 +16,14 @@ class _SplashScreenState extends State<SplashScreen>{
 
   removeScreen() {
     return _timer = Timer(Duration(seconds: 2), () async {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      bool rf = prefs.getBool("is_intro") ?? false;
-      if(rf){
-        Navigator.of(context).pushReplacementNamed(HomeScreen.id);
-      }else{
-        Navigator.of(context).pushReplacementNamed(IntroScreen.id);
-      }
+      // SharedPreferences prefs = await SharedPreferences.getInstance();
+      // bool rf = prefs.getBool("is_intro") ?? false;
+      // if(rf){
+      //   Navigator.of(context).pushReplacementNamed(HomeScreen.id);
+      // }else{
+      //   Navigator.of(context).pushReplacementNamed(IntroScreen.id);
+      // }
+      Navigator.of(context).pushReplacementNamed(IntroScreen.id);
 
     });
   }

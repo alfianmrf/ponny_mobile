@@ -206,7 +206,7 @@ class _AccountScreenState extends State<AccountScreen> {
                         width: double.infinity,
                         child: Container(
                           child: Text(
-                            "Hi, " + user.name,
+                              user != null ? "Hi, "+user.name :"",
                             style: TextStyle(
                               fontSize: 24,
                               fontWeight: FontWeight.w500,
@@ -679,7 +679,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                       margin: EdgeInsets.only(
                                           bottom: 5, left: 15, right: 15),
                                       child: Image.asset(
-                                        'assets/images/Asset 7.png',
+                                        'assets/images/perjalanan@4x.png',
                                         width: 30,
                                         height: 30,
                                         fit: BoxFit.contain,
@@ -846,6 +846,78 @@ class _AccountScreenState extends State<AccountScreen> {
                                             // width: 150,
                                             child: Text(
                                               "Pesanan yang telah diterima",
+                                              textAlign: TextAlign.left,
+                                              style: TextStyle(
+                                                fontFamily: "Brandon",
+                                                fontWeight: FontWeight.w500,
+                                                color: Colors.grey,
+                                                fontSize: 12,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => OrderScreen(
+                                      type: OrderScreen.dibatalkan,
+                                    ),
+                                  ),
+                                );
+                              },
+                              child: Container(
+                                decoration: new BoxDecoration(
+                                  border: Border(
+                                    bottom: BorderSide(
+                                      width: 1,
+                                      color: Hexcolor("#F59379"),
+                                    ),
+                                  ),
+                                ),
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      margin: EdgeInsets.only(
+                                          bottom: 10,
+                                          left: 15,
+                                          right: 15,
+                                          top: 10),
+                                      child: Image.asset(
+                                        'assets/images/dibatalkan@4x.png',
+                                        width: 30,
+                                        height: 30,
+                                        fit: BoxFit.contain,
+                                      ),
+                                    ),
+                                    Container(
+                                      margin: EdgeInsets.only(bottom: 5, top: 5),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                        children: [
+                                          Container(
+                                            margin: EdgeInsets.only(top: 0),
+                                            child: Text(
+                                              "Pesanan Dibatalkan",
+                                              style: TextStyle(
+                                                fontFamily: "Brandon",
+                                                fontWeight: FontWeight.w700,
+                                                fontSize: 17,
+                                              ),
+                                            ),
+                                          ),
+                                          Container(
+                                            // width: 150,
+                                            child: Text(
+                                              "Pesanan yang telah dibatalkan",
                                               textAlign: TextAlign.left,
                                               style: TextStyle(
                                                 fontFamily: "Brandon",
@@ -1770,7 +1842,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) =>
-                                          SyaratKetentuanScreen()),
+                                          WebViewScreen(titile: "Syarat & Ketentuan", url:"https://www.ponnybeaute.co.id/syarat-ketentuan" ,)),
                                 );
                               },
                               child: Container(

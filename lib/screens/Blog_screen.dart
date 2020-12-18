@@ -25,6 +25,7 @@ class Blog extends StatefulWidget {
 
 class _BlogState extends State<Blog> {
   bool onSearch = false;
+  String q;
   String currentTag;
   int categoryId;
   int lostData = 0;
@@ -94,6 +95,12 @@ class _BlogState extends State<Blog> {
                                 child: TextField(
                               cursorColor: Colors.black,
                               keyboardType: TextInputType.text,
+                              onSubmitted: (String _q){
+                                    setState(() {
+                                      q=_q;
+                                    });
+
+                              },
                               textInputAction: TextInputAction.go,
                               decoration: new InputDecoration.collapsed(
                                   hintText: "Search..."),

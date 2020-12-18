@@ -790,7 +790,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   flex: 1,
                                   child: InkWell(
                                     onTap: (){
-                                      final skincare =snapshot.data.firstWhere((element) => element.id == 12 );
+                                      final skincare =snapshot.data.firstWhere((element) => element.id == 15 || element.name == "SKIN CONCERN" );
                                       Navigator.push(context, MaterialPageRoute(builder: (context) => Skincare(category: skincare,) ));
                                     },
                                     child: Column(
