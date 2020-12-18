@@ -1,5 +1,5 @@
 import 'dart:io';
-
+import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +19,8 @@ import 'package:provider/provider.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:uiblock/uiblock.dart';
 import 'package:http/http.dart' as http;
+
+import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 
 class PraDaftarScreen extends StatefulWidget {
   static const String id = "pradaftar_Screen";
@@ -154,6 +156,68 @@ class _PraDaftarScreen extends State<PraDaftarScreen> {
 
 
     return result;
+  }
+   Future<bool> signInWithFacebook() async {
+    bool result = false;
+    final FirebaseAuth _auth = FirebaseAuth.instance;
+    final FacebookLogin facebookSignIn = new FacebookLogin();
+    final FacebookLoginResult results = await facebookSignIn.logIn(['email']);
+
+    switch (results.status) {
+      case FacebookLoginStatus.loggedIn:
+        final FacebookAccessToken accessToken = results.accessToken;
+        print(results.accessToken.token);
+        final FacebookAuthCredential credential =
+            FacebookAuthProvider.credential(accessToken.token);
+        //  final FirebasePakage.User user = await FirebaseAuth.instance.signInWithCredential(credential);
+        
+        print(credential);
+        var graphResponse = await http.get(
+            'https://graph.facebook.com/v2.12/me?fields=name,first_name,last_name,email&access_token=${results.accessToken.token}');
+
+        var profile = json.decode(graphResponse.body);
+        print(profile.toString());
+        var param = {
+          "email": profile['email'],
+          "name": profile['first_name'],
+          "provider_id": profile['id'],
+        };
+        print(param);
+        result = await Provider.of<AppModel>(context).setAuthSocial(param);
+
+        print('signInWithGoogle succeeded: ${profile['name']}');
+
+        print('''
+         Logged in!
+         
+         Token: ${accessToken.token}
+         User id: ${accessToken.userId}
+         Expires: ${accessToken.expires}
+         Permissions: ${accessToken.permissions}
+         Declined permissions: ${accessToken.declinedPermissions}
+         ''');
+        return result;
+        break;
+      case FacebookLoginStatus.cancelledByUser:
+        print('Login cancelled by the user.');
+        break;
+        return result;
+      case FacebookLoginStatus.error:
+        print('Something went wrong with the login process.\n'
+            'Here\'s the error Facebook gave us: ${results.errorMessage}');
+        break;
+        return result;
+    }
+    // _showMessage('''
+    //  Logged in!
+
+    //  Token: ${accessToken.token}
+    //  User id: ${accessToken.userId}
+    //  Expires: ${accessToken.expires}
+    //  Permissions: ${accessToken.permissions}
+    //  Declined permissions: ${accessToken.declinedPermissions}
+    //  ''');
+       return result;
   }
 
   @override
@@ -487,69 +551,107 @@ class _PraDaftarScreen extends State<PraDaftarScreen> {
             ],
           ),
         ),
-            /*Container(
-              margin: EdgeInsets.symmetric(vertical: 5),
-              child: Row(
-                children: [
-                  Expanded(flex: 1, child: Container()),
-                  Expanded(
-                    flex: 3,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: Hexcolor('#F48262'),
-                        ),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: IntrinsicHeight(
+           Container(
+                        margin: EdgeInsets.symmetric(vertical: 5),
                         child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
+                            Expanded(flex: 1, child: Container()),
                             Expanded(
-                              flex: 1,
+                              flex: 3,
                               child: Container(
                                 decoration: BoxDecoration(
-                                  border: Border(
-                                    right: BorderSide(
-                                      width: 1,
-                                      color: Hexcolor('#F48262'),
-                                    ),
+                                  border: Border.all(
+                                    color: Hexcolor('#F48262'),
                                   ),
+                                  borderRadius: BorderRadius.circular(10),
                                 ),
-                                child: IconButton(
-                                  onPressed: () {},
-                                  icon: Image.asset("assets/images/facebookLogo.png"),
+                                child: IntrinsicHeight(
+                                  child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.stretch,
+                                    children: [
+                                      Expanded(
+                                        flex: 1,
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            border: Border(
+                                              right: BorderSide(
+                                                width: 1,
+                                                color: Hexcolor('#F48262'),
+                                              ),
+                                            ),
+                                          ),
+                                          child: IconButton(
+                                            onPressed: () {},
+                                            icon: Image.asset(
+                                                "assets/images/facebookLogo.png"),
+                                          ),
+                                        ),
+                                      ),
+                                      Expanded(
+                                        flex: 2,
+                                        child: FlatButton(
+                                          onPressed: () async {
+                                            UIBlock.block(context,
+                                                customLoaderChild:
+                                                    LoadingWidgetFadingCircle(
+                                                        context));
+
+                                            signInWithFacebook().then((value) {
+                                              UIBlock.unblock(context);
+                                              if (value) {
+                                                Navigator
+                                                    .pushNamedAndRemoveUntil(
+                                                        context,
+                                                        HomeScreen.id,
+                                                        (_) => false);
+                                              } else {
+                                                scaffoldKey.currentState
+                                                    .showSnackBar(
+                                                        snackBarError);
+                                              }
+                                            }).catchError((onError) {
+                                              UIBlock.unblock(context);
+                                              scaffoldKey.currentState
+                                                  .showSnackBar(snackBarError);
+                                            });
+
+                                            // Create a credential from the access token
+                                            // final FacebookAuthCredential facebookAuthCredential =
+                                            // FacebookAuthProvider.credential(result.token);
+                                            // final Facebookuser = await FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
+                                            // print(Facebookuser.user.uid);
+                                            // print("facebook");
+                                            // UIBlock.block(context,customLoaderChild: LoadingWidgetFadingCircle(context));
+                                            // signInWithFacebook().then((value) {
+                                            //   UIBlock.unblock(context);
+                                            // }).catchError((onError){
+                                            //   UIBlock.unblock(context);
+                                            // });
+                                          },
+                                          child: SizedBox(
+                                            width: double.infinity,
+                                            child: Text(
+                                              "FACEBOOK",
+                                              textAlign: TextAlign.left,
+                                              style: TextStyle(
+                                                  fontSize: 18,
+                                                  fontFamily: 'Brandon',
+                                                  fontWeight: FontWeight.w800,
+                                                  color: Hexcolor('#F48262')),
+                                            ),
+                                          ),
+                                        ),
+                                      )
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
-                            Expanded(
-                              flex: 2,
-                              child: FlatButton(
-                                onPressed: () {},
-                                child: SizedBox(
-                                  width: double.infinity,
-                                  child: Text(
-                                    "FACEBOOK",
-                                    textAlign: TextAlign.left,
-                                    style: TextStyle(
-                                        fontSize: 18,
-                                        fontFamily: 'Brandon',
-                                        fontWeight: FontWeight.w800,
-                                        color: Hexcolor('#F48262')),
-                                  ),
-                                ),
-                              ),
-                            )
+                            Expanded(flex: 1, child: Container()),
                           ],
                         ),
-                      ),
-                    ),
-                  ),
-                  Expanded(flex: 1, child: Container()),
-                ],
-              ),
-            ),*/
-            Container(
+                      ), Container(
               margin: EdgeInsets.symmetric(vertical: 5),
               child: Row(
                 children: [

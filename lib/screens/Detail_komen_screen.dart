@@ -52,14 +52,7 @@ class _DetailKomenScreenState extends State<DetailKomenScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-        future: roomData(),
-        builder: (context, snapshot) {
-          if (snapshot.hasError) print(snapshot.error);
-          widget.list = snapshot.data;
-          return snapshot.hasData
-              ? SafeArea(
-                  child: Scaffold(
+    return Scaffold(
                       resizeToAvoidBottomInset: false,
                       backgroundColor: Hexcolor('#FCF8F0'),
                       appBar: AppBar(
@@ -91,7 +84,13 @@ class _DetailKomenScreenState extends State<DetailKomenScreen> {
                             ),
                             preferredSize: Size.fromHeight(1.0)),
                       ),
-                      body: SingleChildScrollView(
+                      body:  FutureBuilder(
+        future: roomData(),
+        builder: (context, snapshot) {
+          if (snapshot.hasError) print(snapshot.error);
+          widget.list = snapshot.data;
+          if(snapshot.hasData) 
+              return   SingleChildScrollView(
                         child: Column(
                           children: [
                             Container(
@@ -613,12 +612,13 @@ class _DetailKomenScreenState extends State<DetailKomenScreen> {
                             )
                           ],
                         ),
-                      ),
-                      bottomNavigationBar:
-                          new PonnyBottomNavbar(selectedIndex: 3)),
-                )
-              : Center(child: CircularProgressIndicator());
-        });
+                      );
+                      return  LoadingWidgetFadingCircle(context);
+                     
+                
+            
+        }) ,bottomNavigationBar:
+                          new PonnyBottomNavbar(selectedIndex: 3));
   }
 
   void _settingModalBottomSheet(

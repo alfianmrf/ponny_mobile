@@ -610,7 +610,8 @@ class _RoomScreenState extends State<RoomScreen> {
                                                                                   padding: EdgeInsets.symmetric(vertical: 3),
                                                                                   materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                                                                                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.only(topLeft: Radius.circular(0), topRight: Radius.circular(0), bottomLeft: Radius.circular(10), bottomRight: Radius.circular(10))),
-                                                                                  onPressed: () {
+                                                                                  onPressed: () async {
+                                                                                    final result = await leaveData(listmyroom[i]["id"]);
                                                                                     setState(() {
                                                                                       widget.gabung[i] = false;
                                                                                     });
@@ -780,7 +781,7 @@ class _RoomScreenState extends State<RoomScreen> {
                                                                             () {
                                                                           setState(
                                                                               () {
-                                                                                filtered =
+                                                                            filtered =
                                                                                 true;
                                                                             detil =
                                                                                 true;
@@ -788,7 +789,6 @@ class _RoomScreenState extends State<RoomScreen> {
                                                                                 i;
                                                                             indexFilter =
                                                                                 i;
-                                                                            
                                                                           });
                                                                         },
                                                                         child:
@@ -902,8 +902,8 @@ class _RoomScreenState extends State<RoomScreen> {
                                                                     onTap: () {
                                                                       setState(
                                                                           () {
-                                                                            filtered =
-                                                                                true;
+                                                                        filtered =
+                                                                            true;
                                                                         detil =
                                                                             true;
                                                                         index =
@@ -1239,10 +1239,9 @@ class _RoomScreenState extends State<RoomScreen> {
                                           ),
                                         ),
                                       ])
-                                    : Center(
-                                        child: new CircularProgressIndicator());
+                                    : LoadingWidgetFadingCircle(context);
                               })
-                          : Center(child: CircularProgressIndicator());
+                          : LoadingWidgetFadingCircle(context);
                     })));
   }
 }
@@ -1286,7 +1285,7 @@ class _RoomDataState extends State<RoomData> {
               ? RoomScreen(
                   listroom: snapshot.data,
                 )
-              : Center(child: new CircularProgressIndicator());
+              : LoadingWidgetFadingCircle(context);
         });
   }
 }

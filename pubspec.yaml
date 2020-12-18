@@ -73,6 +73,7 @@ dependencies:
   sign_in_with_apple: ^2.5.1
   apple_sign_in:
   flutter_facebook_login:
+  image_picker: ^0.6.7+14
 
 
 
