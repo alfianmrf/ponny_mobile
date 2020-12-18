@@ -6,6 +6,14 @@ class Dashboards {
   double toNext;
   double percent;
   Log log;
+  int unpaid;
+  int paid;
+  int ondelivery;
+  int delivered;
+  int komplain;
+  int dibatalkan;
+  int selesai;
+
 
   Dashboards(
       {this.happySkinLabel,
@@ -14,7 +22,15 @@ class Dashboards {
         this.next,
         this.toNext,
         this.percent,
-        this.log});
+        this.log,
+        this.unpaid,
+        this.paid,
+        this.ondelivery,
+        this.delivered,
+        this.komplain,
+        this.dibatalkan,
+        this.selesai
+      });
 
   Dashboards.fromJson(Map<String, dynamic> json) {
     print(json);
@@ -25,6 +41,13 @@ class Dashboards {
     toNext =  double.parse(json['to_next'].toString());
     percent = double.parse(json['percent'].toString());
     log = json['log'] != null ? new Log.fromJson(json['log']) : null;
+    unpaid = json['unpaid'];
+    paid = json['paid'];
+    ondelivery = json['ondelivery'];
+    delivered = json['delivered'];
+    komplain = json['komplain'];
+    dibatalkan = json['dibatalkan'];
+    selesai = json['selesai'];
   }
 
   Map<String, dynamic> toJson() {
