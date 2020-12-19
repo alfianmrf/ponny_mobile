@@ -17,6 +17,7 @@ const loginUrl = base_url + "auth/login";
 const register = base_url + "auth/signup";
 const blogUrl = base_url + "blog";
 const forumUrl = base_url + "forum";
+const detailforum = base_url + "forum/detail/"; 
 const roomUrl = forumUrl + "/rooms";
 const myRoomUrl = forumUrl + "/myrooms";
 const newPost = base_url + "forum/store";

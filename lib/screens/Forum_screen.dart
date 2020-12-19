@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:ponny/common/constant.dart';
+import 'package:ponny/screens/Detail_komen_screen.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -132,17 +133,22 @@ class _ForumScreenState extends State<ForumScreen> {
                                   String gambar = widget.list[i]["thumbnail"].toString();
                                   return Column(
                                     children: [
-                                      Container(
-                                        margin: EdgeInsets.only(top: 10),
-                                        height: 200,
-                                        width: double.infinity,
-                                        child: CachedNetworkImage(
-                                        imageUrl: img_url+gambar,
-                                          placeholder: (context, url) => LoadingWidgetPulse(context),
-                                          errorWidget: (context, url, error) => Image.asset('assets/images/new-placeholder-rect.png'),
-                                          width: MediaQuery.of(context).size.width,
-                                          fit: BoxFit.cover,
-                                        )
+                                      InkWell(
+                                        onTap:(){
+                                          Navigator.push(context, MaterialPageRoute(builder: (ctx)=>DetailKomenScreen(id:widget.list[i]["id"])));
+                                        },
+                                                                              child: Container(
+                                          margin: EdgeInsets.only(top: 10),
+                                          height: 200,
+                                          width: double.infinity,
+                                          child: CachedNetworkImage(
+                                          imageUrl: img_url+gambar,
+                                            placeholder: (context, url) => LoadingWidgetPulse(context),
+                                            errorWidget: (context, url, error) => Image.asset('assets/images/new-placeholder-rect.png'),
+                                            width: MediaQuery.of(context).size.width,
+                                            fit: BoxFit.cover,
+                                          )
+                                        ),
                                       ),
                                       Text(
                                         widget.list[i]["title"],
