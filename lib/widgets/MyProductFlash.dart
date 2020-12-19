@@ -185,7 +185,7 @@ class MyProductFlash extends StatelessWidget {
                       maxLines: 2,
                     ),
                     Text(
-                      product.home_discounted_price,
+                      NumberFormat.simpleCurrency(locale: "id_ID",decimalDigits: 0 ).format(product.base_discounted_price),
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontFamily: 'Brandon',
