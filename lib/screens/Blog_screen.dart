@@ -46,6 +46,7 @@ class _BlogState extends State<Blog> {
   }
 
   Future<List> getOtherArticles() async {
+    print(blogUrl);
     final response = await http.get(blogUrl);
     Map<String, dynamic> map = json.decode(response.body);
     List<dynamic> data = map["other_articles"];
@@ -99,6 +100,7 @@ class _BlogState extends State<Blog> {
                                     setState(() {
                                       q=_q;
                                     });
+
 
                               },
                               textInputAction: TextInputAction.go,

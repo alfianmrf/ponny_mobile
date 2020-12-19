@@ -51,6 +51,7 @@ class _SkincareState extends State<Skincare> {
   List<String> checked = [];
   bool LoadingBrand=true;
   int subKategorysearch = 0;
+  int skinconcern_id = 0;
 
   void initState() {
     super.initState();
@@ -105,6 +106,10 @@ class _SkincareState extends State<Skincare> {
       param.addAll({ "subcategory_id": subKategorysearch});
     }
 
+    if(skinconcern_id>0){
+      param.addAll({ "skinconcern_id": skinconcern_id});
+    }
+
     Provider.of<ProductModel>(context).searchProduct(searchProductUrl, param).then((value){
 
       if(value != null){
@@ -144,6 +149,9 @@ class _SkincareState extends State<Skincare> {
       }
       if(subKategorysearch>0){
         param.addAll({ "subcategory_id": subKategorysearch});
+      }
+      if(skinconcern_id>0){
+        param.addAll({ "skinconcern_id": skinconcern_id});
       }
       List<int> _brandSelect = [];
       listBrand.where((element) => element.value == true).forEach((element) { _brandSelect.add(element.brand.id); });
@@ -262,6 +270,7 @@ class _SkincareState extends State<Skincare> {
                   height: 1,
                   color: Color(0xffF3C1B5),
                 ),
+                if(widget.category.subcategories.length > 0)
                 Container(
                   margin: EdgeInsets.all(10),
                   height: 110,
@@ -277,6 +286,25 @@ class _SkincareState extends State<Skincare> {
                     },
                   ),
                 ),
+                if(widget.category.subcategories.length == 0)
+                  Container(
+                    margin: EdgeInsets.all(10),
+                    height: 110,
+                    width: double.infinity,
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: widget.category.masalahKulit.length,
+                      itemBuilder: (context, i) {
+                        final sub = widget.category.masalahKulit[i];
+                        print(sub.icon);
+                        return Container(
+                            margin: EdgeInsets.all(10),
+                            child: rectanglebutton2(context, sub.name,sub.icon,sub.id));
+                      },
+                    ),
+                  ),
+
+
                 Container(
                   height: 1,
                   color: Color(0xffF3C1B5),
@@ -422,6 +450,61 @@ class _SkincareState extends State<Skincare> {
           children: [
             CachedNetworkImage(
               imageUrl:subimg != null?  img_url+subimg:"",
+              placeholder: (context, url) => LoadingWidgetPulse(context),
+              errorWidget: (context, url, error) => Image.asset('assets/images/basic.jpg'),
+              height: 50,
+              width: 70,
+              fit: BoxFit.contain,
+            ),
+            Container(height: 5,),
+            Container(
+              width: 95,
+              child:Text(
+                subtext,
+                style: TextStyle(
+                  fontSize: 13,
+                  fontFamily: 'Brandon',
+                  height: 1,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ),
+
+          ],
+        ),
+      ),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10.0),
+        side: BorderSide(color: Hexcolor('#F48262')),
+      ),
+    );
+  }
+  Widget rectanglebutton2(context, String subtext, String subimg,int id) {
+    return ButtonTheme(
+      buttonColor: skinconcern_id == id ? Color(0xffF3C1B5) : Colors.white,
+      minWidth: 100.0,
+      height: 100.0,
+      padding: EdgeInsets.symmetric(horizontal: 0),
+      child: RaisedButton(
+        onPressed: () {
+          if(skinconcern_id ==  0){
+            setState(() {
+              skinconcern_id=id;
+            });
+          }else if(skinconcern_id > 0 && skinconcern_id !=  id){
+            setState(() {
+              skinconcern_id=id;
+            });
+          }else{
+            skinconcern_id=0;
+          }
+          getProductSearch();
+        },
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            CachedNetworkImage(
+              imageUrl:subimg != null?  img_url+"frontend/images/beauty-profile-modal/"+subimg:"",
               placeholder: (context, url) => LoadingWidgetPulse(context),
               errorWidget: (context, url, error) => Image.asset('assets/images/basic.jpg'),
               height: 50,

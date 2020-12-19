@@ -82,7 +82,7 @@ class FlashSaleProduct {
   int discount;
   String discountType;
   int qty;
-  int percentase;
+  double percentase;
   Product product;
 
   FlashSaleProduct(
@@ -102,7 +102,7 @@ class FlashSaleProduct {
     discount = json['discount'];
     discountType = json['discount_type'];
     qty = json['qty'];
-    percentase = json['percentase'];
+    percentase = double.parse(json['percentase'].toString());
     product = Product.fromJson(json['product']);
   }
 

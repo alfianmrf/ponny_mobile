@@ -14,6 +14,7 @@ class Category {
   String createdAt;
   String updatedAt;
   List<Subcategories> subcategories;
+  List<MasalahKulit> masalahKulit;
 
   Category(
       {this.id,
@@ -29,7 +30,8 @@ class Category {
         this.metaDescription,
         this.createdAt,
         this.updatedAt,
-        this.subcategories});
+        this.subcategories,
+      this.masalahKulit});
 
   Category.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -49,6 +51,12 @@ class Category {
       subcategories = new List<Subcategories>();
       json['subcategories'].forEach((v) {
         subcategories.add(new Subcategories.fromJson(v));
+      });
+    }
+    if (json['masalahkulit'] != null) {
+      masalahKulit = new List<MasalahKulit>();
+      json['masalahkulit'].forEach((v) {
+        masalahKulit.add(new MasalahKulit.fromJson(v));
       });
     }
   }
@@ -132,6 +140,55 @@ class Subcategories {
       data['subsubcategories'] =
           this.subsubcategories.map((v) => v.toJson()).toList();
     }
+    return data;
+  }
+}
+
+class MasalahKulit {
+  int id;
+  String name;
+  String slug;
+  String updatedAt;
+  String createdAt;
+  String iconMobile;
+  int subCategoryId;
+  String metaDescription;
+  String icon;
+
+  MasalahKulit(
+      {this.id,
+        this.name,
+        this.slug,
+        this.updatedAt,
+        this.createdAt,
+        this.iconMobile,
+        this.subCategoryId,
+        this.metaDescription,
+        this.icon});
+
+  MasalahKulit.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+    slug = json['slug'];
+    updatedAt = json['updated_at'];
+    createdAt = json['created_at'];
+    iconMobile = json['icon_mobile'];
+    subCategoryId = json['sub_category_id'];
+    metaDescription = json['meta_description'];
+    icon = json['icon'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['name'] = this.name;
+    data['slug'] = this.slug;
+    data['updated_at'] = this.updatedAt;
+    data['created_at'] = this.createdAt;
+    data['icon_mobile'] = this.iconMobile;
+    data['sub_category_id'] = this.subCategoryId;
+    data['meta_description'] = this.metaDescription;
+    data['icon'] = this.icon;
     return data;
   }
 }

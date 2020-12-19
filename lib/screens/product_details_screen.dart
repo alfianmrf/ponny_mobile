@@ -682,7 +682,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                 children: <Widget>[
 
                                   Text(
-                                    varian != null ? NumberFormat.simpleCurrency(locale: "id_ID",decimalDigits: 0 ).format(varian.base_price ) : widget.product.home_discounted_price,
+                                    varian != null ? NumberFormat.simpleCurrency(locale: "id_ID",decimalDigits: 0 ).format(varian.base_price ) : NumberFormat.simpleCurrency(locale: "id_ID",decimalDigits: 0 ).format(widget.product.base_price ),
                                     style: TextStyle(
                                       color: Colors.black,
                                       fontFamily: 'Brandon',
@@ -771,33 +771,43 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                               child: Row(
                                 children: <Widget>[
                                   Text(item.atribut_name+" :"),
-                                  for(String xitem in item.values)(
-                                      InkWell(
-                                        onTap: (){
-                                          setState(() {
-                                            option.firstWhere((element) => element.atributId == item.attribute_id).value = xitem;
-                                          });
-                                          _getPriceVarian();
-                                        },
-                                        child: Container(
-                                          margin: EdgeInsets.symmetric(horizontal: 7),
-                                          padding: EdgeInsets.symmetric(horizontal: 7),
-                                          child: Text(
-                                            xitem,
-                                            style: TextStyle(
-                                                color: Colors.black,
-                                                fontFamily: 'Brandon'
-                                            ),
-                                          ),
-                                          decoration: BoxDecoration(
-                                            border: Border.all(color: Color(0xffF48262)),
-                                            color: option.isNotEmpty && option.firstWhere((element) => element.atributId == item.attribute_id).value == xitem ?  Color(0xffF3C1B5) : Colors.white,
-                                            borderRadius: BorderRadius.circular(5),
-                                          ),
-                                        ),
-                                      )
+                                  Expanded(
+                                    child: SingleChildScrollView(
+                                      scrollDirection: Axis.horizontal,
+                                      child: Row(
+                                        children: [
+                                          for(String xitem in item.values)(
+                                              InkWell(
+                                                onTap: (){
+                                                  setState(() {
+                                                    option.firstWhere((element) => element.atributId == item.attribute_id).value = xitem;
+                                                  });
+                                                  _getPriceVarian();
+                                                },
+                                                child: Container(
+                                                  margin: EdgeInsets.symmetric(horizontal: 7),
+                                                  padding: EdgeInsets.symmetric(horizontal: 7),
+                                                  child: Text(
+                                                    xitem,
+                                                    style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontFamily: 'Brandon'
+                                                    ),
+                                                  ),
+                                                  decoration: BoxDecoration(
+                                                    border: Border.all(color: Color(0xffF48262)),
+                                                    color: option.isNotEmpty && option.firstWhere((element) => element.atributId == item.attribute_id).value == xitem ?  Color(0xffF3C1B5) : Colors.white,
+                                                    borderRadius: BorderRadius.circular(5),
+                                                  ),
+                                                ),
+                                              )
 
+                                          )
+                                        ],
+                                      ),
+                                    ),
                                   )
+
                                 ],
                               ),
                             )

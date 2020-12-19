@@ -1579,6 +1579,7 @@ class _MarqueeWidgetState extends State<MarqueeWidget> {
             duration: widget.backDuration, curve: Curves.easeOut);
     }
   }
+
 }
 
 
