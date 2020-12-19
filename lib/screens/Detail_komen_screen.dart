@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ponny/common/constant.dart';
+import 'package:ponny/model/detailForum.dart';
 import 'package:readmore/readmore.dart';
 import 'package:ponny/model/PostandComment.dart';
 import 'package:ponny/common/constant.dart';
@@ -14,11 +15,9 @@ import 'package:intl/intl.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
 
 class DetailKomenScreen extends StatefulWidget {
-  List list;
-  int index;
-  int roomIdx;
-  DetailKomenScreen({Key key, this.list, this.index, this.roomIdx})
-      : super(key: key);
+  int id;
+
+  DetailKomenScreen({this.id});
 
   @override
   _DetailKomenScreenState createState() => _DetailKomenScreenState();
@@ -26,6 +25,7 @@ class DetailKomenScreen extends StatefulWidget {
 
 class _DetailKomenScreenState extends State<DetailKomenScreen> {
   int hours;
+  int hourss;
 
   DateTime convertDateFromString(String strDate) {
     DateTime todayDate = DateTime.parse(strDate);
@@ -35,590 +35,598 @@ class _DetailKomenScreenState extends State<DetailKomenScreen> {
 
   @override
   void initState() {
+    super.initState();
+    print(widget.id);
     // TODO: implement initState
 
-    hours = DateTime.now()
-        .difference(DateTime.parse(widget.list[widget.index]["updated_at"]))
-        .inHours;
+    // hours = DateTime.now()
+    //     .difference(DateTime.parse(widget.list[widget.index]["updated_at"]))
+    //     .inHours;
   }
 
+  List data;
   Future<List> roomData() async {
-    final response = await http.get(roomUrl);
+    final response = await http.get(detailforum + widget.id.toString());
+    if (response.statusCode == 200) {
+      print('sukses');
 
-    Map<String, dynamic> map = json.decode(response.body);
-    List<dynamic> data = map["room"];
-    return data;
+      var datas = json.decode(response.body);
+      setState(() {
+        data = datas;
+      });
+      print(data);
+      return data;
+    } else {
+      throw Exception('Failed to load data');
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-                      resizeToAvoidBottomInset: false,
-                      backgroundColor: Hexcolor('#FCF8F0'),
-                      appBar: AppBar(
-                        elevation: 0,
-                        titleSpacing: 0,
-                        leading: IconButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          icon: Icon(
-                            Icons.arrow_back_ios,
-                            color: Color(0xffF48262),
-                            size: 26,
-                          ),
-                        ),
-                        title: Text(
-                          "Kembali",
-                          style: TextStyle(
-                            fontSize: 24,
-                            fontFamily: "Yeseva",
-                            fontWeight: FontWeight.w500,
-                            color: Color(0xffF48262),
-                          ),
-                        ),
-                        bottom: PreferredSize(
-                            child: Container(
-                              color: Color(0xffF48262),
-                              height: 1.0,
-                            ),
-                            preferredSize: Size.fromHeight(1.0)),
+        resizeToAvoidBottomInset: false,
+        backgroundColor: Hexcolor('#FCF8F0'),
+        appBar: AppBar(
+          elevation: 0,
+          titleSpacing: 0,
+          leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: Icon(
+              Icons.arrow_back_ios,
+              color: Color(0xffF48262),
+              size: 26,
+            ),
+          ),
+          title: Text(
+            "Kembali",
+            style: TextStyle(
+              fontSize: 24,
+              fontFamily: "Yeseva",
+              fontWeight: FontWeight.w500,
+              color: Color(0xffF48262),
+            ),
+          ),
+          bottom: PreferredSize(
+              child: Container(
+                color: Color(0xffF48262),
+                height: 1.0,
+              ),
+              preferredSize: Size.fromHeight(1.0)),
+        ),
+        body: FutureBuilder(
+            future: roomData(),
+            builder: (context, snapshot) {
+              if (snapshot.hasError) {
+                print(snapshot.error);
+              }
+
+              if (snapshot.hasData) {
+                hours = DateTime.now()
+                    .difference(DateTime.parse(data[0]['forum']['created_at']))
+                    .inHours;
+                return SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      Container(
+                        height: 1,
+                        color: Color(0xffF3C1B5),
                       ),
-                      body:  FutureBuilder(
-        future: roomData(),
-        builder: (context, snapshot) {
-          if (snapshot.hasError) print(snapshot.error);
-          widget.list = snapshot.data;
-          if(snapshot.hasData) 
-              return   SingleChildScrollView(
-                        child: Column(
-                          children: [
-                            Container(
-                              height: 1,
-                              color: Color(0xffF3C1B5),
-                            ),
-                            Container(
-                              color: Hexcolor('#FCF8F0'),
-                              margin: EdgeInsets.symmetric(vertical: 10),
-                              child: Container(
-                                color: Hexcolor('#FCF8F0'),
+                      Container(
+                        color: Hexcolor('#FCF8F0'),
+                        margin: EdgeInsets.symmetric(vertical: 10),
+                        child: Container(
+                          color: Hexcolor('#FCF8F0'),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                padding: EdgeInsets.all(10),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Container(
-                                      padding: EdgeInsets.all(10),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Row(
-                                            children: [
-                                              Text(
-                                                "Balasan terbaru di ",
-                                                textAlign: TextAlign.center,
-                                                style: TextStyle(
-                                                  fontSize: 10,
-                                                  fontFamily: 'Brandon',
-                                                  fontWeight: FontWeight.w500,
-                                                ),
-                                              ),
-                                              Text(
-                                                widget.list[widget.roomIdx]
-                                                    ["title"],
-                                                textAlign: TextAlign.center,
-                                                style: TextStyle(
-                                                  fontSize: 10,
-                                                  fontFamily: 'Brandon',
-                                                  fontWeight: FontWeight.w800,
-                                                ),
-                                              ),
-                                            ],
+                                    Row(
+                                      children: [
+                                        Text(
+                                          "Balasan terbaru di ",
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontSize: 10,
+                                            fontFamily: 'Brandon',
+                                            fontWeight: FontWeight.w500,
                                           ),
-                                          Row(
-                                            children: [
-                                              Container(
-                                                height: 35,
-                                                width: 35,
-                                                decoration: BoxDecoration(
-                                                    shape: BoxShape.circle,
-                                                    color: Color(0xffF48262)),
-                                              ),
-                                              Container(
-                                                width: 5,
-                                              ),
-                                              Text(
-                                                "Phoebe",
-                                                textAlign: TextAlign.center,
-                                                style: TextStyle(
-                                                  fontSize: 16,
-                                                  fontFamily: 'Brandon',
-                                                  fontWeight: FontWeight.w800,
-                                                ),
-                                              ),
-                                              Container(
-                                                width: 5,
-                                              ),
-                                              Container(
-                                                padding: EdgeInsets.symmetric(
-                                                    horizontal: 3),
-                                                decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            5),
-                                                    color: Color(0xffF48262)),
-                                                child: Text(
-                                                  "Dewy Skin",
-                                                  textAlign: TextAlign.center,
-                                                  style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 10,
-                                                    fontFamily: 'Brandon',
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
+                                        ),
+                                        Text(
+                                          data[0]['forum']['room']['title']
+                                              .toString(),
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontSize: 10,
+                                            fontFamily: 'Brandon',
+                                            fontWeight: FontWeight.w800,
                                           ),
-                                          Container(
-                                            height: 5,
+                                        ),
+                                      ],
+                                    ),
+                                    Row(
+                                      children: [
+                                        ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(100),
+                                            child: Image.network(
+                                              data[0]['forum']['user'][
+                                                              'avatar_original']
+                                                          .toString() ==
+                                                      null
+                                                  ? 'https://www.tenforums.com/geek/gars/images/2/types/thumb_15951118880user.png'
+                                                  : img_url +
+                                                      data[0]['forum']['user'][
+                                                              'avatar_original']
+                                                          .toString(),
+                                              height: 35,
+                                              width: 35,
+                                              fit: BoxFit.cover,
+                                            )),
+                                        Container(
+                                          width: 5,
+                                        ),
+                                        Text(
+                                          // snapshot.data.forum.user.name,
+                                          data[0]['forum']['user']['name']
+                                              .toString(),
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                            fontFamily: 'Brandon',
+                                            fontWeight: FontWeight.w800,
                                           ),
-                                          Row(
-                                            children: [
-                                              Text(
-                                                "Posted " +
-                                                    DateFormat('dd MMMM yyyy').format(
-                                                        convertDateFromString(
-                                                            widget.list[widget
-                                                                    .index][
-                                                                "created_at"])),
-                                                textAlign: TextAlign.center,
-                                                style: TextStyle(
-                                                  fontSize: 10,
-                                                  fontFamily: 'Brandon',
-                                                  color: Colors.grey,
-                                                ),
-                                              ),
-                                              Container(width: 5),
-                                              Text(
-                                                "|",
-                                                textAlign: TextAlign.center,
-                                                style: TextStyle(
-                                                  fontSize: 10,
-                                                  fontFamily: 'Brandon',
-                                                  color: Colors.grey,
-                                                  letterSpacing: 1,
-                                                ),
-                                              ),
-                                              Container(width: 10),
-                                              Text(
-                                                "Diupdate " +
-                                                    hours.toString() +
-                                                    " jam yang lalu",
-                                                textAlign: TextAlign.center,
-                                                style: TextStyle(
-                                                  fontSize: 10,
-                                                  fontFamily: 'Brandon',
-                                                  color: Colors.grey,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          Text(
-                                            widget.list[widget.roomIdx]["posts"]
-                                                [widget.index]["title"],
+                                        ),
+                                        Container(
+                                          width: 5,
+                                        ),
+                                        Container(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 3),
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(5),
+                                              color: Color(0xffF48262)),
+                                          child: Text(
+                                            data[0]['forum']['user']
+                                                ['user_tier']['title'],
+                                            textAlign: TextAlign.center,
                                             style: TextStyle(
-                                              fontSize: 14,
-                                              fontFamily: 'Yeseva',
-                                              fontWeight: FontWeight.w800,
+                                              color: Colors.white,
+                                              fontSize: 10,
+                                              fontFamily: 'Brandon',
                                             ),
                                           ),
-                                          Container(height: 5),
-                                          Text(
-                                            widget.list[widget.roomIdx]["posts"]
-                                                [widget.index]["text"],
-                                            style: TextStyle(
-                                                fontFamily: "Brandon"),
+                                        ),
+                                      ],
+                                    ),
+                                    Container(
+                                      height: 5,
+                                    ),
+                                    Row(
+                                      children: [
+                                        Text(
+                                          "Posted " +
+                                              DateFormat('dd MMMM yyyy').format(
+                                                  convertDateFromString(data[0]
+                                                      ['forum']['created_at'].toString())),
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontSize: 10,
+                                            fontFamily: 'Brandon',
+                                            color: Colors.grey,
                                           ),
-                                          Container(
-                                            height: 5,
+                                        ),
+                                        Container(width: 5),
+                                        Text(
+                                          "|",
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontSize: 10,
+                                            fontFamily: 'Brandon',
+                                            color: Colors.grey,
+                                            letterSpacing: 1,
                                           ),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Row(
-                                                children: [
-                                                  GestureDetector(
-                                                    onTap: () {},
-                                                    child: Icon(
-                                                      Icons.favorite_border,
-                                                      color: Color(0xffF48262),
-                                                      size: 20,
-                                                    ),
-                                                  ),
-                                                  Container(width: 5),
-                                                  Text(
-                                                      widget
-                                                          .list[widget.roomIdx]
-                                                              ["posts"]
-                                                              [widget.index]
-                                                              ["like"]
-                                                          .length
-                                                          .toString(),
-                                                      style: TextStyle(
-                                                          fontFamily:
-                                                              "Brandon")),
-                                                  Container(width: 10),
-                                                  GestureDetector(
-                                                    child: Image.asset(
-                                                      'assets/images/forum/balas.png',
-                                                      height: 14,
-                                                    ),
-                                                    onTap: () {
-                                                      _settingModalBottomSheet(
-                                                          context,
-                                                          widget.list,
-                                                          widget.list[widget
-                                                                      .roomIdx]
-                                                                  ["posts"][
-                                                              widget
-                                                                  .index]["id"]);
-                                                    },
-                                                  ),
-                                                  Container(width: 5),
-                                                  GestureDetector(
-                                                    onTap: () {_settingModalBottomSheet(
-                                                          context,
-                                                          widget.list,
-                                                          widget.list[widget
-                                                                      .roomIdx]
-                                                                  ["posts"][
-                                                              widget
-                                                                  .index]["id"]);},
-                                                    child: Text("Balas",
-                                                        style: TextStyle(
-                                                            fontFamily:
-                                                                "Brandon")),
-                                                  ),
-                                                  Container(width: 10),
-                                                  Text("|",
-                                                      style: TextStyle(
-                                                          fontFamily:
-                                                              "Brandon")),
-                                                  Container(width: 10),
-                                                  Text(
-                                                      widget
-                                                              .list[widget
-                                                                      .roomIdx]
-                                                                  ["posts"]
-                                                                  [widget.index]
-                                                                  ["reply"]
-                                                              .length
-                                                              .toString() +
-                                                          " Balasan",
-                                                      style: TextStyle(
-                                                          fontFamily:
-                                                              "Brandon")),
-                                                ],
-                                              ),
-                                              IconButton(
-                                                  icon: Image.asset(
-                                                      "assets/images/shareIcon.PNG"),
-                                                  onPressed: () {}),
-                                            ],
+                                        ),
+                                        Container(width: 10),
+                                        Text(
+                                          "Diupdate " +
+                                              hours.toString() +
+                                              " jam yang lalu",
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontSize: 10,
+                                            fontFamily: 'Brandon',
+                                            color: Colors.grey,
                                           ),
-                                        ],
+                                        ),
+                                      ],
+                                    ),
+                                    Text(
+                                      data[0]['forum']['title'],
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        fontFamily: 'Yeseva',
+                                        fontWeight: FontWeight.w800,
                                       ),
                                     ),
-                                    ListView.builder(
-                                      primary: false,
-                                      shrinkWrap: true,
-                                      itemCount: widget
-                                          .list[widget.roomIdx]["posts"]
-                                              [widget.index]["reply"]
-                                          .length,
-                                      itemBuilder: (context, i) {
-                                        return Container(
-                                          padding: EdgeInsets.only(bottom: 10),
-                                          child: Column(
-                                            children: [
-                                              Container(
-                                                height: 7,
-                                                color: Colors.white,
+                                    Container(height: 5),
+                                    Text(
+                                      data[0]['forum']['text'],
+                                      style: TextStyle(fontFamily: "Brandon"),
+                                    ),
+                                    Container(
+                                      height: 5,
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            GestureDetector(
+                                              onTap: () {},
+                                              child: Icon(
+                                                Icons.favorite_border,
+                                                color: Color(0xffF48262),
+                                                size: 20,
                                               ),
-                                              Container(
-                                                padding: EdgeInsets.symmetric(
-                                                    horizontal: 10),
-                                                child: Column(
-                                                  children: [
-                                                    Container(
-                                                      height: 20,
-                                                    ),
-                                                    Row(
-                                                      children: [
-                                                        Container(
-                                                          height: 35,
-                                                          width: 35,
-                                                          decoration: BoxDecoration(
-                                                              shape: BoxShape
-                                                                  .circle,
-                                                              color: Color(
-                                                                  0xffF48262)),
-                                                        ),
-                                                        Container(
-                                                          width: 5,
-                                                        ),
-                                                        Column(
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .start,
-                                                          children: [
-                                                            Row(
-                                                              children: [
-                                                                Text(
-                                                                  "Phoebe",
-                                                                  textAlign:
-                                                                      TextAlign
-                                                                          .center,
-                                                                  style:
-                                                                      TextStyle(
-                                                                    fontSize:
-                                                                        14,
-                                                                    fontFamily:
-                                                                        'Brandon',
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w800,
-                                                                  ),
-                                                                ),
-                                                                Container(
-                                                                  width: 5,
-                                                                ),
-                                                                Container(
-                                                                  padding: EdgeInsets
-                                                                      .symmetric(
-                                                                          horizontal:
-                                                                              3),
-                                                                  decoration: BoxDecoration(
-                                                                      borderRadius:
-                                                                          BorderRadius.circular(
-                                                                              5),
-                                                                      color: Color(
-                                                                          0xffF48262)),
-                                                                  child: Text(
-                                                                    "Dewy Skin",
-                                                                    textAlign:
-                                                                        TextAlign
-                                                                            .center,
-                                                                    style:
-                                                                        TextStyle(
-                                                                      color: Colors
-                                                                          .white,
-                                                                      fontSize:
-                                                                          10,
-                                                                      fontFamily:
-                                                                          'Brandon',
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                            Row(
-                                                              children: [
-                                                                Text(
-                                                                  "Posted 20-07-2020",
-                                                                  textAlign:
-                                                                      TextAlign
-                                                                          .center,
-                                                                  style:
-                                                                      TextStyle(
-                                                                    fontSize:
-                                                                        10,
-                                                                    fontFamily:
-                                                                        'Brandon',
-                                                                    color: Colors
-                                                                        .grey,
-                                                                  ),
-                                                                ),
-                                                                Container(
-                                                                    width: 5),
-                                                                Text(
-                                                                  "|",
-                                                                  textAlign:
-                                                                      TextAlign
-                                                                          .center,
-                                                                  style:
-                                                                      TextStyle(
-                                                                    fontSize:
-                                                                        10,
-                                                                    fontFamily:
-                                                                        'Brandon',
-                                                                    color: Colors
-                                                                        .grey,
-                                                                    letterSpacing:
-                                                                        1,
-                                                                  ),
-                                                                ),
-                                                                Container(
-                                                                    width: 10),
-                                                                Text(
-                                                                  "12.27",
-                                                                  textAlign:
-                                                                      TextAlign
-                                                                          .center,
-                                                                  style:
-                                                                      TextStyle(
-                                                                    fontSize:
-                                                                        10,
-                                                                    fontFamily:
-                                                                        'Brandon',
-                                                                    color: Colors
-                                                                        .grey,
-                                                                  ),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ],
-                                                    ),
-                                                    Container(
-                                                      height: 5,
-                                                    ),
-                                                    Row(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        Text(
-                                                          "Reply: ",
-                                                          style: TextStyle(
-                                                              fontFamily:
-                                                                  "Brandon",
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold),
-                                                        ),
-                                                        Expanded(
-                                                          child: ReadMoreText(
-                                                            widget.list[widget
-                                                                            .roomIdx]
-                                                                        [
-                                                                        "posts"]
-                                                                    [
-                                                                    widget
-                                                                        .index][
-                                                                "reply"][i]["text"],
-                                                            style: TextStyle(
-                                                                fontFamily:
-                                                                    "Brandon"),
-                                                            trimLines: 2,
-                                                            colorClickableText:
-                                                                Colors.blue,
-                                                            trimMode:
-                                                                TrimMode.Line,
-                                                            trimCollapsedText:
-                                                                '...baca selengkapnya',
-                                                            trimExpandedText:
-                                                                ' show less',
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                    Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
-                                                      children: [
-                                                        Row(
-                                                          children: [
-                                                            GestureDetector(
-                                                              onTap: () {},
-                                                              child: Icon(
-                                                                Icons
-                                                                    .favorite_border,
-                                                                color: Color(
-                                                                    0xffF48262),
-                                                                size: 20,
-                                                              ),
-                                                            ),
-                                                            Container(width: 5),
-                                                            Text("52",
-                                                                style: TextStyle(
-                                                                    fontFamily:
-                                                                        "Brandon")),
-                                                            Container(
-                                                                width: 10),
-                                                            GestureDetector(
-                                                              child:
-                                                                  Image.asset(
-                                                                'assets/images/forum/balas.png',
-                                                                height: 14,
-                                                              ),
-                                                              onTap: () {
-                                                                _settingModalBottomSheet(
-                                                                    context,
-                                                                    widget.list,
-                                                                    widget.list[
-                                                                        widget
-                                                                            .roomIdx]["posts"][widget
-                                                                        .index]["id"]);
-                                                              },
-                                                            ),
-                                                            Container(width: 5),
-                                                            GestureDetector(onTap:(){_settingModalBottomSheet(
-                                                          context,
-                                                          widget.list,
-                                                          widget.list[widget
-                                                                      .roomIdx]
-                                                                  ["posts"][
-                                                              widget
-                                                                  .index]["id"]);},
-                                                                                                                          child: Text("Balas",
-                                                                  style: TextStyle(
-                                                                      fontFamily:
-                                                                          "Brandon")),
-                                                            ),
-                                                            Container(
-                                                                width: 10),
-                                                            Text("|",
-                                                                style: TextStyle(
-                                                                    fontFamily:
-                                                                        "Brandon")),
-                                                            Container(
-                                                                width: 10),
-                                                            Text("39 Balasan",
-                                                                style: TextStyle(
-                                                                    fontFamily:
-                                                                        "Brandon")),
-                                                          ],
-                                                        ),
-                                                        IconButton(
-                                                            icon: Image.asset(
-                                                                "assets/images/shareIcon.PNG"),
-                                                            onPressed: () {}),
-                                                      ],
-                                                    )
-                                                  ],
-                                                ),
+                                            ),
+                                            Container(width: 5),
+                                            Text(
+                                                data[0]['forum']['like'][0]
+                                                    .length
+                                                    .toString(),
+                                                style: TextStyle(
+                                                    fontFamily: "Brandon")),
+                                            Container(width: 10),
+                                            GestureDetector(
+                                              child: Image.asset(
+                                                'assets/images/forum/balas.png',
+                                                height: 14,
                                               ),
-                                            ],
-                                          ),
-                                        );
-                                      },
-                                    )
+                                              onTap: () {
+                                                // _settingModalBottomSheet(
+                                                //     context,
+                                                //     widget.list,
+                                                //     widget.list[widget
+                                                //                 .roomIdx]
+                                                //             ["posts"][
+                                                //         widget
+                                                //             .index]["id"]);
+                                              },
+                                            ),
+                                            Container(width: 5),
+                                            GestureDetector(
+                                              // onTap: () {_settingModalBottomSheet(
+                                              //       context,
+                                              //       widget.list,
+                                              //       widget.list[widget
+                                              //                   .roomIdx]
+                                              //               ["posts"][
+                                              //           widget
+                                              //               .index]["id"]);},
+                                              child: Text("Balas",
+                                                  style: TextStyle(
+                                                      fontFamily: "Brandon")),
+                                            ),
+                                            Container(width: 10),
+                                            Text("|",
+                                                style: TextStyle(
+                                                    fontFamily: "Brandon")),
+                                            Container(width: 10),
+                                            Text(
+
+                                                data[0]['forum']['reply'].length==0?'0 Balasan':
+                                                         data[0]['forum']['reply'].length
+                                                        .toString() +
+                                                    " Balasan",
+                                                style: TextStyle(
+                                                    fontFamily: "Brandon")),
+                                          ],
+                                        ),
+                                        IconButton(
+                                            icon: Image.asset(
+                                                "assets/images/shareIcon.PNG"),
+                                            onPressed: () {}),
+                                      ],
+                                    ),
                                   ],
                                 ),
                               ),
-                            )
-                          ],
+                             
+                              ListView.builder(
+                                primary: false,
+                                shrinkWrap: true,
+                                itemCount: data[0]['forum']['reply'].length,
+                                itemBuilder: (context, i) {
+                                  hourss = DateTime.now()
+                                      .difference(DateTime.parse(data[0]
+                                          ['forum']['reply'][i]['created_at']))
+                                      .inHours;
+                                  return Container(
+                                    padding: EdgeInsets.only(bottom: 10),
+                                    child: Column(
+                                      children: [
+                                        Container(
+                                          height: 7,
+                                          color: Colors.white,
+                                        ),
+                                        Container(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 10),
+                                          child: Column(
+                                            children: [
+                                              Container(
+                                                height: 20,
+                                              ),
+                                              Row(
+                                                children: [
+                                                  ClipRRect(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              100),
+                                                      child: Image.network(
+                                                        data[0]['forum']['reply'][i]
+                                                                            ['user']
+                                                                        [
+                                                                        'avatar_original']
+                                                                    .toString() ==
+                                                                null
+                                                            ? 'https://www.tenforums.com/geek/gars/images/2/types/thumb_15951118880user.png'
+                                                            : img_url +
+                                                                data[0]['forum']
+                                                                            [
+                                                                            'reply'][i]['user']
+                                                                        [
+                                                                        'avatar_original']
+                                                                    .toString(),
+                                                        height: 35,
+                                                        width: 35,
+                                                        fit: BoxFit.cover,
+                                                      )),
+                                                  Container(
+                                                    width: 5,
+                                                  ),
+                                                  Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Row(
+                                                        children: [
+                                                          Text(
+                                                            data[0]['forum'][
+                                                                        'reply']
+                                                                    [i]['user']
+                                                                ['name'],
+                                                            textAlign: TextAlign
+                                                                .center,
+                                                            style: TextStyle(
+                                                              fontSize: 14,
+                                                              fontFamily:
+                                                                  'Brandon',
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w800,
+                                                            ),
+                                                          ),
+                                                          Container(
+                                                            width: 5,
+                                                          ),
+                                                          Container(
+                                                            padding: EdgeInsets
+                                                                .symmetric(
+                                                                    horizontal:
+                                                                        3),
+                                                            decoration: BoxDecoration(
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            5),
+                                                                color: Color(
+                                                                    0xffF48262)),
+                                                            child: Text(
+                                                              "Dewy",
+                                                              textAlign:
+                                                                  TextAlign
+                                                                      .center,
+                                                              style: TextStyle(
+                                                                color: Colors
+                                                                    .white,
+                                                                fontSize: 10,
+                                                                fontFamily:
+                                                                    'Brandon',
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                      Row(
+                                                        children: [
+                                                          Text(
+                                                            "Posted " +
+                                                                DateFormat(
+                                                                        'dd MMMM yyyy')
+                                                                    .format(
+                                                                        convertDateFromString(
+                                                                  data[0]['forum']
+                                                                          [
+                                                                          'reply'][i]
+                                                                      [
+                                                                      'created_at'],
+                                                                )),
+                                                            textAlign: TextAlign
+                                                                .center,
+                                                            style: TextStyle(
+                                                              fontSize: 10,
+                                                              fontFamily:
+                                                                  'Brandon',
+                                                              color:
+                                                                  Colors.grey,
+                                                            ),
+                                                          ),
+                                                          Container(width: 5),
+                                                          Text(
+                                                            "|",
+                                                            textAlign: TextAlign
+                                                                .center,
+                                                            style: TextStyle(
+                                                              fontSize: 10,
+                                                              fontFamily:
+                                                                  'Brandon',
+                                                              color:
+                                                                  Colors.grey,
+                                                              letterSpacing: 1,
+                                                            ),
+                                                          ),
+                                                          Container(width: 10),
+                                                          Text(
+                                                            "Diupdate " +
+                                                                hourss
+                                                                    .toString() +
+                                                                " jam yang lalu",
+                                                            textAlign: TextAlign
+                                                                .center,
+                                                            style: TextStyle(
+                                                              fontSize: 10,
+                                                              fontFamily:
+                                                                  'Brandon',
+                                                              color:
+                                                                  Colors.grey,
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
+                                              Container(
+                                                height: 5,
+                                              ),
+                                              Row(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    "Reply: ",
+                                                    style: TextStyle(
+                                                        fontFamily: "Brandon",
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ),
+                                                  Expanded(
+                                                    child: ReadMoreText(
+                                                      data[0]['forum']['reply']
+                                                          [i]['text'],
+                                                      style: TextStyle(
+                                                          fontFamily:
+                                                              "Brandon"),
+                                                      trimLines: 2,
+                                                      colorClickableText:
+                                                          Colors.blue,
+                                                      trimMode: TrimMode.Line,
+                                                      trimCollapsedText:
+                                                          '...baca selengkapnya',
+                                                      trimExpandedText:
+                                                          ' show less',
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Row(
+                                                    children: [
+                                                      GestureDetector(
+                                                        onTap: () {},
+                                                        child: Icon(
+                                                          Icons.favorite_border,
+                                                          color:
+                                                              Color(0xffF48262),
+                                                          size: 20,
+                                                        ),
+                                                      ),
+                                                      Container(width: 5),
+                                                      Text("52",
+                                                          style: TextStyle(
+                                                              fontFamily:
+                                                                  "Brandon")),
+                                                      Container(width: 10),
+                                                      GestureDetector(
+                                                        child: Image.asset(
+                                                          'assets/images/forum/balas.png',
+                                                          height: 14,
+                                                        ),
+                                                        onTap: () {
+                                                          // _settingModalBottomSheet(
+                                                          //     context,
+                                                          //     widget.list,
+                                                          //     widget.list[
+                                                          //         widget
+                                                          //             .roomIdx]["posts"][widget
+                                                          //         .index]["id"]);
+                                                        },
+                                                      ),
+                                                      Container(width: 5),
+                                                      GestureDetector(
+                                                        onTap: () {
+                                                          // _settingModalBottomSheet(
+                                                          // context,
+                                                          // widget.list,
+                                                          // widget.list[widget
+                                                          //             .roomIdx]
+                                                          //         ["posts"][
+                                                          //     widget
+                                                          //         .index]["id"]);},
+                                                        },
+                                                        child: Text("Balas",
+                                                            style: TextStyle(
+                                                                fontFamily:
+                                                                    "Brandon")),
+                                                      ),
+                                                      Container(width: 10),
+                                                      Text("|",
+                                                          style: TextStyle(
+                                                              fontFamily:
+                                                                  "Brandon")),
+                                                      Container(width: 10),
+                                                      Text("39 Balasan",
+                                                          style: TextStyle(
+                                                              fontFamily:
+                                                                  "Brandon")),
+                                                    ],
+                                                  ),
+                                                ],
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                },
+                              )
+                            ],
+                          ),
                         ),
-                      );
-                      return  LoadingWidgetFadingCircle(context);
-                     
-                
-            
-        }) ,bottomNavigationBar:
-                          new PonnyBottomNavbar(selectedIndex: 3));
+                      )
+                    ],
+                  ),
+                );
+              }
+              return LoadingWidgetFadingCircle(context);
+            }),
+        bottomNavigationBar: new PonnyBottomNavbar(selectedIndex: 3));
   }
 
   void _settingModalBottomSheet(

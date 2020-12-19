@@ -197,6 +197,7 @@ class _DetailForumState extends State<DetailForum> {
 
   @override
   Widget build(BuildContext context) {
+    
     return FutureBuilder(
         future: roomData(),
         builder: (context, snapshot) {
@@ -457,14 +458,14 @@ class _DetailForumState extends State<DetailForum> {
                           itemBuilder: (context, i) {
                             return GestureDetector(
                               onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => DetailKomenScreen(
-                                              list: widget.list,
-                                              index: i,
-                                              roomIdx: widget.index,
-                                            )));
+                                // Navigator.push(
+                                //     context,
+                                //     MaterialPageRoute(
+                                //         builder: (context) => DetailKomenScreen(
+                                //               list: widget.list,
+                                //               index: i,
+                                //               roomIdx: widget.index,
+                                //             )));
                               },
                               child: Container(
                                 decoration: BoxDecoration(
@@ -506,9 +507,7 @@ class _DetailForumState extends State<DetailForum> {
                                             MaterialPageRoute(
                                                 builder: (context) =>
                                                     DetailKomenScreen(
-                                                      list: widget.list,
-                                                      index: i,
-                                                      roomIdx: widget.index,
+                                                      id: widget.list[widget.index]["posts"][i]['id'],
                                                     )));
                                       },
                                       child: Text(
@@ -528,8 +527,8 @@ class _DetailForumState extends State<DetailForum> {
                                           "Posted " +
                                               DateFormat('dd MMMM yyyy').format(
                                                   convertDateFromString(
-                                                      widget.list[widget.index]
-                                                          ["created_at"])),
+                                                      widget.list[widget.index]["posts"][i]
+                                                          ["created_at"].toString())),
                                           textAlign: TextAlign.center,
                                           style: TextStyle(
                                             fontSize: 10,
@@ -541,7 +540,7 @@ class _DetailForumState extends State<DetailForum> {
                                         Text(
                                           DateFormat('Hm').format(
                                               convertDateFromString(
-                                                  widget.list[widget.index]
+                                                  widget.list[widget.index]["posts"][i]
                                                       ["created_at"])),
                                           textAlign: TextAlign.center,
                                           style: TextStyle(
