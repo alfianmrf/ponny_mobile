@@ -10,6 +10,7 @@ import 'package:http/http.dart' as http;
 import 'package:ponny/model/App.dart';
 import 'package:ponny/util/globalUrl.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:share/share.dart';
 import 'package:uiblock/uiblock.dart';
 import 'package:intl/intl.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
@@ -46,7 +47,11 @@ class _DetailKomenScreenState extends State<DetailKomenScreen> {
 
   List data;
   Future<List> roomData() async {
-    final response = await http.get(detailforum + widget.id.toString());
+    var token = Provider.of<AppModel>(context).auth.access_token;
+    final response = await http.get(detailforum+"${widget.id}",headers: {
+       'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token',
+    });
     if (response.statusCode == 200) {
       print('sukses');
 
@@ -54,11 +59,100 @@ class _DetailKomenScreenState extends State<DetailKomenScreen> {
       setState(() {
         data = datas;
       });
+
       print(data);
       return data;
     } else {
       throw Exception('Failed to load data');
     }
+  }
+  Future<List> getReplyData(int id) async {
+    var token = Provider.of<AppModel>(context).auth.access_token;
+    final response = await http.get(getReplyComment+"/$id}",headers: {
+       'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token',
+    });
+    if (response.statusCode == 200) {
+      print('sukses');
+
+      var datas = json.decode(response.body);
+      setState(() {
+        data = datas;
+      });
+
+      print(data);
+      return data;
+    } else {
+      throw Exception('Failed to load data');
+    }
+  }
+  Future<bool> like(int idRuang) async {
+    bool result = false;
+    UIBlock.block(context, customLoaderChild: LoadingWidget(context));
+    String accessToken =
+        Provider.of<AppModel>(context).auth.access_token == null
+            ? "abc"
+            : Provider.of<AppModel>(context).auth.access_token;
+
+    final value = await Provider.of<PostandComment>(context)
+        .likePost(accessToken,idRuang.toString());
+    if (value) {
+      UIBlock.unblock(context);
+      result = value;
+    }
+
+    return result;
+  }
+  Future<bool> unlike(int idRuang) async {
+    bool result = false;
+    UIBlock.block(context, customLoaderChild: LoadingWidget(context));
+    String accessToken =
+        Provider.of<AppModel>(context).auth.access_token == null
+            ? "abc"
+            : Provider.of<AppModel>(context).auth.access_token;
+
+    final value = await Provider.of<PostandComment>(context)
+        .unlikePost(accessToken,idRuang.toString());
+    if (value) {
+      UIBlock.unblock(context);
+      result = value;
+    }
+
+    return result;
+  }
+  Future<bool> likecomment(int idRuang) async {
+    bool result = false;
+    UIBlock.block(context, customLoaderChild: LoadingWidget(context));
+    String accessToken =
+        Provider.of<AppModel>(context).auth.access_token == null
+            ? "abc"
+            : Provider.of<AppModel>(context).auth.access_token;
+
+    final value = await Provider.of<PostandComment>(context)
+        .likeComment(accessToken,idRuang.toString());
+    if (value) {
+      UIBlock.unblock(context);
+      result = value;
+    }
+
+    return result;
+  }
+  Future<bool> unlikecomment(int idRuang) async {
+    bool result = false;
+    UIBlock.block(context, customLoaderChild: LoadingWidget(context));
+    String accessToken =
+        Provider.of<AppModel>(context).auth.access_token == null
+            ? "abc"
+            : Provider.of<AppModel>(context).auth.access_token;
+
+    final value = await Provider.of<PostandComment>(context)
+        .unlikeComment(accessToken,idRuang.toString());
+    if (value) {
+      UIBlock.unblock(context);
+      result = value;
+    }
+
+    return result;
   }
 
   @override
@@ -269,18 +363,31 @@ class _DetailKomenScreenState extends State<DetailKomenScreen> {
                                       children: [
                                         Row(
                                           children: [
+
+                                            data[0]['forum']['is_liked']==null?
                                             GestureDetector(
-                                              onTap: () {},
+                                              onTap: () {
+                                                like(data[0]['forum']["id"]);
+                                              },
                                               child: Icon(
                                                 Icons.favorite_border,
+                                                color: Color(0xffF48262),
+                                                size: 20,
+                                              ),
+                                            ):GestureDetector(
+                                              onTap: () {
+                                                unlike(data[0]['forum']["id"]);
+                                              },
+                                              child: Icon(
+                                                Icons.favorite,
                                                 color: Color(0xffF48262),
                                                 size: 20,
                                               ),
                                             ),
                                             Container(width: 5),
                                             Text(
-                                                data[0]['forum']['like'][0]
-                                                    .length
+                                                data[0]['forum']['like']
+                                                    .length==0?"0": data[0]['forum']['like'].length
                                                     .toString(),
                                                 style: TextStyle(
                                                     fontFamily: "Brandon")),
@@ -291,26 +398,14 @@ class _DetailKomenScreenState extends State<DetailKomenScreen> {
                                                 height: 14,
                                               ),
                                               onTap: () {
-                                                // _settingModalBottomSheet(
-                                                //     context,
-                                                //     widget.list,
-                                                //     widget.list[widget
-                                                //                 .roomIdx]
-                                                //             ["posts"][
-                                                //         widget
-                                                //             .index]["id"]);
+                                                _settingModalBottomSheet(
+                                                     data[0]['forum']['id']);
                                               },
                                             ),
                                             Container(width: 5),
                                             GestureDetector(
-                                              // onTap: () {_settingModalBottomSheet(
-                                              //       context,
-                                              //       widget.list,
-                                              //       widget.list[widget
-                                              //                   .roomIdx]
-                                              //               ["posts"][
-                                              //           widget
-                                              //               .index]["id"]);},
+                                              onTap: () {_settingModalBottomSheet(
+                                                   data[0]['forum']['id']);},
                                               child: Text("Balas",
                                                   style: TextStyle(
                                                       fontFamily: "Brandon")),
@@ -333,7 +428,9 @@ class _DetailKomenScreenState extends State<DetailKomenScreen> {
                                         IconButton(
                                             icon: Image.asset(
                                                 "assets/images/shareIcon.PNG"),
-                                            onPressed: () {}),
+                                            onPressed: () {
+                                               Share.share('https://ponnybeaute.co.id/'+data[0]['forum']['slug']);
+                                            }),
                                       ],
                                     ),
                                   ],
@@ -343,7 +440,7 @@ class _DetailKomenScreenState extends State<DetailKomenScreen> {
                               ListView.builder(
                                 primary: false,
                                 shrinkWrap: true,
-                                itemCount: data[0]['forum']['reply'].length,
+                                itemCount: data[0]['forum']['reply'].length==0?0: data[0]['forum']['reply'].length,
                                 itemBuilder: (context, i) {
                                   hourss = DateTime.now()
                                       .difference(DateTime.parse(data[0]
@@ -432,7 +529,10 @@ class _DetailKomenScreenState extends State<DetailKomenScreen> {
                                                                 color: Color(
                                                                     0xffF48262)),
                                                             child: Text(
-                                                              "Dewy",
+                                                              data[0]['forum'][
+                                                                        'reply']
+                                                                    [i]['user']
+                                                                ['user_tier']['title'],
                                                               textAlign:
                                                                   TextAlign
                                                                       .center,
@@ -547,17 +647,40 @@ class _DetailKomenScreenState extends State<DetailKomenScreen> {
                                                 children: [
                                                   Row(
                                                     children: [
+
+                                                      data[0]['forum'][
+                                                                        'reply']
+                                                                    [i]['is_liked']==null?
+                                                                
                                                       GestureDetector(
-                                                        onTap: () {},
+                                                        onTap: () {
+                                                          likecomment(data[0]['forum'][
+                                                                        'reply']
+                                                                    [i]['id']);
+                                                        },
                                                         child: Icon(
                                                           Icons.favorite_border,
                                                           color:
                                                               Color(0xffF48262),
                                                           size: 20,
                                                         ),
+                                                      ):GestureDetector(
+                                                        onTap: () {
+                                                          unlikecomment(data[0]['forum'][
+                                                                        'reply']
+                                                                    [i]['id']);
+                                                        },
+                                                        child: Icon(
+                                                          Icons.favorite,
+                                                          color:
+                                                              Color(0xffF48262),
+                                                          size: 20,
+                                                        ),
                                                       ),
                                                       Container(width: 5),
-                                                      Text("52",
+                                                      Text(data[0]['forum'][
+                                                                        'reply'][i]['like'].length==0?'0':data[0]['forum'][
+                                                                        'reply'][i]['like'].length.toString(),
                                                           style: TextStyle(
                                                               fontFamily:
                                                                   "Brandon")),
@@ -568,27 +691,18 @@ class _DetailKomenScreenState extends State<DetailKomenScreen> {
                                                           height: 14,
                                                         ),
                                                         onTap: () {
-                                                          // _settingModalBottomSheet(
-                                                          //     context,
-                                                          //     widget.list,
-                                                          //     widget.list[
-                                                          //         widget
-                                                          //             .roomIdx]["posts"][widget
-                                                          //         .index]["id"]);
+                                                          _settingModalBottomSheet1(
+                                                              data[0]['forum']['reply']
+                                                          [i]['id']);
                                                         },
                                                       ),
                                                       Container(width: 5),
                                                       GestureDetector(
                                                         onTap: () {
-                                                          // _settingModalBottomSheet(
-                                                          // context,
-                                                          // widget.list,
-                                                          // widget.list[widget
-                                                          //             .roomIdx]
-                                                          //         ["posts"][
-                                                          //     widget
-                                                          //         .index]["id"]);},
-                                                        },
+                                                          _settingModalBottomSheet1(
+                                                           data[0]['forum']['reply']
+                                                          [i]['id']);
+                                                      },
                                                         child: Text("Balas",
                                                             style: TextStyle(
                                                                 fontFamily:
@@ -600,7 +714,9 @@ class _DetailKomenScreenState extends State<DetailKomenScreen> {
                                                               fontFamily:
                                                                   "Brandon")),
                                                       Container(width: 10),
-                                                      Text("39 Balasan",
+                                                      Text(data[0]['forum'][
+                                                                        'reply'][i]['comment'].length==0?'0':data[0]['forum'][
+                                                                        'reply'][i]['comment'].length.toString()+" balasan",
                                                           style: TextStyle(
                                                               fontFamily:
                                                                   "Brandon")),
@@ -630,9 +746,7 @@ class _DetailKomenScreenState extends State<DetailKomenScreen> {
   }
 
   void _settingModalBottomSheet(
-    context,
-    List list,
-    int index,
+    int id
   ) {
     TextEditingController text = new TextEditingController();
 
@@ -641,9 +755,9 @@ class _DetailKomenScreenState extends State<DetailKomenScreen> {
       UIBlock.block(context, customLoaderChild: LoadingWidget(context));
       // var paramPost = {};
       var paramComment = {
-        "post_id": index.toString(),
+        "post_id": id.toString(),
         "text": text.text,
-        "recommended_items[]": "28",
+        // "recommended_items[]": "28",
         "notifmail": "1"
       };
 
@@ -705,7 +819,7 @@ class _DetailKomenScreenState extends State<DetailKomenScreen> {
                                 child: Text(
                                   "Tambahkan Komentar",
                                   style: TextStyle(
-                                    fontSize: 24,
+                                    fontSize: 18,
                                     fontFamily: "Yeseva",
                                     fontWeight: FontWeight.w500,
                                     color: Color(0xffF48262),
@@ -722,14 +836,18 @@ class _DetailKomenScreenState extends State<DetailKomenScreen> {
                             },
                             child: FittedBox(
                               fit: BoxFit.fitWidth,
-                              child: Text(
+                              child: Container(
+                                padding: EdgeInsets.all(3),
+                                decoration: BoxDecoration(color: Color(0xffF48262),borderRadius: BorderRadius.circular(5)),
+                                child:Text(
                                 "Kirim",
                                 style: TextStyle(
                                   fontSize: 16,
                                   fontFamily: "Brandon",
                                   fontWeight: FontWeight.w500,
+                                  color: Colors.white,
                                 ),
-                              ),
+                              ),)
                             ),
                           )
                         ],
@@ -763,4 +881,146 @@ class _DetailKomenScreenState extends State<DetailKomenScreen> {
       setState(() {});
     });
   }
+  void _settingModalBottomSheet1(
+    int id
+  ) {
+    TextEditingController text = new TextEditingController();
+
+    Future<bool> replyPostdanComment(BuildContext context) async {
+      bool result = false;
+      UIBlock.block(context, customLoaderChild: LoadingWidget(context));
+      // var paramPost = {};
+      print(id.toString());
+      var paramComment = {
+        "reply_id": id.toString(),
+        "text": text.text,
+        
+       
+      };
+
+      /* type == 1
+        ? await Provider.of<PostandComment>(context)
+            .posts(Provider.of<AppModel>(context).auth.access_token, paramPost)
+        :*/
+      final value = await Provider.of<PostandComment>(context).replycomment(
+          Provider.of<AppModel>(context).auth.access_token, paramComment);
+
+      if (value) {
+        UIBlock.unblock(context);
+        result = value;
+      }
+      return result;
+    }
+
+    showModalBottomSheet(
+      isScrollControlled: true,
+      backgroundColor: Hexcolor('#FCF8F0'),
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(30), topRight: Radius.circular(30))),
+      context: context,
+      builder: (builder) {
+        return StatefulBuilder(
+          builder: (BuildContext context, setState) {
+            return Container(
+              padding: EdgeInsets.all(10),
+              height: MediaQuery.of(context).size.height * 0.75,
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Container(
+                      margin: EdgeInsets.all(5),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            flex: 1,
+                            child: Container(
+                              child: IconButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  icon: Icon(
+                                    Icons.arrow_back_ios,
+                                    color: Color(0xffF48262),
+                                    size: 26,
+                                  )),
+                            ),
+                          ),
+                          Expanded(
+                            flex: 4,
+                            child: Container(
+                              margin: EdgeInsets.only(right: 10),
+                              child: FittedBox(
+                                fit: BoxFit.fitWidth,
+                                child: Text(
+                                  "Balas Komentar",
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontFamily: "Yeseva",
+                                    fontWeight: FontWeight.w500,
+                                    color: Color(0xffF48262),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          InkWell(
+                            onTap: () async {
+                              final result = await replyPostdanComment(context);
+
+                              Navigator.pop(context, true);
+                            },
+                            child: FittedBox(
+                              fit: BoxFit.fitWidth,
+                              child: Container(
+                                padding: EdgeInsets.all(3),
+                                decoration: BoxDecoration(color: Color(0xffF48262),borderRadius: BorderRadius.circular(5)),
+                                child:Text(
+                                "Kirim",
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontFamily: "Brandon",
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.white,
+                                ),
+                              ),)
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                    Container(
+                      height: 1,
+                      color: Color(0xffF3C1B5),
+                    ),
+                    Container(
+                      margin: EdgeInsets.all(10),
+                      child: TextField(
+                        controller: text,
+                        keyboardType: TextInputType.multiline,
+                        maxLines: null,
+                        cursorColor: Colors.black,
+                        textInputAction: TextInputAction.go,
+                        decoration: new InputDecoration.collapsed(
+                            hintStyle: TextStyle(fontFamily: "Brandon"),
+                            hintText: "Tambahkan Komentar"),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            );
+          },
+        );
+      },
+    ).then((value) {
+      setState(() {});
+    });
+  }
+
 }
+
+
+
+
