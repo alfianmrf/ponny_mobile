@@ -86,9 +86,9 @@ class _LocalPrideState extends State<LocalPride> {
                       ),
                       Container(
                         child: Text(
-                          "Local Pride",
+                          "Bangga Produk Indonesia",
                           style: TextStyle(
-                            fontSize: 24,
+                            fontSize: 22,
                             fontFamily: "Yeseva",
                             fontWeight: FontWeight.w500,
                             color: Color(0xffF48262),

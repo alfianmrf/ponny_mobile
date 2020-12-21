@@ -254,9 +254,9 @@ class _SkincareState extends State<Skincare> {
                       ),
                       Container(
                         child: Text(
-                          widget.category.name,
+                          widget.category.id==11?'PERALATAN KECANTIKAN':widget.category.id==9?'SKINCARE':widget.category.id==10?'HAIR & MAKEUP':widget.category.id==15?'MASALAH KULIT':'',
                           style: TextStyle(
-                            fontSize: 24,
+                            fontSize: 22,
                             fontFamily: "Yeseva",
                             fontWeight: FontWeight.w500,
                             color: Color(0xffF48262),
