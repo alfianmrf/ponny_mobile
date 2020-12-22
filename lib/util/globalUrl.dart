@@ -52,6 +52,7 @@ const newProduct = base_url + "product/news";
 const globalSearch = base_url + "global-search";
 const faqSearch = base_url + "global-faq";
 const skinklopediaSearch = base_url + "global-skinklopedia";
+const generalSetting = base_url + "general-settings";
 
 //cart
 const listCarturl = base_url + "cart/get";

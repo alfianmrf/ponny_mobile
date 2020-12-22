@@ -66,8 +66,7 @@ class _HomeScreenState extends State<HomeScreen> {
   bool loading_flashdeal = false;
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
-  static String videoId = YoutubePlayer.convertUrlToId("https://www.youtube.com/embed/5ou09YALCJw");
-  YoutubePlayerController _ytcontroller;
+  static String videoId = '';
 
   showModal() {
     return _timer = Timer(Duration(seconds: 2), () {
@@ -108,7 +107,12 @@ class _HomeScreenState extends State<HomeScreen> {
       _getCartOfitem();
       _getWishListCount();
     });
-    _ytcontroller = YoutubePlayerController(
+  }
+
+  Future<YoutubePlayerController> ytplayer() async {
+    generalSettings();
+    videoId = YoutubePlayer.convertUrlToId(data[0]['embed_video']);
+    return YoutubePlayerController(
       initialVideoId: videoId,
       flags: YoutubePlayerFlags(
         autoPlay: false,
@@ -122,6 +126,26 @@ class _HomeScreenState extends State<HomeScreen> {
     super.dispose();
     _controller?.removeListener(_scrollListener);
     _controller?.dispose();
+    generalSettings();
+  }
+
+  List data;
+  Future<List> generalSettings() async {
+    final response = await http.get(generalSetting);
+    if (response.statusCode == 200) {
+      //print('sukses');
+      Map<String, dynamic> map;
+      map = json.decode(response.body);
+
+      setState(() {
+        data = map["data"];
+      });
+
+      //print(data);
+      return data;
+    } else {
+      throw Exception('Failed to load data');
+    }
   }
 
   void _scrollListener() {
@@ -1840,13 +1864,24 @@ class _HomeScreenState extends State<HomeScreen> {
               Container(
                 color: Color(0xffFBDFD2),
                 padding: EdgeInsets.symmetric(horizontal: 30),
-                child: YoutubePlayer(
-                  controller: _ytcontroller,
-                  bottomActions: [
-                    CurrentPosition(),
-                    ProgressBar(isExpanded: true),
-                    RemainingDuration(),
-                  ],
+                child: FutureBuilder(
+                  future: ytplayer(),
+                  builder: (context, snapshot){
+                    if(snapshot.hasData){
+                      YoutubePlayerController _ytcontroller = snapshot.data;
+                      return YoutubePlayer(
+                        controller: _ytcontroller,
+                        bottomActions: [
+                          CurrentPosition(),
+                          ProgressBar(isExpanded: true),
+                          RemainingDuration(),
+                        ],
+                      );
+                    }
+                    else{
+                      return Container();
+                    }
+                  }
                 ),
               ),
               Container(
