@@ -82,11 +82,7 @@ class _RoomScreenState extends State<RoomScreen> {
       "room_id": idRuang.toString(),
     };
 
-    String accessToken =
-        Provider.of<AppModel>(context).auth.access_token == null
-            ? "abc"
-            : Provider.of<AppModel>(context).auth.access_token;
-
+    
     final value = await Provider.of<PostandComment>(context)
         .postRoomModel(accessToken, paramComment);
     if (value) {
@@ -106,9 +102,9 @@ class _RoomScreenState extends State<RoomScreen> {
     };
 
     String accessToken =
-        Provider.of<AppModel>(context).auth.access_token == null
+        Provider.of<AppModel>(context, listen: false).auth.access_token == null
             ? "abc"
-            : Provider.of<AppModel>(context).auth.access_token;
+            : Provider.of<AppModel>(context, listen: false).auth.access_token;
 
     final value = await Provider.of<PostandComment>(context)
         .leaveRoomModel(accessToken, paramComment);
@@ -148,13 +144,12 @@ class _RoomScreenState extends State<RoomScreen> {
     List<dynamic> data = map["room"];
     return data;
   }*/
-
+ 
   Future<List> myRoomData(BuildContext context) async {
-    String accessToken =
-        Provider.of<AppModel>(context).auth.access_token == null
-            ? "abc"
-            : Provider.of<AppModel>(context).auth.access_token;
+  
+            print(accessToken);
     if (categoryTrend != 0) {
+      print(accessToken);
       print("1");
       final res = await http.get(
         myRoomUrl + "/" + categoryTrend.toString(),
@@ -167,6 +162,7 @@ class _RoomScreenState extends State<RoomScreen> {
       List<dynamic> data = map["room"];
       return data;
     } else {
+       print(accessToken);
       print("0");
       final res = await http.get(
         myRoomUrl,
@@ -186,14 +182,34 @@ class _RoomScreenState extends State<RoomScreen> {
     prefs.setBool('GabungValue', widget.gabung[index]);
   }
 
+  String katakunci;
+  TextEditingController searchController= new TextEditingController();
   Future<List> roomData() async {
+   
+            print(accessToken);
     if (categoryTrend != 0) {
-      final response = await http.get(roomUrl + "/" + categoryTrend.toString());
+      final response = await http.get(roomUrl + "/" + "$categoryTrend",headers: {
+          HttpHeaders.contentTypeHeader: 'application/json',
+          HttpHeaders.authorizationHeader: "Bearer $accessToken"
+        },);
       Map<String, dynamic> map = json.decode(response.body);
       List<dynamic> data = map["room"];
       return data;
-    } else {
-      final response = await http.get(roomUrl);
+    }
+    else if (katakunci != null) {
+      final response = await http.get(roomUrl + "?keyword=" + searchController.text.toString(),headers: {
+          HttpHeaders.contentTypeHeader: 'application/json',
+          HttpHeaders.authorizationHeader: "Bearer $accessToken"
+        },);
+      Map<String, dynamic> map = json.decode(response.body);
+      List<dynamic> data = map["room"];
+      return data;
+    }
+     else {
+      final response = await http.get(roomUrl,headers: {
+          HttpHeaders.contentTypeHeader: 'application/json',
+          HttpHeaders.authorizationHeader: "Bearer $accessToken"
+        },);
       Map<String, dynamic> map = json.decode(response.body);
       List<dynamic> data = map["room"];
       return data;
@@ -204,9 +220,11 @@ class _RoomScreenState extends State<RoomScreen> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setInt('intValue', index);
   }
-
+  String accessToken;
   @override
   Widget build(BuildContext context) {
+   accessToken = Provider.of<AppModel>(context,listen:false).auth.access_token;
+
     return WillPopScope(
         onWillPop: () {
           setState(() {
@@ -216,15 +234,11 @@ class _RoomScreenState extends State<RoomScreen> {
         },
         child: detil
             ? DetailForum(
-                gabung: widget.gabung[index],
-                list: widget.listroom,
-                index: index,
-                indexFilter: indexFilter,
-                listFilter: listFilter,
-                filters: filtered)
+                id:index,
+                )
             : DefaultTabController(
                 length: 2,
-                child: new FutureBuilder<List>(
+                child: new FutureBuilder(
                     future: roomData(),
                     builder: (context, snapshot) {
                       if (snapshot.hasError) print(snapshot.error);
@@ -312,11 +326,19 @@ class _RoomScreenState extends State<RoomScreen> {
                                                   child: Row(children: [
                                                     Expanded(
                                                         child: TextField(
+                                                          controller: searchController,
+                                                          onChanged: (value){
+                                                           setState(() {
+                                                             katakunci=value;
+                                                           });
+                                                            print(value);
+                                                          },
+                                                          
                                                       cursorColor: Colors.black,
                                                       keyboardType:
                                                           TextInputType.text,
                                                       textInputAction:
-                                                          TextInputAction.go,
+                                                          TextInputAction.search,
                                                       decoration: new InputDecoration
                                                               .collapsed(
                                                           hintText:
@@ -439,8 +461,7 @@ class _RoomScreenState extends State<RoomScreen> {
                                                       setState(() {
                                                         detil = true;
 
-                                                        index = i;
-                                                      });
+                                                        index = widget.listroom[i]["id"];                                                      });
                                                     },
                                                     child: Container(
                                                       margin:
@@ -1268,7 +1289,16 @@ class RoomData extends StatefulWidget {
 
 class _RoomDataState extends State<RoomData> {
   Future<List> roomData() async {
-    final response = await http.get(roomUrl);
+    String accessToken =
+        Provider.of<AppModel>(context, listen: false).auth.access_token == null
+            ? "abc"
+            : Provider.of<AppModel>(context, listen: false).auth.access_token;
+
+    final response = await http.get(roomUrl,headers: {
+          HttpHeaders.contentTypeHeader: 'application/json',
+          HttpHeaders.authorizationHeader: "Bearer $accessToken"
+        },
+      );
 
     Map<String, dynamic> map = json.decode(response.body);
     List<dynamic> data = map["room"];

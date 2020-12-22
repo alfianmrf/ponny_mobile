@@ -70,7 +70,7 @@ class _Browse_CategoryState extends State<Browse_Category> {
                       Container(
                         width: 150,
                         child: Text(
-                          e.id==11?'PERALATAN KECANTIKAN':e.id==9?'SKINCARE':e.id==10?'HAIR & MAKE UP':e.id==15?'MASALAH KULIT':'',
+                          e.id==11?'PERALATAN KECANTIKAN':e.id==9?'SKINCARE':e.id==10?'HAIR & MAKEUP':e.id==15?'MASALAH KULIT':'',
                           style: TextStyle(
                               fontSize: 14,
                               fontFamily: 'Brandon',

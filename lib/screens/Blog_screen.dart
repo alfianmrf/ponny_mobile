@@ -377,49 +377,55 @@ DateTime convertDateFromString(String strDate){
         shrinkWrap: true,
         primary: false,
         itemBuilder: (context, i) {
-          return Container(
-              margin: EdgeInsets.only(bottom: 10),
-              child: ListTile(
-                leading: Container(
-                  width: 100,
-                  child: CachedNetworkImage(
-                    imageUrl:img_url+"blog/thumbnail/"+widget.list[i]["thumbnail"].toString(),
-                    placeholder: (context, url) => LoadingWidgetPulse(context),
-                    errorWidget: (context, url, error) => Image.asset('assets/images/basic.jpg'),
-                    width: MediaQuery.of(context).size.width,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                title: Text(
-                  widget.list[i]["title"],
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontFamily: "Brandon",
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                subtitle: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      widget.list[i]["user"]["name"],
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontFamily: "Brandon",
-                        fontWeight: FontWeight.w500,
-                      ),
+          return GestureDetector(
+            onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => BlogDetailData(contentId:widget.list[i]["id"])));
+            },
+            child: Container(
+                margin: EdgeInsets.only(bottom: 10),
+                child: ListTile(
+                  leading: Container(
+                    width: 100,
+                    child: CachedNetworkImage(
+                      imageUrl:img_url+"blog/thumbnail/"+widget.list[i]["thumbnail"].toString(),
+                      placeholder: (context, url) => LoadingWidgetPulse(context),
+                      errorWidget: (context, url, error) => Image.asset('assets/images/basic.jpg'),
+                      width: MediaQuery.of(context).size.width,
+                      fit: BoxFit.cover,
                     ),
-                    Text(
-                      DateFormat('dd MMMM yyyy').format(convertDateFromString(widget.list[i]["created_at"])),
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontFamily: "Brandon",
-                        fontWeight: FontWeight.w500,
-                      ),
+                  ),
+                  title: Text(
+                    widget.list[i]["title"],
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontFamily: "Brandon",
+                      fontWeight: FontWeight.w500,
                     ),
-                  ],
-                ),
-              ));
+                  ),
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        widget.list[i]["user"]["name"],
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontFamily: "Brandon",
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      Text(
+                        DateFormat('dd MMMM yyyy').format(convertDateFromString(widget.list[i]["created_at"])),
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontFamily: "Brandon",
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
+                  ),
+                )),
+          );
         });
   }
 }

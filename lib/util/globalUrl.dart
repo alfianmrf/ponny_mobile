@@ -18,10 +18,17 @@ const register = base_url + "auth/signup";
 const blogUrl = base_url + "blog";
 const forumUrl = base_url + "forum";
 const detailforum = base_url + "forum/detail/"; 
+const detailRoom = base_url +"forum/roomById/";
+const likeunlikepost = base_url + "forum/liked/";
+const likeunlikecomment = base_url + "forum/commentLiked/";
+const detailcommentchild = base_url +"forum/commentReplies/";
+
 const roomUrl = forumUrl + "/rooms";
 const myRoomUrl = forumUrl + "/myrooms";
 const newPost = base_url + "forum/store";
 const newComment = base_url + "forum/comment";
+const replyComment = base_url + "forum/replyCommentPost";
+const getReplyComment = base_url + "forum/postComments";
 const contactUsUrl = base_url + "contact/wa";
 const contactEmail = base_url + "contact/mail";
 const postRoom = base_url + "forum/joinRoom";
@@ -45,6 +52,7 @@ const newProduct = base_url + "product/news";
 const globalSearch = base_url + "global-search";
 const faqSearch = base_url + "global-faq";
 const skinklopediaSearch = base_url + "global-skinklopedia";
+const generalSetting = base_url + "general-settings";
 
 //cart
 const listCarturl = base_url + "cart/get";
