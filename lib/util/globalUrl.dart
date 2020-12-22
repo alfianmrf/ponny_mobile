@@ -21,6 +21,7 @@ const detailforum = base_url + "forum/detail/";
 const detailRoom = base_url +"forum/roomById/";
 const likeunlikepost = base_url + "forum/liked/";
 const likeunlikecomment = base_url + "forum/commentLiked/";
+const detailcommentchild = base_url +"forum/commentReplies/";
 
 const roomUrl = forumUrl + "/rooms";
 const myRoomUrl = forumUrl + "/myrooms";
