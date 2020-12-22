@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 import 'dart:io';
 import 'package:readmore/readmore.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:share/share.dart';
 import 'Forum_screen.dart';
 import 'package:ponny/common/constant.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
@@ -27,20 +28,11 @@ import 'package:date_format/date_format.dart';
 import 'package:ponny/model/RuangToken.dart';
 
 class DetailForum extends StatefulWidget {
-  bool gabung = false;
-  int index;
-  List list = [];
-  List listFilter;
-  int indexFilter;
-  bool filters;
+  int id;
 
-  DetailForum(
-      {this.gabung,
-      this.index,
-      this.list,
-      this.listFilter,
-      this.indexFilter,
-      this.filters});
+  DetailForum({
+    this.id,
+  });
 
   @override
   _DetailForumState createState() => _DetailForumState();
@@ -54,15 +46,15 @@ class _DetailForumState extends State<DetailForum> {
   TextEditingController post = new TextEditingController();
   int replyIndex;
   bool refresh = false;
-  addBoolToSF() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setBool('GabungValue', widget.gabung);
-  }
+  // addBoolToSF() async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   prefs.setBool('GabungValue', widget.gabung);
+  // }
 
-  addIntToSF() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setInt('intValue', widget.index);
-  }
+  // addIntToSF() async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   prefs.setInt('intValue', widget.index);
+  // }
 
   Future getImage() async {
     FilePickerResult result = await FilePicker.platform.pickFiles(
@@ -125,9 +117,14 @@ class _DetailForumState extends State<DetailForum> {
 
     return result;
   }
-
+  List data;
   Future<List> roomData() async {
-    final response = await http.get(roomUrl);
+     var token = Provider.of<AppModel>(context).auth.access_token;
+     print(token);
+    final response = await http.get(roomUrl,headers: {
+       'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token',
+    });
 
     Map<String, dynamic> map = json.decode(response.body);
     List<dynamic> data = map["room"];
@@ -138,6 +135,18 @@ class _DetailForumState extends State<DetailForum> {
     DateTime todayDate = DateTime.parse(strDate);
 
     return todayDate;
+  }
+
+  Future<List> detailroomData() async {
+      var token = Provider.of<AppModel>(context).auth.access_token;
+    final response = await http.get(detailRoom + widget.id.toString(),headers: {
+       'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token',
+    });
+
+    Map<String, dynamic> map = json.decode(response.body);
+    List<dynamic> data = map["room"];
+    return data;
   }
 
   /*Future<bool> kirimPost(BuildContext context) async {
@@ -187,24 +196,23 @@ class _DetailForumState extends State<DetailForum> {
 
   @override
   void initState() {
-    print(widget.filters);
-    _users = widget.list;
+    // print(widget.filters);
+    // _users = widget.list;
     // TODO: implement initState
-    hours = DateTime.now()
-        .difference(DateTime.parse(widget.list[widget.index]["updated_at"]))
-        .inHours;
+    // hours = DateTime.now()
+    //     .difference(DateTime.parse(widget.list[widget.index]["updated_at"]))
+    //     .inHours;
   }
 
   @override
   Widget build(BuildContext context) {
-    
     return FutureBuilder(
-        future: roomData(),
+        future: detailroomData(),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             print(snapshot.error);
           }
-          widget.list = snapshot.data;
+          // widget.list = snapshot.data;
           if (snapshot.hasData) {
             return WillPopScope(
               onWillPop: () {
@@ -237,8 +245,7 @@ class _DetailForumState extends State<DetailForum> {
                                         image: DecorationImage(
                                             fit: BoxFit.cover,
                                             image: NetworkImage(img_url +
-                                                widget.list[widget.index]
-                                                    ['img'])),
+                                                snapshot.data['img'])),
                                       ),
                                     ),
                                   ),
@@ -250,11 +257,7 @@ class _DetailForumState extends State<DetailForum> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        widget.filters
-                                            ? widget.listFilter[
-                                                widget.indexFilter]["title"]
-                                            : widget.list[widget.index]
-                                                ["title"],
+                                        snapshot.data['title'],
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
                                           fontSize: 16,
@@ -274,8 +277,7 @@ class _DetailForumState extends State<DetailForum> {
                                             ),
                                             Container(width: 5),
                                             Text(
-                                              widget.list[widget.index]
-                                                      ["total_user"]
+                                              snapshot.data['total_user']
                                                   .toString(),
                                               style: TextStyle(
                                                   color: Color(0xffF48262),
@@ -288,10 +290,14 @@ class _DetailForumState extends State<DetailForum> {
                                             ),
                                             Container(width: 5),
                                             Text(
-                                                widget
-                                                    .list[widget.index]["posts"]
-                                                    .length
-                                                    .toString(),
+                                                snapshot.data['post']['reply']
+                                                            .length ==
+                                                        0
+                                                    ? '0'
+                                                    : snapshot
+                                                        .data['post']['reply']
+                                                        .length
+                                                        .toString(),
                                                 style: TextStyle(
                                                     color: Color(0xffF48262),
                                                     fontSize: 14))
@@ -299,11 +305,7 @@ class _DetailForumState extends State<DetailForum> {
                                         ),
                                       ),
                                       Text(
-                                        widget.filters
-                                            ? widget.listFilter[
-                                                widget.indexFilter]["sub_title"]
-                                            : widget.list[widget.index]
-                                                ["sub_title"],
+                                        snapshot.data['sub_title'],
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
                                           fontFamily: 'Brandon',
@@ -314,78 +316,74 @@ class _DetailForumState extends State<DetailForum> {
                                         padding: EdgeInsets.only(top: 5),
                                         child: Row(
                                           children: [
-                                            widget.gabung
-                                                ? FlatButton(
-                                                    color: Color(0xffFBDFD2),
-                                                    materialTapTargetSize:
-                                                        MaterialTapTargetSize
-                                                            .shrinkWrap,
-                                                    minWidth: 85,
-                                                    height: 0,
-                                                    padding:
-                                                        EdgeInsets.symmetric(
-                                                            vertical: 3,
-                                                            horizontal: 15),
-                                                    shape:
-                                                        RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              5),
-                                                    ),
-                                                    onPressed: () {
-                                                      setState(() {
-                                                        widget.gabung = false;
-                                                        addBoolToSF();
-                                                        addIntToSF();
-                                                      });
-                                                    },
-                                                    child: Text(
-                                                      "Member",
-                                                      style: TextStyle(
-                                                        color: Colors.black,
-                                                        fontFamily: "Brandon",
-                                                        fontSize: 12,
-                                                      ),
-                                                    ),
-                                                  )
-                                                : FlatButton(
-                                                    color: Color(0xffF48262),
-                                                    materialTapTargetSize:
-                                                        MaterialTapTargetSize
-                                                            .shrinkWrap,
-                                                    minWidth: 85,
-                                                    height: 0,
-                                                    padding:
-                                                        EdgeInsets.symmetric(
-                                                            vertical: 3,
-                                                            horizontal: 15),
-                                                    shape:
-                                                        RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              5),
-                                                    ),
-                                                    onPressed: () async {
-                                                      final result =
-                                                          await postData(widget
-                                                                      .list[
-                                                                  widget.index]
-                                                              ["id"]);
-                                                      setState(() {
-                                                        widget.gabung = true;
-                                                        addBoolToSF();
-                                                        addIntToSF();
-                                                      });
-                                                    },
-                                                    child: Text(
-                                                      "Bergabung",
-                                                      style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontFamily: "Brandon",
-                                                        fontSize: 12,
-                                                      ),
-                                                    ),
-                                                  ),
+                                            FlatButton(
+                                              color: Color(0xffFBDFD2),
+                                              materialTapTargetSize:
+                                                  MaterialTapTargetSize
+                                                      .shrinkWrap,
+                                              minWidth: 85,
+                                              height: 0,
+                                              padding: EdgeInsets.symmetric(
+                                                  vertical: 3, horizontal: 15),
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(5),
+                                              ),
+                                              onPressed: () {
+                                                setState(() {
+                                                  // widget.gabung = false;
+                                                  // addBoolToSF();
+                                                  // addIntToSF();
+                                                });
+                                              },
+                                              child: Text(
+                                                "Member",
+                                                style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontFamily: "Brandon",
+                                                  fontSize: 12,
+                                                ),
+                                              ),
+                                            )
+                                            // : FlatButton(
+                                            //     color: Color(0xffF48262),
+                                            //     materialTapTargetSize:
+                                            //         MaterialTapTargetSize
+                                            //             .shrinkWrap,
+                                            //     minWidth: 85,
+                                            //     height: 0,
+                                            //     padding:
+                                            //         EdgeInsets.symmetric(
+                                            //             vertical: 3,
+                                            //             horizontal: 15),
+                                            //     shape:
+                                            //         RoundedRectangleBorder(
+                                            //       borderRadius:
+                                            //           BorderRadius.circular(
+                                            //               5),
+                                            //     ),
+                                            //     onPressed: () async {
+                                            //       final result =
+                                            //           await postData(widget
+                                            //                       .list[
+                                            //                   widget.index]
+                                            //               ["id"]);
+                                            //       setState(() {
+                                            //         widget.gabung = true;
+                                            //         addBoolToSF();
+                                            //         addIntToSF();
+                                            //       });
+                                            //     },
+                                            //     child: Text(
+                                            //       "Bergabung",
+                                            //       style: TextStyle(
+                                            //         color: Colors.white,
+                                            //         fontFamily: "Brandon",
+                                            //         fontSize: 12,
+                                            //       ),
+                                            //     ),
+                                            //   ),
+                                            ,
                                             Container(width: 5),
                                             FlatButton(
                                               materialTapTargetSize:
@@ -404,11 +402,11 @@ class _DetailForumState extends State<DetailForum> {
                                               ),
                                               onPressed: () {
                                                 setState(() {
-                                                  mulaiObrolan(
-                                                    context,
-                                                    widget.list,
-                                                    widget.index,
-                                                  );
+                                                  // mulaiObrolan(
+                                                  //   context,
+                                                  //   1,
+                                                  //   widget.index,
+                                                  // );
                                                 });
                                               },
                                               child: Text(
@@ -451,21 +449,17 @@ class _DetailForumState extends State<DetailForum> {
                     Expanded(
                       //Revise this
                       child: ListView.builder(
-                          itemCount:
-                              widget.list[widget.index]["posts"].length == 0
-                                  ? 0
-                                  : widget.list[widget.index]["posts"].length,
+                          itemCount: snapshot.data["post"]["reply"].length,
                           itemBuilder: (context, i) {
                             return GestureDetector(
                               onTap: () {
-                                // Navigator.push(
-                                //     context,
-                                //     MaterialPageRoute(
-                                //         builder: (context) => DetailKomenScreen(
-                                //               list: widget.list,
-                                //               index: i,
-                                //               roomIdx: widget.index,
-                                //             )));
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => DetailKomenScreen(
+                                              id: snapshot.data["post"][0]
+                                                  ["reply"][i]['id'],
+                                            )));
                               },
                               child: Container(
                                 decoration: BoxDecoration(
@@ -490,7 +484,8 @@ class _DetailForumState extends State<DetailForum> {
                                           ),
                                         ),
                                         Text(
-                                          widget.list[widget.index]["title"],
+                                          snapshot.data["post"][0]["reply"][i]
+                                              ['title'],
                                           textAlign: TextAlign.center,
                                           style: TextStyle(
                                             fontSize: 10,
@@ -507,12 +502,14 @@ class _DetailForumState extends State<DetailForum> {
                                             MaterialPageRoute(
                                                 builder: (context) =>
                                                     DetailKomenScreen(
-                                                      id: widget.list[widget.index]["posts"][i]['id'],
-                                                    )));
+                                                        id: snapshot.data[
+                                                                    "post"][0]
+                                                                ["reply"][i]
+                                                            ['id'])));
                                       },
                                       child: Text(
-                                        widget.list[widget.index]["posts"][i]
-                                            ["title"],
+                                        snapshot.data["post"][0]["reply"][i]
+                                            ['title'],
                                         style: TextStyle(
                                           fontSize: 14,
                                           fontFamily: 'Yeseva',
@@ -526,9 +523,10 @@ class _DetailForumState extends State<DetailForum> {
                                         Text(
                                           "Posted " +
                                               DateFormat('dd MMMM yyyy').format(
-                                                  convertDateFromString(
-                                                      widget.list[widget.index]["posts"][i]
-                                                          ["created_at"].toString())),
+                                                  convertDateFromString(snapshot
+                                                      .data["post"][0]
+                                                          ["created_at"]
+                                                      .toString())),
                                           textAlign: TextAlign.center,
                                           style: TextStyle(
                                             fontSize: 10,
@@ -540,7 +538,7 @@ class _DetailForumState extends State<DetailForum> {
                                         Text(
                                           DateFormat('Hm').format(
                                               convertDateFromString(
-                                                  widget.list[widget.index]["posts"][i]
+                                                  snapshot.data["post"][0]
                                                       ["created_at"])),
                                           textAlign: TextAlign.center,
                                           style: TextStyle(
@@ -580,16 +578,14 @@ class _DetailForumState extends State<DetailForum> {
                                             borderRadius:
                                                 BorderRadius.circular(100),
                                             child: Image.network(
-                                              widget.list[widget.index]['posts']
-                                                              [i]['user']
-                                                              ["avatar_original"]
-                                                          ==
+                                              snapshot.data["post"][i]['user']
+                                                          ["avatar_original"] ==
                                                       null
                                                   ? 'https://www.tenforums.com/geek/gars/images/2/types/thumb_15951118880user.png'
                                                   : img_url +
-                                                      widget.list[widget.index]
-                                                              ['posts'][i]
-                                                              ['user']["avatar_original"]
+                                                      snapshot.data["post"][i]
+                                                              ['user'][
+                                                              "avatar_original"]
                                                           .toString(),
                                               height: 35,
                                               width: 35,
@@ -599,8 +595,8 @@ class _DetailForumState extends State<DetailForum> {
                                           width: 5,
                                         ),
                                         Text(
-                                          widget.list[widget.index]['posts'][i]
-                                              ['user']['name'],
+                                          snapshot.data["post"][i]['user']
+                                              ["name"],
                                           textAlign: TextAlign.center,
                                           style: TextStyle(
                                             fontSize: 14,
@@ -634,8 +630,7 @@ class _DetailForumState extends State<DetailForum> {
                                       height: 5,
                                     ),
                                     ReadMoreText(
-                                      widget.list[widget.index]["posts"][i]
-                                          ["text"],
+                                      snapshot.data["post"][i]['text'],
                                       style: TextStyle(fontFamily: "Brandon"),
                                       trimLines: 2,
                                       colorClickableText: Colors.blue,
@@ -648,15 +643,13 @@ class _DetailForumState extends State<DetailForum> {
                                     ),
                                     ListView.builder(
                                         primary: false,
-                                        itemCount: widget
-                                                    .list[widget.index]["posts"]
-                                                        [i]["reply"]
+                                        itemCount: snapshot
+                                                    .data["post"][i][i]['reply']
                                                     .length ==
                                                 0
                                             ? 0
-                                            : widget
-                                                .list[widget.index]["posts"][i]
-                                                    ["reply"]
+                                            : snapshot
+                                                .data["post"][i][i]['reply']
                                                 .length,
                                         shrinkWrap: true,
                                         itemBuilder: (context, idx) {
@@ -684,35 +677,24 @@ class _DetailForumState extends State<DetailForum> {
                                                                         100),
                                                             child:
                                                                 Image.network(
-                                                              widget.list[widget.index]
-                                                                              ["posts"]
+                                                              snapshot.data["post"][i][i]['reply'][idx]["user"]["avatar_original"]
+                                                                              .toString() !=
+                                                                          null ||
+                                                                      snapshot.data["post"][i][i]['reply'][idx]["user"]["avatar_original"]
+                                                                              .toString() !=
+                                                                          ''
+                                                                  ? img_url +
+                                                                      snapshot
+                                                                          .data[
+                                                                              "post"]
                                                                               [i]
-                                                                              ["reply"]
-                                                                              [idx]
-                                                                              ["user"][
-                                                                              "avatar_original"]
-                                                                          .toString() !=
-                                                                      null|| widget.list[widget.index]
-                                                                              ["posts"]
                                                                               [i]
-                                                                              ["reply"]
-                                                                              [idx]
-                                                                              ["user"][
-                                                                              "avatar_original"]
-                                                                          .toString() !=
-                                                      ''
-                                                                  ?img_url +
-                                                                      widget
-                                                                          .list[
-                                                                              widget.index]
-                                                                              ["posts"]
-                                                                              [i]
-                                                                              ["reply"]
+                                                                              ['reply']
                                                                               [idx]
                                                                               ["user"]
                                                                               ["avatar_original"]
-                                                                          .toString() :'https://www.tenforums.com/geek/gars/images/2/types/thumb_15951118880user.png'
-                                                                  ,
+                                                                          .toString()
+                                                                  : 'https://www.tenforums.com/geek/gars/images/2/types/thumb_15951118880user.png',
                                                               height: 35,
                                                               width: 35,
                                                               fit: BoxFit.cover,
@@ -721,12 +703,12 @@ class _DetailForumState extends State<DetailForum> {
                                                           width: 5,
                                                         ),
                                                         Text(
-                                                          widget.list[widget
-                                                                          .index]
-                                                                      [
-                                                                      "posts"][i]
-                                                                  ["reply"][idx]
-                                                              ["user"]["name"],
+                                                          snapshot.data["post"]
+                                                                  [i][i]
+                                                                  ['reply'][idx]
+                                                                  ["user"]
+                                                                  ["name"]
+                                                              .toString(),
                                                           textAlign:
                                                               TextAlign.center,
                                                           style: TextStyle(
@@ -786,11 +768,9 @@ class _DetailForumState extends State<DetailForum> {
                                                         ),
                                                         Expanded(
                                                           child: ReadMoreText(
-                                                            widget.list[widget
-                                                                            .index]
-                                                                        [
-                                                                        "posts"]
-                                                                    [i]["reply"]
+                                                            snapshot.data["post"]
+                                                                        [i][i]
+                                                                    ['reply']
                                                                 [idx]["text"],
                                                             style: TextStyle(
                                                                 fontFamily:
@@ -811,122 +791,111 @@ class _DetailForumState extends State<DetailForum> {
                                                   ],
                                                 ),
                                               ),
-                                              
-                                                ],
+                                            ],
                                           );
-                                          
-                                        })
-                                  ,Padding(
-                                                padding: EdgeInsets.symmetric(
-                                                    vertical: 10),
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: [
-                                                    Row(
-                                                      children: [
-                                                        GestureDetector(
-                                                          onTap: () {},
-                                                          child: Icon(
-                                                            Icons
-                                                                .favorite_border,
-                                                            color: Color(
-                                                                0xffF48262),
-                                                            size: 20,
-                                                          ),
-                                                        ),
-                                                        Container(width: 5),
-                                                        Text(
-                                                            widget
-                                                                .list[widget
-                                                                        .index]
-                                                                    ["posts"][i]
-                                                                    ["like"]
-                                                                .length
-                                                                .toString(),
-                                                            style: TextStyle(
-                                                                fontFamily:
-                                                                    "Brandon")),
-                                                        Container(width: 10),
-                                                        GestureDetector(
-                                                          child: Image.asset(
-                                                            'assets/images/forum/balas.png',
-                                                            height: 14,
-                                                          ),
-                                                          onTap: () {
-                                                            replyIndex = i;
-                                                            _settingModalBottomSheet(
-                                                              context,
-                                                              widget.list,
-                                                              widget.index,
-                                                              2,
-                                                              i,
-                                                              widget.list[widget
-                                                                          .index]
-                                                                      ["posts"]
-                                                                  [i]["id"],
-                                                              roomRefresh,
-                                                            );
-                                                          },
-                                                        ),
-                                                        Container(width: 5),
-                                                        GestureDetector(
-                                                          onTap: () {
-                                                            replyIndex = i;
-                                                            _settingModalBottomSheet(
-                                                              context,
-                                                              widget.list,
-                                                              widget.index,
-                                                              2,
-                                                              i,
-                                                              widget.list[widget
-                                                                          .index]
-                                                                      ["posts"]
-                                                                  [i]["id"],
-                                                              roomRefresh,
-                                                            );
-                                                          },
-                                                          child: Text("Balas",
-                                                              style: TextStyle(
-                                                                  fontFamily:
-                                                                      "Brandon")),
-                                                        ),
-                                                        Container(width: 10),
-                                                        Text("|",
-                                                            style: TextStyle(
-                                                                fontFamily:
-                                                                    "Brandon")),
-                                                        Container(width: 10),
-                                                        Text(
-                                                            widget
-                                                                    .list[widget
-                                                                            .index]
-                                                                        [
-                                                                        "posts"]
-                                                                        [i][
-                                                                        "reply"]
-                                                                    .length
-                                                                    .toString() +
-                                                                " Balasan",
-                                                            style: TextStyle(
-                                                                fontFamily:
-                                                                    "Brandon")),
-                                                      ],
-                                                    ),
-                                                    GestureDetector(
-                                                      onTap: () {},
-                                                      child: Image.asset(
-                                                          "assets/images/shareIcon.PNG"),
-                                                    ),
-                                                  ],
+                                        }),
+                                    Padding(
+                                      padding:
+                                          EdgeInsets.symmetric(vertical: 10),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Row(
+                                            children: [
+                                              GestureDetector(
+                                                onTap: () {},
+                                                child: Icon(
+                                                  Icons.favorite_border,
+                                                  color: Color(0xffF48262),
+                                                  size: 20,
                                                 ),
-                                              )
-                                          
+                                              ),
+                                              Container(width: 5),
+                                              Text(
+                                                  snapshot
+                                                      .data["post"][i][i]
+                                                          ['like']
+                                                      .length
+                                                      .toString(),
+                                                  style: TextStyle(
+                                                      fontFamily: "Brandon")),
+                                              Container(width: 10),
+                                              GestureDetector(
+                                                child: Image.asset(
+                                                  'assets/images/forum/balas.png',
+                                                  height: 14,
+                                                ),
+                                                onTap: () {
+                                                  // replyIndex = i;
+                                                  // _settingModalBottomSheet(
+                                                  //   context,
+                                                  //   widget.list,
+                                                  //   widget.index,
+                                                  //   2,
+                                                  //   i,
+                                                  //   widget.list[widget
+                                                  //               .index]
+                                                  //           ["posts"]
+                                                  //       [i]["id"],
+                                                  //   roomRefresh,
+                                                  // );
+                                                },
+                                              ),
+                                              Container(width: 5),
+                                              GestureDetector(
+                                                onTap: () {
+                                                  // replyIndex = i;
+                                                  // _settingModalBottomSheet(
+                                                  //   context,
+                                                  //   widget.list,
+                                                  //   widget.index,
+                                                  //   2,
+                                                  //   i,
+                                                  //   widget.list[widget
+                                                  //               .index]
+                                                  //           ["posts"]
+                                                  //       [i]["id"],
+                                                  //   roomRefresh,
+                                                  // );
+                                                },
+                                                child: Text("Balas",
+                                                    style: TextStyle(
+                                                        fontFamily: "Brandon")),
+                                              ),
+                                              Container(width: 10),
+                                              Text("|",
+                                                  style: TextStyle(
+                                                      fontFamily: "Brandon")),
+                                              Container(width: 10),
+                                              Text(
+                                                  snapshot
+                                                          .data["post"][i][i]
+                                                              ['reply']
+                                                          .length
+                                                          .toString() +
+                                                      " Balasan",
+                                                  style: TextStyle(
+                                                      fontFamily: "Brandon")),
+                                            ],
+                                          ),
+                                          GestureDetector(
+                                            onTap: () {
+                                              Share.share(
+                                                  'https://ponnybeaute.co.id/' +
+                                                      snapshot.data["post"][i]
+                                                              [i]['slug']
+                                                          .toString());
+                                            },
+                                            child: Image.asset(
+                                                "assets/images/shareIcon.PNG"),
+                                          ),
+                                        ],
+                                      ),
+                                    )
                                   ],
                                 ),
                               ),
-                              
                             );
                           }),
                     )
@@ -1136,9 +1105,11 @@ class _DetailForumState extends State<DetailForum> {
       bool result = false;
       UIBlock.block(context, customLoaderChild: LoadingWidget(context));
       // var paramPost = {};
-      var token =
-          Provider.of<AppModel>(context, listen: false).auth.access_token;
-      Map<String, String> headers = {"Authorization": "Bearer $token"};
+      String accessToken =
+          Provider.of<AppModel>(context).auth.access_token == null
+              ? "abc"
+              : Provider.of<AppModel>(context).auth.access_token;
+      Map<String, String> headers = {"Authorization": "Bearer $accessToken"};
       var request = http.MultipartRequest("POST", Uri.parse(newPost));
 
       var multipartFile =
@@ -1193,7 +1164,7 @@ class _DetailForumState extends State<DetailForum> {
             builder: (BuildContext context, StateSetter setState) {
               return Container(
                   padding: EdgeInsets.all(10),
-                  height: MediaQuery.of(context).size.height*0.90,
+                  height: MediaQuery.of(context).size.height * 0.90,
                   child: SingleChildScrollView(
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
@@ -1257,11 +1228,11 @@ class _DetailForumState extends State<DetailForum> {
                                 InkWell(
                                   onTap: () {},
                                   child: Container(
-                                    
                                     child: _image != null
                                         ? Container(
-                                          height: 80,width:40,
-                                          child:Image.file(_image))
+                                            height: 80,
+                                            width: 40,
+                                            child: Image.file(_image))
                                         : _iconUpload(),
                                   ),
                                 ),
@@ -1313,11 +1284,11 @@ class _DetailForumState extends State<DetailForum> {
                               ),
                             ),
                             Container(width: 10),
-                             _image != null?
-                            InkWell(
-                                onTap: () async {
-                                  final result = await kirimPost(context);
-                                  /*setState() {
+                            _image != null
+                                ? InkWell(
+                                    onTap: () async {
+                                      final result = await kirimPost(context);
+                                      /*setState() {
                                     
                                     if (result) {
                                       print("success");
@@ -1327,23 +1298,24 @@ class _DetailForumState extends State<DetailForum> {
 
                                     
                                   });*/
-                                  Navigator.pop(context);
-                                },
-                                child: Container(
-                                  margin: EdgeInsets.all(10),
-                                  alignment: Alignment.center,
-                                  padding: EdgeInsets.all(10),
-                                  decoration: BoxDecoration(
-                                    color: Color(0xffF48262),
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  child: Text(
-                                    "POST",
-                                    style: TextStyle(
-                                        fontFamily: "Brandon",
-                                        color: Colors.white),
-                                  ),
-                                )):Container(),
+                                      Navigator.pop(context);
+                                    },
+                                    child: Container(
+                                      margin: EdgeInsets.all(10),
+                                      alignment: Alignment.center,
+                                      padding: EdgeInsets.all(10),
+                                      decoration: BoxDecoration(
+                                        color: Color(0xffF48262),
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      child: Text(
+                                        "POST",
+                                        style: TextStyle(
+                                            fontFamily: "Brandon",
+                                            color: Colors.white),
+                                      ),
+                                    ))
+                                : Container(),
                           ],
                         )
                       ],

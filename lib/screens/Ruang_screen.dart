@@ -186,14 +186,37 @@ class _RoomScreenState extends State<RoomScreen> {
     prefs.setBool('GabungValue', widget.gabung[index]);
   }
 
+  String katakunci;
+  TextEditingController searchController= new TextEditingController();
   Future<List> roomData() async {
+    String accessToken =
+        Provider.of<AppModel>(context).auth.access_token == null
+            ? "abc"
+            : Provider.of<AppModel>(context).auth.access_token;
+            print(accessToken);
     if (categoryTrend != 0) {
-      final response = await http.get(roomUrl + "/" + categoryTrend.toString());
+      final response = await http.get(roomUrl + "/" + "$categoryTrend",headers: {
+          HttpHeaders.contentTypeHeader: 'application/json',
+          HttpHeaders.authorizationHeader: "Bearer $accessToken"
+        },);
       Map<String, dynamic> map = json.decode(response.body);
       List<dynamic> data = map["room"];
       return data;
-    } else {
-      final response = await http.get(roomUrl);
+    }
+    else if (katakunci != null) {
+      final response = await http.get(roomUrl + "?keyword=" + searchController.text.toString(),headers: {
+          HttpHeaders.contentTypeHeader: 'application/json',
+          HttpHeaders.authorizationHeader: "Bearer $accessToken"
+        },);
+      Map<String, dynamic> map = json.decode(response.body);
+      List<dynamic> data = map["room"];
+      return data;
+    }
+     else {
+      final response = await http.get(roomUrl,headers: {
+          HttpHeaders.contentTypeHeader: 'application/json',
+          HttpHeaders.authorizationHeader: "Bearer $accessToken"
+        },);
       Map<String, dynamic> map = json.decode(response.body);
       List<dynamic> data = map["room"];
       return data;
@@ -204,7 +227,7 @@ class _RoomScreenState extends State<RoomScreen> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setInt('intValue', index);
   }
-
+  
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -216,15 +239,11 @@ class _RoomScreenState extends State<RoomScreen> {
         },
         child: detil
             ? DetailForum(
-                gabung: widget.gabung[index],
-                list: widget.listroom,
-                index: index,
-                indexFilter: indexFilter,
-                listFilter: listFilter,
-                filters: filtered)
+                id: 1,
+                )
             : DefaultTabController(
                 length: 2,
-                child: new FutureBuilder<List>(
+                child: new FutureBuilder(
                     future: roomData(),
                     builder: (context, snapshot) {
                       if (snapshot.hasError) print(snapshot.error);
@@ -312,11 +331,19 @@ class _RoomScreenState extends State<RoomScreen> {
                                                   child: Row(children: [
                                                     Expanded(
                                                         child: TextField(
+                                                          controller: searchController,
+                                                          onChanged: (value){
+                                                           setState(() {
+                                                             katakunci=value;
+                                                           });
+                                                            print(value);
+                                                          },
+                                                          
                                                       cursorColor: Colors.black,
                                                       keyboardType:
                                                           TextInputType.text,
                                                       textInputAction:
-                                                          TextInputAction.go,
+                                                          TextInputAction.search,
                                                       decoration: new InputDecoration
                                                               .collapsed(
                                                           hintText:
