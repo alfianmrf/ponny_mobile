@@ -82,11 +82,7 @@ class _RoomScreenState extends State<RoomScreen> {
       "room_id": idRuang.toString(),
     };
 
-    String accessToken =
-        Provider.of<AppModel>(context).auth.access_token == null
-            ? "abc"
-            : Provider.of<AppModel>(context).auth.access_token;
-
+    
     final value = await Provider.of<PostandComment>(context)
         .postRoomModel(accessToken, paramComment);
     if (value) {
@@ -106,9 +102,9 @@ class _RoomScreenState extends State<RoomScreen> {
     };
 
     String accessToken =
-        Provider.of<AppModel>(context).auth.access_token == null
+        Provider.of<AppModel>(context, listen: false).auth.access_token == null
             ? "abc"
-            : Provider.of<AppModel>(context).auth.access_token;
+            : Provider.of<AppModel>(context, listen: false).auth.access_token;
 
     final value = await Provider.of<PostandComment>(context)
         .leaveRoomModel(accessToken, paramComment);
@@ -148,13 +144,12 @@ class _RoomScreenState extends State<RoomScreen> {
     List<dynamic> data = map["room"];
     return data;
   }*/
-
+ 
   Future<List> myRoomData(BuildContext context) async {
-    String accessToken =
-        Provider.of<AppModel>(context).auth.access_token == null
-            ? "abc"
-            : Provider.of<AppModel>(context).auth.access_token;
+  
+            print(accessToken);
     if (categoryTrend != 0) {
+      print(accessToken);
       print("1");
       final res = await http.get(
         myRoomUrl + "/" + categoryTrend.toString(),
@@ -167,6 +162,7 @@ class _RoomScreenState extends State<RoomScreen> {
       List<dynamic> data = map["room"];
       return data;
     } else {
+       print(accessToken);
       print("0");
       final res = await http.get(
         myRoomUrl,
@@ -189,10 +185,7 @@ class _RoomScreenState extends State<RoomScreen> {
   String katakunci;
   TextEditingController searchController= new TextEditingController();
   Future<List> roomData() async {
-    String accessToken =
-        Provider.of<AppModel>(context).auth.access_token == null
-            ? "abc"
-            : Provider.of<AppModel>(context).auth.access_token;
+   
             print(accessToken);
     if (categoryTrend != 0) {
       final response = await http.get(roomUrl + "/" + "$categoryTrend",headers: {
@@ -227,9 +220,11 @@ class _RoomScreenState extends State<RoomScreen> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setInt('intValue', index);
   }
-  
+  String accessToken;
   @override
   Widget build(BuildContext context) {
+   accessToken = Provider.of<AppModel>(context,listen:false).auth.access_token;
+
     return WillPopScope(
         onWillPop: () {
           setState(() {
@@ -239,7 +234,7 @@ class _RoomScreenState extends State<RoomScreen> {
         },
         child: detil
             ? DetailForum(
-                id: 1,
+                id:index,
                 )
             : DefaultTabController(
                 length: 2,
@@ -466,8 +461,7 @@ class _RoomScreenState extends State<RoomScreen> {
                                                       setState(() {
                                                         detil = true;
 
-                                                        index = i;
-                                                      });
+                                                        index = widget.listroom[i]["id"];                                                      });
                                                     },
                                                     child: Container(
                                                       margin:
@@ -1295,7 +1289,16 @@ class RoomData extends StatefulWidget {
 
 class _RoomDataState extends State<RoomData> {
   Future<List> roomData() async {
-    final response = await http.get(roomUrl);
+    String accessToken =
+        Provider.of<AppModel>(context, listen: false).auth.access_token == null
+            ? "abc"
+            : Provider.of<AppModel>(context, listen: false).auth.access_token;
+
+    final response = await http.get(roomUrl,headers: {
+          HttpHeaders.contentTypeHeader: 'application/json',
+          HttpHeaders.authorizationHeader: "Bearer $accessToken"
+        },
+      );
 
     Map<String, dynamic> map = json.decode(response.body);
     List<dynamic> data = map["room"];

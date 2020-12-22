@@ -48,8 +48,8 @@ class _DetailKomenScreenState extends State<DetailKomenScreen> {
   List data;
   Future<List> roomData() async {
     var token = Provider.of<AppModel>(context).auth.access_token;
-    final response = await http.get(detailforum+"${widget.id}",headers: {
-       'Content-Type': 'application/json',
+    final response = await http.get(detailforum + "${widget.id}", headers: {
+      'Content-Type': 'application/json',
       'Authorization': 'Bearer $token',
     });
     if (response.statusCode == 200) {
@@ -66,19 +66,19 @@ class _DetailKomenScreenState extends State<DetailKomenScreen> {
       throw Exception('Failed to load data');
     }
   }
-  Future<List> getReplyData(int id) async {
+
+ 
+  Future commentChild(int id) async {
     var token = Provider.of<AppModel>(context).auth.access_token;
-    final response = await http.get(getReplyComment+"/$id}",headers: {
-       'Content-Type': 'application/json',
+    final response = await http.get(detailcommentchild + "$id", headers: {
+      'Content-Type': 'application/json',
       'Authorization': 'Bearer $token',
     });
     if (response.statusCode == 200) {
       print('sukses');
 
-      var datas = json.decode(response.body);
-      setState(() {
-        data = datas;
-      });
+      var data = json.decode(response.body);
+     
 
       print(data);
       return data;
@@ -86,6 +86,8 @@ class _DetailKomenScreenState extends State<DetailKomenScreen> {
       throw Exception('Failed to load data');
     }
   }
+
+
   Future<bool> like(int idRuang) async {
     bool result = false;
     UIBlock.block(context, customLoaderChild: LoadingWidget(context));
@@ -95,7 +97,7 @@ class _DetailKomenScreenState extends State<DetailKomenScreen> {
             : Provider.of<AppModel>(context).auth.access_token;
 
     final value = await Provider.of<PostandComment>(context)
-        .likePost(accessToken,idRuang.toString());
+        .likePost(accessToken, idRuang.toString());
     if (value) {
       UIBlock.unblock(context);
       result = value;
@@ -103,6 +105,7 @@ class _DetailKomenScreenState extends State<DetailKomenScreen> {
 
     return result;
   }
+
   Future<bool> unlike(int idRuang) async {
     bool result = false;
     UIBlock.block(context, customLoaderChild: LoadingWidget(context));
@@ -112,7 +115,7 @@ class _DetailKomenScreenState extends State<DetailKomenScreen> {
             : Provider.of<AppModel>(context).auth.access_token;
 
     final value = await Provider.of<PostandComment>(context)
-        .unlikePost(accessToken,idRuang.toString());
+        .unlikePost(accessToken, idRuang.toString());
     if (value) {
       UIBlock.unblock(context);
       result = value;
@@ -120,6 +123,7 @@ class _DetailKomenScreenState extends State<DetailKomenScreen> {
 
     return result;
   }
+
   Future<bool> likecomment(int idRuang) async {
     bool result = false;
     UIBlock.block(context, customLoaderChild: LoadingWidget(context));
@@ -129,7 +133,7 @@ class _DetailKomenScreenState extends State<DetailKomenScreen> {
             : Provider.of<AppModel>(context).auth.access_token;
 
     final value = await Provider.of<PostandComment>(context)
-        .likeComment(accessToken,idRuang.toString());
+        .likeComment(accessToken, idRuang.toString());
     if (value) {
       UIBlock.unblock(context);
       result = value;
@@ -137,6 +141,7 @@ class _DetailKomenScreenState extends State<DetailKomenScreen> {
 
     return result;
   }
+
   Future<bool> unlikecomment(int idRuang) async {
     bool result = false;
     UIBlock.block(context, customLoaderChild: LoadingWidget(context));
@@ -146,7 +151,7 @@ class _DetailKomenScreenState extends State<DetailKomenScreen> {
             : Provider.of<AppModel>(context).auth.access_token;
 
     final value = await Provider.of<PostandComment>(context)
-        .unlikeComment(accessToken,idRuang.toString());
+        .unlikeComment(accessToken, idRuang.toString());
     if (value) {
       UIBlock.unblock(context);
       result = value;
@@ -308,7 +313,9 @@ class _DetailKomenScreenState extends State<DetailKomenScreen> {
                                           "Posted " +
                                               DateFormat('dd MMMM yyyy').format(
                                                   convertDateFromString(data[0]
-                                                      ['forum']['created_at'].toString())),
+                                                              ['forum']
+                                                          ['created_at']
+                                                      .toString())),
                                           textAlign: TextAlign.center,
                                           style: TextStyle(
                                             fontSize: 10,
@@ -363,32 +370,38 @@ class _DetailKomenScreenState extends State<DetailKomenScreen> {
                                       children: [
                                         Row(
                                           children: [
-
-                                            data[0]['forum']['is_liked']==null?
-                                            GestureDetector(
-                                              onTap: () {
-                                                like(data[0]['forum']["id"]);
-                                              },
-                                              child: Icon(
-                                                Icons.favorite_border,
-                                                color: Color(0xffF48262),
-                                                size: 20,
-                                              ),
-                                            ):GestureDetector(
-                                              onTap: () {
-                                                unlike(data[0]['forum']["id"]);
-                                              },
-                                              child: Icon(
-                                                Icons.favorite,
-                                                color: Color(0xffF48262),
-                                                size: 20,
-                                              ),
-                                            ),
+                                            data[0]['forum']['is_liked'] == null
+                                                ? GestureDetector(
+                                                    onTap: () {
+                                                      like(data[0]['forum']
+                                                          ["id"]);
+                                                    },
+                                                    child: Icon(
+                                                      Icons.favorite_border,
+                                                      color: Color(0xffF48262),
+                                                      size: 20,
+                                                    ),
+                                                  )
+                                                : GestureDetector(
+                                                    onTap: () {
+                                                      unlike(data[0]['forum']
+                                                          ["id"]);
+                                                    },
+                                                    child: Icon(
+                                                      Icons.favorite,
+                                                      color: Color(0xffF48262),
+                                                      size: 20,
+                                                    ),
+                                                  ),
                                             Container(width: 5),
                                             Text(
                                                 data[0]['forum']['like']
-                                                    .length==0?"0": data[0]['forum']['like'].length
-                                                    .toString(),
+                                                            .length ==
+                                                        0
+                                                    ? "0"
+                                                    : data[0]['forum']['like']
+                                                        .length
+                                                        .toString(),
                                                 style: TextStyle(
                                                     fontFamily: "Brandon")),
                                             Container(width: 10),
@@ -399,13 +412,15 @@ class _DetailKomenScreenState extends State<DetailKomenScreen> {
                                               ),
                                               onTap: () {
                                                 _settingModalBottomSheet(
-                                                     data[0]['forum']['id']);
+                                                    data[0]['forum']['id']);
                                               },
                                             ),
                                             Container(width: 5),
                                             GestureDetector(
-                                              onTap: () {_settingModalBottomSheet(
-                                                   data[0]['forum']['id']);},
+                                              onTap: () {
+                                                _settingModalBottomSheet(
+                                                    data[0]['forum']['id']);
+                                              },
                                               child: Text("Balas",
                                                   style: TextStyle(
                                                       fontFamily: "Brandon")),
@@ -416,11 +431,14 @@ class _DetailKomenScreenState extends State<DetailKomenScreen> {
                                                     fontFamily: "Brandon")),
                                             Container(width: 10),
                                             Text(
-
-                                                data[0]['forum']['reply'].length==0?'0 Balasan':
-                                                         data[0]['forum']['reply'].length
-                                                        .toString() +
-                                                    " Balasan",
+                                                data[0]['forum']['reply']
+                                                            .length ==
+                                                        0
+                                                    ? '0 Balasan'
+                                                    : data[0]['forum']['reply']
+                                                            .length
+                                                            .toString() +
+                                                        " Balasan",
                                                 style: TextStyle(
                                                     fontFamily: "Brandon")),
                                           ],
@@ -429,306 +447,381 @@ class _DetailKomenScreenState extends State<DetailKomenScreen> {
                                             icon: Image.asset(
                                                 "assets/images/shareIcon.PNG"),
                                             onPressed: () {
-                                               Share.share('https://ponnybeaute.co.id/'+data[0]['forum']['slug']);
+                                              Share.share(
+                                                  'https://ponnybeaute.co.id/' +
+                                                      data[0]['forum']['slug']);
                                             }),
                                       ],
                                     ),
                                   ],
                                 ),
                               ),
-                             
                               ListView.builder(
                                 primary: false,
                                 shrinkWrap: true,
-                                itemCount: data[0]['forum']['reply'].length==0?0: data[0]['forum']['reply'].length,
+                                itemCount: data[0]['forum']['reply'].length == 0
+                                    ? 0
+                                    : data[0]['forum']['reply'].length,
                                 itemBuilder: (context, i) {
                                   hourss = DateTime.now()
                                       .difference(DateTime.parse(data[0]
                                           ['forum']['reply'][i]['created_at']))
                                       .inHours;
                                   return Container(
-                                    padding: EdgeInsets.only(bottom: 10),
-                                    child: Column(
-                                      children: [
-                                        Container(
-                                          height: 7,
-                                          color: Colors.white,
-                                        ),
-                                        Container(
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 10),
-                                          child: Column(
-                                            children: [
-                                              Container(
-                                                height: 20,
-                                              ),
-                                              Row(
-                                                children: [
-                                                  ClipRRect(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              100),
-                                                      child: Image.network(
-                                                        data[0]['forum']['reply'][i]
-                                                                            ['user']
-                                                                        [
-                                                                        'avatar_original']
-                                                                    .toString() ==
-                                                                null
-                                                            ? 'https://www.tenforums.com/geek/gars/images/2/types/thumb_15951118880user.png'
-                                                            : img_url +
-                                                                data[0]['forum']
-                                                                            [
-                                                                            'reply'][i]['user']
-                                                                        [
-                                                                        'avatar_original']
-                                                                    .toString(),
-                                                        height: 35,
-                                                        width: 35,
-                                                        fit: BoxFit.cover,
-                                                      )),
-                                                  Container(
-                                                    width: 5,
-                                                  ),
-                                                  Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      Row(
-                                                        children: [
-                                                          Text(
-                                                            data[0]['forum'][
-                                                                        'reply']
-                                                                    [i]['user']
-                                                                ['name'],
-                                                            textAlign: TextAlign
-                                                                .center,
-                                                            style: TextStyle(
-                                                              fontSize: 14,
-                                                              fontFamily:
-                                                                  'Brandon',
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w800,
-                                                            ),
-                                                          ),
-                                                          Container(
-                                                            width: 5,
-                                                          ),
-                                                          Container(
-                                                            padding: EdgeInsets
-                                                                .symmetric(
-                                                                    horizontal:
-                                                                        3),
-                                                            decoration: BoxDecoration(
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            5),
-                                                                color: Color(
-                                                                    0xffF48262)),
-                                                            child: Text(
+                                      padding: EdgeInsets.only(bottom: 10),
+                                      child: Column(
+                                        children: [
+                                          Container(
+                                            height: 7,
+                                            color: Colors.white,
+                                          ),
+                                          Container(
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 10),
+                                            child: Column(
+                                              children: [
+                                                Container(
+                                                  height: 20,
+                                                ),
+                                                Row(
+                                                  children: [
+                                                    ClipRRect(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(100),
+                                                        child: Image.network(
+                                                          data[0]['forum']['reply'][i]
+                                                                              ['user']
+                                                                          [
+                                                                          'avatar_original']
+                                                                      .toString() ==
+                                                                  null
+                                                              ? 'https://www.tenforums.com/geek/gars/images/2/types/thumb_15951118880user.png'
+                                                              : img_url +
+                                                                  data[0]['forum']
+                                                                              [
+                                                                              'reply'][i]['user']
+                                                                          [
+                                                                          'avatar_original']
+                                                                      .toString(),
+                                                          height: 35,
+                                                          width: 35,
+                                                          fit: BoxFit.cover,
+                                                        )),
+                                                    Container(
+                                                      width: 5,
+                                                    ),
+                                                    Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Row(
+                                                          children: [
+                                                            Text(
                                                               data[0]['forum'][
-                                                                        'reply']
-                                                                    [i]['user']
-                                                                ['user_tier']['title'],
+                                                                          'reply']
+                                                                      [
+                                                                      i]['user']
+                                                                  ['name'],
                                                               textAlign:
                                                                   TextAlign
                                                                       .center,
                                                               style: TextStyle(
-                                                                color: Colors
-                                                                    .white,
+                                                                fontSize: 14,
+                                                                fontFamily:
+                                                                    'Brandon',
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w800,
+                                                              ),
+                                                            ),
+                                                            Container(
+                                                              width: 5,
+                                                            ),
+                                                            Container(
+                                                              padding: EdgeInsets
+                                                                  .symmetric(
+                                                                      horizontal:
+                                                                          3),
+                                                              decoration: BoxDecoration(
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              5),
+                                                                  color: Color(
+                                                                      0xffF48262)),
+                                                              child: Text(
+                                                                data[0]['forum']
+                                                                            [
+                                                                            'reply']
+                                                                        [
+                                                                        i]['user']
+                                                                    [
+                                                                    'user_tier']['title'],
+                                                                textAlign:
+                                                                    TextAlign
+                                                                        .center,
+                                                                style:
+                                                                    TextStyle(
+                                                                  color: Colors
+                                                                      .white,
+                                                                  fontSize: 10,
+                                                                  fontFamily:
+                                                                      'Brandon',
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                        Row(
+                                                          children: [
+                                                            Text(
+                                                              "Posted " +
+                                                                  DateFormat(
+                                                                          'dd MMMM yyyy')
+                                                                      .format(
+                                                                          convertDateFromString(
+                                                                    data[0]['forum']
+                                                                            [
+                                                                            'reply'][i]
+                                                                        [
+                                                                        'created_at'],
+                                                                  )),
+                                                              textAlign:
+                                                                  TextAlign
+                                                                      .center,
+                                                              style: TextStyle(
                                                                 fontSize: 10,
                                                                 fontFamily:
                                                                     'Brandon',
+                                                                color:
+                                                                    Colors.grey,
                                                               ),
                                                             ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                      Row(
-                                                        children: [
-                                                          Text(
-                                                            "Posted " +
-                                                                DateFormat(
-                                                                        'dd MMMM yyyy')
-                                                                    .format(
-                                                                        convertDateFromString(
-                                                                  data[0]['forum']
-                                                                          [
-                                                                          'reply'][i]
-                                                                      [
-                                                                      'created_at'],
-                                                                )),
-                                                            textAlign: TextAlign
-                                                                .center,
-                                                            style: TextStyle(
-                                                              fontSize: 10,
-                                                              fontFamily:
-                                                                  'Brandon',
-                                                              color:
-                                                                  Colors.grey,
+                                                            Container(width: 5),
+                                                            Text(
+                                                              "|",
+                                                              textAlign:
+                                                                  TextAlign
+                                                                      .center,
+                                                              style: TextStyle(
+                                                                fontSize: 10,
+                                                                fontFamily:
+                                                                    'Brandon',
+                                                                color:
+                                                                    Colors.grey,
+                                                                letterSpacing:
+                                                                    1,
+                                                              ),
                                                             ),
-                                                          ),
-                                                          Container(width: 5),
-                                                          Text(
-                                                            "|",
-                                                            textAlign: TextAlign
-                                                                .center,
-                                                            style: TextStyle(
-                                                              fontSize: 10,
-                                                              fontFamily:
-                                                                  'Brandon',
-                                                              color:
-                                                                  Colors.grey,
-                                                              letterSpacing: 1,
+                                                            Container(
+                                                                width: 10),
+                                                            Text(
+                                                              "Diupdate " +
+                                                                  hourss
+                                                                      .toString() +
+                                                                  " jam yang lalu",
+                                                              textAlign:
+                                                                  TextAlign
+                                                                      .center,
+                                                              style: TextStyle(
+                                                                fontSize: 10,
+                                                                fontFamily:
+                                                                    'Brandon',
+                                                                color:
+                                                                    Colors.grey,
+                                                              ),
                                                             ),
-                                                          ),
-                                                          Container(width: 10),
-                                                          Text(
-                                                            "Diupdate " +
-                                                                hourss
-                                                                    .toString() +
-                                                                " jam yang lalu",
-                                                            textAlign: TextAlign
-                                                                .center,
-                                                            style: TextStyle(
-                                                              fontSize: 10,
-                                                              fontFamily:
-                                                                  'Brandon',
-                                                              color:
-                                                                  Colors.grey,
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ],
-                                              ),
-                                              Container(
-                                                height: 5,
-                                              ),
-                                              Row(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    "Reply: ",
-                                                    style: TextStyle(
-                                                        fontFamily: "Brandon",
-                                                        fontWeight:
-                                                            FontWeight.bold),
-                                                  ),
-                                                  Expanded(
-                                                    child: ReadMoreText(
-                                                      data[0]['forum']['reply']
-                                                          [i]['text'],
-                                                      style: TextStyle(
-                                                          fontFamily:
-                                                              "Brandon"),
-                                                      trimLines: 2,
-                                                      colorClickableText:
-                                                          Colors.blue,
-                                                      trimMode: TrimMode.Line,
-                                                      trimCollapsedText:
-                                                          '...baca selengkapnya',
-                                                      trimExpandedText:
-                                                          ' show less',
+                                                          ],
+                                                        ),
+                                                      ],
                                                     ),
-                                                  ),
-                                                ],
-                                              ),
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: [
-                                                  Row(
-                                                    children: [
-
-                                                      data[0]['forum'][
-                                                                        'reply']
-                                                                    [i]['is_liked']==null?
-                                                                
-                                                      GestureDetector(
-                                                        onTap: () {
-                                                          likecomment(data[0]['forum'][
-                                                                        'reply']
-                                                                    [i]['id']);
-                                                        },
-                                                        child: Icon(
-                                                          Icons.favorite_border,
-                                                          color:
-                                                              Color(0xffF48262),
-                                                          size: 20,
-                                                        ),
-                                                      ):GestureDetector(
-                                                        onTap: () {
-                                                          unlikecomment(data[0]['forum'][
-                                                                        'reply']
-                                                                    [i]['id']);
-                                                        },
-                                                        child: Icon(
-                                                          Icons.favorite,
-                                                          color:
-                                                              Color(0xffF48262),
-                                                          size: 20,
-                                                        ),
+                                                  ],
+                                                ),
+                                                Container(
+                                                  height: 5,
+                                                ),
+                                                Row(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      "Reply: ",
+                                                      style: TextStyle(
+                                                          fontFamily: "Brandon",
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    ),
+                                                    Expanded(
+                                                      child: ReadMoreText(
+                                                        data[0]['forum']
+                                                                ['reply'][i]
+                                                            ['text'],
+                                                        style: TextStyle(
+                                                            fontFamily:
+                                                                "Brandon"),
+                                                        trimLines: 2,
+                                                        colorClickableText:
+                                                            Colors.blue,
+                                                        trimMode: TrimMode.Line,
+                                                        trimCollapsedText:
+                                                            '...baca selengkapnya',
+                                                        trimExpandedText:
+                                                            ' show less',
                                                       ),
-                                                      Container(width: 5),
-                                                      Text(data[0]['forum'][
-                                                                        'reply'][i]['like'].length==0?'0':data[0]['forum'][
-                                                                        'reply'][i]['like'].length.toString(),
-                                                          style: TextStyle(
-                                                              fontFamily:
-                                                                  "Brandon")),
-                                                      Container(width: 10),
-                                                      GestureDetector(
-                                                        child: Image.asset(
-                                                          'assets/images/forum/balas.png',
-                                                          height: 14,
-                                                        ),
-                                                        onTap: () {
-                                                          _settingModalBottomSheet1(
-                                                              data[0]['forum']['reply']
-                                                          [i]['id']);
-                                                        },
-                                                      ),
-                                                      Container(width: 5),
-                                                      GestureDetector(
-                                                        onTap: () {
-                                                          _settingModalBottomSheet1(
-                                                           data[0]['forum']['reply']
-                                                          [i]['id']);
-                                                      },
-                                                        child: Text("Balas",
+                                                    ),
+                                                  ],
+                                                ),
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    Row(
+                                                      children: [
+                                                        data[0]['forum']['reply']
+                                                                        [i][
+                                                                    'is_liked'] ==
+                                                                null
+                                                            ? GestureDetector(
+                                                                onTap: () {
+                                                                  likecomment(data[0]
+                                                                              [
+                                                                              'forum']
+                                                                          [
+                                                                          'reply']
+                                                                      [
+                                                                      i]['id']);
+                                                                },
+                                                                child: Icon(
+                                                                  Icons
+                                                                      .favorite_border,
+                                                                  color: Color(
+                                                                      0xffF48262),
+                                                                  size: 20,
+                                                                ),
+                                                              )
+                                                            : GestureDetector(
+                                                                onTap: () {
+                                                                  unlikecomment(data[0]
+                                                                              [
+                                                                              'forum']
+                                                                          [
+                                                                          'reply']
+                                                                      [
+                                                                      i]['id']);
+                                                                },
+                                                                child: Icon(
+                                                                  Icons
+                                                                      .favorite,
+                                                                  color: Color(
+                                                                      0xffF48262),
+                                                                  size: 20,
+                                                                ),
+                                                              ),
+                                                        Container(width: 5),
+                                                        Text(
+                                                            data[0]['forum']['reply'][i]
+                                                                            [
+                                                                            'like']
+                                                                        .length ==
+                                                                    0
+                                                                ? '0'
+                                                                : data[0]['forum']
+                                                                            [
+                                                                            'reply'][i]
+                                                                        ['like']
+                                                                    .length
+                                                                    .toString(),
                                                             style: TextStyle(
                                                                 fontFamily:
                                                                     "Brandon")),
-                                                      ),
-                                                      Container(width: 10),
-                                                      Text("|",
-                                                          style: TextStyle(
-                                                              fontFamily:
-                                                                  "Brandon")),
-                                                      Container(width: 10),
-                                                      Text(data[0]['forum'][
-                                                                        'reply'][i]['comment'].length==0?'0':data[0]['forum'][
-                                                                        'reply'][i]['comment'].length.toString()+" balasan",
-                                                          style: TextStyle(
-                                                              fontFamily:
-                                                                  "Brandon")),
-                                                    ],
-                                                  ),
-                                                ],
-                                              )
-                                            ],
+                                                        Container(width: 10),
+                                                        GestureDetector(
+                                                          child: Image.asset(
+                                                            'assets/images/forum/balas.png',
+                                                            height: 14,
+                                                          ),
+                                                          onTap: () {
+                                                            _settingModalBottomSheet1(
+                                                                data[0]['forum']
+                                                                        [
+                                                                        'reply']
+                                                                    [i]['id']);
+                                                          },
+                                                        ),
+                                                        Container(width: 5),
+                                                        GestureDetector(
+                                                          onTap: () {
+                                                            _settingModalBottomSheet1(
+                                                                data[0]['forum']
+                                                                        [
+                                                                        'reply']
+                                                                    [i]['id']);
+                                                          },
+                                                          child: Text("Balas",
+                                                              style: TextStyle(
+                                                                  fontFamily:
+                                                                      "Brandon")),
+                                                        ),
+                                                        Container(width: 10),
+                                                        Text("|",
+                                                            style: TextStyle(
+                                                                fontFamily:
+                                                                    "Brandon")),
+                                                        Container(width: 10),
+                                                         InkWell(
+                                    onTap: () {
+                                      showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return AlertDialog(
+                                              title: InkWell(
+                                                onTap: (){
+                                                  Navigator.of(context).pop();
+                                                },
+                                                child: Container(
+                                                  alignment: Alignment.topRight,
+                                                  child: Icon(Icons.close,color: Colors.grey,))),
+                                              content:
+                                                  setupAlertDialoadContainer(
+                                                data[0]['forum']['reply'][i]
+                                                    ['id'], data[0]['forum']
+                                                                ['reply'][i]
+                                                            ['text'],
+                                                      
+                                              ),
+                                            );
+                                          });
+                                    },
+                                    child:
+                                                        Text(
+                                                            data[0]['forum']['reply'][i]
+                                                                            [
+                                                                            'comment']
+                                                                        .length ==
+                                                                    0
+                                                                ? '0 Balasan'
+                                                                : data[0]['forum']['reply'][i]
+                                                                            [
+                                                                            'comment']
+                                                                        .length
+                                                                        .toString() +
+                                                                    " balasan",
+                                                            style: TextStyle(
+                                                                fontFamily:
+                                                                    "Brandon"))),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                )
+                                              ],
+                                            ),
                                           ),
-                                        ),
-                                      ],
-                                    ),
+                                        ],
+                                      ),
+                                    
                                   );
                                 },
                               )
@@ -745,9 +838,7 @@ class _DetailKomenScreenState extends State<DetailKomenScreen> {
         bottomNavigationBar: new PonnyBottomNavbar(selectedIndex: 3));
   }
 
-  void _settingModalBottomSheet(
-    int id
-  ) {
+  void _settingModalBottomSheet(int id) {
     TextEditingController text = new TextEditingController();
 
     Future<bool> kirimPostdanComment(BuildContext context) async {
@@ -835,20 +926,22 @@ class _DetailKomenScreenState extends State<DetailKomenScreen> {
                               Navigator.pop(context, true);
                             },
                             child: FittedBox(
-                              fit: BoxFit.fitWidth,
-                              child: Container(
-                                padding: EdgeInsets.all(3),
-                                decoration: BoxDecoration(color: Color(0xffF48262),borderRadius: BorderRadius.circular(5)),
-                                child:Text(
-                                "Kirim",
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontFamily: "Brandon",
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.white,
-                                ),
-                              ),)
-                            ),
+                                fit: BoxFit.fitWidth,
+                                child: Container(
+                                  padding: EdgeInsets.all(3),
+                                  decoration: BoxDecoration(
+                                      color: Color(0xffF48262),
+                                      borderRadius: BorderRadius.circular(5)),
+                                  child: Text(
+                                    "Kirim",
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontFamily: "Brandon",
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                )),
                           )
                         ],
                       ),
@@ -881,9 +974,8 @@ class _DetailKomenScreenState extends State<DetailKomenScreen> {
       setState(() {});
     });
   }
-  void _settingModalBottomSheet1(
-    int id
-  ) {
+
+  void _settingModalBottomSheet1(int id) {
     TextEditingController text = new TextEditingController();
 
     Future<bool> replyPostdanComment(BuildContext context) async {
@@ -894,8 +986,6 @@ class _DetailKomenScreenState extends State<DetailKomenScreen> {
       var paramComment = {
         "reply_id": id.toString(),
         "text": text.text,
-        
-       
       };
 
       /* type == 1
@@ -972,20 +1062,22 @@ class _DetailKomenScreenState extends State<DetailKomenScreen> {
                               Navigator.pop(context, true);
                             },
                             child: FittedBox(
-                              fit: BoxFit.fitWidth,
-                              child: Container(
-                                padding: EdgeInsets.all(3),
-                                decoration: BoxDecoration(color: Color(0xffF48262),borderRadius: BorderRadius.circular(5)),
-                                child:Text(
-                                "Kirim",
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontFamily: "Brandon",
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.white,
-                                ),
-                              ),)
-                            ),
+                                fit: BoxFit.fitWidth,
+                                child: Container(
+                                  padding: EdgeInsets.all(3),
+                                  decoration: BoxDecoration(
+                                      color: Color(0xffF48262),
+                                      borderRadius: BorderRadius.circular(5)),
+                                  child: Text(
+                                    "Kirim",
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontFamily: "Brandon",
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                )),
                           )
                         ],
                       ),
@@ -1019,8 +1111,210 @@ class _DetailKomenScreenState extends State<DetailKomenScreen> {
     });
   }
 
+  Widget setupAlertDialoadContainer(int id,String title) {
+    print(id);
+    return Container(
+     color: Hexcolor('#FCF8F0'),
+      height:
+          MediaQuery.of(context).size.height, // Change as per your requirement
+      width:
+          MediaQuery.of(context).size.width, // Change as per your requirement
+      child: Column(
+        children: [
+          Text("Balasan untuk komentar : $title",style: TextStyle(fontSize: 14,fontFamily: "Brandon")),
+          Expanded(
+                      child: FutureBuilder(
+                future: commentChild(id),
+                builder: (context, snapshot) {
+                  if (snapshot.hasError) print(snapshot.hasError);
+                  if (snapshot.hasData)
+                  if(snapshot.data!=null)
+                  
+                    return ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: snapshot.data["comment"].length,
+                      itemBuilder: (BuildContext context, int index) {
+                        print(snapshot.data.length);
+                        return Container(
+                                     
+                                      child: Column(
+                                        children: [
+                                          Container(
+                                            height: 7,
+                                            color: Colors.white,
+                                          ),
+                                          Container(
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 10),
+                                            child: Column(
+                                              children: [
+                                                Container(
+                                                  height: 20,
+                                                ),
+                                                Row(
+                                                  children: [
+                                                    ClipRRect(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(100),
+                                                        child: Image.network(
+                                                          // data[0]['forum']['reply'][i]
+                                                          //                     ['user']
+                                                          //                 [
+                                                          //                 'avatar_original']
+                                                          //             .toString() ==
+                                                          //         null
+                                                          //     ? 'https://www.tenforums.com/geek/gars/images/2/types/thumb_15951118880user.png'
+                                                          //     : img_url +
+                                                          //         data[0]['forum']
+                                                          //                     [
+                                                          //                     'reply'][i]['user']
+                                                          //                 [
+                                                          //                 'avatar_original']
+                                                          //             .toString(),
+                                                          'https://www.tenforums.com/geek/gars/images/2/types/thumb_15951118880user.png',
+                                                          
+                                                          height: 25,
+                                                          width: 25,
+                                                          fit: BoxFit.cover,
+                                                        )),
+                                                    Container(
+                                                      width: 5,
+                                                    ),
+                                                    Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Row(
+                                                          children: [
+                                                            Text(
+                                                              "Username",
+                                                              textAlign:
+                                                                  TextAlign
+                                                                      .center,
+                                                              style: TextStyle(
+                                                                fontSize: 12,
+                                                                fontFamily:
+                                                                    'Brandon',
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w800,
+                                                              ),
+                                                            ),
+                                                            Container(
+                                                              width: 5,
+                                                            ),
+                                                            Container(
+                                                              padding: EdgeInsets
+                                                                  .symmetric(
+                                                                      horizontal:
+                                                                          3),
+                                                              decoration: BoxDecoration(
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              5),
+                                                                  color: Color(
+                                                                      0xffF48262)),
+                                                              child: Text(
+                                                               "Title",
+                                                                textAlign:
+                                                                    TextAlign
+                                                                        .center,
+                                                                style:
+                                                                    TextStyle(
+                                                                  color: Colors
+                                                                      .white,
+                                                                  fontSize: 10,
+                                                                  fontFamily:
+                                                                      'Brandon',
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                        Row(
+                                                          children: [
+                                                            Text(
+                                                              "Posted " +
+                                                                  DateFormat(
+                                                                          'dd MMMM yyyy')
+                                                                      .format(
+                                                                          convertDateFromString(
+                                                                  "2020-20-20 16:15:00"
+                                                                  )),
+                                                              textAlign:
+                                                                  TextAlign
+                                                                      .center,
+                                                              style: TextStyle(
+                                                                fontSize: 10,
+                                                                fontFamily:
+                                                                    'Brandon',
+                                                                color:
+                                                                    Colors.grey,
+                                                              ),
+                                                            ),
+                                                            Container(width: 5),
+                                                            
+                                                          ],
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+                                                Container(
+                                                  height: 5,
+                                                ),
+                                                Row(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      "Reply: ",
+                                                      style: TextStyle(
+                                                          fontFamily: "Brandon",
+                                                          fontWeight:
+                                                              FontWeight.bold,fontSize:10),
+                                                    ),
+                                                    Expanded(
+                                                      child: ReadMoreText(
+                                                       "Testing",
+                                                        style: TextStyle(
+                                                            fontFamily:
+                                                                "Brandon",fontSize: 11),
+                                                        trimLines: 2,
+                                                        colorClickableText:
+                                                            Colors.blue,
+                                                        trimMode: TrimMode.Line,
+                                                        trimCollapsedText:
+                                                            '...baca selengkapnya',
+                                                        trimExpandedText:
+                                                            ' show less',
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                                   ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    
+                                  );
+                                
+                          
+                  
+                      },
+                    );
+                  else
+                  return Text("belum ada Komentar");
+                  
+                  return LoadingWidget(context);
+                }),
+          ),
+        ],
+      ),
+    );
+  }
 }
-
-
-
-
