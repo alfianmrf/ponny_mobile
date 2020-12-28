@@ -225,8 +225,7 @@ class _SkincareState extends State<Skincare> {
                           cursorColor: Colors.black,
                           keyboardType: TextInputType.text,
                           textInputAction: TextInputAction.go,
-                          onChanged: (String text) async {
-
+                          onSubmitted: (String text) async {
                             setState(() {
                               _q = text;
                             });

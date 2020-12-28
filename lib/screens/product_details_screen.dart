@@ -53,6 +53,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   final targetColor = Color(0xfffdf8f0);
   var _color = Colors.transparent;
   double _elevation = 0;
+  List<String> gambars = new List<String>();
+  SwiperController controller = new SwiperController();
+  SwiperControl swcontrol = new SwiperControl();
 
 
   @override
@@ -61,6 +64,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     _controller = ScrollController();
     _controller.addListener(_scrollListener);
     WidgetsBinding.instance.addPostFrameCallback((_) async {
+      setState(() {
+        gambars.addAll(widget.product.photos);
+      });
       _getData();
       _scrollController.addListener(() {
         if (_scrollController.position.pixels ==
@@ -126,7 +132,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
       if(value != null){
         setState(() {
           varian =value;
-          print(varian.stock_quantity);
+          if(varian.gambar != null)
+            controller.move(gambars.indexOf(varian.gambar),animation: true);
         });
       }
 
@@ -576,22 +583,24 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   children: <Widget>[
                     Container(
                       height: MediaQuery.of(context).size.width * 1.2,
-                      child: widget.product.photos.length >0 ? new Swiper(
+                      child: gambars.length >0 ? new Swiper(
                         itemBuilder: (BuildContext context, int index) {
                           return new CachedNetworkImage(
-                            imageUrl:  img_url+widget.product.photos[index] != null ?  img_url+widget.product.photos[index] :"",
+                            imageUrl:  gambars[index] != null ?  img_url+gambars[index] :"",
                             placeholder: (context, url) => LoadingWidgetPulse(context),
                             errorWidget: (context, url, error) => Image.asset('assets/images/210x265.png'),
                             width: MediaQuery.of(context).size.width,
                             fit: BoxFit.cover,
+                            useOldImageOnUrlChange: true,
+
                           );
                         },
-                        itemCount: widget.product.photos.length,
+                        itemCount: gambars.length,
                         pagination: new SwiperPagination(
                             margin: new EdgeInsets.all(5.0),
                             builder: new DotSwiperPaginationBuilder(
                                 color: Color(0xffE6E7E9), activeColor: Color(0xffF48262))),
-                        control: null,
+                        controller: controller,
                         autoplay: false,
                       ): Image.asset('assets/images/210x265.png',fit:BoxFit.cover ,),
                     ),

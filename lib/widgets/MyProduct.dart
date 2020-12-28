@@ -65,6 +65,7 @@ class MyProduct extends StatelessWidget {
                       placeholder: (context, url) => LoadingWidgetPulse(context),
                       errorWidget: (context, url, error) => Image.asset('assets/images/210x265.png'),
                       width: MediaQuery.of(context).size.width,
+                      useOldImageOnUrlChange:true,
                       fit: BoxFit.cover,
                     ),
                   ),

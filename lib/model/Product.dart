@@ -346,8 +346,9 @@ class VarianResult {
   int price;
   int stock_quantity;
   int base_price;
+  String gambar;
 
-  VarianResult({this.productId, this.varian, this.price, this.stock_quantity,this.base_price});
+  VarianResult({this.productId, this.varian, this.price, this.stock_quantity,this.base_price,this.gambar});
 
   VarianResult.fromJson(Map<String, dynamic> json) {
     productId = json['product_id'];
@@ -355,6 +356,7 @@ class VarianResult {
     price = json['price'];
     stock_quantity = json['stock_quantity'] != null ? json['stock_quantity'] : 0;
     base_price = json["base_price"];
+    gambar = json["gambar"];
   }
 
   Map<String, dynamic> toJson() {

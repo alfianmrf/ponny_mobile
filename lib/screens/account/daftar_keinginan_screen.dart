@@ -5,6 +5,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:lodash_dart/lodash_dart.dart';
 import 'package:ponny/common/constant.dart';
@@ -485,18 +486,24 @@ Widget _buildList() {
                       ),
                     ),
                   ),
-                  Container(
-                    child: Text(
-                      "view more",
-                      style: TextStyle(
-                        fontFamily: "Brandon",
-                        fontSize: 16,
-                        fontWeight: FontWeight.w200,
-                        color: Colors.blueGrey,
-                        decoration: TextDecoration.underline,
+                  /*
+                  InkWell(
+                    onTap: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => DaftarKeinginanSuksesScreen()));
+                    },
+                    child: Container(
+                      child: Text(
+                        "view more",
+                        style: TextStyle(
+                          fontFamily: "Brandon",
+                          fontSize: 16,
+                          fontWeight: FontWeight.w200,
+                          color: Colors.blueGrey,
+                          decoration: TextDecoration.underline,
+                        ),
                       ),
                     ),
-                  ),
+                  ),*/
                 ],
               ),
             ),
@@ -511,54 +518,295 @@ Widget _buildList() {
                       child: LoadingWidgetFadingCircle(context),
                       );
                       } else {
-                        var listnews = Lodash().chunk(array: value.news, size: 3)[0];
-                        return Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            for( Product item_product in listnews)
-                              Expanded(
-                                child: Container(
-                                  padding: EdgeInsets.symmetric(horizontal: 5),
-                                  child: MyProduct(
-                                    product: item_product,
-                                    IsLiked: Provider.of<WishModel>(context).rawlist.firstWhere((element) => element.productId == item_product.id, orElse: () => null) != null ? true:false,
-                                    onFavorit: (){
-                                      if(Provider.of<AppModel>(context).loggedIn) {
-                                        Provider.of<WishModel>(context).addProductToWish(item_product, Provider.of<AppModel>(context).auth.access_token);
-                                      }else{
-                                        Navigator.push(context,new MaterialPageRoute(
-                                          builder: (BuildContext context) => new LoginScreen(),
-                                        ));
-                                      }
-                                    },
-                                    onUnFavorit: (){
-                                      if(Provider.of<AppModel>(context).loggedIn) {
-                                        Provider.of<WishModel>(context).removeProductFromWish(item_product, Provider.of<AppModel>(context).auth.access_token);
-                                      }else{
-                                        Navigator.push(context,new MaterialPageRoute(
-                                          builder: (BuildContext context) => new LoginScreen(),
-                                        ));
-                                      }
-                                    },
-                                    onTobag: (){
-                                      if(Provider.of<AppModel>(context).loggedIn){
-                                        UIBlock.block(context,customLoaderChild: LoadingWidget(context));
-                                        Provider.of<CartModel>(context).addProductToCart(item_product,Provider.of<AppModel>(context).auth.access_token,null).then((value){
-                                          UIBlock.unblock(context);
-                                          showAlertDialog(context,item_product);
-                                        });
-                                      }else{
-                                        Navigator.push(context,new MaterialPageRoute(
-                                          builder: (BuildContext context) => new LoginScreen(),
-                                        ));
-                                      }
-                                    },
-                                  ),
-                                ),
+                        var listnews = Lodash().chunk(array: value.news, size: 3);
+                        return new Swiper(
+                          itemCount: listnews.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            if(listnews[index].length == 3) {
+                              return Row(
+                                mainAxisAlignment: MainAxisAlignment
+                                    .spaceBetween,
+                                children: [
+                                  for( Product item_product in listnews[index])
+                                    Expanded(
+                                      child: Container(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 5),
+                                        child: MyProduct(
+                                          product: item_product,
+                                          IsLiked: Provider
+                                              .of<WishModel>(context)
+                                              .rawlist
+                                              .firstWhere((element) =>
+                                          element.productId == item_product.id,
+                                              orElse: () => null) != null
+                                              ? true
+                                              : false,
+                                          onFavorit: () {
+                                            if (Provider
+                                                .of<AppModel>(context)
+                                                .loggedIn) {
+                                              Provider.of<WishModel>(context)
+                                                  .addProductToWish(
+                                                  item_product, Provider
+                                                  .of<AppModel>(context)
+                                                  .auth
+                                                  .access_token);
+                                            } else {
+                                              Navigator.push(context,
+                                                  new MaterialPageRoute(
+                                                    builder: (
+                                                        BuildContext context) => new LoginScreen(),
+                                                  ));
+                                            }
+                                          },
+                                          onUnFavorit: () {
+                                            if (Provider
+                                                .of<AppModel>(context)
+                                                .loggedIn) {
+                                              Provider.of<WishModel>(context)
+                                                  .removeProductFromWish(
+                                                  item_product, Provider
+                                                  .of<AppModel>(context)
+                                                  .auth
+                                                  .access_token);
+                                            } else {
+                                              Navigator.push(context,
+                                                  new MaterialPageRoute(
+                                                    builder: (
+                                                        BuildContext context) => new LoginScreen(),
+                                                  ));
+                                            }
+                                          },
+                                          onTobag: () {
+                                            if (Provider
+                                                .of<AppModel>(context)
+                                                .loggedIn) {
+                                              UIBlock.block(context,
+                                                  customLoaderChild: LoadingWidget(
+                                                      context));
+                                              Provider.of<CartModel>(context)
+                                                  .addProductToCart(
+                                                  item_product, Provider
+                                                  .of<AppModel>(context)
+                                                  .auth
+                                                  .access_token, null)
+                                                  .then((value) {
+                                                UIBlock.unblock(context);
+                                                showAlertDialog(
+                                                    context, item_product);
+                                              });
+                                            } else {
+                                              Navigator.push(context,
+                                                  new MaterialPageRoute(
+                                                    builder: (
+                                                        BuildContext context) => new LoginScreen(),
+                                                  ));
+                                            }
+                                          },
+                                        ),
+                                      ),
 
-                              ),
-                          ],
+                                    ),
+                                ],
+                              );
+                            }else if(listnews[index].length == 2){
+                              return Row(
+                                mainAxisAlignment: MainAxisAlignment
+                                    .spaceBetween,
+                                children: [
+                                  for( Product item_product in listnews[index])
+                                    Expanded(
+                                      child: Container(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 5),
+                                        child: MyProduct(
+                                          product: item_product,
+                                          IsLiked: Provider
+                                              .of<WishModel>(context)
+                                              .rawlist
+                                              .firstWhere((element) =>
+                                          element.productId == item_product.id,
+                                              orElse: () => null) != null
+                                              ? true
+                                              : false,
+                                          onFavorit: () {
+                                            if (Provider
+                                                .of<AppModel>(context)
+                                                .loggedIn) {
+                                              Provider.of<WishModel>(context)
+                                                  .addProductToWish(
+                                                  item_product, Provider
+                                                  .of<AppModel>(context)
+                                                  .auth
+                                                  .access_token);
+                                            } else {
+                                              Navigator.push(context,
+                                                  new MaterialPageRoute(
+                                                    builder: (
+                                                        BuildContext context) => new LoginScreen(),
+                                                  ));
+                                            }
+                                          },
+                                          onUnFavorit: () {
+                                            if (Provider
+                                                .of<AppModel>(context)
+                                                .loggedIn) {
+                                              Provider.of<WishModel>(context)
+                                                  .removeProductFromWish(
+                                                  item_product, Provider
+                                                  .of<AppModel>(context)
+                                                  .auth
+                                                  .access_token);
+                                            } else {
+                                              Navigator.push(context,
+                                                  new MaterialPageRoute(
+                                                    builder: (
+                                                        BuildContext context) => new LoginScreen(),
+                                                  ));
+                                            }
+                                          },
+                                          onTobag: () {
+                                            if (Provider
+                                                .of<AppModel>(context)
+                                                .loggedIn) {
+                                              UIBlock.block(context,
+                                                  customLoaderChild: LoadingWidget(
+                                                      context));
+                                              Provider.of<CartModel>(context)
+                                                  .addProductToCart(
+                                                  item_product, Provider
+                                                  .of<AppModel>(context)
+                                                  .auth
+                                                  .access_token, null)
+                                                  .then((value) {
+                                                UIBlock.unblock(context);
+                                                showAlertDialog(
+                                                    context, item_product);
+                                              });
+                                            } else {
+                                              Navigator.push(context,
+                                                  new MaterialPageRoute(
+                                                    builder: (
+                                                        BuildContext context) => new LoginScreen(),
+                                                  ));
+                                            }
+                                          },
+                                        ),
+                                      ),
+
+                                    ),
+                                    Expanded(
+                                    child: Container(
+                                    ),
+
+                                  )
+                                ],
+                              );
+                            }else{
+                              return Row(
+                                mainAxisAlignment: MainAxisAlignment
+                                    .spaceBetween,
+                                children: [
+                                  for( Product item_product in listnews[index])
+                                    Expanded(
+                                      child: Container(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 5),
+                                        child: MyProduct(
+                                          product: item_product,
+                                          IsLiked: Provider
+                                              .of<WishModel>(context)
+                                              .rawlist
+                                              .firstWhere((element) =>
+                                          element.productId == item_product.id,
+                                              orElse: () => null) != null
+                                              ? true
+                                              : false,
+                                          onFavorit: () {
+                                            if (Provider
+                                                .of<AppModel>(context)
+                                                .loggedIn) {
+                                              Provider.of<WishModel>(context)
+                                                  .addProductToWish(
+                                                  item_product, Provider
+                                                  .of<AppModel>(context)
+                                                  .auth
+                                                  .access_token);
+                                            } else {
+                                              Navigator.push(context,
+                                                  new MaterialPageRoute(
+                                                    builder: (
+                                                        BuildContext context) => new LoginScreen(),
+                                                  ));
+                                            }
+                                          },
+                                          onUnFavorit: () {
+                                            if (Provider
+                                                .of<AppModel>(context)
+                                                .loggedIn) {
+                                              Provider.of<WishModel>(context)
+                                                  .removeProductFromWish(
+                                                  item_product, Provider
+                                                  .of<AppModel>(context)
+                                                  .auth
+                                                  .access_token);
+                                            } else {
+                                              Navigator.push(context,
+                                                  new MaterialPageRoute(
+                                                    builder: (
+                                                        BuildContext context) => new LoginScreen(),
+                                                  ));
+                                            }
+                                          },
+                                          onTobag: () {
+                                            if (Provider
+                                                .of<AppModel>(context)
+                                                .loggedIn) {
+                                              UIBlock.block(context,
+                                                  customLoaderChild: LoadingWidget(
+                                                      context));
+                                              Provider.of<CartModel>(context)
+                                                  .addProductToCart(
+                                                  item_product, Provider
+                                                  .of<AppModel>(context)
+                                                  .auth
+                                                  .access_token, null)
+                                                  .then((value) {
+                                                UIBlock.unblock(context);
+                                                showAlertDialog(
+                                                    context, item_product);
+                                              });
+                                            } else {
+                                              Navigator.push(context,
+                                                  new MaterialPageRoute(
+                                                    builder: (
+                                                        BuildContext context) => new LoginScreen(),
+                                                  ));
+                                            }
+                                          },
+                                        ),
+                                      ),
+
+                                    ),
+                                    Expanded(
+                                    child: Container(
+                                    )
+                                  ),
+                                  Expanded(
+                                    child: Container(
+                                    ),
+                                  )
+                                ],
+                              );
+                            }
+                          },
+                          control: null,
+                          autoplay: true,
                         );
+
+
+
                       }
                   }
               ),
