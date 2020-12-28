@@ -9,6 +9,7 @@ import 'package:localstorage/localstorage.dart';
 import 'package:ponny/model/Brand.dart';
 import 'package:ponny/model/Category.dart';
 import 'package:ponny/model/FaqHeader.dart';
+import 'package:ponny/model/GeneralSetting.dart';
 import 'package:ponny/model/ItemBlog.dart';
 import 'package:ponny/model/ItemSkinklopedia.dart';
 import 'package:ponny/model/Product.dart';
@@ -20,13 +21,31 @@ import 'package:http/http.dart' as http;
 class AppModel with ChangeNotifier{
   LoginAuth auth;
   WaContact waContact;
+  GeneralSetting setting;
   List<FaqHeader> listFaq =[];
   bool loggedIn =false;
   bool loadingFaq =true;
+  bool loadingSetting= true;
   AppModel(){
     getAuth();
     getFAQ();
     getWA();
+    generalSettings();
+  }
+
+  Future<void> generalSettings() async {
+    final response = await http.get(generalSetting);
+    if (response.statusCode == 200) {
+      //print('sukses');
+      final res = json.decode(response.body);
+      setting = GeneralSetting.fromJson(res['data'][0]);
+      loadingSetting = false;
+      notifyListeners();
+      //print(data);
+      // return data;
+    } else {
+      throw Exception('Failed to load data');
+    }
   }
 
   Future<void> getAuth() async {

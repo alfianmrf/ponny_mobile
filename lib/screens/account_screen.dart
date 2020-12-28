@@ -2011,7 +2011,7 @@ class _AccountScreenState extends State<AccountScreen> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) =>
-                                    SyaratKetentuanScreen()),
+                                    WebViewScreen(titile: "Syarat dan Ketentuan", url:"https://www.ponnybeaute.co.id/syarat-ketentuan" ,)),
                           );
                         },
                         child: Container(

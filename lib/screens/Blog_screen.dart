@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
@@ -13,12 +15,8 @@ import 'package:date_format/date_format.dart';
 class Blog extends StatefulWidget {
   final category;
   final tag;
-
   Blog({this.category, this.tag});
-
   static const String id = "Blog";
-
-
   @override
   _BlogState createState() => _BlogState();
 }
@@ -30,10 +28,19 @@ class _BlogState extends State<Blog> {
   int categoryId;
   int lostData = 0;
   var categoryFilter;
+  bool loadingAll= true;
+  List listAll;
+  List Trending;
 
- 
 
-  Future<List> filterData(int categoryId) async {
+
+
+
+  Future<void> filterData(int categoryId) async {
+    if(!loadingAll)
+      setState(() {
+        loadingAll=true;
+      });
     final response = await http.get(blogUrl +
         (() {
           if (categoryId == 0) {
@@ -42,7 +49,43 @@ class _BlogState extends State<Blog> {
             return "/category/" + categoryId.toString();
           }
         }()));
-    return json.decode(response.body);
+    setState(() {
+      listAll = json.decode(response.body);
+      loadingAll = false;
+    });
+  }
+
+  Future<void> search() async {
+    if(!loadingAll)
+      setState(() {
+        loadingAll=true;
+      });
+    var param =<String,dynamic>{};
+    if(q.isNotEmpty){
+      param.addAll({
+        "q":q
+      });
+    }
+    if(categoryId > 0){
+      param.addAll({
+        "category_id":categoryId
+      });
+    }
+    final res = await http.post(blogCari,headers: { HttpHeaders.contentTypeHeader: 'application/json' },body: json.encode(param));
+    if(res.statusCode == 200){
+      setState(() {
+        listAll = json.decode(res.body);
+        loadingAll = false;
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    categoryId=widget.category;
+    currentTag=widget.tag;
+    filterData(categoryId);
   }
 
   Future<List> getOtherArticles() async {
@@ -51,12 +94,6 @@ class _BlogState extends State<Blog> {
     Map<String, dynamic> map = json.decode(response.body);
     List<dynamic> data = map["other_articles"];
     return data;
-  }
-  @override
-  void initState() {
-    // TODO: implement initState
-    categoryId=widget.category;
-    currentTag=widget.tag;
   }
   @override
   Widget build(BuildContext context) {
@@ -100,8 +137,7 @@ class _BlogState extends State<Blog> {
                                     setState(() {
                                       q=_q;
                                     });
-
-
+                                    search();
                               },
                               textInputAction: TextInputAction.go,
                               decoration: new InputDecoration.collapsed(
@@ -156,6 +192,7 @@ class _BlogState extends State<Blog> {
                               currentTag = "ALL";
                               categoryId = 0;
                             });
+                            filterData(categoryId);
                           },
                           child: Container(
                             height: 50,
@@ -184,6 +221,7 @@ class _BlogState extends State<Blog> {
                               currentTag = "BASIC SKINCARE";
                               categoryId = 1;
                             });
+                            filterData(categoryId);
                           },
                           child: Container(
                             height: 50,
@@ -212,6 +250,7 @@ class _BlogState extends State<Blog> {
                               currentTag = "MASALAH KULIT";
                               categoryId = 2;
                             });
+                            filterData(categoryId);
                           },
                           child: Container(
                             height: 50,
@@ -240,6 +279,7 @@ class _BlogState extends State<Blog> {
                               currentTag = "SKINCARE ROUTINE";
                               categoryId = 3;
                             });
+                            filterData(categoryId);
                           },
                           child: Container(
                             height: 50,
@@ -268,6 +308,7 @@ class _BlogState extends State<Blog> {
                               currentTag = "MITOS ATAU FAKTA";
                               categoryId = 4;
                             });
+                            filterData(categoryId);
                           },
                           child: Container(
                             height: 50,
@@ -309,17 +350,11 @@ class _BlogState extends State<Blog> {
                       children: [
                         Container(
                           padding: EdgeInsets.symmetric(horizontal: 10),
-                            child: new FutureBuilder<List>(
-                                future: filterData(categoryId),
-                                builder: (context, snapshot) {
-                                  if (snapshot.hasError) print(snapshot.error);
-                                  return snapshot.hasData
-                                      ? categoryListBlog(
-                                          context, snapshot.data, categoryId)
-                                      : Center(
-                                          child:
-                                              new CircularProgressIndicator());
-                                })),
+                            child: loadingAll?Center(
+                                child:
+                                LoadingWidgetFadingCircle(context)) : categoryListBlog(
+                                context, listAll, categoryId)
+                        ),
                         Container(
                           margin: EdgeInsets.only(top: 30, bottom: 30),
                           height: 1,

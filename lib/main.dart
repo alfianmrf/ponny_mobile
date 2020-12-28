@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ponny/model/Address.dart';
 import 'package:ponny/model/Cart.dart';
+import 'package:ponny/model/Category.dart';
 import 'package:ponny/model/Product.dart';
 import 'package:ponny/model/Slider.dart';
 import 'package:ponny/model/User.dart';
@@ -115,6 +116,7 @@ Future<void> main() async {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => AppModel()),
+        ChangeNotifierProvider(create: (context) => CategoryModel()),
         ChangeNotifierProvider(create: (context) => SliderModel()),
         ChangeNotifierProvider(create: (context) => ProductModel()),
         ChangeNotifierProvider(create: (context) => CartModel()),
@@ -125,6 +127,7 @@ Future<void> main() async {
         ChangeNotifierProvider(create: (context) => VoucherModel()),
         ChangeNotifierProvider(create: (context) => ChatEmail()),
         ChangeNotifierProvider(create: (context) => PostandComment()),
+
        
       ],
       child: MyApp(),

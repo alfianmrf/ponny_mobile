@@ -1,20 +1,29 @@
+import 'dart:async';
+import 'dart:convert';
+import 'dart:io';
+
+import 'package:agora_rtm/agora_rtm.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_html/style.dart';
 import 'package:intl/intl.dart';
 import 'package:ponny/common/constant.dart';
 import 'package:ponny/model/App.dart';
+import 'package:ponny/model/Dokter.dart';
 import 'package:ponny/model/FaqHeader.dart';
 import 'package:ponny/model/Order.dart';
+import 'package:ponny/model/User.dart';
 import 'package:ponny/model/Voucher.dart';
 import 'package:ponny/screens/Qris_screen.dart';
 import 'package:ponny/screens/WaitingPage.dart';
 import 'package:ponny/screens/payment_voucher_screen.dart';
+import 'package:ponny/util/AppId.dart';
 import 'package:ponny/util/globalUrl.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:http/http.dart' as http;
 
 class KonsultasiScreen extends StatefulWidget {
   static const String id = "konsultasi_screen";
@@ -39,6 +48,9 @@ class _KonsultasiState extends State<KonsultasiScreen> {
   List<OrderDetailVoucher> listMyvoucher =[];
   String nextUrlRiwayat;
   String nextUrllistVouvher;
+  OrderDetailVoucher selectVoucher;
+  int jmlVoucherAktive=0;
+  int jmlBelumdibayar=0;
 
 
   @override
@@ -51,7 +63,7 @@ class _KonsultasiState extends State<KonsultasiScreen> {
           voucher = Provider.of<VoucherModel>(context).voucher;
         });
       });
-
+      _getVoucherAktive();
 
       _scrollController.addListener(() {
         if (_scrollController.position.pixels ==
@@ -75,6 +87,19 @@ class _KonsultasiState extends State<KonsultasiScreen> {
       await launch(url);
     } else {
       throw 'Could not launch $url';
+    }
+  }
+
+  _getVoucherAktive() async {
+    var token = Provider.of<AppModel>(context,listen: false).auth.access_token;
+    final res = await http.get(voucherAktive,headers: { HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: "Bearer $token"});
+    if(res.statusCode == 200){
+      setState(() {
+        print(res.body);
+        final result = json.decode(res.body);
+        jmlVoucherAktive = result['vouchers'];
+        jmlBelumdibayar = result['orders'];
+      });
     }
   }
 
@@ -308,12 +333,39 @@ class _KonsultasiState extends State<KonsultasiScreen> {
                         child: Container(
                           child: Column(
                             children: [
-                              Container(
-                                padding: EdgeInsets.only(top: 5),
-                                child: Image.asset(
-                                  "assets/images/Asset 1.png",
-                                  width: 50,
-                                ),
+                              Stack(
+                                children: [
+                                  Container(
+                                    padding: EdgeInsets.only(top: 5),
+                                    child: Image.asset(
+                                      "assets/images/Asset 1.png",
+                                      width: 50,
+                                    ),
+                                  ),
+                                  if(jmlBelumdibayar>0)
+                                    Positioned(  // draw a red marble
+                                      top: 0.0,
+                                      right: 0.0,
+                                      child: Container(
+                                        width: 18,
+                                        height: 18,
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(40),
+                                          color: Hexcolor('#de1738'),
+                                        ),
+                                        child: Center(
+                                          child: Text(
+                                            jmlBelumdibayar.toString(),
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontFamily: 'Brandon',
+                                              fontSize: 12,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    )
+                                ],
                               ),
                               Container(
                                 margin: EdgeInsets.only(top: 5),
@@ -353,6 +405,7 @@ class _KonsultasiState extends State<KonsultasiScreen> {
                                       width: 50,
                                     ),
                                   ),
+                                  if(jmlVoucherAktive>0)
                                   Positioned(  // draw a red marble
                                     top: 0.0,
                                     right: 0.0,
@@ -365,7 +418,7 @@ class _KonsultasiState extends State<KonsultasiScreen> {
                                       ),
                                       child: Center(
                                         child: Text(
-                                          '2',
+                                          jmlVoucherAktive.toString(),
                                           style: TextStyle(
                                             color: Colors.white,
                                             fontFamily: 'Brandon',
@@ -418,7 +471,7 @@ class _KonsultasiState extends State<KonsultasiScreen> {
                       }
                       else{
                         return SingleChildScrollView(
-                          child:  pakai_konsultasi(),
+                          child:  pakai_konsultasi(voucher: selectVoucher,),
                         );
                       }
                       break;
@@ -694,7 +747,7 @@ class _KonsultasiState extends State<KonsultasiScreen> {
                                             fontSize: 12,
                                           ),
                                         ),
-                                        if(e == listMyvoucher[0])
+                                        if(e.dokterId == null && DateTime.now().isBefore(convertDateFromString(e.expDate)))
                                           Container(
                                             margin: EdgeInsets.only(left: 10),
                                             padding: EdgeInsets.symmetric(horizontal: 3),
@@ -725,7 +778,7 @@ class _KonsultasiState extends State<KonsultasiScreen> {
                                               ),
                                             ),
                                           )
-                                        else if(e == listMyvoucher[1])
+                                        else if(!DateTime.now().isBefore(convertDateFromString(e.expDate)) && e.dokterId == null)
                                           Container(
                                             margin: EdgeInsets.only(left: 10),
                                             padding: EdgeInsets.symmetric(horizontal: 3),
@@ -755,7 +808,7 @@ class _KonsultasiState extends State<KonsultasiScreen> {
                                               ),
                                             ),
                                           )
-                                        else if(e == listMyvoucher[2])
+                                        else if(e.dokterId != null)
                                         Container(
                                           margin: EdgeInsets.only(left: 10),
                                           padding: EdgeInsets.symmetric(horizontal: 3),
@@ -825,35 +878,15 @@ class _KonsultasiState extends State<KonsultasiScreen> {
                                 ),
                               ),
                             ),
-                            //if(DateTime.now().isBefore(convertDateFromString(e.expDate)))
+                            if(DateTime.now().isBefore(convertDateFromString(e.expDate)) && e.dokterId == null)
                               Container(
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       InkWell(
                                         onTap: () {
-                                          // if( DateTime.now().isBefore(convertDateFromString(e.expDate))){
-                                          //   Navigator.push(
-                                          //     context,
-                                          //     MaterialPageRoute(
-                                          //       builder: (context) => WaitingPage(voucher: e,),
-                                          //     ),
-                                          //   ).then((value){
-                                          //     if(value != null && value){
-                                          //       getListVoucheSaya();
-                                          //       setState(() => _currentPage = 1);
-                                          //
-                                          //     }
-                                          //   });
-                                          // }else{
-                                          //   getListVoucheSaya();
-                                          //   final snackBarexpirate = SnackBar(
-                                          //     content: Text('Maaf voucher ini sudah tidak berlaku!',style: TextStyle(color: Colors.white)),
-                                          //     backgroundColor: Colors.redAccent,
-                                          //   );
-                                          //   scaffolKey.currentState.showSnackBar(snackBarexpirate);
-                                          // }
                                           setState(() {
+                                            selectVoucher = e;
                                             pakai = true;
                                           });
                                         },
@@ -1288,7 +1321,7 @@ class _KonsultasiState extends State<KonsultasiScreen> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                if(item == riwayatVoucher[0])
+                                if(item.status.param1 == "unpaid" && item.status.param2 == "pending")
                                   Container(
                                     padding: EdgeInsets.symmetric(horizontal: 3),
                                     child: Container(
@@ -1318,7 +1351,7 @@ class _KonsultasiState extends State<KonsultasiScreen> {
                                       ),
                                     ),
                                   )
-                                else if(item == riwayatVoucher[1])
+                                else if(item.status.param1 == "expire")
                                   Container(
                                     padding: EdgeInsets.symmetric(horizontal: 3),
                                     child: Container(
@@ -1347,7 +1380,7 @@ class _KonsultasiState extends State<KonsultasiScreen> {
                                       ),
                                     ),
                                   )
-                                else if(item == riwayatVoucher[2])
+                                else if(item.status.param1 == "paid")
                                     Container(
                                       padding: EdgeInsets.symmetric(horizontal: 3),
                                       child: Container(
@@ -1378,8 +1411,15 @@ class _KonsultasiState extends State<KonsultasiScreen> {
                                     )
                                   else
                                     Container(),
+                                if(item.payment_status == 'unpaid' && item.payment_type == "ovo")
                                 InkWell(
-                                  onTap: () {},
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => QrisScreen(title: "OVO", urlQR: item.mitransVal.actions.firstWhere((element) => element.name == "generate-qr-code").url,type: QrisScreen.ovo,), ),
+                                    );
+                                  },
                                   child: Container(
                                     decoration: BoxDecoration(
                                       color: Hexcolor("#F7866A"),
@@ -1397,6 +1437,80 @@ class _KonsultasiState extends State<KonsultasiScreen> {
                                     ),
                                   ),
                                 ),
+                                if(item.payment_status == 'unpaid' && item.payment_type == "shopeepay")
+                                  InkWell(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => QrisScreen(title: "SHOPEEPAY", urlQR: item.mitransVal.actions.firstWhere((element) => element.name == "generate-qr-code").url,type: QrisScreen.shopee), ),
+                                      );
+                                    },
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        color: Hexcolor("#F7866A"),
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      padding: EdgeInsets.symmetric(vertical: 3, horizontal: 12),
+                                      child: Text(
+                                        "BAYAR SEKARANG",
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          fontFamily: "Brandon",
+                                          fontSize: 12,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                if(item.payment_status == 'unpaid' && item.payment_type == "gopay")
+                                  InkWell(
+                                    onTap: () {
+                                      _launchURL(item.mitransVal.actions.firstWhere((element) => element.name == "deeplink-redirect").url);
+                                    },
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        color: Hexcolor("#F7866A"),
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      padding: EdgeInsets.symmetric(vertical: 3, horizontal: 12),
+                                      child: Text(
+                                        "BAYAR SEKARANG",
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          fontFamily: "Brandon",
+                                          fontSize: 12,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                if(item.payment_status == 'unpaid' && item.payment_type == "qris")
+                                  InkWell(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => QrisScreen(title: "QRIS", urlQR: item.mitransVal.actions.firstWhere((element) => element.name == "generate-qr-code").url,type: QrisScreen.qris), ),
+                                      );
+                                    },
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        color: Hexcolor("#F7866A"),
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      padding: EdgeInsets.symmetric(vertical: 3, horizontal: 12),
+                                      child: Text(
+                                        "BAYAR SEKARANG",
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          fontFamily: "Brandon",
+                                          fontSize: 12,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
                               ],
                             ),
                           ),
@@ -1779,12 +1893,106 @@ class _KonsultasiState extends State<KonsultasiScreen> {
 }
 
 class pakai_konsultasi extends StatefulWidget {
+  OrderDetailVoucher voucher;
+  pakai_konsultasi({this.voucher});
   @override
   _PakaiKonsultasi createState() => _PakaiKonsultasi();
 }
 
 class _PakaiKonsultasi extends State<pakai_konsultasi> {
   // int _konsultasiPage = 0;
+  final scaffollKey = GlobalKey<ScaffoldState>();
+  AgoraRtmClient _client;
+  AgoraRtmChannel _channel;
+  BuildContext _context;
+  bool status_build =true;
+  List<AgoraRtmMember> dokter = new List<AgoraRtmMember>();
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if(Provider.of<UserModel>(context).user == null){
+        Provider.of<UserModel>(context).getUser(Provider.of<AppModel>(context).auth.access_token).then((value) =>  _initLoby() );
+      }else{
+        _initLoby();
+      }
+    });
+
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    _channel.leave();
+    _client.logout();
+    super.dispose();
+  }
+
+  Future<Dokter> getDetaildokter(id) async {
+    var param ={"id_dokter": id};
+    Dokter dokter=null;
+    final res = await http.post(detaildokter,headers: { HttpHeaders.contentTypeHeader: 'application/json' },body: json.encode(param));
+    if(res.statusCode == 200){
+      dokter = Dokter.fromJson( json.decode(res.body));
+    }
+    return dokter;
+  }
+
+  Future<void> _initLoby() async {
+    String uid= "u"+Provider.of<UserModel>(context).user.id.toString();
+    _client = await AgoraRtmClient.createInstance(appID);
+    _client.login(null,uid);
+    try {
+      _channel = await _createChannel("loby");
+      await _channel.join();
+      final member =  await _channel.getMembers();
+      setState(() {
+        dokter = member.where((element) => element.userId.startsWith("d")).toList();
+      });
+
+      print(dokter);
+      print('Join channel success.');
+    } catch (errorCode) {
+      print('Join channel error: ' + errorCode.toString());
+    }
+  }
+
+  Future<AgoraRtmChannel> _createChannel(String name) async {
+    AgoraRtmChannel channel = await _client.createChannel(name);
+
+    channel.onMemberJoined = (AgoraRtmMember member) {
+      print(
+          "Member joined: " + member.userId + ', channel: ' + member.channelId);
+      if(member.userId.startsWith("d")){
+        setState(() {
+          dokter.add(member);
+        });
+      }
+      print(dokter);
+
+    };
+    channel.onMemberLeft = (AgoraRtmMember member) {
+      print("Member left: " + member.userId + ', channel: ' + member.channelId);
+      if(member.userId.startsWith("d")){
+        setState(() {
+          dokter.removeWhere((element) => element.userId == member.userId);
+        });
+        print(dokter);
+      }
+    };
+    channel.onMessageReceived =
+        (AgoraRtmMessage message, AgoraRtmMember member) {
+      print("Channel msg: " + member.userId + ", msg: " + message.text);
+
+    };
+    return channel;
+  }
+
+  void kirimPesan(peerId,pesan){
+    AgoraRtmMessage message = new AgoraRtmMessage(pesan, null, null);
+    _client.sendMessageToPeer(peerId, message);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -1793,182 +2001,267 @@ class _PakaiKonsultasi extends State<pakai_konsultasi> {
       padding: EdgeInsets.only(top: 20),
       child: Column(
         children: [
-          // Container(
-          //   margin: EdgeInsets.only(right: 40, left: 40),
-          //   padding: EdgeInsets.only(top: 15, bottom: 15),
-          //   child: Row(
-          //     children: [
-          //       Expanded(
-          //         flex: 1,
-          //         child: GestureDetector(
-          //           onTap: () {
-          //             setState(() => _konsultasiPage = 0);
-          //           },
-          //           child: Container(
-          //             decoration: BoxDecoration(
-          //               borderRadius: BorderRadius.circular(5),
-          //               color: Hexcolor("#F7866A"),
-          //             ),
-          //             padding: EdgeInsets.only(top: 3, bottom: 3),
-          //             child: Text(
-          //               "BELI",
-          //               textAlign: TextAlign.center,
-          //               style: TextStyle(
-          //                 color: Colors.white,
-          //                 fontFamily: "Brandon",
-          //                 fontWeight: FontWeight.w600,
-          //                 fontSize: 13,
-          //               ),
-          //             ),
-          //           ),
-          //         ),
-          //       ),
-          //       SizedBox(width: 5),
-          //       Expanded(
-          //         flex: 1,
-          //         child: GestureDetector(
-          //           onTap: () {
-          //             setState(() => _konsultasiPage = 1);
-          //           },
-          //           child: Container(
-          //             decoration: BoxDecoration(
-          //               borderRadius: BorderRadius.circular(5),
-          //               color: Hexcolor("#F7866A"),
-          //             ),
-          //             padding: EdgeInsets.only(top: 3, bottom: 3),
-          //             child: Text(
-          //               "TUKAR",
-          //               textAlign: TextAlign.center,
-          //               style: TextStyle(
-          //                 color: Colors.white,
-          //                 fontFamily: "Brandon",
-          //                 fontWeight: FontWeight.w600,
-          //                 fontSize: 13,
-          //               ),
-          //             ),
-          //           ),
-          //         ),
-          //       ),
-          //       SizedBox(width: 5),
-          //       Expanded(
-          //         flex: 1,
-          //         child: GestureDetector(
-          //           onTap: () {
-          //             setState(() => _konsultasiPage = 2);
-          //           },
-          //           child: Container(
-          //             decoration: BoxDecoration(
-          //               borderRadius: BorderRadius.circular(5),
-          //               color: Hexcolor("#F7866A"),
-          //             ),
-          //             padding: EdgeInsets.only(top: 3, bottom: 3),
-          //             child: Text(
-          //               "KONSULTASI",
-          //               textAlign: TextAlign.center,
-          //               style: TextStyle(
-          //                 color: Colors.white,
-          //                 fontFamily: "Brandon",
-          //                 fontWeight: FontWeight.w600,
-          //                 fontSize: 13,
-          //               ),
-          //             ),
-          //           ),
-          //         ),
-          //       ),
-          //     ],
-          //   ),
-          // ),
           LayoutBuilder(
             builder: (context, constraint) {
-              return konsultasi_screen();
+              return Container(
+                child: Column(
+                  children: [
+                    for(AgoraRtmMember item in dokter)
+                    Container(
+                      width: MediaQuery.of(context).size.width,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.2),
+                            spreadRadius: 1,
+                            blurRadius: 1,
+                          ),
+                        ],
+                      ),
+                      margin: EdgeInsets.only(left: 35, right: 35, bottom: 20),
+                      padding: EdgeInsets.only(left: 15, right: 15, top: 10, bottom: 10),
+                      child: FutureBuilder<Dokter>(
+                        future: getDetaildokter(item.userId.replaceFirst("d", "")),
+                        builder: (context, snapshot) {
+                        if(snapshot.hasData && snapshot.data != null){
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  Container(
+                                    width: 60.0,
+                                    height: 60.0,
+                                    margin: EdgeInsets.only(right: 10),
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      image: DecorationImage(
+                                          fit: BoxFit.cover,
+                                          image: snapshot.data.gambarProfile != null ? NetworkImage(img_url+snapshot.data.gambarProfile) : AssetImage(
+                                              "assets/images/basic.jpg")
+                                      ),
+                                    ),
+                                  ),
+                                  Expanded(
+                                    child: IntrinsicHeight(
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                snapshot.data.user.name,
+                                                style: TextStyle(
+                                                  fontFamily: 'Brandon',
+                                                  fontWeight: FontWeight.w600,
+                                                  fontSize: 15,
+                                                ),
+                                              ),
+                                              Text(
+                                                snapshot.data.bidang,
+                                                style: TextStyle(
+                                                  fontFamily: 'Brandon',
+                                                  fontSize: 15,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          Container(
+                                            margin: EdgeInsets.symmetric(vertical: 3),
+                                            child: Row(
+                                              children: [
+                                                Container(
+                                                  width: 10,
+                                                  height: 10,
+                                                  margin: EdgeInsets.only(right: 5),
+                                                  decoration: BoxDecoration(
+                                                    shape: BoxShape.circle,
+                                                    color: Color(0xff4CBC43),
+                                                  ),
+                                                ),
+                                                Text(
+                                                  'Sedang Online',
+                                                  style: TextStyle(
+                                                    fontFamily: 'Brandon',
+                                                    fontSize: 12,
+                                                    color: Color(0xff4CBC43),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Container(
+                                padding: EdgeInsets.only(top: 5),
+                                child: Row(
+                                  children: [
+                                    Image.asset(
+                                      'assets/images/konsultasi/tempat-praktek.png',
+                                      height: 40,
+                                    ),
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          'Tempat Praktek',
+                                          style: TextStyle(
+                                            fontFamily: 'Brandon',
+                                            fontSize: 11,
+                                          ),
+                                        ),
+                                        Text(
+                                          snapshot.data.tempatPraktek != null?snapshot.data.tempatPraktek:'Belum Tersedia',
+                                          style: TextStyle(
+                                            fontFamily: 'Brandon',
+                                            fontSize: 13,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                padding: EdgeInsets.only(top: 5),
+                                child: Row(
+                                  children: [
+                                    Image.asset(
+                                      'assets/images/konsultasi/pengalaman.png',
+                                      height: 40,
+                                    ),
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          'Pengalaman',
+                                          style: TextStyle(
+                                            fontFamily: 'Brandon',
+                                            fontSize: 11,
+                                          ),
+                                        ),
+                                        Text(
+                                          snapshot.data.graduated != null?snapshot.data.graduated+' Tahun':'Belum Tersedia',
+                                          style: TextStyle(
+                                            fontFamily: 'Brandon',
+                                            fontSize: 13,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                padding: EdgeInsets.only(top: 5),
+                                child: Row(
+                                  children: [
+                                    Image.asset(
+                                      'assets/images/konsultasi/izin-praktek.png',
+                                      height: 40,
+                                    ),
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          'Nomor Izin Praktek',
+                                          style: TextStyle(
+                                            fontFamily: 'Brandon',
+                                            fontSize: 11,
+                                          ),
+                                        ),
+                                        Text(
+                                          snapshot.data.deskripsi != null?snapshot.data.deskripsi:'Belum Tersedia',
+                                          style: TextStyle(
+                                            fontFamily: 'Brandon',
+                                            fontSize: 13,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Align(
+                                alignment: Alignment.centerRight,
+                                child: Container(
+                                  margin: EdgeInsets.only(top: 15),
+                                  child: FlatButton(
+                                    onPressed: (){
+                                      Navigator.push(context, MaterialPageRoute(builder: (context) => WaitingPage(
+                                        channel: _channel,
+                                        client: _client,
+                                        voucher: widget.voucher,
+                                        DokterID: item.userId,
+                                      )));
+                                    },
+                                    padding: EdgeInsets.symmetric(horizontal: 10),
+                                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      side: BorderSide(
+                                        width: 1.0,
+                                        color: Color(0xffF48262),
+                                      ),
+                                    ),
+                                    child: Text(
+                                      'KONSULTASI SEKARANG',
+                                      style: TextStyle(
+                                        fontFamily: 'Brandon',
+                                        color: Color(0xffF48262),
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          );
+                        }else{
+                          return Center(
+                            child: LoadingWidget(context),
+                          );
+                        }
+                        })
+
+                    ),
+                    if(dokter.length<= 0)
+
+                    GestureDetector(
+                      onTap: () {},
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Hexcolor("#F7866A"),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        padding: EdgeInsets.only(top: 8, bottom: 8),
+                        margin: EdgeInsets.only(right: 35, left: 35),
+                        width: MediaQuery.of(context).size.width,
+                        child: Text(
+                          "Yuk, Mulai Konsultasi",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontFamily: "Brandon",
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              );
             },
           ),
-          // SizedBox(height: 70),
-          // Container(
-          //   decoration: BoxDecoration(
-          //     border: Border(
-          //       top: BorderSide(
-          //         color: Hexcolor("#F7866A"),
-          //         width: 2,
-          //       ),
-          //     ),
-          //   ),
-          //   margin: EdgeInsets.only(left: 20, right: 20),
-          //   padding: EdgeInsets.only(top: 15),
-          //   width: MediaQuery.of(context).size.width,
-          //   child: Text(
-          //     "FAQs",
-          //     textAlign: TextAlign.center,
-          //     style: TextStyle(
-          //       fontFamily: "Yeseva",
-          //       color: Colors.black,
-          //       fontSize: 20,
-          //       fontWeight: FontWeight.w500,
-          //     ),
-          //   ),
-          // ),
-          // for(Faq item in faq.faq)
-          // Padding(
-          //   padding: EdgeInsets.only(left: 20, right: 20),
-          //   child: Card(
-          //       elevation: 0,
-          //       color: Colors.transparent,
-          //       child: ExpansionTile(
-          //         title: Padding(
-          //           padding: EdgeInsets.only(left: 0),
-          //           child: Text(
-          //             item.ask,
-          //             style: new TextStyle(
-          //               fontFamily: "Brandon",
-          //               fontSize: 16,
-          //               fontWeight: FontWeight.w600,
-          //               color: Colors.black,
-          //             ),
-          //             textAlign: TextAlign.left,
-          //           ),
-          //         ),
-          //         children: <Widget>[
-          //           Container(
-          //             decoration: BoxDecoration(
-          //               color: Colors.transparent,
-          //               border: Border(
-          //                 top: BorderSide(
-          //                   color: Hexcolor("#F7866A"),
-          //                   width: 2.0,
-          //                 ),
-          //               ),
-          //             ),
-          //             padding: EdgeInsets.only(
-          //               left: 15,
-          //               right: 15,
-          //               top: 5,
-          //               bottom: 5,
-          //             ),
-          //             child: Column(
-          //               children: [
-          //                 Container(
-          //                   width: MediaQuery.of(context).size.width,
-          //                   child:
-          //                   Html(
-          //                     data:item.ans,
-          //                     style: {
-          //                       "html": Style(
-          //                         fontFamily: "Brandon",
-          //                         fontSize: FontSize.medium,
-          //                         fontWeight: FontWeight.w300,
-          //                         color: Colors.black,
-          //                       )
-          //                     },
-          //                   )
-          //                 ),
-          //               ],
-          //             ),
-          //           ),
-          //         ],
-          //       ),
-          //     ),
-          // ),
-          // SizedBox(height: 20),
         ],
       ),
     );
@@ -1990,91 +2283,6 @@ class _Konsultasi extends State<konsultasi> {
       padding: EdgeInsets.only(top: 20),
       child: Column(
         children: [
-          // Container(
-          //   margin: EdgeInsets.only(right: 35, left: 35),
-          //   padding: EdgeInsets.only(top: 15, bottom: 15),
-          //   child: Row(
-          //     children: [
-          //       Expanded(
-          //         flex: 1,
-          //         child: GestureDetector(
-          //           onTap: () {
-          //             setState(() => _konsultasiPage = 0);
-          //           },
-          //           child: Container(
-          //             decoration: BoxDecoration(
-          //               borderRadius: BorderRadius.circular(5),
-          //               color: Hexcolor("#F7866A"),
-          //             ),
-          //             padding: EdgeInsets.only(top: 3, bottom: 3),
-          //             child: Text(
-          //               "BELI",
-          //               textAlign: TextAlign.center,
-          //               style: TextStyle(
-          //                 color: Colors.white,
-          //                 fontFamily: "Brandon",
-          //                 fontWeight: FontWeight.w600,
-          //                 fontSize: 13,
-          //               ),
-          //             ),
-          //           ),
-          //         ),
-          //       ),
-          //       SizedBox(width: 5),
-          //       Expanded(
-          //         flex: 1,
-          //         child: GestureDetector(
-          //           onTap: () {
-          //             setState(() => _konsultasiPage = 1);
-          //           },
-          //           child: Container(
-          //             decoration: BoxDecoration(
-          //               borderRadius: BorderRadius.circular(5),
-          //               color: Hexcolor("#F7866A"),
-          //             ),
-          //             padding: EdgeInsets.only(top: 3, bottom: 3),
-          //             child: Text(
-          //               "TUKAR",
-          //               textAlign: TextAlign.center,
-          //               style: TextStyle(
-          //                 color: Colors.white,
-          //                 fontFamily: "Brandon",
-          //                 fontWeight: FontWeight.w600,
-          //                 fontSize: 13,
-          //               ),
-          //             ),
-          //           ),
-          //         ),
-          //       ),
-          //       SizedBox(width: 5),
-          //       Expanded(
-          //         flex: 1,
-          //         child: GestureDetector(
-          //           onTap: () {
-          //             setState(() => _konsultasiPage = 2);
-          //           },
-          //           child: Container(
-          //             decoration: BoxDecoration(
-          //               borderRadius: BorderRadius.circular(5),
-          //               color: Hexcolor("#F7866A"),
-          //             ),
-          //             padding: EdgeInsets.only(top: 3, bottom: 3),
-          //             child: Text(
-          //               "KONSULTASI",
-          //               textAlign: TextAlign.center,
-          //               style: TextStyle(
-          //                 color: Colors.white,
-          //                 fontFamily: "Brandon",
-          //                 fontWeight: FontWeight.w600,
-          //                 fontSize: 13,
-          //               ),
-          //             ),
-          //           ),
-          //         ),
-          //       ),
-          //     ],
-          //   ),
-          // ),
           LayoutBuilder(
             builder: (context, constraint) {
               switch (_konsultasiPage) {
@@ -2190,6 +2398,8 @@ class _Konsultasi extends State<konsultasi> {
 }
 
 class konsultasi_screen extends StatelessWidget {
+
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -2296,7 +2506,7 @@ class konsultasi_screen extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Tempat Praktek',
+                            "Tempat Praktek",
                             style: TextStyle(
                               fontFamily: 'Brandon',
                               fontSize: 11,

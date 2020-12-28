@@ -15,6 +15,7 @@ import 'package:http/http.dart' as http;
 import 'package:ponny/screens/Qris_screen.dart';
 import 'package:ponny/screens/account/komplain_dalam_perjalanan_screen.dart';
 import 'package:ponny/screens/konfirmasi_pembayaran_screen.dart';
+import 'package:ponny/screens/product_details_screen.dart';
 import 'package:ponny/screens/review_screen.dart';
 import 'package:ponny/util/globalUrl.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
@@ -248,16 +249,24 @@ class _OrderScreenState extends State<OrderScreen> {
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Expanded(
-                                          child: Container(
-                                            alignment: Alignment.topCenter,
-                                            padding: EdgeInsets.only(right: 10),
-                                            height: MediaQuery.of(context).size.width*0.35,
-                                            child: CachedNetworkImage(
-                                              imageUrl: e.product.thumbnail_image != null ? img_url+ e.product.thumbnail_image :"",
-                                              placeholder: (context, url) => LoadingWidgetPulse(context),
-                                              errorWidget: (context, url, error) => Image.asset('assets/images/210x265.png'),
-                                              width: MediaQuery.of(context).size.width,
-                                              fit: BoxFit.cover,
+                                          child: InkWell(
+                                            onTap: (){
+                                              Navigator.push(context, MaterialPageRoute(builder: (context) => ProductDetailsScreen(
+                                                product: e.product,
+                                              )
+                                              ));
+                                            },
+                                            child: Container(
+                                              alignment: Alignment.topCenter,
+                                              padding: EdgeInsets.only(right: 10),
+                                              height: MediaQuery.of(context).size.width*0.35,
+                                              child: CachedNetworkImage(
+                                                imageUrl: e.product.thumbnail_image != null ? img_url+ e.product.thumbnail_image :"",
+                                                placeholder: (context, url) => LoadingWidgetPulse(context),
+                                                errorWidget: (context, url, error) => Image.asset('assets/images/210x265.png'),
+                                                width: MediaQuery.of(context).size.width,
+                                                fit: BoxFit.cover,
+                                              ),
                                             ),
                                           ),
                                         ),
@@ -350,15 +359,18 @@ class _OrderScreenState extends State<OrderScreen> {
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Expanded(
-                                          child: Container(
-                                            alignment: Alignment.topCenter,
-                                            height: MediaQuery.of(context).size.width*0.35,
-                                            child: CachedNetworkImage(
-                                              imageUrl: img_url+e.product.thumbnail_image,
-                                              placeholder: (context, url) => LoadingWidgetPulse(context),
-                                              errorWidget: (context, url, error) => Image.asset('assets/images/210x265.png'),
-                                              width: MediaQuery.of(context).size.width,
-                                              fit: BoxFit.cover,
+                                          child: InkWell(
+                                            child: Container(
+                                              alignment: Alignment.topCenter,
+                                              padding: EdgeInsets.only(right: 10),
+                                              height: MediaQuery.of(context).size.width*0.35,
+                                              child: CachedNetworkImage(
+                                                imageUrl: img_url+e.product.thumbnail_image,
+                                                placeholder: (context, url) => LoadingWidgetPulse(context),
+                                                errorWidget: (context, url, error) => Image.asset('assets/images/210x265.png'),
+                                                width: MediaQuery.of(context).size.width,
+                                                fit: BoxFit.cover,
+                                              ),
                                             ),
                                           ),
                                         ),
@@ -449,15 +461,18 @@ class _OrderScreenState extends State<OrderScreen> {
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Expanded(
-                                          child: Container(
-                                            alignment: Alignment.topCenter,
-                                            height: MediaQuery.of(context).size.width*0.35,
-                                            child: CachedNetworkImage(
-                                              imageUrl: img_url+e.product.thumbnail_image,
-                                              placeholder: (context, url) => LoadingWidgetPulse(context),
-                                              errorWidget: (context, url, error) => Image.asset('assets/images/210x265.png'),
-                                              width: MediaQuery.of(context).size.width,
-                                              fit: BoxFit.cover,
+                                          child: InkWell(
+                                            child: Container(
+                                              alignment: Alignment.topCenter,
+                                              padding: EdgeInsets.only(right: 10),
+                                              height: MediaQuery.of(context).size.width*0.35,
+                                              child: CachedNetworkImage(
+                                                imageUrl: img_url+e.product.thumbnail_image,
+                                                placeholder: (context, url) => LoadingWidgetPulse(context),
+                                                errorWidget: (context, url, error) => Image.asset('assets/images/210x265.png'),
+                                                width: MediaQuery.of(context).size.width,
+                                                fit: BoxFit.cover,
+                                              ),
                                             ),
                                           ),
                                         ),

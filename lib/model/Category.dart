@@ -1,3 +1,35 @@
+import 'dart:convert';
+
+import 'package:flutter/material.dart';
+import 'package:ponny/util/globalUrl.dart';
+import 'package:http/http.dart' as http;
+
+class CategoryModel with ChangeNotifier {
+
+  List<Category> categoris = List<Category>();
+  bool loadingCategory =true;
+
+  CategoryModel(){
+    getCategory();
+  }
+
+  Future<void> getCategory() async {
+
+    final res = await http.get(categoryList);
+    // print(res.body);
+    if(res.statusCode == 200){
+      final responejson = json.decode(res.body);
+      responejson.forEach((v) {
+        categoris.add(new Category.fromJson(v));
+      });
+      loadingCategory=false;
+      notifyListeners();
+
+    }
+
+  }
+
+}
 
 class Category {
   int id;

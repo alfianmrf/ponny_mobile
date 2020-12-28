@@ -16,6 +16,7 @@ const filterTrend = base_url + "forum/rooms/";
 const loginUrl = base_url + "auth/login";
 const register = base_url + "auth/signup";
 const blogUrl = base_url + "blog";
+const blogCari = base_url+ "blog/cari";
 const forumUrl = base_url + "forum";
 const detailforum = base_url + "forum/detail/"; 
 const detailRoom = base_url +"forum/roomById/";
@@ -112,6 +113,8 @@ const historyVoucher = base_url + "consultation/history";
 const listVoucherActive = base_url + "consultation/myvoucher";
 const inCallconsultation = base_url + "consultation/incall";
 const updateDuration = base_url + "consultation/incallStatus";
+const detaildokter = base_url+"consultation/dokter-detail";
+const voucherAktive = base_url+"consultation/active";
 
 //master
 const urlProv = base_url + "shipping/provinces";

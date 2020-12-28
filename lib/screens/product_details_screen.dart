@@ -123,10 +123,13 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     UIBlock.block(context,customLoaderChild: LoadingWidget(context));
     Provider.of<ProductModel>(context).getValueVariant(param).then((value){
       UIBlock.unblock(context);
-      setState(() {
-        varian =value;
-        print(varian.stock_quantity);
-      });
+      if(value != null){
+        setState(() {
+          varian =value;
+          print(varian.stock_quantity);
+        });
+      }
+
     }).catchError((onError){
       UIBlock.unblock(context);
       print(onError);
@@ -1461,7 +1464,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                             borderRadius: BorderRadius.circular(7.0),
                           ),
                           child:  Text(
-                              widget.product.currentStock >0 ||  varian != null && varian.stock_quantity > 0 ? 'MASUKKAN KERANJANG' : "STOK KOSONG ",
+                              widget.product.currentStock > 0 ||  varian != null && varian.stock_quantity > 0 ? 'MASUKKAN KERANJANG' : "STOK KOSONG ",
                             style: TextStyle(
                               fontFamily: 'Brandon',
                               fontWeight: FontWeight.w700,

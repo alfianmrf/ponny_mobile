@@ -11,6 +11,7 @@ import 'package:ponny/model/Voucher.dart';
 import 'package:ponny/screens/Qris_screen.dart';
 import 'package:ponny/screens/account/menunggu_pembayaran_sukses_screen.dart';
 import 'package:ponny/screens/home_screen.dart';
+import 'package:ponny/screens/pembayaran_gopay_voucher_screen.dart';
 import 'package:ponny/screens/pesanan_berhasil_screen.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
 import 'package:ponny/screens/bank_transfer_screen.dart';
@@ -63,7 +64,7 @@ class _PaymentVoucherScreenState extends State<PaymentVoucherScreen> {
           }
           else{
             Navigator.pushAndRemoveUntil(context,new MaterialPageRoute(
-              builder: (BuildContext context) => new PesananBerhasilScreen(code: value.orderCode,),
+              builder: (BuildContext context) => new PesananBerhasilScreen(code: value.orderCode,typeDigital: 1,),
             ),(_) => false);
           }
 
@@ -151,9 +152,9 @@ class _PaymentVoucherScreenState extends State<PaymentVoucherScreen> {
                               InkWell(
                                 onTap: () async {
                                   final result = await chekOut(context,"mt_tf_bca");
-                                  if(result){
-                                    Navigator.pop(context,true);
-                                  }
+                                  // if(result){
+                                  //   Navigator.pop(context,true);
+                                  // }
                                 },
                                 child: Container(
                                   width: MediaQuery.of(context).size.width,
@@ -190,9 +191,9 @@ class _PaymentVoucherScreenState extends State<PaymentVoucherScreen> {
                               InkWell(
                                 onTap: () async {
                                   final result = await chekOut(context,"mt_tf_mdr");
-                                  if(result){
-                                    Navigator.pop(context,true);
-                                  }
+                                  // if(result){
+                                  //   Navigator.pop(context,true);
+                                  // }
                                 },
                                 child: Container(
                                   width: MediaQuery.of(context).size.width,
@@ -231,9 +232,9 @@ class _PaymentVoucherScreenState extends State<PaymentVoucherScreen> {
                                 onTap: () async {
 
                                   final result = await chekOut(context,"mt_tf_bni");
-                                  if(result){
-                                    Navigator.pop(context,true);
-                                  }
+                                  // if(result){
+                                  //   Navigator.pop(context,true);
+                                  // }
                                 },
                                 child: Container(
                                   width: MediaQuery.of(context).size.width,
@@ -483,7 +484,7 @@ class _PaymentVoucherScreenState extends State<PaymentVoucherScreen> {
                               InkWell(
                                 onTap: () {
                                   Navigator.push(context,new MaterialPageRoute(
-                                    builder: (BuildContext context) => new PembayaranGopayScreen(method:PembayaranGopayScreen.gopay,),
+                                    builder: (BuildContext context) => new PembayaranGopayVoucherScreen(method:PembayaranGopayScreen.gopay,voucher: widget.voucher,qty: widget.qty,),
                                   ));
                                 },
                                 child: Container(

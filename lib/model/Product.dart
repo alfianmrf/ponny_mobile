@@ -51,6 +51,7 @@ class ProductModel with ChangeNotifier {
     }
   }
 
+
   Future<void> getFlashSale() async {
     try {
       final result = await http.get(flashdealUrl);
@@ -352,7 +353,7 @@ class VarianResult {
     productId = json['product_id'];
     varian = json['varian'];
     price = json['price'];
-    stock_quantity = json['stock_quantity'];
+    stock_quantity = json['stock_quantity'] != null ? json['stock_quantity'] : 0;
     base_price = json["base_price"];
   }
 

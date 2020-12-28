@@ -16,15 +16,16 @@ import 'package:provider/provider.dart';
 class WaitingPage extends StatefulWidget {
   static const String id = "Waiting_call";
   OrderDetailVoucher voucher;
-  WaitingPage({Key key,@required this.voucher });
+  AgoraRtmClient client;
+  AgoraRtmChannel channel;
+  String DokterID;
+  WaitingPage({Key key,@required this.voucher,this.channel,this.client,this.DokterID });
   @override
   _WaitingPageState createState() => _WaitingPageState();
 
 }
 class _WaitingPageState extends State<WaitingPage> {
   final scaffollKey = GlobalKey<ScaffoldState>();
-  AgoraRtmClient _client;
-  AgoraRtmChannel _channel;
   BuildContext _context;
   bool status_build =true;
 
@@ -34,9 +35,10 @@ class _WaitingPageState extends State<WaitingPage> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       Provider.of<UserModel>(context).getUser(Provider.of<AppModel>(context, listen: false).auth.access_token).then((value) {
         _createClient();
-      });
-      Timer(Duration(minutes: 1), () {
-        showdialog();
+        kirimPesan(widget.DokterID,"list");
+        Timer(Duration(minutes: 1), () {
+          showdialog();
+        });
       });
     });
 
@@ -44,30 +46,27 @@ class _WaitingPageState extends State<WaitingPage> {
   @override
   void dispose() {
     // TODO: implement dispose
-    _channel.leave();
-    _client.logout();
+    // widget.channel.leave();
+    // widget.client.logout();
     super.dispose();
   }
 
   void _createClient() async {
-    _client =
-    await AgoraRtmClient.createInstance(appID);
-    _client.login(null, Provider.of<UserModel>(context,listen: false).user.id.toString());
-    _client.onMessageReceived = (AgoraRtmMessage message, String peerId) {
+    widget.client.onMessageReceived = (AgoraRtmMessage message, String peerId) {
       print("Peer msg: " + peerId + ", msg: " + message.text);
       if(message.text == 'answer'){
         var param={
           "id_voucher":widget.voucher.id,
-          "dokter_id":int.parse(peerId)
+          "dokter_id":int.parse(peerId.replaceFirst("d", ""))
         };
         Provider.of<VoucherModel>(context).incall(Provider.of<AppModel>(context,listen: false).auth.access_token, param).then((value) async {
-           _channel.leave();
-           _client.logout();
+           widget.channel.leave();
+           widget.client.logout();
           if(value){
             Navigator.pushReplacement(
               _context,
               MaterialPageRoute(
-                builder: (context) => CallPage(chanel: peerId, voucher: widget.voucher),
+                builder: (context) => CallPage(chanel: peerId.replaceFirst("d", ""), voucher: widget.voucher),
               ),
             );
           }else{
@@ -76,45 +75,28 @@ class _WaitingPageState extends State<WaitingPage> {
         });
       }
     };
-    _client.onConnectionStateChanged = (int state, int reason) {
+    widget.client.onConnectionStateChanged = (int state, int reason) {
       print('Connection state changed: ' +
           state.toString() +
           ', reason: ' +
           reason.toString());
       if (state == 5) {
-        _client.logout();
+        widget.client.logout();
         print('Logout.');
       }
     };
-    try {
-      _channel = await _createChannel("loby");
-      await _channel.join();
-      print('Join channel success.');
-    } catch (errorCode) {
-      print('Join channel error: ' + errorCode.toString());
-    }
+
   }
 
-  Future<AgoraRtmChannel> _createChannel(String name) async {
-    AgoraRtmChannel channel = await _client.createChannel(name);
-    channel.onMemberJoined = (AgoraRtmMember member) {
-      print(
-          "Member joined: " + member.userId + ', channel: ' + member.channelId);
-    };
-    channel.onMemberLeft = (AgoraRtmMember member) {
-      print("Member left: " + member.userId + ', channel: ' + member.channelId);
-    };
-    channel.onMessageReceived =
-        (AgoraRtmMessage message, AgoraRtmMember member) {
-          print("Channel msg: " + member.userId + ", msg: " + message.text);
-
-    };
-    return channel;
+  void kirimPesan(peerId,pesan){
+    AgoraRtmMessage message = new AgoraRtmMessage(pesan, null, null);
+    widget.client.sendMessageToPeer(peerId, message);
   }
+
 
   Future<bool> _onWillPop() async {
-     _channel.leave();
-     _client.logout();
+     // widget.channel.leave();
+     // widget.client.logout();
     return true;
   }
 
@@ -124,10 +106,11 @@ class _WaitingPageState extends State<WaitingPage> {
       context: _context,
       builder: (context) => new AlertDialog(
         title: new Text('Dokter Sedang Sibuk'),
-        content: new Text('Sepertinya semua dokter sedang sibuk, apakah anda ingin menunggu?'),
+        content: new Text('Sepertinya dokter sedang sibuk, apakah anda ingin menunggu?'),
         actions: <Widget>[
           new FlatButton(
             onPressed: () async {
+              kirimPesan(widget.DokterID,"exit");
               Navigator.pop(_context,true);
             },
             child: new Text('Tidak'),

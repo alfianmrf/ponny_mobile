@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:ponny/screens/account_screen.dart';
+import 'package:ponny/screens/konsultasi_screen.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
 import 'package:ponny/screens/home_screen.dart';
 import 'package:hexcolor/hexcolor.dart';
@@ -7,8 +9,10 @@ import 'package:ponny/screens/Order_Screen.dart';
 
 class PesananBerhasilScreen extends StatefulWidget {
   static const String id = "pesanan_berhasil_screen";
+
   String code;
-  PesananBerhasilScreen({Key key,this.code});
+  int typeDigital;
+  PesananBerhasilScreen({Key key,this.code,this.typeDigital});
 
   @override
   _PesananBerhasilScreenState createState() => _PesananBerhasilScreenState();
@@ -20,22 +24,38 @@ class _PesananBerhasilScreenState extends State<PesananBerhasilScreen> {
     super.initState();
   }
 
+  Future<bool> _onWillPop() async {
+    return  false;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return new WillPopScope(
+        onWillPop: _onWillPop,
+        child: Scaffold(
       appBar: AppBar(
         titleSpacing: 0.0,
         elevation: 0.0,
         leading: IconButton(
           onPressed: () {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => OrderScreen(
-                  type: OrderScreen.unpaid,
+            if(widget.typeDigital == 1){
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => KonsultasiScreen(
+                  ),
                 ),
-              ),
-            );
+              );
+            }else{
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => OrderScreen(
+                    type: OrderScreen.unpaid,
+                  ),
+                ),
+              );
+            }
           },
           icon: Icon(
             Icons.arrow_back_ios_rounded,
@@ -141,6 +161,7 @@ class _PesananBerhasilScreenState extends State<PesananBerhasilScreen> {
         )
       ]),
       bottomNavigationBar: new PonnyBottomNavbar(selectedIndex: 1),
+      )
     );
   }
 }
