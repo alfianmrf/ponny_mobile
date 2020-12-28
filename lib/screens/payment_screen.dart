@@ -674,7 +674,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                     ),
                                   ),
                                 ),
-                                InkWell(
+                                /*InkWell(
                                   onTap: () {
                                     chekOut(context,"shopeepay");
                                   },
@@ -709,7 +709,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                       ],
                                     ),
                                   ),
-                                ),
+                                ),*/
                                 /*
                                 Container(
                                   color: Color(0xffFDEDE4),

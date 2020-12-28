@@ -2,6 +2,7 @@ import 'dart:ffi';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:ponny/common/constant.dart';
 import 'package:ponny/model/Address.dart';
 import 'package:ponny/model/App.dart';
@@ -82,46 +83,41 @@ class _PaymentVoucherScreenState extends State<PaymentVoucherScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: scaffoldKey,
-      backgroundColor: Theme.of(context).primaryColor,
+      appBar: AppBar(
+        titleSpacing: 0.0,
+        elevation: 0.0,
+        leading: IconButton(
+          onPressed: () =>Navigator.pop(context),
+          icon: Icon(
+            Icons.arrow_back_ios_rounded,
+            color: Color(0xffF48262),
+          ),
+        ),
+        title: Text(
+          'Metode Pembayaran',
+          style: TextStyle(
+            fontSize: 24,
+            fontFamily: 'Yeseva',
+            color: Hexcolor('#F48262'),
+          ),
+        ),
+        bottom: PreferredSize(
+            child: Container(
+              color: Color(0xffF48262),
+              height: 1.0,
+            ),
+            preferredSize: Size.fromHeight(1.0)),
+      ),
+      resizeToAvoidBottomInset: false,
+      backgroundColor: Hexcolor('#FCF8F0'),
       body: Stack(children: <Widget>[
         Scaffold(
           backgroundColor: Color(0xffFDF8F0),
           body: Container(
-            margin: MediaQuery.of(context).padding,
+            width: MediaQuery.of(context).size.width,
             child: SingleChildScrollView(
               child: Column(
                 children: <Widget>[
-                  Container(
-                    width: MediaQuery.of(context).size.width,
-                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 30),
-                    decoration: BoxDecoration(
-                      border: Border(
-                        bottom: BorderSide(
-                          color: Color(0xffF48262),
-                          width: 1.0,
-                        ),
-                      ),
-                    ),
-                    child: Row(
-                      children: <Widget>[
-                        Container(
-                          margin: EdgeInsets.only(right: 10),
-                          child: Icon(
-                            Icons.arrow_back_ios,
-                            color: Color(0xffF48262),
-                          ),
-                        ),
-                        Text(
-                          'Metode Pembayaran',
-                          style: TextStyle(
-                            fontFamily: 'Yeseva',
-                            fontSize: 22,
-                            color: Color(0xffF48262),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
                   Container(
                     margin: EdgeInsets.only(top: 25, bottom: 25),
                     width: MediaQuery.of(context).size.width*0.9,
@@ -604,20 +600,6 @@ class _PaymentVoucherScreenState extends State<PaymentVoucherScreen> {
                                   ],
                                 ),
                               ),*/
-                              Container(
-                                color: Color(0xffFDEDE4),
-                                width: MediaQuery.of(context).size.width,
-                                padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                                child: Text(
-                                  'METODE PEMBAYARAN LAINNYA',
-                                  style: TextStyle(
-                                    fontFamily: 'Brandon',
-                                    fontSize: 14,
-                                    color: Color(0xffF48262),
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ),
                               InkWell(
                                 onTap: (){
                                   chekOut(context,"qris");
@@ -630,6 +612,14 @@ class _PaymentVoucherScreenState extends State<PaymentVoucherScreen> {
                                     children: [
                                       Row(
                                         children: [
+                                          Image.asset(
+                                            'assets/images/payment/dana-02.png',
+                                            height: 40,
+                                          ),
+                                          Image.asset(
+                                            'assets/images/payment/linkaja-02.png',
+                                            height: 40,
+                                          ),
                                           Padding(
                                             padding: EdgeInsets.only(left: 5),
                                             child: Text(

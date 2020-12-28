@@ -35,7 +35,7 @@ class _KonsultasiState extends State<KonsultasiScreen> {
   ScrollController _scrollController = new ScrollController();
   ScrollController _scrollControllerVoucher = new ScrollController();
   final scaffolKey =  GlobalKey<ScaffoldState>();
-  int _currentPage = 0;
+  int _currentPage = 3;
   int counter = 1;
   Voucher voucher;
   bool loadingVoucher = true;
@@ -174,9 +174,9 @@ class _KonsultasiState extends State<KonsultasiScreen> {
       });
     }
   }
-
   @override
   Widget build(BuildContext context) {
+    final faq = Provider.of<AppModel>(context,listen: false).listFaq.firstWhere((element) => element.id == 5);
     return Scaffold(
       key: scaffolKey,
       backgroundColor: Hexcolor("#FDF9EE"),
@@ -485,7 +485,174 @@ class _KonsultasiState extends State<KonsultasiScreen> {
                     {
                       pakai=false;
                       return SingleChildScrollView(
-                        child:  konsultasi(),
+                        child:  Container(
+                          padding: EdgeInsets.only(top: 20),
+                          child: Column(
+                            children: [
+                              Container(
+                                child: Column(
+                                  children: [
+                                    Container(
+                                      width: double.infinity,
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(10),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.grey.withOpacity(0.2),
+                                            spreadRadius: 1,
+                                            blurRadius: 1,
+                                          ),
+                                        ],
+                                      ),
+                                      margin: EdgeInsets.only(left: 35, right: 35),
+                                      padding: EdgeInsets.only(left: 15, right: 15, top: 10, bottom: 10),
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Container(
+                                            child: Text(
+                                              "Layanan Konsultasi",
+                                              style: TextStyle(
+                                                fontFamily: "Brandon",
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: 15,
+                                              ),
+                                            ),
+                                          ),
+                                          SizedBox(height: 10),
+                                          Container(
+                                            child: Text(
+                                              "Dolor enim sit amet ex pariatur ullamco adipisicing consequat occaecat irure officia dolor. Voluptate ad nostrud pariatur sit dolor irure incididunt proident. Non anim amet voluptate sint officia ut anim et magna aute cupidatat nisi eiusmod anim. Eu consectetur nostrud excepteur eu est cupidatat cillum irure mollit cillum. Minim sunt commodo in pariatur commodo qui adipisicing culpa.",
+                                              style: TextStyle(
+                                                fontFamily: "Brandon",
+                                                fontWeight: FontWeight.w400,
+                                                fontSize: 14,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    SizedBox(height: 10),
+                                    GestureDetector(
+                                      onTap: () {
+                                        setState((){
+                                          _currentPage = 0;
+                                        });
+                                      },
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          color: Hexcolor("#F7866A"),
+                                          borderRadius: BorderRadius.circular(10),
+                                        ),
+                                        padding: EdgeInsets.only(top: 8, bottom: 8),
+                                        margin: EdgeInsets.only(right: 35, left: 35),
+                                        width: double.infinity,
+                                        child: Text(
+                                          "Yuk, Mulai Konsultasi",
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontSize: 14,
+                                            fontFamily: "Brandon",
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(height: 70),
+                              Container(
+                                decoration: BoxDecoration(
+                                  border: Border(
+                                    top: BorderSide(
+                                      color: Hexcolor("#F7866A"),
+                                      width: 2,
+                                    ),
+                                  ),
+                                ),
+                                margin: EdgeInsets.only(left: 20, right: 20),
+                                padding: EdgeInsets.only(top: 15),
+                                width: MediaQuery.of(context).size.width,
+                                child: Text(
+                                  "FAQs",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontFamily: "Yeseva",
+                                    color: Colors.black,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ),
+                              for(Faq item in faq.faq)
+                                Padding(
+                                  padding: EdgeInsets.only(left: 20, right: 20),
+                                  child: Card(
+                                    elevation: 0,
+                                    color: Colors.transparent,
+                                    child: ExpansionTile(
+                                      title: Padding(
+                                        padding: EdgeInsets.only(left: 0),
+                                        child: Text(
+                                          item.ask,
+                                          style: new TextStyle(
+                                            fontFamily: "Brandon",
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w600,
+                                            color: Colors.black,
+                                          ),
+                                          textAlign: TextAlign.left,
+                                        ),
+                                      ),
+                                      children: <Widget>[
+                                        Container(
+                                          decoration: BoxDecoration(
+                                            color: Colors.transparent,
+                                            border: Border(
+                                              top: BorderSide(
+                                                color: Hexcolor("#F7866A"),
+                                                width: 2.0,
+                                              ),
+                                            ),
+                                          ),
+                                          padding: EdgeInsets.only(
+                                            left: 15,
+                                            right: 15,
+                                            top: 5,
+                                            bottom: 5,
+                                          ),
+                                          child: Column(
+                                            children: [
+                                              Container(
+                                                  width: MediaQuery.of(context).size.width,
+                                                  child:
+                                                  Html(
+                                                    data:item.ans,
+                                                    style: {
+                                                      "html": Style(
+                                                        fontFamily: "Brandon",
+                                                        fontSize: FontSize.medium,
+                                                        fontWeight: FontWeight.w300,
+                                                        color: Colors.black,
+                                                      )
+                                                    },
+                                                  )
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              SizedBox(height: 20),
+                            ],
+                          ),
+                        ),
                       );
                     }
                   case 4:
@@ -2268,135 +2435,6 @@ class _PakaiKonsultasi extends State<pakai_konsultasi> {
   }
 }
 
-class konsultasi extends StatefulWidget {
-  @override
-  _Konsultasi createState() => _Konsultasi();
-}
-
-class _Konsultasi extends State<konsultasi> {
-  int _konsultasiPage = 0;
-
-  @override
-  Widget build(BuildContext context) {
-    final faq = Provider.of<AppModel>(context,listen: false).listFaq.firstWhere((element) => element.id == 5);
-    return Container(
-      padding: EdgeInsets.only(top: 20),
-      child: Column(
-        children: [
-          LayoutBuilder(
-            builder: (context, constraint) {
-              switch (_konsultasiPage) {
-                case 0:
-                  {
-                    return beli_screen();
-                  }
-                case 1:
-                  {
-                    return tukar_screen();
-                  }
-                case 2:
-                  {
-                    return konsultasi_screen();
-                  }
-                default:
-                  return Container(
-                    child: Text("Halaman Kosong"),
-                  );
-              }
-            },
-          ),
-          SizedBox(height: 70),
-          Container(
-            decoration: BoxDecoration(
-              border: Border(
-                top: BorderSide(
-                  color: Hexcolor("#F7866A"),
-                  width: 2,
-                ),
-              ),
-            ),
-            margin: EdgeInsets.only(left: 20, right: 20),
-            padding: EdgeInsets.only(top: 15),
-            width: MediaQuery.of(context).size.width,
-            child: Text(
-              "FAQs",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontFamily: "Yeseva",
-                color: Colors.black,
-                fontSize: 20,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-          ),
-          for(Faq item in faq.faq)
-          Padding(
-            padding: EdgeInsets.only(left: 20, right: 20),
-            child: Card(
-                elevation: 0,
-                color: Colors.transparent,
-                child: ExpansionTile(
-                  title: Padding(
-                    padding: EdgeInsets.only(left: 0),
-                    child: Text(
-                      item.ask,
-                      style: new TextStyle(
-                        fontFamily: "Brandon",
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.black,
-                      ),
-                      textAlign: TextAlign.left,
-                    ),
-                  ),
-                  children: <Widget>[
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Colors.transparent,
-                        border: Border(
-                          top: BorderSide(
-                            color: Hexcolor("#F7866A"),
-                            width: 2.0,
-                          ),
-                        ),
-                      ),
-                      padding: EdgeInsets.only(
-                        left: 15,
-                        right: 15,
-                        top: 5,
-                        bottom: 5,
-                      ),
-                      child: Column(
-                        children: [
-                          Container(
-                            width: MediaQuery.of(context).size.width,
-                            child:
-                            Html(
-                              data:item.ans,
-                              style: {
-                                "html": Style(
-                                  fontFamily: "Brandon",
-                                  fontSize: FontSize.medium,
-                                  fontWeight: FontWeight.w300,
-                                  color: Colors.black,
-                                )
-                              },
-                            )
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-          ),
-          SizedBox(height: 20),
-        ],
-      ),
-    );
-  }
-}
-
 class konsultasi_screen extends StatelessWidget {
 
 
@@ -2907,84 +2945,6 @@ class tukar_screen extends StatelessWidget {
               ),
               padding: EdgeInsets.only(top: 8, bottom: 8),
               margin: EdgeInsets.only(right: 40, left: 40),
-              width: MediaQuery.of(context).size.width,
-              child: Text(
-                "Yuk, Mulai Konsultasi",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 14,
-                  fontFamily: "Brandon",
-                  color: Colors.white,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class beli_screen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-
-    return Container(
-      child: Column(
-        children: [
-          Container(
-            width: MediaQuery.of(context).size.width,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(10),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.2),
-                  spreadRadius: 1,
-                  blurRadius: 1,
-                ),
-              ],
-            ),
-            margin: EdgeInsets.only(left: 35, right: 35),
-            padding: EdgeInsets.only(left: 15, right: 15, top: 10, bottom: 10),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  child: Text(
-                    "Layanan Konsultasi",
-                    style: TextStyle(
-                      fontFamily: "Brandon",
-                      fontWeight: FontWeight.w600,
-                      fontSize: 15,
-                    ),
-                  ),
-                ),
-                SizedBox(height: 10),
-                Container(
-                  child: Text(
-                    "Dolor enim sit amet ex pariatur ullamco adipisicing consequat occaecat irure officia dolor. Voluptate ad nostrud pariatur sit dolor irure incididunt proident. Non anim amet voluptate sint officia ut anim et magna aute cupidatat nisi eiusmod anim. Eu consectetur nostrud excepteur eu est cupidatat cillum irure mollit cillum. Minim sunt commodo in pariatur commodo qui adipisicing culpa.",
-                    style: TextStyle(
-                      fontFamily: "Brandon",
-                      fontWeight: FontWeight.w400,
-                      fontSize: 14,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          SizedBox(height: 10),
-          GestureDetector(
-            onTap: () {},
-            child: Container(
-              decoration: BoxDecoration(
-                color: Hexcolor("#F7866A"),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              padding: EdgeInsets.only(top: 8, bottom: 8),
-              margin: EdgeInsets.only(right: 35, left: 35),
               width: MediaQuery.of(context).size.width,
               child: Text(
                 "Yuk, Mulai Konsultasi",

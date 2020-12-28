@@ -85,7 +85,7 @@ class _QrisStateScreen extends State<QrisScreen> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Container(
-                child: Text("Pembayaran melaui "+widget.title,
+                child: Text("Pembayaran melalui "+widget.title,
                 style: TextStyle(
                   fontSize: 23,
                   fontFamily: 'Yeseva',

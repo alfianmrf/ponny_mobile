@@ -464,7 +464,7 @@ class _TambahAlamatStateScreen extends State<TambahAlamatScreen> {
                             "Kecamatan",
                             style: TextStyle(
                               fontFamily: "Brandon",
-                              fontSize: 15,
+                              fontSize: 17,
                               fontWeight: FontWeight.w300,
                             ),
                           ),
