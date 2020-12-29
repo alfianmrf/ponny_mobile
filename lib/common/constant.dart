@@ -242,16 +242,23 @@ Widget getProduct(context,Product product) => Column(
           ],
         ),
       ),
-      Container(
-        alignment: Alignment.bottomCenter,
+      InkWell(
+        onTap: (){
+          Navigator.push(context, new MaterialPageRoute(
+            builder: (BuildContext context) => new ProductDetailsScreen(product: product,),
+          ));
+        },
         child: Container(
-          width: MediaQuery.of(context).size.width,
-          child: const Text(
-            'TAMBAHKAN',
-            textAlign: TextAlign.center,
-            style: TextStyle(color: Colors.white, fontFamily: 'Brandon'),
+          alignment: Alignment.bottomCenter,
+          child: Container(
+            width: MediaQuery.of(context).size.width,
+            child: const Text(
+              'TAMBAHKAN',
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.white, fontFamily: 'Brandon'),
+            ),
+            color: Color(0xffF3C1B5),
           ),
-          color: Color(0xffF3C1B5),
         ),
       ),
       Padding(

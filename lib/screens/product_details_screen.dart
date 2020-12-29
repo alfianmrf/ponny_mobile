@@ -622,7 +622,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                 Container(
                                   padding: EdgeInsets.symmetric(horizontal: 7, vertical: 3),
                                   margin: EdgeInsets.only(right: 10),
-                                  child: Text(widget.product.nomer_bpom != null ? widget.product.nomer_bpom :"", style: TextStyle(fontSize: 12),),
+                                  child: Text(widget.product.nomer_bpom != null ? widget.product.nomer_bpom :"", style: TextStyle(fontSize: 12, fontFamily: 'Brandon'),),
                                   decoration: BoxDecoration(
                                       border: Border.all(color: Colors.black),
                                       borderRadius: BorderRadius.circular(5),
