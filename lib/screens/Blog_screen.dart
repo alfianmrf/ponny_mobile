@@ -353,7 +353,7 @@ class _BlogState extends State<Blog> {
                             child: loadingAll?Center(
                                 child:
                                 LoadingWidgetFadingCircle(context)) : categoryListBlog(
-                                context, listAll, categoryId)
+                                context, listAll.reversed.toList(), categoryId)
                         ),
                         Container(
                           margin: EdgeInsets.only(top: 30, bottom: 30),
