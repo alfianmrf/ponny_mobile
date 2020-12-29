@@ -12,6 +12,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:css_text/css_text.dart';
 import 'package:intl/intl.dart';
+import 'package:share/share.dart';
 
 import 'Blog_screen.dart';
 
@@ -397,7 +398,9 @@ class _BlogDetailScreenState extends State<BlogDetailScreen> {
                                       ),
                                     ),
                                     IconButton(
-                                      onPressed: (){},
+                                      onPressed: (){
+                                        Share.share(urlGlobal+'blog/artikel/'+widget.title['slug']);
+                                      },
                                       icon: Icon(Icons.share, color: Color(0xffF48262),),),
                                   ],
                                 ),
