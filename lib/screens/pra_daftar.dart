@@ -7,6 +7,7 @@ import 'package:flutter_twitter_login/flutter_twitter_login.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:ponny/common/constant.dart';
 import 'package:ponny/model/App.dart';
+import 'package:ponny/screens/Affiliate_Home_screen.dart';
 import 'package:ponny/screens/home_screen.dart';
 import 'package:ponny/screens/login.dart';
 import 'package:ponny/screens/login_otp.dart';
@@ -818,7 +819,7 @@ class _PraDaftarScreen extends State<PraDaftarScreen> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => LoginOTP(),
+                        builder: (context) => AffiliateHomeScreen(),
                       ),
                     );
                   },
