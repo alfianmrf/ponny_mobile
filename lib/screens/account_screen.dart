@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:intl/intl.dart';
 import 'package:percent_indicator/percent_indicator.dart';
@@ -11,6 +12,7 @@ import 'package:ponny/model/Address.dart';
 import 'package:ponny/model/App.dart';
 import 'package:ponny/model/Cart.dart';
 import 'package:ponny/model/Order.dart';
+import 'package:ponny/model/Product.dart';
 import 'package:ponny/model/User.dart';
 import 'package:ponny/screens/CallPage.dart';
 import 'package:ponny/screens/FAQ_screen.dart';
@@ -2060,12 +2062,14 @@ class _AccountScreenState extends State<AccountScreen> {
                                 .logout()
                                 .then((value) {
                               UIBlock.unblock(context);
-                              Navigator.pushReplacement(
-                                  context,
-                                  new MaterialPageRoute(
-                                    builder: (BuildContext context) =>
-                                    new HomeScreen(),
-                                  ));
+                              Phoenix.rebirth(context);
+                              // Provider.of<ProductModel>(context).getBestSell();
+                              // Navigator.pushReplacement(
+                              //     context,
+                              //     new MaterialPageRoute(
+                              //       builder: (BuildContext context) =>
+                              //       new HomeScreen(),
+                              //     ));
                             });
                           });
                         },

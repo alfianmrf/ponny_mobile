@@ -19,7 +19,7 @@ class Browse_Brands extends StatefulWidget {
 
 class _Browse_BrandsState extends State<Browse_Brands> {
   final _controller = ScrollController();
-  final _height = 500.0;
+  final _height = .000;
   bool LoadingBrand = true;
   List<Brand> listBrand =[];
   var alphabets = [];
@@ -47,7 +47,7 @@ class _Browse_BrandsState extends State<Browse_Brands> {
   }
 
 
-  _animateToIndex(i) => _controller.animateTo(_height * i,
+  _animateToIndex(i) => _controller.animateTo(i,
       duration: Duration(seconds: 2), curve: Curves.fastOutSlowIn);
   @override
   Widget build(BuildContext context) {
@@ -59,25 +59,33 @@ class _Browse_BrandsState extends State<Browse_Brands> {
             color: Hexcolor('#F48262'),
             borderRadius: BorderRadius.circular(10),
           ),
-          width: 20.0,
-          height: 400.0,
+          width: 38.0,
+          height: MediaQuery.of(context).size.height*0.7,
           child: ListView.builder(
               itemCount: alphabetsUniq.length,
               itemBuilder: (context, i) {
                 return new FlatButton(
                     onPressed: () {
-                      print(i);
-                      return _animateToIndex(i);
+                      //if(i == 0)
+                      int total =0;
+                      for(int v =0;v<i;v++){
+                        var a = alphabetsUniq.elementAt(v).toString().toUpperCase();
+                        var brands = listBrand.where((element) => element.name.startsWith(a)).toList();
+                        total+= brands.length;
+                      }
+
+                      var _height = 43.0; // MediaQuery.of(context).size.width*.102;
+                      return _animateToIndex(_height*total);
 
 
                     },
                     materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                    padding: EdgeInsets.symmetric(vertical: 3),
+                    padding: EdgeInsets.symmetric(vertical: 5),
                     height: 0,
                     child: Text(
                       alphabetsUniq[i],
                       style: TextStyle(
-                          fontSize: 12,
+                          fontSize: 14,
                           fontFamily: 'Brandon',
                           color: Colors.white),
                     ));

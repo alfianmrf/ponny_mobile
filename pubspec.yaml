@@ -73,6 +73,8 @@ dependencies:
   flutter_facebook_login:
   image_picker: ^0.6.7+14
   share: ^0.6.3+5
+  flutter_phoenix: ^0.1.0
+  firebase_messaging: ^7.0.3
 
 
 

@@ -162,6 +162,7 @@ class _SkincareState extends State<Skincare> {
       if(checked.length > 0){
         param.addAll({"scope": getOrdering()});
       }
+      print(param);
       Provider.of<ProductModel>(context).searchProduct(searchProductUrl, param).then((value){
         if(value != null){
           setState(() {
@@ -545,6 +546,8 @@ class _SkincareState extends State<Skincare> {
         result = "price_high_to_low";
       }else if(val  == "arga: Rendah - Tinggi"){
         result = "price_low_to_high";
+      }else{
+        result = "price_low_to_high";
       }
     }
     return result;
@@ -580,6 +583,9 @@ class _SkincareState extends State<Skincare> {
             if(_q.isNotEmpty){
               param.addAll({ "keyword":_q});
 
+            }
+            if(subKategorysearch>0){
+              param.addAll({ "subcategory_id": subKategorysearch});
             }
             if(_brandSelect.length>0){
               param.addAll({"brand_id": "["+_brandSelect.join(',')+"]"});

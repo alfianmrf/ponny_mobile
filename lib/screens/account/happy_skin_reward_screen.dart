@@ -10,6 +10,7 @@ import 'package:ponny/model/App.dart';
 import 'package:ponny/model/Cart.dart';
 import 'package:ponny/model/Product.dart';
 import 'package:ponny/model/ProductPoin.dart';
+import 'package:ponny/model/StockVariant.dart';
 import 'package:ponny/model/User.dart';
 import 'package:ponny/screens/Blog_Detail_screen.dart';
 import 'package:ponny/screens/account_screen.dart';
@@ -55,15 +56,40 @@ class _HappySkinRewardStateScreen extends State<HappySkinRewardScreen>
 
         setState(() {
         for(Map item in responseJson["lessThan200"]){
-          if(item["product"]!= null)
+
+          int s =0;
+          if(item["product"]!= null && item["product"]["stocks"] != null){
+            s= item["product"]["current_stock"];
+            item["product"]["stocks"].forEach((v) {
+              s+=v["qty"];
+            });
+          }
+          if(item["product"]!= null && s>0)
           lessThan200.add(ProductPoin(item["id"],item["jml_point"],Product.fromJson(item["product"]["availability"]),1));
         }
         for(Map item in responseJson["200to500"]){
-          if(item["product"]!= null)
+
+          int s =0;
+          if(item["product"]!= null && item["product"]["stocks"] != null){
+            s= item["product"]["current_stock"];
+            item["product"]["stocks"].forEach((v) {
+              s+=v["qty"];
+            });
+          }
+
+          if(item["product"]!= null && s>0)
           more200to500.add(ProductPoin(item["id"],item["jml_point"],Product.fromJson(item["product"]["availability"]),1));
         }
         for(Map item in responseJson["moreThan500"]){
-          if(item["product"]!= null)
+          int s =0;
+          if(item["product"] != null && item["product"]["stocks"] != null){
+            s= item["product"]["current_stock"];
+            item["product"]["stocks"].forEach((v) {
+              s+=v["qty"];
+            });
+          }
+
+          if(item["product"]!= null && s>0)
           moreThan500.add(ProductPoin(item["id"],item["jml_point"],Product.fromJson(item["product"]["availability"]),1));
         }
         loading =false;

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
+import 'package:ponny/common/PushNotificationsManager.dart';
 import 'package:ponny/model/Address.dart';
 import 'package:ponny/model/Cart.dart';
 import 'package:ponny/model/Category.dart';
@@ -110,27 +112,28 @@ import 'package:ponny/screens/account/hubungi_kami_screen.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  PushNotificationsManager().init();
   
 
   runApp(
-    MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (context) => AppModel()),
-        ChangeNotifierProvider(create: (context) => CategoryModel()),
-        ChangeNotifierProvider(create: (context) => SliderModel()),
-        ChangeNotifierProvider(create: (context) => ProductModel()),
-        ChangeNotifierProvider(create: (context) => CartModel()),
-        ChangeNotifierProvider(create: (context) => WishModel()),
-        ChangeNotifierProvider(create: (context) => AddressModel()),
-        ChangeNotifierProvider(create: (context) => OrderModel()),
-        ChangeNotifierProvider(create: (context) => UserModel()),
-        ChangeNotifierProvider(create: (context) => VoucherModel()),
-        ChangeNotifierProvider(create: (context) => ChatEmail()),
-        ChangeNotifierProvider(create: (context) => PostandComment()),
-
-       
-      ],
-      child: MyApp(),
+    Phoenix(
+      child:MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (context) => AppModel()),
+          ChangeNotifierProvider(create: (context) => CategoryModel()),
+          ChangeNotifierProvider(create: (context) => SliderModel()),
+          ChangeNotifierProvider(create: (context) => ProductModel()),
+          ChangeNotifierProvider(create: (context) => CartModel()),
+          ChangeNotifierProvider(create: (context) => WishModel()),
+          ChangeNotifierProvider(create: (context) => AddressModel()),
+          ChangeNotifierProvider(create: (context) => OrderModel()),
+          ChangeNotifierProvider(create: (context) => UserModel()),
+          ChangeNotifierProvider(create: (context) => VoucherModel()),
+          ChangeNotifierProvider(create: (context) => ChatEmail()),
+          ChangeNotifierProvider(create: (context) => PostandComment()),
+        ],
+        child: MyApp(),
+      ),
     ),
   );
 }

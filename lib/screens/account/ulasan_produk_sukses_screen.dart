@@ -9,6 +9,7 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:ponny/common/constant.dart';
 import 'package:ponny/model/App.dart';
 import 'package:ponny/model/Review.dart';
+import 'package:ponny/screens/product_details_screen.dart';
 import 'package:ponny/util/globalUrl.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
 import 'package:http/http.dart' as http;
@@ -112,132 +113,136 @@ class _UlasanProdukSuksesStateScreen extends State<UlasanProdukSuksesScreen> {
           return _buildProgressIndicator();
         }
         else {
-
-          return  Container(
-            margin: EdgeInsets.only(
-              top: 30,
-              left: 20,
-              right: 20,
-            ),
-            width: MediaQuery.of(context).size.width,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  child: Text(
-                    listReview[index].product.name,
-                    style: TextStyle(
-                      fontFamily: "Yeseva",
-                      fontSize: 20,
-                      fontWeight: FontWeight.w400,
+          return InkWell(
+            onTap: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context) => ProductDetailsScreen(product: listReview[index].product,)));
+            },
+            child: Container(
+              margin: EdgeInsets.only(
+                top: 30,
+                left: 20,
+                right: 20,
+              ),
+              width: MediaQuery.of(context).size.width,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    child: Text(
+                      listReview[index].product.name,
+                      style: TextStyle(
+                        fontFamily: "Yeseva",
+                        fontSize: 20,
+                        fontWeight: FontWeight.w400,
+                      ),
                     ),
                   ),
-                ),
-                Container(
-                  alignment: Alignment.centerLeft,
-                  margin: EdgeInsets.symmetric(vertical: 5),
-                  child: Text.rich(TextSpan(children: <InlineSpan>[
-                    WidgetSpan(
-                      child:  RatingBar.builder(
-                        initialRating: listReview[index].rating,
-                        minRating: 0,
-                        direction: Axis.horizontal,
-                        allowHalfRating: true,
-                        itemCount: 5,
-                        itemSize: 25.0,
-                        itemPadding: EdgeInsets.symmetric(horizontal: 1.0),
-                        itemBuilder: (context, index) => Icon(
-                          Icons.favorite,
-                          color: Color(0xffF48262),
-                        ),
-                        unratedColor: Color(0xffFBD2CD),
-                      ),
-                    ),
-                    WidgetSpan(
-                    child: Container(
-                      margin: EdgeInsets.only(left: 10),
-                      padding: EdgeInsets.symmetric(horizontal: 5),
-                      child: Text(
-                        listReview[index].rating.toString(),
-                        style: TextStyle(
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    margin: EdgeInsets.symmetric(vertical: 5),
+                    child: Text.rich(TextSpan(children: <InlineSpan>[
+                      WidgetSpan(
+                        child:  RatingBar.builder(
+                          initialRating: listReview[index].rating,
+                          minRating: 0,
+                          direction: Axis.horizontal,
+                          allowHalfRating: true,
+                          itemCount: 5,
+                          itemSize: 25.0,
+                          itemPadding: EdgeInsets.symmetric(horizontal: 1.0),
+                          itemBuilder: (context, index) => Icon(
+                            Icons.favorite,
                             color: Color(0xffF48262),
-                            fontSize: 18,
-                            fontWeight: FontWeight.w700,
-                            fontFamily: 'Brandon',
+                          ),
+                          unratedColor: Color(0xffFBD2CD),
                         ),
                       ),
-                    ),
-                    ),
-                    if(listReview[index].statusBeli == 1)
                       WidgetSpan(
                         child: Container(
                           margin: EdgeInsets.only(left: 10),
                           padding: EdgeInsets.symmetric(horizontal: 5),
                           child: Text(
-                            'Verified by Phoebe',
+                            listReview[index].rating.toString(),
                             style: TextStyle(
-                                fontFamily: 'Brandon',
-                                fontSize: 10
+                              color: Color(0xffF48262),
+                              fontSize: 18,
+                              fontWeight: FontWeight.w700,
+                              fontFamily: 'Brandon',
                             ),
-                          ),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(3),
-                          ),
-                        ),
-                      )
-                  ])),
-                ),
-                Container(
-                  margin: EdgeInsets.only(top: 10),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        child: Text(
-                          listReview[index].comment,
-                          style: TextStyle(
-                            fontFamily: "Brandon",
-                            fontWeight: FontWeight.w400,
-                            fontSize: 15,
                           ),
                         ),
                       ),
-                    ],
-                  ),
-                ),
-                if(listReview[index].photos.length>0)
-                ListView(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  children: [
-                    GridView.count(
-                        shrinkWrap: true,
-                        primary: true,
-                        physics:  const NeverScrollableScrollPhysics(),
-                        padding: const EdgeInsets.all(10.0),
-                        childAspectRatio: 100/140,
-                        crossAxisSpacing: 10.0,
-                        crossAxisCount: 3,
-                        children: <Widget>[
-                          for(String path in listReview[index].photos)Container(
-                            child: CachedNetworkImage(
-                              imageUrl: img_url+path,
-                              placeholder: (context, url) => LoadingWidgetPulse(context),
-                              errorWidget: (context, url, error) => Image.asset('assets/images/basic.jpg'),
-                              width: MediaQuery.of(context).size.width*0.15,
-                              fit: BoxFit.cover,
-                            )
+                      if(listReview[index].statusBeli == 1)
+                        WidgetSpan(
+                          child: Container(
+                            margin: EdgeInsets.only(left: 10),
+                            padding: EdgeInsets.symmetric(horizontal: 5),
+                            child: Text(
+                              'Verified by Phoebe',
+                              style: TextStyle(
+                                  fontFamily: 'Brandon',
+                                  fontSize: 10
+                              ),
+                            ),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(3),
+                            ),
                           ),
-                        ]),
-                  ],
-                ),
-                Container(
-                  margin: EdgeInsets.only(top: 20),
-                  height: 1,
-                  color: Color(0xffF48262),
-                ),
-              ],
+                        )
+                    ])),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(top: 10),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          child: Text(
+                            listReview[index].comment,
+                            style: TextStyle(
+                              fontFamily: "Brandon",
+                              fontWeight: FontWeight.w400,
+                              fontSize: 15,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  if(listReview[index].photos.length>0)
+                    ListView(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      children: [
+                        GridView.count(
+                            shrinkWrap: true,
+                            primary: true,
+                            physics:  const NeverScrollableScrollPhysics(),
+                            padding: const EdgeInsets.all(10.0),
+                            childAspectRatio: 100/140,
+                            crossAxisSpacing: 10.0,
+                            crossAxisCount: 3,
+                            children: <Widget>[
+                              for(String path in listReview[index].photos)Container(
+                                  child: CachedNetworkImage(
+                                    imageUrl: img_url+path,
+                                    placeholder: (context, url) => LoadingWidgetPulse(context),
+                                    errorWidget: (context, url, error) => Image.asset('assets/images/basic.jpg'),
+                                    width: MediaQuery.of(context).size.width*0.15,
+                                    fit: BoxFit.cover,
+                                  )
+                              ),
+                            ]),
+                      ],
+                    ),
+                  Container(
+                    margin: EdgeInsets.only(top: 20),
+                    height: 1,
+                    color: Color(0xffF48262),
+                  ),
+                ],
+              ),
             ),
           );
         }
