@@ -930,7 +930,7 @@ class _OrderScreenState extends State<OrderScreen> {
                       },
                     ) ,
                   ),
-                if(order.confrimResi!=null)
+                if(order.confrimResi!=null && order.deliveryStatus != "delivered" && order.deliveryStatus != "completed")
                   InkWell(
                     child: Container(
                       padding: EdgeInsets.only(left: 15, right: 15),

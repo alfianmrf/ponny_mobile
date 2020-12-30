@@ -329,8 +329,15 @@ Widget _buildList() {
                         UIBlock.block(context,customLoaderChild: LoadingWidget(context));
                         Provider.of<CartModel>(context).addProductToCart(_result[index].product, Provider.of<AppModel>(context).auth.access_token,null).then((value){
                           UIBlock.unblock(context);
-                          showAlertDialog(context, _result[index].product);
-
+                          if(value.statusCode == 200){
+                            showAlertDialog(context, _result[index].product);
+                          }else{
+                            final snackBar = SnackBar(
+                              content: Text(value.message,style: TextStyle(color: Colors.white)),
+                              backgroundColor: Colors.redAccent,
+                            );
+                            _scaffoldKey.currentState.showSnackBar(snackBar);
+                          }
                         });
                       },
                       child: Container(
