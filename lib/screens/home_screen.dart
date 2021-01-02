@@ -103,9 +103,12 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     // showModal();
-    _controller = ScrollController();
-    _controller.addListener(_scrollListener);
+
     WidgetsBinding.instance.addPostFrameCallback((_) async {
+      _controller = ScrollController();
+      if (_controller.hasClients) {
+        _controller.addListener(_scrollListener);
+      }
       _getCartOfitem();
       _getWishListCount();
     });

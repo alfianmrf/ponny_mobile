@@ -43,7 +43,7 @@ class _AffiliateUsStateScreen extends State<AffiliateUsScreen> {
           ),
         ),
         title:  Text(
-          'Affiliate',
+          'Jadi Rekan Phoebe',
           style: TextStyle(
             fontSize: 24,
             fontFamily: "Yeseva",
@@ -127,64 +127,51 @@ class _AffiliateUsStateScreen extends State<AffiliateUsScreen> {
               ],
             ),
             Container(
-              width: MediaQuery.of(context).size.width,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: Color(0xffF48262),
+                  width: 1,
+                ),
+                borderRadius: BorderRadius.circular(10),
+              ),
               // padding: EdgeInsets.only(top: 20, bottom: 20),
-              margin: EdgeInsets.only(top: 50),
+              margin: EdgeInsets.only(top: 50,right: 30, left: 30),
               child: Column(
                 children: [
                   Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: Color(0xffF48262),
-                        width: 1,
-                      ),
-                    ),
-                    margin: EdgeInsets.only(right: 30, left: 30),
+                    width: double.infinity,
                     padding: EdgeInsets.only(left: 15, top: 5, bottom: 5),
-                    child: Row(
-                      children: [
-                        Container(
-                          child: Text(
-                            "AFFILIATE URL",
-                            style: TextStyle(
-                              fontFamily: "Brandon",
-                              fontWeight: FontWeight.w600,
-                              fontSize: 13,
-                            ),
-                          ),
-                        )
-                      ],
+                    child: Container(
+                      width: double.infinity,
+                      child: Text(
+                        "AFFILIATE URL",
+                        style: TextStyle(
+                          fontFamily: "Brandon",
+                          fontWeight: FontWeight.w600,
+                          fontSize: 13,
+                        ),
+                      ),
                     ),
                   ),
                   Container(
+                    width: double.infinity,
                     decoration: BoxDecoration(
                       border: Border(
-                        bottom: BorderSide(
-                          color: Color(0xffF48262),
-                          width: 1,
-                        ),
-                        left: BorderSide(
-                          color: Color(0xffF48262),
-                          width: 1,
-                        ),
-                        right: BorderSide(
+                        top: BorderSide(
                           color: Color(0xffF48262),
                           width: 1,
                         ),
                       ),
                     ),
-                    margin: EdgeInsets.only(right: 30, left: 30),
                     padding: EdgeInsets.only(left: 15, top: 5, bottom: 5),
-                    child: Container(
-                      width:MediaQuery.of(context).size.width*.8,
-                      child: Text(
-                        afiliateUrl,
-                        style: TextStyle(
-                          fontFamily: "Brandon",
-                          fontWeight: FontWeight.w500,
-                          fontSize: 13,
-                          color: Colors.grey,
-                        ),
+                    child: Text(
+                      afiliateUrl,
+                      style: TextStyle(
+                        fontFamily: "Brandon",
+                        fontWeight: FontWeight.w500,
+                        fontSize: 13,
+                        color: Colors.grey,
                       ),
                     ),
                   ),
@@ -192,21 +179,23 @@ class _AffiliateUsStateScreen extends State<AffiliateUsScreen> {
               ),
             ),
             Container(
-              width: MediaQuery.of(context).size.width,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: Color(0xffF48262),
+                  width: 1,
+                ),
+                borderRadius: BorderRadius.circular(10),
+              ),
               // padding: EdgeInsets.only(top: 20, bottom: 20),
-              margin: EdgeInsets.only(top: 10),
+              margin: EdgeInsets.only(top: 10, left: 30, right: 30),
               child: Column(
                 children: [
                   Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: Color(0xffF48262),
-                        width: 1,
-                      ),
-                    ),
-                    margin: EdgeInsets.only(right: 30, left: 30),
-                    padding: EdgeInsets.only(left: 10, top: 5, bottom: 5),
+                    width: double.infinity,
+                    padding: EdgeInsets.only(left: 15, top: 5, bottom: 5),
                     child: Container(
+                      width: double.infinity,
                       child: Text(
                         "Salin tautan di bawah ini untuk digunakan di website mu",
                         style: TextStyle(
@@ -218,34 +207,23 @@ class _AffiliateUsStateScreen extends State<AffiliateUsScreen> {
                     ),
                   ),
                   Container(
+                    width: double.infinity,
                     decoration: BoxDecoration(
                       border: Border(
-                        bottom: BorderSide(
-                          color: Color(0xffF48262),
-                          width: 1,
-                        ),
-                        left: BorderSide(
-                          color: Color(0xffF48262),
-                          width: 1,
-                        ),
-                        right: BorderSide(
+                        top: BorderSide(
                           color: Color(0xffF48262),
                           width: 1,
                         ),
                       ),
                     ),
-                    margin: EdgeInsets.only(right: 30, left: 30),
                     padding: EdgeInsets.only(left: 15, top: 5, bottom: 5),
-                    child: Container(
-                      width:MediaQuery.of(context).size.width*.8,
-                      child: Text(
-                        link?ringkasUrl:afiliateUrl,
-                        style: TextStyle(
-                          fontFamily: "Brandon",
-                          fontWeight: FontWeight.w500,
-                          fontSize: 13,
-                          color: Colors.grey,
-                        ),
+                    child: Text(
+                      link?ringkasUrl:afiliateUrl,
+                      style: TextStyle(
+                        fontFamily: "Brandon",
+                        fontWeight: FontWeight.w500,
+                        fontSize: 13,
+                        color: Colors.grey,
                       ),
                     ),
                   ),
@@ -300,25 +278,20 @@ class _AffiliateUsStateScreen extends State<AffiliateUsScreen> {
               child: Container(
                 decoration: BoxDecoration(
                   color: Color(0xffF48262),
-                  borderRadius: BorderRadius.all(Radius.circular(4)),
+                  borderRadius: BorderRadius.all(Radius.circular(15)),
                 ),
                 margin: EdgeInsets.only(left: 30, right: 30, top: 20),
-                padding: EdgeInsets.all(10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      child: Text(
-                        "SALIN TAUTAN",
-                        style: TextStyle(
-                          fontFamily: "Brandon",
-                          fontWeight: FontWeight.w600,
-                          color: Colors.white,
-                          fontSize: 16,
-                        ),
-                      ),
+                padding: EdgeInsets.symmetric(vertical: 5, horizontal: 70),
+                child: Container(
+                  child: Text(
+                    "SALIN TAUTAN",
+                    style: TextStyle(
+                      fontFamily: "Brandon",
+                      fontWeight: FontWeight.w600,
+                      color: Colors.white,
+                      fontSize: 16,
                     ),
-                  ],
+                  ),
                 ),
               ),
             ),
