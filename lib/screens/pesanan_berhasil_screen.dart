@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:ponny/model/OrderResult.dart';
 import 'package:ponny/screens/account_screen.dart';
 import 'package:ponny/screens/konsultasi_screen.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
@@ -12,7 +13,8 @@ class PesananBerhasilScreen extends StatefulWidget {
 
   String code;
   int typeDigital;
-  PesananBerhasilScreen({Key key,this.code,this.typeDigital});
+  OrderResult nota;
+  PesananBerhasilScreen({Key key,this.code,this.typeDigital,this.nota});
 
   @override
   _PesananBerhasilScreenState createState() => _PesananBerhasilScreenState();
@@ -115,6 +117,37 @@ class _PesananBerhasilScreenState extends State<PesananBerhasilScreen> {
                       fontFamily: 'Brandon',
                       fontSize: 12,
                     ),
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.only(top: 20),
+                  child: Column(
+                    children: [
+                      Text(
+                        'Total Pembayaran Rp'+widget.nota.mitransRequest.grossAmount.substring(0, widget.nota.mitransRequest.grossAmount.lastIndexOf('.')),
+                        style: TextStyle(
+                          fontFamily: 'Brandon',
+                          fontSize: 12,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      Text(
+                        'Metode Pembayaran '+widget.nota.mitrans_val.mitrans_val,
+                        style: TextStyle(
+                          fontFamily: 'Brandon',
+                          fontSize: 12,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      // Text(
+                      //   'No Virtual '+widget.nota.mitransRequest.actions.toString(),
+                      //   style: TextStyle(
+                      //     fontFamily: 'Brandon',
+                      //     fontSize: 12,
+                      //   ),
+                      //   textAlign: TextAlign.center,
+                      // ),
+                    ],
                   ),
                 ),
                 Container(

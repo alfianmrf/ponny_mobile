@@ -65,7 +65,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                   }
                   else{
                     Navigator.pushAndRemoveUntil(context,new MaterialPageRoute(
-                      builder: (BuildContext context) => new PesananBerhasilScreen(code: value.orderCode,),
+                      builder: (BuildContext context) => new PesananBerhasilScreen(code: value.orderCode, nota: value),
                     ),(_) => false);
                   }
                 }else{
