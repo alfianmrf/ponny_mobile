@@ -52,15 +52,15 @@ class _PaymentVoucherScreenState extends State<PaymentVoucherScreen> {
         result =true;
           if(method == "qris"){
             Navigator.pushAndRemoveUntil(context,new MaterialPageRoute(
-              builder: (BuildContext context) => new QrisScreen(title: "QRIS",urlQR: value.mitransRequest.actions.firstWhere((element) => element.name == "generate-qr-code").url,type:QrisScreen.qris),
+              builder: (BuildContext context) => new QrisScreen(title: "QRIS",urlQR: value.mitransRequest.actions.firstWhere((element) => element.name == "generate-qr-code").url,type:QrisScreen.qris,typeDigital: 1),
             ),(_) => false);
           }else if(method == "ovo"){
             Navigator.pushAndRemoveUntil(context,new MaterialPageRoute(
-              builder: (BuildContext context) => new QrisScreen(title: "OVO",urlQR: value.mitransRequest.actions.firstWhere((element) => element.name == "generate-qr-code").url, type:QrisScreen.ovo),
+              builder: (BuildContext context) => new QrisScreen(title: "OVO",urlQR: value.mitransRequest.actions.firstWhere((element) => element.name == "generate-qr-code").url, type:QrisScreen.ovo,typeDigital: 1),
             ),(_) => false);
           }else if(method == "shopeepay"){
             Navigator.pushAndRemoveUntil(context,new MaterialPageRoute(
-              builder: (BuildContext context) => new QrisScreen(title: "SHOPEEPAY",urlQR: value.mitransRequest.actions.firstWhere((element) => element.name == "generate-qr-code").url,type:QrisScreen.shopee),
+              builder: (BuildContext context) => new QrisScreen(title: "SHOPEEPAY",urlQR: value.mitransRequest.actions.firstWhere((element) => element.name == "generate-qr-code").url,type:QrisScreen.shopee,typeDigital: 1),
             ),(_) => false);
           }
           else{

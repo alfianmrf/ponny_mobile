@@ -27,7 +27,24 @@ class _PesananBerhasilScreenState extends State<PesananBerhasilScreen> {
   }
 
   Future<bool> _onWillPop() async {
-    return  false;
+    if(widget.typeDigital == 1){
+      return Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => KonsultasiScreen(
+          ),
+        ),
+      );
+    }else{
+      return Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => OrderScreen(
+            type: OrderScreen.unpaid,
+          ),
+        ),
+      );
+    }
   }
 
   @override
