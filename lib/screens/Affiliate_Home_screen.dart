@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
 
@@ -387,6 +388,8 @@ Widget rectanglebutton(context, String subtext) {
   return ButtonTheme(
     padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
     child: FlatButton(
+      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+      padding: EdgeInsets.symmetric(vertical: 5),
       color: Hexcolor('#F48262'),
       onPressed: () {},
       child: Text(
@@ -412,67 +415,441 @@ Widget form_Influencer() {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            "Nama Lengkap*",
-            style: TextStyle(
-              fontSize: 15,
-              fontFamily: 'Brandon',
+          RichText(
+            text: TextSpan(
+              text: 'Nama Lengkap',
+              style: TextStyle(
+                fontSize: 15,
+                color: Colors.black,
+                fontFamily: 'Brandon',
+              ),
+              children: [
+                TextSpan(
+                  text: '*',
+                  style: TextStyle(
+                    color: Hexcolor('#F48262'),
+                  ),
+                ),
+              ],
             ),
           ),
-          daftar_TextField(
-            "",
-            null,
+          TextFormField(
+            style: TextStyle(
+              fontFamily: 'Brandon',
+              fontSize: 14,
+            ),
+            decoration: InputDecoration(
+              isDense: true,
+              contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              filled: true,
+              fillColor: Colors.white,
+              labelStyle: TextStyle(color: Colors.black),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: BorderSide(
+                  color: Hexcolor('#F48262'),
+                ),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: BorderSide(
+                  color: Hexcolor('#F48262'),
+                  width: 1.0,
+                ),
+              ),
+            ),
+            keyboardType: TextInputType.name,
+            validator: (String value) {
+              if (value.isEmpty) {
+                return 'Nama Lengkap tidak boleh kosong';
+              }
+            },
           ),
           Container(height: 10),
-          Text(
-            "Email*",
-            style: TextStyle(
-              fontSize: 15,
-              fontFamily: 'Brandon',
+          RichText(
+            text: TextSpan(
+              text: 'Email',
+              style: TextStyle(
+                fontSize: 15,
+                color: Colors.black,
+                fontFamily: 'Brandon',
+              ),
+              children: [
+                TextSpan(
+                  text: '*',
+                  style: TextStyle(
+                    color: Hexcolor('#F48262'),
+                  ),
+                ),
+              ],
             ),
           ),
-          daftar_TextField(
-            "",
-            null,
+          TextFormField(
+            style: TextStyle(
+              fontFamily: 'Brandon',
+              fontSize: 14,
+            ),
+            decoration: InputDecoration(
+              isDense: true,
+              contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              filled: true,
+              fillColor: Colors.white,
+              labelStyle: TextStyle(color: Colors.black),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: BorderSide(
+                  color: Hexcolor('#F48262'),
+                ),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: BorderSide(
+                  color: Hexcolor('#F48262'),
+                  width: 1.0,
+                ),
+              ),
+            ),
+            keyboardType: TextInputType.emailAddress,
+            validator: (String value) {
+              if (value.isEmpty) {
+                return 'Email tidak boleh kosong';
+              }
+            },
           ),
           Container(height: 10),
-          Text(
-            "Nomor Handphone(PIC)*",
-            style: TextStyle(
-              fontSize: 15,
-              fontFamily: 'Brandon',
+          RichText(
+            text: TextSpan(
+              text: 'Kata Sandi',
+              style: TextStyle(
+                fontSize: 15,
+                color: Colors.black,
+                fontFamily: 'Brandon',
+              ),
+              children: [
+                TextSpan(
+                  text: '*',
+                  style: TextStyle(
+                    color: Hexcolor('#F48262'),
+                  ),
+                ),
+              ],
             ),
           ),
-          daftar_TextField(
-            "",
-            null,
+          TextFormField(
+            obscureText: true,
+            style: TextStyle(
+              fontFamily: 'Brandon',
+              fontSize: 14,
+            ),
+            decoration: InputDecoration(
+              isDense: true,
+              contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              filled: true,
+              fillColor: Colors.white,
+              labelStyle: TextStyle(color: Colors.black),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: BorderSide(
+                  color: Hexcolor('#F48262'),
+                ),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: BorderSide(
+                  color: Hexcolor('#F48262'),
+                  width: 1.0,
+                ),
+              ),
+            ),
+            keyboardType: TextInputType.visiblePassword,
+            validator: (String value) {
+              if (value.isEmpty) {
+                return 'Kata Sandi tidak boleh kosong';
+              }
+              if (value.length<8) {
+                return 'Kata Sandi minimal 8 karakter';
+              }
+            },
           ),
           Container(height: 10),
-          Text(
-            "Nama Social Media*",
-            style: TextStyle(
-              fontSize: 15,
-              fontFamily: 'Brandon',
+          RichText(
+            text: TextSpan(
+              text: 'Konfirmasi Kata Sandi',
+              style: TextStyle(
+                fontSize: 15,
+                color: Colors.black,
+                fontFamily: 'Brandon',
+              ),
+              children: [
+                TextSpan(
+                  text: '*',
+                  style: TextStyle(
+                    color: Hexcolor('#F48262'),
+                  ),
+                ),
+              ],
             ),
           ),
-          daftar_TextField(
-            "Username",
-            Image.asset("assets/images/ponny.png"),
+          TextFormField(
+            obscureText: true,
+            style: TextStyle(
+              fontFamily: 'Brandon',
+              fontSize: 14,
+            ),
+            decoration: InputDecoration(
+              isDense: true,
+              contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              filled: true,
+              fillColor: Colors.white,
+              labelStyle: TextStyle(color: Colors.black),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: BorderSide(
+                  color: Hexcolor('#F48262'),
+                ),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: BorderSide(
+                  color: Hexcolor('#F48262'),
+                  width: 1.0,
+                ),
+              ),
+            ),
+            keyboardType: TextInputType.visiblePassword,
+            validator: (String value) {
+              if (value.isEmpty) {
+                return 'Konfirmasi Kata Sandi tidak boleh kosong';
+              }
+              if (value.length<8) {
+                return 'Konfirmasi Kata Sandi minimal 8 karakter';
+              }
+            },
           ),
           Container(height: 10),
-          daftar_TextField(
-            "Username",
-            Image.asset("assets/images/ponny.png"),
+          RichText(
+            text: TextSpan(
+              text: 'Nomor Handphone (PIC)',
+              style: TextStyle(
+                fontSize: 15,
+                color: Colors.black,
+                fontFamily: 'Brandon',
+              ),
+              children: [
+                TextSpan(
+                  text: '*',
+                  style: TextStyle(
+                    color: Hexcolor('#F48262'),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          TextFormField(
+            style: TextStyle(
+              fontFamily: 'Brandon',
+              fontSize: 14,
+            ),
+            decoration: InputDecoration(
+              isDense: true,
+              contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              filled: true,
+              fillColor: Colors.white,
+              labelStyle: TextStyle(color: Colors.black),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: BorderSide(
+                  color: Hexcolor('#F48262'),
+                ),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: BorderSide(
+                  color: Hexcolor('#F48262'),
+                  width: 1.0,
+                ),
+              ),
+            ),
+            keyboardType: TextInputType.phone,
+            validator: (String value) {
+              if (value.isEmpty) {
+                return 'Nomor Handphone (PIC) tidak boleh kosong';
+              }
+            },
           ),
           Container(height: 10),
-          daftar_TextField(
-            "Username",
-            Image.asset("assets/images/ponny.png"),
+          RichText(
+            text: TextSpan(
+              text: 'Nama Social Media',
+              style: TextStyle(
+                fontSize: 15,
+                color: Colors.black,
+                fontFamily: 'Brandon',
+              ),
+              children: [
+                TextSpan(
+                  text: '*',
+                  style: TextStyle(
+                    color: Hexcolor('#F48262'),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          TextFormField(
+            style: TextStyle(
+              fontFamily: 'Brandon',
+              fontSize: 14,
+            ),
+            decoration: InputDecoration(
+              prefixIcon: Container(
+                width: 45,
+                padding: EdgeInsets.symmetric(horizontal: 12.0),
+                child: FaIcon(FontAwesomeIcons.instagram, color: Hexcolor('#F48262'), size: 20,),
+              ),
+              prefixIconConstraints: BoxConstraints(
+                minWidth: 20,
+                minHeight: 20,
+              ),
+              hintText: 'Username',
+              hintStyle: TextStyle(color: Colors.black26),
+              isDense: true,
+              contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              filled: true,
+              fillColor: Colors.white,
+              labelStyle: TextStyle(color: Colors.black),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: BorderSide(
+                  color: Hexcolor('#F48262'),
+                ),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: BorderSide(
+                  color: Hexcolor('#F48262'),
+                  width: 1.0,
+                ),
+              ),
+            ),
+            keyboardType: TextInputType.name,
           ),
           Container(height: 10),
-          daftar_TextField(
-            "Username",
-            Image.asset("assets/images/ponny.png"),
+          TextFormField(
+            style: TextStyle(
+              fontFamily: 'Brandon',
+              fontSize: 14,
+            ),
+            decoration: InputDecoration(
+              prefixIcon: Container(
+                width: 45,
+                padding: EdgeInsets.symmetric(horizontal: 12.0),
+                child: FaIcon(FontAwesomeIcons.facebookF, color: Hexcolor('#F48262'), size: 20,),
+              ),
+              prefixIconConstraints: BoxConstraints(
+                minWidth: 20,
+                minHeight: 20,
+              ),
+              hintText: 'Username',
+              hintStyle: TextStyle(color: Colors.black26),
+              isDense: true,
+              contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              filled: true,
+              fillColor: Colors.white,
+              labelStyle: TextStyle(color: Colors.black),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: BorderSide(
+                  color: Hexcolor('#F48262'),
+                ),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: BorderSide(
+                  color: Hexcolor('#F48262'),
+                  width: 1.0,
+                ),
+              ),
+            ),
+            keyboardType: TextInputType.name,
+          ),
+          Container(height: 10),
+          TextFormField(
+            style: TextStyle(
+              fontFamily: 'Brandon',
+              fontSize: 14,
+            ),
+            decoration: InputDecoration(
+              prefixIcon: Container(
+                width: 45,
+                padding: EdgeInsets.symmetric(horizontal: 12.0),
+                child: FaIcon(FontAwesomeIcons.twitter, color: Hexcolor('#F48262'), size: 20,),
+              ),
+              prefixIconConstraints: BoxConstraints(
+                minWidth: 20,
+                minHeight: 20,
+              ),
+              hintText: 'Username',
+              hintStyle: TextStyle(color: Colors.black26),
+              isDense: true,
+              contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              filled: true,
+              fillColor: Colors.white,
+              labelStyle: TextStyle(color: Colors.black),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: BorderSide(
+                  color: Hexcolor('#F48262'),
+                ),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: BorderSide(
+                  color: Hexcolor('#F48262'),
+                  width: 1.0,
+                ),
+              ),
+            ),
+            keyboardType: TextInputType.name,
+          ),
+          Container(height: 10),
+          TextFormField(
+            style: TextStyle(
+              fontFamily: 'Brandon',
+              fontSize: 14,
+            ),
+            decoration: InputDecoration(
+              prefixIcon: Container(
+                width: 45,
+                padding: EdgeInsets.symmetric(horizontal: 12.0),
+                child: FaIcon(FontAwesomeIcons.youtube, color: Hexcolor('#F48262'), size: 20,),
+              ),
+              prefixIconConstraints: BoxConstraints(
+                minWidth: 20,
+                minHeight: 20,
+              ),
+              hintText: 'Username',
+              hintStyle: TextStyle(color: Colors.black26),
+              isDense: true,
+              contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              filled: true,
+              fillColor: Colors.white,
+              labelStyle: TextStyle(color: Colors.black),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: BorderSide(
+                  color: Hexcolor('#F48262'),
+                ),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: BorderSide(
+                  color: Hexcolor('#F48262'),
+                  width: 1.0,
+                ),
+              ),
+            ),
+            keyboardType: TextInputType.name,
           ),
           Container(height: 10),
           Text(
@@ -486,7 +863,7 @@ Widget form_Influencer() {
             children: [
               Radio(
                 activeColor: Color(0xffF48262),
-                value: "LakiLaki",
+                value: "Perempuan",
                 groupValue: genderValueInfluencer,
                 onChanged: (String value) {
                   setState(() {
@@ -503,7 +880,7 @@ Widget form_Influencer() {
               ),
               Radio(
                 activeColor: Color(0xffF48262),
-                value: "Perempuan",
+                value: "LakiLaki",
                 groupValue: genderValueInfluencer,
                 onChanged: (String value) {
                   setState(() {
