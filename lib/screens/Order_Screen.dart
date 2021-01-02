@@ -1042,9 +1042,10 @@ class _OrderScreenState extends State<OrderScreen> {
                                                   ),
                                                 ),
                                                 Container(
+                                                  height: 400,
                                                   color: Color(0xffFEF9F0),
                                                   padding: EdgeInsets.all(20),
-                                                  child: Column(
+                                                  child: ListView(
                                                       children: snapshot.data.result.manifest.map(
                                                               (e) => IntrinsicHeight(
                                                             child: Row(
