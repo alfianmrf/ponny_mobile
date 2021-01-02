@@ -542,7 +542,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                       children: <Widget>[
                         new Container(
                           padding: EdgeInsets.all(5),
-                          child: Icon(Icons.shopping_cart),
+                          child: ImageIcon(
+                            AssetImage('assets/images/home/cart.png')),
                         ),
                         if(jmlCard>0)
                           new Positioned(  // draw a red marble
