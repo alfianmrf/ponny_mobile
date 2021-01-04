@@ -17,6 +17,7 @@ import 'package:ponny/screens/home_screen.dart';
 import 'package:ponny/screens/login_otp.dart';
 import 'package:keyboard_attachable/keyboard_attachable.dart';
 import 'package:http/http.dart' as http;
+import 'package:ponny/screens/produk_rekomendasi_screen.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -514,12 +515,19 @@ class _SkinTypeStateScreen extends State<SkinTypeScreen> {
                               fontSize: 15,
                             ),
                           ),
-                          Text(
-                            'lihat selengkapnya',
-                            style: TextStyle(
-                              fontFamily: 'Brandon',
-                              fontSize: 12,
-                              decoration: TextDecoration.underline,
+                          GestureDetector(
+                            onTap: (){
+                              Navigator.push(context, new MaterialPageRoute(
+                                builder: (BuildContext context) => new ProdukRekomendasiScreen(),
+                              ));
+                            },
+                            child: Text(
+                              'lihat selengkapnya',
+                              style: TextStyle(
+                                fontFamily: 'Brandon',
+                                fontSize: 12,
+                                decoration: TextDecoration.underline,
+                              ),
                             ),
                           ),
                         ],
