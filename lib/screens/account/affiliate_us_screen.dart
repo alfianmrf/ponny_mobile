@@ -76,7 +76,7 @@ class _AffiliateUsStateScreen extends State<AffiliateUsScreen> {
                           color: Hexcolor('#FDEDE4'),
                           borderRadius: BorderRadius.all(Radius.circular(15)),
                         ),
-                        margin: EdgeInsets.only(right: 30, left: 30, top: 160),
+                        margin: EdgeInsets.only(right: 20, left: 20, top: 160),
                         height: 130,
                         width: MediaQuery.of(context).size.width,
                         child: Column(
@@ -129,6 +129,7 @@ class _AffiliateUsStateScreen extends State<AffiliateUsScreen> {
             Container(
               width: double.infinity,
               decoration: BoxDecoration(
+                color: Colors.white,
                 border: Border.all(
                   color: Color(0xffF48262),
                   width: 1,
@@ -136,12 +137,12 @@ class _AffiliateUsStateScreen extends State<AffiliateUsScreen> {
                 borderRadius: BorderRadius.circular(10),
               ),
               // padding: EdgeInsets.only(top: 20, bottom: 20),
-              margin: EdgeInsets.only(top: 50,right: 30, left: 30),
+              margin: EdgeInsets.only(top: 50,right: 20, left: 20),
               child: Column(
                 children: [
                   Container(
                     width: double.infinity,
-                    padding: EdgeInsets.only(left: 15, top: 5, bottom: 5),
+                    padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
                     child: Container(
                       width: double.infinity,
                       child: Text(
@@ -164,7 +165,7 @@ class _AffiliateUsStateScreen extends State<AffiliateUsScreen> {
                         ),
                       ),
                     ),
-                    padding: EdgeInsets.only(left: 15, top: 5, bottom: 5),
+                    padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
                     child: Text(
                       afiliateUrl,
                       style: TextStyle(
@@ -181,6 +182,7 @@ class _AffiliateUsStateScreen extends State<AffiliateUsScreen> {
             Container(
               width: double.infinity,
               decoration: BoxDecoration(
+                color: Colors.white,
                 border: Border.all(
                   color: Color(0xffF48262),
                   width: 1,
@@ -188,12 +190,12 @@ class _AffiliateUsStateScreen extends State<AffiliateUsScreen> {
                 borderRadius: BorderRadius.circular(10),
               ),
               // padding: EdgeInsets.only(top: 20, bottom: 20),
-              margin: EdgeInsets.only(top: 10, left: 30, right: 30),
+              margin: EdgeInsets.only(top: 10, left: 20, right: 20),
               child: Column(
                 children: [
                   Container(
                     width: double.infinity,
-                    padding: EdgeInsets.only(left: 15, top: 5, bottom: 5),
+                    padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
                     child: Container(
                       width: double.infinity,
                       child: Text(
@@ -216,7 +218,7 @@ class _AffiliateUsStateScreen extends State<AffiliateUsScreen> {
                         ),
                       ),
                     ),
-                    padding: EdgeInsets.only(left: 15, top: 5, bottom: 5),
+                    padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
                     child: Text(
                       link?ringkasUrl:afiliateUrl,
                       style: TextStyle(
@@ -231,7 +233,7 @@ class _AffiliateUsStateScreen extends State<AffiliateUsScreen> {
               ),
             ),
             Container(
-              margin: EdgeInsets.only(left: 30, right: 30),
+              margin: EdgeInsets.only(left: 20, right: 20),
               padding: EdgeInsets.only(top: 0, bottom: 0),
               child: Row(
                 children: [
@@ -280,7 +282,7 @@ class _AffiliateUsStateScreen extends State<AffiliateUsScreen> {
                   color: Color(0xffF48262),
                   borderRadius: BorderRadius.all(Radius.circular(15)),
                 ),
-                margin: EdgeInsets.only(left: 30, right: 30, top: 20),
+                margin: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
                 padding: EdgeInsets.symmetric(vertical: 5, horizontal: 70),
                 child: Container(
                   child: Text(
@@ -295,7 +297,672 @@ class _AffiliateUsStateScreen extends State<AffiliateUsScreen> {
                 ),
               ),
             ),
-            Container(height: 30,)
+            Container(
+              width: double.infinity,
+              margin: EdgeInsets.symmetric(horizontal: 20),
+              child: Text(
+                "Perolehan Kamu",
+                style: TextStyle(
+                  fontFamily: "Brandon",
+                  fontWeight: FontWeight.w600,
+                  fontSize: 13,
+                ),
+                textAlign: TextAlign.left,
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 15, vertical: 7),
+              child: Row(
+                children: [
+                  Expanded(
+                    flex: 1,
+                    child: Container(
+                      margin: EdgeInsets.symmetric(horizontal: 5),
+                      padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        border: Border.all(
+                          color: Color(0xffF48262),
+                          width: 1,
+                        ),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Sessions",
+                            style: TextStyle(
+                              fontFamily: "Brandon",
+                              fontSize: 12,
+                            ),
+                            textAlign: TextAlign.left,
+                          ),
+                          Text(
+                            "4.500",
+                            style: TextStyle(
+                              fontFamily: "Brandon",
+                            ),
+                            textAlign: TextAlign.left,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: Container(
+                      margin: EdgeInsets.symmetric(horizontal: 5),
+                      padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        border: Border.all(
+                          color: Color(0xffF48262),
+                          width: 1,
+                        ),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Yang Terpakai",
+                            style: TextStyle(
+                              fontFamily: "Brandon",
+                              fontSize: 12,
+                            ),
+                            textAlign: TextAlign.left,
+                          ),
+                          Text(
+                            "56",
+                            style: TextStyle(
+                              fontFamily: "Brandon",
+                            ),
+                            textAlign: TextAlign.left,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: Container(
+                      margin: EdgeInsets.symmetric(horizontal: 5),
+                      padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        border: Border.all(
+                          color: Color(0xffF48262),
+                          width: 1,
+                        ),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Pendapatan",
+                            style: TextStyle(
+                              fontFamily: "Brandon",
+                              fontSize: 12,
+                            ),
+                            textAlign: TextAlign.left,
+                          ),
+                          Text(
+                            "3.560.000",
+                            style: TextStyle(
+                              fontFamily: "Brandon",
+                            ),
+                            textAlign: TextAlign.left,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 20, vertical: 7),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                border: Border.all(
+                  color: Color(0xffF48262),
+                  width: 1,
+                ),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                        flex: 6,
+                        child: Container(
+                          padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Campaigns",
+                                style: TextStyle(
+                                  fontFamily: "Brandon",
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                                textAlign: TextAlign.left,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 3,
+                        child: Container(
+                          padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Status",
+                                style: TextStyle(
+                                  fontFamily: "Brandon",
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                                textAlign: TextAlign.left,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 5,
+                        child: Container(
+                          padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Pendapatan",
+                                style: TextStyle(
+                                  fontFamily: "Brandon",
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                                textAlign: TextAlign.left,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 4,
+                        child: Container(
+                          padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Total Penggunaan",
+                                style: TextStyle(
+                                  fontFamily: "Brandon",
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                                textAlign: TextAlign.left,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                      border: Border(
+                        top: BorderSide(
+                          color: Color(0xffF48262),
+                          width: 1,
+                        ),
+                      ),
+                    ),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          flex: 6,
+                          child: Container(
+                            padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Code",
+                                  style: TextStyle(
+                                    fontFamily: "Brandon",
+                                    fontSize: 11,
+                                  ),
+                                  textAlign: TextAlign.left,
+                                ),
+                                Text(
+                                  "PHOEBEXTITAN",
+                                  style: TextStyle(
+                                    fontFamily: "Brandon",
+                                    fontSize: 12,
+                                  ),
+                                  textAlign: TextAlign.left,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 3,
+                          child: Container(
+                            padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  padding: EdgeInsets.symmetric(horizontal: 5),
+                                  decoration: BoxDecoration(
+                                    color: Color(0xffF6DE6E),
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: Text(
+                                    "Active",
+                                    style: TextStyle(
+                                      fontFamily: "Brandon",
+                                      fontSize: 11,
+                                    ),
+                                    textAlign: TextAlign.left,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 5,
+                          child: Container(
+                            padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Rp 2.000.000",
+                                  style: TextStyle(
+                                    fontFamily: "Brandon",
+                                    fontSize: 12,
+                                  ),
+                                  textAlign: TextAlign.left,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 4,
+                          child: Container(
+                            padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "25",
+                                  style: TextStyle(
+                                    fontFamily: "Brandon",
+                                    fontSize: 12,
+                                  ),
+                                  textAlign: TextAlign.left,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                      border: Border(
+                        top: BorderSide(
+                          color: Color(0xffF48262),
+                          width: 1,
+                        ),
+                      ),
+                    ),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          flex: 6,
+                          child: Container(
+                            padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Code",
+                                  style: TextStyle(
+                                    fontFamily: "Brandon",
+                                    fontSize: 11,
+                                  ),
+                                  textAlign: TextAlign.left,
+                                ),
+                                Text(
+                                  "PHOEBEXTITAN",
+                                  style: TextStyle(
+                                    fontFamily: "Brandon",
+                                    fontSize: 12,
+                                  ),
+                                  textAlign: TextAlign.left,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 3,
+                          child: Container(
+                            padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  padding: EdgeInsets.symmetric(horizontal: 5),
+                                  decoration: BoxDecoration(
+                                    color: Color(0xffF6DE6E),
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: Text(
+                                    "Active",
+                                    style: TextStyle(
+                                      fontFamily: "Brandon",
+                                      fontSize: 11,
+                                    ),
+                                    textAlign: TextAlign.left,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 5,
+                          child: Container(
+                            padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Rp 2.000.000",
+                                  style: TextStyle(
+                                    fontFamily: "Brandon",
+                                    fontSize: 12,
+                                  ),
+                                  textAlign: TextAlign.left,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 4,
+                          child: Container(
+                            padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "25",
+                                  style: TextStyle(
+                                    fontFamily: "Brandon",
+                                    fontSize: 12,
+                                  ),
+                                  textAlign: TextAlign.left,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                      border: Border(
+                        top: BorderSide(
+                          color: Color(0xffF48262),
+                          width: 1,
+                        ),
+                      ),
+                    ),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          flex: 6,
+                          child: Container(
+                            padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Code",
+                                  style: TextStyle(
+                                    fontFamily: "Brandon",
+                                    fontSize: 11,
+                                  ),
+                                  textAlign: TextAlign.left,
+                                ),
+                                Text(
+                                  "PHOEBEXTITAN",
+                                  style: TextStyle(
+                                    fontFamily: "Brandon",
+                                    fontSize: 12,
+                                  ),
+                                  textAlign: TextAlign.left,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 3,
+                          child: Container(
+                            padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  padding: EdgeInsets.symmetric(horizontal: 5),
+                                  decoration: BoxDecoration(
+                                    color: Color(0xffF6DE6E),
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: Text(
+                                    "Active",
+                                    style: TextStyle(
+                                      fontFamily: "Brandon",
+                                      fontSize: 11,
+                                    ),
+                                    textAlign: TextAlign.left,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 5,
+                          child: Container(
+                            padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Rp 2.000.000",
+                                  style: TextStyle(
+                                    fontFamily: "Brandon",
+                                    fontSize: 12,
+                                  ),
+                                  textAlign: TextAlign.left,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 4,
+                          child: Container(
+                            padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "25",
+                                  style: TextStyle(
+                                    fontFamily: "Brandon",
+                                    fontSize: 12,
+                                  ),
+                                  textAlign: TextAlign.left,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                      border: Border(
+                        top: BorderSide(
+                          color: Color(0xffF48262),
+                          width: 1,
+                        ),
+                      ),
+                    ),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          flex: 6,
+                          child: Container(
+                            padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Code",
+                                  style: TextStyle(
+                                    fontFamily: "Brandon",
+                                    fontSize: 11,
+                                  ),
+                                  textAlign: TextAlign.left,
+                                ),
+                                Text(
+                                  "PHOEBEXTITAN",
+                                  style: TextStyle(
+                                    fontFamily: "Brandon",
+                                    fontSize: 12,
+                                  ),
+                                  textAlign: TextAlign.left,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 3,
+                          child: Container(
+                            padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  padding: EdgeInsets.symmetric(horizontal: 5),
+                                  decoration: BoxDecoration(
+                                    color: Color(0xffF06A4F),
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: Text(
+                                    "Finish",
+                                    style: TextStyle(
+                                      fontFamily: "Brandon",
+                                      fontSize: 11,
+                                    ),
+                                    textAlign: TextAlign.left,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 5,
+                          child: Container(
+                            padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Rp 2.000.000",
+                                  style: TextStyle(
+                                    fontFamily: "Brandon",
+                                    fontSize: 12,
+                                  ),
+                                  textAlign: TextAlign.left,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 4,
+                          child: Container(
+                            padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "25",
+                                  style: TextStyle(
+                                    fontFamily: "Brandon",
+                                    fontSize: 12,
+                                  ),
+                                  textAlign: TextAlign.left,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            InkWell(
+              onTap: (){},
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Color(0xffF48262),
+                  borderRadius: BorderRadius.all(Radius.circular(15)),
+                ),
+                margin: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                padding: EdgeInsets.symmetric(vertical: 5, horizontal: 30),
+                child: Container(
+                  child: Text(
+                    "CAIRKAN",
+                    style: TextStyle(
+                      fontFamily: "Brandon",
+                      fontWeight: FontWeight.w600,
+                      color: Colors.white,
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
       ),
