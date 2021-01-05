@@ -499,7 +499,24 @@ class _PraDaftarScreen extends State<PraDaftarScreen> {
                         ),
                       ),
                       child: IconButton(
-                        onPressed: () {},
+                        onPressed: ()  {
+                          UIBlock.block(context,customLoaderChild: LoadingWidgetFadingCircle(context));
+                          signInWithGoogle().then((value) {
+                            UIBlock.unblock(context);
+                            if(value){
+                              Navigator.pushNamedAndRemoveUntil(
+                                  context,
+                                  HomeScreen.id,(_) => false
+                              );
+                            }else{
+                              scaffoldKey.currentState.showSnackBar(snackBarError);
+                            }
+                          }).catchError((onError){
+                            UIBlock.unblock(context);
+                            scaffoldKey.currentState.showSnackBar(snackBarError);
+                          });
+
+                        },
                         icon: Image.asset("assets/images/googleLogo.png"),
                       ),
                     ),
@@ -572,7 +589,44 @@ class _PraDaftarScreen extends State<PraDaftarScreen> {
                                       ),
                                     ),
                                     child: IconButton(
-                                      onPressed: () {},
+                                      onPressed: () async {
+                                        UIBlock.block(context,
+                                            customLoaderChild:
+                                            LoadingWidgetFadingCircle(
+                                                context));
+
+                                        signInWithFacebook().then((value) {
+                                          UIBlock.unblock(context);
+                                          if (value) {
+                                            Navigator
+                                                .pushNamedAndRemoveUntil(
+                                                context,
+                                                HomeScreen.id,
+                                                    (_) => false);
+                                          } else {
+                                            scaffoldKey.currentState
+                                                .showSnackBar(
+                                                snackBarError);
+                                          }
+                                        }).catchError((onError) {
+                                          UIBlock.unblock(context);
+                                          scaffoldKey.currentState
+                                              .showSnackBar(snackBarError);
+                                        });
+
+                                        // Create a credential from the access token
+                                        // final FacebookAuthCredential facebookAuthCredential =
+                                        // FacebookAuthProvider.credential(result.token);
+                                        // final Facebookuser = await FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
+                                        // print(Facebookuser.user.uid);
+                                        // print("facebook");
+                                        // UIBlock.block(context,customLoaderChild: LoadingWidgetFadingCircle(context));
+                                        // signInWithFacebook().then((value) {
+                                        //   UIBlock.unblock(context);
+                                        // }).catchError((onError){
+                                        //   UIBlock.unblock(context);
+                                        // });
+                                      },
                                       icon: Image.asset(
                                           "assets/images/facebookLogo.png"),
                                     ),
@@ -664,7 +718,24 @@ class _PraDaftarScreen extends State<PraDaftarScreen> {
                             ),
                           ),
                           child: IconButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              UIBlock.block(context,customLoaderChild: LoadingWidgetFadingCircle(context));
+                              signInWithTwitter().then((value) {
+                                UIBlock.unblock(context);
+                                if(value){
+                                  Navigator.pushNamedAndRemoveUntil(
+                                      context,
+                                      HomeScreen.id,(_) => false
+                                  );
+                                }else{
+                                  scaffoldKey.currentState.showSnackBar(snackBarError);
+                                }
+                              }).catchError((onError){
+                                UIBlock.unblock(context);
+                                scaffoldKey.currentState.showSnackBar(snackBarError);
+                              });
+
+                            },
                             icon: Image.asset("assets/images/twitter.png"),
                           ),
                         ),
@@ -736,7 +807,14 @@ class _PraDaftarScreen extends State<PraDaftarScreen> {
                             ),
                           ),
                           child: IconButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => LoginOTP(false),
+                                ),
+                              );
+                            },
                             icon: Icon(
                               Icons.phone_android,
                               color: Hexcolor('#F48262'),
@@ -751,7 +829,7 @@ class _PraDaftarScreen extends State<PraDaftarScreen> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => LoginOTP(),
+                                builder: (context) => LoginOTP(false),
                               ),
                             );
                           },

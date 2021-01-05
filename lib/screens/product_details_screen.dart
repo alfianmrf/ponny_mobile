@@ -150,12 +150,18 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
       backgroundColor: Color(0xfffdf8f0),
       contentPadding: EdgeInsets.all(5.0),
       children: <Widget>[
+        Align(
+          alignment: Alignment.centerRight,
+          child: IconButton(
+              icon: Icon(Icons.close),
+              color: Color(0xffF48262),
+              onPressed: () {
+                Navigator.of(context).pop();
+              }),
+        ),
         Container(
-          padding: EdgeInsets.only(top: 30),
-          child: Icon(
-            Icons.shopping_cart,
-            color: Color(0xffF48262),
-            size: 40,
+          child: ImageIcon(
+            AssetImage('assets/images/home/cart.png'),color: Color(0xffF48262),size: 30,
           ),
         ),
         Padding(

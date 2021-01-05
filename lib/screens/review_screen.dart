@@ -142,7 +142,7 @@ class _ReviewStateScreen extends State<ReviewScreen> {
             preferredSize: Size.fromHeight(1.0)
         ),
       ),
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       backgroundColor: Hexcolor('#FCF8F0'),
       body: Container(
         child: SingleChildScrollView(
@@ -160,58 +160,60 @@ class _ReviewStateScreen extends State<ReviewScreen> {
                             img_url+widget.product.thumbnail_image,
                             width: 80,
                           ),
-                          Container(
-                            margin: EdgeInsets.only(left: 10),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  widget.product.brand.name,
-                                  style: TextStyle(
-                                    fontFamily: 'Yeseva',
-                                    fontSize: 20,
-                                  ),
-                                ),
-                                Container(
-                                  width: MediaQuery.of(context).size.width*.7,
-                                  child: Text(
-                                    widget.product.name,
+                          Expanded(
+                            child: Container(
+                              margin: EdgeInsets.only(left: 10),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    widget.product.brand.name,
                                     style: TextStyle(
-                                      fontFamily: 'Brandon',
+                                      fontFamily: 'Yeseva',
                                       fontSize: 20,
                                     ),
                                   ),
-                                ),
-                              for(Varian item in widget.product.varian)(
-                              Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Container(
-                                    padding: EdgeInsets.only(top: 9.0),
-                                    child: Row(
-                                      children: <Widget>[
-                                        Text(item.atribut_name+" :"),
-                                        for(String xitem in item.values)(
-                                            Container(
-                                              margin: EdgeInsets.symmetric(horizontal: 7),
-                                              padding: EdgeInsets.symmetric(horizontal: 7),
-                                              child: Text(
-                                                xitem,
-                                                style: TextStyle(
-                                                    color: Colors.black,
-                                                    fontFamily: 'Brandon'
-                                                ),
-                                              ),
-                                              decoration: BoxDecoration(
-                                                border: Border.all(color: Color(0xffF48262)),
-                                                borderRadius: BorderRadius.circular(5),
-                                              ),
-                                            )
-                                        )
-                                      ],
+                                  Container(
+                                    width: MediaQuery.of(context).size.width*.7,
+                                    child: Text(
+                                      widget.product.name,
+                                      style: TextStyle(
+                                        fontFamily: 'Brandon',
+                                        fontSize: 20,
+                                      ),
                                     ),
-                                  )
-                              ))
-                              ],
+                                  ),
+                                for(Varian item in widget.product.varian)(
+                                Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Container(
+                                      padding: EdgeInsets.only(top: 9.0),
+                                      child: Row(
+                                        children: <Widget>[
+                                          Text(item.atribut_name+" :", style: TextStyle(fontFamily: 'Brandon'),),
+                                          for(String xitem in item.values)(
+                                              Container(
+                                                margin: EdgeInsets.symmetric(horizontal: 7),
+                                                padding: EdgeInsets.symmetric(horizontal: 7),
+                                                child: Text(
+                                                  xitem,
+                                                  style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontFamily: 'Brandon'
+                                                  ),
+                                                ),
+                                                decoration: BoxDecoration(
+                                                  border: Border.all(color: Color(0xffF48262)),
+                                                  borderRadius: BorderRadius.circular(5),
+                                                ),
+                                              )
+                                          )
+                                        ],
+                                      ),
+                                    )
+                                ))
+                                ],
+                              ),
                             ),
                           ),
                         ],
@@ -412,6 +414,7 @@ class _ReviewStateScreen extends State<ReviewScreen> {
                       maxLines: 6,
                       cursorColor: Color(0xffF48262),
                       keyboardType: TextInputType.multiline,
+
                       style: TextStyle(
                         fontFamily: 'Brandon',
                         fontSize: 12,
