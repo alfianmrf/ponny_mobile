@@ -1291,82 +1291,91 @@ class _OrderScreenState extends State<OrderScreen> {
         Container(
           padding: EdgeInsets.symmetric(vertical: 10.0),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              GestureDetector(
-                onTap: () {
-                  Navigator.of(context).pop();
-                },
+              Expanded(
+                flex: 1,
                 child: Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: Color(0xffF3C1B5),
-                    ),
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(5),
-                    ),
-                  ),
-                  width: 160,
-                  height: 35,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        child: Text(
-                          "NANTI SAJA",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontFamily: "Brandon",
-                            color: Color(0xffF48262),
-                            fontSize: 15,
-                          ),
+                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Color(0xffF3C1B5),
+                        ),
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(5),
                         ),
                       ),
-                    ],
+                      height: 35,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            child: Text(
+                              "NANTI SAJA",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontFamily: "Brandon",
+                                color: Color(0xffF48262),
+                                fontSize: 15,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
                 ),
               ),
-              GestureDetector(
-                onTap: () {
-                  UIBlock.block(context,customLoaderChild: LoadingWidgetFadingCircle(context));
-                  Provider.of<OrderModel>(context,listen: false).konfirmasiTerima(Provider.of<AppModel>(context,listen: false).auth.access_token, order.id.toString()).then((value){
-                    UIBlock.unblock(context);
-                    Navigator.of(context).pop();
-                    _getData();
-                  }).catchError((onError){
-                    UIBlock.unblock(context);
-                    Navigator.of(context).pop();
-                    print(onError);
-                  });
-
-                },
+              Expanded(
+                flex: 1,
                 child: Container(
-                  decoration: BoxDecoration(
-                    // border: Border.all(
-                    //   color: Colors.red[500],
-                    // ),
-                    color: Color(0xffF48262),
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(5),
-                    ),
-                  ),
-                  width: 160,
-                  height: 35,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        child: Text(
-                          "KONFIRMASI",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontFamily: "Brandon",
-                            color: Colors.white,
-                            fontSize: 15,
-                          ),
+                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  child: GestureDetector(
+                    onTap: () {
+                      UIBlock.block(context,customLoaderChild: LoadingWidgetFadingCircle(context));
+                      Provider.of<OrderModel>(context,listen: false).konfirmasiTerima(Provider.of<AppModel>(context,listen: false).auth.access_token, order.id.toString()).then((value){
+                        UIBlock.unblock(context);
+                        Navigator.of(context).pop();
+                        _getData();
+                      }).catchError((onError){
+                        UIBlock.unblock(context);
+                        Navigator.of(context).pop();
+                        print(onError);
+                      });
+
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        // border: Border.all(
+                        //   color: Colors.red[500],
+                        // ),
+                        color: Color(0xffF48262),
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(5),
                         ),
                       ),
-                    ],
+                      height: 35,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            child: Text(
+                              "KONFIRMASI",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontFamily: "Brandon",
+                                color: Colors.white,
+                                fontSize: 15,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
                 ),
               ),
