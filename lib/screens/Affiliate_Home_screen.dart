@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
 
@@ -13,7 +15,8 @@ class AffiliateHomeScreen extends StatefulWidget {
 class _AffiliateHomeScreenState extends State<AffiliateHomeScreen>
     with SingleTickerProviderStateMixin {
   bool login = false;
-  bool regist = false;
+  bool regist = true;
+  bool menu = true;
   bool daftarInfluencer = false;
   bool daftarBrand = false;
   bool vision = true;
@@ -26,7 +29,8 @@ class _AffiliateHomeScreenState extends State<AffiliateHomeScreen>
           login = false;
           daftarInfluencer = false;
           daftarBrand = false;
-          regist = false;
+          regist = true;
+          menu = true;
         });
       },
       child: Scaffold(
@@ -56,7 +60,7 @@ class _AffiliateHomeScreenState extends State<AffiliateHomeScreen>
                       ),
                       Container(
                         child: Text(
-                          "Affiliate With Us",
+                          menu ? "Affiliate With Us" : "Daftar",
                           style: TextStyle(
                             fontSize: 24,
                             fontFamily: "Yeseva",
@@ -86,49 +90,50 @@ class _AffiliateHomeScreenState extends State<AffiliateHomeScreen>
                         ),
                         Column(
                           children: [
-                            AnimatedSize(
-                              duration: Duration(milliseconds: 150),
-                              curve: Curves.fastOutSlowIn,
-                              child: Container(
-                                width: double.infinity,
-                                margin: EdgeInsets.fromLTRB(20, 180, 20, 0),
-                                padding: EdgeInsets.all(20),
-                                decoration: BoxDecoration(
-                                  color: Color(0xffF3C1B5),
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(10),
+                            Container(
+                              width: double.infinity,
+                              margin: EdgeInsets.fromLTRB(20, 180, 20, 0),
+                              padding: EdgeInsets.all(20),
+                              decoration: BoxDecoration(
+                                color: Color(0xffFCF6F0),
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(20),
+                                ),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey.withOpacity(0.2),
+                                    spreadRadius: 1,
+                                    blurRadius: 1,// changes position of shadow
                                   ),
-                                ),
-                                child: Column(
-                                  children: [
-                                    Text(
-                                      "Yuk Join \ndan Dapatkan Keuntungan",
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        fontFamily: "Yeseva",
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                    Text(
-                                      'Isi formulir di bawah ini dan Tim Phoebe akan menghubungi kalian lebih lanjut',
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        fontFamily: 'Brandon',
-                                        fontSize: 14,
-                                      ),
-                                    ),
-                                    Container(height: 20),
-                                    daftarInfluencer
-                                        ? form_Influencer()
-                                        : daftarBrand
-                                            ? form_Brands()
-                                            : Container()
-                                  ],
-                                ),
+                                ],
                               ),
-                              vsync: this,
+                              child: Column(
+                                children: [
+                                  Text(
+                                    "Yuk Join \ndan Dapatkan Keuntungan",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      fontFamily: "Yeseva",
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                  Text(
+                                    'Isi formulir di bawah ini dan Tim Phoebe akan menghubungi kamu lebih lanjut',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontFamily: 'Brandon',
+                                      fontSize: 14,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
+                            daftarInfluencer
+                                ? form_Influencer()
+                                : daftarBrand
+                                ? form_Brands()
+                                : Container(),
                             login
                                 ? Container(
                                     margin: EdgeInsets.fromLTRB(20, 20, 20, 0),
@@ -142,7 +147,6 @@ class _AffiliateHomeScreenState extends State<AffiliateHomeScreen>
                                               fontSize: 14,
                                               fontFamily: 'Brandon',
                                               fontWeight: FontWeight.w800,
-                                              letterSpacing: 1,
                                               color: Colors.black),
                                         ),
                                         Text(
@@ -151,7 +155,6 @@ class _AffiliateHomeScreenState extends State<AffiliateHomeScreen>
                                               fontSize: 14,
                                               fontFamily: 'Brandon',
                                               fontWeight: FontWeight.w800,
-                                              letterSpacing: 1,
                                               color: Colors.black),
                                         ),
                                         Container(height: 10),
@@ -237,7 +240,6 @@ class _AffiliateHomeScreenState extends State<AffiliateHomeScreen>
                                                 fontSize: 14,
                                                 fontFamily: 'Brandon',
                                                 color: Colors.grey,
-                                                letterSpacing: 1,
                                               ),
                                             ),
                                           ),
@@ -250,7 +252,7 @@ class _AffiliateHomeScreenState extends State<AffiliateHomeScreen>
                                       ],
                                     ),
                                   )
-                                : regist
+                                : menu
                                     ? Container(
                                         margin: EdgeInsets.only(top: 20),
                                         child: Row(
@@ -273,6 +275,7 @@ class _AffiliateHomeScreenState extends State<AffiliateHomeScreen>
                                                     daftarInfluencer =
                                                         !daftarInfluencer;
                                                     daftarBrand = false;
+                                                    menu = false;
                                                   });
                                                 },
                                                 child:
@@ -294,6 +297,7 @@ class _AffiliateHomeScreenState extends State<AffiliateHomeScreen>
                                                   setState(() {
                                                     daftarBrand = !daftarBrand;
                                                     daftarInfluencer = false;
+                                                    menu = false;
                                                   });
                                                 },
                                                 child: Icon(Icons.business),
@@ -302,7 +306,7 @@ class _AffiliateHomeScreenState extends State<AffiliateHomeScreen>
                                           ],
                                         ),
                                       )
-                                    : Container(
+                                    : /*Container(
                                         margin: EdgeInsets.only(top: 20),
                                         child: Row(
                                           mainAxisAlignment:
@@ -325,7 +329,6 @@ class _AffiliateHomeScreenState extends State<AffiliateHomeScreen>
                                                       fontFamily: 'Brandon',
                                                       fontWeight:
                                                           FontWeight.w800,
-                                                      letterSpacing: 1,
                                                       color: Colors.white),
                                                 ),
                                               ),
@@ -353,7 +356,6 @@ class _AffiliateHomeScreenState extends State<AffiliateHomeScreen>
                                                       fontFamily: 'Brandon',
                                                       fontWeight:
                                                           FontWeight.w800,
-                                                      letterSpacing: 1,
                                                       color: Colors.white),
                                                 ),
                                               ),
@@ -366,7 +368,7 @@ class _AffiliateHomeScreenState extends State<AffiliateHomeScreen>
                                             )
                                           ],
                                         ),
-                                      ),
+                                      ),*/
                             Container(height: 30),
                           ],
                         ),
@@ -384,9 +386,11 @@ class _AffiliateHomeScreenState extends State<AffiliateHomeScreen>
 
 Widget rectanglebutton(context, String subtext) {
   return ButtonTheme(
-    buttonColor: Hexcolor('#F48262'),
     padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
-    child: RaisedButton(
+    child: FlatButton(
+      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+      padding: EdgeInsets.symmetric(vertical: 5),
+      color: Hexcolor('#F48262'),
       onPressed: () {},
       child: Text(
         subtext,
@@ -394,13 +398,11 @@ Widget rectanglebutton(context, String subtext) {
             fontSize: 14,
             fontFamily: 'Brandon',
             fontWeight: FontWeight.w800,
-            letterSpacing: 1,
             color: Colors.white),
       ),
     ),
     shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(5.0),
-      side: BorderSide(color: Hexcolor('#F48262')),
+      borderRadius: BorderRadius.circular(10.0),
     ),
   );
 }
@@ -408,126 +410,496 @@ Widget rectanglebutton(context, String subtext) {
 Widget form_Influencer() {
   String genderValueInfluencer;
   return StatefulBuilder(builder: (BuildContext context, StateSetter setState) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          "Nama Lengkap*",
-          style: TextStyle(
-            fontSize: 15,
-            fontFamily: 'Brandon',
-            letterSpacing: 1,
-          ),
-        ),
-        daftar_TextField(
-          "",
-          null,
-        ),
-        Container(height: 10),
-        Text(
-          "Email*",
-          style: TextStyle(
-            fontSize: 15,
-            fontFamily: 'Brandon',
-            letterSpacing: 1,
-          ),
-        ),
-        daftar_TextField(
-          "",
-          null,
-        ),
-        Container(height: 10),
-        Text(
-          "Nomor Handphone(PIC)*",
-          style: TextStyle(
-            fontSize: 15,
-            fontFamily: 'Brandon',
-            letterSpacing: 1,
-          ),
-        ),
-        daftar_TextField(
-          "",
-          null,
-        ),
-        Container(height: 10),
-        Text(
-          "Nama Social Media*",
-          style: TextStyle(
-            fontSize: 15,
-            fontFamily: 'Brandon',
-            letterSpacing: 1,
-          ),
-        ),
-        daftar_TextField(
-          "Username",
-          Image.asset("assets/images/ponny.png"),
-        ),
-        Container(height: 10),
-        daftar_TextField(
-          "Username",
-          Image.asset("assets/images/ponny.png"),
-        ),
-        Container(height: 10),
-        daftar_TextField(
-          "Username",
-          Image.asset("assets/images/ponny.png"),
-        ),
-        Container(height: 10),
-        daftar_TextField(
-          "Username",
-          Image.asset("assets/images/ponny.png"),
-        ),
-        Container(height: 10),
-        Text(
-          "Jenis Kelamin",
-          style: TextStyle(
-            fontSize: 15,
-            fontFamily: 'Brandon',
-            letterSpacing: 1,
-          ),
-        ),
-        Row(
-          children: [
-            Radio(
-              activeColor: Color(0xffF48262),
-              value: "LakiLaki",
-              groupValue: genderValueInfluencer,
-              onChanged: (String value) {
-                setState(() {
-                  genderValueInfluencer = value;
-                });
-              },
-            ),
-            Text(
-              "Perempuan",
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          RichText(
+            text: TextSpan(
+              text: 'Nama Lengkap',
               style: TextStyle(
                 fontSize: 15,
+                color: Colors.black,
                 fontFamily: 'Brandon',
-                letterSpacing: 1,
+              ),
+              children: [
+                TextSpan(
+                  text: '*',
+                  style: TextStyle(
+                    color: Hexcolor('#F48262'),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          TextFormField(
+            style: TextStyle(
+              fontFamily: 'Brandon',
+              fontSize: 14,
+            ),
+            decoration: InputDecoration(
+              isDense: true,
+              contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              filled: true,
+              fillColor: Colors.white,
+              labelStyle: TextStyle(color: Colors.black),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: BorderSide(
+                  color: Hexcolor('#F48262'),
+                ),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: BorderSide(
+                  color: Hexcolor('#F48262'),
+                  width: 1.0,
+                ),
               ),
             ),
-            Radio(
-              activeColor: Color(0xffF48262),
-              value: "Perempuan",
-              groupValue: genderValueInfluencer,
-              onChanged: (String value) {
-                setState(() {
-                  genderValueInfluencer = value;
-                });
-              },
-            ),
-            Text(
-              "Laki-Laki",
+            keyboardType: TextInputType.name,
+            validator: (String value) {
+              if (value.isEmpty) {
+                return 'Nama Lengkap tidak boleh kosong';
+              }
+            },
+          ),
+          Container(height: 10),
+          RichText(
+            text: TextSpan(
+              text: 'Email',
               style: TextStyle(
                 fontSize: 15,
+                color: Colors.black,
                 fontFamily: 'Brandon',
-                letterSpacing: 1,
+              ),
+              children: [
+                TextSpan(
+                  text: '*',
+                  style: TextStyle(
+                    color: Hexcolor('#F48262'),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          TextFormField(
+            style: TextStyle(
+              fontFamily: 'Brandon',
+              fontSize: 14,
+            ),
+            decoration: InputDecoration(
+              isDense: true,
+              contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              filled: true,
+              fillColor: Colors.white,
+              labelStyle: TextStyle(color: Colors.black),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: BorderSide(
+                  color: Hexcolor('#F48262'),
+                ),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: BorderSide(
+                  color: Hexcolor('#F48262'),
+                  width: 1.0,
+                ),
               ),
             ),
-          ],
-        ),
-        rectanglebutton(context, "KIRIM")
-      ],
+            keyboardType: TextInputType.emailAddress,
+            validator: (String value) {
+              if (value.isEmpty) {
+                return 'Email tidak boleh kosong';
+              }
+            },
+          ),
+          Container(height: 10),
+          RichText(
+            text: TextSpan(
+              text: 'Kata Sandi',
+              style: TextStyle(
+                fontSize: 15,
+                color: Colors.black,
+                fontFamily: 'Brandon',
+              ),
+              children: [
+                TextSpan(
+                  text: '*',
+                  style: TextStyle(
+                    color: Hexcolor('#F48262'),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          TextFormField(
+            obscureText: true,
+            style: TextStyle(
+              fontFamily: 'Brandon',
+              fontSize: 14,
+            ),
+            decoration: InputDecoration(
+              isDense: true,
+              contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              filled: true,
+              fillColor: Colors.white,
+              labelStyle: TextStyle(color: Colors.black),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: BorderSide(
+                  color: Hexcolor('#F48262'),
+                ),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: BorderSide(
+                  color: Hexcolor('#F48262'),
+                  width: 1.0,
+                ),
+              ),
+            ),
+            keyboardType: TextInputType.visiblePassword,
+            validator: (String value) {
+              if (value.isEmpty) {
+                return 'Kata Sandi tidak boleh kosong';
+              }
+              if (value.length<8) {
+                return 'Kata Sandi minimal 8 karakter';
+              }
+            },
+          ),
+          Container(height: 10),
+          RichText(
+            text: TextSpan(
+              text: 'Konfirmasi Kata Sandi',
+              style: TextStyle(
+                fontSize: 15,
+                color: Colors.black,
+                fontFamily: 'Brandon',
+              ),
+              children: [
+                TextSpan(
+                  text: '*',
+                  style: TextStyle(
+                    color: Hexcolor('#F48262'),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          TextFormField(
+            obscureText: true,
+            style: TextStyle(
+              fontFamily: 'Brandon',
+              fontSize: 14,
+            ),
+            decoration: InputDecoration(
+              isDense: true,
+              contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              filled: true,
+              fillColor: Colors.white,
+              labelStyle: TextStyle(color: Colors.black),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: BorderSide(
+                  color: Hexcolor('#F48262'),
+                ),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: BorderSide(
+                  color: Hexcolor('#F48262'),
+                  width: 1.0,
+                ),
+              ),
+            ),
+            keyboardType: TextInputType.visiblePassword,
+            validator: (String value) {
+              if (value.isEmpty) {
+                return 'Konfirmasi Kata Sandi tidak boleh kosong';
+              }
+              if (value.length<8) {
+                return 'Konfirmasi Kata Sandi minimal 8 karakter';
+              }
+            },
+          ),
+          Container(height: 10),
+          RichText(
+            text: TextSpan(
+              text: 'Nomor Handphone (PIC)',
+              style: TextStyle(
+                fontSize: 15,
+                color: Colors.black,
+                fontFamily: 'Brandon',
+              ),
+              children: [
+                TextSpan(
+                  text: '*',
+                  style: TextStyle(
+                    color: Hexcolor('#F48262'),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          TextFormField(
+            style: TextStyle(
+              fontFamily: 'Brandon',
+              fontSize: 14,
+            ),
+            decoration: InputDecoration(
+              isDense: true,
+              contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              filled: true,
+              fillColor: Colors.white,
+              labelStyle: TextStyle(color: Colors.black),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: BorderSide(
+                  color: Hexcolor('#F48262'),
+                ),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: BorderSide(
+                  color: Hexcolor('#F48262'),
+                  width: 1.0,
+                ),
+              ),
+            ),
+            keyboardType: TextInputType.phone,
+            validator: (String value) {
+              if (value.isEmpty) {
+                return 'Nomor Handphone (PIC) tidak boleh kosong';
+              }
+            },
+          ),
+          Container(height: 10),
+          RichText(
+            text: TextSpan(
+              text: 'Nama Social Media',
+              style: TextStyle(
+                fontSize: 15,
+                color: Colors.black,
+                fontFamily: 'Brandon',
+              ),
+              children: [
+                TextSpan(
+                  text: '*',
+                  style: TextStyle(
+                    color: Hexcolor('#F48262'),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          TextFormField(
+            style: TextStyle(
+              fontFamily: 'Brandon',
+              fontSize: 14,
+            ),
+            decoration: InputDecoration(
+              prefixIcon: Container(
+                width: 45,
+                padding: EdgeInsets.symmetric(horizontal: 12.0),
+                child: FaIcon(FontAwesomeIcons.instagram, color: Hexcolor('#F48262'), size: 20,),
+              ),
+              prefixIconConstraints: BoxConstraints(
+                minWidth: 20,
+                minHeight: 20,
+              ),
+              hintText: 'Username',
+              hintStyle: TextStyle(color: Colors.black26),
+              isDense: true,
+              contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              filled: true,
+              fillColor: Colors.white,
+              labelStyle: TextStyle(color: Colors.black),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: BorderSide(
+                  color: Hexcolor('#F48262'),
+                ),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: BorderSide(
+                  color: Hexcolor('#F48262'),
+                  width: 1.0,
+                ),
+              ),
+            ),
+            keyboardType: TextInputType.name,
+          ),
+          Container(height: 10),
+          TextFormField(
+            style: TextStyle(
+              fontFamily: 'Brandon',
+              fontSize: 14,
+            ),
+            decoration: InputDecoration(
+              prefixIcon: Container(
+                width: 45,
+                padding: EdgeInsets.symmetric(horizontal: 12.0),
+                child: FaIcon(FontAwesomeIcons.facebookF, color: Hexcolor('#F48262'), size: 20,),
+              ),
+              prefixIconConstraints: BoxConstraints(
+                minWidth: 20,
+                minHeight: 20,
+              ),
+              hintText: 'Username',
+              hintStyle: TextStyle(color: Colors.black26),
+              isDense: true,
+              contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              filled: true,
+              fillColor: Colors.white,
+              labelStyle: TextStyle(color: Colors.black),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: BorderSide(
+                  color: Hexcolor('#F48262'),
+                ),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: BorderSide(
+                  color: Hexcolor('#F48262'),
+                  width: 1.0,
+                ),
+              ),
+            ),
+            keyboardType: TextInputType.name,
+          ),
+          Container(height: 10),
+          TextFormField(
+            style: TextStyle(
+              fontFamily: 'Brandon',
+              fontSize: 14,
+            ),
+            decoration: InputDecoration(
+              prefixIcon: Container(
+                width: 45,
+                padding: EdgeInsets.symmetric(horizontal: 12.0),
+                child: FaIcon(FontAwesomeIcons.twitter, color: Hexcolor('#F48262'), size: 20,),
+              ),
+              prefixIconConstraints: BoxConstraints(
+                minWidth: 20,
+                minHeight: 20,
+              ),
+              hintText: 'Username',
+              hintStyle: TextStyle(color: Colors.black26),
+              isDense: true,
+              contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              filled: true,
+              fillColor: Colors.white,
+              labelStyle: TextStyle(color: Colors.black),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: BorderSide(
+                  color: Hexcolor('#F48262'),
+                ),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: BorderSide(
+                  color: Hexcolor('#F48262'),
+                  width: 1.0,
+                ),
+              ),
+            ),
+            keyboardType: TextInputType.name,
+          ),
+          Container(height: 10),
+          TextFormField(
+            style: TextStyle(
+              fontFamily: 'Brandon',
+              fontSize: 14,
+            ),
+            decoration: InputDecoration(
+              prefixIcon: Container(
+                width: 45,
+                padding: EdgeInsets.symmetric(horizontal: 12.0),
+                child: FaIcon(FontAwesomeIcons.youtube, color: Hexcolor('#F48262'), size: 20,),
+              ),
+              prefixIconConstraints: BoxConstraints(
+                minWidth: 20,
+                minHeight: 20,
+              ),
+              hintText: 'Username',
+              hintStyle: TextStyle(color: Colors.black26),
+              isDense: true,
+              contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              filled: true,
+              fillColor: Colors.white,
+              labelStyle: TextStyle(color: Colors.black),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: BorderSide(
+                  color: Hexcolor('#F48262'),
+                ),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: BorderSide(
+                  color: Hexcolor('#F48262'),
+                  width: 1.0,
+                ),
+              ),
+            ),
+            keyboardType: TextInputType.name,
+          ),
+          Container(height: 10),
+          Text(
+            "Jenis Kelamin",
+            style: TextStyle(
+              fontSize: 15,
+              fontFamily: 'Brandon',
+            ),
+          ),
+          Row(
+            children: [
+              Radio(
+                activeColor: Color(0xffF48262),
+                value: "Perempuan",
+                groupValue: genderValueInfluencer,
+                onChanged: (String value) {
+                  setState(() {
+                    genderValueInfluencer = value;
+                  });
+                },
+              ),
+              Text(
+                "Perempuan",
+                style: TextStyle(
+                  fontSize: 15,
+                  fontFamily: 'Brandon',
+                ),
+              ),
+              Radio(
+                activeColor: Color(0xffF48262),
+                value: "LakiLaki",
+                groupValue: genderValueInfluencer,
+                onChanged: (String value) {
+                  setState(() {
+                    genderValueInfluencer = value;
+                  });
+                },
+              ),
+              Text(
+                "Laki-Laki",
+                style: TextStyle(
+                  fontSize: 15,
+                  fontFamily: 'Brandon',
+                ),
+              ),
+            ],
+          ),
+          rectanglebutton(context, "KIRIM")
+        ],
+      ),
     );
   });
 }
@@ -535,169 +907,407 @@ Widget form_Influencer() {
 Widget form_Brands() {
   String genderValueBrand;
   return StatefulBuilder(builder: (BuildContext context, StateSetter setState) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          "Nama Lengkap*",
-          style: TextStyle(
-            fontSize: 15,
-            fontFamily: 'Brandon',
-            letterSpacing: 1,
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            "Nama Lengkap*",
+            style: TextStyle(
+              fontSize: 15,
+              fontFamily: 'Brandon',
+            ),
           ),
-        ),
-        daftar_TextField(
-          "",
-          null,
-        ),
-        Container(height: 10),
-        Text(
-          "Email*",
-          style: TextStyle(
-            fontSize: 15,
-            fontFamily: 'Brandon',
-            letterSpacing: 1,
+          TextFormField(
+            style: TextStyle(
+              fontFamily: 'Brandon',
+              fontSize: 14,
+            ),
+            decoration: InputDecoration(
+              isDense: true,
+              contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              filled: true,
+              fillColor: Colors.white,
+              labelStyle: TextStyle(color: Colors.black),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: BorderSide(
+                  color: Hexcolor('#F48262'),
+                ),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: BorderSide(
+                  color: Hexcolor('#F48262'),
+                  width: 1.0,
+                ),
+              ),
+            ),
+            keyboardType: TextInputType.name,
+            validator: (String value) {
+              if (value.isEmpty) {
+                return 'Nama Lengkap tidak boleh kosong';
+              }
+            },
           ),
-        ),
-        daftar_TextField(
-          "",
-          null,
-        ),
-        Container(height: 10),
-        Text(
-          "Nomor Handphone(PIC)*",
-          style: TextStyle(
-            fontSize: 15,
-            fontFamily: 'Brandon',
-            letterSpacing: 1,
+          Container(height: 10),
+          Text(
+            "Email*",
+            style: TextStyle(
+              fontSize: 15,
+              fontFamily: 'Brandon',
+            ),
           ),
-        ),
-        daftar_TextField(
-          "",
-          null,
-        ),
-        Container(height: 10),
-        Text(
-          "Toko/Nama Perusahaan*",
-          style: TextStyle(
-            fontSize: 15,
-            fontFamily: 'Brandon',
-            letterSpacing: 1,
+          TextFormField(
+            style: TextStyle(
+              fontFamily: 'Brandon',
+              fontSize: 14,
+            ),
+            decoration: InputDecoration(
+              isDense: true,
+              contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              filled: true,
+              fillColor: Colors.white,
+              labelStyle: TextStyle(color: Colors.black),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: BorderSide(
+                  color: Hexcolor('#F48262'),
+                ),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: BorderSide(
+                  color: Hexcolor('#F48262'),
+                  width: 1.0,
+                ),
+              ),
+            ),
+            keyboardType: TextInputType.emailAddress,
+            validator: (String value) {
+              if (value.isEmpty) {
+                return 'Email tidak boleh kosong';
+              }
+            },
           ),
-        ),
-        daftar_TextField(
-          "",
-          null,
-        ),
-        Container(height: 10),
-        Text(
-          "Alamat Toko/Perusahaan*",
-          style: TextStyle(
-            fontSize: 15,
-            fontFamily: 'Brandon',
-            letterSpacing: 1,
+          Container(height: 10),
+          RichText(
+            text: TextSpan(
+              text: 'Kata Sandi',
+              style: TextStyle(
+                fontSize: 15,
+                color: Colors.black,
+                fontFamily: 'Brandon',
+              ),
+              children: [
+                TextSpan(
+                  text: '*',
+                  style: TextStyle(
+                    color: Hexcolor('#F48262'),
+                  ),
+                ),
+              ],
+            ),
           ),
-        ),
-        daftar_TextField(
-          "",
-          null,
-        ),
-        Container(height: 10),
-        Text(
-          "Nomor Handphone Perusahaan*",
-          style: TextStyle(
-            fontSize: 15,
-            fontFamily: 'Brandon',
-            letterSpacing: 1,
+          TextFormField(
+            obscureText: true,
+            style: TextStyle(
+              fontFamily: 'Brandon',
+              fontSize: 14,
+            ),
+            decoration: InputDecoration(
+              isDense: true,
+              contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              filled: true,
+              fillColor: Colors.white,
+              labelStyle: TextStyle(color: Colors.black),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: BorderSide(
+                  color: Hexcolor('#F48262'),
+                ),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: BorderSide(
+                  color: Hexcolor('#F48262'),
+                  width: 1.0,
+                ),
+              ),
+            ),
+            keyboardType: TextInputType.visiblePassword,
+            validator: (String value) {
+              if (value.isEmpty) {
+                return 'Kata Sandi tidak boleh kosong';
+              }
+              if (value.length<8) {
+                return 'Kata Sandi minimal 8 karakter';
+              }
+            },
           ),
-        ),
-        daftar_TextField(
-          "",
-          null,
-        ),
-        Container(height: 10),
-        Text(
-          "Deskripsi Produk*",
-          style: TextStyle(
-            fontSize: 15,
-            fontFamily: 'Brandon',
-            letterSpacing: 1,
+          Container(height: 10),
+          RichText(
+            text: TextSpan(
+              text: 'Konfirmasi Kata Sandi',
+              style: TextStyle(
+                fontSize: 15,
+                color: Colors.black,
+                fontFamily: 'Brandon',
+              ),
+              children: [
+                TextSpan(
+                  text: '*',
+                  style: TextStyle(
+                    color: Hexcolor('#F48262'),
+                  ),
+                ),
+              ],
+            ),
           ),
-        ),
-        Container(
-          child: TextField(
-            keyboardType: TextInputType.multiline,
+          TextFormField(
+            obscureText: true,
+            style: TextStyle(
+              fontFamily: 'Brandon',
+              fontSize: 14,
+            ),
+            decoration: InputDecoration(
+              isDense: true,
+              contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              filled: true,
+              fillColor: Colors.white,
+              labelStyle: TextStyle(color: Colors.black),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: BorderSide(
+                  color: Hexcolor('#F48262'),
+                ),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: BorderSide(
+                  color: Hexcolor('#F48262'),
+                  width: 1.0,
+                ),
+              ),
+            ),
+            keyboardType: TextInputType.visiblePassword,
+            validator: (String value) {
+              if (value.isEmpty) {
+                return 'Konfirmasi Kata Sandi tidak boleh kosong';
+              }
+              if (value.length<8) {
+                return 'Konfirmasi Kata Sandi minimal 8 karakter';
+              }
+            },
+          ),
+          Container(height: 10),
+          Text(
+            "Nomor Handphone (PIC)*",
+            style: TextStyle(
+              fontSize: 15,
+              fontFamily: 'Brandon',
+            ),
+          ),
+          TextFormField(
+            style: TextStyle(
+              fontFamily: 'Brandon',
+              fontSize: 14,
+            ),
+            decoration: InputDecoration(
+              isDense: true,
+              contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              filled: true,
+              fillColor: Colors.white,
+              labelStyle: TextStyle(color: Colors.black),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: BorderSide(
+                  color: Hexcolor('#F48262'),
+                ),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: BorderSide(
+                  color: Hexcolor('#F48262'),
+                  width: 1.0,
+                ),
+              ),
+            ),
+            keyboardType: TextInputType.phone,
+            validator: (String value) {
+              if (value.isEmpty) {
+                return 'Nomor Handphone (PIC) tidak boleh kosong';
+              }
+            },
+          ),
+          Container(height: 10),
+          Text(
+            "Toko/Nama Perusahaan*",
+            style: TextStyle(
+              fontSize: 15,
+              fontFamily: 'Brandon',
+            ),
+          ),
+          TextFormField(
+            style: TextStyle(
+              fontFamily: 'Brandon',
+              fontSize: 14,
+            ),
+            decoration: InputDecoration(
+              isDense: true,
+              contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              filled: true,
+              fillColor: Colors.white,
+              labelStyle: TextStyle(color: Colors.black),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: BorderSide(
+                  color: Hexcolor('#F48262'),
+                ),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: BorderSide(
+                  color: Hexcolor('#F48262'),
+                  width: 1.0,
+                ),
+              ),
+            ),
+            keyboardType: TextInputType.name,
+            validator: (String value) {
+              if (value.isEmpty) {
+                return 'Toko/Nama Perusahaan tidak boleh kosong';
+              }
+            },
+          ),
+          Container(height: 10),
+          Text(
+            "Alamat Toko/Perusahaan*",
+            style: TextStyle(
+              fontSize: 15,
+              fontFamily: 'Brandon',
+            ),
+          ),
+          TextFormField(
+            style: TextStyle(
+              fontFamily: 'Brandon',
+              fontSize: 14,
+            ),
+            decoration: InputDecoration(
+              isDense: true,
+              contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              filled: true,
+              fillColor: Colors.white,
+              labelStyle: TextStyle(color: Colors.black),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: BorderSide(
+                  color: Hexcolor('#F48262'),
+                ),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: BorderSide(
+                  color: Hexcolor('#F48262'),
+                  width: 1.0,
+                ),
+              ),
+            ),
+            keyboardType: TextInputType.streetAddress,
+            validator: (String value) {
+              if (value.isEmpty) {
+                return 'Alamat Toko/Perusahaan tidak boleh kosong';
+              }
+            },
+          ),
+          Container(height: 10),
+          Text(
+            "Nomor Handphone Perusahaan*",
+            style: TextStyle(
+              fontSize: 15,
+              fontFamily: 'Brandon',
+            ),
+          ),
+          TextFormField(
+            style: TextStyle(
+              fontFamily: 'Brandon',
+              fontSize: 14,
+            ),
+            decoration: InputDecoration(
+              isDense: true,
+              contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              filled: true,
+              fillColor: Colors.white,
+              labelStyle: TextStyle(color: Colors.black),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: BorderSide(
+                  color: Hexcolor('#F48262'),
+                ),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: BorderSide(
+                  color: Hexcolor('#F48262'),
+                  width: 1.0,
+                ),
+              ),
+            ),
+            keyboardType: TextInputType.phone,
+            validator: (String value) {
+              if (value.isEmpty) {
+                return 'Nomor Handphone Perusahaan tidak boleh kosong';
+              }
+            },
+          ),
+          Container(height: 10),
+          Text(
+            "Deskripsi Produk*",
+            style: TextStyle(
+              fontSize: 15,
+              fontFamily: 'Brandon',
+            ),
+          ),
+          TextFormField(
+            style: TextStyle(
+              fontFamily: 'Brandon',
+              fontSize: 14,
+            ),
             maxLines: 4,
             textAlignVertical: TextAlignVertical.top,
-            decoration: new InputDecoration(
-              fillColor: Colors.white,
+            decoration: InputDecoration(
+              hintText: "Deskripsi mengenai merek/produk anda...",
+              isDense: true,
+              contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
               filled: true,
-              contentPadding: EdgeInsets.all(10),
-              hintStyle: TextStyle(
-                fontSize: 15,
-                fontFamily: 'Brandon',
+              fillColor: Colors.white,
+              labelStyle: TextStyle(color: Colors.black),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: BorderSide(
+                  color: Hexcolor('#F48262'),
+                ),
               ),
-              focusedBorder: new OutlineInputBorder(
-                  borderSide: new BorderSide(color: Hexcolor('#F48262'))),
-              errorBorder: InputBorder.none,
-              disabledBorder: InputBorder.none,
-              hintText: "Deskripsi mengenai merek/produk anda",
-              enabledBorder: new OutlineInputBorder(
-                  borderSide: new BorderSide(color: Hexcolor('#F48262'))),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: BorderSide(
+                  color: Hexcolor('#F48262'),
+                  width: 1.0,
+                ),
+              ),
             ),
+            keyboardType: TextInputType.multiline,
+            validator: (String value) {
+              if (value.isEmpty) {
+                return 'Deskripsi Produk tidak boleh kosong';
+              }
+            },
           ),
-        ),
-        Container(height: 10),
-        Text(
-          "Jenis Kelamin",
-          style: TextStyle(
-            fontSize: 15,
-            fontFamily: 'Brandon',
-            letterSpacing: 1,
-          ),
-        ),
-        Row(
-          children: [
-            Radio(
-              activeColor: Color(0xffF48262),
-              value: "LakiLaki",
-              groupValue: genderValueBrand,
-              onChanged: (String value) {
-                setState(() {
-                  genderValueBrand = value;
-                });
-              },
-            ),
-            Text(
-              "Perempuan",
-              style: TextStyle(
-                fontSize: 15,
-                fontFamily: 'Brandon',
-                letterSpacing: 1,
-              ),
-            ),
-            Radio(
-              activeColor: Color(0xffF48262),
-              value: "Perempuan",
-              groupValue: genderValueBrand,
-              onChanged: (String value) {
-                setState(() {
-                  genderValueBrand = value;
-                });
-              },
-            ),
-            Text(
-              "Laki-Laki",
-              style: TextStyle(
-                fontSize: 15,
-                fontFamily: 'Brandon',
-                letterSpacing: 1,
-              ),
-            ),
-          ],
-        ),
-        rectanglebutton(context, "KIRIM")
-      ],
+          Container(height: 10),
+          rectanglebutton(context, "KIRIM")
+        ],
+      ),
     );
   });
 }

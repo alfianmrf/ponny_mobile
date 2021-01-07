@@ -1,8 +1,11 @@
+import 'Order.dart';
+
 class OrderResult {
   String message;
   bool success;
   bool emailSuccess;
   MitransRequest mitransRequest;
+  Midtrans mitrans_val;
   String orderCode;
 
   OrderResult(
@@ -10,7 +13,9 @@ class OrderResult {
         this.success,
         this.emailSuccess,
         this.mitransRequest,
-        this.orderCode});
+        this.orderCode,
+        this.mitrans_val
+      });
 
   OrderResult.fromJson(Map<String, dynamic> json) {
     message = json['message'];
@@ -20,6 +25,7 @@ class OrderResult {
         ? new MitransRequest.fromJson(json['mitrans_request'])
         : null;
     orderCode = json['order_code'];
+    mitrans_val = json["mitrans_request"] != null ? Midtrans.fromJson(json["mitrans_request"]) : null;
   }
 
   Map<String, dynamic> toJson() {

@@ -915,7 +915,7 @@ class _LoginStateScreen extends State<LoginScreen> {
                                                 context,
                                                 MaterialPageRoute(
                                                   builder: (context) =>
-                                                      LoginOTP(),
+                                                      LoginOTP(true),
                                                 ),
                                               );
                                             },
@@ -934,7 +934,7 @@ class _LoginStateScreen extends State<LoginScreen> {
                                               context,
                                               MaterialPageRoute(
                                                 builder: (context) =>
-                                                    LoginOTP(),
+                                                    LoginOTP(true),
                                               ),
                                             );
                                           },

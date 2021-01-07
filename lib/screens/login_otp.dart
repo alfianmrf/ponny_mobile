@@ -14,11 +14,16 @@ import 'package:ponny/screens/home_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:sms_autofill/sms_autofill.dart';
 import 'package:uiblock/uiblock.dart';
+import 'package:flutter/services.dart';
 
 import 'account_screen.dart';
 
 class LoginOTP extends StatefulWidget {
   static const String id = "login_otp";
+  final bool login;
+
+  LoginOTP(this.login);
+
   @override
   _LoginOTPScreen createState() => _LoginOTPScreen();
 }
@@ -491,6 +496,9 @@ class _LoginOTPScreen extends State<LoginOTP> {
                                       maxLines: 1,
                                       minLines: 1,
                                       keyboardType: TextInputType.phone,
+                                      inputFormatters: [
+                                        FilteringTextInputFormatter.digitsOnly,
+                                      ],
                                       validator: (value){
                                         if(value.startsWith("0")){
                                           return "Nomor awal tidak boleh 0.";
@@ -525,7 +533,7 @@ class _LoginOTPScreen extends State<LoginOTP> {
 
                               },
                               child: Text(
-                                "LOGIN",
+                                widget.login?"MASUK":"DAFTAR",
                                 style: TextStyle(
                                   fontFamily: "Brandon",
                                   fontSize: 16,

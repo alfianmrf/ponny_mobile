@@ -802,10 +802,11 @@ class _DetailBrandScreen extends State<DetailBrand> {
                     ],
                   ),
                 ),
-                WaterfallFlow.count(
+                GridView.count(
                   padding: EdgeInsets.fromLTRB(20.0, 0, 20.0, 10.0),
                   shrinkWrap: true,
                   crossAxisCount: 2,
+                  childAspectRatio: 0.45,
                   mainAxisSpacing: 10,
                   crossAxisSpacing: 20,
                   physics: ScrollPhysics(),

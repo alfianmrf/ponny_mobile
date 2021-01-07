@@ -105,6 +105,7 @@ class _HomeScreenState extends State<HomeScreen> {
     // showModal();
     _controller = ScrollController();
     _controller.addListener(_scrollListener);
+
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       _getCartOfitem();
       _getWishListCount();
@@ -1018,6 +1019,116 @@ class _HomeScreenState extends State<HomeScreen> {
                   }
                 }
               ),
+              ),
+              Container(
+                width: MediaQuery.of(context).size.width,
+                child: Stack(
+                  children: [
+                    Column(
+                      children: [
+                        Container(
+                          height: 20,
+                          width: double.infinity,
+                        ),
+                        Container(
+                          color: Color(0xffFBDFD2),
+                          height: 20,
+                          width: double.infinity,
+                        ),
+                      ],
+                    ),
+                    Positioned.fill(
+                      child: Center(
+                        child: Text(
+                          'LIVE NOW',
+                          style: TextStyle(
+                            fontSize: 24,
+                            fontFamily: 'Brandon',
+                            color: Color(0xffF48262),
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                color: Color(0xffFBDFD2),
+                padding: EdgeInsets.symmetric(horizontal: 30),
+                child: Stack(
+                  children: [
+                    Container(
+                      width: double.infinity,
+                      color: Colors.grey,
+                      child: Image.asset(
+                        'assets/images/new-placeholder-rect.png'
+                      ),
+                    ),
+                    Positioned(
+                      top: 10,
+                      right: 10,
+                      child: Container(
+                        padding: EdgeInsets.symmetric(vertical: 3, horizontal: 5),
+                        color: Color(0xff000000).withOpacity(0.1),
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.remove_red_eye,
+                              color: Colors.white,
+                              size: 12,
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(left: 5),
+                              child: Text(
+                                '12',
+                                style: TextStyle(
+                                  fontFamily: 'Brandon',
+                                  fontSize: 12,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Positioned(
+                      bottom: 10,
+                      right: 10,
+                      child: Icon(
+                        Icons.fullscreen,
+                        size: 22,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ]
+                ),
+              ),
+              Container(
+                color: Color(0xffFBDFD2),
+                width: double.infinity,
+                padding: EdgeInsets.fromLTRB(30, 10, 30, 30),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Menuju Glowing Bersama Phoebe',
+                      style: TextStyle(
+                        fontFamily: 'Brandon',
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    Text(
+                      'Halo teman Phoebe, kita lagi ada diskon gede-gedean.',
+                      style: TextStyle(
+                        fontFamily: 'Brandon',
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
               ),
               if(flashdeal != null && DateTime.now().millisecondsSinceEpoch < flashdeal.detail.endDate * 1000 && !loading_flashdeal)
               Container(

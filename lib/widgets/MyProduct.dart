@@ -200,12 +200,15 @@ class MyProduct extends StatelessWidget {
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
         ),
-        Text(
-          product.home_discounted_price,
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontFamily: 'Brandon',
-            fontSize: 14,
+        MarqueeWidget(
+          direction: Axis.horizontal,
+          child: Text(
+            product.home_discounted_price,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontFamily: 'Brandon',
+              fontSize: 14,
+            ),
           ),
         ),
         if(product.is_flash_deal != null)

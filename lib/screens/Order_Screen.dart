@@ -259,7 +259,7 @@ class _OrderScreenState extends State<OrderScreen> {
                                             child: Container(
                                               alignment: Alignment.topCenter,
                                               padding: EdgeInsets.only(right: 10),
-                                              height: MediaQuery.of(context).size.width*0.35,
+                                              width: MediaQuery.of(context).size.width*0.35,
                                               child: CachedNetworkImage(
                                                 imageUrl: e.product.thumbnail_image != null ? img_url+ e.product.thumbnail_image :"",
                                                 placeholder: (context, url) => LoadingWidgetPulse(context),
@@ -279,12 +279,15 @@ class _OrderScreenState extends State<OrderScreen> {
                                                   margin: EdgeInsets.only(top: 0),
                                                   // color: Colors.redAccent,
                                                   width: 90,
-                                                  child: Text(
-                                                    e.product.brand.name,
-                                                    textAlign: TextAlign.left,
-                                                    style: TextStyle(
-                                                      fontFamily: "Yeseva",
-                                                      fontSize: 14,
+                                                  child: MarqueeWidget(
+                                                    direction: Axis.horizontal,
+                                                    child: Text(
+                                                      e.product.brand.name,
+                                                      textAlign: TextAlign.left,
+                                                      style: TextStyle(
+                                                        fontFamily: "Yeseva",
+                                                        fontSize: 14,
+                                                      ),
                                                     ),
                                                   ),
                                                 ),
@@ -354,7 +357,7 @@ class _OrderScreenState extends State<OrderScreen> {
                               for(OrderDetailPoint e in order.orderDetailPoint)(
                                   Container(
                                     alignment: Alignment.topCenter,
-                                    padding: EdgeInsets.only(bottom: 10),
+                                    padding: EdgeInsets.only(bottom: 10, right: 10),
                                     child:  Row(
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
@@ -363,7 +366,7 @@ class _OrderScreenState extends State<OrderScreen> {
                                             child: Container(
                                               alignment: Alignment.topCenter,
                                               padding: EdgeInsets.only(right: 10),
-                                              height: MediaQuery.of(context).size.width*0.35,
+                                              width: MediaQuery.of(context).size.width*0.35,
                                               child: CachedNetworkImage(
                                                 imageUrl: img_url+e.product.thumbnail_image,
                                                 placeholder: (context, url) => LoadingWidgetPulse(context),
@@ -383,12 +386,15 @@ class _OrderScreenState extends State<OrderScreen> {
                                                   margin: EdgeInsets.only(top: 0),
                                                   // color: Colors.redAccent,
                                                   width: 90,
-                                                  child: Text(
-                                                    e.product.brand.name,
-                                                    textAlign: TextAlign.left,
-                                                    style: TextStyle(
-                                                      fontFamily: "Yeseva",
-                                                      fontSize: 14,
+                                                  child: MarqueeWidget(
+                                                    direction: Axis.horizontal,
+                                                    child: Text(
+                                                      e.product.brand.name,
+                                                      textAlign: TextAlign.left,
+                                                      style: TextStyle(
+                                                        fontFamily: "Yeseva",
+                                                        fontSize: 14,
+                                                      ),
                                                     ),
                                                   ),
                                                 ),
@@ -418,33 +424,33 @@ class _OrderScreenState extends State<OrderScreen> {
                                                     ),
                                                   ),
                                                 ),
-                                                if(order.deliveryStatus == OrderScreen.completed && e.reviewed == 0)
-                                                  Container(
-                                                    margin:EdgeInsets.only(top: 4),
-                                                    child: RaisedButton(
-                                                      color: Color(0xffF48262),
-                                                      onPressed: () {
-                                                        Navigator.push(
-                                                          context,
-                                                          MaterialPageRoute(
-                                                            builder: (context) => ReviewScreen(product: e.product,orderReview: OrderReview(e.id,"order_point_id"),), ),
-                                                        ).then(( _value){
-                                                          if(_value){
-                                                            _getData();
-                                                          }
-                                                        });
-                                                      },
-                                                      child: Text(
-                                                        "Review",
-                                                        style: TextStyle(
-                                                            color: Colors.white,
-                                                            fontSize: 12,
-                                                            fontFamily:
-                                                            "Brandon"),
-                                                      ),
-                                                    ),
-                                                    height: 30,
-                                                  )
+                                                // if(order.deliveryStatus == OrderScreen.completed && e.reviewed == 0)
+                                                //   Container(
+                                                //     margin:EdgeInsets.only(top: 4),
+                                                //     child: RaisedButton(
+                                                //       color: Color(0xffF48262),
+                                                //       onPressed: () {
+                                                //         Navigator.push(
+                                                //           context,
+                                                //           MaterialPageRoute(
+                                                //             builder: (context) => ReviewScreen(product: e.product,orderReview: OrderReview(e.id,"order_point_id"),), ),
+                                                //         ).then(( _value){
+                                                //           if(_value){
+                                                //             _getData();
+                                                //           }
+                                                //         });
+                                                //       },
+                                                //       child: Text(
+                                                //         "Review",
+                                                //         style: TextStyle(
+                                                //             color: Colors.white,
+                                                //             fontSize: 12,
+                                                //             fontFamily:
+                                                //             "Brandon"),
+                                                //       ),
+                                                //     ),
+                                                //     height: 30,
+                                                //   )
                                               ],
                                             ),
                                           ),
@@ -456,7 +462,7 @@ class _OrderScreenState extends State<OrderScreen> {
                               for(OrderDetailSample e in order.orderDetailSample)(
                                   Container(
                                     alignment: Alignment.topCenter,
-                                    padding: EdgeInsets.only(bottom: 10),
+                                    padding: EdgeInsets.only(bottom: 10, right: 10),
                                     child:  Row(
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
@@ -465,7 +471,7 @@ class _OrderScreenState extends State<OrderScreen> {
                                             child: Container(
                                               alignment: Alignment.topCenter,
                                               padding: EdgeInsets.only(right: 10),
-                                              height: MediaQuery.of(context).size.width*0.35,
+                                              width: MediaQuery.of(context).size.width*0.35,
                                               child: CachedNetworkImage(
                                                 imageUrl: img_url+e.product.thumbnail_image,
                                                 placeholder: (context, url) => LoadingWidgetPulse(context),
@@ -485,12 +491,15 @@ class _OrderScreenState extends State<OrderScreen> {
                                                   margin: EdgeInsets.only(top: 0),
                                                   // color: Colors.redAccent,
                                                   width: 90,
-                                                  child: Text(
-                                                    e.product.brand.name,
-                                                    textAlign: TextAlign.left,
-                                                    style: TextStyle(
-                                                      fontFamily: "Yeseva",
-                                                      fontSize: 14,
+                                                  child: MarqueeWidget(
+                                                    direction: Axis.horizontal,
+                                                    child: Text(
+                                                      e.product.brand.name,
+                                                      textAlign: TextAlign.left,
+                                                      style: TextStyle(
+                                                        fontFamily: "Yeseva",
+                                                        fontSize: 14,
+                                                      ),
                                                     ),
                                                   ),
                                                 ),
@@ -520,36 +529,36 @@ class _OrderScreenState extends State<OrderScreen> {
                                                     ),
                                                   ),
                                                 ),
-                                                if(order.deliveryStatus == OrderScreen.completed && e.reviewed == 0)
-                                                  Container(
-                                                    margin:EdgeInsets.only(top: 4),
-                                                    child: RaisedButton(
-                                                      color: Color(0xffF48262),
-                                                      onPressed: () {
-
-                                                        Navigator.push(
-                                                          context,
-                                                          MaterialPageRoute(
-                                                            builder: (context) => ReviewScreen(product: e.product,orderReview: OrderReview(e.id,"order_sample_id"),), ),
-                                                        ).then((_value) async {
-                                                          if(_value){
-                                                            print("get dta");
-                                                            await _getData();
-                                                          }
-                                                        });
-
-                                                      },
-                                                      child: Text(
-                                                        "Review",
-                                                        style: TextStyle(
-                                                            color: Colors.white,
-                                                            fontSize: 12,
-                                                            fontFamily:
-                                                            "Brandon"),
-                                                      ),
-                                                    ),
-                                                    height: 30,
-                                                  )
+                                                // if(order.deliveryStatus == OrderScreen.completed && e.reviewed == 0)
+                                                //   Container(
+                                                //     margin:EdgeInsets.only(top: 4),
+                                                //     child: RaisedButton(
+                                                //       color: Color(0xffF48262),
+                                                //       onPressed: () {
+                                                //
+                                                //         Navigator.push(
+                                                //           context,
+                                                //           MaterialPageRoute(
+                                                //             builder: (context) => ReviewScreen(product: e.product,orderReview: OrderReview(e.id,"order_sample_id"),), ),
+                                                //         ).then((_value) async {
+                                                //           if(_value){
+                                                //             print("get dta");
+                                                //             await _getData();
+                                                //           }
+                                                //         });
+                                                //
+                                                //       },
+                                                //       child: Text(
+                                                //         "Review",
+                                                //         style: TextStyle(
+                                                //             color: Colors.white,
+                                                //             fontSize: 12,
+                                                //             fontFamily:
+                                                //             "Brandon"),
+                                                //       ),
+                                                //     ),
+                                                //     height: 30,
+                                                //   )
                                               ],
                                             ),
                                           ),
@@ -1042,9 +1051,10 @@ class _OrderScreenState extends State<OrderScreen> {
                                                   ),
                                                 ),
                                                 Container(
+                                                  height: 400,
                                                   color: Color(0xffFEF9F0),
                                                   padding: EdgeInsets.all(20),
-                                                  child: Column(
+                                                  child: ListView(
                                                       children: snapshot.data.result.manifest.map(
                                                               (e) => IntrinsicHeight(
                                                             child: Row(
@@ -1281,82 +1291,91 @@ class _OrderScreenState extends State<OrderScreen> {
         Container(
           padding: EdgeInsets.symmetric(vertical: 10.0),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              GestureDetector(
-                onTap: () {
-                  Navigator.of(context).pop();
-                },
+              Expanded(
+                flex: 1,
                 child: Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: Color(0xffF3C1B5),
-                    ),
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(5),
-                    ),
-                  ),
-                  width: 160,
-                  height: 35,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        child: Text(
-                          "NANTI SAJA",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontFamily: "Brandon",
-                            color: Color(0xffF48262),
-                            fontSize: 15,
-                          ),
+                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Color(0xffF3C1B5),
+                        ),
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(5),
                         ),
                       ),
-                    ],
+                      height: 35,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            child: Text(
+                              "NANTI SAJA",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontFamily: "Brandon",
+                                color: Color(0xffF48262),
+                                fontSize: 15,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
                 ),
               ),
-              GestureDetector(
-                onTap: () {
-                  UIBlock.block(context,customLoaderChild: LoadingWidgetFadingCircle(context));
-                  Provider.of<OrderModel>(context,listen: false).konfirmasiTerima(Provider.of<AppModel>(context,listen: false).auth.access_token, order.id.toString()).then((value){
-                    UIBlock.unblock(context);
-                    Navigator.of(context).pop();
-                    _getData();
-                  }).catchError((onError){
-                    UIBlock.unblock(context);
-                    Navigator.of(context).pop();
-                    print(onError);
-                  });
-
-                },
+              Expanded(
+                flex: 1,
                 child: Container(
-                  decoration: BoxDecoration(
-                    // border: Border.all(
-                    //   color: Colors.red[500],
-                    // ),
-                    color: Color(0xffF48262),
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(5),
-                    ),
-                  ),
-                  width: 160,
-                  height: 35,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        child: Text(
-                          "KONFIRMASI",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontFamily: "Brandon",
-                            color: Colors.white,
-                            fontSize: 15,
-                          ),
+                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  child: GestureDetector(
+                    onTap: () {
+                      UIBlock.block(context,customLoaderChild: LoadingWidgetFadingCircle(context));
+                      Provider.of<OrderModel>(context,listen: false).konfirmasiTerima(Provider.of<AppModel>(context,listen: false).auth.access_token, order.id.toString()).then((value){
+                        UIBlock.unblock(context);
+                        Navigator.of(context).pop();
+                        _getData();
+                      }).catchError((onError){
+                        UIBlock.unblock(context);
+                        Navigator.of(context).pop();
+                        print(onError);
+                      });
+
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        // border: Border.all(
+                        //   color: Colors.red[500],
+                        // ),
+                        color: Color(0xffF48262),
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(5),
                         ),
                       ),
-                    ],
+                      height: 35,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            child: Text(
+                              "KONFIRMASI",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontFamily: "Brandon",
+                                color: Colors.white,
+                                fontSize: 15,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
                 ),
               ),

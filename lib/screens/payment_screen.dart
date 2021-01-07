@@ -65,7 +65,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                   }
                   else{
                     Navigator.pushAndRemoveUntil(context,new MaterialPageRoute(
-                      builder: (BuildContext context) => new PesananBerhasilScreen(code: value.orderCode,),
+                      builder: (BuildContext context) => new PesananBerhasilScreen(code: value.orderCode, nota: value),
                     ),(_) => false);
                   }
                 }else{
@@ -586,7 +586,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                 ),*/
 
 
-                                Container(
+                                /*Container(
                                   color: Color(0xffFDEDE4),
                                   width: MediaQuery.of(context).size.width,
                                   padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
@@ -673,7 +673,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                       ],
                                     ),
                                   ),
-                                ),
+                                ),*/
                                 /*InkWell(
                                   onTap: () {
                                     chekOut(context,"shopeepay");
@@ -775,7 +775,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                 //     ),
                                 //   ),
                                 // ),
-                                InkWell(
+                                /*InkWell(
                                   onTap: (){
                                     chekOut(context,"qris");
                                   },
@@ -814,7 +814,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                       ],
                                     ),
                                   ) ,
-                                ),
+                                ),*/
                               ],
                             ),
                           ),

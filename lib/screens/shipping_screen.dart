@@ -305,6 +305,33 @@ class _ShippingScreenState extends State<ShippingScreen> {
           if(value.loading){
             return Scaffold(
                 backgroundColor: Theme.of(context).primaryColor,
+                appBar: AppBar(
+                  elevation: 0,
+                  titleSpacing: 0,
+                  leading: IconButton(
+                    onPressed: () => Navigator.pop(context),
+                    icon: Icon(
+                      Icons.arrow_back_ios,
+                      color: Color(0xffF48262),
+                      size: 26,
+                    ),
+                  ),
+                  title:  Text(
+                    'Detail Pengiriman',
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontFamily: "Yeseva",
+                      fontWeight: FontWeight.w500,
+                      color: Color(0xffF48262),
+                    ),
+                  ),
+                  bottom: PreferredSize(
+                      child: Container(
+                        color: Color(0xffF48262),
+                        height: 1.0,
+                      ),
+                      preferredSize: Size.fromHeight(1.0)),
+                ),
                 body: Stack(children: <Widget>[
                   Scaffold(
                     backgroundColor: Color(0xffFDF8F0),
@@ -314,37 +341,6 @@ class _ShippingScreenState extends State<ShippingScreen> {
                       child: SingleChildScrollView(
                         child: Column(
                           children: <Widget>[
-                            Container(
-                              width: MediaQuery.of(context).size.width,
-                              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 30),
-                              decoration: BoxDecoration(
-                                border: Border(
-                                  bottom: BorderSide(
-                                    color: Color(0xffF48262),
-                                    width: 1.0,
-                                  ),
-                                ),
-                              ),
-                              child: Row(
-                                children: <Widget>[
-                                  Container(
-                                    margin: EdgeInsets.only(right: 10),
-                                    child: Icon(
-                                      Icons.arrow_back_ios,
-                                      color: Color(0xffF48262),
-                                    ),
-                                  ),
-                                  Text(
-                                    'Detail Pengiriman',
-                                    style: TextStyle(
-                                      fontFamily: 'Yeseva',
-                                      fontSize: 22,
-                                      color: Color(0xffF48262),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
                             Container(
                               height: MediaQuery.of(context).size.height,
                               child: Center(
@@ -366,42 +362,38 @@ class _ShippingScreenState extends State<ShippingScreen> {
                 body: Stack(children: <Widget>[
                   Scaffold(
                     backgroundColor: Color(0xffFDF8F0),
+                    appBar: AppBar(
+                      elevation: 0,
+                      titleSpacing: 0,
+                      leading: IconButton(
+                        onPressed: () => Navigator.pop(context),
+                        icon: Icon(
+                          Icons.arrow_back_ios,
+                          color: Color(0xffF48262),
+                          size: 26,
+                        ),
+                      ),
+                      title:  Text(
+                        'Detail Pengiriman',
+                        style: TextStyle(
+                          fontSize: 24,
+                          fontFamily: "Yeseva",
+                          fontWeight: FontWeight.w500,
+                          color: Color(0xffF48262),
+                        ),
+                      ),
+                      bottom: PreferredSize(
+                          child: Container(
+                            color: Color(0xffF48262),
+                            height: 1.0,
+                          ),
+                          preferredSize: Size.fromHeight(1.0)),
+                    ),
                     body: Container(
                       margin: MediaQuery.of(context).padding,
                       child: SingleChildScrollView(
                         child: Column(
                           children: <Widget>[
-                            Container(
-                              width: MediaQuery.of(context).size.width,
-                              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 30),
-                              decoration: BoxDecoration(
-                                border: Border(
-                                  bottom: BorderSide(
-                                    color: Color(0xffF48262),
-                                    width: 1.0,
-                                  ),
-                                ),
-                              ),
-                              child: Row(
-                                children: <Widget>[
-                                  Container(
-                                    margin: EdgeInsets.only(right: 10),
-                                    child: Icon(
-                                      Icons.arrow_back_ios,
-                                      color: Color(0xffF48262),
-                                    ),
-                                  ),
-                                  Text(
-                                    'Detail Pengiriman',
-                                    style: TextStyle(
-                                      fontFamily: 'Yeseva',
-                                      fontSize: 22,
-                                      color: Color(0xffF48262),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
                             Container(
                               margin: EdgeInsets.only(top: 25),
                               width: MediaQuery.of(context).size.width*0.9,
@@ -906,61 +898,78 @@ class _ShippingScreenState extends State<ShippingScreen> {
               );
             }else{
               return Scaffold(
-                          backgroundColor: Theme.of(context).primaryColor,
-                          body: Stack(children: <Widget>[
-                          Scaffold(
-                          backgroundColor: Color(0xffFDF8F0),
-                          body:
-                          Container(
-                              margin: MediaQuery.of(context).padding,
-                              child: SingleChildScrollView(
-                                child: Column(
-                                    children: <Widget>[
-                                    Container(
-                                width: MediaQuery.of(context).size.width,
-                                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 30),
-                                decoration: BoxDecoration(
-                                  border: Border(
-                                    bottom: BorderSide(
-                                      color: Color(0xffF48262),
-                                      width: 1.0,
-                                    ),
-                                  ),
-                                ),
-                                child: Row(
-                                  children: <Widget>[
-                                    Container(
-                                      margin: EdgeInsets.only(right: 10),
-                                      child: Icon(
-                                        Icons.arrow_back_ios,
-                                        color: Color(0xffF48262),
-                                      ),
-                                    ),
-                                    Text(
-                                      'Detail Pengiriman',
-                                      style: TextStyle(
-                                        fontFamily: 'Yeseva',
-                                        fontSize: 22,
-                                        color: Color(0xffF48262),
-                                      ),
-                                    ),
-                                  ],
+                  backgroundColor: Theme.of(context).primaryColor,
+                  appBar: AppBar(
+                    elevation: 0,
+                    titleSpacing: 0,
+                    leading: IconButton(
+                      onPressed: () => Navigator.pop(context),
+                      icon: Icon(
+                        Icons.arrow_back_ios,
+                        color: Color(0xffF48262),
+                        size: 26,
+                      ),
+                    ),
+                    title:  Text(
+                      'Detail Pengiriman',
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontFamily: "Yeseva",
+                        fontWeight: FontWeight.w500,
+                        color: Color(0xffF48262),
+                      ),
+                    ),
+                    bottom: PreferredSize(
+                        child: Container(
+                          color: Color(0xffF48262),
+                          height: 1.0,
+                        ),
+                        preferredSize: Size.fromHeight(1.0)),
+                  ),
+                  body: Stack(children: <Widget>[
+                    Scaffold(
+                      backgroundColor: Color(0xffFDF8F0),
+                      body:
+                      Container(
+                        margin: MediaQuery.of(context).padding,
+                        child: SingleChildScrollView(
+                          child: Column(
+                              children: <Widget>[
+                                Provider.of<AddressModel>(context).listAdress.length > 0 ?
+                        Container(
+                          height: MediaQuery.of(context).size.height*.8,
+                          child: Center(
+                            child: FlatButton(
+                              onPressed: (){
+                                showAllAdress();
+                              },
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(0.0),
+                                  side: BorderSide(color: Color(0xffF48262))
+                              ),
+                              child: Text(
+                                '+ Pilih Default alamat Pengiriman',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontFamily: 'Brandon',
                                 ),
                               ),
-                                      Provider.of<AddressModel>(context).listAdress.length > 0 ?
-                              Container(
+                            ),
+                          ),
+                        ):Container(
                                 height: MediaQuery.of(context).size.height*.8,
                                 child: Center(
                                   child: FlatButton(
                                     onPressed: (){
-                                      showAllAdress();
+                                      Navigator.push(context,
+                                          MaterialPageRoute(builder: (context) => TambahAlamatScreen()));
                                     },
                                     shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(0.0),
                                         side: BorderSide(color: Color(0xffF48262))
                                     ),
                                     child: Text(
-                                      '+ Pilih Default alamat Pengiriman',
+                                      '+ Tambah alamat Pengiriman',
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
                                         fontFamily: 'Brandon',
@@ -968,28 +977,7 @@ class _ShippingScreenState extends State<ShippingScreen> {
                                     ),
                                   ),
                                 ),
-                              ):Container(
-                                        height: MediaQuery.of(context).size.height*.8,
-                                        child: Center(
-                                          child: FlatButton(
-                                            onPressed: (){
-                                              Navigator.push(context,
-                                                  MaterialPageRoute(builder: (context) => TambahAlamatScreen()));
-                                            },
-                                            shape: RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.circular(0.0),
-                                                side: BorderSide(color: Color(0xffF48262))
-                                            ),
-                                            child: Text(
-                                              '+ Tambah alamat Pengiriman',
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(
-                                                fontFamily: 'Brandon',
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
+                              ),
                             ],
                         ),
                       ),
