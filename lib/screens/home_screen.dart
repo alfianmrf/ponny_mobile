@@ -2,14 +2,17 @@ import 'dart:async';
 import 'dart:collection';
 import 'dart:convert';
 import 'dart:wasm';
+import 'package:agora_rtm/agora_rtm.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_countdown_timer/flutter_countdown_timer.dart';
 import 'package:lodash_dart/lodash_dart.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:ponny/common/constant.dart';
 import 'package:ponny/model/App.dart';
 import 'package:ponny/model/Cart.dart';
 import 'package:ponny/model/Category.dart';
+import 'package:ponny/model/ChanelBroadcast.dart';
 import 'package:ponny/model/FlashDeal.dart';
 import 'package:ponny/model/Product.dart';
 import 'package:ponny/model/ProductFlashDeal.dart';
@@ -17,6 +20,7 @@ import 'package:ponny/model/Slider.dart';
 import 'package:ponny/model/User.dart';
 import 'package:ponny/screens/Blog_screen.dart';
 import 'package:ponny/screens/Browse_Screen.dart';
+import 'package:ponny/screens/FullSiaran.dart';
 import 'package:ponny/screens/Localpride_Screen.dart';
 import 'package:ponny/screens/Promotion_screen.dart';
 import 'package:ponny/screens/Skincare_Screen.dart';
@@ -30,6 +34,7 @@ import 'package:ponny/screens/product_details_screen.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:ponny/screens/skin_type_screen.dart';
+import 'package:ponny/util/AppId.dart';
 import 'package:ponny/util/globalUrl.dart';
 import 'package:ponny/widgets/MyProduct.dart';
 import 'package:ponny/widgets/MyProductFlash.dart';
@@ -46,6 +51,10 @@ import 'package:ponny/util/globalUrl.dart';
 
 import 'account/daftar_keinginan_screen.dart';
 import 'package:ponny/common/constant.dart';
+import 'package:agora_rtc_engine/rtc_engine.dart' as RtcE;
+import 'package:agora_rtc_engine/rtc_local_view.dart' as RtcLocalView;
+import 'package:agora_rtc_engine/rtc_remote_view.dart' as RtcRemoteView;
+import 'dart:io' show HttpHeaders, Platform;
 
 import 'bantuan_screen.dart';
 
@@ -67,8 +76,16 @@ class _HomeScreenState extends State<HomeScreen> {
   bool loading_flashdeal = false;
   final scaffoldKey = GlobalKey<ScaffoldState>();
   String urlYoutube="";
-
+  bool isbrodcasting = false;
+  int _remoteUid = null;
+  AgoraRtmClient _client;
   static String videoId = '';
+  int viewer = 0;
+  bool isSiaran = false;
+
+  bool _joined =false;
+
+  var _channel;
 
   showModal() {
     return _timer = Timer(Duration(seconds: 2), () {
@@ -96,6 +113,26 @@ class _HomeScreenState extends State<HomeScreen> {
     return categoris;
   }
 
+  Future<void> getbrodcaster() async {
+    String urls = "https://api.agora.io/dev/v1/channel/user/1a2ac884df8a4c4c886353e5580a8580/broadcast";
+    final res = await http.get(urls, headers: { HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: "Basic OGI4YjdiYjA2NGU5NDFlMDhkMTFlNDg0Y2Q5MTY1MjM6OGJhNWMzNjczM2RkNDQzY2IzZjE3ZjE2Mzc3YjIwOTQ="});
+    print(res.body);
+    if(res.statusCode == 200){
+      final responejson = json.decode(res.body);
+      final channelbc  = ChanelBroadcast.fromJson(responejson);
+      print(channelbc);
+      if(channelbc.success == true && channelbc.data.broadcasters.length > 0 && channelbc.data.broadcasters.contains(1)){
+        setState(() {
+          _remoteUid = 1;
+        });
+      }else{
+        setState(() {
+          _remoteUid = null;
+        });
+      }
+    }
+  }
+
 
 
 
@@ -109,7 +146,95 @@ class _HomeScreenState extends State<HomeScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       _getCartOfitem();
       _getWishListCount();
+      initChanelBrodcaster();
+      getbrodcaster();
     });
+  }
+
+  Future<void> initChanelBrodcaster() async {
+
+    var engine = await RtcE.RtcEngine.create(appID);
+    engine.setEventHandler(RtcE.RtcEngineEventHandler(
+      joinChannelSuccess: (String channel, int uid, int elapsed,) {
+        print('joinChannelSuccess ${channel} ${uid}');
+        setState(() {
+          _joined = true;
+
+        });
+      }, userJoined: (int uid, int elapsed) {
+      print('userJoined ${uid}');
+      setState(() {
+        _remoteUid = 1;
+      });
+    }, userOffline: (int uid, RtcE.UserOfflineReason reason) {
+      print('userOffline ${uid}');
+      setState(() {
+        _remoteUid = null;
+      });
+
+    },streamMessage: (uid, streamId, data) {
+      print(data);
+
+
+    },
+
+
+    ));
+    engine.enableVideo();
+    engine.enableLocalAudio(false);
+    engine.enableLocalVideo(false);
+    engine.enableVideo();
+    engine.setParameters('''{\"che.video.lowBitRateStreamParameter\":{\"width\":320,\"height\":180,\"frameRate\":15,\"bitRate\":140}}''');
+    await engine.joinChannel(null, "broadcast", null, 0);
+
+    _client = await AgoraRtmClient.createInstance(appID);
+    await _client.login(null, Provider.of<UserModel>(context).loading ? Provider.of<UserModel>(context).user.id.toString() : DateTime.now().toString());
+    _channel = await _createChannel("broadcast");
+    await _channel.join();
+    _channel.getMembers().then((value) {
+      setState(() {
+        viewer=value.length;
+      });
+     print("jumlsh :"+value.length.toString());
+    });
+
+  }
+  Future<AgoraRtmChannel> _createChannel(String name) async {
+    AgoraRtmChannel channel = await _client.createChannel(name);
+    channel.onMemberJoined = (AgoraRtmMember member) async{
+      _channel.getMembers().then((value) {
+        setState(() {
+          viewer = value.length;
+        });
+      });
+
+
+    };
+    channel.onMemberLeft = (AgoraRtmMember member) {
+      var len;
+      _channel.getMembers().then((value) {
+        setState(() {
+          viewer = value.length;
+        });
+      });
+
+    };
+    channel.onMemberJoined= (AgoraRtmMember member) {
+      _channel.getMembers().then((value) {
+        setState(() {
+          viewer = value.length;
+        });
+      });
+    };
+    return channel;
+  }
+
+  Widget _renderRemoteVideo() {
+    if (_remoteUid != null) {
+      return RtcRemoteView.SurfaceView(uid: _remoteUid);
+    } else {
+      return Container();
+    }
   }
 
   Future<YoutubePlayerController> ytplayer() async {
@@ -122,6 +247,8 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
+
+
 
   @override
   void dispose() {
@@ -163,8 +290,7 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  static const TextStyle optionStyle =
-      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+  static const TextStyle optionStyle = TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
 
   Widget title(String nameTitle) {
     return Padding(
@@ -1020,6 +1146,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 }
               ),
               ),
+              if(_remoteUid !=null)
               Container(
                 width: MediaQuery.of(context).size.width,
                 child: Stack(
@@ -1053,58 +1180,66 @@ class _HomeScreenState extends State<HomeScreen> {
                   ],
                 ),
               ),
+              if(_remoteUid !=null)
               Container(
                 color: Color(0xffFBDFD2),
                 padding: EdgeInsets.symmetric(horizontal: 30),
                 child: Stack(
-                  children: [
-                    Container(
-                      width: double.infinity,
-                      color: Colors.grey,
-                      child: Image.asset(
-                        'assets/images/new-placeholder-rect.png'
+                    children: [
+                      Container(
+                        width: double.infinity,
+                        height: 250,
+                        color: Colors.grey,
+                        child: _renderRemoteVideo(),
                       ),
-                    ),
-                    Positioned(
-                      top: 10,
-                      right: 10,
-                      child: Container(
-                        padding: EdgeInsets.symmetric(vertical: 3, horizontal: 5),
-                        color: Color(0xff000000).withOpacity(0.1),
-                        child: Row(
-                          children: [
-                            Icon(
-                              Icons.remove_red_eye,
-                              color: Colors.white,
-                              size: 12,
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(left: 5),
-                              child: Text(
-                                '12',
-                                style: TextStyle(
-                                  fontFamily: 'Brandon',
-                                  fontSize: 12,
-                                  color: Colors.white,
+                      Positioned(
+                        top: 10,
+                        right: 10,
+                        child: Container(
+                          padding: EdgeInsets.symmetric(vertical: 3, horizontal: 5),
+                          color: Color(0xff000000).withOpacity(0.1),
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.remove_red_eye,
+                                color: Colors.white,
+                                size: 12,
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(left: 5),
+                                child: Text(
+                                  viewer.toString(),
+                                  style: TextStyle(
+                                    fontFamily: 'Brandon',
+                                    fontSize: 12,
+                                    color: Colors.white,
+                                  ),
                                 ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                    Positioned(
-                      bottom: 10,
-                      right: 10,
-                      child: Icon(
-                        Icons.fullscreen,
-                        size: 22,
-                        color: Colors.white,
+                      Positioned(
+                        bottom: 10,
+                        right: 10,
+                        child: InkWell(
+                          onTap: (){
+                            Navigator.push(context,new MaterialPageRoute(
+                              builder: (BuildContext context) => new FullSiaran(remoteUid: _remoteUid,),
+                            ));
+                          },
+                          child: Icon(
+                            Icons.fullscreen,
+                            size: 22,
+                            color: Colors.white,
+                          ),
+                        ) ,
                       ),
-                    ),
-                  ]
+                    ]
                 ),
               ),
+              if(_remoteUid !=null)
               Container(
                 color: Color(0xffFBDFD2),
                 width: double.infinity,
