@@ -115,7 +115,7 @@ class _LoginStateScreen extends State<LoginScreen> {
           scaffoldKey.currentState.showSnackBar(snackBar);
         }
       }).catchError((onError) {
-        scaffoldKey.currentState.showSnackBar(snackBarError);
+        print(onError);
       });
     }
   }
@@ -436,12 +436,14 @@ class _LoginStateScreen extends State<LoginScreen> {
                         ),
                         child: TextFormField(
                           controller: myemail,
+                          style: TextStyle(fontFamily: 'Brandon'),
                           decoration: InputDecoration(
                             filled: true,
                             fillColor: Colors.white,
                             hintText: 'Email',
-                            labelText: 'Email:',
-                            labelStyle: TextStyle(color: Colors.black),
+                            hintStyle: TextStyle(fontFamily: 'Brandon'),
+                            labelText: 'Email :',
+                            labelStyle: TextStyle(fontFamily: 'Brandon', color: Colors.black),
                             focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(8.0),
                               borderSide: BorderSide(
@@ -477,12 +479,14 @@ class _LoginStateScreen extends State<LoginScreen> {
                         child: TextFormField(
                           controller: mypass,
                           obscureText: true,
+                          style: TextStyle(fontFamily: 'Brandon'),
                           decoration: InputDecoration(
                             filled: true,
                             fillColor: Colors.white,
                             hintText: 'Password',
+                            hintStyle: TextStyle(fontFamily: 'Brandon'),
                             labelText: 'Password :',
-                            labelStyle: TextStyle(color: Colors.black),
+                            labelStyle: TextStyle(fontFamily: 'Brandon', color: Colors.black),
                             focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(8.0),
                               borderSide: BorderSide(

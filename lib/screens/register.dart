@@ -682,7 +682,7 @@ class _RegisterScreen extends State<RegisterScreen> {
                       color: Hexcolor('#F48262'),
                       onPressed: validateInput,
                       child: Text(
-                        "MASUK",
+                        "DAFTAR",
                         style: TextStyle(
                             fontSize: 18,
                             fontFamily: 'Brandon',
