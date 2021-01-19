@@ -57,7 +57,7 @@ class _Browse_BrandsState extends State<Browse_Brands> {
       floatingActionButton: LoadingBrand?Container() :Container(
           decoration: BoxDecoration(
             color: Hexcolor('#F48262'),
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(20),
           ),
           width: 38.0,
           height: MediaQuery.of(context).size.height*0.7,
