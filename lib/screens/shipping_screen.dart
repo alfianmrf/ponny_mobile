@@ -337,7 +337,7 @@ class _ShippingScreenState extends State<ShippingScreen> {
                     backgroundColor: Color(0xffFDF8F0),
                     body:
                     Container(
-                      margin: MediaQuery.of(context).padding,
+                      width: MediaQuery.of(context).size.width,
                       child: SingleChildScrollView(
                         child: Column(
                           children: <Widget>[
@@ -390,7 +390,7 @@ class _ShippingScreenState extends State<ShippingScreen> {
                           preferredSize: Size.fromHeight(1.0)),
                     ),
                     body: Container(
-                      margin: MediaQuery.of(context).padding,
+                      width: MediaQuery.of(context).size.width,
                       child: SingleChildScrollView(
                         child: Column(
                           children: <Widget>[
@@ -931,7 +931,7 @@ class _ShippingScreenState extends State<ShippingScreen> {
                       backgroundColor: Color(0xffFDF8F0),
                       body:
                       Container(
-                        margin: MediaQuery.of(context).padding,
+                        width: MediaQuery.of(context).size.width,
                         child: SingleChildScrollView(
                           child: Column(
                               children: <Widget>[
