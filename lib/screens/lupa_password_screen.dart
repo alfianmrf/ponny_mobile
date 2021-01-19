@@ -108,6 +108,7 @@ class _LupaPasswordStateScreen extends State<LupaPasswordScreen> {
                         margin: EdgeInsets.only(top: 5, bottom: 40),
                         child: TextFormField(
                           controller: myemail,
+                          style: TextStyle(fontFamily: 'Brandon'),
                           cursorColor: Color(0xffF48262),
                           decoration: InputDecoration(
                             filled: true,
