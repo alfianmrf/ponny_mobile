@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 
 //prod
 const base_url = "https://ponnybeaute.co.id/api/v1/";
-const img_url = "https://ponnybeaute.co.id/public/";
+const img_url = "https://ponny-publik.s3-ap-southeast-1.amazonaws.com/public/";
 const urlGlobal = "https://ponnybeaute.co.id/";
 
 
