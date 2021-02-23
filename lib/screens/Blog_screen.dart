@@ -423,7 +423,7 @@ DateTime convertDateFromString(String strDate){
                   leading: Container(
                     width: 100,
                     child: CachedNetworkImage(
-                      imageUrl:img_url+"blog/thumbnail/"+widget.list[i]["thumbnail"].toString(),
+                      imageUrl:img_url+"uploads/blog/thumbnail/"+widget.list[i]["thumbnail"].toString(),
                       placeholder: (context, url) => LoadingWidgetPulse(context),
                       errorWidget: (context, url, error) => Image.asset('assets/images/basic.jpg'),
                       width: MediaQuery.of(context).size.width,
@@ -488,7 +488,7 @@ Widget categoryListBlog(context, List list, int categoryId) {
                   child: Container(
                       width: double.infinity,
                       child: CachedNetworkImage(
-                        imageUrl:img_url+"blog/thumbnail/"+list[i]["thumbnail"].toString(),
+                        imageUrl:img_url+"uploads/blog/thumbnail/"+list[i]["thumbnail"].toString(),
                         placeholder: (context, url) => LoadingWidgetPulse(context),
                         errorWidget: (context, url, error) => Image.asset('assets/images/basic.jpg'),
                         width: MediaQuery.of(context).size.width,

@@ -283,7 +283,7 @@ class _BlogDetailScreenState extends State<BlogDetailScreen> {
                                     width: double.infinity,
                                     height: 200,
                                     child: CachedNetworkImage(
-                                      imageUrl:img_url+"blog/thumbnail/"+widget.title["thumbnail"].toString(),
+                                      imageUrl:img_url+"uploads/blog/thumbnail/"+widget.title["thumbnail"].toString(),
                                       placeholder: (context, url) => LoadingWidgetPulse(context),
                                       errorWidget: (context, url, error) => Image.asset('assets/images/basic.jpg'),
                                       width: MediaQuery.of(context).size.width,
