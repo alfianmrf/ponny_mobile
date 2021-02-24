@@ -967,12 +967,18 @@ class _HomeScreenState extends State<HomeScreen> {
                               Expanded(
                                 flex: 1,
                                 child:InkWell(
-                                  onTap: (){
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => PromotionScreen()),
-                                    );
+                                  onTap: () {
+                                    if(Provider.of<AppModel>(context).loggedIn){
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => PromotionScreen()),
+                                      );
+                                    }else{
+                                      Navigator.push(context,new MaterialPageRoute(
+                                        builder: (BuildContext context) => new LoginScreen(),
+                                      ));
+                                    }
                                   },
                                   child: Column(
                                     children: [

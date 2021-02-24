@@ -155,7 +155,7 @@ class _PromotionDetailScreenState extends State<PromotionDetailScreen> {
                                         ),
                                       ),
                                       Text(
-                                        nm_format.format(widget.cupon.details.minBuy),
+                                        widget.cupon.type == "cart_base" ? nm_format.format(double.tryParse(widget.cupon.decodeDetail.minBuy)):"-",
                                         style: TextStyle(
                                           fontSize: 14,
                                           fontFamily: "Brandon",

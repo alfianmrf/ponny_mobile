@@ -108,8 +108,8 @@ class _PromotionScreenState extends State<PromotionScreen> {
                 ),
               ),
             ),
-            Expanded(
-              flex: 1,
+            Container(
+              height: 120,
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
                 itemCount: result.coupons !=null ? result.coupons.length :0,
@@ -122,19 +122,22 @@ class _PromotionScreenState extends State<PromotionScreen> {
                           MaterialPageRoute(
                               builder: (context) => PromotionDetailScreen(cupon: kupon,)));
                     },
-                    child: Container(
-                        margin: EdgeInsets.all(10),
-                        child: Image.network(
-                          img_url+kupon.banner,
-                          fit: BoxFit.cover,
-                        ),
+                    child: AspectRatio(
+                      aspectRatio: 1,
+                      child: Container(
+                          margin: EdgeInsets.all(10),
+                          color: Colors.white,
+                          child: Image.network(
+                            img_url+kupon.banner,
+                            fit: BoxFit.contain,
+                          ),
+                      ),
                     )
                   );
                 },
               ),
             ),
             Expanded(
-              flex: 3,
               child: ListView.builder(
                 scrollDirection: Axis.vertical,
                 itemCount: result.promotions != null ? result.promotions.length :0,
@@ -154,7 +157,7 @@ class _PromotionScreenState extends State<PromotionScreen> {
                               child: ClipRRect(
                                 borderRadius: BorderRadius.only(topRight: Radius.circular(10), topLeft: Radius.circular(10)),
                                 child: CachedNetworkImage(
-                                  imageUrl:promo.banner != null?   img_url+promo.banner:"",
+                                  imageUrl:promo.thumbnail != null?   img_url+promo.thumbnail:"",
                                   placeholder: (context, url) => LoadingWidgetPulse(context),
                                   errorWidget: (context, url, error) => Image.asset('assets/images/new-placeholder-rect.png'),
                                   width: MediaQuery.of(context).size.width,
@@ -175,7 +178,7 @@ class _PromotionScreenState extends State<PromotionScreen> {
                                   ),
                                 ),
                                 Html(
-                                  data: promo.meta_description,
+                                  data: promo.metaDescription,
                                   style: {
                                     "html": Style(
                                       fontSize: FontSize.small,
