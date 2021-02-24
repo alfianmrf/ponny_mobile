@@ -54,6 +54,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   var _color = Colors.transparent;
   double _elevation = 0;
   List<String> gambars = new List<String>();
+  List<String> pictures = new List<String>();
   SwiperController controller = new SwiperController();
   SwiperControl swcontrol = new SwiperControl();
 
@@ -66,6 +67,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       setState(() {
         gambars.addAll(widget.product.photos);
+        pictures = gambars.reversed.toList();
       });
       _getData();
       _scrollController.addListener(() {
@@ -590,10 +592,10 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   children: <Widget>[
                     Container(
                       height: MediaQuery.of(context).size.width * 1.2,
-                      child: gambars.length >0 ? new Swiper(
+                      child: pictures.length >0 ? new Swiper(
                         itemBuilder: (BuildContext context, int index) {
                           return new CachedNetworkImage(
-                            imageUrl:  gambars[index] != null ?  img_url+gambars[index] :"",
+                            imageUrl:  pictures[index] != null ?  img_url+pictures[index] :"",
                             placeholder: (context, url) => LoadingWidgetPulse(context),
                             errorWidget: (context, url, error) => Image.asset('assets/images/210x265.png'),
                             width: MediaQuery.of(context).size.width,
@@ -602,7 +604,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
 
                           );
                         },
-                        itemCount: gambars.length,
+                        itemCount: pictures.length,
                         pagination: new SwiperPagination(
                             margin: new EdgeInsets.all(5.0),
                             builder: new DotSwiperPaginationBuilder(
