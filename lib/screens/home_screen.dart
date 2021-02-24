@@ -1152,7 +1152,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 }
               ),
               ),
-              if(_remoteUid !=null)
+              /*if(_remoteUid !=null)
               Container(
                 width: MediaQuery.of(context).size.width,
                 child: Stack(
@@ -1270,7 +1270,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ],
                 ),
-              ),
+              ),*/
               if(flashdeal != null && DateTime.now().millisecondsSinceEpoch < flashdeal.detail.endDate * 1000 && !loading_flashdeal)
               Container(
                 color: Color(0xffFACAC1),
