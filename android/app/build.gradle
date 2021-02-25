@@ -56,8 +56,8 @@ android {
         minSdkVersion 23
         targetSdkVersion 29
         multiDexEnabled true
-        versionCode 23
-        versionName "2.1.9"
+        versionCode 24
+        versionName "2.2.0"
     }
     signingConfigs {
         release {
