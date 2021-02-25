@@ -55,6 +55,14 @@
           }
         },
         {
+          "client_id": "1028517918903-vb4ujdtmuivh7sn7njf9t1onchtrpk8l.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ponnybeauteindonesia.app",
+            "certificate_hash": "5d412d0045dd552a5daf4df838f68066bc1a9c3a"
+          }
+        },
+        {
           "client_id": "1028517918903-4s17oj4sl7tlhfbvhjeogv8pio7oh3q5.apps.googleusercontent.com",
           "client_type": 3
         }
