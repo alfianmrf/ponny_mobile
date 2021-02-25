@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "1028517918903-8e36dmgt3llhe1bjlq6p2ob0cp5mplhu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ponnybeauteindonesia.app",
+            "certificate_hash": "7e57d650fccd2948eeb5b7d12ec631c26219047b"
+          }
+        },
+        {
           "client_id": "1028517918903-8p6asvrj2f84roo9jthjuq1r8k7mo55b.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -23,19 +31,27 @@
           }
         },
         {
-          "client_id": "1028517918903-u7lu32nboqnmbung12v43onb6molrg2k.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.ponnybeauteindonesia.app",
-            "certificate_hash": "084ada426372e44802e6877f57b5d6a7e894d0a3"
-          }
-        },
-        {
           "client_id": "1028517918903-hu6i5sd972chhn6k0egecohutmsii7kq.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.ponnybeauteindonesia.app",
             "certificate_hash": "c2d175f9dc2028ed4b16a9ce6a618e6686ff9030"
+          }
+        },
+        {
+          "client_id": "1028517918903-jph1ok4j79ps5qgfn8d7vplpvvuaf8aq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ponnybeauteindonesia.app",
+            "certificate_hash": "47639b918b92e36ef0e00cc97e06c5b7062c1d6f"
+          }
+        },
+        {
+          "client_id": "1028517918903-u7lu32nboqnmbung12v43onb6molrg2k.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ponnybeauteindonesia.app",
+            "certificate_hash": "084ada426372e44802e6877f57b5d6a7e894d0a3"
           }
         },
         {
@@ -54,6 +70,14 @@
             {
               "client_id": "1028517918903-4s17oj4sl7tlhfbvhjeogv8pio7oh3q5.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "1028517918903-nlaqk81j6cqs0u82trmqf8kurl554c7g.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "app.jcurve.ponny-beaute-indonesia",
+                "app_store_id": "1525352672"
+              }
             }
           ]
         }

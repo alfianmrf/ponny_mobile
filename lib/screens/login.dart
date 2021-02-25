@@ -667,6 +667,7 @@ class _LoginStateScreen extends State<LoginScreen> {
                                                         snackBarError);
                                               }
                                             }).catchError((onError) {
+                                              print(onError);
                                               UIBlock.unblock(context);
                                               scaffoldKey.currentState
                                                   .showSnackBar(snackBarError);
