@@ -715,7 +715,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                   Padding(
                                     padding: EdgeInsets.symmetric(horizontal: 10),
                                     child: Text(
-                                       varian != null ?  NumberFormat.simpleCurrency(locale: "id_ID",decimalDigits: 0 ).format(varian.price ) :  NumberFormat.simpleCurrency(locale: "id_ID",decimalDigits: 0 ).format(widget.product.base_discounted_price),
+                                       varian != null ?  NumberFormat.simpleCurrency(locale: "id_ID",decimalDigits: 0 ).format(widget.product.is_flash_deal.discount_type == "percent"? varian.price-(varian.price*widget.product.is_flash_deal.discount/100) : varian.price-widget.product.is_flash_deal.discount ) :  NumberFormat.simpleCurrency(locale: "id_ID",decimalDigits: 0 ).format(widget.product.base_discounted_price),
                                       style: TextStyle(
                                         color: Color(0xffF48262),
                                         fontFamily: 'Brandon',

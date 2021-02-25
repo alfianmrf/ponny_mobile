@@ -7,9 +7,9 @@ const urlGlobal = "https://ponnybeaute.co.id/";
 
 
 //dev
-// const base_url = "https://ponnybeaute.revoapps.id/api/v1/";
+// const base_url = "http://devponnylb-1174518223.ap-southeast-1.elb.amazonaws.com/api/v1/";
 // const img_url = "https://ponnybeaute.revoapps.id/public/";
-// const urlGlobal = "https://ponnybeaute.revoapps.id/";
+// const urlGlobal = "http://devponnylb-1174518223.ap-southeast-1.elb.amazonaws.com/";
 
 //Auth
 const filterTrend = base_url + "forum/rooms/";
