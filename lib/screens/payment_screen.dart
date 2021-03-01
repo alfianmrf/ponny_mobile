@@ -12,6 +12,7 @@ import 'package:ponny/screens/Qris_screen.dart';
 import 'package:ponny/screens/account/menunggu_pembayaran_sukses_screen.dart';
 import 'package:ponny/screens/home_screen.dart';
 import 'package:ponny/screens/pesanan_berhasil_screen.dart';
+import 'package:ponny/screens/bank_transfer_detail_screen.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
 import 'package:ponny/screens/bank_transfer_screen.dart';
 import 'package:ponny/screens/pembayaran_ovo_screen.dart';
@@ -63,6 +64,11 @@ class _PaymentScreenState extends State<PaymentScreen> {
                       builder: (BuildContext context) => new QrisScreen(title: "SHOPEEPAY",urlQR: value.mitransRequest.actions.firstWhere((element) => element.name == "generate-qr-code").url,type:QrisScreen.shopee),
                     ),(_) => false);
                   }
+                  // else if(method == "manual_bca" || method == "manual_mandiri" || method == "manual_permata" || method == "transfer_manual"){
+                  //   Navigator.pushAndRemoveUntil(context,new MaterialPageRoute(
+                  //     builder: (BuildContext context) => new BankTransferDetailScreen(order_id: ),
+                  //   ),(_) => false);
+                  // }
                   else{
                     Navigator.pushAndRemoveUntil(context,new MaterialPageRoute(
                       builder: (BuildContext context) => new PesananBerhasilScreen(code: value.orderCode, nota: value),

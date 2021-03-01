@@ -199,7 +199,11 @@ class Midtrans{
     }else if( parsedJson != null && parsedJson["payment_type"] == "echannel"){
       _va_numbers= "Mandiri Bill Payment"+"\nBill key: "+parsedJson["bill_key"]+"\nBiller Code: "+parsedJson["biller_code"];
       return Midtrans(parsedJson["payment_type"],_va_numbers);
-    }else
+    }else if(parsedJson != null && parsedJson["payment_type"] == "bank_transfer" && parsedJson["permata_va_number"] != null){
+      _va_numbers= "Permata Virtual"+"\nCode: "+parsedJson["permata_va_number"];
+      return Midtrans(parsedJson["payment_type"],_va_numbers);
+    }
+    else
     return null;
   }
 }
