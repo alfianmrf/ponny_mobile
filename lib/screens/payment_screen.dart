@@ -64,11 +64,11 @@ class _PaymentScreenState extends State<PaymentScreen> {
                       builder: (BuildContext context) => new QrisScreen(title: "SHOPEEPAY",urlQR: value.mitransRequest.actions.firstWhere((element) => element.name == "generate-qr-code").url,type:QrisScreen.shopee),
                     ),(_) => false);
                   }
-                  // else if(method == "manual_bca" || method == "manual_mandiri" || method == "manual_permata" || method == "transfer_manual"){
-                  //   Navigator.pushAndRemoveUntil(context,new MaterialPageRoute(
-                  //     builder: (BuildContext context) => new BankTransferDetailScreen(order_id: ),
-                  //   ),(_) => false);
-                  // }
+                  else if(method == "manual_bca" || method == "manual_mandiri" || method == "manual_permata" || method == "transfer_manual"){
+                    Navigator.pushAndRemoveUntil(context,new MaterialPageRoute(
+                      builder: (BuildContext context) => new BankTransferDetailScreen(order_id: value.orderId),
+                    ),(_) => false);
+                  }
                   else{
                     Navigator.pushAndRemoveUntil(context,new MaterialPageRoute(
                       builder: (BuildContext context) => new PesananBerhasilScreen(code: value.orderCode, nota: value),
@@ -592,7 +592,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                 ),*/
 
 
-                                /*Container(
+                                Container(
                                   color: Color(0xffFDEDE4),
                                   width: MediaQuery.of(context).size.width,
                                   padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
@@ -679,8 +679,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                       ],
                                     ),
                                   ),
-                                ),*/
-                                /*InkWell(
+                                ),
+                                InkWell(
                                   onTap: () {
                                     chekOut(context,"shopeepay");
                                   },
@@ -715,7 +715,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                       ],
                                     ),
                                   ),
-                                ),*/
+                                ),
                                 /*
                                 Container(
                                   color: Color(0xffFDEDE4),

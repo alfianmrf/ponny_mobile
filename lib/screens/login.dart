@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -8,6 +9,7 @@ import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:flutter_twitter_login/flutter_twitter_login.dart';
 import 'package:google_sign_in/google_sign_in.dart' as google;
 import 'package:hexcolor/hexcolor.dart';
+import 'package:package_info/package_info.dart';
 import 'package:ponny/common/constant.dart';
 import 'package:ponny/model/App.dart';
 import 'package:ponny/model/User.dart';
@@ -43,6 +45,28 @@ class _LoginStateScreen extends State<LoginScreen> {
 
   final myemail = TextEditingController();
   final mypass = TextEditingController();
+
+  String _appName;
+  String _versionName;
+  String _versionCode;
+  String _packageName;
+
+  @override
+  void initState() {
+    _init();
+    super.initState();
+  }
+
+  void _init() async {
+    final _packageInfo = await PackageInfo.fromPlatform();
+
+    setState(() {
+      _appName = _packageInfo.appName;
+      _versionName = _packageInfo.version;
+      _versionCode = _packageInfo.buildNumber;
+      _packageName = _packageInfo.packageName;
+    });
+  }
 
   void validateInput() {
     FormState form = this.formKey.currentState;
@@ -994,8 +1018,17 @@ class _LoginStateScreen extends State<LoginScreen> {
                               ),
                             )
                           : Container(
-                              height: 50,
+                              height: 20,
                             ),
+                      Text(
+                        'Version '+_versionName,
+                        style: TextStyle(
+                          fontFamily: 'Brandon',
+                        ),
+                      ),
+                      Container(
+                        height: 20,
+                      ),
                     ],
                   ),
                 ),

@@ -1,6 +1,7 @@
 import 'Order.dart';
 
 class OrderResult {
+  int orderId;
   String message;
   bool success;
   bool emailSuccess;
@@ -9,7 +10,8 @@ class OrderResult {
   String orderCode;
 
   OrderResult(
-      {this.message,
+      {this.orderId,
+        this.message,
         this.success,
         this.emailSuccess,
         this.mitransRequest,
@@ -18,6 +20,7 @@ class OrderResult {
       });
 
   OrderResult.fromJson(Map<String, dynamic> json) {
+    orderId = json['order_id'];
     message = json['message'];
     success = json['success'] != null ? json['success'] :false;
     emailSuccess = json['email_success'] != null ? json['email_success'] :false ;

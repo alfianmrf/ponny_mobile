@@ -1,10 +1,12 @@
 import 'dart:io';
 import 'dart:convert';
+import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_twitter_login/flutter_twitter_login.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:package_info/package_info.dart';
 import 'package:ponny/common/constant.dart';
 import 'package:ponny/model/App.dart';
 import 'package:ponny/screens/Affiliate_Home_screen.dart';
@@ -33,6 +35,27 @@ class _PraDaftarScreen extends State<PraDaftarScreen> {
   final FirebasePakage.FirebaseAuth _auth = FirebasePakage.FirebaseAuth.instance;
   final google.GoogleSignIn googleSignIn = google.GoogleSignIn();
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+
+  String _appName;
+  String _versionName;
+  String _versionCode;
+  String _packageName;
+
+  void initState() {
+    _init();
+    super.initState();
+  }
+
+  void _init() async {
+    final _packageInfo = await PackageInfo.fromPlatform();
+
+    setState(() {
+      _appName = _packageInfo.appName;
+      _versionName = _packageInfo.version;
+      _versionCode = _packageInfo.buildNumber;
+      _packageName = _packageInfo.packageName;
+    });
+  }
 
   Future<bool> signInWithGoogle() async {
     await Firebase.initializeApp();
@@ -917,7 +940,16 @@ class _PraDaftarScreen extends State<PraDaftarScreen> {
               ),
             ),
             Container(
-              height: 50,
+              height: 20,
+            ),
+            Text(
+              'Version '+_versionName,
+              style: TextStyle(
+                fontFamily: 'Brandon',
+              ),
+            ),
+            Container(
+              height: 20,
             ),
           ],
         ),
