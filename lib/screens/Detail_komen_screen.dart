@@ -55,10 +55,7 @@ class _DetailKomenScreenState extends State<DetailKomenScreen> {
     if (response.statusCode == 200) {
       print('sukses');
 
-      var datas = json.decode(response.body);
-      setState(() {
-        data = datas;
-      });
+      data = json.decode(response.body);
 
       print(data);
       return data;
@@ -76,6 +73,7 @@ class _DetailKomenScreenState extends State<DetailKomenScreen> {
     });
     if (response.statusCode == 200) {
       print('sukses');
+      print(id);
 
       var data = json.decode(response.body);
      
@@ -255,8 +253,7 @@ class _DetailKomenScreenState extends State<DetailKomenScreen> {
                                                 BorderRadius.circular(100),
                                             child: Image.network(
                                               data[0]['forum']['user'][
-                                                              'avatar_original']
-                                                          .toString() ==
+                                                              'avatar_original'] ==
                                                       null
                                                   ? 'https://www.tenforums.com/geek/gars/images/2/types/thumb_15951118880user.png'
                                                   : img_url +
@@ -448,7 +445,7 @@ class _DetailKomenScreenState extends State<DetailKomenScreen> {
                                                 "assets/images/shareIcon.PNG"),
                                             onPressed: () {
                                               Share.share(
-                                                  'https://ponnybeaute.co.id/' +
+                                                  urlGlobal + 'forum/' +
                                                       data[0]['forum']['slug']);
                                             }),
                                       ],
@@ -490,11 +487,10 @@ class _DetailKomenScreenState extends State<DetailKomenScreen> {
                                                             BorderRadius
                                                                 .circular(100),
                                                         child: Image.network(
+                                                            data[0]['forum']['reply'][i]
+                                                            ['user'] == null ? 'https://www.tenforums.com/geek/gars/images/2/types/thumb_15951118880user.png' :
                                                           data[0]['forum']['reply'][i]
-                                                                              ['user']
-                                                                          [
-                                                                          'avatar_original']
-                                                                      .toString() ==
+                                                                              ['user']['avatar_original'] ==
                                                                   null
                                                               ? 'https://www.tenforums.com/geek/gars/images/2/types/thumb_15951118880user.png'
                                                               : img_url +
@@ -520,6 +516,10 @@ class _DetailKomenScreenState extends State<DetailKomenScreen> {
                                                           children: [
                                                             Text(
                                                               data[0]['forum'][
+                                                              'reply']
+                                                              [
+                                                              i]['user'] == null ? 'Anonim' :
+                                                              data[0]['forum'][
                                                                           'reply']
                                                                       [
                                                                       i]['user']
@@ -539,6 +539,11 @@ class _DetailKomenScreenState extends State<DetailKomenScreen> {
                                                             Container(
                                                               width: 5,
                                                             ),
+                                                            if (data[0]['forum']
+                                                            [
+                                                            'reply']
+                                                            [
+                                                            i]['user'] != null)
                                                             Container(
                                                               padding: EdgeInsets
                                                                   .symmetric(
@@ -777,20 +782,27 @@ class _DetailKomenScreenState extends State<DetailKomenScreen> {
                                           context: context,
                                           builder: (BuildContext context) {
                                             return AlertDialog(
-                                              title: InkWell(
-                                                onTap: (){
-                                                  Navigator.of(context).pop();
-                                                },
-                                                child: Container(
-                                                  alignment: Alignment.topRight,
-                                                  child: Icon(Icons.close,color: Colors.grey,))),
+                                              backgroundColor: Hexcolor('#FCF8F0'),
+                                              title: Container(
+                                                child: Align(
+                                                  alignment: Alignment.centerRight,
+                                                  child: IconButton(
+                                                      icon: Icon(Icons.close),
+                                                      color: Color(0xffF48262),
+                                                      onPressed: () {
+                                                        Navigator.of(context).pop();
+                                                      }),
+                                                ),
+                                              ),
+                                              titlePadding: EdgeInsets.all(0),
+                                              contentPadding: EdgeInsets.all(5),
                                               content:
                                                   setupAlertDialoadContainer(
                                                 data[0]['forum']['reply'][i]
                                                     ['id'], data[0]['forum']
                                                                 ['reply'][i]
                                                             ['text'],
-                                                      
+
                                               ),
                                             );
                                           });
@@ -1113,206 +1125,221 @@ class _DetailKomenScreenState extends State<DetailKomenScreen> {
 
   Widget setupAlertDialoadContainer(int id,String title) {
     print(id);
-    return Container(
-     color: Hexcolor('#FCF8F0'),
-      height:
-          MediaQuery.of(context).size.height, // Change as per your requirement
-      width:
-          MediaQuery.of(context).size.width, // Change as per your requirement
+    return Padding(
+      padding: EdgeInsets.only(bottom: 10.0),
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
-          Text("Balasan untuk komentar : $title",style: TextStyle(fontSize: 14,fontFamily: "Brandon")),
-          Expanded(
-                      child: FutureBuilder(
+          Padding(
+            padding: EdgeInsets.all(5.0),
+            child: Text("Balasan untuk komentar : $title",style: TextStyle(fontSize: 14,fontFamily: "Brandon")),
+          ),
+          FutureBuilder(
                 future: commentChild(id),
                 builder: (context, snapshot) {
-                  if (snapshot.hasError) print(snapshot.hasError);
-                  if (snapshot.hasData)
-                  if(snapshot.data!=null)
-                  
+                  if (snapshot.hasError){
+                    print(snapshot.hasError);
+                    return null;
+                  }
+                  else if (snapshot.hasData && snapshot.data["replys"].length > 0){
+                    print("JUMLAH KOMEN");
+                    print(snapshot.data["replys"].length);
                     return ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: snapshot.data["comment"].length,
-                      itemBuilder: (BuildContext context, int index) {
-                        print(snapshot.data.length);
-                        return Container(
-                                     
-                                      child: Column(
-                                        children: [
-                                          Container(
-                                            height: 7,
-                                            color: Colors.white,
-                                          ),
-                                          Container(
-                                            padding: EdgeInsets.symmetric(
-                                                horizontal: 10),
-                                            child: Column(
-                                              children: [
-                                                Container(
-                                                  height: 20,
-                                                ),
-                                                Row(
-                                                  children: [
-                                                    ClipRRect(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(100),
-                                                        child: Image.network(
-                                                          // data[0]['forum']['reply'][i]
-                                                          //                     ['user']
-                                                          //                 [
-                                                          //                 'avatar_original']
-                                                          //             .toString() ==
-                                                          //         null
-                                                          //     ? 'https://www.tenforums.com/geek/gars/images/2/types/thumb_15951118880user.png'
-                                                          //     : img_url +
-                                                          //         data[0]['forum']
-                                                          //                     [
-                                                          //                     'reply'][i]['user']
-                                                          //                 [
-                                                          //                 'avatar_original']
-                                                          //             .toString(),
-                                                          'https://www.tenforums.com/geek/gars/images/2/types/thumb_15951118880user.png',
-                                                          
-                                                          height: 25,
-                                                          width: 25,
-                                                          fit: BoxFit.cover,
-                                                        )),
-                                                    Container(
-                                                      width: 5,
-                                                    ),
-                                                    Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        Row(
-                                                          children: [
-                                                            Text(
-                                                              "Username",
-                                                              textAlign:
-                                                                  TextAlign
-                                                                      .center,
-                                                              style: TextStyle(
-                                                                fontSize: 12,
-                                                                fontFamily:
-                                                                    'Brandon',
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w800,
-                                                              ),
-                                                            ),
-                                                            Container(
-                                                              width: 5,
-                                                            ),
-                                                            Container(
-                                                              padding: EdgeInsets
-                                                                  .symmetric(
-                                                                      horizontal:
-                                                                          3),
-                                                              decoration: BoxDecoration(
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                              5),
-                                                                  color: Color(
-                                                                      0xffF48262)),
-                                                              child: Text(
-                                                               "Title",
-                                                                textAlign:
-                                                                    TextAlign
-                                                                        .center,
-                                                                style:
-                                                                    TextStyle(
-                                                                  color: Colors
-                                                                      .white,
-                                                                  fontSize: 10,
-                                                                  fontFamily:
-                                                                      'Brandon',
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                        Row(
-                                                          children: [
-                                                            Text(
-                                                              "Posted " +
-                                                                  DateFormat(
-                                                                          'dd MMMM yyyy')
-                                                                      .format(
-                                                                          convertDateFromString(
-                                                                  "2020-20-20 16:15:00"
-                                                                  )),
-                                                              textAlign:
-                                                                  TextAlign
-                                                                      .center,
-                                                              style: TextStyle(
-                                                                fontSize: 10,
-                                                                fontFamily:
-                                                                    'Brandon',
-                                                                color:
-                                                                    Colors.grey,
-                                                              ),
-                                                            ),
-                                                            Container(width: 5),
-                                                            
-                                                          ],
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ],
-                                                ),
-                                                Container(
-                                                  height: 5,
-                                                ),
-                                                Row(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text(
-                                                      "Reply: ",
-                                                      style: TextStyle(
-                                                          fontFamily: "Brandon",
-                                                          fontWeight:
-                                                              FontWeight.bold,fontSize:10),
-                                                    ),
-                                                    Expanded(
-                                                      child: ReadMoreText(
-                                                       "Testing",
-                                                        style: TextStyle(
-                                                            fontFamily:
-                                                                "Brandon",fontSize: 11),
-                                                        trimLines: 2,
-                                                        colorClickableText:
-                                                            Colors.blue,
-                                                        trimMode: TrimMode.Line,
-                                                        trimCollapsedText:
-                                                            '...baca selengkapnya',
-                                                        trimExpandedText:
-                                                            ' show less',
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                                   ],
-                                            ),
-                                          ),
-                                        ],
+          shrinkWrap: true,
+          itemCount: snapshot.data["replys"].length,
+          itemBuilder: (BuildContext context, int index) {
+            return Container(
+
+              child: Column(
+                children: [
+                  Container(
+                    height: 7,
+                    color: Colors.white,
+                  ),
+                  Container(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: 10),
+                    child: Column(
+                      children: [
+                        Container(
+                          height: 20,
+                        ),
+                        Row(
+                          children: [
+                            ClipRRect(
+                                borderRadius:
+                                BorderRadius
+                                    .circular(100),
+                                child: Image.network(
+                                  // data[0]['forum']['reply'][i]
+                                  //                     ['user']
+                                  //                 [
+                                  //                 'avatar_original']
+                                  //             .toString() ==
+                                  //         null
+                                  //     ? 'https://www.tenforums.com/geek/gars/images/2/types/thumb_15951118880user.png'
+                                  //     : img_url +
+                                  //         data[0]['forum']
+                                  //                     [
+                                  //                     'reply'][i]['user']
+                                  //                 [
+                                  //                 'avatar_original']
+                                  //             .toString(),
+                                  snapshot.data["replys"][index]["user"]["avatar_original"] != null ? snapshot.data["replys"][index]["user"]["avatar_original"] :
+                                  'https://www.tenforums.com/geek/gars/images/2/types/thumb_15951118880user.png',
+
+                                  height: 25,
+                                  width: 25,
+                                  fit: BoxFit.cover,
+                                )),
+                            Container(
+                              width: 5,
+                            ),
+                            Column(
+                              crossAxisAlignment:
+                              CrossAxisAlignment
+                                  .start,
+                              children: [
+                                Row(
+                                  children: [
+                                    Text(
+                                      snapshot.data["replys"][index]["user"]["name"],
+                                      textAlign:
+                                      TextAlign
+                                          .center,
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        fontFamily:
+                                        'Brandon',
+                                        fontWeight:
+                                        FontWeight
+                                            .w800,
                                       ),
-                                    
-                                  );
-                                
-                          
-                  
-                      },
+                                    ),
+                                    Container(
+                                      width: 5,
+                                    ),
+                                    Container(
+                                      padding: EdgeInsets
+                                          .symmetric(
+                                          horizontal:
+                                          3),
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                          BorderRadius
+                                              .circular(
+                                              5),
+                                          color: Color(
+                                              0xffF48262)),
+                                      child: Text(
+                                        snapshot.data["replys"][index]["user"]["user_tier"]["title"],
+                                        textAlign:
+                                        TextAlign
+                                            .center,
+                                        style:
+                                        TextStyle(
+                                          color: Colors
+                                              .white,
+                                          fontSize: 10,
+                                          fontFamily:
+                                          'Brandon',
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    Text(
+                                      "Posted " +
+                                          DateFormat(
+                                              'dd MMMM yyyy')
+                                              .format(
+                                              convertDateFromString(
+                                                snapshot.data["replys"][index]["created_at"]
+                                              )),
+                                      textAlign:
+                                      TextAlign
+                                          .center,
+                                      style: TextStyle(
+                                        fontSize: 10,
+                                        fontFamily:
+                                        'Brandon',
+                                        color:
+                                        Colors.grey,
+                                      ),
+                                    ),
+                                    Container(width: 5),
+
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                        Container(
+                          height: 5,
+                        ),
+                        Row(
+                          crossAxisAlignment:
+                          CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Reply: ",
+                              style: TextStyle(
+                                  fontFamily: "Brandon",
+                                  fontWeight:
+                                  FontWeight.bold,fontSize:10),
+                            ),
+                            Expanded(
+                              child: ReadMoreText(
+                                snapshot.data["replys"][index]["isi"],
+                                style: TextStyle(
+                                    fontFamily:
+                                    "Brandon",fontSize: 11),
+                                trimLines: 2,
+                                colorClickableText:
+                                Colors.blue,
+                                trimMode: TrimMode.Line,
+                                trimCollapsedText:
+                                '...baca selengkapnya',
+                                trimExpandedText:
+                                ' show less',
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+
+            );
+
+
+
+          },
                     );
-                  else
-                  return Text("belum ada Komentar");
-                  
-                  return LoadingWidget(context);
+                  }
+                  else if (snapshot.hasData && snapshot.data["replys"].length == 0){
+                    return Container(
+                      padding: EdgeInsets.symmetric(vertical: 20),
+                      child: Center(
+                        child: Text(
+                          "Belum Ada Komentar",
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontFamily: 'Brandon',
+                          ),
+                        ),
+                      ),
+                    );
+                  }
+                  else{
+                    return LoadingWidget(context);
+                  }
                 }),
-          ),
         ],
       ),
     );

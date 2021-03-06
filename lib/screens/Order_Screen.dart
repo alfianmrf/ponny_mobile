@@ -929,7 +929,7 @@ class _OrderScreenState extends State<OrderScreen> {
                       textColor: Colors.white,
                       disabledColor: Colors.grey,
                       disabledTextColor: Colors.black,
-                      child: Text("UBAH BUKTI PEMBAYARAN"),
+                      child: Text("UBAH BUKTI PEMBAYARAN", style: TextStyle(fontFamily: 'Brandon'),),
                       onPressed: (){
                         Navigator.push(
                           context,

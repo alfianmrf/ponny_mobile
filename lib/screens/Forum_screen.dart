@@ -131,44 +131,46 @@ class _ForumScreenState extends State<ForumScreen> {
                                     widget.list == null ? 0 : widget.list.length,
                                 itemBuilder: (context, i) {
                                   String gambar = widget.list[i]["thumbnail"].toString();
-                                  return Column(
-                                    children: [
-                                      InkWell(
-                                        onTap:(){
-                                          Navigator.push(context, MaterialPageRoute(builder: (ctx)=>DetailKomenScreen(id:widget.list[i]["id"])));
-                                        },
-                                                                              child: Container(
-                                          margin: EdgeInsets.only(top: 10),
-                                          height: 200,
-                                          width: double.infinity,
-                                          child: CachedNetworkImage(
-                                          imageUrl: img_url+gambar,
-                                            placeholder: (context, url) => LoadingWidgetPulse(context),
-                                            errorWidget: (context, url, error) => Image.asset('assets/images/new-placeholder-rect.png'),
-                                            width: MediaQuery.of(context).size.width,
-                                            fit: BoxFit.cover,
-                                          )
+                                  return Container(
+                                    margin: EdgeInsets.symmetric(vertical: 10),
+                                    child: Column(
+                                      children: [
+                                        InkWell(
+                                          onTap:(){
+                                            Navigator.push(context, MaterialPageRoute(builder: (ctx)=>DetailKomenScreen(id:widget.list[i]["id"])));
+                                          },
+                                                                                child: Container(
+                                            height: 200,
+                                            width: double.infinity,
+                                            child: CachedNetworkImage(
+                                            imageUrl: img_url+gambar,
+                                              placeholder: (context, url) => LoadingWidgetPulse(context),
+                                              errorWidget: (context, url, error) => Image.asset('assets/images/new-placeholder-rect.png'),
+                                              width: MediaQuery.of(context).size.width,
+                                              fit: BoxFit.cover,
+                                            )
+                                          ),
                                         ),
-                                      ),
-                                      Text(
-                                        widget.list[i]["title"],
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          fontSize: 20,
-                                          fontFamily: "Brandon",
-                                          fontWeight: FontWeight.w500,
+                                        Text(
+                                          widget.list[i]["title"],
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontSize: 20,
+                                            fontFamily: "Brandon",
+                                            fontWeight: FontWeight.w500,
+                                          ),
                                         ),
-                                      ),
-                                      Text(
-                                        "Temukan topik yang kamu",
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          fontFamily: "Brandon",
-                                          fontWeight: FontWeight.w500,
+                                        Text(
+                                          "Temukan topik yang kamu",
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontSize: 14,
+                                            fontFamily: "Brandon",
+                                            fontWeight: FontWeight.w500,
+                                          ),
                                         ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   );
                                 }),
                           ),
