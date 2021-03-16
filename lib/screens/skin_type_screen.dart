@@ -97,6 +97,17 @@ class _SkinTypeStateScreen extends State<SkinTypeScreen> {
     );
   }
 
+  Future<YoutubePlayerController> ytplayer() async {
+    videoId = YoutubePlayer.convertUrlToId(Provider.of<AppModel>(context).setting.embedVideo);
+    return YoutubePlayerController(
+      initialVideoId: videoId,
+      flags: YoutubePlayerFlags(
+        autoPlay: false,
+        mute: false,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final jenisKulit = daftarJenisKulit.firstWhere((element) => element.id==index);
@@ -491,14 +502,27 @@ class _SkinTypeStateScreen extends State<SkinTypeScreen> {
                     ),
                     Container(
                       color: Color(0xffFBDFD2),
-                      padding: EdgeInsets.fromLTRB(30,0,30,20),
-                      child: YoutubePlayer(
-                        controller: _ytcontroller,
-                        bottomActions: [
-                          CurrentPosition(),
-                          ProgressBar(isExpanded: true),
-                          RemainingDuration(),
-                        ],
+                      padding: EdgeInsets.fromLTRB(30, 0, 30, 20),
+                      child:Provider.of<AppModel>(context).loadingSetting ? Center(
+                        child: LoadingWidgetFadingCircle(context),
+                      ) : FutureBuilder(
+                          future: ytplayer(),
+                          builder: (context, snapshot){
+                            if(snapshot.hasData){
+                              YoutubePlayerController _ytcontroller = snapshot.data;
+                              return YoutubePlayer(
+                                controller: _ytcontroller,
+                                bottomActions: [
+                                  CurrentPosition(),
+                                  ProgressBar(isExpanded: true),
+                                  RemainingDuration(),
+                                ],
+                              );
+                            }
+                            else{
+                              return Container();
+                            }
+                          }
                       ),
                     ),
                     Container(
@@ -561,7 +585,7 @@ class _SkinTypeStateScreen extends State<SkinTypeScreen> {
           ],
         ),
       ),
-      bottomNavigationBar: new PonnyBottomNavbar(selectedIndex: 4),
+      bottomNavigationBar: new PonnyBottomNavbar(selectedIndex: 0),
     );
   }
 }
