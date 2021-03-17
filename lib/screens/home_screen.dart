@@ -121,16 +121,28 @@ class _HomeScreenState extends State<HomeScreen> {
     if(res.statusCode == 200){
       final responejson = json.decode(res.body);
       final channelbc  = ChanelBroadcast.fromJson(responejson);
-      print(channelbc);
-      if(channelbc.success == true && channelbc.data.broadcasters.length > 0 && channelbc.data.broadcasters.contains(1)){
+      print("HALOOOOO");
+      print(responejson);
+      if(channelbc.success == true && channelbc.data.broadcasters.length > 0 && channelbc.data.broadcasters[0]==1){
         setState(() {
           _remoteUid = 1;
         });
+        print("HALOOOOO");
+        print(responejson);
+        print(_remoteUid);
       }else{
         setState(() {
           _remoteUid = null;
         });
+        print("HALOOOOO");
+        print(responejson);
+        print(_remoteUid);
       }
+    }
+    else{
+      setState(() {
+        _remoteUid = null;
+      });
     }
   }
 
@@ -165,11 +177,17 @@ class _HomeScreenState extends State<HomeScreen> {
           _joined = true;
 
         });
-      }, userJoined: (int uid, int elapsed) {
+      }, userJoined: (int uid, int elapsed) async {
       print('userJoined ${uid}');
-      setState(() {
-        _remoteUid = 1;
-      });
+      String urls = "https://api.agora.io/dev/v1/channel/user/1a2ac884df8a4c4c886353e5580a8580/broadcast";
+      final res = await http.get(urls, headers: { HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: "Basic OGI4YjdiYjA2NGU5NDFlMDhkMTFlNDg0Y2Q5MTY1MjM6OGJhNWMzNjczM2RkNDQzY2IzZjE3ZjE2Mzc3YjIwOTQ="});
+      final responejson = json.decode(res.body);
+      final channelbc  = ChanelBroadcast.fromJson(responejson);
+      if(channelbc.success == true && channelbc.data.broadcasters.length > 0 && channelbc.data.broadcasters[0]==1){
+        setState(() {
+          _remoteUid = 1;
+        });
+      }
     }, userOffline: (int uid, RtcE.UserOfflineReason reason) {
       print('userOffline ${uid}');
       setState(() {
@@ -1171,7 +1189,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 }
               ),
               ),
-              /*if(_remoteUid !=null)
+              if(_remoteUid !=null)
               Container(
                 width: MediaQuery.of(context).size.width,
                 child: Stack(
@@ -1289,7 +1307,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ],
                 ),
-              ),*/
+              ),
               if(flashdeal != null && DateTime.now().millisecondsSinceEpoch < flashdeal.detail.endDate * 1000 && !loading_flashdeal)
               Container(
                 color: Color(0xffFACAC1),
