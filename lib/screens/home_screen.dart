@@ -82,7 +82,7 @@ class _HomeScreenState extends State<HomeScreen> {
   static String videoId = '';
   int viewer = 0;
   bool isSiaran = false;
-  static YoutubePlayerController _controllersYoutube;
+  YoutubePlayerController _controllersYoutube;
 
   bool _joined =false;
 
@@ -149,6 +149,9 @@ class _HomeScreenState extends State<HomeScreen> {
       _getWishListCount();
       initChanelBrodcaster();
       getbrodcaster();
+      getyt();
+      print("SUCCESS");
+      print(_controllersYoutube);
     });
   }
 
@@ -239,11 +242,11 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future ytplayer() async {
-    var textId = YoutubePlayer.convertUrlToId(Provider.of<AppModel>(context).setting.embedVideo);
+    videoId = YoutubePlayer.convertUrlToId(Provider.of<AppModel>(context).setting.embedVideo);
       Future.delayed(Duration(seconds: 1), () {
         setState(() {
           _controllersYoutube = YoutubePlayerController(
-            initialVideoId: textId,
+            initialVideoId: videoId,
             flags: const YoutubePlayerFlags(
               autoPlay: false,
             ),
@@ -251,6 +254,18 @@ class _HomeScreenState extends State<HomeScreen> {
         });
       });
       return _controllersYoutube;
+  }
+
+  void getyt() {
+    var textId = YoutubePlayer.convertUrlToId(Provider.of<AppModel>(context).setting.embedVideo);
+    setState(() {
+      _controllersYoutube = YoutubePlayerController(
+        initialVideoId: textId,
+        flags: const YoutubePlayerFlags(
+          autoPlay: false,
+        ),
+      );
+    });
   }
 
 
@@ -2103,25 +2118,13 @@ class _HomeScreenState extends State<HomeScreen> {
               Container(
                 color: Color(0xffFBDFD2),
                 padding: EdgeInsets.symmetric(horizontal: 30),
-                child:Provider.of<AppModel>(context).loadingSetting ? Center(
-                  child: LoadingWidgetFadingCircle(context),
-                ) : FutureBuilder(
-                  future: ytplayer(),
-                  builder: (context, snapshot){
-                    if(snapshot.hasData){
-                      return YoutubePlayer(
-                        controller: _controllersYoutube,
-                        bottomActions: [
-                          CurrentPosition(),
-                          ProgressBar(isExpanded: true),
-                          RemainingDuration(),
-                        ],
-                      );
-                    }
-                    else{
-                      return Container();
-                    }
-                  }
+                child: YoutubePlayer(
+                  controller: _controllersYoutube,
+                  bottomActions: [
+                    CurrentPosition(),
+                    ProgressBar(isExpanded: true),
+                    RemainingDuration(),
+                  ],
                 ),
               ),
               Container(
