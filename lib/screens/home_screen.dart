@@ -82,6 +82,7 @@ class _HomeScreenState extends State<HomeScreen> {
   static String videoId = '';
   int viewer = 0;
   bool isSiaran = false;
+  static YoutubePlayerController _controllersYoutube;
 
   bool _joined =false;
 
@@ -237,25 +238,28 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  Future<YoutubePlayerController> ytplayer() async {
-    videoId = YoutubePlayer.convertUrlToId(Provider.of<AppModel>(context).setting.embedVideo);
-    return YoutubePlayerController(
-      initialVideoId: videoId,
-      flags: YoutubePlayerFlags(
-        autoPlay: false,
-        mute: false,
-      ),
-    );
+  Future ytplayer() async {
+    var textId = YoutubePlayer.convertUrlToId(Provider.of<AppModel>(context).setting.embedVideo);
+      Future.delayed(Duration(seconds: 1), () {
+        setState(() {
+          _controllersYoutube = YoutubePlayerController(
+            initialVideoId: textId,
+            flags: const YoutubePlayerFlags(
+              autoPlay: false,
+            ),
+          );
+        });
+      });
+      return _controllersYoutube;
   }
 
 
 
   @override
   void dispose() {
-    super.dispose();
     _controller?.removeListener(_scrollListener);
     _controller?.dispose();
-
+    super.dispose();
   }
 
 
@@ -2105,9 +2109,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   future: ytplayer(),
                   builder: (context, snapshot){
                     if(snapshot.hasData){
-                      YoutubePlayerController _ytcontroller = snapshot.data;
                       return YoutubePlayer(
-                        controller: _ytcontroller,
+                        controller: _controllersYoutube,
                         bottomActions: [
                           CurrentPosition(),
                           ProgressBar(isExpanded: true),
