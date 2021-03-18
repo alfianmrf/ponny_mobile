@@ -9,6 +9,7 @@ import 'package:ponny/widgets/PonnyBottomNavbar.dart';
 import 'package:provider/provider.dart';
 import 'package:ponny/util/globalUrl.dart';
 import 'package:intl/intl.dart';
+import 'package:ponny/screens/Affiliate_CairkanDana_TotalBox_screen.dart';
 
 class AffiliateUsScreen extends StatefulWidget {
   static const String id = "Affiliate_Us_Screen";
