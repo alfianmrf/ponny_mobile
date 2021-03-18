@@ -101,7 +101,7 @@ import 'model/WishProduct.dart';
 
 import 'package:ponny/screens/daftarLogin_screen.dart';
 
-import 'package:ponny/screens/kartu_screen.dart';
+import 'package:ponny/screens/Kartu_screen.dart';
 
 import 'package:ponny/screens/Keuntungan_HappyReward_screen.dart';
 
@@ -113,11 +113,10 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   PushNotificationsManager().init();
-  
 
   runApp(
     Phoenix(
-      child:MultiProvider(
+      child: MultiProvider(
         providers: [
           ChangeNotifierProvider(create: (context) => AppModel()),
           ChangeNotifierProvider(create: (context) => CategoryModel()),
