@@ -26,6 +26,7 @@ class _AffiliateUsStateScreen extends State<AffiliateUsScreen> {
     final user= Provider.of<UserModel>(context).user;
     String afiliateUrl= urlGlobal+"users/registration?referral_code="+user.referral_code;
     String ringkasUrl=  urlGlobal+"referral/"+user.referral_code;
+    final size = MediaQuery.of(context).size;
     return Scaffold(
       key: scaffoldkey,
       resizeToAvoidBottomInset: false,
