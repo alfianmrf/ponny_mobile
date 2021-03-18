@@ -26,16 +26,17 @@ import 'package:webview_flutter/webview_flutter.dart';
 
 class WebViewScreen extends StatefulWidget {
   static const String id = "web_view_Screen";
-  @required String titile;
-  @required String url;
-  WebViewScreen({this.titile,this.url});
+  @required
+  String titile;
+  @required
+  String url;
+  WebViewScreen({this.titile, this.url});
 
   @override
   _WebViewStateScreen createState() => _WebViewStateScreen();
 }
 
 class _WebViewStateScreen extends State<WebViewScreen> {
-
   @override
   Widget build(BuildContext context) {
     InAppWebViewController webView;
@@ -70,21 +71,19 @@ class _WebViewStateScreen extends State<WebViewScreen> {
       ),
       resizeToAvoidBottomInset: false,
       backgroundColor: Hexcolor('#FCF8F0'),
-      body:InAppWebView(
+      body: InAppWebView(
         initialUrl: widget.url,
         initialHeaders: {},
         onWebViewCreated: (InAppWebViewController controller) {
           webView = controller;
-          UIBlock.block(context,customLoaderChild: LoadingWidgetFadingCircle(context));
+          UIBlock.block(context,
+              customLoaderChild: LoadingWidgetFadingCircle(context));
         },
-        onLoadStart: (InAppWebViewController controller, String url) {
-
-
-        },
+        onLoadStart: (InAppWebViewController controller, String url) {},
         onLoadStop: (InAppWebViewController controller, String url) async {
-
           // inject javascript file from assets folder
-          await controller.injectJavascriptFileFromAsset ( assetFilePath: "assets/js/mywebview.js");
+          await controller.injectJavascriptFileFromAsset(
+              assetFilePath: "assets/js/mywebview.js");
           UIBlock.unblock(context);
         },
       ),
@@ -92,5 +91,3 @@ class _WebViewStateScreen extends State<WebViewScreen> {
     );
   }
 }
-
-

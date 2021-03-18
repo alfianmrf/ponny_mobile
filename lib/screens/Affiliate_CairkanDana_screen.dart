@@ -84,7 +84,7 @@ class _CairkanDanaScreenState extends State<CairkanDanaScreen> {
                                 ),
                               ),
                               child: Text(
-                                "Cairkan Dana",
+                                "CAIRKAN DANA",
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                   fontSize: 18,
@@ -107,50 +107,64 @@ class _CairkanDanaScreenState extends State<CairkanDanaScreen> {
                                     ),
                                   ),
                                   IconButton(
-                                    icon: dropPencairan ? Icon(Icons.keyboard_arrow_up,
-                                        size: 14, color: Color(0xffF48262)) : Icon(Icons.keyboard_arrow_down,
-                                        size: 14, color: Color(0xffF48262)),
-                                    onPressed: () {setState(() {
-                                      dropPencairan = !dropPencairan;
-                                    });},
+                                    icon: dropPencairan
+                                        ? Icon(Icons.keyboard_arrow_up,
+                                            size: 14, color: Color(0xffF48262))
+                                        : Icon(Icons.keyboard_arrow_down,
+                                            size: 14, color: Color(0xffF48262)),
+                                    onPressed: () {
+                                      setState(() {
+                                        dropPencairan = !dropPencairan;
+                                      });
+                                    },
                                   )
                                 ],
                               ),
                             ),
-                            dropPencairan ? Container(
-                              margin: EdgeInsets.fromLTRB(20, 0, 20, 0),
-                              child: Text(
-                                '• Masukan nomor rekening dan nama pemilik rekening dengan benar.\n• Dana akan ditransfer ke rekening yang tertera di bawah ini dalam waktu 3x24 jam.\n• Konfirmasi pencairan dana akan dikirimkan melalui email yang terdaftar',
-                                style: TextStyle(
-                                  fontFamily: "Brandon",
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w800,
-                                ),
-                              ),
-                            ) : Container(),
+                            dropPencairan
+                                ? Container(
+                                    margin: EdgeInsets.fromLTRB(20, 0, 20, 0),
+                                    child: Text(
+                                      '• Masukan nomor rekening dan nama pemilik rekening dengan benar.\n• Dana akan ditransfer ke rekening yang tertera di bawah ini dalam waktu 3x24 jam.\n• Konfirmasi pencairan dana akan dikirimkan melalui email yang terdaftar',
+                                      style: TextStyle(
+                                        fontFamily: "Brandon",
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w800,
+                                      ),
+                                    ),
+                                  )
+                                : Container(),
                             Container(
                               child: ListTile(
                                 leading: Container(
-                                    height: double.infinity,
-                                    child: Icon(
-                                      Icons.account_balance_wallet,
-                                      size: 30,
-                                    )),
-                                title: Text(
-                                  'TOTAL',
-                                  style: TextStyle(
-                                    fontFamily: "Brandon",
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.grey,
+                                  height: double.infinity,
+                                  child: ImageIcon(
+                                    AssetImage('assets/images/wallet.png'),
+                                    color: Color(0xffF48262),
                                   ),
                                 ),
-                                subtitle: Text(
-                                  'Rp.3.560.000',
-                                  style: TextStyle(
-                                    fontFamily: "Brandon",
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w800,
+                                title: Align(
+                                  alignment: Alignment(-1.2, 0),
+                                  child: Text(
+                                    'TOTAL',
+                                    style: TextStyle(
+                                      fontFamily: "Brandon",
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.grey,
+                                    ),
+                                  ),
+                                ),
+                                subtitle: Align(
+                                  alignment: Alignment(-1.3, 0),
+                                  child: Text(
+                                    'Rp.3.560.000',
+                                    style: TextStyle(
+                                      fontFamily: "Brandon",
+                                      fontSize: 20,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w800,
+                                    ),
                                   ),
                                 ),
                               ),
@@ -245,6 +259,7 @@ class _CairkanDanaScreenState extends State<CairkanDanaScreen> {
                                   padding: EdgeInsets.symmetric(
                                       horizontal: 10, vertical: 5),
                                   child: RaisedButton(
+                                    elevation: 0,
                                     onPressed: () {
                                       setState(() {});
                                     },
