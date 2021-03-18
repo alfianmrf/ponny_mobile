@@ -1,8 +1,9 @@
 class PromotionResult {
   List<Coupons> coupons;
   List<Promotions> promotions;
+  String banner;
 
-  PromotionResult({this.coupons, this.promotions});
+  PromotionResult({this.coupons, this.promotions, this.banner});
 
   PromotionResult.fromJson(Map<String, dynamic> json) {
     if (json['coupons'] != null) {
@@ -17,6 +18,7 @@ class PromotionResult {
         promotions.add(new Promotions.fromJson(v));
       });
     }
+    banner = json['banner'];
   }
 
   Map<String, dynamic> toJson() {
@@ -27,6 +29,7 @@ class PromotionResult {
     if (this.promotions != null) {
       data['promotions'] = this.promotions.map((v) => v.toJson()).toList();
     }
+    data['banner'] = this.banner;
     return data;
   }
 }

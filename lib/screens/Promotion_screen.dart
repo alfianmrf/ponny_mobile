@@ -95,51 +95,95 @@ class _PromotionScreenState extends State<PromotionScreen> {
           ),
         ) :
 
-        Column(
-          children: [
-            Container(
-              padding: EdgeInsets.all(20),
-              child: Text(
-                "Kupon Diskon",
-                style: TextStyle(
-                  fontSize: 24,
-                  fontFamily: "Yeseva",
-                  fontWeight: FontWeight.w500,
+        SingleChildScrollView(
+          child: Column(
+            children: [
+              Container(
+                height: MediaQuery.of(context).size.width * 0.45,
+                color: Colors.white,
+                child: Center(
+                  child: Stack(
+                    children: [
+                      CachedNetworkImage(
+                        imageUrl: result.banner,
+                        placeholder: (context, url) => LoadingWidgetPulse(context),
+                        errorWidget: (context, url, error) => Image.asset('assets/images/basic.jpg'),
+                        fit: BoxFit.fill,
+                      ),
+                      Center(
+                        child: Text(
+                          'PROMOSI',
+                          style: TextStyle(
+                            fontSize: 24,
+                            fontFamily: "Yeseva",
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-            Container(
-              height: 120,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: result.coupons !=null ? result.coupons.length :0,
-                itemBuilder: (context, i) {
-                  final kupon = result.coupons[i];
-                  return GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => PromotionDetailScreen(cupon: kupon,)));
-                    },
-                    child: AspectRatio(
-                      aspectRatio: 1,
-                      child: Container(
-                          margin: EdgeInsets.all(10),
-                          color: Colors.white,
-                          child: Image.network(
-                            img_url+kupon.banner,
-                            fit: BoxFit.contain,
-                          ),
-                      ),
-                    )
-                  );
-                },
+              Container(
+                padding: EdgeInsets.all(20),
+                child: Text(
+                  "Kupon Diskon",
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontFamily: "Yeseva",
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
               ),
-            ),
-            Expanded(
-              child: ListView.builder(
-                scrollDirection: Axis.vertical,
+              Container(
+                height: 120,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: result.coupons !=null ? result.coupons.length :0,
+                  itemBuilder: (context, i) {
+                    final kupon = result.coupons[i];
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => PromotionDetailScreen(cupon: kupon,)));
+                      },
+                      child: AspectRatio(
+                        aspectRatio: 1,
+                        child: Container(
+                            margin: EdgeInsets.all(10),
+                            color: Colors.white,
+                            child: Image.network(
+                              img_url+kupon.banner,
+                              fit: BoxFit.contain,
+                            ),
+                        ),
+                      )
+                    );
+                  },
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.all(20),
+                height: 1,
+                width: MediaQuery.of(context).size.width,
+                color: Color(0xffF48262),
+              ),
+              Container(
+                padding: EdgeInsets.all(20),
+                child: Text(
+                  "Promosi",
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontFamily: "Yeseva",
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+              ListView.builder(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
                 itemCount: result.promotions != null ? result.promotions.length :0,
                 itemBuilder: (context, i) {
                   final promo = result.promotions[i];
@@ -196,9 +240,9 @@ class _PromotionScreenState extends State<PromotionScreen> {
                     ),
                   );
                 },
-              ),
-            )
-          ],
+              )
+            ],
+          ),
         ),
         bottomNavigationBar: new PonnyBottomNavbar(selectedIndex: 1),);
   }
