@@ -89,6 +89,7 @@ const faqUrl = base_url+"account/faqs";
 const changePassword = base_url+"account/password";
 const historyPointurl =base_url+"account/pointHistory";
 const kirimUlangVerifikasi = base_url+"auth/resend/emailverification";
+const affiliateHome = base_url+"account/affiliate";
 
 //Order
 const urlTracking = base_url + "checkout/tracking";
