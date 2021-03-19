@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:ponny/screens/account/affiliate_us_screen.dart';
+import 'package:ponny/screens/account_screen.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
 
 class CairkanDanaScreen extends StatefulWidget {
@@ -18,47 +20,41 @@ class _CairkanDanaScreenState extends State<CairkanDanaScreen> {
     return Scaffold(
         resizeToAvoidBottomInset: true,
         backgroundColor: Hexcolor('#FCF8F0'),
+        appBar: AppBar(
+          elevation: 0,
+          titleSpacing: 0,
+          leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: Icon(
+              Icons.arrow_back_ios,
+              color: Color(0xffF48262),
+              size: 26,
+            ),
+          ),
+          title: Text(
+            'Dalam Perjalanan',
+            style: TextStyle(
+              fontSize: 24,
+              fontFamily: "Yeseva",
+              fontWeight: FontWeight.w500,
+              color: Color(0xffF48262),
+            ),
+          ),
+          bottom: PreferredSize(
+              child: Container(
+                color: Color(0xffF48262),
+                height: 1.0,
+              ),
+              preferredSize: Size.fromHeight(1.0)),
+        ),
         body: GestureDetector(
           onTap: () {
             FocusScope.of(context).requestFocus(new FocusNode());
           },
           child: Column(
             children: [
-              Container(
-                height: 35,
-              ),
-              Container(
-                margin: EdgeInsets.all(5),
-                child: Row(
-                  children: [
-                    Container(
-                      child: IconButton(
-                          onPressed: () {},
-                          icon: Icon(
-                            Icons.arrow_back_ios,
-                            color: Color(0xffF48262),
-                            size: 26,
-                          )),
-                    ),
-                    Container(
-                      child: Text(
-                        "Cairkan Dana",
-                        style: TextStyle(
-                          fontSize: 24,
-                          fontFamily: "Yeseva",
-                          fontWeight: FontWeight.w500,
-                          color: Color(0xffF48262),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                margin: EdgeInsets.only(),
-                height: 1,
-                color: Color(0xffF3C1B5),
-              ),
               Expanded(
                 child: SingleChildScrollView(
                   child: Stack(
@@ -261,7 +257,9 @@ class _CairkanDanaScreenState extends State<CairkanDanaScreen> {
                                   child: RaisedButton(
                                     elevation: 0,
                                     onPressed: () {
-                                      setState(() {});
+                                      int count = 0;
+                                      Navigator.of(context)
+                                          .popUntil((_) => count++ >= 2);
                                     },
                                     child: Text(
                                       "CAIRKAN",

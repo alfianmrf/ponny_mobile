@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:ponny/screens/Affiliate_CairkanDana_screen.dart';
+import 'package:ponny/screens/account/affiliate_about_screen.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
 
 class CairkanDanaTotalScreen extends StatefulWidget {
@@ -14,44 +15,38 @@ class _CairkanDanaTotalScreenState extends State<CairkanDanaTotalScreen> {
     final size = MediaQuery.of(context).size;
     return Scaffold(
         backgroundColor: Hexcolor('#FCF8F0'),
+        appBar: AppBar(
+          elevation: 0,
+          titleSpacing: 0,
+          leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: Icon(
+              Icons.arrow_back_ios,
+              color: Color(0xffF48262),
+              size: 26,
+            ),
+          ),
+          title: Text(
+            'Dalam Perjalanan',
+            style: TextStyle(
+              fontSize: 24,
+              fontFamily: "Yeseva",
+              fontWeight: FontWeight.w500,
+              color: Color(0xffF48262),
+            ),
+          ),
+          bottom: PreferredSize(
+              child: Container(
+                color: Color(0xffF48262),
+                height: 1.0,
+              ),
+              preferredSize: Size.fromHeight(1.0)),
+        ),
         body: SingleChildScrollView(
           child: Column(
             children: [
-              Container(
-                height: 35,
-              ),
-              Container(
-                margin: EdgeInsets.all(5),
-                child: Row(
-                  children: [
-                    Container(
-                      child: IconButton(
-                          onPressed: () {},
-                          icon: Icon(
-                            Icons.arrow_back_ios,
-                            color: Color(0xffF48262),
-                            size: 26,
-                          )),
-                    ),
-                    Container(
-                      child: Text(
-                        "Dalam Perjalanan",
-                        style: TextStyle(
-                          fontSize: 24,
-                          fontFamily: "Yeseva",
-                          fontWeight: FontWeight.w500,
-                          color: Color(0xffF48262),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                margin: EdgeInsets.only(),
-                height: 1,
-                color: Color(0xffF3C1B5),
-              ),
               Container(
                   width: size.width,
                   height: size.height * 0.46,
@@ -326,15 +321,25 @@ class _CairkanDanaTotalScreenState extends State<CairkanDanaTotalScreen> {
                                     fontSize: size.height * 0.02),
                                 textAlign: TextAlign.left,
                               ),
-                              Container(
-                                width: 40,
-                                height: size.height * 0.03,
-                                child: Text(
-                                  " disini",
-                                  style: TextStyle(
-                                      color: Hexcolor('#ffF48262'),
-                                      fontFamily: "Brandon",
-                                      fontSize: size.height * 0.02),
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => AboutRefund(),
+                                    ),
+                                  );
+                                },
+                                child: Container(
+                                  width: 40,
+                                  height: size.height * 0.03,
+                                  child: Text(
+                                    " disini",
+                                    style: TextStyle(
+                                        color: Hexcolor('#ffF48262'),
+                                        fontFamily: "Brandon",
+                                        fontSize: size.height * 0.02),
+                                  ),
                                 ),
                               )
                             ],
