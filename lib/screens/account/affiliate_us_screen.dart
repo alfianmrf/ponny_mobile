@@ -1,8 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:ponny/model/AffiliateResult.dart';
 import 'package:ponny/model/User.dart';
 import 'package:ponny/screens/account_screen.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
@@ -10,6 +13,10 @@ import 'package:provider/provider.dart';
 import 'package:ponny/util/globalUrl.dart';
 import 'package:intl/intl.dart';
 import 'package:ponny/screens/Affiliate_CairkanDana_TotalBox_screen.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:ponny/common/constant.dart';
+import 'package:ponny/model/App.dart';
 
 class AffiliateUsScreen extends StatefulWidget {
   static const String id = "Affiliate_Us_Screen";
@@ -20,6 +27,40 @@ class AffiliateUsScreen extends StatefulWidget {
 class _AffiliateUsStateScreen extends State<AffiliateUsScreen> {
   bool link = false;
   final scaffoldkey = GlobalKey<ScaffoldState>();
+  AffiliateResult result = AffiliateResult();
+  bool loading = true;
+
+
+  @override
+  void initState() {
+    super.initState();
+    getData();
+
+  }
+
+  Future<void> getData() async {
+    try{
+      var token = Provider.of<AppModel>(context, listen: false).auth.access_token;
+      final res=  await http.get(affiliateHome,headers: { HttpHeaders.contentTypeHeader: 'application/json',HttpHeaders.authorizationHeader: "Bearer $token" });
+      if(res.statusCode == 200){
+        final responeJson = json.decode(res.body);
+        setState(() {
+          result = AffiliateResult.fromJson(responeJson);
+          loading =false;
+        });
+        print("OIIII");
+        print(responeJson);
+      }
+    }catch(e){
+      print("ERROR");
+      print(e.toString());
+      setState(() {
+        loading =false;
+      });
+      scaffoldkey.currentState.showSnackBar(snackBarError);
+
+    }
+  }
 
 
   @override
