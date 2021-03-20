@@ -74,6 +74,7 @@ class _HomeScreenState extends State<HomeScreen> {
   double _elevation = 0;
   ScrollController _controller;
   bool loading_flashdeal = false;
+  bool loading_youtube = true;
   final scaffoldKey = GlobalKey<ScaffoldState>();
   String urlYoutube="";
   bool isbrodcasting = false;
@@ -274,7 +275,7 @@ class _HomeScreenState extends State<HomeScreen> {
       return _controllersYoutube;
   }
 
-  void getyt() {
+  Future getyt() {
     var textId = YoutubePlayer.convertUrlToId(Provider.of<AppModel>(context).setting.embedVideo);
     setState(() {
       _controllersYoutube = YoutubePlayerController(
@@ -283,6 +284,8 @@ class _HomeScreenState extends State<HomeScreen> {
           autoPlay: false,
         ),
       );
+      loading_youtube = false;
+      return _controllersYoutube;
     });
   }
 
@@ -656,7 +659,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
           body: new Container(
-              margin: MediaQuery.of(context).padding,
+              margin: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
               child: SingleChildScrollView(
                   controller: _controller,
                   child: Column(
@@ -2133,6 +2136,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   ],
                 ),
               ),
+              loading_youtube ? Container(
+                child: Center(
+                  child: LoadingWidgetFadingCircle(context),
+                ),
+              ) :
               Container(
                 color: Color(0xffFBDFD2),
                 padding: EdgeInsets.symmetric(horizontal: 30),

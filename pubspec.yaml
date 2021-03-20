@@ -62,7 +62,9 @@ dependencies:
   flutter_countdown_timer: ^1.4.0
   youtube_player_flutter: ^7.0.0+7
   google_sign_in: ^4.5.3
-  flutter_twitter_login: ^1.1.0
+  flutter_twitter_login:
+    git:
+      url: https://github.com/Kiruel/flutter_twitter_login
   url_launcher: ^5.4.2
   font_awesome_flutter: ^8.11.0
   social_share: ^2.0.5
