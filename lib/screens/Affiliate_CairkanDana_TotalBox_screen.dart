@@ -16,34 +16,25 @@ class _CairkanDanaTotalScreenState extends State<CairkanDanaTotalScreen> {
     return Scaffold(
         backgroundColor: Hexcolor('#FCF8F0'),
         appBar: AppBar(
-          elevation: 0,
-          titleSpacing: 0,
-          leading: IconButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            icon: Icon(
-              Icons.arrow_back_ios,
-              color: Color(0xffF48262),
-              size: 26,
+            elevation: 0,
+            titleSpacing: 0,
+            leading: IconButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                icon: Icon(Icons.arrow_back_ios,
+                    color: Color(0xffF48262), size: 26)),
+            title: Text(
+              'Dalam Perjalanan',
+              style: TextStyle(
+                  fontSize: 24,
+                  fontFamily: "Yeseva",
+                  fontWeight: FontWeight.w500,
+                  color: Color(0xffF48262)),
             ),
-          ),
-          title: Text(
-            'Dalam Perjalanan',
-            style: TextStyle(
-              fontSize: 24,
-              fontFamily: "Yeseva",
-              fontWeight: FontWeight.w500,
-              color: Color(0xffF48262),
-            ),
-          ),
-          bottom: PreferredSize(
-              child: Container(
-                color: Color(0xffF48262),
-                height: 1.0,
-              ),
-              preferredSize: Size.fromHeight(1.0)),
-        ),
+            bottom: PreferredSize(
+                child: Container(color: Color(0xffF48262), height: 1.0),
+                preferredSize: Size.fromHeight(1.0))),
         body: SingleChildScrollView(
           child: Column(
             children: [
@@ -77,22 +68,18 @@ class _CairkanDanaTotalScreenState extends State<CairkanDanaTotalScreen> {
                             padding: EdgeInsets.only(top: size.height * 0.021),
                             child: Column(
                               children: [
-                                Text(
-                                  "Hallo,",
-                                  style: TextStyle(
-                                    fontFamily: "Yeseva",
-                                    fontSize: size.height * 0.034,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
+                                Text("Hallo,",
+                                    style: TextStyle(
+                                        fontFamily: "Yeseva",
+                                        fontSize: size.height * 0.034,
+                                        fontWeight: FontWeight.w600)),
                                 Text(
                                   "tytan tyra".toUpperCase(),
                                   style: TextStyle(
-                                    color: Hexcolor('#ffF48262'),
-                                    fontFamily: "Yeseva",
-                                    fontSize: size.height * 0.037,
-                                    fontWeight: FontWeight.w600,
-                                  ),
+                                      color: Hexcolor('#ffF48262'),
+                                      fontFamily: "Yeseva",
+                                      fontSize: size.height * 0.037,
+                                      fontWeight: FontWeight.w600),
                                 )
                               ],
                             ),
@@ -106,14 +93,11 @@ class _CairkanDanaTotalScreenState extends State<CairkanDanaTotalScreen> {
                   Container(
                     width: double.infinity,
                     margin: EdgeInsets.only(left: size.width * 0.04),
-                    child: Text(
-                      "Result from campaigns",
-                      style: TextStyle(
-                        fontFamily: "Brandon",
-                        fontWeight: FontWeight.w600,
-                        fontSize: size.height * 0.023,
-                      ),
-                    ),
+                    child: Text("Result from campaigns",
+                        style: TextStyle(
+                            fontFamily: "Brandon",
+                            fontWeight: FontWeight.w600,
+                            fontSize: size.height * 0.023)),
                   ),
                   Container(
                     width: size.width,
@@ -130,31 +114,22 @@ class _CairkanDanaTotalScreenState extends State<CairkanDanaTotalScreen> {
                             padding: EdgeInsets.symmetric(
                                 vertical: 5, horizontal: 10),
                             decoration: BoxDecoration(
-                              color: Colors.white,
-                              border: Border.all(
-                                color: Color(0xffF48262),
-                                width: 1,
-                              ),
-                              borderRadius: BorderRadius.circular(5),
-                            ),
+                                color: Colors.white,
+                                border: Border.all(
+                                    color: Color(0xffF48262), width: 1),
+                                borderRadius: BorderRadius.circular(5)),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
                                   "Sessions",
                                   style: TextStyle(
-                                    fontFamily: "Brandon",
-                                    fontSize: 12,
-                                  ),
+                                      fontFamily: "Brandon", fontSize: 12),
                                   textAlign: TextAlign.left,
                                 ),
-                                Text(
-                                  "4.500",
-                                  style: TextStyle(
-                                    fontFamily: "Brandon",
-                                  ),
-                                  textAlign: TextAlign.left,
-                                ),
+                                Text("4.500",
+                                    style: TextStyle(fontFamily: "Brandon"),
+                                    textAlign: TextAlign.left)
                               ],
                             ),
                           ),
@@ -166,31 +141,20 @@ class _CairkanDanaTotalScreenState extends State<CairkanDanaTotalScreen> {
                             padding: EdgeInsets.symmetric(
                                 vertical: 5, horizontal: 10),
                             decoration: BoxDecoration(
-                              color: Colors.white,
-                              border: Border.all(
-                                color: Color(0xffF48262),
-                                width: 1,
-                              ),
-                              borderRadius: BorderRadius.circular(5),
-                            ),
+                                color: Colors.white,
+                                border: Border.all(
+                                    color: Color(0xffF48262), width: 1),
+                                borderRadius: BorderRadius.circular(5)),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
-                                  "Yang Terpakai",
-                                  style: TextStyle(
-                                    fontFamily: "Brandon",
-                                    fontSize: 12,
-                                  ),
-                                  textAlign: TextAlign.left,
-                                ),
-                                Text(
-                                  "56",
-                                  style: TextStyle(
-                                    fontFamily: "Brandon",
-                                  ),
-                                  textAlign: TextAlign.left,
-                                ),
+                                Text("Yang Terpakai",
+                                    style: TextStyle(
+                                        fontFamily: "Brandon", fontSize: 12),
+                                    textAlign: TextAlign.left),
+                                Text("56",
+                                    style: TextStyle(fontFamily: "Brandon"),
+                                    textAlign: TextAlign.left),
                               ],
                             ),
                           ),
@@ -202,31 +166,20 @@ class _CairkanDanaTotalScreenState extends State<CairkanDanaTotalScreen> {
                             padding: EdgeInsets.symmetric(
                                 vertical: 5, horizontal: 10),
                             decoration: BoxDecoration(
-                              color: Colors.white,
-                              border: Border.all(
-                                color: Color(0xffF48262),
-                                width: 1,
-                              ),
-                              borderRadius: BorderRadius.circular(5),
-                            ),
+                                color: Colors.white,
+                                border: Border.all(
+                                    color: Color(0xffF48262), width: 1),
+                                borderRadius: BorderRadius.circular(5)),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
-                                  "Pendapatan",
-                                  style: TextStyle(
-                                    fontFamily: "Brandon",
-                                    fontSize: 12,
-                                  ),
-                                  textAlign: TextAlign.left,
-                                ),
-                                Text(
-                                  "3.560.000",
-                                  style: TextStyle(
-                                    fontFamily: "Brandon",
-                                  ),
-                                  textAlign: TextAlign.left,
-                                ),
+                                Text("Pendapatan",
+                                    style: TextStyle(
+                                        fontFamily: "Brandon", fontSize: 12),
+                                    textAlign: TextAlign.left),
+                                Text("3.560.000",
+                                    style: TextStyle(fontFamily: "Brandon"),
+                                    textAlign: TextAlign.left)
                               ],
                             ),
                           ),
@@ -241,62 +194,48 @@ class _CairkanDanaTotalScreenState extends State<CairkanDanaTotalScreen> {
                         vertical: size.height * 0.037),
                     padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
                     decoration: BoxDecoration(
-                      color: Colors.white,
-                      border: Border.all(
-                        color: Color(0xffF48262),
-                        width: 1,
-                      ),
-                      borderRadius: BorderRadius.circular(5),
-                    ),
+                        color: Colors.white,
+                        border: Border.all(color: Color(0xffF48262), width: 1),
+                        borderRadius: BorderRadius.circular(5)),
                     child: Padding(
                       padding: EdgeInsets.only(top: size.height * 0.02),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Row(
-                            children: [
-                              ImageIcon(
-                                AssetImage('assets/images/wallet.png'),
-                                color: Color(0xffF48262),
-                              ),
-                              Padding(
-                                padding:
-                                    EdgeInsets.only(left: size.width * 0.03),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "TOTAL",
+                          Row(children: [
+                            ImageIcon(AssetImage('assets/images/wallet.png'),
+                                color: Color(0xffF48262)),
+                            Padding(
+                              padding: EdgeInsets.only(left: size.width * 0.03),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text("TOTAL",
                                       style: TextStyle(
                                           color: Colors.black45,
                                           fontFamily: "Brandon",
                                           fontSize: size.width * 0.035,
-                                          fontWeight: FontWeight.w600),
-                                    ),
-                                    Text(
-                                      "Rp. 3.560.000",
+                                          fontWeight: FontWeight.w600)),
+                                  Text("Rp. 3.560.000",
                                       style: TextStyle(
                                           fontFamily: "Brandon",
                                           fontSize: size.width * 0.046,
-                                          fontWeight: FontWeight.w700),
-                                    )
-                                  ],
-                                ),
+                                          fontWeight: FontWeight.w700))
+                                ],
                               ),
-                              Spacer(),
-                              Container(
+                            ),
+                            Spacer(),
+                            Container(
                                 child: RaisedButton(
                                     padding:
                                         EdgeInsets.symmetric(horizontal: 5),
                                     onPressed: () {
                                       Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              CairkanDanaScreen(),
-                                        ),
-                                      );
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  CairkanDanaScreen()));
                                     },
                                     elevation: 0,
                                     child: Text("CAIRKAN DANA",
@@ -305,42 +244,32 @@ class _CairkanDanaTotalScreenState extends State<CairkanDanaTotalScreen> {
                                             color: Colors.white,
                                             fontSize: size.width * 0.034,
                                             fontWeight: FontWeight.w700)),
-                                    color: Color(0xffF48262)),
-                              ),
-                            ],
-                          ),
-                          Divider(
-                            color: Color(0xffF48262),
-                          ),
+                                    color: Color(0xffF48262)))
+                          ]),
+                          Divider(color: Color(0xffF48262)),
                           Row(
                             children: [
                               Text(
-                                "Pelajari lebih lengkap mengenai pencarian dana,",
-                                style: TextStyle(
-                                    fontFamily: "Brandon",
-                                    fontSize: size.height * 0.02),
-                                textAlign: TextAlign.left,
-                              ),
+                                  "Pelajari lebih lengkap mengenai pencarian dana,",
+                                  style: TextStyle(
+                                      fontFamily: "Brandon",
+                                      fontSize: size.height * 0.02),
+                                  textAlign: TextAlign.left),
                               GestureDetector(
                                 onTap: () {
                                   Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => AboutRefund(),
-                                    ),
-                                  );
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => AboutRefund()));
                                 },
                                 child: Container(
-                                  width: 40,
-                                  height: size.height * 0.03,
-                                  child: Text(
-                                    " disini",
-                                    style: TextStyle(
-                                        color: Hexcolor('#ffF48262'),
-                                        fontFamily: "Brandon",
-                                        fontSize: size.height * 0.02),
-                                  ),
-                                ),
+                                    width: 40,
+                                    height: size.height * 0.03,
+                                    child: Text(" disini",
+                                        style: TextStyle(
+                                            color: Hexcolor('#ffF48262'),
+                                            fontFamily: "Brandon",
+                                            fontSize: size.height * 0.02))),
                               )
                             ],
                           ),

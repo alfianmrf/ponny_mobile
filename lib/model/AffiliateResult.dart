@@ -5,28 +5,28 @@ class AffiliateResult {
   List<Withdrawal> withdrawal;
   List<Codes> codes;
   int sessions;
-  String totalUsed;
+  int totalUsed;
   String sales;
   List<Payment> payment;
   String pathImg;
 
   AffiliateResult(
       {this.firstName,
-        this.lastName,
-        this.banner,
-        this.withdrawal,
-        this.codes,
-        this.sessions,
-        this.totalUsed,
-        this.sales,
-        this.payment,
-        this.pathImg});
+      this.lastName,
+      this.banner,
+      this.withdrawal,
+      this.codes,
+      this.sessions,
+      this.totalUsed,
+      this.sales,
+      this.payment,
+      this.pathImg});
 
   AffiliateResult.fromJson(Map<String, dynamic> json) {
     firstName = json['first_name'];
     lastName = json['last_name'];
     banner =
-    json['banner'] != null ? new Banner.fromJson(json['banner']) : null;
+        json['banner'] != null ? new Banner.fromJson(json['banner']) : null;
     if (json['withdrawal'] != null) {
       withdrawal = new List<Withdrawal>();
       json['withdrawal'].forEach((v) {
@@ -87,13 +87,13 @@ class Banner {
 
   Banner(
       {this.id,
-        this.photo,
-        this.url,
-        this.position,
-        this.published,
-        this.createdAt,
-        this.updatedAt,
-        this.banner});
+      this.photo,
+      this.url,
+      this.position,
+      this.published,
+      this.createdAt,
+      this.updatedAt,
+      this.banner});
 
   Banner.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -136,17 +136,17 @@ class Withdrawal {
 
   Withdrawal(
       {this.id,
-        this.affiliateUserId,
-        this.amount,
-        this.paymentMethod,
-        this.paymentDetails,
-        this.createdAt,
-        this.updatedAt,
-        this.status,
-        this.norek,
-        this.atasnama,
-        this.tglBayar,
-        this.gambar});
+      this.affiliateUserId,
+      this.amount,
+      this.paymentMethod,
+      this.paymentDetails,
+      this.createdAt,
+      this.updatedAt,
+      this.status,
+      this.norek,
+      this.atasnama,
+      this.tglBayar,
+      this.gambar});
 
   Withdrawal.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -194,14 +194,14 @@ class Codes {
 
   Codes(
       {this.kodeId,
-        this.userId,
-        this.createdAt,
-        this.updatedAt,
-        this.isActive,
-        this.use,
-        this.sales,
-        this.komisi,
-        this.id});
+      this.userId,
+      this.createdAt,
+      this.updatedAt,
+      this.isActive,
+      this.use,
+      this.sales,
+      this.komisi,
+      this.id});
 
   Codes.fromJson(Map<String, dynamic> json) {
     kodeId = json['kode_id'];
@@ -246,17 +246,17 @@ class Payment {
 
   Payment(
       {this.id,
-        this.affiliateUserId,
-        this.amount,
-        this.paymentMethod,
-        this.paymentDetails,
-        this.createdAt,
-        this.updatedAt,
-        this.status,
-        this.norek,
-        this.atasnama,
-        this.tglBayar,
-        this.gambar});
+      this.affiliateUserId,
+      this.amount,
+      this.paymentMethod,
+      this.paymentDetails,
+      this.createdAt,
+      this.updatedAt,
+      this.status,
+      this.norek,
+      this.atasnama,
+      this.tglBayar,
+      this.gambar});
 
   Payment.fromJson(Map<String, dynamic> json) {
     id = json['id'];

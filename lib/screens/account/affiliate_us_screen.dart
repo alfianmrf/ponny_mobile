@@ -40,10 +40,7 @@ class _AffiliateUsStateScreen extends State<AffiliateUsScreen> {
     showModalBottomSheet(
         context: context,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(
-            top: Radius.circular(15),
-          ),
-        ),
+            borderRadius: BorderRadius.vertical(top: Radius.circular(15))),
         clipBehavior: Clip.antiAliasWithSaveLayer,
         builder: (BuildContext bc) {
           return Container(
@@ -549,7 +546,7 @@ class _AffiliateUsStateScreen extends State<AffiliateUsScreen> {
                                   textAlign: TextAlign.left,
                                 ),
                                 Text(
-                                  "${result.totalUsed == null ? 0 : result.totalUsed}",
+                                  "${result.totalUsed == null ? 0 : result.totalUsed.toString()}",
                                   style: TextStyle(
                                     fontFamily: "Brandon",
                                   ),
