@@ -878,28 +878,36 @@ class _PraDaftarScreen extends State<PraDaftarScreen> {
             ),
             Platform.isIOS
                           ? Container(
-                              margin: EdgeInsets.symmetric(
-                                  vertical: 5, horizontal: 75),
-                              child: SignInWithAppleButton(
-                                onPressed: () async {
-                                  UIBlock.block(context,
-                                      customLoaderChild:
-                                          LoadingWidgetFadingCircle(context));
-                                  signInWithApple().then((value) {
-                                    UIBlock.unblock(context);
-                                    if (value) {
-                                      Navigator.pushNamedAndRemoveUntil(
-                                          context, HomeScreen.id, (_) => false);
-                                    } else {
-                                      scaffoldKey.currentState
-                                          .showSnackBar(snackBarError);
-                                    }
-                                  }).catchError((onError) {
-                                    UIBlock.unblock(context);
-                                    scaffoldKey.currentState
-                                        .showSnackBar(snackBarError);
-                                  });
-                                },
+                              margin: EdgeInsets.symmetric(vertical: 5),
+                              child: Row(
+                                children: [
+                                  Expanded(flex: 1, child: Container()),
+                                  Expanded(
+                                    flex: 3,
+                                    child: SignInWithAppleButton(
+                                      onPressed: () async {
+                                        UIBlock.block(context,
+                                            customLoaderChild:
+                                                LoadingWidgetFadingCircle(context));
+                                        signInWithApple().then((value) {
+                                          UIBlock.unblock(context);
+                                          if (value) {
+                                            Navigator.pushNamedAndRemoveUntil(
+                                                context, HomeScreen.id, (_) => false);
+                                          } else {
+                                            scaffoldKey.currentState
+                                                .showSnackBar(snackBarError);
+                                          }
+                                        }).catchError((onError) {
+                                          UIBlock.unblock(context);
+                                          scaffoldKey.currentState
+                                              .showSnackBar(snackBarError);
+                                        });
+                                      },
+                                    ),
+                                  ),
+                                  Expanded(flex: 1, child: Container()),
+                                ],
                               ),
                             )
                           : Container(
