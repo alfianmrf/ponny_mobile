@@ -51,6 +51,8 @@ class _LoginStateScreen extends State<LoginScreen> {
   String _versionCode;
   String _packageName;
 
+  bool _loadingVersion = true;
+
   @override
   void initState() {
     _init();
@@ -65,6 +67,7 @@ class _LoginStateScreen extends State<LoginScreen> {
       _versionName = _packageInfo.version;
       _versionCode = _packageInfo.buildNumber;
       _packageName = _packageInfo.packageName;
+      _loadingVersion = false;
     });
   }
 
@@ -352,594 +355,637 @@ class _LoginStateScreen extends State<LoginScreen> {
        return result;
   }
 
+  Future<bool> _onWillPop() async {
+    return Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => HomeScreen(),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      // resizeToAvoidBottomPadding: false,
-      resizeToAvoidBottomInset: false,
-      key: scaffoldKey,
-      backgroundColor: Hexcolor('#FCF8F0'),
-      appBar: AppBar(
-        titleSpacing: 20.0,
-        elevation: 0.0,
-        automaticallyImplyLeading: false,
-        title: Text(
-          'Akun Saya',
-          style: TextStyle(
-            fontSize: 24,
-            fontFamily: 'Yeseva',
-            color: Hexcolor('#F48262'),
-          ),
-        ),
-        bottom: PreferredSize(
-            child: Container(
+    return WillPopScope(
+      onWillPop: _onWillPop,
+      child: Scaffold(
+        // resizeToAvoidBottomPadding: false,
+        key: scaffoldKey,
+        appBar: AppBar(
+          titleSpacing: 0.0,
+          elevation: 0.0,
+          leading: IconButton(
+            onPressed: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => HomeScreen(),
+                ),
+              );
+            },
+            icon: Icon(
+              Icons.arrow_back_ios_rounded,
               color: Color(0xffF48262),
-              height: 1.0,
             ),
-            preferredSize: Size.fromHeight(1.0)),
-      ),
-      body: Container(
-        child: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              Container(
-                margin: EdgeInsets.only(left: 20.0, right: 20.0, top: 20.0),
-                child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Expanded(
-                        flex: 1,
-                        child: Container(
-                          padding: EdgeInsets.only(right: 10),
-                          child: ButtonTheme(
-                            buttonColor: Hexcolor('#F48262'),
-                            height: 35.0,
-                            child: FlatButton(
-                              onPressed: () {},
-                              color: Hexcolor('#F48262'),
-                              child: Text(
-                                "MASUK",
-                                style: TextStyle(
-                                    fontSize: 18,
-                                    fontFamily: 'Brandon',
-                                    fontWeight: FontWeight.w800,
-                                    letterSpacing: 1,
-                                    color: Colors.white),
-                              ),
-                            ),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        flex: 1,
-                        child: Container(
-                          padding: EdgeInsets.only(left: 10),
-                          child: ButtonTheme(
-                            buttonColor: Hexcolor('#FCF8F0'),
-                            height: 35.0,
-                            child: FlatButton(
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => PraDaftarScreen()),
-                                );
-                              },
-                              child: Text(
-                                "DAFTAR",
-                                style: TextStyle(
-                                    fontSize: 18,
-                                    fontFamily: 'Brandon',
-                                    fontWeight: FontWeight.w800,
-                                    letterSpacing: 1,
-                                    color: Hexcolor('#F48262')),
-                              ),
-                            ),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                              side: BorderSide(color: Hexcolor('#F48262')),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ]),
+          ),
+          title: Text(
+            'Akun Saya',
+            style: TextStyle(
+              fontSize: 24,
+              fontFamily: 'Yeseva',
+              color: Hexcolor('#F48262'),
+            ),
+          ),
+          bottom: PreferredSize(
+              child: Container(
+                color: Color(0xffF48262),
+                height: 1.0,
               ),
-              Container(
-                margin: EdgeInsets.only(top: 40.0),
-                child: Form(
-                  key: formKey,
-                  child: Column(
-                    children: <Widget>[
-                      Container(
-                        margin: EdgeInsets.only(
-                          left: 20.0,
-                          right: 20.0,
-                        ),
-                        child: TextFormField(
-                          controller: myemail,
-                          style: TextStyle(fontFamily: 'Brandon'),
-                          decoration: InputDecoration(
-                            filled: true,
-                            fillColor: Colors.white,
-                            hintText: 'Email',
-                            hintStyle: TextStyle(fontFamily: 'Brandon'),
-                            labelText: 'Email :',
-                            labelStyle: TextStyle(fontFamily: 'Brandon', color: Colors.black),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8.0),
-                              borderSide: BorderSide(
+              preferredSize: Size.fromHeight(1.0)),
+        ),
+        resizeToAvoidBottomInset: false,
+        backgroundColor: Hexcolor('#FCF8F0'),
+        body: Container(
+          child: SingleChildScrollView(
+            child: Column(
+              children: <Widget>[
+                Container(
+                  margin: EdgeInsets.only(left: 20.0, right: 20.0, top: 20.0),
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Expanded(
+                          flex: 1,
+                          child: Container(
+                            padding: EdgeInsets.only(right: 10),
+                            child: ButtonTheme(
+                              buttonColor: Hexcolor('#F48262'),
+                              height: 35.0,
+                              child: FlatButton(
+                                onPressed: () {},
                                 color: Hexcolor('#F48262'),
-                              ),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8.0),
-                              borderSide: BorderSide(
-                                color: Hexcolor('#F48262'),
-                                width: 1.0,
-                              ),
-                            ),
-                          ),
-                          keyboardType: TextInputType.emailAddress,
-                          validator: (String value) {
-                            if (value.isEmpty) {
-                              return 'Email tidak boleh kosong';
-                            } else if (!value.contains('@')) {
-                              return 'Email tidak valid';
-                            }
-                          },
-                        ),
-                      ),
-                      Container(
-                        height: 20.0,
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(
-                          left: 20.0,
-                          right: 20.0,
-                        ),
-                        child: TextFormField(
-                          controller: mypass,
-                          obscureText: true,
-                          style: TextStyle(fontFamily: 'Brandon'),
-                          decoration: InputDecoration(
-                            filled: true,
-                            fillColor: Colors.white,
-                            hintText: 'Password',
-                            hintStyle: TextStyle(fontFamily: 'Brandon'),
-                            labelText: 'Password :',
-                            labelStyle: TextStyle(fontFamily: 'Brandon', color: Colors.black),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8.0),
-                              borderSide: BorderSide(
-                                color: Hexcolor('#F48262'),
-                              ),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8.0),
-                              borderSide: BorderSide(
-                                color: Hexcolor('#F48262'),
-                                width: 1.0,
-                              ),
-                            ),
-                          ),
-                          validator: (String value) {
-                            if (value.isEmpty) {
-                              return 'Password tidak boleh kosong';
-                            }
-                          },
-                        ),
-                      ),
-                      Container(
-                        height: 45.0,
-                      ),
-                      ButtonTheme(
-                        buttonColor: Hexcolor('#F48262'),
-                        minWidth: 220.0,
-                        height: 60.0,
-                        child: FlatButton(
-                          color: Hexcolor('#F48262'),
-                          onPressed: validateInput,
-                          // onPressed: () {
-                          //   return showDialog(
-                          //       context: context,
-                          //       builder: (BuildContext context) {
-                          //         return AlertDialog(
-                          //           content: Text("Anda memasukkan email " +
-                          //               myemail.text +
-                          //               " dan password " +
-                          //               mypass.text),
-                          //         );
-                          //       });
-                          // },
-                          child: Text(
-                            "MASUK",
-                            style: TextStyle(
-                                fontSize: 22,
-                                fontFamily: 'Brandon',
-                                fontWeight: FontWeight.w800,
-                                letterSpacing: 1,
-                                color: Colors.white),
-                          ),
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(top: 10.0),
-                        child: GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                new MaterialPageRoute(
-                                  builder: (BuildContext context) =>
-                                      new LupaPasswordScreen(),
-                                ));
-                          },
-                          child: Text(
-                            'Lupa Password ?',
-                            style: TextStyle(
-                                fontFamily: 'Brandon',
-                                fontWeight: FontWeight.w300,
-                                color: Colors.black,
-                                decoration: TextDecoration.underline),
-                          ),
-                        ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.symmetric(vertical: 20),
-                        child: IntrinsicHeight(
-                          child: Row(
-                            children: [
-                              Expanded(
-                                flex: 1,
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  width: double.infinity,
-                                  height: 1,
-                                  color: Hexcolor('#F48262'),
-                                  margin: EdgeInsets.symmetric(horizontal: 20),
+                                child: Text(
+                                  "MASUK",
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      fontFamily: 'Brandon',
+                                      fontWeight: FontWeight.w800,
+                                      letterSpacing: 1,
+                                      color: Colors.white),
                                 ),
                               ),
-                              Expanded(
-                                flex: 1,
-                                child: Container(
-                                  child: Text(
-                                    'atau masuk dengan',
-                                    style: TextStyle(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: Container(
+                            padding: EdgeInsets.only(left: 10),
+                            child: ButtonTheme(
+                              buttonColor: Hexcolor('#FCF8F0'),
+                              height: 35.0,
+                              child: FlatButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => PraDaftarScreen()),
+                                  );
+                                },
+                                child: Text(
+                                  "DAFTAR",
+                                  style: TextStyle(
+                                      fontSize: 18,
                                       fontFamily: 'Brandon',
-                                      color: Hexcolor('#F48262'),
-                                      fontSize: 16,
+                                      fontWeight: FontWeight.w800,
+                                      letterSpacing: 1,
+                                      color: Hexcolor('#F48262')),
+                                ),
+                              ),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                                side: BorderSide(color: Hexcolor('#F48262')),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ]),
+                ),
+                Container(
+                  margin: EdgeInsets.only(top: 40.0),
+                  child: Form(
+                    key: formKey,
+                    child: Column(
+                      children: <Widget>[
+                        Container(
+                          margin: EdgeInsets.only(
+                            left: 20.0,
+                            right: 20.0,
+                          ),
+                          child: TextFormField(
+                            controller: myemail,
+                            style: TextStyle(fontFamily: 'Brandon'),
+                            decoration: InputDecoration(
+                              filled: true,
+                              fillColor: Colors.white,
+                              hintText: 'Email',
+                              hintStyle: TextStyle(fontFamily: 'Brandon'),
+                              labelText: 'Email :',
+                              labelStyle: TextStyle(fontFamily: 'Brandon', color: Colors.black),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8.0),
+                                borderSide: BorderSide(
+                                  color: Hexcolor('#F48262'),
+                                ),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8.0),
+                                borderSide: BorderSide(
+                                  color: Hexcolor('#F48262'),
+                                  width: 1.0,
+                                ),
+                              ),
+                            ),
+                            keyboardType: TextInputType.emailAddress,
+                            validator: (String value) {
+                              if (value.isEmpty) {
+                                return 'Email tidak boleh kosong';
+                              } else if (!value.contains('@')) {
+                                return 'Email tidak valid';
+                              }
+                            },
+                          ),
+                        ),
+                        Container(
+                          height: 20.0,
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(
+                            left: 20.0,
+                            right: 20.0,
+                          ),
+                          child: TextFormField(
+                            controller: mypass,
+                            obscureText: true,
+                            style: TextStyle(fontFamily: 'Brandon'),
+                            decoration: InputDecoration(
+                              filled: true,
+                              fillColor: Colors.white,
+                              hintText: 'Password',
+                              hintStyle: TextStyle(fontFamily: 'Brandon'),
+                              labelText: 'Password :',
+                              labelStyle: TextStyle(fontFamily: 'Brandon', color: Colors.black),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8.0),
+                                borderSide: BorderSide(
+                                  color: Hexcolor('#F48262'),
+                                ),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8.0),
+                                borderSide: BorderSide(
+                                  color: Hexcolor('#F48262'),
+                                  width: 1.0,
+                                ),
+                              ),
+                            ),
+                            validator: (String value) {
+                              if (value.isEmpty) {
+                                return 'Password tidak boleh kosong';
+                              }
+                            },
+                          ),
+                        ),
+                        Container(
+                          height: 45.0,
+                        ),
+                        ButtonTheme(
+                          buttonColor: Hexcolor('#F48262'),
+                          minWidth: 220.0,
+                          height: 60.0,
+                          child: FlatButton(
+                            color: Hexcolor('#F48262'),
+                            onPressed: validateInput,
+                            // onPressed: () {
+                            //   return showDialog(
+                            //       context: context,
+                            //       builder: (BuildContext context) {
+                            //         return AlertDialog(
+                            //           content: Text("Anda memasukkan email " +
+                            //               myemail.text +
+                            //               " dan password " +
+                            //               mypass.text),
+                            //         );
+                            //       });
+                            // },
+                            child: Text(
+                              "MASUK",
+                              style: TextStyle(
+                                  fontSize: 22,
+                                  fontFamily: 'Brandon',
+                                  fontWeight: FontWeight.w800,
+                                  letterSpacing: 1,
+                                  color: Colors.white),
+                            ),
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(top: 10.0),
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  new MaterialPageRoute(
+                                    builder: (BuildContext context) =>
+                                        new LupaPasswordScreen(),
+                                  ));
+                            },
+                            child: Text(
+                              'Lupa Password ?',
+                              style: TextStyle(
+                                  fontFamily: 'Brandon',
+                                  fontWeight: FontWeight.w300,
+                                  color: Colors.black,
+                                  decoration: TextDecoration.underline),
+                            ),
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.symmetric(vertical: 20),
+                          child: IntrinsicHeight(
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  flex: 1,
+                                  child: Container(
+                                    alignment: Alignment.center,
+                                    width: double.infinity,
+                                    height: 1,
+                                    color: Hexcolor('#F48262'),
+                                    margin: EdgeInsets.symmetric(horizontal: 20),
+                                  ),
+                                ),
+                                Expanded(
+                                  flex: 1,
+                                  child: Container(
+                                    child: Text(
+                                      'atau masuk dengan',
+                                      style: TextStyle(
+                                        fontFamily: 'Brandon',
+                                        color: Hexcolor('#F48262'),
+                                        fontSize: 16,
+                                      ),
+                                      textAlign: TextAlign.center,
                                     ),
-                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                                Expanded(
+                                  flex: 1,
+                                  child: Container(
+                                    alignment: Alignment.center,
+                                    width: double.infinity,
+                                    height: 1,
+                                    color: Hexcolor('#F48262'),
+                                    margin: EdgeInsets.symmetric(horizontal: 20),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.symmetric(vertical: 5),
+                          child: Row(
+                            children: [
+                              Expanded(flex: 1, child: Container()),
+                              Expanded(
+                                flex: 3,
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                      color: Hexcolor('#F48262'),
+                                    ),
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: IntrinsicHeight(
+                                    child: Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.stretch,
+                                      children: [
+                                        Expanded(
+                                          flex: 1,
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                              border: Border(
+                                                right: BorderSide(
+                                                  width: 1,
+                                                  color: Hexcolor('#F48262'),
+                                                ),
+                                              ),
+                                            ),
+                                            child: IconButton(
+                                              onPressed: () {},
+                                              icon: Image.asset(
+                                                  "assets/images/googleLogo.png"),
+                                            ),
+                                          ),
+                                        ),
+                                        Expanded(
+                                          flex: 2,
+                                          child: FlatButton(
+                                            onPressed: () {
+                                              UIBlock.block(context,
+                                                  customLoaderChild:
+                                                      LoadingWidgetFadingCircle(
+                                                          context));
+                                              signInWithGoogle().then((value) {
+                                                UIBlock.unblock(context);
+                                                if (value) {
+                                                  Navigator
+                                                      .pushNamedAndRemoveUntil(
+                                                          context,
+                                                          HomeScreen.id,
+                                                          (_) => false);
+                                                } else {
+                                                  scaffoldKey.currentState
+                                                      .showSnackBar(
+                                                          snackBarError);
+                                                }
+                                              }).catchError((onError) {
+                                                print(onError);
+                                                UIBlock.unblock(context);
+                                                scaffoldKey.currentState
+                                                    .showSnackBar(snackBarError);
+                                              });
+                                            },
+                                            child: SizedBox(
+                                              width: double.infinity,
+                                              child: Text(
+                                                "GOOGLE",
+                                                textAlign: TextAlign.left,
+                                                style: TextStyle(
+                                                    fontSize: 18,
+                                                    fontFamily: 'Brandon',
+                                                    fontWeight: FontWeight.w800,
+                                                    color: Hexcolor('#F48262')),
+                                              ),
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),
-                              Expanded(
-                                flex: 1,
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  width: double.infinity,
-                                  height: 1,
-                                  color: Hexcolor('#F48262'),
-                                  margin: EdgeInsets.symmetric(horizontal: 20),
-                                ),
-                              ),
+                              Expanded(flex: 1, child: Container()),
                             ],
                           ),
                         ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.symmetric(vertical: 5),
-                        child: Row(
-                          children: [
-                            Expanded(flex: 1, child: Container()),
-                            Expanded(
-                              flex: 3,
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                    color: Hexcolor('#F48262'),
+                        Container(
+                          margin: EdgeInsets.symmetric(vertical: 5),
+                          child: Row(
+                            children: [
+                              Expanded(flex: 1, child: Container()),
+                              Expanded(
+                                flex: 3,
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                      color: Hexcolor('#F48262'),
+                                    ),
+                                    borderRadius: BorderRadius.circular(10),
                                   ),
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: IntrinsicHeight(
-                                  child: Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.stretch,
-                                    children: [
-                                      Expanded(
-                                        flex: 1,
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            border: Border(
-                                              right: BorderSide(
-                                                width: 1,
-                                                color: Hexcolor('#F48262'),
+                                  child: IntrinsicHeight(
+                                    child: Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.stretch,
+                                      children: [
+                                        Expanded(
+                                          flex: 1,
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                              border: Border(
+                                                right: BorderSide(
+                                                  width: 1,
+                                                  color: Hexcolor('#F48262'),
+                                                ),
                                               ),
                                             ),
-                                          ),
-                                          child: IconButton(
-                                            onPressed: () {},
-                                            icon: Image.asset(
-                                                "assets/images/googleLogo.png"),
-                                          ),
-                                        ),
-                                      ),
-                                      Expanded(
-                                        flex: 2,
-                                        child: FlatButton(
-                                          onPressed: () {
-                                            UIBlock.block(context,
-                                                customLoaderChild:
-                                                    LoadingWidgetFadingCircle(
-                                                        context));
-                                            signInWithGoogle().then((value) {
-                                              UIBlock.unblock(context);
-                                              if (value) {
-                                                Navigator
-                                                    .pushNamedAndRemoveUntil(
-                                                        context,
-                                                        HomeScreen.id,
-                                                        (_) => false);
-                                              } else {
-                                                scaffoldKey.currentState
-                                                    .showSnackBar(
-                                                        snackBarError);
-                                              }
-                                            }).catchError((onError) {
-                                              print(onError);
-                                              UIBlock.unblock(context);
-                                              scaffoldKey.currentState
-                                                  .showSnackBar(snackBarError);
-                                            });
-                                          },
-                                          child: SizedBox(
-                                            width: double.infinity,
-                                            child: Text(
-                                              "GOOGLE",
-                                              textAlign: TextAlign.left,
-                                              style: TextStyle(
-                                                  fontSize: 18,
-                                                  fontFamily: 'Brandon',
-                                                  fontWeight: FontWeight.w800,
-                                                  color: Hexcolor('#F48262')),
+                                            child: IconButton(
+                                              onPressed: () {},
+                                              icon: Image.asset(
+                                                  "assets/images/facebookLogo.png"),
                                             ),
                                           ),
                                         ),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Expanded(flex: 1, child: Container()),
-                          ],
-                        ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.symmetric(vertical: 5),
-                        child: Row(
-                          children: [
-                            Expanded(flex: 1, child: Container()),
-                            Expanded(
-                              flex: 3,
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                    color: Hexcolor('#F48262'),
-                                  ),
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: IntrinsicHeight(
-                                  child: Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.stretch,
-                                    children: [
-                                      Expanded(
-                                        flex: 1,
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            border: Border(
-                                              right: BorderSide(
-                                                width: 1,
-                                                color: Hexcolor('#F48262'),
-                                              ),
-                                            ),
-                                          ),
-                                          child: IconButton(
-                                            onPressed: () {},
-                                            icon: Image.asset(
-                                                "assets/images/facebookLogo.png"),
-                                          ),
-                                        ),
-                                      ),
-                                      Expanded(
-                                        flex: 2,
-                                        child: FlatButton(
-                                          onPressed: () async {
-                                            UIBlock.block(context,
-                                                customLoaderChild:
-                                                    LoadingWidgetFadingCircle(
-                                                        context));
+                                        Expanded(
+                                          flex: 2,
+                                          child: FlatButton(
+                                            onPressed: () async {
+                                              UIBlock.block(context,
+                                                  customLoaderChild:
+                                                      LoadingWidgetFadingCircle(
+                                                          context));
 
-                                            signInWithFacebook().then((value) {
-                                              UIBlock.unblock(context);
-                                              if (value) {
-                                                Navigator
-                                                    .pushNamedAndRemoveUntil(
-                                                        context,
-                                                        HomeScreen.id,
-                                                        (_) => false);
-                                              } else {
+                                              signInWithFacebook().then((value) {
+                                                UIBlock.unblock(context);
+                                                if (value) {
+                                                  Navigator
+                                                      .pushNamedAndRemoveUntil(
+                                                          context,
+                                                          HomeScreen.id,
+                                                          (_) => false);
+                                                } else {
+                                                  scaffoldKey.currentState
+                                                      .showSnackBar(
+                                                          snackBarError);
+                                                }
+                                              }).catchError((onError) {
+                                                UIBlock.unblock(context);
                                                 scaffoldKey.currentState
-                                                    .showSnackBar(
-                                                        snackBarError);
-                                              }
-                                            }).catchError((onError) {
-                                              UIBlock.unblock(context);
-                                              scaffoldKey.currentState
-                                                  .showSnackBar(snackBarError);
-                                            });
+                                                    .showSnackBar(snackBarError);
+                                              });
 
-                                            // Create a credential from the access token
-                                            // final FacebookAuthCredential facebookAuthCredential =
-                                            // FacebookAuthProvider.credential(result.token);
-                                            // final Facebookuser = await FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
-                                            // print(Facebookuser.user.uid);
-                                            // print("facebook");
-                                            // UIBlock.block(context,customLoaderChild: LoadingWidgetFadingCircle(context));
-                                            // signInWithFacebook().then((value) {
-                                            //   UIBlock.unblock(context);
-                                            // }).catchError((onError){
-                                            //   UIBlock.unblock(context);
-                                            // });
-                                          },
-                                          child: SizedBox(
-                                            width: double.infinity,
-                                            child: Text(
-                                              "FACEBOOK",
-                                              textAlign: TextAlign.left,
-                                              style: TextStyle(
-                                                  fontSize: 18,
-                                                  fontFamily: 'Brandon',
-                                                  fontWeight: FontWeight.w800,
-                                                  color: Hexcolor('#F48262')),
-                                            ),
-                                          ),
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Expanded(flex: 1, child: Container()),
-                          ],
-                        ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.symmetric(vertical: 5),
-                        child: Row(
-                          children: [
-                            Expanded(flex: 1, child: Container()),
-                            Expanded(
-                              flex: 3,
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                    color: Hexcolor('#F48262'),
-                                  ),
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: IntrinsicHeight(
-                                  child: Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.stretch,
-                                    children: [
-                                      Expanded(
-                                        flex: 1,
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            border: Border(
-                                              right: BorderSide(
-                                                width: 1,
-                                                color: Hexcolor('#F48262'),
+                                              // Create a credential from the access token
+                                              // final FacebookAuthCredential facebookAuthCredential =
+                                              // FacebookAuthProvider.credential(result.token);
+                                              // final Facebookuser = await FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
+                                              // print(Facebookuser.user.uid);
+                                              // print("facebook");
+                                              // UIBlock.block(context,customLoaderChild: LoadingWidgetFadingCircle(context));
+                                              // signInWithFacebook().then((value) {
+                                              //   UIBlock.unblock(context);
+                                              // }).catchError((onError){
+                                              //   UIBlock.unblock(context);
+                                              // });
+                                            },
+                                            child: SizedBox(
+                                              width: double.infinity,
+                                              child: Text(
+                                                "FACEBOOK",
+                                                textAlign: TextAlign.left,
+                                                style: TextStyle(
+                                                    fontSize: 18,
+                                                    fontFamily: 'Brandon',
+                                                    fontWeight: FontWeight.w800,
+                                                    color: Hexcolor('#F48262')),
                                               ),
                                             ),
                                           ),
-                                          child: IconButton(
-                                            onPressed: () {},
-                                            icon: Image.asset(
-                                                "assets/images/twitter.png"),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Expanded(flex: 1, child: Container()),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.symmetric(vertical: 5),
+                          child: Row(
+                            children: [
+                              Expanded(flex: 1, child: Container()),
+                              Expanded(
+                                flex: 3,
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                      color: Hexcolor('#F48262'),
+                                    ),
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: IntrinsicHeight(
+                                    child: Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.stretch,
+                                      children: [
+                                        Expanded(
+                                          flex: 1,
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                              border: Border(
+                                                right: BorderSide(
+                                                  width: 1,
+                                                  color: Hexcolor('#F48262'),
+                                                ),
+                                              ),
+                                            ),
+                                            child: IconButton(
+                                              onPressed: () {},
+                                              icon: Image.asset(
+                                                  "assets/images/twitter.png"),
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                      Expanded(
-                                        flex: 2,
-                                        child: FlatButton(
-                                          onPressed: () {
-                                            UIBlock.block(context,
-                                                customLoaderChild:
-                                                    LoadingWidgetFadingCircle(
-                                                        context));
-                                            signInWithTwitter().then((value) {
-                                              UIBlock.unblock(context);
-                                              if (value) {
-                                                Navigator
-                                                    .pushNamedAndRemoveUntil(
-                                                        context,
-                                                        HomeScreen.id,
-                                                        (_) => false);
-                                              } else {
+                                        Expanded(
+                                          flex: 2,
+                                          child: FlatButton(
+                                            onPressed: () {
+                                              UIBlock.block(context,
+                                                  customLoaderChild:
+                                                      LoadingWidgetFadingCircle(
+                                                          context));
+                                              signInWithTwitter().then((value) {
+                                                UIBlock.unblock(context);
+                                                if (value) {
+                                                  Navigator
+                                                      .pushNamedAndRemoveUntil(
+                                                          context,
+                                                          HomeScreen.id,
+                                                          (_) => false);
+                                                } else {
+                                                  scaffoldKey.currentState
+                                                      .showSnackBar(
+                                                          snackBarError);
+                                                }
+                                              }).catchError((onError) {
+                                                print(onError);
+                                                UIBlock.unblock(context);
                                                 scaffoldKey.currentState
-                                                    .showSnackBar(
-                                                        snackBarError);
-                                              }
-                                            }).catchError((onError) {
-                                              print(onError);
-                                              UIBlock.unblock(context);
-                                              scaffoldKey.currentState
-                                                  .showSnackBar(snackBarError);
-                                            });
-                                          },
-                                          child: SizedBox(
-                                            width: double.infinity,
-                                            child: Text(
-                                              "TWITTER",
-                                              textAlign: TextAlign.left,
-                                              style: TextStyle(
-                                                  fontSize: 18,
-                                                  fontFamily: 'Brandon',
-                                                  fontWeight: FontWeight.w800,
-                                                  color: Hexcolor('#F48262')),
+                                                    .showSnackBar(snackBarError);
+                                              });
+                                            },
+                                            child: SizedBox(
+                                              width: double.infinity,
+                                              child: Text(
+                                                "TWITTER",
+                                                textAlign: TextAlign.left,
+                                                style: TextStyle(
+                                                    fontSize: 18,
+                                                    fontFamily: 'Brandon',
+                                                    fontWeight: FontWeight.w800,
+                                                    color: Hexcolor('#F48262')),
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                      )
-                                    ],
+                                        )
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                            Expanded(flex: 1, child: Container()),
-                          ],
+                              Expanded(flex: 1, child: Container()),
+                            ],
+                          ),
                         ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.symmetric(vertical: 5),
-                        child: Row(
-                          children: [
-                            Expanded(flex: 1, child: Container()),
-                            Expanded(
-                              flex: 3,
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                    color: Hexcolor('#F48262'),
+                        Container(
+                          margin: EdgeInsets.symmetric(vertical: 5),
+                          child: Row(
+                            children: [
+                              Expanded(flex: 1, child: Container()),
+                              Expanded(
+                                flex: 3,
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                      color: Hexcolor('#F48262'),
+                                    ),
+                                    borderRadius: BorderRadius.circular(10),
                                   ),
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: IntrinsicHeight(
-                                  child: Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.stretch,
-                                    children: [
-                                      Expanded(
-                                        flex: 1,
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            border: Border(
-                                              right: BorderSide(
-                                                width: 1,
+                                  child: IntrinsicHeight(
+                                    child: Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.stretch,
+                                      children: [
+                                        Expanded(
+                                          flex: 1,
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                              border: Border(
+                                                right: BorderSide(
+                                                  width: 1,
+                                                  color: Hexcolor('#F48262'),
+                                                ),
+                                              ),
+                                            ),
+                                            child: IconButton(
+                                              onPressed: () {
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        LoginOTP(true),
+                                                  ),
+                                                );
+                                              },
+                                              icon: Icon(
+                                                Icons.phone_android,
                                                 color: Hexcolor('#F48262'),
                                               ),
                                             ),
                                           ),
-                                          child: IconButton(
+                                        ),
+                                        Expanded(
+                                          flex: 2,
+                                          child: FlatButton(
                                             onPressed: () {
                                               Navigator.push(
                                                 context,
@@ -949,100 +995,84 @@ class _LoginStateScreen extends State<LoginScreen> {
                                                 ),
                                               );
                                             },
-                                            icon: Icon(
-                                              Icons.phone_android,
-                                              color: Hexcolor('#F48262'),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      Expanded(
-                                        flex: 2,
-                                        child: FlatButton(
-                                          onPressed: () {
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    LoginOTP(true),
+                                            child: SizedBox(
+                                              width: double.infinity,
+                                              child: Text(
+                                                "OTP / SMS",
+                                                textAlign: TextAlign.left,
+                                                style: TextStyle(
+                                                    fontSize: 18,
+                                                    fontFamily: 'Brandon',
+                                                    fontWeight: FontWeight.w800,
+                                                    color: Hexcolor('#F48262')),
                                               ),
-                                            );
-                                          },
-                                          child: SizedBox(
-                                            width: double.infinity,
-                                            child: Text(
-                                              "OTP / SMS",
-                                              textAlign: TextAlign.left,
-                                              style: TextStyle(
-                                                  fontSize: 18,
-                                                  fontFamily: 'Brandon',
-                                                  fontWeight: FontWeight.w800,
-                                                  color: Hexcolor('#F48262')),
                                             ),
                                           ),
-                                        ),
-                                      )
-                                    ],
+                                        )
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                            Expanded(flex: 1, child: Container()),
-                          ],
+                              Expanded(flex: 1, child: Container()),
+                            ],
+                          ),
                         ),
-                      ),
-                      Platform.isIOS
-                          ?
-                          Container(
-                              margin: EdgeInsets.symmetric(vertical: 5),
-                              child: Row(
-                                children: [
-                                  Expanded(flex: 1, child: Container()),
-                                  Expanded(
-                                    flex: 3,
-                                    child: SignInWithAppleButton(
-                                      onPressed: () async {
-                                        UIBlock.block(context,
-                                            customLoaderChild:
-                                                LoadingWidgetFadingCircle(context));
-                                        signInWithApple().then((value) {
-                                          UIBlock.unblock(context);
-                                          if (value) {
-                                            Navigator.pushNamedAndRemoveUntil(
-                                                context, HomeScreen.id, (_) => false);
-                                          } else {
+                        Platform.isIOS
+                            ?
+                            Container(
+                                margin: EdgeInsets.symmetric(vertical: 5),
+                                child: Row(
+                                  children: [
+                                    Expanded(flex: 1, child: Container()),
+                                    Expanded(
+                                      flex: 3,
+                                      child: SignInWithAppleButton(
+                                        onPressed: () async {
+                                          UIBlock.block(context,
+                                              customLoaderChild:
+                                                  LoadingWidgetFadingCircle(context));
+                                          signInWithApple().then((value) {
+                                            UIBlock.unblock(context);
+                                            if (value) {
+                                              Navigator.pushNamedAndRemoveUntil(
+                                                  context, HomeScreen.id, (_) => false);
+                                            } else {
+                                              scaffoldKey.currentState
+                                                  .showSnackBar(snackBarError);
+                                            }
+                                          }).catchError((onError) {
+                                            UIBlock.unblock(context);
                                             scaffoldKey.currentState
                                                 .showSnackBar(snackBarError);
-                                          }
-                                        }).catchError((onError) {
-                                          UIBlock.unblock(context);
-                                          scaffoldKey.currentState
-                                              .showSnackBar(snackBarError);
-                                        });
-                                      },
+                                          });
+                                        },
+                                      ),
                                     ),
-                                  ),
-                                  Expanded(flex: 1, child: Container()),
-                                ],
+                                    Expanded(flex: 1, child: Container()),
+                                  ],
+                                ),
+                              )
+                            : Container(
+                                height: 20,
                               ),
-                            )
-                          : Container(
-                              height: 20,
-                            ),
-                      Text(
-                        'Version '+_versionName,
-                        style: TextStyle(
-                          fontFamily: 'Brandon',
+                        _loadingVersion?
+                        Container():
+                        Text(
+                          'Version '+_versionName,
+                          style: TextStyle(
+                            fontFamily: 'Brandon',
+                          ),
                         ),
-                      ),
-                      Container(
-                        height: 20,
-                      ),
-                    ],
+                        Container(
+                          height: 20,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

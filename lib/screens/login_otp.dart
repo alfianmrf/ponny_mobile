@@ -334,6 +334,7 @@ class _LoginOTPScreen extends State<LoginOTP> {
               backgroundColor: Colors.redAccent,
             );
             scaffoldKey.currentState.showSnackBar(snackBar);
+            print("ERROR");
             print(e.message);
           },
           codeSent: (String verificationId, int resendToken) {
@@ -367,21 +368,32 @@ class _LoginOTPScreen extends State<LoginOTP> {
         }else{
           return Scaffold(
             // resizeToAvoidBottomPadding: false,
-            resizeToAvoidBottomInset: false,
             key: scaffoldKey,
+            appBar: AppBar(
+              titleSpacing: 0.0,
+              elevation: 0.0,
+              leading: IconButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                icon: Icon(
+                  Icons.arrow_back_ios_rounded,
+                  color: Color(0xffF48262),
+                ),
+              ),
+              bottom: PreferredSize(
+                  child: Container(
+                    color: Color(0xffF48262),
+                    height: 1.0,
+                  ),
+                  preferredSize: Size.fromHeight(1.0)),
+            ),
+            resizeToAvoidBottomInset: false,
             backgroundColor: Hexcolor('#FCF8F0'),
             body: Container(
               child: SingleChildScrollView(
                 child: Column(
                   children: <Widget>[
-                    Container(
-                      height: 100.0,
-                    ),
-                    Container(
-                      color: Hexcolor('#F48262'),
-                      margin: EdgeInsets.only(top: 20),
-                      height: 2,
-                    ),
                     Container(
                       margin: EdgeInsets.only(left: 35, right: 35, top: 70),
                       padding: EdgeInsets.only(top: 20, bottom: 20),
