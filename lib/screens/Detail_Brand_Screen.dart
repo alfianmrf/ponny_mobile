@@ -495,13 +495,6 @@ class _DetailBrandScreen extends State<DetailBrand> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    'Headline About Brand',
-                    style: TextStyle(
-                      fontFamily: 'Yeseva',
-                      fontSize: 16,
-                    ),
-                  ),
                   Padding(padding: EdgeInsets.only(top: 5)),
                   Text(
                     widget.brand.metaDescription != null ? widget.brand.metaDescription :"-",

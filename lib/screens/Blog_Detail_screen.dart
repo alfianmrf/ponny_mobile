@@ -39,9 +39,10 @@ class _BlogDetailScreenState extends State<BlogDetailScreen> {
 
   Future<List> getRecom() async {
     final response = await http.get(recomProduct);
-    // Map<String, dynamic> map = json.decode(response.body);
-    //List<dynamic> data = map[0];
-    return json.decode(response.body);
+    Map<String, dynamic> map = json.decode(response.body);
+    List<dynamic> data = map['products'];
+    print(data);
+    return data;
   }
 
   @override

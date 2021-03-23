@@ -12,11 +12,13 @@ import 'package:ponny/util/globalUrl.dart';
 import 'FlashDeal.dart';
 
 class ProductModel with ChangeNotifier {
+  List<Product> Local_product = [];
   List<Product> Best_sell = [];
   List<Product> PhoebeChoices = [];
   List<Product> Recomendasi = [];
   List<Product> Sample = [];
   List<Product> news =[];
+  bool loadingLocalProduct = true;
   bool loadingBestSale = true;
   bool loadingPhobe = true;
   bool loadingRekomendasi = true;
@@ -25,11 +27,32 @@ class ProductModel with ChangeNotifier {
 
 
   ProductModel() {
+    getLocalProduct();
     getBestSell();
     getPhoebe();
     getRekomendasi();
     getFlashSale();
     getNews();
+  }
+
+  Future<void> getLocalProduct() async {
+    loadingLocalProduct = false;
+    try {
+      final result = await http.get(localprideUrl);
+      if (result.statusCode == 200) {
+        final responseJson = json.decode(result.body);
+        if (responseJson["products"] != null)
+          for (Map item in responseJson["products"]) {
+            Local_product.add(Product.fromJson(item));
+          }
+      }
+      loadingLocalProduct = false;
+      notifyListeners();
+    } catch (err) {
+      loadingLocalProduct = false;
+      print("error." + err.toString());
+      notifyListeners();
+    }
   }
 
   Future<void> getBestSell() async {
