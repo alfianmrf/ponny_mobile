@@ -1,17 +1,19 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:ponny/common/constant.dart';
+import 'package:ponny/model/AffiliateResult.dart';
 import 'package:ponny/screens/Affiliate_CairkanDana_screen.dart';
 import 'package:ponny/screens/account/affiliate_about_screen.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
 import 'package:intl/intl.dart';
+import 'package:ponny/util/globalUrl.dart';
 
 class CairkanDanaTotalScreen extends StatefulWidget {
-  int total;
-  int session;
-  int use;
-  String sales;
-  CairkanDanaTotalScreen({this.total, this.session, this.use, this.sales});
+  int total, use, session;
+  String sales, img;
+  CairkanDanaTotalScreen(
+      {this.total, this.session, this.use, this.sales, this.img});
   @override
   _CairkanDanaTotalScreenState createState() => _CairkanDanaTotalScreenState();
 }
@@ -51,15 +53,21 @@ class _CairkanDanaTotalScreenState extends State<CairkanDanaTotalScreen> {
             children: [
               Container(
                   width: size.width,
-                  height: size.height * 0.46,
+                  height: size.height * 0.37,
                   decoration: BoxDecoration(color: Hexcolor('#FCF8F0')),
                   child: Stack(
                     children: [
                       Container(
                         width: size.width,
-                        child: Image.network(
-                          "https://via.placeholder.com/288x188",
-                          fit: BoxFit.cover,
+                        height: size.height * 0.28,
+                        color: Colors.red,
+                        child: CachedNetworkImage(
+                          imageUrl: "$img_url${widget.img}",
+                          placeholder: (context, url) =>
+                              LoadingWidgetPulse(context),
+                          errorWidget: (context, url, error) =>
+                              Image.asset('assets/images/basic.jpg'),
+                          fit: BoxFit.fill,
                         ),
                       ),
                       Positioned(
@@ -248,6 +256,7 @@ class _CairkanDanaTotalScreenState extends State<CairkanDanaTotalScreen> {
                                               builder: (context) =>
                                                   CairkanDanaScreen(
                                                     total: widget.total,
+                                                    img: widget.img,
                                                   )));
                                     },
                                     elevation: 0,

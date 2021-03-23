@@ -1,7 +1,7 @@
 class AffiliateResult {
   String firstName;
   String lastName;
-  Banner banner;
+  BannerAffiliate banner;
   List<Withdrawal> withdrawal;
   List<Codes> codes;
   int sessions;
@@ -25,8 +25,9 @@ class AffiliateResult {
   AffiliateResult.fromJson(Map<String, dynamic> json) {
     firstName = json['first_name'];
     lastName = json['last_name'];
-    banner =
-        json['banner'] != null ? new Banner.fromJson(json['banner']) : null;
+    banner = json['banner'] != null
+        ? new BannerAffiliate.fromJson(json['banner'])
+        : null;
     if (json['withdrawal'] != null) {
       withdrawal = new List<Withdrawal>();
       json['withdrawal'].forEach((v) {
@@ -75,7 +76,7 @@ class AffiliateResult {
   }
 }
 
-class Banner {
+class BannerAffiliate {
   int id;
   String photo;
   String url;
@@ -85,7 +86,7 @@ class Banner {
   String updatedAt;
   Null banner;
 
-  Banner(
+  BannerAffiliate(
       {this.id,
       this.photo,
       this.url,
@@ -95,7 +96,7 @@ class Banner {
       this.updatedAt,
       this.banner});
 
-  Banner.fromJson(Map<String, dynamic> json) {
+  BannerAffiliate.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     photo = json['photo'];
     url = json['url'];
