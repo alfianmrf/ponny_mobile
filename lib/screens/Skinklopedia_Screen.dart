@@ -50,9 +50,11 @@ class _SkinklopediaState extends State<Skinklopedia> {
 
   Future<List> filterSkin(String alphaBets) async {
     final response = await http.get(skinkloUrl + alphaBets);
-    Map<String, dynamic> map = json.decode(response.body);
-    List<dynamic> data = map["data"];
-    return data;
+    // Map<String, dynamic> map = json.decode(response.body);
+    // List<dynamic> data = map["data"];
+    print('SUKSES');
+    print(json.decode(response.body));
+    return json.decode(response.body);
   }
 
   @override
@@ -310,6 +312,7 @@ class _PageAScreen extends State<page_a> {
       padding: EdgeInsets.symmetric(vertical: 20),
       itemCount: widget.list.length,
       itemBuilder: (context, i) {
+        print(img_url+"skinlopedia/img/"+(widget.list[i]["img"].replaceAll('skinlopedia/img/', '')));
         return Column(
           children: [
             i % 2 == 0
@@ -337,7 +340,7 @@ class _PageAScreen extends State<page_a> {
                             child: Container(
                               height: 140,
                               child:  CachedNetworkImage(
-                                imageUrl:img_url+"skinlopedia/img/"+widget.list[i]["img"].toString(),
+                                imageUrl:img_url+"skinlopedia/img/"+(widget.list[i]["img"].replaceAll('skinlopedia/img/', '')),
                                 placeholder: (context, url) => LoadingWidgetPulse(context),
                                 errorWidget: (context, url, error) => Image.asset('assets/images/basic.jpg'),
                                 width: MediaQuery.of(context).size.width,
@@ -508,7 +511,7 @@ class _PageAScreen extends State<page_a> {
                             child: Container(
                               height: 140,
                               child: CachedNetworkImage(
-                                imageUrl:img_url+"skinlopedia/img/"+widget.list[i]["img"].toString(),
+                                imageUrl:img_url+"skinlopedia/img/"+(widget.list[i]["img"].replaceAll('skinlopedia/img/', '')),
                                 placeholder: (context, url) => LoadingWidgetPulse(context),
                                 errorWidget: (context, url, error) => Image.asset('assets/images/basic.jpg'),
                                 width: MediaQuery.of(context).size.width,

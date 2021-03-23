@@ -108,6 +108,14 @@ class _SkinTypeStateScreen extends State<SkinTypeScreen> {
     );
   }
 
+  Future<List> getRecom() async {
+    final response = await http.get(recomProduct);
+    Map<String, dynamic> map = json.decode(response.body);
+    List<dynamic> data = map['products'];
+    print(data);
+    return data;
+  }
+
   @override
   Widget build(BuildContext context) {
     final jenisKulit = daftarJenisKulit.firstWhere((element) => element.id==index);
@@ -539,45 +547,38 @@ class _SkinTypeStateScreen extends State<SkinTypeScreen> {
                               fontSize: 15,
                             ),
                           ),
-                          GestureDetector(
-                            onTap: (){
-                              Navigator.push(context, new MaterialPageRoute(
-                                builder: (BuildContext context) => new ProdukRekomendasiScreen(),
-                              ));
-                            },
-                            child: Text(
-                              'lihat selengkapnya',
-                              style: TextStyle(
-                                fontFamily: 'Brandon',
-                                fontSize: 12,
-                                decoration: TextDecoration.underline,
-                              ),
-                            ),
-                          ),
+                          // GestureDetector(
+                          //   onTap: (){
+                          //     Navigator.push(context, new MaterialPageRoute(
+                          //       builder: (BuildContext context) => new ProdukRekomendasiScreen(),
+                          //     ));
+                          //   },
+                          //   child: Text(
+                          //     'lihat selengkapnya',
+                          //     style: TextStyle(
+                          //       fontFamily: 'Brandon',
+                          //       fontSize: 12,
+                          //       decoration: TextDecoration.underline,
+                          //     ),
+                          //   ),
+                          // ),
                         ],
                       ),
                     ),
-                    Container(
-                      height: MediaQuery.of(context).size.width * .8,
-                      child: Consumer<ProductModel>(
-                        builder: (context,value,child){
-                          if(value.loadingRekomendasi){
-                            return LoadingWidgetFadingCircle(context);
-                          }else{
-                            ListRekomedasi = getColumProduct(context,value.Recomendasi,3);
-                            return  new Swiper(
-                              itemBuilder: (BuildContext context, int index) {
-                                return ListRekomedasi[index];
-                              },
-                              itemCount: ListRekomedasi.length,
-                              pagination: null,
-                              control: null,
-                              autoplay: false,
-                            );
-                          }
-                        },
-                      ),
-                    ),
+                    new FutureBuilder<List>(
+                        future: getRecom(),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasError)
+                            print(snapshot.error);
+                          return snapshot.hasData
+                              ? recommendationSection(
+                            context,
+                            snapshot.data,
+                          )
+                              : Center(
+                              child:
+                              new CircularProgressIndicator());
+                        })
                   ],
                 ),
               ),
@@ -588,6 +589,39 @@ class _SkinTypeStateScreen extends State<SkinTypeScreen> {
       bottomNavigationBar: new PonnyBottomNavbar(selectedIndex: 0),
     );
   }
+}
+
+Widget recommendationSection(context, List list) {
+  // print(list[0]);
+  return Container(
+    child: IntrinsicHeight(
+      child: Row(
+        children: [
+          Expanded(
+              flex: 1,
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 5),
+                child: getProduct(context,
+                    Product.fromJson(list[0]["data"][0])),
+              )),
+          Expanded(
+              flex: 1,
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 5),
+                child: getProduct(context,
+                    Product.fromJson(list[0]["data"][1])),
+              )),
+          Expanded(
+              flex: 1,
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 5),
+                child: getProduct(context,
+                    Product.fromJson(list[0]["data"][2])),
+              )),
+        ],
+      ),
+    ),
+  );
 }
 
 class JenisKulit{
