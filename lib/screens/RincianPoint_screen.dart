@@ -126,28 +126,46 @@ class _RincianPointState extends State<RincianPoint> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    Text(
-                      item.createdAt,
-                      style: TextStyle(
-                        fontSize: 11,
-                        fontFamily: "Brandon",
-                        fontWeight: FontWeight.w800,
+                    Expanded(
+                      flex: 1,
+                      child: Center(
+                        child: Text(
+                          (item.createdAt.split(" "))[0],
+                          style: TextStyle(
+                            fontSize: 11,
+                            fontFamily: "Brandon",
+                            fontWeight: FontWeight.w800,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
                       ),
                     ),
-                    Text(
-                      item.points.toString()+" POIN",
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontFamily: "Brandon",
-                        fontWeight: FontWeight.w800,
+                    Expanded(
+                      flex: 1,
+                      child: Center(
+                        child: Text(
+                          item.points.toString()+" POIN",
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontFamily: "Brandon",
+                            fontWeight: FontWeight.w800,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
                       ),
                     ),
-                    Text(
-                      item.keterangan,
-                      style: TextStyle(
-                        fontSize: 11,
-                        fontFamily: "Brandon",
-                        fontWeight: FontWeight.w500,
+                    Expanded(
+                      flex: 1,
+                      child: Center(
+                        child: Text(
+                          item.keterangan,
+                          style: TextStyle(
+                            fontSize: 11,
+                            fontFamily: "Brandon",
+                            fontWeight: FontWeight.w500,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
                       ),
                     ),
                   ],
@@ -174,28 +192,46 @@ class _RincianPointState extends State<RincianPoint> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    Text(
-                      item.createdAt,
-                      style: TextStyle(
-                        fontSize: 11,
-                        fontFamily: "Brandon",
-                        fontWeight: FontWeight.w800,
+                    Expanded(
+                      flex: 1,
+                      child: Center(
+                        child: Text(
+                          (item.createdAt.split(" "))[0],
+                          style: TextStyle(
+                            fontSize: 11,
+                            fontFamily: "Brandon",
+                            fontWeight: FontWeight.w800,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
                       ),
                     ),
-                    Text(
-                      item.points.toString()+" POIN",
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontFamily: "Brandon",
-                        fontWeight: FontWeight.w800,
+                    Expanded(
+                      flex: 1,
+                      child: Center(
+                        child: Text(
+                          item.points.toString()+" POIN",
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontFamily: "Brandon",
+                            fontWeight: FontWeight.w800,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
                       ),
                     ),
-                    Text(
-                      item.keterangan,
-                      style: TextStyle(
-                        fontSize: 11,
-                        fontFamily: "Brandon",
-                        fontWeight: FontWeight.w500,
+                    Expanded(
+                      flex: 1,
+                      child: Center(
+                        child: Text(
+                          item.keterangan,
+                          style: TextStyle(
+                            fontSize: 11,
+                            fontFamily: "Brandon",
+                            fontWeight: FontWeight.w500,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
                       ),
                     ),
                   ],
@@ -223,28 +259,46 @@ class _RincianPointState extends State<RincianPoint> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    Text(
-                      item.createdAt,
-                      style: TextStyle(
-                        fontSize: 11,
-                        fontFamily: "Brandon",
-                        fontWeight: FontWeight.w800,
+                    Expanded(
+                      flex: 1,
+                      child: Center(
+                        child: Text(
+                          (item.createdAt.split(" "))[0],
+                          style: TextStyle(
+                            fontSize: 11,
+                            fontFamily: "Brandon",
+                            fontWeight: FontWeight.w800,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
                       ),
                     ),
-                    Text(
-                      item.points.toString()+" POIN",
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontFamily: "Brandon",
-                        fontWeight: FontWeight.w800,
+                    Expanded(
+                      flex: 1,
+                      child: Center(
+                        child: Text(
+                          item.points.toString()+" POIN",
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontFamily: "Brandon",
+                            fontWeight: FontWeight.w800,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
                       ),
                     ),
-                    Text(
-                      item.keterangan,
-                      style: TextStyle(
-                        fontSize: 11,
-                        fontFamily: "Brandon",
-                        fontWeight: FontWeight.w500,
+                    Expanded(
+                      flex: 1,
+                      child: Center(
+                        child: Text(
+                          item.keterangan,
+                          style: TextStyle(
+                            fontSize: 11,
+                            fontFamily: "Brandon",
+                            fontWeight: FontWeight.w500,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
                       ),
                     ),
                   ],
