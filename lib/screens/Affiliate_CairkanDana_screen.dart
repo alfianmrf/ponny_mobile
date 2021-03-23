@@ -3,19 +3,27 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:ponny/screens/account/affiliate_us_screen.dart';
 import 'package:ponny/screens/account_screen.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
+import 'package:intl/intl.dart';
 
 class CairkanDanaScreen extends StatefulWidget {
   static const String id = "Affiliate_CairkanDana_screen";
-
+  int total;
+  CairkanDanaScreen({this.total});
   @override
   _CairkanDanaScreenState createState() => _CairkanDanaScreenState();
 }
 
 class _CairkanDanaScreenState extends State<CairkanDanaScreen> {
+  final formatCurrency = new NumberFormat.simpleCurrency(locale: 'id_ID');
+
   String dropdownValue = 'Bank BCA';
   bool dropPencairan = false;
 
   @override
+  void withdrawSales() {
+    print("drop" + dropdownValue);
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
         resizeToAvoidBottomInset: true,
@@ -154,7 +162,7 @@ class _CairkanDanaScreenState extends State<CairkanDanaScreen> {
                                 subtitle: Align(
                                   alignment: Alignment(-1.3, 0),
                                   child: Text(
-                                    'Rp.3.560.000',
+                                    '${formatCurrency.format(widget.total)}',
                                     style: TextStyle(
                                       fontFamily: "Brandon",
                                       fontSize: 20,
@@ -257,9 +265,10 @@ class _CairkanDanaScreenState extends State<CairkanDanaScreen> {
                                   child: RaisedButton(
                                     elevation: 0,
                                     onPressed: () {
-                                      int count = 0;
-                                      Navigator.of(context)
-                                          .popUntil((_) => count++ >= 2);
+                                      // int count = 0;
+                                      // Navigator.of(context)
+                                      //     .popUntil((_) => count++ >= 2);
+                                      withdrawSales();
                                     },
                                     child: Text(
                                       "CAIRKAN",

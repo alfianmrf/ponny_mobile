@@ -5,7 +5,6 @@ const base_url = "https://ponnybeaute.co.id/api/v1/";
 const img_url = "https://ponny-publik.s3-ap-southeast-1.amazonaws.com/public/";
 const urlGlobal = "https://ponnybeaute.co.id/";
 
-
 //dev
 // const base_url = "http://devponnylb-1174518223.ap-southeast-1.elb.amazonaws.com/api/v1/";
 // const img_url = "https://ponnybeaute.revoapps.id/public/";
@@ -16,13 +15,13 @@ const filterTrend = base_url + "forum/rooms/";
 const loginUrl = base_url + "auth/login";
 const register = base_url + "auth/signup";
 const blogUrl = base_url + "blog";
-const blogCari = base_url+ "blog/cari";
+const blogCari = base_url + "blog/cari";
 const forumUrl = base_url + "forum";
-const detailforum = base_url + "forum/detail/"; 
-const detailRoom = base_url +"forum/roomById/";
+const detailforum = base_url + "forum/detail/";
+const detailRoom = base_url + "forum/roomById/";
 const likeunlikepost = base_url + "forum/liked/";
 const likeunlikecomment = base_url + "forum/commentLiked/";
-const detailcommentchild = base_url +"forum/commentReplies/";
+const detailcommentchild = base_url + "forum/commentReplies/";
 
 const roomUrl = forumUrl + "/rooms";
 const myRoomUrl = forumUrl + "/myrooms";
@@ -85,11 +84,12 @@ const urlAddress = base_url + "shipping/address";
 const urlOrder = base_url + "account/orders";
 const urlUpdateProfile = base_url + "account/update";
 const updateBeauteProfile = base_url + "account/update_beauty";
-const faqUrl = base_url+"account/faqs";
-const changePassword = base_url+"account/password";
-const historyPointurl =base_url+"account/pointHistory";
-const kirimUlangVerifikasi = base_url+"auth/resend/emailverification";
-const affiliateHome = base_url+"account/affiliate";
+const faqUrl = base_url + "account/faqs";
+const changePassword = base_url + "account/password";
+const historyPointurl = base_url + "account/pointHistory";
+const kirimUlangVerifikasi = base_url + "auth/resend/emailverification";
+const affiliateHome = base_url + "account/affiliate";
+const affiliateCustomCode = base_url + "account/custom_code";
 
 //Order
 const urlTracking = base_url + "checkout/tracking";
@@ -114,8 +114,8 @@ const historyVoucher = base_url + "consultation/history";
 const listVoucherActive = base_url + "consultation/myvoucher";
 const inCallconsultation = base_url + "consultation/incall";
 const updateDuration = base_url + "consultation/incallStatus";
-const detaildokter = base_url+"consultation/dokter-detail";
-const voucherAktive = base_url+"consultation/active";
+const detaildokter = base_url + "consultation/dokter-detail";
+const voucherAktive = base_url + "consultation/active";
 
 //master
 const urlProv = base_url + "shipping/provinces";

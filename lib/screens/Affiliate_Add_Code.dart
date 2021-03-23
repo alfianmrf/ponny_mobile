@@ -1,7 +1,14 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:ponny/screens/Affiliate_CairkanDana_screen.dart';
+import 'package:ponny/model/AffiliatesAddCode.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
+import 'package:provider/provider.dart';
+import 'package:ponny/model/App.dart';
+import 'package:ponny/util/globalUrl.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class AddCodeAffiliate extends StatefulWidget {
   @override
@@ -9,6 +16,8 @@ class AddCodeAffiliate extends StatefulWidget {
 }
 
 class _AddCodeAffiliateState extends State<AddCodeAffiliate> {
+  final code = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -153,7 +162,9 @@ class _AddCodeAffiliateState extends State<AddCodeAffiliate> {
                                   ),
                                 ),
                                 child: TextFormField(
+                                  controller: code,
                                   cursorColor: Colors.black,
+                                  keyboardType: TextInputType.name,
                                   decoration: new InputDecoration(
                                       border: InputBorder.none,
                                       focusedBorder: InputBorder.none,
@@ -177,7 +188,10 @@ class _AddCodeAffiliateState extends State<AddCodeAffiliate> {
               Container(
                 child: RaisedButton(
                     padding: EdgeInsets.symmetric(horizontal: 5),
-                    onPressed: () {
+                    onPressed: () async {
+                      await Provider.of<AddCodeResult>(context).customCode(
+                          code.text,
+                          Provider.of<AppModel>(context).auth.access_token);
                       Navigator.pop(context);
                     },
                     elevation: 0,

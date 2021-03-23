@@ -8,6 +8,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:ponny/model/AffiliateResult.dart';
 import 'package:ponny/model/User.dart';
+import 'package:ponny/screens/Affiliate_Add_Code.dart';
 import 'package:ponny/screens/account_screen.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
 import 'package:provider/provider.dart';
@@ -31,10 +32,18 @@ class _AffiliateUsStateScreen extends State<AffiliateUsScreen> {
   AffiliateResult result = AffiliateResult();
   bool loading = true;
   String bank, noRek, name;
+  int total;
   bool codeReferal, income;
   List<dynamic> detailImage;
 
   final formatCurrency = new NumberFormat.simpleCurrency(locale: 'id_ID');
+
+  void _sumSales() {
+    total = 0;
+    for (var i = 0; i < result.codes.length; i++) {
+      total = total + result.codes[i].sales;
+    }
+  }
 
   void _settingModalBottomSheet(context) {
     final size = MediaQuery.of(context).size;
@@ -159,6 +168,7 @@ class _AffiliateUsStateScreen extends State<AffiliateUsScreen> {
           result = AffiliateResult.fromJson(responeJson);
           loading = false;
         });
+        _sumSales();
         print("OIIII");
         print(responeJson);
       }
@@ -174,6 +184,28 @@ class _AffiliateUsStateScreen extends State<AffiliateUsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    onGoBack(dynamic value) {
+      getData();
+      setState(() {});
+      print("ulala");
+    }
+
+    void affiliateAddCodePage() {
+      Route route = MaterialPageRoute(builder: (context) => AddCodeAffiliate());
+      Navigator.push(context, route).then(onGoBack);
+    }
+
+    void affiliateWithdrawPage() {
+      Route route = MaterialPageRoute(
+          builder: (context) => CairkanDanaTotalScreen(
+                total: total,
+                session: result.sessions,
+                use: result.totalUsed,
+                sales: result.sales,
+              ));
+      Navigator.push(context, route).then(onGoBack);
+    }
+
     final user = Provider.of<UserModel>(context).user;
     String afiliateUrl =
         urlGlobal + "users/registration?referral_code=" + user.referral_code;
@@ -1044,12 +1076,7 @@ class _AffiliateUsStateScreen extends State<AffiliateUsScreen> {
                           child: RaisedButton(
                               padding: EdgeInsets.symmetric(horizontal: 5),
                               onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          CairkanDanaTotalScreen()),
-                                );
+                                affiliateAddCodePage();
                               },
                               elevation: 0,
                               child: Row(
@@ -1069,12 +1096,7 @@ class _AffiliateUsStateScreen extends State<AffiliateUsScreen> {
                           child: RaisedButton(
                               padding: EdgeInsets.symmetric(horizontal: 5),
                               onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          CairkanDanaTotalScreen()),
-                                );
+                                affiliateWithdrawPage();
                               },
                               elevation: 0,
                               child: Text("CAIRKAN",
