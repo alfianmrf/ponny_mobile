@@ -1,17 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:ponny/common/constant.dart';
 import 'package:ponny/screens/Affiliate_CairkanDana_screen.dart';
 import 'package:ponny/screens/account/affiliate_about_screen.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
+import 'package:intl/intl.dart';
 
 class CairkanDanaTotalScreen extends StatefulWidget {
+  int total;
+  int session;
+  int use;
+  String sales;
+  CairkanDanaTotalScreen({this.total, this.session, this.use, this.sales});
   @override
   _CairkanDanaTotalScreenState createState() => _CairkanDanaTotalScreenState();
 }
 
 class _CairkanDanaTotalScreenState extends State<CairkanDanaTotalScreen> {
+  int session;
+
   @override
   Widget build(BuildContext context) {
+    final formatCurrency = new NumberFormat.simpleCurrency(locale: 'id_ID');
+
     final size = MediaQuery.of(context).size;
     return Scaffold(
         backgroundColor: Hexcolor('#FCF8F0'),
@@ -25,7 +36,7 @@ class _CairkanDanaTotalScreenState extends State<CairkanDanaTotalScreen> {
                 icon: Icon(Icons.arrow_back_ios,
                     color: Color(0xffF48262), size: 26)),
             title: Text(
-              'Dalam Perjalanan',
+              'Cairkan Dana',
               style: TextStyle(
                   fontSize: 24,
                   fontFamily: "Yeseva",
@@ -127,7 +138,7 @@ class _CairkanDanaTotalScreenState extends State<CairkanDanaTotalScreen> {
                                       fontFamily: "Brandon", fontSize: 12),
                                   textAlign: TextAlign.left,
                                 ),
-                                Text("4.500",
+                                Text("${widget.session}",
                                     style: TextStyle(fontFamily: "Brandon"),
                                     textAlign: TextAlign.left)
                               ],
@@ -152,7 +163,7 @@ class _CairkanDanaTotalScreenState extends State<CairkanDanaTotalScreen> {
                                     style: TextStyle(
                                         fontFamily: "Brandon", fontSize: 12),
                                     textAlign: TextAlign.left),
-                                Text("56",
+                                Text("${widget.use}",
                                     style: TextStyle(fontFamily: "Brandon"),
                                     textAlign: TextAlign.left),
                               ],
@@ -177,7 +188,7 @@ class _CairkanDanaTotalScreenState extends State<CairkanDanaTotalScreen> {
                                     style: TextStyle(
                                         fontFamily: "Brandon", fontSize: 12),
                                     textAlign: TextAlign.left),
-                                Text("3.560.000",
+                                Text("${formatCurrency.format(widget.total)}",
                                     style: TextStyle(fontFamily: "Brandon"),
                                     textAlign: TextAlign.left)
                               ],
@@ -217,7 +228,7 @@ class _CairkanDanaTotalScreenState extends State<CairkanDanaTotalScreen> {
                                           fontFamily: "Brandon",
                                           fontSize: size.width * 0.035,
                                           fontWeight: FontWeight.w600)),
-                                  Text("Rp. 3.560.000",
+                                  Text("${formatCurrency.format(widget.total)}",
                                       style: TextStyle(
                                           fontFamily: "Brandon",
                                           fontSize: size.width * 0.046,
@@ -235,7 +246,9 @@ class _CairkanDanaTotalScreenState extends State<CairkanDanaTotalScreen> {
                                           context,
                                           MaterialPageRoute(
                                               builder: (context) =>
-                                                  CairkanDanaScreen()));
+                                                  CairkanDanaScreen(
+                                                    total: widget.total,
+                                                  )));
                                     },
                                     elevation: 0,
                                     child: Text("CAIRKAN DANA",
