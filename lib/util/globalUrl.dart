@@ -90,6 +90,7 @@ const historyPointurl = base_url + "account/pointHistory";
 const kirimUlangVerifikasi = base_url + "auth/resend/emailverification";
 const affiliateHome = base_url + "account/affiliate";
 const affiliateCustomCode = base_url + "account/custom_code";
+const affiliateWithdraw = base_url + "account/affiliate/withdraw";
 
 //Order
 const urlTracking = base_url + "checkout/tracking";

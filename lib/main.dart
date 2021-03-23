@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:ponny/common/PushNotificationsManager.dart';
 import 'package:ponny/model/Address.dart';
+import 'package:ponny/model/AffiliateWithdraw.dart';
 import 'package:ponny/model/AffiliatesAddCode.dart';
 import 'package:ponny/model/Cart.dart';
 import 'package:ponny/model/Category.dart';
@@ -76,6 +77,7 @@ import 'package:ponny/screens/product_details_screen.dart';
 import 'package:ponny/screens/cart_screen.dart';
 import 'package:ponny/screens/shipping_screen.dart';
 import 'package:ponny/screens/payment_screen.dart';
+import 'package:ponny/util/globalUrl.dart';
 import 'package:provider/provider.dart';
 
 /* FAQ*/
@@ -131,7 +133,8 @@ Future<void> main() async {
           ChangeNotifierProvider(create: (context) => VoucherModel()),
           ChangeNotifierProvider(create: (context) => ChatEmail()),
           ChangeNotifierProvider(create: (context) => PostandComment()),
-          ChangeNotifierProvider(create: (context)=> AddCodeResult()),
+          ChangeNotifierProvider(create: (context) => AddCodeResult()),
+          ChangeNotifierProvider(create: (context) => AffiliateWithdraw()),
         ],
         child: MyApp(),
       ),

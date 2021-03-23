@@ -1,28 +1,86 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:ponny/common/constant.dart';
 import 'package:ponny/model/AffiliatesAddCode.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
 import 'package:provider/provider.dart';
 import 'package:ponny/model/App.dart';
 import 'package:ponny/util/globalUrl.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 
 class AddCodeAffiliate extends StatefulWidget {
+  final String img;
+  AddCodeAffiliate({this.img});
   @override
   _AddCodeAffiliateState createState() => _AddCodeAffiliateState();
 }
 
 class _AddCodeAffiliateState extends State<AddCodeAffiliate> {
   final code = TextEditingController();
+  final scaffoldkey = GlobalKey<ScaffoldState>();
+  GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
+  void customCode() async {
+    await Provider.of<AddCodeResult>(context)
+        .customCode(code.text, Provider.of<AppModel>(context).auth.access_token)
+        .then((value) {
+      if (value == true) {
+        scaffoldkey.currentState.showSnackBar(snackBarSuccess);
+        Navigator.pop(context);
+      } else {
+        scaffoldkey.currentState.showSnackBar(snackBarError);
+      }
+    });
+    Future.delayed(const Duration(milliseconds: 1000), () {
+      Navigator.pop(context);
+    });
+  }
+
+  makeSureCreateCode(BuildContext context) {
+    Widget cancelButton = FlatButton(
+      child: Text("Tidak"),
+      onPressed: () {
+        Navigator.pop(context);
+      },
+    );
+    Widget continueButton = FlatButton(
+      child: Text("Ya"),
+      onPressed: () {
+        customCode();
+      },
+    );
+    AlertDialog alert = AlertDialog(
+      title: Text("Bikin Akun ?"),
+      content: Text("Apakah anda ingin membuat kode voucher?"),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  void validatorInput() {
+    FormState form = this.formKey.currentState;
+    if (form.validate() && code.text != null) {
+      FocusScope.of(context).unfocus();
+      makeSureCreateCode(context);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Scaffold(
         backgroundColor: Hexcolor('#FCF8F0'),
+        key: scaffoldkey,
         appBar: AppBar(
           elevation: 0,
           titleSpacing: 0,
@@ -37,7 +95,7 @@ class _AddCodeAffiliateState extends State<AddCodeAffiliate> {
             ),
           ),
           title: Text(
-            'Dalam Perjalanan',
+            'Bikin Kode',
             style: TextStyle(
               fontSize: 24,
               fontFamily: "Yeseva",
@@ -57,15 +115,21 @@ class _AddCodeAffiliateState extends State<AddCodeAffiliate> {
             children: [
               Container(
                   width: size.width,
-                  height: size.height * 0.46,
+                  height: size.height * 0.37,
                   decoration: BoxDecoration(color: Hexcolor('#FCF8F0')),
                   child: Stack(
                     children: [
                       Container(
                         width: size.width,
-                        child: Image.network(
-                          "https://via.placeholder.com/288x188",
-                          fit: BoxFit.cover,
+                        height: size.height * 0.28,
+                        color: Colors.red,
+                        child: CachedNetworkImage(
+                          imageUrl: "$img_url${widget.img}",
+                          placeholder: (context, url) =>
+                              LoadingWidgetPulse(context),
+                          errorWidget: (context, url, error) =>
+                              Image.asset('assets/images/basic.jpg'),
+                          fit: BoxFit.fill,
                         ),
                       ),
                       Positioned(
@@ -161,22 +225,30 @@ class _AddCodeAffiliateState extends State<AddCodeAffiliate> {
                                     ),
                                   ),
                                 ),
-                                child: TextFormField(
-                                  controller: code,
-                                  cursorColor: Colors.black,
-                                  keyboardType: TextInputType.name,
-                                  decoration: new InputDecoration(
-                                      border: InputBorder.none,
-                                      focusedBorder: InputBorder.none,
-                                      enabledBorder: InputBorder.none,
-                                      errorBorder: InputBorder.none,
-                                      disabledBorder: InputBorder.none,
-                                      contentPadding: EdgeInsets.only(
-                                          left: 15,
-                                          bottom: 11,
-                                          top: 11,
-                                          right: 15),
-                                      hintText: "PHOEBEXTITAN"),
+                                child: Form(
+                                  key: formKey,
+                                  child: TextFormField(
+                                    controller: code,
+                                    cursorColor: Colors.black,
+                                    keyboardType: TextInputType.name,
+                                    validator: (String value) {
+                                      if (value.isEmpty) {
+                                        return 'Field kode tidak boleh kosong';
+                                      }
+                                    },
+                                    decoration: new InputDecoration(
+                                        border: InputBorder.none,
+                                        focusedBorder: InputBorder.none,
+                                        enabledBorder: InputBorder.none,
+                                        errorBorder: InputBorder.none,
+                                        disabledBorder: InputBorder.none,
+                                        contentPadding: EdgeInsets.only(
+                                            left: 15,
+                                            bottom: 11,
+                                            top: 11,
+                                            right: 15),
+                                        hintText: "PHOEBEXTITAN"),
+                                  ),
                                 )),
                           ],
                         ),
@@ -188,11 +260,8 @@ class _AddCodeAffiliateState extends State<AddCodeAffiliate> {
               Container(
                 child: RaisedButton(
                     padding: EdgeInsets.symmetric(horizontal: 5),
-                    onPressed: () async {
-                      await Provider.of<AddCodeResult>(context).customCode(
-                          code.text,
-                          Provider.of<AppModel>(context).auth.access_token);
-                      Navigator.pop(context);
+                    onPressed: () {
+                      validatorInput();
                     },
                     elevation: 0,
                     child: Text("SIMPAN",

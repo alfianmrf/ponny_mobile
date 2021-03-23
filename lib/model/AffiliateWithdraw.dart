@@ -5,20 +5,21 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:ponny/util/globalUrl.dart';
 
-AddCodeResult addCodeResultFromJson(String str) =>
-    AddCodeResult.fromJson(json.decode(str));
+AffiliateWithdraw affiliateWithdrawFromJson(String str) =>
+    AffiliateWithdraw.fromJson(json.decode(str));
 
-String addCodeResultToJson(AddCodeResult data) => json.encode(data.toJson());
+String affiliateWithdrawToJson(AffiliateWithdraw data) =>
+    json.encode(data.toJson());
 
-class AddCodeResult with ChangeNotifier {
-  Future<bool> customCode(code, token) async {
-    var param = {"code": code};
-    final res = await http.post(affiliateCustomCode,
+class AffiliateWithdraw with ChangeNotifier {
+  Future<bool> withdrawFund(bankname, norek, name, token) async {
+    var params = {"payment_method": bankname, "norek": norek, "atasnama": name};
+    final res = await http.post(affiliateWithdraw,
         headers: {
           HttpHeaders.contentTypeHeader: 'application/json',
           HttpHeaders.authorizationHeader: "Bearer $token"
         },
-        body: json.encode(param));
+        body: json.encode(params));
     if (res.statusCode == 200) {
       notifyListeners();
       return true;
@@ -27,7 +28,7 @@ class AddCodeResult with ChangeNotifier {
     return false;
   }
 
-  AddCodeResult({
+  AffiliateWithdraw({
     this.message,
     this.success,
     this.status,
@@ -37,7 +38,8 @@ class AddCodeResult with ChangeNotifier {
   bool success;
   int status;
 
-  factory AddCodeResult.fromJson(Map<String, dynamic> json) => AddCodeResult(
+  factory AffiliateWithdraw.fromJson(Map<String, dynamic> json) =>
+      AffiliateWithdraw(
         message: json["message"],
         success: json["success"],
         status: json["status"],

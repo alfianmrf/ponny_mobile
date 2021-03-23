@@ -191,18 +191,21 @@ class _AffiliateUsStateScreen extends State<AffiliateUsScreen> {
     }
 
     void affiliateAddCodePage() {
-      Route route = MaterialPageRoute(builder: (context) => AddCodeAffiliate());
+      Route route = MaterialPageRoute(
+          builder: (context) => AddCodeAffiliate(
+                img: result.banner.photo,
+              ));
       Navigator.push(context, route).then(onGoBack);
     }
 
     void affiliateWithdrawPage() {
       Route route = MaterialPageRoute(
           builder: (context) => CairkanDanaTotalScreen(
-                total: total,
-                session: result.sessions,
-                use: result.totalUsed,
-                sales: result.sales,
-              ));
+              total: total,
+              session: result.sessions,
+              use: result.totalUsed,
+              sales: result.sales,
+              img: result.banner.photo));
       Navigator.push(context, route).then(onGoBack);
     }
 
@@ -257,8 +260,10 @@ class _AffiliateUsStateScreen extends State<AffiliateUsScreen> {
                     children: [
                       CachedNetworkImage(
                         imageUrl: img_url + result.banner.photo,
-                        placeholder: (context, url) => LoadingWidgetPulse(context),
-                        errorWidget: (context, url, error) => Image.asset('assets/images/basic.jpg'),
+                        placeholder: (context, url) =>
+                            LoadingWidgetPulse(context),
+                        errorWidget: (context, url, error) =>
+                            Image.asset('assets/images/basic.jpg'),
                         fit: BoxFit.fill,
                       ),
                       Container(
