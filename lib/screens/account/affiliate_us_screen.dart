@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -254,10 +255,11 @@ class _AffiliateUsStateScreen extends State<AffiliateUsScreen> {
                 children: <Widget>[
                   Stack(
                     children: [
-                      Container(
-                        color: Colors.grey,
-                        height: 230,
-                        width: MediaQuery.of(context).size.width,
+                      CachedNetworkImage(
+                        imageUrl: img_url + result.banner.photo,
+                        placeholder: (context, url) => LoadingWidgetPulse(context),
+                        errorWidget: (context, url, error) => Image.asset('assets/images/basic.jpg'),
+                        fit: BoxFit.fill,
                       ),
                       Container(
                         child: Column(
@@ -269,8 +271,8 @@ class _AffiliateUsStateScreen extends State<AffiliateUsScreen> {
                                     BorderRadius.all(Radius.circular(15)),
                               ),
                               margin: EdgeInsets.only(
-                                  right: 20, left: 20, top: 160),
-                              height: 130,
+                                  right: 20, left: 20, top: 120),
+                              height: 80,
                               width: MediaQuery.of(context).size.width,
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.center,

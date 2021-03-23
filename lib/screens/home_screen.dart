@@ -122,20 +122,17 @@ class _HomeScreenState extends State<HomeScreen> {
     if(res.statusCode == 200){
       final responejson = json.decode(res.body);
       final channelbc  = ChanelBroadcast.fromJson(responejson);
-      print("HALOOOOO");
       print(responejson);
       if(channelbc.success == true && channelbc.data.broadcasters.length > 0 && channelbc.data.broadcasters[0]==1){
         setState(() {
           _remoteUid = 1;
         });
-        print("HALOOOOO");
         print(responejson);
         print(_remoteUid);
       }else{
         setState(() {
           _remoteUid = null;
         });
-        print("HALOOOOO");
         print(responejson);
         print(_remoteUid);
       }
@@ -218,7 +215,7 @@ class _HomeScreenState extends State<HomeScreen> {
       setState(() {
         viewer=value.length;
       });
-     print("jumlsh :"+value.length.toString());
+     print("jumlah :"+value.length.toString());
     });
 
   }
