@@ -2012,6 +2012,7 @@ class _KonsultasiState extends State<KonsultasiScreen> {
               ),
             ),
             SizedBox(height: 20),
+            int.parse(voucher.harga) > 0 ?
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
@@ -2050,7 +2051,7 @@ class _KonsultasiState extends State<KonsultasiScreen> {
                   ),
                 )
               ],
-            ),
+            ) : Container(),
           ],
         ),
       );

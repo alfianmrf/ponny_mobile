@@ -3,11 +3,11 @@ class AffiliateResult {
   String lastName;
   BannerAffiliate banner;
   List<Withdrawal> withdrawal;
+  bool isAffiliate;
   List<Codes> codes;
   int sessions;
   int totalUsed;
   String sales;
-  List<Payment> payment;
   String pathImg;
 
   AffiliateResult(
@@ -15,11 +15,11 @@ class AffiliateResult {
       this.lastName,
       this.banner,
       this.withdrawal,
+      this.isAffiliate,
       this.codes,
       this.sessions,
       this.totalUsed,
       this.sales,
-      this.payment,
       this.pathImg});
 
   AffiliateResult.fromJson(Map<String, dynamic> json) {
@@ -34,6 +34,7 @@ class AffiliateResult {
         withdrawal.add(new Withdrawal.fromJson(v));
       });
     }
+    isAffiliate = json['is_affiliate'];
     if (json['codes'] != null) {
       codes = new List<Codes>();
       json['codes'].forEach((v) {
@@ -43,12 +44,6 @@ class AffiliateResult {
     sessions = json['sessions'];
     totalUsed = json['total_used'];
     sales = json['sales'];
-    if (json['payment'] != null) {
-      payment = new List<Payment>();
-      json['payment'].forEach((v) {
-        payment.add(new Payment.fromJson(v));
-      });
-    }
     pathImg = json['path_img'];
   }
 
@@ -62,15 +57,13 @@ class AffiliateResult {
     if (this.withdrawal != null) {
       data['withdrawal'] = this.withdrawal.map((v) => v.toJson()).toList();
     }
+    data['is_affiliate'] = this.isAffiliate;
     if (this.codes != null) {
       data['codes'] = this.codes.map((v) => v.toJson()).toList();
     }
     data['sessions'] = this.sessions;
     data['total_used'] = this.totalUsed;
     data['sales'] = this.sales;
-    if (this.payment != null) {
-      data['payment'] = this.payment.map((v) => v.toJson()).toList();
-    }
     data['path_img'] = this.pathImg;
     return data;
   }
@@ -227,67 +220,6 @@ class Codes {
     data['sales'] = this.sales;
     data['komisi'] = this.komisi;
     data['id'] = this.id;
-    return data;
-  }
-}
-
-class Payment {
-  int id;
-  int affiliateUserId;
-  int amount;
-  String paymentMethod;
-  Null paymentDetails;
-  String createdAt;
-  String updatedAt;
-  String status;
-  String norek;
-  String atasnama;
-  String tglBayar;
-  String gambar;
-
-  Payment(
-      {this.id,
-      this.affiliateUserId,
-      this.amount,
-      this.paymentMethod,
-      this.paymentDetails,
-      this.createdAt,
-      this.updatedAt,
-      this.status,
-      this.norek,
-      this.atasnama,
-      this.tglBayar,
-      this.gambar});
-
-  Payment.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    affiliateUserId = json['affiliate_user_id'];
-    amount = json['amount'];
-    paymentMethod = json['payment_method'];
-    paymentDetails = json['payment_details'];
-    createdAt = json['created_at'];
-    updatedAt = json['updated_at'];
-    status = json['status'];
-    norek = json['norek'];
-    atasnama = json['atasnama'];
-    tglBayar = json['tgl_bayar'];
-    gambar = json['gambar'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['affiliate_user_id'] = this.affiliateUserId;
-    data['amount'] = this.amount;
-    data['payment_method'] = this.paymentMethod;
-    data['payment_details'] = this.paymentDetails;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
-    data['status'] = this.status;
-    data['norek'] = this.norek;
-    data['atasnama'] = this.atasnama;
-    data['tgl_bayar'] = this.tglBayar;
-    data['gambar'] = this.gambar;
     return data;
   }
 }
