@@ -131,7 +131,7 @@ class _CairkanDanaScreenState extends State<CairkanDanaScreen> {
             ),
           ),
           title: Text(
-            'Dalam Perjalanan',
+            'Cairkan Dana',
             style: TextStyle(
               fontSize: 24,
               fontFamily: "Yeseva",
