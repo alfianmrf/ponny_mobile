@@ -40,8 +40,10 @@ class _AffiliateUsStateScreen extends State<AffiliateUsScreen> {
 
   void _sumSales() {
     total = 0;
-    for (var i = 0; i < result.codes.length; i++) {
-      total = total + result.codes[i].sales;
+    if(result.isAffiliate){
+      for (var i = 0; i < result.codes.length; i++) {
+        total = total + result.codes[i].sales;
+      }
     }
   }
 
@@ -169,7 +171,7 @@ class _AffiliateUsStateScreen extends State<AffiliateUsScreen> {
           loading = false;
         });
         _sumSales();
-        print("OIIII");
+        print("SUCCESS");
         print(responeJson);
       }
     } catch (e) {
@@ -506,6 +508,7 @@ class _AffiliateUsStateScreen extends State<AffiliateUsScreen> {
                       ),
                     ),
                   ),
+                  if(result.isAffiliate)
                   Container(
                     width: double.infinity,
                     margin: EdgeInsets.symmetric(horizontal: 20),
@@ -519,6 +522,7 @@ class _AffiliateUsStateScreen extends State<AffiliateUsScreen> {
                       textAlign: TextAlign.left,
                     ),
                   ),
+                  if(result.isAffiliate)
                   Container(
                     margin: EdgeInsets.symmetric(horizontal: 15, vertical: 7),
                     child: Row(
@@ -637,6 +641,7 @@ class _AffiliateUsStateScreen extends State<AffiliateUsScreen> {
                       ],
                     ),
                   ),
+                  if(result.isAffiliate)
                   Container(
                     margin: EdgeInsets.symmetric(horizontal: 20, vertical: 7),
                     decoration: BoxDecoration(
@@ -737,6 +742,7 @@ class _AffiliateUsStateScreen extends State<AffiliateUsScreen> {
                             ),
                           ],
                         ),
+                        if(result.isAffiliate)
                         ListView.builder(
                           shrinkWrap: true,
                           physics: NeverScrollableScrollPhysics(),
@@ -847,6 +853,7 @@ class _AffiliateUsStateScreen extends State<AffiliateUsScreen> {
                       ],
                     ),
                   ),
+                  if(result.isAffiliate)
                   Container(
                     margin: EdgeInsets.symmetric(horizontal: 20, vertical: 7),
                     decoration: BoxDecoration(
@@ -950,7 +957,7 @@ class _AffiliateUsStateScreen extends State<AffiliateUsScreen> {
                         ListView.builder(
                           shrinkWrap: true,
                           physics: NeverScrollableScrollPhysics(),
-                          itemCount: result.payment.length,
+                          itemCount: result.withdrawal.length,
                           itemBuilder: (BuildContext context, int index) {
                             return Container(
                               decoration: BoxDecoration(
@@ -969,7 +976,7 @@ class _AffiliateUsStateScreen extends State<AffiliateUsScreen> {
                                       padding: EdgeInsets.symmetric(
                                           vertical: 5, horizontal: 5),
                                       child: Text(
-                                        "${result.payment[index].createdAt}",
+                                        "${result.withdrawal[index].createdAt}",
                                         style: TextStyle(
                                           fontFamily: "Brandon",
                                           fontSize: 12,
@@ -988,7 +995,7 @@ class _AffiliateUsStateScreen extends State<AffiliateUsScreen> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            "${formatCurrency.format(result.payment[index].amount)}",
+                                            "${formatCurrency.format(result.withdrawal[index].amount)}",
                                             style: TextStyle(
                                               fontFamily: "Brandon",
                                               fontSize: 12,
@@ -1009,7 +1016,7 @@ class _AffiliateUsStateScreen extends State<AffiliateUsScreen> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           statusAffiliatesReedem(
-                                              result.payment[index].status),
+                                              result.withdrawal[index].status),
                                         ],
                                       ),
                                     ),
@@ -1030,25 +1037,25 @@ class _AffiliateUsStateScreen extends State<AffiliateUsScreen> {
                                                   padding: EdgeInsets.symmetric(
                                                       horizontal: 5),
                                                   onPressed: () {
-                                                    name = result.payment[index]
+                                                    name = result.withdrawal[index]
                                                         .atasnama;
-                                                    bank = result.payment[index]
+                                                    bank = result.withdrawal[index]
                                                         .paymentMethod;
                                                     noRek = result
-                                                        .payment[index].norek;
-                                                    result.payment[index]
+                                                        .withdrawal[index].norek;
+                                                    result.withdrawal[index]
                                                                 .gambar ==
                                                             null
                                                         ? detailImage = null
                                                         : detailImage =
                                                             json.decode(result
-                                                                .payment[index]
+                                                                .withdrawal[index]
                                                                 .gambar);
 
                                                     _settingModalBottomSheet(
                                                         context);
                                                     print(
-                                                        "objeck $index dengan nama ${result.payment[index].createdAt}");
+                                                        "objeck $index dengan nama ${result.withdrawal[index].createdAt}");
                                                   },
                                                   elevation: 0,
                                                   child: Text("Detail",
@@ -1072,18 +1079,20 @@ class _AffiliateUsStateScreen extends State<AffiliateUsScreen> {
                       ],
                     ),
                   ),
+                  if(result.isAffiliate)
                   Container(
                     margin: EdgeInsets.symmetric(horizontal: size.width * 0.1),
+                    padding: EdgeInsets.only(top: 10, bottom: 20),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Container(
-                          child: RaisedButton(
-                              padding: EdgeInsets.symmetric(horizontal: 5),
+                          child: FlatButton(
+                              padding: EdgeInsets.symmetric(horizontal: 10),
                               onPressed: () {
                                 affiliateAddCodePage();
                               },
-                              elevation: 0,
+                              shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(15.0)),
                               child: Row(
                                 children: [
                                   Icon(Icons.add, color: Colors.white),
@@ -1098,12 +1107,12 @@ class _AffiliateUsStateScreen extends State<AffiliateUsScreen> {
                               color: Color(0xffF48262)),
                         ),
                         Container(
-                          child: RaisedButton(
-                              padding: EdgeInsets.symmetric(horizontal: 5),
+                          child: FlatButton(
+                              padding: EdgeInsets.symmetric(horizontal: 10),
                               onPressed: () {
                                 total == 0 ? null : affiliateWithdrawPage();
                               },
-                              elevation: 0,
+                              shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(15.0)),
                               child: Text("CAIRKAN",
                                   style: TextStyle(
                                       fontFamily: "Brandon",
