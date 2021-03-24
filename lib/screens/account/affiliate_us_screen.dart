@@ -1101,7 +1101,7 @@ class _AffiliateUsStateScreen extends State<AffiliateUsScreen> {
                           child: RaisedButton(
                               padding: EdgeInsets.symmetric(horizontal: 5),
                               onPressed: () {
-                                affiliateWithdrawPage();
+                                total == 0 ? null : affiliateWithdrawPage();
                               },
                               elevation: 0,
                               child: Text("CAIRKAN",
@@ -1110,7 +1110,9 @@ class _AffiliateUsStateScreen extends State<AffiliateUsScreen> {
                                       color: Colors.white,
                                       fontSize: size.width * 0.034,
                                       fontWeight: FontWeight.w700)),
-                              color: Color(0xffF48262)),
+                              color: total == 0
+                                  ? Color(0xffF48262).withOpacity(0.46)
+                                  : Color(0xffF48262)),
                         )
                       ],
                     ),
