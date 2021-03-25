@@ -620,7 +620,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                       ),
                                       Container(
                                           width: size.width * 0.87,
-                                          height: size.width * 0.16,
+                                          height: size.width * 0.17,
                                           child: GridView.builder(
                                               itemCount: 7,
                                               gridDelegate:
@@ -637,71 +637,75 @@ class _AccountScreenState extends State<AccountScreen> {
                                                   },
                                                   child: Stack(
                                                     children: [
-                                                      Container(
-                                                          margin: EdgeInsets
-                                                              .symmetric(
-                                                                  horizontal:
-                                                                      2),
-                                                          decoration: BoxDecoration(
-                                                              border: Border.all(
-                                                                  color: Hexcolor(
-                                                                      "#F59379"),
-                                                                  width: 1),
-                                                              borderRadius: BorderRadius
-                                                                  .all(Radius
-                                                                      .circular(
-                                                                          5))),
-                                                          child: Padding(
-                                                            padding: EdgeInsets
-                                                                .fromLTRB(
-                                                                    size.width *
-                                                                        0.01,
-                                                                    size.height *
-                                                                        0.01,
-                                                                    size.width *
-                                                                        0.01,
-                                                                    0),
-                                                            child: Column(
-                                                              children: [
-                                                                SizedBox(
-                                                                  child: ImageIcon(
-                                                                      AssetImage(
-                                                                          'assets/images/Asset 13.png'),
-                                                                      color: Color(
-                                                                          0xffF48262)),
-                                                                ),
-                                                                Spacer(),
-                                                                Text(
-                                                                    "Hari ${index + 1}",
-                                                                    style: TextStyle(
-                                                                        fontSize:
-                                                                            11))
-                                                              ],
-                                                            ),
-                                                          )),
+                                                      Center(
+                                                        child: Container(
+                                                            margin: EdgeInsets
+                                                                .symmetric(
+                                                                    horizontal:
+                                                                        2),
+                                                            decoration: BoxDecoration(
+                                                                border: Border.all(
+                                                                    color: Hexcolor(
+                                                                        "#F59379"),
+                                                                    width: 1),
+                                                                borderRadius: BorderRadius
+                                                                    .all(Radius
+                                                                        .circular(
+                                                                            5))),
+                                                            child: Padding(
+                                                              padding: EdgeInsets
+                                                                  .fromLTRB(
+                                                                      size.width *
+                                                                          0.01,
+                                                                      size.height *
+                                                                          0.01,
+                                                                      size.width *
+                                                                          0.01,
+                                                                      0),
+                                                              child: Column(
+                                                                children: [
+                                                                  SizedBox(
+                                                                    child: ImageIcon(
+                                                                        AssetImage(
+                                                                            'assets/images/Asset 13.png'),
+                                                                        color: Color(
+                                                                            0xffF48262)),
+                                                                  ),
+                                                                  Spacer(),
+                                                                  Text(
+                                                                      "Hari ${index + 1}",
+                                                                      style: TextStyle(
+                                                                          fontSize:
+                                                                              11))
+                                                                ],
+                                                              ),
+                                                            )),
+                                                      ),
                                                       pointCheck == true &&
                                                               (index + 1) ==
                                                                   dayNowInt
-                                                          ? Container(
-                                                              width: 40,
-                                                              height: 80,
-                                                              margin: EdgeInsets
-                                                                  .symmetric(
-                                                                      horizontal:
-                                                                          2),
-                                                              decoration: BoxDecoration(
-                                                                  image: DecorationImage(
-                                                                      image: AssetImage(
-                                                                          "assets/images/icon-checked.png"),
-                                                                      colorFilter: new ColorFilter.mode(
-                                                                          Colors.black.withOpacity(
-                                                                              0.90),
-                                                                          BlendMode
-                                                                              .dstATop),
-                                                                      fit: BoxFit
-                                                                          .cover),
-                                                                  borderRadius:
-                                                                      BorderRadius.all(Radius.circular(5))))
+                                                          ? Center(
+                                                            child: Container(
+                                                                width: 40,
+                                                                height: 80,
+                                                                margin: EdgeInsets
+                                                                    .symmetric(
+                                                                        horizontal:
+                                                                            2),
+                                                                decoration: BoxDecoration(
+                                                                    image: DecorationImage(
+                                                                        image: AssetImage(
+                                                                            "assets/images/icon-checked.png"),
+                                                                        colorFilter: new ColorFilter.mode(
+                                                                            Colors.black.withOpacity(
+                                                                                0.90),
+                                                                            BlendMode
+                                                                                .dstATop),
+                                                                        fit: BoxFit
+                                                                            .cover),
+                                                                    borderRadius:
+                                                                        BorderRadius.all(Radius.circular(5)))),
+                                                          )
                                                           : Container(),
                                                     ],
                                                   ),
