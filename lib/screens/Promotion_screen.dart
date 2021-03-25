@@ -105,10 +105,11 @@ class _PromotionScreenState extends State<PromotionScreen> {
                   child: Stack(
                     children: [
                       CachedNetworkImage(
-                        imageUrl: result.banner,
+                        imageUrl: result.banner??'',
                         placeholder: (context, url) => LoadingWidgetPulse(context),
-                        errorWidget: (context, url, error) => Image.asset('assets/images/basic.jpg'),
+                        errorWidget: (context, url, error) => Image.asset('assets/images/new-placeholder-rect.png'),
                         fit: BoxFit.fill,
+                        width: double.infinity,
                       ),
                       Center(
                         child: Text(
