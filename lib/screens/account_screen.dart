@@ -269,13 +269,13 @@ class _AccountScreenState extends State<AccountScreen> {
                       ),
                       Container(
                         width: MediaQuery.of(context).size.width,
-                        height: size.height * 0.67,
+                        height: 440,
                         child: Stack(
                           children: [
                             Container(
                               color: Hexcolor("#F59379"),
                               width: MediaQuery.of(context).size.width,
-                              height: size.height * 0.6 - 20,
+                              height: 380,
                               child: Column(
                                 children: <Widget>[
                                   Container(
@@ -287,7 +287,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                       borderRadius:
                                           BorderRadius.all(Radius.circular(15)),
                                     ),
-                                    width: 300,
+                                    width: 380,
                                     // height: 190,
                                     child: Column(
                                       children: <Widget>[
@@ -299,7 +299,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                             style: TextStyle(
                                               color: Hexcolor("#F59379"),
                                               fontFamily: "Brandon",
-                                              fontSize: size.height * 0.050,
+                                              fontSize: 40,
                                               fontWeight: FontWeight.w900,
                                               letterSpacing: 3,
                                             ),
@@ -586,18 +586,17 @@ class _AccountScreenState extends State<AccountScreen> {
                                       color: Colors.white,
                                       borderRadius:
                                           BorderRadius.all(Radius.circular(5))),
-                                  height: size.height * 0.18,
+                                  // height: size.width * 0.36,
                                   padding: EdgeInsets.symmetric(
-                                      vertical: 10, horizontal: 10),
+                                      vertical: 10),
                                   margin: EdgeInsets.symmetric(
-                                      horizontal: size.width * 0.03,
+                                      horizontal: size.width * 0.05,
                                       vertical: 10),
                                   width: size.width,
                                   child: Column(
                                     children: [
                                       Container(
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: 15, vertical: 4),
+
                                         margin: EdgeInsets.only(bottom: 10),
                                         decoration: BoxDecoration(
                                             color: Hexcolor('#faebcd'),
@@ -610,13 +609,13 @@ class _AccountScreenState extends State<AccountScreen> {
                                               style: TextStyle(
                                                   color: Colors.black87,
                                                   fontSize:
-                                                      size.height * 0.02)),
+                                                      12)),
                                           TextSpan(
                                               text: '1 Point',
                                               style: TextStyle(
                                                   fontWeight: FontWeight.bold,
                                                   color: Colors.black87,
-                                                  fontSize: size.height * 0.02))
+                                                  fontSize: 12))
                                         ])),
                                       ),
                                       Container(
@@ -674,8 +673,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                                                     "Hari ${index + 1}",
                                                                     style: TextStyle(
                                                                         fontSize:
-                                                                            size.height *
-                                                                                0.02))
+                                                                            12))
                                                               ],
                                                             ),
                                                           ))),
