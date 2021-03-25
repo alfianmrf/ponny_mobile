@@ -40,7 +40,7 @@ class _AffiliateUsStateScreen extends State<AffiliateUsScreen> {
 
   void _sumSales() {
     total = 0;
-    if(result.isAffiliate){
+    if (result.isAffiliate) {
       for (var i = 0; i < result.codes.length; i++) {
         total = total + result.codes[i].sales;
       }
@@ -508,624 +508,645 @@ class _AffiliateUsStateScreen extends State<AffiliateUsScreen> {
                       ),
                     ),
                   ),
-                  if(result.isAffiliate)
-                  Container(
-                    width: double.infinity,
-                    margin: EdgeInsets.symmetric(horizontal: 20),
-                    child: Text(
-                      "Perolehan Kamu",
-                      style: TextStyle(
-                        fontFamily: "Brandon",
-                        fontWeight: FontWeight.w600,
-                        fontSize: 13,
+                  if (result.isAffiliate)
+                    Container(
+                      width: double.infinity,
+                      margin: EdgeInsets.symmetric(horizontal: 20),
+                      child: Text(
+                        "Perolehan Kamu",
+                        style: TextStyle(
+                          fontFamily: "Brandon",
+                          fontWeight: FontWeight.w600,
+                          fontSize: 13,
+                        ),
+                        textAlign: TextAlign.left,
                       ),
-                      textAlign: TextAlign.left,
                     ),
-                  ),
-                  if(result.isAffiliate)
-                  Container(
-                    margin: EdgeInsets.symmetric(horizontal: 15, vertical: 7),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          flex: 1,
-                          child: Container(
-                            margin: EdgeInsets.symmetric(horizontal: 5),
-                            padding: EdgeInsets.symmetric(
-                                vertical: 5, horizontal: 10),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              border: Border.all(
-                                color: Color(0xffF48262),
-                                width: 1,
-                              ),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "Sessions",
-                                  style: TextStyle(
-                                    fontFamily: "Brandon",
-                                    fontSize: 12,
-                                  ),
-                                  textAlign: TextAlign.left,
-                                ),
-                                Text(
-                                  "${result.sessions == null ? 0 : result.sessions}",
-                                  style: TextStyle(
-                                    fontFamily: "Brandon",
-                                  ),
-                                  textAlign: TextAlign.left,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          flex: 1,
-                          child: Container(
-                            margin: EdgeInsets.symmetric(horizontal: 5),
-                            padding: EdgeInsets.symmetric(
-                                vertical: 5, horizontal: 10),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              border: Border.all(
-                                color: Color(0xffF48262),
-                                width: 1,
-                              ),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "Yang Terpakai",
-                                  style: TextStyle(
-                                    fontFamily: "Brandon",
-                                    fontSize: 12,
-                                  ),
-                                  textAlign: TextAlign.left,
-                                ),
-                                Text(
-                                  "${result.totalUsed == null ? 0 : result.totalUsed.toString()}",
-                                  style: TextStyle(
-                                    fontFamily: "Brandon",
-                                  ),
-                                  textAlign: TextAlign.left,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          flex: 1,
-                          child: Container(
-                            margin: EdgeInsets.symmetric(horizontal: 5),
-                            padding: EdgeInsets.symmetric(
-                                vertical: 5, horizontal: 10),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              border: Border.all(
-                                color: Color(0xffF48262),
-                                width: 1,
-                              ),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "Pendapatan",
-                                  style: TextStyle(
-                                    fontFamily: "Brandon",
-                                    fontSize: 12,
-                                  ),
-                                  textAlign: TextAlign.left,
-                                ),
-                                Text(
-                                  "${result.sales == null ? 0 : result.sales}",
-                                  // NumberFormat.simpleCurrency(
-                                  //         locale: "id_ID", decimalDigits: 0)
-                                  //     .format(5000),
-                                  style: TextStyle(
-                                    fontFamily: "Brandon",
-                                  ),
-                                  textAlign: TextAlign.left,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  if(result.isAffiliate)
-                  Container(
-                    margin: EdgeInsets.symmetric(horizontal: 20, vertical: 7),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      border: Border.all(
-                        color: Color(0xffF48262),
-                        width: 1,
-                      ),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Column(
-                      children: [
-                        Row(
-                          children: [
-                            Expanded(
-                              flex: 6,
-                              child: Container(
-                                padding: EdgeInsets.symmetric(
-                                    vertical: 5, horizontal: 5),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "Campaigns",
-                                      style: TextStyle(
-                                        fontFamily: "Brandon",
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                      textAlign: TextAlign.left,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              flex: 3,
-                              child: Container(
-                                padding: EdgeInsets.symmetric(
-                                    vertical: 5, horizontal: 5),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "Status",
-                                      style: TextStyle(
-                                        fontFamily: "Brandon",
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                      textAlign: TextAlign.left,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              flex: 5,
-                              child: Container(
-                                padding: EdgeInsets.symmetric(
-                                    vertical: 5, horizontal: 5),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "Pendapatan",
-                                      style: TextStyle(
-                                        fontFamily: "Brandon",
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                      textAlign: TextAlign.left,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              flex: 4,
-                              child: Container(
-                                padding: EdgeInsets.symmetric(
-                                    vertical: 5, horizontal: 5),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "Total Penggunaan",
-                                      style: TextStyle(
-                                        fontFamily: "Brandon",
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                      textAlign: TextAlign.left,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        if(result.isAffiliate)
-                        ListView.builder(
-                          shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
-                          itemCount: result.codes.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return Container(
+                  if (result.isAffiliate)
+                    Container(
+                      margin: EdgeInsets.symmetric(horizontal: 15, vertical: 7),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            flex: 1,
+                            child: Container(
+                              margin: EdgeInsets.symmetric(horizontal: 5),
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 5, horizontal: 10),
                               decoration: BoxDecoration(
-                                border: Border(
-                                  top: BorderSide(
-                                    color: Color(0xffF48262),
-                                    width: 1,
-                                  ),
+                                color: Colors.white,
+                                border: Border.all(
+                                  color: Color(0xffF48262),
+                                  width: 1,
                                 ),
+                                borderRadius: BorderRadius.circular(10),
                               ),
-                              child: Row(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Expanded(
-                                    flex: 6,
-                                    child: Container(
-                                      padding: EdgeInsets.symmetric(
-                                          vertical: 5, horizontal: 5),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            "Code",
-                                            style: TextStyle(
-                                              fontFamily: "Brandon",
-                                              fontSize: 11,
-                                            ),
-                                            textAlign: TextAlign.left,
-                                          ),
-                                          Text(
-                                            "${result.codes[index].kodeId}",
-                                            style: TextStyle(
-                                              fontFamily: "Brandon",
-                                              fontSize: 12,
-                                            ),
-                                            textAlign: TextAlign.left,
-                                          ),
-                                        ],
-                                      ),
+                                  Text(
+                                    "Sessions",
+                                    style: TextStyle(
+                                      fontFamily: "Brandon",
+                                      fontSize: 12,
                                     ),
+                                    textAlign: TextAlign.left,
                                   ),
-                                  Expanded(
-                                    flex: 3,
-                                    child: Container(
-                                      padding: EdgeInsets.symmetric(
-                                          vertical: 5, horizontal: 5),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          statusAffiliatesStatus(
-                                              result.codes[index].isActive),
-                                        ],
-                                      ),
+                                  Text(
+                                    "${result.sessions == null ? 0 : result.sessions}",
+                                    style: TextStyle(
+                                      fontFamily: "Brandon",
                                     ),
-                                  ),
-                                  Expanded(
-                                    flex: 5,
-                                    child: Container(
-                                      padding: EdgeInsets.symmetric(
-                                          vertical: 5, horizontal: 5),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            "${formatCurrency.format(result.codes[index].sales)}",
-                                            style: TextStyle(
-                                              fontFamily: "Brandon",
-                                              fontSize: 12,
-                                            ),
-                                            textAlign: TextAlign.left,
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                  Expanded(
-                                    flex: 4,
-                                    child: Container(
-                                      padding: EdgeInsets.symmetric(
-                                          vertical: 5, horizontal: 5),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            "${result.codes[index].use}",
-                                            style: TextStyle(
-                                              fontFamily: "Brandon",
-                                              fontSize: 12,
-                                            ),
-                                            textAlign: TextAlign.left,
-                                          ),
-                                        ],
-                                      ),
-                                    ),
+                                    textAlign: TextAlign.left,
                                   ),
                                 ],
                               ),
-                            );
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                  if(result.isAffiliate)
-                  Container(
-                    margin: EdgeInsets.symmetric(horizontal: 20, vertical: 7),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      border: Border.all(
-                        color: Color(0xffF48262),
-                        width: 1,
-                      ),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Column(
-                      children: [
-                        Row(
-                          children: [
-                            Expanded(
-                              flex: 6,
-                              child: Container(
-                                padding: EdgeInsets.symmetric(
-                                    vertical: 5, horizontal: 5),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "Date",
-                                      style: TextStyle(
-                                        fontFamily: "Brandon",
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                      textAlign: TextAlign.left,
-                                    ),
-                                  ],
-                                ),
-                              ),
                             ),
-                            Expanded(
-                              flex: 5,
-                              child: Container(
-                                padding: EdgeInsets.symmetric(
-                                    vertical: 5, horizontal: 5),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "Amount",
-                                      style: TextStyle(
-                                        fontFamily: "Brandon",
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                      textAlign: TextAlign.left,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              flex: 3,
-                              child: Container(
-                                padding: EdgeInsets.symmetric(
-                                    vertical: 5, horizontal: 5),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "Status",
-                                      style: TextStyle(
-                                        fontFamily: "Brandon",
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                      textAlign: TextAlign.left,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              flex: 4,
-                              child: Container(
-                                padding: EdgeInsets.symmetric(
-                                    vertical: 5, horizontal: 5),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "Detail",
-                                      style: TextStyle(
-                                        fontFamily: "Brandon",
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                      textAlign: TextAlign.left,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        ListView.builder(
-                          shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
-                          itemCount: result.withdrawal.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return Container(
+                          ),
+                          Expanded(
+                            flex: 1,
+                            child: Container(
+                              margin: EdgeInsets.symmetric(horizontal: 5),
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 5, horizontal: 10),
                               decoration: BoxDecoration(
-                                border: Border(
-                                  top: BorderSide(
-                                    color: Color(0xffF48262),
-                                    width: 1,
-                                  ),
+                                color: Colors.white,
+                                border: Border.all(
+                                  color: Color(0xffF48262),
+                                  width: 1,
                                 ),
+                                borderRadius: BorderRadius.circular(10),
                               ),
-                              child: Row(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Expanded(
-                                    flex: 6,
-                                    child: Container(
-                                      padding: EdgeInsets.symmetric(
-                                          vertical: 5, horizontal: 5),
-                                      child: Text(
-                                        "${result.withdrawal[index].createdAt}",
+                                  Text(
+                                    "Yang Terpakai",
+                                    style: TextStyle(
+                                      fontFamily: "Brandon",
+                                      fontSize: 12,
+                                    ),
+                                    textAlign: TextAlign.left,
+                                  ),
+                                  Text(
+                                    "${result.totalUsed == null ? 0 : result.totalUsed.toString()}",
+                                    style: TextStyle(
+                                      fontFamily: "Brandon",
+                                    ),
+                                    textAlign: TextAlign.left,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            flex: 1,
+                            child: Container(
+                              margin: EdgeInsets.symmetric(horizontal: 5),
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 5, horizontal: 10),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                border: Border.all(
+                                  color: Color(0xffF48262),
+                                  width: 1,
+                                ),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "Pendapatan",
+                                    style: TextStyle(
+                                      fontFamily: "Brandon",
+                                      fontSize: 12,
+                                    ),
+                                    textAlign: TextAlign.left,
+                                  ),
+                                  Text(
+                                    "${result.sales == null ? 0 : result.sales}",
+                                    // NumberFormat.simpleCurrency(
+                                    //         locale: "id_ID", decimalDigits: 0)
+                                    //     .format(5000),
+                                    style: TextStyle(
+                                      fontFamily: "Brandon",
+                                    ),
+                                    textAlign: TextAlign.left,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  if (result.isAffiliate)
+                    Container(
+                      margin: EdgeInsets.symmetric(horizontal: 20, vertical: 7),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        border: Border.all(
+                          color: Color(0xffF48262),
+                          width: 1,
+                        ),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Column(
+                        children: [
+                          Row(
+                            children: [
+                              Expanded(
+                                flex: 6,
+                                child: Container(
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: 5, horizontal: 5),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "Campaigns",
                                         style: TextStyle(
                                           fontFamily: "Brandon",
                                           fontSize: 12,
+                                          fontWeight: FontWeight.w600,
                                         ),
                                         textAlign: TextAlign.left,
                                       ),
-                                    ),
+                                    ],
                                   ),
-                                  Expanded(
-                                    flex: 5,
-                                    child: Container(
-                                      padding: EdgeInsets.symmetric(
-                                          vertical: 5, horizontal: 5),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            "${formatCurrency.format(result.withdrawal[index].amount)}",
-                                            style: TextStyle(
-                                              fontFamily: "Brandon",
-                                              fontSize: 12,
-                                            ),
-                                            textAlign: TextAlign.left,
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                  Expanded(
-                                    flex: 3,
-                                    child: Container(
-                                      padding: EdgeInsets.symmetric(
-                                          vertical: 5, horizontal: 5),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          statusAffiliatesReedem(
-                                              result.withdrawal[index].status),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                  Expanded(
-                                    flex: 4,
-                                    child: Container(
-                                      padding: EdgeInsets.symmetric(
-                                          vertical: 5, horizontal: 5),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          SizedBox(
-                                              width: 40,
-                                              height: 20,
-                                              child: RaisedButton(
-                                                  padding: EdgeInsets.symmetric(
-                                                      horizontal: 5),
-                                                  onPressed: () {
-                                                    name = result.withdrawal[index]
-                                                        .atasnama;
-                                                    bank = result.withdrawal[index]
-                                                        .paymentMethod;
-                                                    noRek = result
-                                                        .withdrawal[index].norek;
-                                                    result.withdrawal[index]
-                                                                .gambar ==
-                                                            null
-                                                        ? detailImage = null
-                                                        : detailImage =
-                                                            json.decode(result
-                                                                .withdrawal[index]
-                                                                .gambar);
-
-                                                    _settingModalBottomSheet(
-                                                        context);
-                                                    print(
-                                                        "objeck $index dengan nama ${result.withdrawal[index].createdAt}");
-                                                  },
-                                                  elevation: 0,
-                                                  child: Text("Detail",
-                                                      style: TextStyle(
-                                                          fontFamily: "Brandon",
-                                                          color: Colors.white,
-                                                          fontSize: size.width *
-                                                              0.028,
-                                                          fontWeight:
-                                                              FontWeight.w700)),
-                                                  color: Colors.blue[700])),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ],
+                                ),
                               ),
-                            );
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                  if(result.isAffiliate)
-                  Container(
-                    margin: EdgeInsets.symmetric(horizontal: size.width * 0.1),
-                    padding: EdgeInsets.only(top: 10, bottom: 20),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                          child: FlatButton(
-                              padding: EdgeInsets.symmetric(horizontal: 10),
-                              onPressed: () {
-                                affiliateAddCodePage();
-                              },
-                              shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(15.0)),
-                              child: Row(
-                                children: [
-                                  Icon(Icons.add, color: Colors.white),
-                                  Text("BIKIN KODE SENDIRI",
-                                      style: TextStyle(
+                              Expanded(
+                                flex: 3,
+                                child: Container(
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: 5, horizontal: 5),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "Status",
+                                        style: TextStyle(
                                           fontFamily: "Brandon",
-                                          color: Colors.white,
-                                          fontSize: size.width * 0.034,
-                                          fontWeight: FontWeight.w700)),
-                                ],
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                        textAlign: TextAlign.left,
+                                      ),
+                                    ],
+                                  ),
+                                ),
                               ),
-                              color: Color(0xffF48262)),
-                        ),
-                        Container(
-                          child: FlatButton(
-                              padding: EdgeInsets.symmetric(horizontal: 10),
-                              onPressed: () {
-                                total == 0 ? null : affiliateWithdrawPage();
+                              Expanded(
+                                flex: 5,
+                                child: Container(
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: 5, horizontal: 5),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "Pendapatan",
+                                        style: TextStyle(
+                                          fontFamily: "Brandon",
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                        textAlign: TextAlign.left,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                flex: 4,
+                                child: Container(
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: 5, horizontal: 5),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "Total Penggunaan",
+                                        style: TextStyle(
+                                          fontFamily: "Brandon",
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                        textAlign: TextAlign.left,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          if (result.isAffiliate)
+                            ListView.builder(
+                              shrinkWrap: true,
+                              physics: NeverScrollableScrollPhysics(),
+                              itemCount: result.codes.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                return Container(
+                                  decoration: BoxDecoration(
+                                    border: Border(
+                                      top: BorderSide(
+                                        color: Color(0xffF48262),
+                                        width: 1,
+                                      ),
+                                    ),
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      Expanded(
+                                        flex: 6,
+                                        child: Container(
+                                          padding: EdgeInsets.symmetric(
+                                              vertical: 5, horizontal: 5),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                "Code",
+                                                style: TextStyle(
+                                                  fontFamily: "Brandon",
+                                                  fontSize: 11,
+                                                ),
+                                                textAlign: TextAlign.left,
+                                              ),
+                                              Text(
+                                                "${result.codes[index].kodeId}",
+                                                style: TextStyle(
+                                                  fontFamily: "Brandon",
+                                                  fontSize: 12,
+                                                ),
+                                                textAlign: TextAlign.left,
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      Expanded(
+                                        flex: 3,
+                                        child: Container(
+                                          padding: EdgeInsets.symmetric(
+                                              vertical: 5, horizontal: 5),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              statusAffiliatesStatus(
+                                                  result.codes[index].isActive),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      Expanded(
+                                        flex: 5,
+                                        child: Container(
+                                          padding: EdgeInsets.symmetric(
+                                              vertical: 5, horizontal: 5),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                "${formatCurrency.format(result.codes[index].sales)}",
+                                                style: TextStyle(
+                                                  fontFamily: "Brandon",
+                                                  fontSize: 12,
+                                                ),
+                                                textAlign: TextAlign.left,
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      Expanded(
+                                        flex: 4,
+                                        child: Container(
+                                          padding: EdgeInsets.symmetric(
+                                              vertical: 5, horizontal: 5),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                "${result.codes[index].use}",
+                                                style: TextStyle(
+                                                  fontFamily: "Brandon",
+                                                  fontSize: 12,
+                                                ),
+                                                textAlign: TextAlign.left,
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                );
                               },
-                              shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(15.0)),
-                              child: Text("CAIRKAN",
-                                  style: TextStyle(
-                                      fontFamily: "Brandon",
-                                      color: Colors.white,
-                                      fontSize: size.width * 0.034,
-                                      fontWeight: FontWeight.w700)),
-                              color: total == 0
-                                  ? Color(0xffF48262).withOpacity(0.46)
-                                  : Color(0xffF48262)),
-                        )
-                      ],
+                            ),
+                        ],
+                      ),
                     ),
-                  ),
+                  if (result.isAffiliate)
+                    Container(
+                      margin: EdgeInsets.symmetric(horizontal: 20, vertical: 7),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        border: Border.all(
+                          color: Color(0xffF48262),
+                          width: 1,
+                        ),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Column(
+                        children: [
+                          Row(
+                            children: [
+                              Expanded(
+                                flex: 6,
+                                child: Container(
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: 5, horizontal: 5),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "Date",
+                                        style: TextStyle(
+                                          fontFamily: "Brandon",
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                        textAlign: TextAlign.left,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                flex: 5,
+                                child: Container(
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: 5, horizontal: 5),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "Amount",
+                                        style: TextStyle(
+                                          fontFamily: "Brandon",
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                        textAlign: TextAlign.left,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                flex: 3,
+                                child: Container(
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: 5, horizontal: 5),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "Status",
+                                        style: TextStyle(
+                                          fontFamily: "Brandon",
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                        textAlign: TextAlign.left,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                flex: 4,
+                                child: Container(
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: 5, horizontal: 5),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "Detail",
+                                        style: TextStyle(
+                                          fontFamily: "Brandon",
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                        textAlign: TextAlign.left,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          ListView.builder(
+                            shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
+                            itemCount: result.withdrawal.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return Container(
+                                decoration: BoxDecoration(
+                                  border: Border(
+                                    top: BorderSide(
+                                      color: Color(0xffF48262),
+                                      width: 1,
+                                    ),
+                                  ),
+                                ),
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      flex: 6,
+                                      child: Container(
+                                        padding: EdgeInsets.symmetric(
+                                            vertical: 5, horizontal: 5),
+                                        child: Text(
+                                          "${result.withdrawal[index].createdAt}",
+                                          style: TextStyle(
+                                            fontFamily: "Brandon",
+                                            fontSize: 12,
+                                          ),
+                                          textAlign: TextAlign.left,
+                                        ),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: 5,
+                                      child: Container(
+                                        padding: EdgeInsets.symmetric(
+                                            vertical: 5, horizontal: 5),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              "${formatCurrency.format(result.withdrawal[index].amount)}",
+                                              style: TextStyle(
+                                                fontFamily: "Brandon",
+                                                fontSize: 12,
+                                              ),
+                                              textAlign: TextAlign.left,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: 3,
+                                      child: Container(
+                                        padding: EdgeInsets.symmetric(
+                                            vertical: 5, horizontal: 5),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            statusAffiliatesReedem(result
+                                                .withdrawal[index].status),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: 4,
+                                      child: Container(
+                                        padding: EdgeInsets.symmetric(
+                                            vertical: 5, horizontal: 5),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            SizedBox(
+                                                width: 40,
+                                                height: 20,
+                                                child: RaisedButton(
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                            horizontal: 5),
+                                                    onPressed: () {
+                                                      name = result
+                                                          .withdrawal[index]
+                                                          .atasnama;
+                                                      bank = result
+                                                          .withdrawal[index]
+                                                          .paymentMethod;
+                                                      noRek = result
+                                                          .withdrawal[index]
+                                                          .norek;
+                                                      result.withdrawal[index]
+                                                                  .gambar ==
+                                                              null
+                                                          ? detailImage = null
+                                                          : detailImage =
+                                                              json.decode(result
+                                                                  .withdrawal[
+                                                                      index]
+                                                                  .gambar);
+
+                                                      _settingModalBottomSheet(
+                                                          context);
+                                                      print(
+                                                          "objeck $index dengan nama ${result.withdrawal[index].createdAt}");
+                                                    },
+                                                    elevation: 0,
+                                                    child: Text("Detail",
+                                                        style: TextStyle(
+                                                            fontFamily:
+                                                                "Brandon",
+                                                            color: Colors.white,
+                                                            fontSize:
+                                                                size.width *
+                                                                    0.028,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w700)),
+                                                    color: Colors.blue[700])),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                  if (result.isAffiliate)
+                    Container(
+                      margin:
+                          EdgeInsets.symmetric(horizontal: size.width * 0.1),
+                      padding: EdgeInsets.only(top: 10, bottom: 20),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            child: FlatButton(
+                                padding: EdgeInsets.symmetric(horizontal: 10),
+                                onPressed: () {
+                                  affiliateAddCodePage();
+                                },
+                                shape: new RoundedRectangleBorder(
+                                    borderRadius:
+                                        new BorderRadius.circular(15.0)),
+                                child: Row(
+                                  children: [
+                                    Icon(Icons.add, color: Colors.white),
+                                    Text("BIKIN KODE SENDIRI",
+                                        style: TextStyle(
+                                            fontFamily: "Brandon",
+                                            color: Colors.white,
+                                            fontSize: size.width * 0.034,
+                                            fontWeight: FontWeight.w700)),
+                                  ],
+                                ),
+                                color: Color(0xffF48262)),
+                          ),
+                          Container(
+                            child: FlatButton(
+                                padding: EdgeInsets.symmetric(horizontal: 10),
+                                onPressed: () {
+                                  total == 0 ? null : affiliateWithdrawPage();
+                                },
+                                shape: new RoundedRectangleBorder(
+                                    borderRadius:
+                                        new BorderRadius.circular(15.0)),
+                                child: Text("CAIRKAN",
+                                    style: TextStyle(
+                                        fontFamily: "Brandon",
+                                        color: Colors.white,
+                                        fontSize: size.width * 0.034,
+                                        fontWeight: FontWeight.w700)),
+                                color: total == 0
+                                    ? Color(0xffF48262).withOpacity(0.46)
+                                    : Color(0xffF48262)),
+                          )
+                        ],
+                      ),
+                    ),
                 ],
               ),
             ),

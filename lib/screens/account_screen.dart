@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -56,6 +57,9 @@ class AccountScreen extends StatefulWidget {
 class _AccountScreenState extends State<AccountScreen> {
   bool isLoading = true;
   final mon = DateFormat('MMMM');
+  DateTime daynow = DateTime.now();
+  int dayPass, dayNowInt, dayClicked;
+  bool pointCheck;
 
   @override
   void initState() {
@@ -67,9 +71,48 @@ class _AccountScreenState extends State<AccountScreen> {
           .then((value) {
         setState(() {
           isLoading = false;
+          print("hari sekarang" + DateFormat('EEEE').format(daynow).toString());
         });
       });
     });
+    pointDayChecked();
+  }
+
+  void pointDayChecked() {
+    String day = DateFormat('EEEE').format(daynow).toString();
+    switch (day) {
+      case "Sunday":
+        dayNowInt = 1;
+        break;
+      case "Monday":
+        dayNowInt = 2;
+        break;
+      case "Thuesday":
+        dayNowInt = 3;
+        break;
+      case "Wednesday":
+        dayNowInt = 4;
+        break;
+      case "Thursday":
+        dayNowInt = 5;
+        break;
+      case "Friday":
+        dayNowInt = 6;
+        break;
+      case "Saturday":
+        dayNowInt = 7;
+        break;
+      default:
+    }
+  }
+
+  void pointClicked() {
+    print(dayClicked.toString() + " -sadsadasd- " + dayNowInt.toString());
+    if (dayClicked == dayNowInt) {
+      print("nomor ke $dayClicked");
+      pointCheck = true;
+      setState(() {});
+    }
   }
 
   Future<void> getUser() async {
@@ -129,6 +172,7 @@ class _AccountScreenState extends State<AccountScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     final user = Provider.of<UserModel>(context).user;
     final jmlCard = Provider.of<CartModel>(context).getCountOfquantity();
     return new WillPopScope(
@@ -225,163 +269,179 @@ class _AccountScreenState extends State<AccountScreen> {
                       ),
                       Container(
                         width: MediaQuery.of(context).size.width,
-                        height: 330,
-                        color: Hexcolor("#F59379"),
-                        child: Column(
-                          children: <Widget>[
+                        height: size.height * 0.67,
+                        child: Stack(
+                          children: [
                             Container(
-                              margin: EdgeInsets.only(top: 20),
-                              padding: EdgeInsets.only(right: 20, left: 20),
-                              decoration: new BoxDecoration(
-                                color: Hexcolor('#FCF8F0'),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(15)),
-                              ),
-                              width: 300,
-                              height: 190,
+                              color: Hexcolor("#F59379"),
+                              width: MediaQuery.of(context).size.width,
+                              height: size.height * 0.6 - 20,
                               child: Column(
                                 children: <Widget>[
                                   Container(
-                                    margin: EdgeInsets.only(top: 7),
-                                    child: Text(
-                                      user.dashboard.membershipTitle
-                                          .toUpperCase(),
-                                      style: TextStyle(
-                                        color: Hexcolor("#F59379"),
-                                        fontFamily: "Brandon",
-                                        fontSize: 45,
-                                        fontWeight: FontWeight.w900,
-                                        letterSpacing: 3,
-                                      ),
+                                    margin: EdgeInsets.only(top: 20),
+                                    padding: EdgeInsets.only(
+                                        right: 20, left: 20, bottom: 20),
+                                    decoration: new BoxDecoration(
+                                      color: Hexcolor('#FCF8F0'),
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(15)),
                                     ),
-                                  ),
-                                  Container(
-                                    child: Text(
-                                      "SKIN",
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        color: Hexcolor("#F59379"),
-                                        fontFamily: "Yeseva",
-                                        fontWeight: FontWeight.w300,
-                                        letterSpacing: 1,
-                                      ),
-                                    ),
-                                  ),
-                                  Container(
-                                    alignment: Alignment.centerLeft,
-                                    margin: EdgeInsets.only(top: 10),
-                                    child: RichText(
-                                      text: TextSpan(
-                                          text: user.name,
-                                          style: TextStyle(
-                                            fontFamily: "Yeseva",
-                                            fontSize: 12,
-                                            color: Hexcolor("#F59379"),
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                          children: <TextSpan>[
-                                            TextSpan(text: " "),
-                                            TextSpan(text: user.last_name)
-                                          ]),
-                                    ),
-                                  ),
-                                  Container(
-                                    margin: EdgeInsets.only(
-                                      top: 6,
-                                    ),
-                                    height: 1,
-                                    color: Hexcolor("#F59379"),
-                                  ),
-                                  Container(
-                                    // margin: EdgeInsets.only(top: 10),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                    width: 300,
+                                    // height: 190,
+                                    child: Column(
                                       children: <Widget>[
                                         Container(
+                                          margin: EdgeInsets.only(top: 7),
                                           child: Text(
-                                            user.point.toString() + " POINTS",
+                                            user.dashboard.membershipTitle
+                                                .toUpperCase(),
                                             style: TextStyle(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.w700,
-                                              fontFamily: 'Brandon',
                                               color: Hexcolor("#F59379"),
+                                              fontFamily: "Brandon",
+                                              fontSize: size.height * 0.050,
+                                              fontWeight: FontWeight.w900,
+                                              letterSpacing: 3,
                                             ),
                                           ),
                                         ),
                                         Container(
-                                          margin: EdgeInsets.only(top: 2),
+                                          child: Text(
+                                            "SKIN",
+                                            style: TextStyle(
+                                              fontSize: 20,
+                                              color: Hexcolor("#F59379"),
+                                              fontFamily: "Yeseva",
+                                              fontWeight: FontWeight.w300,
+                                              letterSpacing: 1,
+                                            ),
+                                          ),
+                                        ),
+                                        Container(
+                                          alignment: Alignment.centerLeft,
+                                          margin: EdgeInsets.only(top: 10),
+                                          child: RichText(
+                                            text: TextSpan(
+                                                text: user.name,
+                                                style: TextStyle(
+                                                  fontFamily: "Yeseva",
+                                                  fontSize: 12,
+                                                  color: Hexcolor("#F59379"),
+                                                  fontWeight: FontWeight.w600,
+                                                ),
+                                                children: <TextSpan>[
+                                                  TextSpan(text: " "),
+                                                  TextSpan(text: user.last_name)
+                                                ]),
+                                          ),
+                                        ),
+                                        Container(
+                                          margin: EdgeInsets.only(
+                                            top: 6,
+                                          ),
+                                          height: 1,
+                                          color: Hexcolor("#F59379"),
+                                        ),
+                                        Container(
+                                          // margin: EdgeInsets.only(top: 10),
                                           child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
                                             children: <Widget>[
                                               Container(
-                                                child: Column(
-                                                  children: <Widget>[
-                                                    Container(
-                                                      child: Text(
-                                                        "Berlaku",
-                                                        style: TextStyle(
-                                                          fontFamily: "Brandon",
-                                                          fontSize: 11,
-                                                          color: Hexcolor(
-                                                              "#F59379"),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    Container(
-                                                      child: Text(
-                                                        "Hingga",
-                                                        style: TextStyle(
-                                                          fontFamily: "Brandon",
-                                                          fontSize: 11,
-                                                          color: Hexcolor(
-                                                              "#F59379"),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ],
+                                                child: Text(
+                                                  user.point.toString() +
+                                                      " POINTS",
+                                                  style: TextStyle(
+                                                    fontSize: 18,
+                                                    fontWeight: FontWeight.w700,
+                                                    fontFamily: 'Brandon',
+                                                    color: Hexcolor("#F59379"),
+                                                  ),
                                                 ),
                                               ),
                                               Container(
-                                                child: Column(
+                                                margin: EdgeInsets.only(top: 2),
+                                                child: Row(
                                                   children: <Widget>[
                                                     Container(
-                                                      margin: EdgeInsets.only(
-                                                          left: 5),
-                                                      child: Text(
-                                                        mon
-                                                            .format(
-                                                                convertDateFromString(
-                                                                    user
-                                                                        .dashboard
-                                                                        .log
-                                                                        .endsOn))
-                                                            .toUpperCase(),
-                                                        style: TextStyle(
-                                                          fontFamily: "Brandon",
-                                                          fontSize: 11,
-                                                          color: Hexcolor(
-                                                              "#F59379"),
-                                                          fontWeight:
-                                                              FontWeight.w600,
-                                                        ),
+                                                      child: Column(
+                                                        children: <Widget>[
+                                                          Container(
+                                                            child: Text(
+                                                              "Berlaku",
+                                                              style: TextStyle(
+                                                                fontFamily:
+                                                                    "Brandon",
+                                                                fontSize: 11,
+                                                                color: Hexcolor(
+                                                                    "#F59379"),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          Container(
+                                                            child: Text(
+                                                              "Hingga",
+                                                              style: TextStyle(
+                                                                fontFamily:
+                                                                    "Brandon",
+                                                                fontSize: 11,
+                                                                color: Hexcolor(
+                                                                    "#F59379"),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ],
                                                       ),
                                                     ),
                                                     Container(
-                                                      // margin: EdgeInsets.only(left: 10),
-                                                      child: Text(
-                                                        convertDateFromString(
-                                                                user.dashboard
-                                                                    .log.endsOn)
-                                                            .year
-                                                            .toString(),
-                                                        style: TextStyle(
-                                                          fontFamily: "Brandon",
-                                                          fontSize: 11,
-                                                          color: Hexcolor(
-                                                              '#F48262'),
-                                                          fontWeight:
-                                                              FontWeight.w600,
-                                                        ),
+                                                      child: Column(
+                                                        children: <Widget>[
+                                                          Container(
+                                                            margin:
+                                                                EdgeInsets.only(
+                                                                    left: 5),
+                                                            child: Text(
+                                                              mon
+                                                                  .format(convertDateFromString(user
+                                                                      .dashboard
+                                                                      .log
+                                                                      .endsOn))
+                                                                  .toUpperCase(),
+                                                              style: TextStyle(
+                                                                fontFamily:
+                                                                    "Brandon",
+                                                                fontSize: 11,
+                                                                color: Hexcolor(
+                                                                    "#F59379"),
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w600,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          Container(
+                                                            // margin: EdgeInsets.only(left: 10),
+                                                            child: Text(
+                                                              convertDateFromString(user
+                                                                      .dashboard
+                                                                      .log
+                                                                      .endsOn)
+                                                                  .year
+                                                                  .toString(),
+                                                              style: TextStyle(
+                                                                fontFamily:
+                                                                    "Brandon",
+                                                                fontSize: 11,
+                                                                color: Hexcolor(
+                                                                    '#F48262'),
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w600,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ],
                                                       ),
                                                     ),
                                                   ],
@@ -393,82 +453,117 @@ class _AccountScreenState extends State<AccountScreen> {
                                       ],
                                     ),
                                   ),
-                                ],
-                              ),
-                            ),
-                            Container(
-                              height: 20,
-                            ),
-                            Container(
-                              margin: EdgeInsets.only(left: 45, right: 45),
-                              height: 50,
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                children: <Widget>[
                                   Container(
-                                    child: Column(
+                                    height: 20,
+                                  ),
+                                  Container(
+                                    margin:
+                                        EdgeInsets.only(left: 45, right: 45),
+                                    height: 50,
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
                                       children: <Widget>[
                                         Container(
-                                          child: Text(
-                                            user.dashboard.membershipTitle
-                                                .toUpperCase(),
-                                            style: TextStyle(
-                                              fontFamily: "Brandon",
-                                              fontWeight: FontWeight.w700,
-                                              color: Colors.white,
-                                              fontSize: 12,
-                                              letterSpacing: 1,
+                                          child: Column(
+                                            children: <Widget>[
+                                              Container(
+                                                child: Text(
+                                                  user.dashboard.membershipTitle
+                                                      .toUpperCase(),
+                                                  style: TextStyle(
+                                                    fontFamily: "Brandon",
+                                                    fontWeight: FontWeight.w700,
+                                                    color: Colors.white,
+                                                    fontSize: 12,
+                                                    letterSpacing: 1,
+                                                  ),
+                                                ),
+                                              ),
+                                              Container(
+                                                child: Text(
+                                                  "SKIN",
+                                                  style: TextStyle(
+                                                    fontFamily: "Yeseva",
+                                                    fontWeight: FontWeight.w600,
+                                                    color: Colors.white,
+                                                    fontSize: 12,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Expanded(
+                                          child: Container(
+                                            child: LinearPercentIndicator(
+                                              lineHeight: 8.0,
+                                              percent:
+                                                  user.dashboard.percent / 100,
+                                              progressColor: Colors.white,
                                             ),
                                           ),
                                         ),
                                         Container(
-                                          child: Text(
-                                            "SKIN",
-                                            style: TextStyle(
-                                              fontFamily: "Yeseva",
-                                              fontWeight: FontWeight.w600,
-                                              color: Colors.white,
-                                              fontSize: 12,
-                                            ),
+                                          child: Column(
+                                            children: <Widget>[
+                                              Container(
+                                                child: Text(
+                                                  user.dashboard.next
+                                                      .toUpperCase(),
+                                                  style: TextStyle(
+                                                    fontFamily: "Brandon",
+                                                    fontWeight: FontWeight.w700,
+                                                    color: Colors.white,
+                                                    fontSize: 12,
+                                                  ),
+                                                ),
+                                              ),
+                                              Container(
+                                                child: Text(
+                                                  "SKIN",
+                                                  style: TextStyle(
+                                                    fontFamily: "Yeseva",
+                                                    fontWeight: FontWeight.w600,
+                                                    color: Colors.white,
+                                                    fontSize: 12,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                         ),
                                       ],
                                     ),
                                   ),
-                                  Expanded(
-                                    child: Container(
-                                      child: LinearPercentIndicator(
-                                        lineHeight: 8.0,
-                                        percent: user.dashboard.percent / 100,
-                                        progressColor: Colors.white,
-                                      ),
-                                    ),
-                                  ),
                                   Container(
                                     child: Column(
                                       children: <Widget>[
                                         Container(
                                           child: Text(
-                                            user.dashboard.next.toUpperCase(),
+                                            "Belanja " +
+                                                nm_format.format(
+                                                    user.dashboard.toNext) +
+                                                " lagi untuk naik tingkat",
                                             style: TextStyle(
-                                              fontFamily: "Brandon",
-                                              fontWeight: FontWeight.w700,
+                                              fontSize: 10,
                                               color: Colors.white,
-                                              fontSize: 12,
+                                              fontWeight: FontWeight.w800,
+                                              fontFamily: "Brandon",
                                             ),
                                           ),
                                         ),
                                         Container(
                                           child: Text(
-                                            "SKIN",
-                                            style: TextStyle(
-                                              fontFamily: "Yeseva",
-                                              fontWeight: FontWeight.w600,
-                                              color: Colors.white,
-                                              fontSize: 12,
-                                            ),
-                                          ),
+                                              "ke " +
+                                                  user.dashboard.next +
+                                                  " Skin",
+                                              style: TextStyle(
+                                                fontSize: 10,
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.w800,
+                                                fontFamily: "Brandon",
+                                              )),
                                         ),
                                       ],
                                     ),
@@ -476,35 +571,146 @@ class _AccountScreenState extends State<AccountScreen> {
                                 ],
                               ),
                             ),
-                            Container(
-                              child: Column(
-                                children: <Widget>[
-                                  Container(
-                                    child: Text(
-                                      "Belanja " +
-                                          nm_format
-                                              .format(user.dashboard.toNext) +
-                                          " lagi untuk naik tingkat",
-                                      style: TextStyle(
-                                        fontSize: 10,
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.w800,
-                                        fontFamily: "Brandon",
+                            Positioned(
+                              bottom: 0,
+                              right: 0,
+                              left: 0,
+                              child: Container(
+                                  decoration: BoxDecoration(
+                                      boxShadow: [
+                                        BoxShadow(
+                                            offset: Offset(0, 1),
+                                            blurRadius: 3,
+                                            color: Colors.grey[300])
+                                      ],
+                                      color: Colors.white,
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(5))),
+                                  height: size.height * 0.18,
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: 10, horizontal: 10),
+                                  margin: EdgeInsets.symmetric(
+                                      horizontal: size.width * 0.03,
+                                      vertical: 10),
+                                  width: size.width,
+                                  child: Column(
+                                    children: [
+                                      Container(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 15, vertical: 4),
+                                        margin: EdgeInsets.only(bottom: 10),
+                                        decoration: BoxDecoration(
+                                            color: Hexcolor('#faebcd'),
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(15))),
+                                        child: RichText(
+                                            text: TextSpan(children: [
+                                          TextSpan(
+                                              text: 'Kunjungan kamu hari ini ',
+                                              style: TextStyle(
+                                                  color: Colors.black87,
+                                                  fontSize:
+                                                      size.height * 0.02)),
+                                          TextSpan(
+                                              text: '1 Point',
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.black87,
+                                                  fontSize: size.height * 0.02))
+                                        ])),
                                       ),
-                                    ),
-                                  ),
-                                  Container(
-                                    child: Text(
-                                        "ke " + user.dashboard.next + " Skin",
-                                        style: TextStyle(
-                                          fontSize: 10,
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.w800,
-                                          fontFamily: "Brandon",
-                                        )),
-                                  ),
-                                ],
-                              ),
+                                      Container(
+                                        height: size.width * 0.15,
+                                        child: ListView.builder(
+                                          scrollDirection: Axis.horizontal,
+                                          shrinkWrap: true,
+                                          itemCount: 7,
+                                          itemBuilder: (BuildContext context,
+                                              int index) {
+                                            return GestureDetector(
+                                              onTap: () {
+                                                dayClicked = index + 1;
+                                                pointClicked();
+                                              },
+                                              child: Stack(
+                                                children: [
+                                                  Flexible(
+                                                      flex: 1,
+                                                      child: Container(
+                                                          margin: EdgeInsets
+                                                              .symmetric(
+                                                                  horizontal:
+                                                                      2),
+                                                          decoration: BoxDecoration(
+                                                              border: Border.all(
+                                                                  color: Hexcolor(
+                                                                      "#F59379"),
+                                                                  width: 1),
+                                                              borderRadius: BorderRadius
+                                                                  .all(Radius
+                                                                      .circular(
+                                                                          5))),
+                                                          child: Padding(
+                                                            padding: EdgeInsets
+                                                                .fromLTRB(
+                                                                    size.width *
+                                                                        0.01,
+                                                                    size.height *
+                                                                        0.01,
+                                                                    size.width *
+                                                                        0.01,
+                                                                    0),
+                                                            child: Column(
+                                                              children: [
+                                                                SizedBox(
+                                                                  child: ImageIcon(
+                                                                      AssetImage(
+                                                                          'assets/images/Asset 13.png'),
+                                                                      color: Color(
+                                                                          0xffF48262)),
+                                                                ),
+                                                                Spacer(),
+                                                                Text(
+                                                                    "Hari ${index + 1}",
+                                                                    style: TextStyle(
+                                                                        fontSize:
+                                                                            size.height *
+                                                                                0.02))
+                                                              ],
+                                                            ),
+                                                          ))),
+                                                  pointCheck == true &&
+                                                          (index + 1) ==
+                                                              dayNowInt
+                                                      ? Flexible(
+                                                          flex: 1,
+                                                          child: Container(
+                                                              width: size.width *
+                                                                  0.114,
+                                                              height: 80,
+                                                              margin: EdgeInsets
+                                                                  .symmetric(
+                                                                      horizontal:
+                                                                          2),
+                                                              decoration: BoxDecoration(
+                                                                  image: DecorationImage(
+                                                                      image: AssetImage(
+                                                                          "assets/images/icon-checked.png"),
+                                                                      colorFilter: new ColorFilter.mode(
+                                                                          Colors.black
+                                                                              .withOpacity(0.90),
+                                                                          BlendMode.dstATop),
+                                                                      fit: BoxFit.cover),
+                                                                  borderRadius: BorderRadius.all(Radius.circular(5)))))
+                                                      : Container(),
+                                                ],
+                                              ),
+                                            );
+                                          },
+                                        ),
+                                      ),
+                                    ],
+                                  )),
                             ),
                           ],
                         ),
