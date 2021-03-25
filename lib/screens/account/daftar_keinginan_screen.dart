@@ -219,6 +219,34 @@ Widget _buildList() {
       if (index == _result.length) {
         return _buildProgressIndicator();
       } else {
+        var stock = new List(_result.length + 1);
+        var startVarian, endVarian, startIndexVarian, endIndexVarian, startQty, endQty, startIndexQty, endIndexQty, startPrice, endPrice, startIndexPrice, endIndexPrice;
+        var _param = new List(_result.length + 1);
+        if(_result[index].stocks.toString()!='[]'){
+          print(_result[index].stocks.toString());
+          stock[index] = _result[index].stocks.toString();
+
+          startVarian = "variant: ";
+          endVarian = ",";
+
+          startIndexVarian = stock[index].indexOf(startVarian);
+          endIndexVarian = stock[index].indexOf(endVarian, startIndexVarian + startVarian.length);
+
+          startQty = "qty: ";
+          endQty = ",";
+
+          startIndexQty = stock[index].indexOf(startQty);
+          endIndexQty = stock[index].indexOf(endQty, startIndexQty + startQty.length);
+
+          startPrice = "price: ";
+          endPrice = ",";
+
+          startIndexPrice = stock[index].indexOf(startPrice);
+          endIndexPrice = stock[index].indexOf(endPrice, startIndexPrice + startPrice.length);
+
+          _param[index] = '{"varian": "${stock[index].substring(startIndexVarian + startVarian.length, endIndexVarian)}", "product_id": ${_result[index].product.id}, "quantity": ${stock[index].substring(startIndexQty + startQty.length, endIndexQty)}, "price": ${stock[index].substring(startIndexPrice + startPrice.length, endIndexPrice)}}';
+        }
+
         return Container(
           margin: EdgeInsets.only(left: 10, right: 10, bottom: 3),
           child: Row(
@@ -326,19 +354,28 @@ Widget _buildList() {
                   children: [
                     GestureDetector(
                       onTap: (){
-                        UIBlock.block(context,customLoaderChild: LoadingWidget(context));
-                        Provider.of<CartModel>(context).addProductToCart(_result[index].product, Provider.of<AppModel>(context).auth.access_token,null).then((value){
-                          UIBlock.unblock(context);
-                          if(value.statusCode == 200){
-                            showAlertDialog(context, _result[index].product);
-                          }else{
-                            final snackBar = SnackBar(
-                              content: Text(value.message,style: TextStyle(color: Colors.white)),
-                              backgroundColor: Colors.redAccent,
-                            );
-                            _scaffoldKey.currentState.showSnackBar(snackBar);
+                        if(_result[index].product.varian.length>1){
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => ProductDetailsScreen(product: _result[index].product,)));
+                        }
+                        else{
+                          VarianResult varian_result;
+                          if(_result[index].product.varian.length==1){
+                            varian_result = new VarianResult.fromJson(json.decode(_param[index]));
                           }
-                        });
+                          UIBlock.block(context,customLoaderChild: LoadingWidget(context));
+                          Provider.of<CartModel>(context).addProductToCart(_result[index].product, Provider.of<AppModel>(context).auth.access_token,_result[index].product.varian.length==0?null:varian_result).then((value){
+                            UIBlock.unblock(context);
+                            if(value.statusCode == 200){
+                              showAlertDialog(context, _result[index].product);
+                            }else{
+                              final snackBar = SnackBar(
+                                content: Text(value.message,style: TextStyle(color: Colors.white)),
+                                backgroundColor: Colors.redAccent,
+                              );
+                              _scaffoldKey.currentState.showSnackBar(snackBar);
+                            }
+                          });
+                        }
                       },
                       child: Container(
                         margin: EdgeInsets.only(right: 5),

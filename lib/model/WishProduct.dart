@@ -61,11 +61,13 @@ class WishModel with ChangeNotifier {
 class Wish{
   int id;
   Product product;
-  Wish(this.id,this.product);
+  List stocks;
+
+  Wish(this.id,this.product,this.stocks);
 
   factory Wish.fromJson(Map<String, dynamic> parsedJson){
     Product  _product =  Product.fromJson(parsedJson["product"]["availability"]);
-    return Wish(parsedJson["id"], _product);
+    return Wish(parsedJson["id"], _product, parsedJson["product"]["stocks"]);
   }
 }
 

@@ -41,7 +41,6 @@ class CartModel with ChangeNotifier{
          param.addAll({"variant":variant.varian});
        }
        print(variant);
-
        param.addAll({
          "product_id": product.id,
          "qty": 1
