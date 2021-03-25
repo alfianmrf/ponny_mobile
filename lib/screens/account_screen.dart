@@ -279,7 +279,8 @@ class _AccountScreenState extends State<AccountScreen> {
                               child: Column(
                                 children: <Widget>[
                                   Container(
-                                    margin: EdgeInsets.only(top: 20),
+                                    margin: EdgeInsets.only(
+                                        top: 20, right: 20, left: 20),
                                     padding: EdgeInsets.only(
                                         right: 20, left: 20, bottom: 20),
                                     decoration: new BoxDecoration(
@@ -587,8 +588,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                       borderRadius:
                                           BorderRadius.all(Radius.circular(5))),
                                   // height: size.width * 0.36,
-                                  padding: EdgeInsets.symmetric(
-                                      vertical: 10),
+                                  padding: EdgeInsets.symmetric(vertical: 10),
                                   margin: EdgeInsets.symmetric(
                                       horizontal: size.width * 0.05,
                                       vertical: 10),
@@ -596,7 +596,6 @@ class _AccountScreenState extends State<AccountScreen> {
                                   child: Column(
                                     children: [
                                       Container(
-
                                         margin: EdgeInsets.only(bottom: 10),
                                         decoration: BoxDecoration(
                                             color: Hexcolor('#faebcd'),
@@ -608,8 +607,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                               text: 'Kunjungan kamu hari ini ',
                                               style: TextStyle(
                                                   color: Colors.black87,
-                                                  fontSize:
-                                                      12)),
+                                                  fontSize: 12)),
                                           TextSpan(
                                               text: '1 Point',
                                               style: TextStyle(
@@ -683,11 +681,10 @@ class _AccountScreenState extends State<AccountScreen> {
                                                       ? Flexible(
                                                           flex: 1,
                                                           child: Container(
-                                                              width: size.width *
-                                                                  0.114,
+                                                              width: 41,
                                                               height: 80,
-                                                              margin: EdgeInsets
-                                                                  .symmetric(
+                                                              margin:
+                                                                  EdgeInsets.symmetric(
                                                                       horizontal:
                                                                           2),
                                                               decoration: BoxDecoration(
@@ -695,11 +692,14 @@ class _AccountScreenState extends State<AccountScreen> {
                                                                       image: AssetImage(
                                                                           "assets/images/icon-checked.png"),
                                                                       colorFilter: new ColorFilter.mode(
-                                                                          Colors.black
-                                                                              .withOpacity(0.90),
-                                                                          BlendMode.dstATop),
-                                                                      fit: BoxFit.cover),
-                                                                  borderRadius: BorderRadius.all(Radius.circular(5)))))
+                                                                          Colors.black.withOpacity(
+                                                                              0.90),
+                                                                          BlendMode
+                                                                              .dstATop),
+                                                                      fit: BoxFit
+                                                                          .cover),
+                                                                  borderRadius:
+                                                                      BorderRadius.all(Radius.circular(5)))))
                                                       : Container(),
                                                 ],
                                               ),
