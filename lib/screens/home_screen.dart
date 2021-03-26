@@ -18,6 +18,7 @@ import 'package:ponny/model/Product.dart';
 import 'package:ponny/model/ProductFlashDeal.dart';
 import 'package:ponny/model/Slider.dart';
 import 'package:ponny/model/User.dart';
+import 'package:ponny/screens/Barcode_Scanner_Screen.dart';
 import 'package:ponny/screens/Blog_screen.dart';
 import 'package:ponny/screens/Browse_Screen.dart';
 import 'package:ponny/screens/FullSiaran.dart';
@@ -749,42 +750,55 @@ class _HomeScreenState extends State<HomeScreen> {
                                               color: Colors.grey[300])
                                         ]),
                                     child: Row(children: [
-                                      Expanded(
-                                          flex: 4,
-                                          child: Row(
-                                            children: [
-                                              Container(
+                                      GestureDetector(
+                                        onTap: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    QRScreen()),
+                                          );
+                                        },
+                                        child: Expanded(
+                                            flex: 4,
+                                            child: Row(
+                                              children: [
+                                                Container(
+                                                    margin: EdgeInsets.only(
+                                                        left: 15),
+                                                    width: 35,
+                                                    height: 35,
+                                                    child: Image.asset(
+                                                        'assets/images/icon-scan.png')),
+                                                Container(
                                                   margin:
-                                                      EdgeInsets.only(left: 15),
-                                                  width: 35,
-                                                  height: 35,
-                                                  child: Image.asset(
-                                                      'assets/images/icon-scan.png')),
-                                              Container(
-                                                margin:
-                                                    EdgeInsets.only(left: 7),
-                                                child: RichText(
-                                                    text: TextSpan(children: [
-                                                  TextSpan(
-                                                      text: 'Scan QR Produk\n',
-                                                      style: TextStyle(
-                                                          color: Colors.black87,
+                                                      EdgeInsets.only(left: 7),
+                                                  child: RichText(
+                                                      text: TextSpan(children: [
+                                                    TextSpan(
+                                                        text:
+                                                            'Scan QR Produk\n',
+                                                        style: TextStyle(
+                                                            color:
+                                                                Colors.black87,
+                                                            fontFamily:
+                                                                'Brandon',
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            fontSize: 12)),
+                                                    TextSpan(
+                                                        text:
+                                                            'Untuk belanja di toko Ponny Beaute',
+                                                        style: TextStyle(
                                                           fontFamily: 'Brandon',
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          fontSize: 12)),
-                                                  TextSpan(
-                                                      text:
-                                                          'Untuk belanja di toko Ponny Beaute',
-                                                      style: TextStyle(
-                                                        fontFamily: 'Brandon',
-                                                        fontSize: 9,
-                                                        color: Colors.black45,
-                                                      ))
-                                                ])),
-                                              ),
-                                            ],
-                                          )),
+                                                          fontSize: 9,
+                                                          color: Colors.black45,
+                                                        ))
+                                                  ])),
+                                                ),
+                                              ],
+                                            )),
+                                      ),
                                       Padding(
                                         padding:
                                             EdgeInsets.symmetric(vertical: 10),
