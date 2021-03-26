@@ -58,7 +58,7 @@ class _AccountScreenState extends State<AccountScreen> {
   bool isLoading = true;
   final mon = DateFormat('MMMM');
   DateTime daynow = DateTime.now();
-  int dayPass, dayNowInt, dayClicked;
+  int dayPass, dayNowInt, dayClicked, pointActive = 5;
   bool pointCheck;
 
   @override
@@ -685,27 +685,28 @@ class _AccountScreenState extends State<AccountScreen> {
                                                               (index + 1) ==
                                                                   dayNowInt
                                                           ? Center(
-                                                            child: Container(
-                                                                width: 40,
-                                                                height: 80,
-                                                                margin: EdgeInsets
-                                                                    .symmetric(
-                                                                        horizontal:
-                                                                            2),
-                                                                decoration: BoxDecoration(
-                                                                    image: DecorationImage(
-                                                                        image: AssetImage(
-                                                                            "assets/images/icon-checked.png"),
-                                                                        colorFilter: new ColorFilter.mode(
-                                                                            Colors.black.withOpacity(
-                                                                                0.90),
-                                                                            BlendMode
-                                                                                .dstATop),
-                                                                        fit: BoxFit
-                                                                            .cover),
-                                                                    borderRadius:
-                                                                        BorderRadius.all(Radius.circular(5)))),
-                                                          )
+                                                              child: Container(
+                                                                  width: 40,
+                                                                  height: 80,
+                                                                  margin: EdgeInsets
+                                                                      .symmetric(
+                                                                          horizontal:
+                                                                              2),
+                                                                  decoration: BoxDecoration(
+                                                                      image: DecorationImage(
+                                                                          image: AssetImage(
+                                                                              "assets/images/icon-checked.png"),
+                                                                          colorFilter: new ColorFilter.mode(
+                                                                              Colors.black.withOpacity(
+                                                                                  0.90),
+                                                                              BlendMode
+                                                                                  .dstATop),
+                                                                          fit: BoxFit
+                                                                              .cover),
+                                                                      borderRadius:
+                                                                          BorderRadius.all(
+                                                                              Radius.circular(5)))),
+                                                            )
                                                           : Container(),
                                                     ],
                                                   ),
