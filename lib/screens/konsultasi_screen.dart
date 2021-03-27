@@ -9,6 +9,7 @@ import 'package:flutter_html/style.dart';
 import 'package:intl/intl.dart';
 import 'package:ponny/common/constant.dart';
 import 'package:ponny/model/App.dart';
+import 'package:ponny/model/DetailKonsultasi.dart';
 import 'package:ponny/model/Dokter.dart';
 import 'package:ponny/model/FaqHeader.dart';
 import 'package:ponny/model/Order.dart';
@@ -51,11 +52,13 @@ class _KonsultasiState extends State<KonsultasiScreen> {
   OrderDetailVoucher selectVoucher;
   int jmlVoucherAktive=0;
   int jmlBelumdibayar=0;
-
+  DetailKonsultasi result = DetailKonsultasi();
+  bool loading = true;
 
   @override
   void initState() {
     super.initState();
+    getData();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       Provider.of<VoucherModel>(context).getVoucher().then((value){
         setState(() {
@@ -100,6 +103,28 @@ class _KonsultasiState extends State<KonsultasiScreen> {
         jmlVoucherAktive = result['vouchers'];
         jmlBelumdibayar = result['orders'];
       });
+    }
+  }
+
+  Future<void> getData() async {
+    try {
+      final res = await http.get(detailKonsultasi);
+      if (res.statusCode == 200) {
+        final responeJson = json.decode(res.body);
+        setState(() {
+          result = DetailKonsultasi.fromJson(responeJson);
+          loading = false;
+        });
+        print("SUCCESS");
+        print(responeJson);
+      }
+    } catch (e) {
+      print("ERROR");
+      print(e.toString());
+      setState(() {
+        loading = false;
+      });
+      scaffolKey.currentState.showSnackBar(snackBarError);
     }
   }
 
@@ -492,7 +517,11 @@ class _KonsultasiState extends State<KonsultasiScreen> {
                               Container(
                                 child: Column(
                                   children: [
-                                    Container(
+                                    loading ? Container(
+                                      child: Center(
+                                        child: LoadingWidgetFadingCircle(context),
+                                      ),
+                                    ): Container(
                                       width: double.infinity,
                                       decoration: BoxDecoration(
                                         color: Colors.white,
@@ -512,7 +541,7 @@ class _KonsultasiState extends State<KonsultasiScreen> {
                                         children: [
                                           Container(
                                             child: Text(
-                                              "Layanan Konsultasi",
+                                              json.decode(result.data[0])['judul'],
                                               style: TextStyle(
                                                 fontFamily: "Brandon",
                                                 fontWeight: FontWeight.w600,
@@ -523,7 +552,7 @@ class _KonsultasiState extends State<KonsultasiScreen> {
                                           SizedBox(height: 10),
                                           Container(
                                             child: Text(
-                                              "Dolor enim sit amet ex pariatur ullamco adipisicing consequat occaecat irure officia dolor. Voluptate ad nostrud pariatur sit dolor irure incididunt proident. Non anim amet voluptate sint officia ut anim et magna aute cupidatat nisi eiusmod anim. Eu consectetur nostrud excepteur eu est cupidatat cillum irure mollit cillum. Minim sunt commodo in pariatur commodo qui adipisicing culpa.",
+                                              json.decode(result.data[0])['deskripsi'],
                                               style: TextStyle(
                                                 fontFamily: "Brandon",
                                                 fontWeight: FontWeight.w400,
@@ -2403,25 +2432,35 @@ class _PakaiKonsultasi extends State<pakai_konsultasi> {
                     ),
                     if(dokter.length<= 0)
 
-                    GestureDetector(
-                      onTap: () {},
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      padding: EdgeInsets.only(top: 8, bottom: 8),
+                      margin: EdgeInsets.only(right: 20, left: 20),
+                      width: MediaQuery.of(context).size.width,
                       child: Container(
-                        decoration: BoxDecoration(
-                          color: Hexcolor("#F7866A"),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        padding: EdgeInsets.only(top: 8, bottom: 8),
-                        margin: EdgeInsets.only(right: 35, left: 35),
-                        width: MediaQuery.of(context).size.width,
-                        child: Text(
-                          "Yuk, Mulai Konsultasi",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontFamily: "Brandon",
-                            color: Colors.white,
-                            fontWeight: FontWeight.w600,
-                          ),
+                        padding: EdgeInsets.all(30),
+                        child: Column(
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(bottom: 20),
+                              child: Image.asset(
+                                'assets/images/konsultasi/ponny-face.png',
+                                width: 100,
+                              ),
+                            ),
+                            Text(
+                              "Sayang sekali tidak ada dokter yang Online :(. Tunggu beberapa saat atau hubungi Tim Phoebe untuk mendapatkan informasi lebih lanjut",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontFamily: "Brandon",
+                                color: Hexcolor("#F7866A"),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ),

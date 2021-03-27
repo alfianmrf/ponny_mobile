@@ -177,6 +177,7 @@ PODS:
     - Flutter
   - image_picker (0.0.1):
     - Flutter
+  - MTBBarcodeScanner (5.0.11)
   - nanopb (1.30906.0):
     - nanopb/decode (= 1.30906.0)
     - nanopb/encode (= 1.30906.0)
@@ -190,6 +191,9 @@ PODS:
     - Flutter
   - PromisesObjC (1.2.12)
   - Protobuf (3.14.0)
+  - qr_code_scanner (0.2.0):
+    - Flutter
+    - MTBBarcodeScanner
   - screen (0.0.1):
     - Flutter
   - SDWebImage (5.10.4):
@@ -244,6 +248,7 @@ DEPENDENCIES:
   - package_info (from `.symlinks/plugins/package_info/ios`)
   - path_provider (from `.symlinks/plugins/path_provider/ios`)
   - permission_handler (from `.symlinks/plugins/permission_handler/ios`)
+  - qr_code_scanner (from `.symlinks/plugins/qr_code_scanner/ios`)
   - screen (from `.symlinks/plugins/screen/ios`)
   - share (from `.symlinks/plugins/share/ios`)
   - shared_preferences (from `.symlinks/plugins/shared_preferences/ios`)
@@ -279,6 +284,7 @@ SPEC REPOS:
     - GoogleUtilities
     - GTMAppAuth
     - GTMSessionFetcher
+    - MTBBarcodeScanner
     - nanopb
     - PromisesObjC
     - Protobuf
@@ -331,6 +337,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/path_provider/ios"
   permission_handler:
     :path: ".symlinks/plugins/permission_handler/ios"
+  qr_code_scanner:
+    :path: ".symlinks/plugins/qr_code_scanner/ios"
   screen:
     :path: ".symlinks/plugins/screen/ios"
   share:
@@ -394,12 +402,14 @@ SPEC CHECKSUMS:
   GTMSessionFetcher: b3503b20a988c4e20cc189aa798fd18220133f52
   hexcolor: fdfb9c4258ad96e949c2dbcdf790a62194b8aa89
   image_picker: 9c3312491f862b28d21ecd8fdf0ee14e601b3f09
+  MTBBarcodeScanner: f453b33c4b7dfe545d8c6484ed744d55671788cb
   nanopb: 59317e09cf1f1a0af72f12af412d54edf52603fc
   package_info: 873975fc26034f0b863a300ad47e7f1ac6c7ec62
   path_provider: abfe2b5c733d04e238b0d8691db0cfd63a27a93c
   permission_handler: ccb20a9fad0ee9b1314a52b70b76b473c5f8dab0
   PromisesObjC: 3113f7f76903778cf4a0586bd1ab89329a0b7b97
   Protobuf: 0cde852566359049847168e51bd1c690e0f70056
+  qr_code_scanner: bb67d64904c3b9658ada8c402e8b4d406d5d796e
   screen: abd91ca7bf3426e1cc3646d27e9b2358d6bf07b0
   SDWebImage: c666b97e1fa9c64b4909816a903322018f0a9c84
   share: 0b2c3e82132f5888bccca3351c504d0003b3b410

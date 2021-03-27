@@ -48,35 +48,45 @@ class _QRScreenState extends State<QRScreen> {
                   height: 50,
                   child: Row(
                     children: [
-                      Container(
-                        margin: EdgeInsets.only(left: 15),
-                        child: IconButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            icon: Icon(Icons.arrow_back_ios,
-                                color: Color(0xffF48262), size: 26)),
+                      Expanded(
+                        flex: 1,
+                        child: Container(
+                          margin: EdgeInsets.only(left: 15),
+                          child: IconButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              icon: Icon(Icons.arrow_back_ios,
+                                  color: Color(0xffF48262), size: 26)),
+                        ),
                       ),
-                      Container(
-                          child: Column(
-                        children: [
-                          Text(
-                            'Scan QR',
-                            style: TextStyle(
-                                fontSize: 14,
-                                fontFamily: "Brandon",
-                                fontWeight: FontWeight.w700,
-                                color: Colors.white),
-                          ),
-                          Text(
-                            'Pindai kode QR produk yang tersedia dengan kamera',
-                            style: TextStyle(
-                                fontSize: 12,
-                                fontFamily: "Brandon",
-                                color: Colors.white),
-                          ),
-                        ],
-                      )),
+                      Expanded(
+                        flex: 5,
+                        child: Container(
+                            child: Column(
+                          children: [
+                            Text(
+                              'Scan QR',
+                              style: TextStyle(
+                                  fontSize: 14,
+                                  fontFamily: "Brandon",
+                                  fontWeight: FontWeight.w700,
+                                  color: Colors.white),
+                            ),
+                            Text(
+                              'Pindai kode QR produk yang tersedia dengan kamera',
+                              style: TextStyle(
+                                  fontSize: 12,
+                                  fontFamily: "Brandon",
+                                  color: Colors.white),
+                            ),
+                          ],
+                        )),
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: Container(),
+                      ),
                     ],
                   ),
                 ),

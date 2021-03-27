@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
@@ -952,11 +954,20 @@ class _CartScreenState extends State<CartScreen> {
                                                 value.AppyCoupon(_code.value.text, Provider.of<AppModel>(context).auth.access_token).then((values){
                                                   UIBlock.unblock(context);
                                                   if(value.coupon != null && value.coupon.code != null){
-                                                    final snackBar = SnackBar(
-                                                      content: Text('Success.',style: TextStyle(color: Colors.white)),
-                                                      backgroundColor: Colors.green,
-                                                    );
-                                                    scaffoldKey.currentState.showSnackBar(snackBar);
+                                                    if(value.coupon.calculated == "0"){
+                                                      final snackBar = SnackBar(
+                                                        content: Text('Minimum belanja belum mencukupi!',style: TextStyle(color: Colors.white)),
+                                                        backgroundColor: Colors.redAccent,
+                                                      );
+                                                      scaffoldKey.currentState.showSnackBar(snackBar);
+                                                    }
+                                                    else{
+                                                      final snackBar = SnackBar(
+                                                        content: Text('Success.',style: TextStyle(color: Colors.white)),
+                                                        backgroundColor: Colors.green,
+                                                      );
+                                                      scaffoldKey.currentState.showSnackBar(snackBar);
+                                                    }
                                                   }else{
                                                     final snackBar = SnackBar(
                                                       content: Text('Code promo tidak berlaku!',style: TextStyle(color: Colors.white)),
@@ -1016,7 +1027,9 @@ class _CartScreenState extends State<CartScreen> {
                                       ],
                                     ),
                                   ),
-                                  if(value.coupon != null )
+                                  if(value.coupon != null)
+                                  if(value.coupon.coupon_id != null)
+                                  if(value.summary.discount != "Rp0")
                                   Padding(
                                     padding: EdgeInsets.symmetric(vertical: 5),
                                     child: Row(

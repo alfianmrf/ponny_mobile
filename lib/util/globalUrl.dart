@@ -117,6 +117,7 @@ const inCallconsultation = base_url + "consultation/incall";
 const updateDuration = base_url + "consultation/incallStatus";
 const detaildokter = base_url + "consultation/dokter-detail";
 const voucherAktive = base_url + "consultation/active";
+const detailKonsultasi = base_url + "consultation/detail-konsultasi";
 
 //master
 const urlProv = base_url + "shipping/provinces";
