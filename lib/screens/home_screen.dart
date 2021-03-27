@@ -759,87 +759,74 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     QRScreen()),
                                           );
                                         },
-                                        child: Expanded(
-                                            flex: 4,
-                                            child: Row(
-                                              children: [
-                                                Container(
-                                                    margin: EdgeInsets.only(
-                                                        left: 15),
-                                                    width: 35,
-                                                    height: 35,
-                                                    child: Image.asset(
-                                                        'assets/images/icon-scan.png')),
-                                                Container(
-                                                  margin:
-                                                      EdgeInsets.only(left: 7),
-                                                  child: RichText(
-                                                      text: TextSpan(children: [
-                                                    TextSpan(
-                                                        text:
-                                                            'Scan QR Produk\n',
-                                                        style: TextStyle(
-                                                            color:
-                                                                Colors.black87,
-                                                            fontFamily:
-                                                                'Brandon',
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                            fontSize: 12)),
-                                                    TextSpan(
-                                                        text:
-                                                            'Untuk belanja di toko Ponny Beaute',
-                                                        style: TextStyle(
-                                                          fontFamily: 'Brandon',
-                                                          fontSize: 9,
-                                                          color: Colors.black45,
-                                                        ))
-                                                  ])),
-                                                ),
-                                              ],
-                                            )),
+                                        child: Row(
+                                          children: [
+                                            Container(
+                                                margin:
+                                                    EdgeInsets.only(left: 15),
+                                                width: 35,
+                                                child: Image.asset(
+                                                    'assets/images/icon-scan.png')),
+                                            Container(
+                                              margin: EdgeInsets.only(left: 7),
+                                              child: RichText(
+                                                  text: TextSpan(children: [
+                                                TextSpan(
+                                                    text: 'Scan QR Produk\n',
+                                                    style: TextStyle(
+                                                        color: Colors.black87,
+                                                        fontFamily: 'Brandon',
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        fontSize: 12)),
+                                                TextSpan(
+                                                    text:
+                                                        'Untuk belanja di toko Ponny Beaute',
+                                                    style: TextStyle(
+                                                      fontFamily: 'Brandon',
+                                                      fontSize: 9,
+                                                      color: Colors.black45,
+                                                    ))
+                                              ])),
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                       Padding(
                                         padding:
                                             EdgeInsets.symmetric(vertical: 10),
                                         child: VerticalDivider(),
                                       ),
-                                      Expanded(
-                                          flex: 3,
-                                          child: Row(
-                                            children: [
-                                              Container(
-                                                  margin:
-                                                      EdgeInsets.only(left: 6),
-                                                  width: 30,
-                                                  height: 30,
-                                                  child: Image.asset(
-                                                      'assets/images/Asset 13.png')),
-                                              Container(
-                                                margin:
-                                                    EdgeInsets.only(left: 7),
-                                                child: RichText(
-                                                    text: TextSpan(children: [
-                                                  TextSpan(
-                                                      text: '1200 POIN\n',
-                                                      style: TextStyle(
-                                                          color: Colors.black87,
-                                                          fontFamily: 'Brandon',
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          fontSize: 12)),
-                                                  TextSpan(
-                                                      text:
-                                                          'Happy Skin Rewards',
-                                                      style: TextStyle(
-                                                        fontFamily: 'Brandon',
-                                                        fontSize: 9,
-                                                        color: Colors.black45,
-                                                      ))
-                                                ])),
-                                              ),
-                                            ],
-                                          ))
+                                      Row(
+                                        children: [
+                                          Container(
+                                              margin: EdgeInsets.only(left: 6),
+                                              width: 30,
+                                              child: Image.asset(
+                                                  'assets/images/Asset 13.png')),
+                                          Container(
+                                            margin: EdgeInsets.only(left: 7),
+                                            child: RichText(
+                                                text: TextSpan(children: [
+                                              TextSpan(
+                                                  text: '1200 POIN\n',
+                                                  style: TextStyle(
+                                                      color: Colors.black87,
+                                                      fontFamily: 'Brandon',
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontSize: 12)),
+                                              TextSpan(
+                                                  text: 'Happy Skin Rewards',
+                                                  style: TextStyle(
+                                                    fontFamily: 'Brandon',
+                                                    fontSize: 9,
+                                                    color: Colors.black45,
+                                                  ))
+                                            ])),
+                                          ),
+                                        ],
+                                      )
                                     ]),
                                   ),
                                   IntrinsicHeight(
