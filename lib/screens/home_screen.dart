@@ -730,238 +730,238 @@ class _HomeScreenState extends State<HomeScreen> {
                             } else {
                               return Column(
                                 children: [
-                                  IntrinsicHeight(
-                                    child: Row(
-                                      children: [
-                                        Expanded(
-                                            flex: 1,
-                                            child: Container(
-                                                color: Color(0xffFACAC1),
-                                                padding: EdgeInsets.symmetric(
-                                                    vertical: 5),
-                                                child: Column(children: [
-                                                  Container(
-                                                    height: 20,
-                                                    child: Image.asset(
-                                                      'assets/images/home/asli.png',
-                                                      fit: BoxFit.contain,
-                                                    ),
-                                                  ),
-                                                  Container(
-                                                    child: Text(
-                                                      '100%\nASLI',
-                                                      style: TextStyle(
-                                                        fontFamily: 'Brandon',
-                                                        fontSize: 12,
-                                                        color:
-                                                            Color(0xffF48262),
-                                                        fontWeight:
-                                                            FontWeight.w600,
-                                                      ),
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                    ),
-                                                  ),
-                                                ]))),
-                                        Expanded(
-                                          flex: 1,
-                                          child: Container(
-                                            color: Color(0xffFBDFD2),
-                                            padding: EdgeInsets.symmetric(
-                                                vertical: 5),
-                                            child: Column(
-                                              children: [
-                                                Container(
-                                                  height: 20,
-                                                  child: Image.asset(
-                                                    'assets/images/home/bpom.png',
-                                                    fit: BoxFit.contain,
-                                                  ),
-                                                ),
-                                                Container(
-                                                  child: Text(
-                                                    'PRODUK\nBER-BPOM',
-                                                    style: TextStyle(
-                                                      fontFamily: 'Brandon',
-                                                      fontSize: 12,
-                                                      color: Color(0xffF48262),
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                    ),
-                                                    textAlign: TextAlign.center,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                        Expanded(
-                                          flex: 1,
-                                          child: Container(
-                                            color: Color(0xffFACAC1),
-                                            padding: EdgeInsets.symmetric(
-                                                vertical: 5),
-                                            child: Column(
-                                              children: [
-                                                Container(
-                                                  height: 20,
-                                                  child: Image.asset(
-                                                    'assets/images/home/konsumen.png',
-                                                    fit: BoxFit.contain,
-                                                  ),
-                                                ),
-                                                Container(
-                                                  child: Text(
-                                                    'LAYANAN\nKONSUMEN',
-                                                    style: TextStyle(
-                                                      fontFamily: 'Brandon',
-                                                      fontSize: 12,
-                                                      color: Color(0xffF48262),
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                    ),
-                                                    textAlign: TextAlign.center,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                        Expanded(
-                                            flex: 1,
-                                            child: Container(
-                                              color: Color(0xffFBDFD2),
-                                              padding: EdgeInsets.symmetric(
-                                                  vertical: 5),
-                                              child: Column(
-                                                children: [
-                                                  Container(
-                                                    height: 20,
-                                                    child: Image.asset(
-                                                      'assets/images/home/aman.png',
-                                                      fit: BoxFit.contain,
-                                                    ),
-                                                  ),
-                                                  Container(
-                                                    child: Text(
-                                                      'KEMASAN\nAMAN',
-                                                      style: TextStyle(
-                                                        fontFamily: 'Brandon',
-                                                        fontSize: 12,
-                                                        color:
-                                                            Color(0xffF48262),
-                                                        fontWeight:
-                                                            FontWeight.w600,
-                                                      ),
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ))
-                                      ],
-                                    ),
-                                  ),
-                                  // Container(
-                                  //   width: MediaQuery.of(context).size.width,
-                                  //   margin: EdgeInsets.symmetric(
-                                  //       horizontal:
-                                  //           MediaQuery.of(context).size.width *
-                                  //               0.030,
-                                  //       vertical: 7),
-                                  //   height: 60,
-                                  //   decoration: BoxDecoration(
-                                  //       color: Colors.white,
-                                  //       borderRadius: BorderRadius.all(
-                                  //           Radius.circular(18)),
-                                  //       boxShadow: [
-                                  //         BoxShadow(
-                                  //             offset: Offset(0, 0),
-                                  //             blurRadius: 2,
-                                  //             color: Colors.grey[300])
-                                  //       ]),
-                                  //   child: Row(children: [
-                                  //     GestureDetector(
-                                  //       onTap: () {
-                                  //         Navigator.push(
-                                  //           context,
-                                  //           MaterialPageRoute(
-                                  //               builder: (context) =>
-                                  //                   QRScreen()),
-                                  //         );
-                                  //       },
-                                  //       child: Row(
-                                  //         children: [
-                                  //           Container(
-                                  //               margin:
-                                  //                   EdgeInsets.only(left: 15),
-                                  //               width: 35,
-                                  //               child: Image.asset(
-                                  //                   'assets/images/icon-scan.png')),
-                                  //           Container(
-                                  //             margin: EdgeInsets.only(left: 7),
-                                  //             child: RichText(
-                                  //                 text: TextSpan(children: [
-                                  //               TextSpan(
-                                  //                   text: 'Scan QR Produk\n',
-                                  //                   style: TextStyle(
-                                  //                       color: Colors.black87,
+                                  // IntrinsicHeight(
+                                  //   child: Row(
+                                  //     children: [
+                                  //       Expanded(
+                                  //           flex: 1,
+                                  //           child: Container(
+                                  //               color: Color(0xffFACAC1),
+                                  //               padding: EdgeInsets.symmetric(
+                                  //                   vertical: 5),
+                                  //               child: Column(children: [
+                                  //                 Container(
+                                  //                   height: 20,
+                                  //                   child: Image.asset(
+                                  //                     'assets/images/home/asli.png',
+                                  //                     fit: BoxFit.contain,
+                                  //                   ),
+                                  //                 ),
+                                  //                 Container(
+                                  //                   child: Text(
+                                  //                     '100%\nASLI',
+                                  //                     style: TextStyle(
                                   //                       fontFamily: 'Brandon',
+                                  //                       fontSize: 12,
+                                  //                       color:
+                                  //                           Color(0xffF48262),
                                   //                       fontWeight:
-                                  //                           FontWeight.bold,
-                                  //                       fontSize: 12)),
-                                  //               TextSpan(
-                                  //                   text:
-                                  //                       'Untuk belanja di toko Ponny Beaute',
+                                  //                           FontWeight.w600,
+                                  //                     ),
+                                  //                     textAlign:
+                                  //                         TextAlign.center,
+                                  //                   ),
+                                  //                 ),
+                                  //               ]))),
+                                  //       Expanded(
+                                  //         flex: 1,
+                                  //         child: Container(
+                                  //           color: Color(0xffFBDFD2),
+                                  //           padding: EdgeInsets.symmetric(
+                                  //               vertical: 5),
+                                  //           child: Column(
+                                  //             children: [
+                                  //               Container(
+                                  //                 height: 20,
+                                  //                 child: Image.asset(
+                                  //                   'assets/images/home/bpom.png',
+                                  //                   fit: BoxFit.contain,
+                                  //                 ),
+                                  //               ),
+                                  //               Container(
+                                  //                 child: Text(
+                                  //                   'PRODUK\nBER-BPOM',
                                   //                   style: TextStyle(
                                   //                     fontFamily: 'Brandon',
-                                  //                     fontSize: 9,
-                                  //                     color: Colors.black45,
-                                  //                   ))
-                                  //             ])),
-                                  //           ),
-                                  //         ],
-                                  //       ),
-                                  //     ),
-                                  //     Padding(
-                                  //       padding:
-                                  //           EdgeInsets.symmetric(vertical: 10),
-                                  //       child: VerticalDivider(),
-                                  //     ),
-                                  //     Row(
-                                  //       children: [
-                                  //         Container(
-                                  //             margin: EdgeInsets.only(left: 6),
-                                  //             width: 30,
-                                  //             child: Image.asset(
-                                  //                 'assets/images/Asset 13.png')),
-                                  //         Container(
-                                  //           margin: EdgeInsets.only(left: 7),
-                                  //           child: RichText(
-                                  //               text: TextSpan(children: [
-                                  //             TextSpan(
-                                  //                 text: '1200 POIN\n',
-                                  //                 style: TextStyle(
-                                  //                     color: Colors.black87,
-                                  //                     fontFamily: 'Brandon',
+                                  //                     fontSize: 12,
+                                  //                     color: Color(0xffF48262),
                                   //                     fontWeight:
-                                  //                         FontWeight.bold,
-                                  //                     fontSize: 12)),
-                                  //             TextSpan(
-                                  //                 text: 'Happy Skin Rewards',
-                                  //                 style: TextStyle(
-                                  //                   fontFamily: 'Brandon',
-                                  //                   fontSize: 9,
-                                  //                   color: Colors.black45,
-                                  //                 ))
-                                  //           ])),
+                                  //                         FontWeight.w600,
+                                  //                   ),
+                                  //                   textAlign: TextAlign.center,
+                                  //                 ),
+                                  //               ),
+                                  //             ],
+                                  //           ),
                                   //         ),
-                                  //       ],
-                                  //     )
-                                  //   ]),
+                                  //       ),
+                                  //       Expanded(
+                                  //         flex: 1,
+                                  //         child: Container(
+                                  //           color: Color(0xffFACAC1),
+                                  //           padding: EdgeInsets.symmetric(
+                                  //               vertical: 5),
+                                  //           child: Column(
+                                  //             children: [
+                                  //               Container(
+                                  //                 height: 20,
+                                  //                 child: Image.asset(
+                                  //                   'assets/images/home/konsumen.png',
+                                  //                   fit: BoxFit.contain,
+                                  //                 ),
+                                  //               ),
+                                  //               Container(
+                                  //                 child: Text(
+                                  //                   'LAYANAN\nKONSUMEN',
+                                  //                   style: TextStyle(
+                                  //                     fontFamily: 'Brandon',
+                                  //                     fontSize: 12,
+                                  //                     color: Color(0xffF48262),
+                                  //                     fontWeight:
+                                  //                         FontWeight.w600,
+                                  //                   ),
+                                  //                   textAlign: TextAlign.center,
+                                  //                 ),
+                                  //               ),
+                                  //             ],
+                                  //           ),
+                                  //         ),
+                                  //       ),
+                                  //       Expanded(
+                                  //           flex: 1,
+                                  //           child: Container(
+                                  //             color: Color(0xffFBDFD2),
+                                  //             padding: EdgeInsets.symmetric(
+                                  //                 vertical: 5),
+                                  //             child: Column(
+                                  //               children: [
+                                  //                 Container(
+                                  //                   height: 20,
+                                  //                   child: Image.asset(
+                                  //                     'assets/images/home/aman.png',
+                                  //                     fit: BoxFit.contain,
+                                  //                   ),
+                                  //                 ),
+                                  //                 Container(
+                                  //                   child: Text(
+                                  //                     'KEMASAN\nAMAN',
+                                  //                     style: TextStyle(
+                                  //                       fontFamily: 'Brandon',
+                                  //                       fontSize: 12,
+                                  //                       color:
+                                  //                           Color(0xffF48262),
+                                  //                       fontWeight:
+                                  //                           FontWeight.w600,
+                                  //                     ),
+                                  //                     textAlign:
+                                  //                         TextAlign.center,
+                                  //                   ),
+                                  //                 ),
+                                  //               ],
+                                  //             ),
+                                  //           ))
+                                  //     ],
+                                  //   ),
                                   // ),
-                                  SizedBox(height: 20),
+                                  Container(
+                                    width: MediaQuery.of(context).size.width,
+                                    margin: EdgeInsets.symmetric(
+                                        horizontal:
+                                            MediaQuery.of(context).size.width *
+                                                0.030,
+                                        vertical: 7),
+                                    height: 60,
+                                    decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(18)),
+                                        boxShadow: [
+                                          BoxShadow(
+                                              offset: Offset(0, 0),
+                                              blurRadius: 2,
+                                              color: Colors.grey[300])
+                                        ]),
+                                    child: Row(children: [
+                                      GestureDetector(
+                                        onTap: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    QRScreen()),
+                                          );
+                                        },
+                                        child: Row(
+                                          children: [
+                                            Container(
+                                                margin:
+                                                    EdgeInsets.only(left: 15),
+                                                width: 35,
+                                                child: Image.asset(
+                                                    'assets/images/icon-scan.png')),
+                                            Container(
+                                              margin: EdgeInsets.only(left: 7),
+                                              child: RichText(
+                                                  text: TextSpan(children: [
+                                                TextSpan(
+                                                    text: 'Scan QR Produk\n',
+                                                    style: TextStyle(
+                                                        color: Colors.black87,
+                                                        fontFamily: 'Brandon',
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        fontSize: 12)),
+                                                TextSpan(
+                                                    text:
+                                                        'Untuk belanja di toko Ponny Beaute',
+                                                    style: TextStyle(
+                                                      fontFamily: 'Brandon',
+                                                      fontSize: 9,
+                                                      color: Colors.black45,
+                                                    ))
+                                              ])),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding:
+                                            EdgeInsets.symmetric(vertical: 10),
+                                        child: VerticalDivider(),
+                                      ),
+                                      Row(
+                                        children: [
+                                          Container(
+                                              margin: EdgeInsets.only(left: 6),
+                                              width: 30,
+                                              child: Image.asset(
+                                                  'assets/images/Asset 13.png')),
+                                          Container(
+                                            margin: EdgeInsets.only(left: 7),
+                                            child: RichText(
+                                                text: TextSpan(children: [
+                                              TextSpan(
+                                                  text: '1200 POIN\n',
+                                                  style: TextStyle(
+                                                      color: Colors.black87,
+                                                      fontFamily: 'Brandon',
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontSize: 12)),
+                                              TextSpan(
+                                                  text: 'Happy Skin Rewards',
+                                                  style: TextStyle(
+                                                    fontFamily: 'Brandon',
+                                                    fontSize: 9,
+                                                    color: Colors.black45,
+                                                  ))
+                                            ])),
+                                          ),
+                                        ],
+                                      )
+                                    ]),
+                                  ),
+                                  // SizedBox(height: 20),
                                   IntrinsicHeight(
                                     child: Row(
                                       children: [
