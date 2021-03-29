@@ -115,13 +115,13 @@ class _AddCodeAffiliateState extends State<AddCodeAffiliate> {
             children: [
               Container(
                   width: size.width,
-                  height: size.height * 0.37,
+                  height: 220,
                   decoration: BoxDecoration(color: Hexcolor('#FCF8F0')),
                   child: Stack(
                     children: [
                       Container(
                         width: size.width,
-                        height: size.height * 0.28,
+                        height: 170,
                         color: Colors.red,
                         child: CachedNetworkImage(
                           imageUrl: "$img_url${widget.img}",
@@ -140,7 +140,7 @@ class _AddCodeAffiliateState extends State<AddCodeAffiliate> {
                           margin: EdgeInsets.symmetric(
                               horizontal: size.width * 0.05),
                           width: size.width,
-                          height: size.height * 0.14,
+                          height: 80,
                           decoration: BoxDecoration(
                               color: Hexcolor('#FCF8F0'),
                               borderRadius:
