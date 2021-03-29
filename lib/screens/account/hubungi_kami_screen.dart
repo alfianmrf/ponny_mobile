@@ -19,7 +19,7 @@ import 'package:ponny/widgets/PonnyBottomNavbar.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uiblock/uiblock.dart';
-import 'package:url_launcher/url_launcher.dart' as Launcher;
+import 'package:url_launcher/url_launcher.dart';
 import 'package:ponny/util/globalUrl.dart';
 
 class HubungiKamiScreen extends StatefulWidget {
@@ -30,15 +30,6 @@ class HubungiKamiScreen extends StatefulWidget {
 
 class _HubungiKamiStateScreen extends State<HubungiKamiScreen> {
   final VoidCallback onError = null;
-  void _launch(String url) async {
-    if (await Launcher.canLaunch(url)) {
-      await Launcher.launch(url, forceWebView: false,);
-    } else {
-      if (onError != null) {
-        onError();
-      }
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -152,9 +143,16 @@ class _HubungiKamiStateScreen extends State<HubungiKamiScreen> {
                       alignment: Alignment.center,
                       child: InkWell(
                         borderRadius: BorderRadius.circular(10),
-                        onTap: (){
+                        onTap: () async {
+                          var url = wa.link.replaceAll(' ', '%20');
                           if(wa != null){
-                            _launch(wa.link);
+                            if (await canLaunch(url)) {
+                                await launch(url, forceWebView: false, forceSafariVC: false);
+                              } else {
+                              if (onError != null) {
+                                onError();
+                              }
+                            }
                           }
                         },
                         child: Container(

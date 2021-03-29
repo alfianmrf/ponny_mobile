@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
@@ -1502,16 +1504,35 @@ class _CartScreenState extends State<CartScreen> {
                                                   if (value.coupon != null &&
                                                       value.coupon.code !=
                                                           null) {
-                                                    final snackBar = SnackBar(
-                                                      content: Text('Success.',
-                                                          style: TextStyle(
-                                                              color: Colors
-                                                                  .white)),
-                                                      backgroundColor:
-                                                          Colors.green,
-                                                    );
-                                                    scaffoldKey.currentState
-                                                        .showSnackBar(snackBar);
+                                                    if (value.coupon
+                                                            .calculated ==
+                                                        "0") {
+                                                      final snackBar = SnackBar(
+                                                        content: Text(
+                                                            'Minimum belanja belum mencukupi!',
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .white)),
+                                                        backgroundColor:
+                                                            Colors.redAccent,
+                                                      );
+                                                      scaffoldKey.currentState
+                                                          .showSnackBar(
+                                                              snackBar);
+                                                    } else {
+                                                      final snackBar = SnackBar(
+                                                        content: Text(
+                                                            'Success.',
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .white)),
+                                                        backgroundColor:
+                                                            Colors.green,
+                                                      );
+                                                      scaffoldKey.currentState
+                                                          .showSnackBar(
+                                                              snackBar);
+                                                    }
                                                   } else {
                                                     final snackBar = SnackBar(
                                                       content: Text(
@@ -1638,32 +1659,34 @@ class _CartScreenState extends State<CartScreen> {
                                     ),
                                   ),
                                   if (value.coupon != null)
-                                    Padding(
-                                      padding:
-                                          EdgeInsets.symmetric(vertical: 5),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: <Widget>[
-                                          Text(
-                                            'POTONGAN DISKON',
-                                            style: TextStyle(
-                                              fontFamily: 'Brandon',
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.bold,
-                                            ),
+                                    if (value.coupon.coupon_id != null)
+                                      if (value.summary.discount != "Rp0")
+                                        Padding(
+                                          padding:
+                                              EdgeInsets.symmetric(vertical: 5),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: <Widget>[
+                                              Text(
+                                                'POTONGAN DISKON',
+                                                style: TextStyle(
+                                                  fontFamily: 'Brandon',
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                              Text(
+                                                value.summary.discount,
+                                                style: TextStyle(
+                                                  fontFamily: 'Brandon',
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                            ],
                                           ),
-                                          Text(
-                                            value.summary.discount,
-                                            style: TextStyle(
-                                              fontFamily: 'Brandon',
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
+                                        ),
                                   Padding(
                                     padding: EdgeInsets.symmetric(vertical: 5),
                                     child: Row(
