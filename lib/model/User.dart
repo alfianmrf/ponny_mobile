@@ -65,6 +65,20 @@ class UserModel with ChangeNotifier{
     return false;
   }
 
+  Future<bool> setUserOTP(String token,param,id) async {
+
+    try {
+      final result = await http.post(urlUpdateProfile+"/"+id.toString(), headers: { HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: "Bearer $token"},body: json.encode(param));
+      if (result.statusCode == 200) {
+        await getUser(token);
+        return true;
+      }
+    } catch (err) {
+      print(err);
+    }
+    return false;
+  }
+
   Future<void> logout() async {
     user = null;
     loggedIn = false;
