@@ -7,9 +7,17 @@ class ListTokoPengirimanScreen extends StatefulWidget {
 }
 
 class _ListTokoPengirimanScreenState extends State<ListTokoPengirimanScreen> {
+  int _selectedIndex;
+
+  _onSelected(int index) {
+    setState(() => _selectedIndex = index);
+  }
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    var method = Provider.of<MetodePengiriman>(context);
+
     return Scaffold(
       backgroundColor: Hexcolor('#FCF8F0'),
       appBar: AppBar(
@@ -41,54 +49,61 @@ class _ListTokoPengirimanScreenState extends State<ListTokoPengirimanScreen> {
               );
             },
             itemBuilder: (BuildContext context, int index) {
-              return Container(
-                margin: EdgeInsets.only(left: 16, top: 10, bottom: 10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Neo Soho Mall",
-                      style: TextStyle(
-                        fontFamily: "Brandon",
-                        fontWeight: FontWeight.w600,
-                        color: Colors.black,
-                        fontSize: 17,
-                      ),
-                    ),
-                    Text(
-                      "Letjend S. Parman St. No.KAv 28, West Jakarta",
-                      style: TextStyle(
-                        fontFamily: "Brandon",
-                        color: Colors.black,
-                        fontSize: 15,
-                      ),
-                    ),
-                    Text(
-                      "Jam Buka : Pukul 10:00 - 19:00 WIB ",
-                      style: TextStyle(
-                        fontFamily: "Brandon",
-                        color: Colors.black,
-                        fontSize: 15,
-                      ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(top: 12),
-                      padding: EdgeInsets.symmetric(horizontal: 7, vertical: 4),
-                      decoration: BoxDecoration(
-                          color: Colors.green.withOpacity(0.90),
-                          borderRadius: BorderRadius.all(Radius.circular(8))),
-                      child: Text(
-                        "Stok barang tersedia",
-                        style: TextStyle(
-                          fontFamily: "Brandon",
-                          color: Colors.white,
-                          fontSize: 13,
+              return GestureDetector(
+                  child: Container(
+                    color: _selectedIndex != null && _selectedIndex == index
+                        ? Hexcolor('#FFF4DE')
+                        : Hexcolor('#FCF8F0'),
+                    padding: EdgeInsets.only(left: 16, top: 10, bottom: 10),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Neo Soho Mall",
+                          style: TextStyle(
+                            fontFamily: "Brandon",
+                            fontWeight: FontWeight.w600,
+                            color: Colors.black,
+                            fontSize: 17,
+                          ),
                         ),
-                      ),
-                    )
-                  ],
-                ),
-              );
+                        Text(
+                          "Letjend S. Parman St. No.KAv 28, West Jakarta",
+                          style: TextStyle(
+                            fontFamily: "Brandon",
+                            color: Colors.black,
+                            fontSize: 15,
+                          ),
+                        ),
+                        Text(
+                          "Jam Buka : Pukul 10:00 - 19:00 WIB ",
+                          style: TextStyle(
+                            fontFamily: "Brandon",
+                            color: Colors.black,
+                            fontSize: 15,
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(top: 12),
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 7, vertical: 4),
+                          decoration: BoxDecoration(
+                              color: Colors.green.withOpacity(0.90),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(8))),
+                          child: Text(
+                            "Stok barang tersedia",
+                            style: TextStyle(
+                              fontFamily: "Brandon",
+                              color: Colors.white,
+                              fontSize: 13,
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  onTap: () => _onSelected(index));
             },
           ),
           Positioned(
@@ -114,6 +129,8 @@ class _ListTokoPengirimanScreenState extends State<ListTokoPengirimanScreen> {
                       ),
                     ),
                     onPressed: () {
+                      method.setAddress = "wkwkwk";
+
                       Navigator.push(
                         context,
                         MaterialPageRoute(

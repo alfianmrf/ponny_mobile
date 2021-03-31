@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:intl/intl.dart';
@@ -9,6 +10,7 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:ponny/common/constant.dart';
 import 'package:ponny/model/App.dart';
 import 'package:ponny/model/Cart.dart';
+import 'package:ponny/model/MetodePengirimanModel.dart';
 import 'package:ponny/model/User.dart';
 import 'package:ponny/screens/PilihSample.dart';
 import 'package:ponny/screens/account/happy_skin_reward_screen.dart';
@@ -43,6 +45,9 @@ class _CartScreenState extends State<CartScreen> {
   int _n1 = 1;
   int _n2 = 1;
   List<dynamic> detailImage;
+  bool pointValue = true;
+  bool productOutOfStock = true;
+
   void add1() {
     setState(() {
       _n1++;
@@ -230,20 +235,20 @@ class _CartScreenState extends State<CartScreen> {
                       ),
                     ),
                     Divider(color: Color(0xffF48262)),
-                    Padding(
-                      padding: EdgeInsets.only(bottom: 20),
-                      child: Column(
-                        children: [
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        ListTokoPengirimanScreen()),
-                              );
-                            },
-                            child: Container(
+                    GestureDetector(
+                      onTap: () {
+                        Provider.of<MetodePengiriman>(context);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ListTokoPengirimanScreen()),
+                        );
+                      },
+                      child: Padding(
+                        padding: EdgeInsets.only(bottom: 20),
+                        child: Column(
+                          children: [
+                            Container(
                                 child: Column(children: [
                               Padding(
                                 padding: EdgeInsets.only(left: 20),
@@ -278,55 +283,56 @@ class _CartScreenState extends State<CartScreen> {
                                 ),
                               ),
                             ])),
-                          ),
-                          Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 15),
-                              child: Divider(
-                                color: Color(0xffF48262),
-                              )),
-                          GestureDetector(
-                            onTap: () {
-                              print("Pick up");
-                            },
-                            child: Container(
-                              child: Column(
-                                children: [
-                                  Padding(
-                                      padding: EdgeInsets.only(left: 20),
-                                      child: Row(children: [
-                                        Image.asset(
-                                          'assets/images/perjalanan@4x.png',
-                                          width: 25,
-                                          height: 25,
-                                          fit: BoxFit.contain,
-                                        ),
-                                        SizedBox(width: 7),
-                                        Text(
-                                          "Pick Up",
-                                          style: TextStyle(
-                                            fontFamily: "Brandon",
-                                            fontWeight: FontWeight.w600,
-                                            color: Colors.black,
-                                            fontSize: 15,
+                            Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 15),
+                                child: Divider(
+                                  color: Color(0xffF48262),
+                                )),
+                            GestureDetector(
+                              onTap: () {
+                                print("Pick up");
+                              },
+                              child: Container(
+                                child: Column(
+                                  children: [
+                                    Padding(
+                                        padding: EdgeInsets.only(left: 20),
+                                        child: Row(children: [
+                                          Image.asset(
+                                            'assets/images/perjalanan@4x.png',
+                                            width: 25,
+                                            height: 25,
+                                            fit: BoxFit.contain,
                                           ),
-                                        )
-                                      ])),
-                                  Container(
-                                    margin: EdgeInsets.symmetric(horizontal: 5),
-                                    child: Text(
-                                      "Pesanan akan dikirim ke alamat penerima yang sudah kamu pilih",
-                                      style: TextStyle(
-                                        fontFamily: "Brandon",
-                                        color: Colors.black45,
-                                        fontSize: 13,
+                                          SizedBox(width: 7),
+                                          Text(
+                                            "Pick Up",
+                                            style: TextStyle(
+                                              fontFamily: "Brandon",
+                                              fontWeight: FontWeight.w600,
+                                              color: Colors.black,
+                                              fontSize: 15,
+                                            ),
+                                          )
+                                        ])),
+                                    Container(
+                                      margin:
+                                          EdgeInsets.symmetric(horizontal: 5),
+                                      child: Text(
+                                        "Pesanan akan dikirim ke alamat penerima yang sudah kamu pilih",
+                                        style: TextStyle(
+                                          fontFamily: "Brandon",
+                                          color: Colors.black45,
+                                          fontSize: 13,
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
-                            ),
-                          )
-                        ],
+                            )
+                          ],
+                        ),
                       ),
                     )
                   ],
@@ -411,6 +417,7 @@ class _CartScreenState extends State<CartScreen> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    var method = Provider.of<MetodePengiriman>(context);
     int jumlahSample =
         Provider.of<CartModel>(context).listUseSample.length ?? 0;
     return Scaffold(
@@ -1225,300 +1232,323 @@ class _CartScreenState extends State<CartScreen> {
                               ),
                             ),
                           ),
-                          Container(
-                            height: 10,
-                            width: MediaQuery.of(context).size.width,
-                            color: Colors.white,
-                          ),
-                          Container(
-                            width: MediaQuery.of(context).size.width,
-                            padding: EdgeInsets.symmetric(vertical: 7),
-                            child: Column(
-                              children: [
-                                Row(
-                                  children: [
-                                    Container(
-                                      padding:
-                                          EdgeInsets.symmetric(horizontal: 15),
-                                      child: Text(
-                                        'METODE PENGIRIMAN',
-                                        style: TextStyle(
-                                          fontFamily: 'Brandon',
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                        textAlign: TextAlign.left,
-                                      ),
-                                    ),
-                                    Spacer(),
-                                    GestureDetector(
-                                      onTap: () {
-                                        _methodeModalBottomSheet(context);
-                                      },
-                                      child: Container(
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 15),
-                                          child: Icon(Icons.help_outline,
-                                              color: Colors.black54, size: 20)),
-                                    )
-                                  ],
-                                ),
-                                Container(
-                                  padding: EdgeInsets.only(left: 13, right: 10),
-                                  margin: EdgeInsets.symmetric(
-                                      horizontal: 15, vertical: 8),
-                                  width: MediaQuery.of(context).size.width,
-                                  height: 50,
-                                  decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      border: Border.all(
-                                          width: 1,
-                                          color: Color(0xffF48262)
-                                              .withOpacity(0.37)),
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(10))),
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      _changeMethodeModalBottomSheet(context);
-                                    },
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        RichText(
-                                            text: TextSpan(children: [
-                                          TextSpan(
-                                              text: 'Pilih metode pengiriman\n',
-                                              style: TextStyle(
-                                                  color: Colors.black87,
-                                                  fontFamily: 'Brandon',
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 13)),
-                                          TextSpan(
-                                              text:
-                                                  'Mau diantar atau diambil sendiri nih ? Kami bisa pilih, loh!',
-                                              style: TextStyle(
-                                                fontFamily: 'Brandon',
-                                                fontSize: 10,
-                                                color: Colors.black45,
-                                              ))
-                                        ])),
-                                        Icon(Icons.arrow_forward_ios,
-                                            color: Color(0xffF48262), size: 16)
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                Column(
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Icon(
-                                          Icons.priority_high,
-                                          color: Color(0xffF48262),
-                                          size: 27,
-                                        ),
-                                        Container(
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              0.9,
-                                          child: TextBuild(
-                                            value:
-                                                "Oops,sorry! Produk pilihanmu stoknya lagi nggak tersedia untuk pickup di Grand Indonesia, nih.",
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.only(
-                                      left: 25, top: 10, bottom: 10),
-                                  child: Row(
-                                    children: [
-                                      Container(
-                                        margin: EdgeInsets.only(right: 10),
-                                        height: 25,
-                                        decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(20),
-                                            border: Border.all(
-                                                color: Color(0xffF48262)
-                                                    .withOpacity(0.22))),
-                                        child: FlatButton(
-                                            padding: EdgeInsets.zero,
-                                            materialTapTargetSize:
-                                                MaterialTapTargetSize
-                                                    .shrinkWrap,
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(20),
-                                            ),
-                                            color: Colors.white,
-                                            onPressed: () {},
-                                            child: TextBuild(
-                                              value: "Ganti Toko",
-                                              size: 12,
-                                              warna: Color(0xffF48262),
-                                            )),
-                                      ),
-                                      Container(
-                                        height: 25,
-                                        decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(20),
-                                            border: Border.all(
-                                                color: Color(0xffF48262)
-                                                    .withOpacity(0.22))),
-                                        child: FlatButton(
-                                            padding: EdgeInsets.zero,
-                                            materialTapTargetSize:
-                                                MaterialTapTargetSize
-                                                    .shrinkWrap,
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(20),
-                                            ),
-                                            color: Colors.white,
-                                            onPressed: () {},
-                                            child: TextBuild(
-                                              value: "Coba Delivery",
-                                              size: 12,
-                                              warna: Color(0xffF48262),
-                                            )),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                                Container(
+                          productOutOfStock != null && productOutOfStock == true
+                              ? Container(
                                   height: 10,
                                   width: MediaQuery.of(context).size.width,
                                   color: Colors.white,
-                                ),
-                                ListView.separated(
-                                  scrollDirection: Axis.vertical,
-                                  shrinkWrap: true,
-                                  physics: NeverScrollableScrollPhysics(),
-                                  itemCount: 2,
-                                  separatorBuilder:
-                                      (BuildContext context, int index) {
-                                    return Divider();
-                                  },
-                                  itemBuilder:
-                                      (BuildContext context, int index) {
-                                    return Container(
-                                      padding: EdgeInsets.symmetric(
-                                          vertical: 20, horizontal: 10),
-                                      child: Row(
+                                )
+                              : Container(),
+                          productOutOfStock != null && productOutOfStock == true
+                              ? Container(
+                                  width: MediaQuery.of(context).size.width,
+                                  padding: EdgeInsets.symmetric(vertical: 7),
+                                  child: Column(
+                                    children: [
+                                      Row(
                                         children: [
-                                          Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
+                                          Container(
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 15),
+                                            child: Text(
+                                              'METODE PENGIRIMAN',
+                                              style: TextStyle(
+                                                fontFamily: 'Brandon',
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                              textAlign: TextAlign.left,
+                                            ),
+                                          ),
+                                          Spacer(),
+                                          GestureDetector(
+                                            onTap: () {
+                                              _methodeModalBottomSheet(context);
+                                            },
+                                            child: Container(
+                                                padding: EdgeInsets.symmetric(
+                                                    horizontal: 15),
+                                                child: Icon(Icons.help_outline,
+                                                    color: Colors.black54,
+                                                    size: 20)),
+                                          )
+                                        ],
+                                      ),
+                                      GestureDetector(
+                                        onTap: () {
+                                          _changeMethodeModalBottomSheet(
+                                              context);
+                                        },
+                                        child: Container(
+                                          padding: EdgeInsets.only(
+                                              left: 13, right: 10),
+                                          margin: EdgeInsets.symmetric(
+                                              horizontal: 15, vertical: 8),
+                                          width:
+                                              MediaQuery.of(context).size.width,
+                                          height: 50,
+                                          decoration: BoxDecoration(
+                                              color: Colors.white,
+                                              border: Border.all(
+                                                  width: 1,
+                                                  color: Color(0xffF48262)
+                                                      .withOpacity(0.37)),
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(10))),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
                                             children: [
-                                              detailImage == null
-                                                  ? Container(
-                                                      width: 110,
-                                                      height: 110,
-                                                      color: Colors.grey[300],
-                                                      child: Image.asset(
-                                                          'assets/images/210x265.png'),
-                                                    )
-                                                  : Container(
-                                                      width: 110,
-                                                      height: 110,
-                                                      decoration: BoxDecoration(
-                                                          image: DecorationImage(
-                                                              image: NetworkImage(
-                                                                  "$img_url${detailImage[0]}"),
-                                                              fit: BoxFit
-                                                                  .cover)),
-                                                    )
+                                              RichText(
+                                                  text: TextSpan(children: [
+                                                TextSpan(
+                                                    text:
+                                                        'Pilih metode pengiriman\n',
+                                                    style: TextStyle(
+                                                        color: Colors.black87,
+                                                        fontFamily: 'Brandon',
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        fontSize: 13)),
+                                                TextSpan(
+                                                    text: method.setAddress,
+                                                    style: TextStyle(
+                                                      fontFamily: 'Brandon',
+                                                      fontSize: 10,
+                                                      color: Colors.black45,
+                                                    ))
+                                              ])),
+                                              Icon(Icons.arrow_forward_ios,
+                                                  color: Color(0xffF48262),
+                                                  size: 16)
                                             ],
                                           ),
-                                          Container(
-                                            width: size.width * 0.58,
-                                            padding: EdgeInsets.only(left: 15),
-                                            height: 110,
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  "Skin Game",
-                                                  style: TextStyle(
-                                                    fontWeight: FontWeight.w600,
-                                                    fontFamily: 'Yeseva',
-                                                    fontSize: 16,
-                                                  ),
+                                        ),
+                                      ),
+                                      Column(
+                                        children: [
+                                          Row(
+                                            children: [
+                                              Icon(
+                                                Icons.priority_high,
+                                                color: Color(0xffF48262),
+                                                size: 27,
+                                              ),
+                                              Container(
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    0.9,
+                                                child: TextBuild(
+                                                  value:
+                                                      "Oops,sorry! Produk pilihanmu stoknya lagi nggak tersedia untuk pickup di Grand Indonesia, nih.",
                                                 ),
-                                                TextBuild(
-                                                  value: "Acne Warrior",
-                                                ),
-                                                SizedBox(height: 7),
-                                                Row(
-                                                  children: [
-                                                    Container(
-                                                      margin: EdgeInsets.only(
-                                                          top: 20),
-                                                      height: 31,
-                                                      decoration: BoxDecoration(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(20),
-                                                          border: Border.all(
-                                                              color: Color(
-                                                                      0xffF48262)
-                                                                  .withOpacity(
-                                                                      0.22))),
-                                                      child: FlatButton(
-                                                        padding: EdgeInsets
-                                                            .symmetric(
-                                                                horizontal: 13),
-                                                        materialTapTargetSize:
-                                                            MaterialTapTargetSize
-                                                                .shrinkWrap,
-                                                        color: Colors.white,
-                                                        shape: RoundedRectangleBorder(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .all(Radius
-                                                                        .circular(
-                                                                            20))),
-                                                        onPressed: () {},
-                                                        child: TextBuild(
-                                                          value:
-                                                              "Masukan daftar keinginan",
-                                                          size: 12,
-                                                          warna:
-                                                              Color(0xffF48262),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    Container(
-                                                      margin: EdgeInsets.only(
-                                                          top: 20, left: 10),
-                                                      width: 25,
-                                                      height: 25,
-                                                      child: Icon(
-                                                        Icons.delete,
-                                                        color:
-                                                            Color(0xffF48262),
-                                                      ),
-                                                    )
-                                                  ],
-                                                )
-                                              ],
-                                            ),
+                                              )
+                                            ],
                                           ),
                                         ],
                                       ),
-                                    );
-                                  },
-                                ),
-                              ],
-                            ),
-                          ),
+                                      Padding(
+                                        padding: EdgeInsets.only(
+                                            left: 25, top: 10, bottom: 10),
+                                        child: Row(
+                                          children: [
+                                            Container(
+                                              margin:
+                                                  EdgeInsets.only(right: 10),
+                                              height: 25,
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(20),
+                                                  border: Border.all(
+                                                      color: Color(0xffF48262)
+                                                          .withOpacity(0.22))),
+                                              child: FlatButton(
+                                                  padding: EdgeInsets.zero,
+                                                  materialTapTargetSize:
+                                                      MaterialTapTargetSize
+                                                          .shrinkWrap,
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            20),
+                                                  ),
+                                                  color: Colors.white,
+                                                  onPressed: () {},
+                                                  child: TextBuild(
+                                                    value: "Ganti Toko",
+                                                    size: 12,
+                                                    warna: Color(0xffF48262),
+                                                  )),
+                                            ),
+                                            Container(
+                                              height: 25,
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(20),
+                                                  border: Border.all(
+                                                      color: Color(0xffF48262)
+                                                          .withOpacity(0.22))),
+                                              child: FlatButton(
+                                                  padding: EdgeInsets.zero,
+                                                  materialTapTargetSize:
+                                                      MaterialTapTargetSize
+                                                          .shrinkWrap,
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            20),
+                                                  ),
+                                                  color: Colors.white,
+                                                  onPressed: () {},
+                                                  child: TextBuild(
+                                                    value: "Coba Delivery",
+                                                    size: 12,
+                                                    warna: Color(0xffF48262),
+                                                  )),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                      Container(
+                                        height: 10,
+                                        width:
+                                            MediaQuery.of(context).size.width,
+                                        color: Colors.white,
+                                      ),
+                                      ListView.separated(
+                                        scrollDirection: Axis.vertical,
+                                        shrinkWrap: true,
+                                        physics: NeverScrollableScrollPhysics(),
+                                        itemCount: 2,
+                                        separatorBuilder:
+                                            (BuildContext context, int index) {
+                                          return Divider();
+                                        },
+                                        itemBuilder:
+                                            (BuildContext context, int index) {
+                                          return Container(
+                                            padding: EdgeInsets.symmetric(
+                                                vertical: 20, horizontal: 10),
+                                            child: Row(
+                                              children: [
+                                                Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    detailImage == null
+                                                        ? Container(
+                                                            width: 110,
+                                                            height: 110,
+                                                            color: Colors
+                                                                .grey[300],
+                                                            child: Image.asset(
+                                                                'assets/images/210x265.png'),
+                                                          )
+                                                        : Container(
+                                                            width: 110,
+                                                            height: 110,
+                                                            decoration: BoxDecoration(
+                                                                image: DecorationImage(
+                                                                    image: NetworkImage(
+                                                                        "$img_url${detailImage[0]}"),
+                                                                    fit: BoxFit
+                                                                        .cover)),
+                                                          )
+                                                  ],
+                                                ),
+                                                Container(
+                                                  width: size.width * 0.58,
+                                                  padding:
+                                                      EdgeInsets.only(left: 15),
+                                                  height: 110,
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Text(
+                                                        "Skin Game",
+                                                        style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                          fontFamily: 'Yeseva',
+                                                          fontSize: 16,
+                                                        ),
+                                                      ),
+                                                      TextBuild(
+                                                        value: "Acne Warrior",
+                                                      ),
+                                                      SizedBox(height: 7),
+                                                      Row(
+                                                        children: [
+                                                          Container(
+                                                            margin:
+                                                                EdgeInsets.only(
+                                                                    top: 20),
+                                                            height: 31,
+                                                            decoration: BoxDecoration(
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            20),
+                                                                border: Border.all(
+                                                                    color: Color(
+                                                                            0xffF48262)
+                                                                        .withOpacity(
+                                                                            0.22))),
+                                                            child: FlatButton(
+                                                              padding: EdgeInsets
+                                                                  .symmetric(
+                                                                      horizontal:
+                                                                          13),
+                                                              materialTapTargetSize:
+                                                                  MaterialTapTargetSize
+                                                                      .shrinkWrap,
+                                                              color:
+                                                                  Colors.white,
+                                                              shape: RoundedRectangleBorder(
+                                                                  borderRadius:
+                                                                      BorderRadius.all(
+                                                                          Radius.circular(
+                                                                              20))),
+                                                              onPressed: () {},
+                                                              child: TextBuild(
+                                                                value:
+                                                                    "Masukan daftar keinginan",
+                                                                size: 12,
+                                                                warna: Color(
+                                                                    0xffF48262),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          Container(
+                                                            margin:
+                                                                EdgeInsets.only(
+                                                                    top: 20,
+                                                                    left: 10),
+                                                            width: 25,
+                                                            height: 25,
+                                                            child: Icon(
+                                                              Icons.delete,
+                                                              color: Color(
+                                                                  0xffF48262),
+                                                            ),
+                                                          )
+                                                        ],
+                                                      )
+                                                    ],
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              : Container(),
                           Container(
                             height: 10,
                             width: MediaQuery.of(context).size.width,
@@ -1676,69 +1706,86 @@ class _CartScreenState extends State<CartScreen> {
                                     ],
                                   ),
                                 ),
-                                Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: 12),
-                                  child: Divider(
-                                    color: Color(0xffF48262),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.only(left: 12),
-                                  child: Row(
-                                    children: [
-                                      Image.asset(
-                                        'assets/images/Asset 13.png',
-                                        width: 30,
-                                        height: 30,
-                                        fit: BoxFit.contain,
-                                      ),
-                                      SizedBox(
-                                        width: 10,
-                                      ),
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Row(
-                                            children: [
-                                              Text("Poin yang dapat ditukar",
-                                                  style: TextStyle(
-                                                    fontFamily: 'Brandon',
-                                                    fontSize: 14,
-                                                    color: Colors.black,
-                                                  )),
-                                              SizedBox(width: 8),
-                                              Icon(Icons.help_outline,
-                                                  size: 16,
-                                                  color: Colors.black54),
-                                            ],
-                                          ),
-                                          Text("-10.000",
-                                              style: TextStyle(
-                                                fontFamily: 'Brandon',
-                                                fontSize: 14,
-                                                color: Color(0xffF48262),
-                                              )),
-                                        ],
-                                      ),
-                                      Spacer(),
-                                      Switch(
-                                        value: false,
-                                        onChanged: (value) {
-                                          setState(() {});
-                                        },
-                                        activeTrackColor: Color(0xffF48262),
-                                        activeColor: Colors.grey[200],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: 12),
-                                  child: Divider(
-                                    color: Color(0xffF48262),
-                                  ),
-                                ),
+                                productOutOfStock != null &&
+                                        productOutOfStock == true
+                                    ? Padding(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 12),
+                                        child: Divider(
+                                          color: Color(0xffF48262),
+                                        ),
+                                      )
+                                    : Container(),
+                                productOutOfStock != null &&
+                                        productOutOfStock == true
+                                    ? Padding(
+                                        padding: EdgeInsets.only(left: 12),
+                                        child: Row(
+                                          children: [
+                                            Image.asset(
+                                              'assets/images/Asset 13.png',
+                                              width: 30,
+                                              height: 30,
+                                              fit: BoxFit.contain,
+                                            ),
+                                            SizedBox(
+                                              width: 10,
+                                            ),
+                                            Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Row(
+                                                  children: [
+                                                    Text(
+                                                        "Poin yang dapat ditukar",
+                                                        style: TextStyle(
+                                                          fontFamily: 'Brandon',
+                                                          fontSize: 14,
+                                                          color: Colors.black,
+                                                        )),
+                                                    SizedBox(width: 8),
+                                                    Icon(Icons.help_outline,
+                                                        size: 16,
+                                                        color: Colors.black54),
+                                                  ],
+                                                ),
+                                                Text("-10.000",
+                                                    style: TextStyle(
+                                                      fontFamily: 'Brandon',
+                                                      fontSize: 14,
+                                                      color: Color(0xffF48262),
+                                                    )),
+                                              ],
+                                            ),
+                                            Spacer(),
+                                            Transform.scale(
+                                              scale: 0.72,
+                                              child: CupertinoSwitch(
+                                                value: pointValue,
+                                                onChanged: (value) {
+                                                  setState(() {
+                                                    pointValue = value;
+                                                  });
+                                                },
+                                                trackColor: Color(0xffF48262),
+                                                activeColor: Colors.grey[200],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      )
+                                    : Container(),
+                                productOutOfStock != null &&
+                                        productOutOfStock == true
+                                    ? Padding(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 12),
+                                        child: Divider(
+                                          color: Color(0xffF48262),
+                                        ),
+                                      )
+                                    : Container(),
                               ],
                             ),
                           ),

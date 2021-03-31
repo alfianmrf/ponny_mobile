@@ -37,7 +37,8 @@ class _RincianPengambilanScreenState extends State<RincianPengambilanScreen> {
             children: [
               Container(
                 decoration: BoxDecoration(
-                    border: Border.all(width: 1, color: Color(0xffF48262)),
+                    border: Border.all(
+                        width: 1, color: Color(0xffF48262).withOpacity(0.32)),
                     borderRadius: BorderRadius.all(Radius.circular(10))),
                 margin:
                     EdgeInsets.only(left: 14, top: 10, bottom: 10, right: 14),
@@ -51,7 +52,7 @@ class _RincianPengambilanScreenState extends State<RincianPengambilanScreen> {
                           Icons.location_on,
                           color: Color(0xffF48262),
                         ),
-                        SizedBox(width: 10),
+                        SizedBox(width: 3),
                         Text(
                           "Pick up in store",
                           style: TextStyle(
@@ -104,7 +105,8 @@ class _RincianPengambilanScreenState extends State<RincianPengambilanScreen> {
               ),
               Container(
                 decoration: BoxDecoration(
-                    border: Border.all(width: 1, color: Color(0xffF48262)),
+                    border: Border.all(
+                        width: 1, color: Color(0xffF48262).withOpacity(0.32)),
                     borderRadius: BorderRadius.all(Radius.circular(10))),
                 margin:
                     EdgeInsets.only(left: 14, top: 10, bottom: 10, right: 14),
