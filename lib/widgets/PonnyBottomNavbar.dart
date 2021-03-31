@@ -57,9 +57,12 @@ class PonnyBottomNavbar extends StatelessWidget {
           break;
         case 3:
             if( ModalRoute.of(context).settings.name != "forums_screen"){
-              Navigator.pushNamedAndRemoveUntil(
+              Provider.of<AppModel>(context).loggedIn ? Navigator.pushNamedAndRemoveUntil(
                   context,
                   ForumData.id,(_) => false
+              ):Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => LoginScreen()),
               );
             }
           break;
