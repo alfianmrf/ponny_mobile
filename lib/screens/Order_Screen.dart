@@ -251,6 +251,7 @@ class _OrderScreenState extends State<OrderScreen> {
                                         Expanded(
                                           child: InkWell(
                                             onTap: (){
+                                              if(e.product.is_shown)
                                               Navigator.push(context, MaterialPageRoute(builder: (context) => ProductDetailsScreen(
                                                 product: e.product,
                                               )

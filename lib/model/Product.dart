@@ -217,7 +217,7 @@ class Product{
   String komposisi;
   String slug;
   int currentStock;
-
+  bool is_shown;
 
 
 
@@ -248,7 +248,8 @@ class Product{
       this.varian,
       this.komposisi,
       this.slug,
-      this.currentStock
+      this.currentStock,
+      this.is_shown
       );
 
 
@@ -293,7 +294,8 @@ class Product{
         _var,
         parsedJson['komposisi'],
         parsedJson["slug"],
-        parsedJson["current_stock"]
+        parsedJson["current_stock"],
+        parsedJson["is_shown"]
     );
   }
 }

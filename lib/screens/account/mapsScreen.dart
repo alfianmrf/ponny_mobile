@@ -87,9 +87,33 @@ class _MapsScreenState extends State<MapsScreen> {
     return WillPopScope(
       child:  Scaffold(
         appBar: AppBar(
-          leading: null,
-          title: Text("Lokasi Pengiriman"),
-          centerTitle: true,
+          elevation: 0,
+          titleSpacing: 0,
+          leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: Icon(
+              Icons.arrow_back_ios,
+              color: Color(0xffF48262),
+              size: 26,
+            ),
+          ),
+          title:  Text(
+            "Lokasi Pengiriman",
+            style: TextStyle(
+              fontSize: 24,
+              fontFamily: "Yeseva",
+              fontWeight: FontWeight.w500,
+              color: Color(0xffF48262),
+            ),
+          ),
+          bottom: PreferredSize(
+              child: Container(
+                color: Color(0xffF48262),
+                height: 1.0,
+              ),
+              preferredSize: Size.fromHeight(1.0)),
         ),
         body: loading? Center(
           child: LoadingWidget(context),
