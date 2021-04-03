@@ -13,12 +13,14 @@ import 'package:ponny/model/User.dart';
 import 'package:ponny/screens/PilihSample.dart';
 import 'package:ponny/screens/account/happy_skin_reward_screen.dart';
 import 'package:ponny/screens/pages.dart';
+import 'package:ponny/screens/product_details_screen.dart';
 import 'package:ponny/util/globalUrl.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
 import 'package:ponny/screens/shipping_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:ponny/model/Cart.dart';
 import 'package:uiblock/uiblock.dart';
+
 
 class CartScreen extends StatefulWidget {
   static const String id = "cart_screen";
@@ -479,20 +481,26 @@ class _CartScreenState extends State<CartScreen> {
                                       width: MediaQuery.of(context).size.width *
                                           0.25,
                                       padding: EdgeInsets.only(right: 7),
-                                      child: CachedNetworkImage(
-                                        imageUrl:
-                                            item.product.thumbnail_image != null
-                                                ? img_url +
-                                                    item.product.thumbnail_image
-                                                : "",
-                                        placeholder: (context, url) =>
-                                            LoadingWidgetPulse(context),
-                                        errorWidget: (context, url, error) =>
-                                            Image.asset(
-                                                'assets/images/210x265.png'),
-                                        width:
-                                            MediaQuery.of(context).size.width,
-                                        fit: BoxFit.cover,
+                                      child: GestureDetector(
+                                        onTap: (){
+
+                                          Navigator.push(context, new MaterialPageRoute(builder: (BuildContext context)=> new ProductDetailsScreen(product: item.product,)));
+                                        },
+                                        child: CachedNetworkImage(
+                                          imageUrl:
+                                              item.product.thumbnail_image != null
+                                                  ? img_url +
+                                                      item.product.thumbnail_image
+                                                  : "",
+                                          placeholder: (context, url) =>
+                                              LoadingWidgetPulse(context),
+                                          errorWidget: (context, url, error) =>
+                                              Image.asset(
+                                                  'assets/images/210x265.png'),
+                                          width:
+                                              MediaQuery.of(context).size.width,
+                                          fit: BoxFit.cover,
+                                        ),
                                       ),
                                     ),
                                     Container(
