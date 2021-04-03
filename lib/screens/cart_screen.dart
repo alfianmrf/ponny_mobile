@@ -9,6 +9,7 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:ponny/common/constant.dart';
 import 'package:ponny/model/App.dart';
 import 'package:ponny/model/Cart.dart';
+import 'package:ponny/model/Product.dart';
 import 'package:ponny/model/User.dart';
 import 'package:ponny/screens/PilihSample.dart';
 import 'package:ponny/screens/account/happy_skin_reward_screen.dart';
@@ -519,7 +520,7 @@ class _CartScreenState extends State<CartScreen> {
                                             ),
                                           ),
                                           Text(
-                                            item.product.name,
+                                            item.product.name + " - " + item.variant,
                                             maxLines: 2,
                                             overflow: TextOverflow.ellipsis,
                                             style: TextStyle(
@@ -591,7 +592,7 @@ class _CartScreenState extends State<CartScreen> {
                                                                 Provider.of<AppModel>(
                                                                         context)
                                                                     .auth
-                                                                    .access_token)
+                                                                    .access_token, item.variant)
                                                             .then((value) {
                                                           UIBlock.unblock(
                                                               context);
@@ -626,6 +627,16 @@ class _CartScreenState extends State<CartScreen> {
                                                         ),
                                                       ),
                                                       onPressed: () {
+                                                        var _param;
+                                                        if(item.product.varian.toString()!='[]'){
+                                                          _param = '{"varian": "${item.variant}", "product_id": ${item.product.id}, "quantity": 1, "price": ${item.product.base_price}}';
+                                                        }
+                                                        print("PARAM: "+_param);
+                                                        print(item.variant);
+                                                        VarianResult varian_result;
+                                                        if(item.variant!=null){
+                                                          varian_result = new VarianResult.fromJson(json.decode(_param));
+                                                        }
                                                         UIBlock.block(context,
                                                             customLoaderChild:
                                                                 LoadingWidget(
@@ -637,7 +648,8 @@ class _CartScreenState extends State<CartScreen> {
                                                                         context)
                                                                     .auth
                                                                     .access_token,
-                                                                null)
+                                                            item.variant==null?null:varian_result)
+                                                            // null)
                                                             .then((value) {
                                                           UIBlock.unblock(
                                                               context);

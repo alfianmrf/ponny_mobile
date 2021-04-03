@@ -58,6 +58,13 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   SwiperController controller = new SwiperController();
   SwiperControl swcontrol = new SwiperControl();
 
+  Future<void> _getCartOfitem() async {
+    final auth = Provider.of<AppModel>(context);
+    if (auth.loggedIn) {
+      await Provider.of<CartModel>(context).getCart(auth.auth.access_token);
+    }
+  }
+
 
   @override
   void initState() {
@@ -82,8 +89,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
         for(Varian item in widget.product.varian ){
           option.add(ChoiceOptionsValue(atributId: item.attribute_id,value: item.values[0]));
         }
-        if(option.length>0)
-        _getPriceVarian();
+        // if(option.length>0)
+        // _getPriceVarian();
       }
 
     });
@@ -703,7 +710,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                 children: <Widget>[
 
                                   Text(
-                                    varian != null ? NumberFormat.simpleCurrency(locale: "id_ID",decimalDigits: 0 ).format(varian.base_price ) : NumberFormat.simpleCurrency(locale: "id_ID",decimalDigits: 0 ).format(widget.product.base_price ),
+                                    varian != null ? NumberFormat.simpleCurrency(locale: "id_ID",decimalDigits: 0 ).format(varian.base_price ) : widget.product.home_discounted_price,
                                     style: TextStyle(
                                       color: Colors.black,
                                       fontFamily: 'Brandon',
@@ -791,7 +798,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                               padding: EdgeInsets.only(top: 9.0),
                               child: Row(
                                 children: <Widget>[
-                                  Text(item.atribut_name+" :"),
+                                  Text(item.atribut_name+" :", style: TextStyle(fontFamily: 'Brandon'),),
                                   Expanded(
                                     child: SingleChildScrollView(
                                       scrollDirection: Axis.horizontal,
@@ -817,7 +824,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                                   ),
                                                   decoration: BoxDecoration(
                                                     border: Border.all(color: Color(0xffF48262)),
-                                                    color: option.isNotEmpty && option.firstWhere((element) => element.atributId == item.attribute_id).value == xitem ?  Color(0xffF3C1B5) : Colors.white,
+                                                    color: option.isNotEmpty && (varian != null ? varian.varian : '') == xitem ?  Color(0xffF3C1B5) : Theme.of(context).primaryColor,
                                                     borderRadius: BorderRadius.circular(5),
                                                   ),
                                                 ),
@@ -1482,7 +1489,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                             borderRadius: BorderRadius.circular(7.0),
                           ),
                           child:  Text(
-                              widget.product.currentStock > 0 ||  varian != null && varian.stock_quantity > 0 ? 'MASUKKAN KERANJANG' : "STOK KOSONG ",
+                              widget.product.currentStock > 0 ||  varian != null && varian.stock_quantity > 0 ? 'MASUKKAN KERANJANG' : varian == null ? "MASUKKAN KERANJANG" : "STOK KOSONG ",
                             style: TextStyle(
                               fontFamily: 'Brandon',
                               fontWeight: FontWeight.w700,
@@ -1497,12 +1504,20 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                 cardData.addProductToCart(widget.product,Provider.of<AppModel>(context).auth.access_token,varian != null ? varian:null).then((value){
                                   UIBlock.unblock(context);
                                   showAlertDialog(context);
+                                  _getCartOfitem();
                                 });
                               }else{
                                 Navigator.push(context,new MaterialPageRoute(
                                   builder: (BuildContext context) => new LoginScreen(),
                                 ));
                               }
+                            }
+                            else if(varian == null){
+                              final snackBarNoVariant = SnackBar(
+                                content: Text('Mohon pilih varian terlebih dahulu',style: TextStyle(color: Colors.white)),
+                                backgroundColor: Colors.redAccent,
+                              );
+                              scaffoldKey.currentState.showSnackBar(snackBarNoVariant);
                             }
                           },
                         ),
