@@ -33,7 +33,7 @@ class CartModel with ChangeNotifier{
   {
     CartResult result;
      int index = listCardOfitem.indexWhere((element) =>
-     element.product.id == product.id);
+     element.product.id == product.id && element.variant == variant.varian);
      var param=<String,dynamic>{};
 
      if (index < 0) {
@@ -66,11 +66,12 @@ class CartModel with ChangeNotifier{
        int quantity= listCardOfitem.elementAt(index).quantity;
        param.addAll({
          "product_id": product.id,
-         "qty": quantity+1
+         "qty": quantity + 1
        });
-       if(listCardOfitem.elementAt(index).variant != null){
-         param.addAll({"variant":listCardOfitem.elementAt(index).variant});
+       if(variant != null){
+         param.addAll({"variant":variant.varian});
        }
+       print(json.encode(param));
        final res = await http.post(addtocart, headers: { HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: "Bearer $token"}, body: json.encode(param));
        if (res.statusCode == 200) {
          listCardOfitem.elementAt(index).quantity = quantity+1;
@@ -79,7 +80,6 @@ class CartModel with ChangeNotifier{
        }
        final jsonData =json.decode(res.body);
        result = CartResult(message: jsonData["message"],statusCode: res.statusCode);
-
      }
     return result;
  }
@@ -128,9 +128,9 @@ class CartModel with ChangeNotifier{
     }
   }
 
-  Future<void> RemoveProductToCart(Product product,String token) async
+  Future<void> RemoveProductToCart(Product product,String token, String variant) async
   {
-    int index = listCardOfitem.indexWhere((element) => element.product.id == product.id);
+    int index = listCardOfitem.indexWhere((element) => element.product.id == product.id && element.variant == variant);
     // print(index);
     if(listCardOfitem.elementAt(index).quantity > 1){
       int quantity= listCardOfitem.elementAt(index).quantity;
@@ -138,8 +138,8 @@ class CartModel with ChangeNotifier{
         "product_id": product.id,
         "qty": quantity-1
       };
-      if(listCardOfitem.elementAt(index).variant != null){
-        param.addAll({"variant":listCardOfitem.elementAt(index).variant});
+      if(variant != null){
+        param.addAll({"variant":variant});
       }
       final res = await http.post(addtocart, headers: { HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: "Bearer $token"}, body: json.encode(param));
       if (res.statusCode == 200) {
