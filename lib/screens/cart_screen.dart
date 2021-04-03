@@ -511,11 +511,9 @@ class _CartScreenState extends State<CartScreen> {
                                             ),
                                           ),
                                           Text(
-                                            item.product.name.length > 20
-                                                ? item.product.name
-                                                        .substring(0, 20) +
-                                                    '...'
-                                                : item.product.name,
+                                            item.product.name,
+                                            maxLines: 2,
+                                            overflow: TextOverflow.ellipsis,
                                             style: TextStyle(
                                               fontFamily: 'Brandon',
                                               fontSize: 14,
@@ -564,7 +562,7 @@ class _CartScreenState extends State<CartScreen> {
                                                       highlightElevation: 0.0,
                                                       heroTag: "btnmin" +
                                                           item.product.id
-                                                              .toString(),
+                                                              .toString()+item.variant,
                                                       child: Text(
                                                         '-',
                                                         style: TextStyle(
@@ -608,7 +606,7 @@ class _CartScreenState extends State<CartScreen> {
                                                       highlightElevation: 0.0,
                                                       heroTag: "btnplus" +
                                                           item.product.id
-                                                              .toString(),
+                                                              .toString()+item.variant,
                                                       child: Text(
                                                         '+',
                                                         style: TextStyle(
@@ -777,11 +775,9 @@ class _CartScreenState extends State<CartScreen> {
                                             ),
                                           ),
                                           Text(
-                                            item.product.name.length > 20
-                                                ? item.product.name
-                                                        .substring(0, 20) +
-                                                    '...'
-                                                : item.product.name,
+                                            item.product.name,
+                                            maxLines: 2,
+                                            overflow: TextOverflow.ellipsis,
                                             style: TextStyle(
                                               fontFamily: 'Brandon',
                                               fontSize: 14,
