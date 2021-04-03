@@ -389,7 +389,7 @@ class _LoginStateScreen extends State<LoginScreen> {
             ),
           ),
           title: Text(
-            'Akun Saya',
+            'Masuk',
             style: TextStyle(
               fontSize: 24,
               fontFamily: 'Yeseva',

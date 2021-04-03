@@ -41,7 +41,7 @@ class _EditAkunStateScreen extends State<EditAkunScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       final user = Provider.of<UserModel>(context).user;
       setState(() {
-        account.text= user.provider_id == null ? user.email : user.phone;
+        account.text= user.provider_id == null ? user.email : user.phone != null ? user.phone : user.email;
         firstName.text = user.name;
         lastName.text =user.last_name;
         item =user.gender != null? user.gender=="P" ? "Female": "Male" :null;
