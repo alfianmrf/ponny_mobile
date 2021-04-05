@@ -535,8 +535,6 @@ class _CartScreenState extends State<CartScreen> {
                                               fontFamily: 'Brandon',
                                               fontSize: 14,
                                             ),
-                                            maxLines: 2,
-                                            overflow: TextOverflow.ellipsis,
                                           ),
 
                                           Text(
@@ -817,8 +815,6 @@ class _CartScreenState extends State<CartScreen> {
                                               fontFamily: 'Brandon',
                                               fontSize: 14,
                                             ),
-                                            maxLines: 2,
-                                            overflow: TextOverflow.ellipsis,
                                           ),
                                           Text(
                                             (item.jml_point * item.qty)

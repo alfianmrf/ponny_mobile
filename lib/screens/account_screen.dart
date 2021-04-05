@@ -269,13 +269,13 @@ class _AccountScreenState extends State<AccountScreen> {
                       ),
                       Container(
                         width: MediaQuery.of(context).size.width,
-                        height: 310,
+                        height: 430,
                         child: Stack(
                           children: [
                             Container(
                               color: Hexcolor("#F59379"),
                               width: MediaQuery.of(context).size.width,
-                              height: 380,
+                              height: 370,
                               child: Column(
                                 children: <Widget>[
                                   Container(
@@ -572,149 +572,149 @@ class _AccountScreenState extends State<AccountScreen> {
                                 ],
                               ),
                             ),
-                            // Positioned(
-                            //   bottom: 0,
-                            //   right: 0,
-                            //   left: 0,
-                            //   child: Container(
-                            //       decoration: BoxDecoration(
-                            //           boxShadow: [
-                            //             BoxShadow(
-                            //                 offset: Offset(0, 1),
-                            //                 blurRadius: 3,
-                            //                 color: Colors.grey[300])
-                            //           ],
-                            //           color: Colors.white,
-                            //           borderRadius:
-                            //               BorderRadius.all(Radius.circular(5))),
-                            //       // height: size.width * 0.36,
-                            //       padding: EdgeInsets.symmetric(vertical: 10),
-                            //       margin: EdgeInsets.symmetric(
-                            //           horizontal: size.width * 0.05,
-                            //           vertical: 10),
-                            //       width: size.width,
-                            //       child: Column(
-                            //         children: [
-                            //           Container(
-                            //             padding: EdgeInsets.symmetric(
-                            //                 horizontal: 10, vertical: 5),
-                            //             margin: EdgeInsets.only(bottom: 10),
-                            //             decoration: BoxDecoration(
-                            //                 color: Hexcolor('#faebcd'),
-                            //                 borderRadius: BorderRadius.all(
-                            //                     Radius.circular(15))),
-                            //             child: RichText(
-                            //                 text: TextSpan(children: [
-                            //               TextSpan(
-                            //                   text: 'Kunjungan kamu hari ini ',
-                            //                   style: TextStyle(
-                            //                       color: Colors.black87,
-                            //                       fontSize: 12)),
-                            //               TextSpan(
-                            //                   text: '1 Point',
-                            //                   style: TextStyle(
-                            //                       fontWeight: FontWeight.bold,
-                            //                       color: Colors.black87,
-                            //                       fontSize: 12))
-                            //             ])),
-                            //           ),
-                            //           Container(
-                            //               width: size.width * 0.87,
-                            //               height: size.width * 0.17,
-                            //               child: GridView.builder(
-                            //                   itemCount: 7,
-                            //                   gridDelegate:
-                            //                       SliverGridDelegateWithFixedCrossAxisCount(
-                            //                           childAspectRatio: 0.77,
-                            //                           crossAxisCount: 7),
-                            //                   itemBuilder:
-                            //                       (BuildContext context,
-                            //                           int index) {
-                            //                     return GestureDetector(
-                            //                       onTap: () {
-                            //                         dayClicked = index + 1;
-                            //                         pointClicked();
-                            //                       },
-                            //                       child: Stack(
-                            //                         children: [
-                            //                           Center(
-                            //                             child: Container(
-                            //                                 margin: EdgeInsets
-                            //                                     .symmetric(
-                            //                                         horizontal:
-                            //                                             2),
-                            //                                 decoration: BoxDecoration(
-                            //                                     border: Border.all(
-                            //                                         color: Hexcolor(
-                            //                                             "#F59379"),
-                            //                                         width: 1),
-                            //                                     borderRadius: BorderRadius
-                            //                                         .all(Radius
-                            //                                             .circular(
-                            //                                                 5))),
-                            //                                 child: Padding(
-                            //                                   padding: EdgeInsets
-                            //                                       .fromLTRB(
-                            //                                           size.width *
-                            //                                               0.01,
-                            //                                           size.height *
-                            //                                               0.01,
-                            //                                           size.width *
-                            //                                               0.01,
-                            //                                           0),
-                            //                                   child: Column(
-                            //                                     children: [
-                            //                                       SizedBox(
-                            //                                         child: ImageIcon(
-                            //                                             AssetImage(
-                            //                                                 'assets/images/Asset 13.png'),
-                            //                                             color: Color(
-                            //                                                 0xffF48262)),
-                            //                                       ),
-                            //                                       Spacer(),
-                            //                                       Text(
-                            //                                           "Hari ${index + 1}",
-                            //                                           style: TextStyle(
-                            //                                               fontSize:
-                            //                                                   11))
-                            //                                     ],
-                            //                                   ),
-                            //                                 )),
-                            //                           ),
-                            //                           pointCheck == true &&
-                            //                                   (index + 1) ==
-                            //                                       dayNowInt
-                            //                               ? Center(
-                            //                                   child: Container(
-                            //                                       width: 40,
-                            //                                       height: 80,
-                            //                                       margin: EdgeInsets
-                            //                                           .symmetric(
-                            //                                               horizontal:
-                            //                                                   2),
-                            //                                       decoration: BoxDecoration(
-                            //                                           image: DecorationImage(
-                            //                                               image: AssetImage(
-                            //                                                   "assets/images/icon-checked.png"),
-                            //                                               colorFilter: new ColorFilter.mode(
-                            //                                                   Colors.black.withOpacity(
-                            //                                                       0.90),
-                            //                                                   BlendMode
-                            //                                                       .dstATop),
-                            //                                               fit: BoxFit
-                            //                                                   .cover),
-                            //                                           borderRadius:
-                            //                                               BorderRadius.all(
-                            //                                                   Radius.circular(5)))),
-                            //                                 )
-                            //                               : Container(),
-                            //                         ],
-                            //                       ),
-                            //                     );
-                            //                   })),
-                            //         ],
-                            //       )),
-                            // ),
+                            Positioned(
+                              bottom: 0,
+                              right: 0,
+                              left: 0,
+                              child: Container(
+                                  decoration: BoxDecoration(
+                                      boxShadow: [
+                                        BoxShadow(
+                                            offset: Offset(0, 1),
+                                            blurRadius: 3,
+                                            color: Colors.grey[300])
+                                      ],
+                                      color: Colors.white,
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(5))),
+                                  // height: size.width * 0.36,
+                                  padding: EdgeInsets.symmetric(vertical: 10),
+                                  margin: EdgeInsets.symmetric(
+                                      horizontal: size.width * 0.05,
+                                      vertical: 10),
+                                  width: size.width,
+                                  child: Column(
+                                    children: [
+                                      Container(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 10, vertical: 5),
+                                        margin: EdgeInsets.only(bottom: 10),
+                                        decoration: BoxDecoration(
+                                            color: Hexcolor('#faebcd'),
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(15))),
+                                        child: RichText(
+                                            text: TextSpan(children: [
+                                          TextSpan(
+                                              text: 'Kunjungan kamu hari ini ',
+                                              style: TextStyle(
+                                                  color: Colors.black87,
+                                                  fontSize: 12)),
+                                          TextSpan(
+                                              text: '1 Point',
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.black87,
+                                                  fontSize: 12))
+                                        ])),
+                                      ),
+                                      Container(
+                                          width: size.width * 0.87,
+                                          height: size.width * 0.17,
+                                          child: GridView.builder(
+                                              itemCount: 7,
+                                              gridDelegate:
+                                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                                      childAspectRatio: 0.77,
+                                                      crossAxisCount: 7),
+                                              itemBuilder:
+                                                  (BuildContext context,
+                                                      int index) {
+                                                return GestureDetector(
+                                                  onTap: () {
+                                                    dayClicked = index + 1;
+                                                    pointClicked();
+                                                  },
+                                                  child: Stack(
+                                                    children: [
+                                                      Center(
+                                                        child: Container(
+                                                            margin: EdgeInsets
+                                                                .symmetric(
+                                                                    horizontal:
+                                                                        2),
+                                                            decoration: BoxDecoration(
+                                                                border: Border.all(
+                                                                    color: Hexcolor(
+                                                                        "#F59379"),
+                                                                    width: 1),
+                                                                borderRadius: BorderRadius
+                                                                    .all(Radius
+                                                                        .circular(
+                                                                            5))),
+                                                            child: Padding(
+                                                              padding: EdgeInsets
+                                                                  .fromLTRB(
+                                                                      size.width *
+                                                                          0.01,
+                                                                      size.height *
+                                                                          0.01,
+                                                                      size.width *
+                                                                          0.01,
+                                                                      0),
+                                                              child: Column(
+                                                                children: [
+                                                                  SizedBox(
+                                                                    child: ImageIcon(
+                                                                        AssetImage(
+                                                                            'assets/images/Asset 13.png'),
+                                                                        color: Color(
+                                                                            0xffF48262)),
+                                                                  ),
+                                                                  Spacer(),
+                                                                  Text(
+                                                                      "Hari ${index + 1}",
+                                                                      style: TextStyle(
+                                                                          fontSize:
+                                                                              11))
+                                                                ],
+                                                              ),
+                                                            )),
+                                                      ),
+                                                      pointCheck == true &&
+                                                              (index + 1) ==
+                                                                  dayNowInt
+                                                          ? Center(
+                                                              child: Container(
+                                                                  width: 40,
+                                                                  height: 80,
+                                                                  margin: EdgeInsets
+                                                                      .symmetric(
+                                                                          horizontal:
+                                                                              2),
+                                                                  decoration: BoxDecoration(
+                                                                      image: DecorationImage(
+                                                                          image: AssetImage(
+                                                                              "assets/images/icon-checked.png"),
+                                                                          colorFilter: new ColorFilter.mode(
+                                                                              Colors.black.withOpacity(
+                                                                                  0.90),
+                                                                              BlendMode
+                                                                                  .dstATop),
+                                                                          fit: BoxFit
+                                                                              .cover),
+                                                                      borderRadius:
+                                                                          BorderRadius.all(
+                                                                              Radius.circular(5)))),
+                                                            )
+                                                          : Container(),
+                                                    ],
+                                                  ),
+                                                );
+                                              })),
+                                    ],
+                                  )),
+                            ),
                           ],
                         ),
                       ),
