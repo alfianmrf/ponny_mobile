@@ -126,7 +126,7 @@ class _DetailAkunStateScreen extends State<DetailAkunScreen> {
                         ),
                         Container(
                           child: Text(
-                            user.provider_id == null ? user.email :user.phone,
+                            user.provider_id == null ? user.email : user.phone != null ? user.phone : user.email,
                             style: TextStyle(
                               fontFamily: "Brandon",
                               fontSize: 15,
@@ -307,7 +307,7 @@ class _DetailAkunStateScreen extends State<DetailAkunScreen> {
                         ),
                         Container(
                           child: Text(
-                           user.phone,
+                           user.phone??'',
                             style: TextStyle(
                               fontFamily: "Brandon",
                               fontSize: 15,

@@ -722,27 +722,11 @@ class _DetailForumState extends State<DetailForum> {
                                                               BorderRadius
                                                                   .circular(
                                                                       100),
-                                                          child: Image.network(
-                                                            snapshot.data["post"]
-                                                                            [i]
-                                                                            ['reply']
-                                                                            [idx]
-                                                                            ["user"]
-                                                                            [
-                                                                            "avatar_original"]
-                                                                        .toString() !=
-                                                                    null
-                                                                ? img_url +
-                                                                    snapshot
-                                                                        .data[
-                                                                            "post"]
-                                                                            [i]
-                                                                            ['reply']
-                                                                            [idx]
-                                                                            ["user"]
-                                                                            ["avatar_original"]
-                                                                        .toString()
-                                                                : 'https://www.tenforums.com/geek/gars/images/2/types/thumb_15951118880user.png',
+                                                          child: Image.network(snapshot.data["post"][i]['reply'][idx]["user"] == null
+                                                              ? 'https://www.tenforums.com/geek/gars/images/2/types/thumb_15951118880user.png'
+                                                              : snapshot.data["post"][i]['reply'][idx]["user"]["avatar_original"] == null
+                                                              ? 'https://www.tenforums.com/geek/gars/images/2/types/thumb_15951118880user.png'
+                                                              : img_url + snapshot.data["post"][i]['reply'][idx]["user"]["avatar_original"],
                                                             height: 35,
                                                             width: 35,
                                                             fit: BoxFit.cover,
@@ -751,10 +735,8 @@ class _DetailForumState extends State<DetailForum> {
                                                         width: 5,
                                                       ),
                                                       Text(
-                                                        snapshot.data["post"][i]
-                                                                ['reply'][idx]
-                                                                ["user"]["name"]
-                                                            .toString(),
+                                                        snapshot.data["post"][i]['reply'][idx]["user"] == null ? 'Anonim' :
+                                                        snapshot.data["post"][i]['reply'][idx]["user"]["name"].toString(),
                                                         textAlign:
                                                             TextAlign.center,
                                                         style: TextStyle(
@@ -767,6 +749,7 @@ class _DetailForumState extends State<DetailForum> {
                                                       Container(
                                                         width: 5,
                                                       ),
+                                                      if(snapshot.data["post"][i]['reply'][idx]["user"] != null )
                                                       Container(
                                                         padding: EdgeInsets
                                                             .symmetric(

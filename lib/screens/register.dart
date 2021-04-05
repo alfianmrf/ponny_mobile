@@ -83,6 +83,7 @@ class _RegisterScreen extends State<RegisterScreen> {
       if(res.statusCode == 201){
         final pesan = json.decode(res.body);
         showDialog(
+            barrierDismissible: false,
             context: context,
             builder: (BuildContext context) {
               return AlertDialog(

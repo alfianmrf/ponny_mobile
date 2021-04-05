@@ -280,7 +280,7 @@ class _PraDaftarScreen extends State<PraDaftarScreen> {
             ),
           ),
           title: Text(
-            'Daftar Keinginan',
+            'Daftar',
             style: TextStyle(
               fontSize: 24,
               fontFamily: 'Yeseva',

@@ -486,20 +486,11 @@ class _DetailKomenScreenState extends State<DetailKomenScreen> {
                                                         borderRadius:
                                                             BorderRadius
                                                                 .circular(100),
-                                                        child: Image.network(
-                                                            data[0]['forum']['reply'][i]
-                                                            ['user'] == null ? 'https://www.tenforums.com/geek/gars/images/2/types/thumb_15951118880user.png' :
-                                                          data[0]['forum']['reply'][i]
-                                                                              ['user']['avatar_original'] ==
-                                                                  null
-                                                              ? 'https://www.tenforums.com/geek/gars/images/2/types/thumb_15951118880user.png'
-                                                              : img_url +
-                                                                  data[0]['forum']
-                                                                              [
-                                                                              'reply'][i]['user']
-                                                                          [
-                                                                          'avatar_original']
-                                                                      .toString(),
+                                                        child: Image.network(data[0]['forum']['reply'][i]['user'] == null
+                                                            ? 'https://www.tenforums.com/geek/gars/images/2/types/thumb_15951118880user.png'
+                                                            : data[0]['forum']['reply'][i]['user']['avatar_original'] == null
+                                                            ? 'https://www.tenforums.com/geek/gars/images/2/types/thumb_15951118880user.png'
+                                                            : img_url + data[0]['forum']['reply'][i]['user']['avatar_original'].toString(),
                                                           height: 35,
                                                           width: 35,
                                                           fit: BoxFit.cover,

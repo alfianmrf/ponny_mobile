@@ -85,7 +85,9 @@ class _RegisterOtpScreen extends State<RegisterOtpScreen> {
       "birthdate":DateFormat("y-M-d").format(date)
     };
     String token = Provider.of<AppModel>(context).auth.access_token;
-    Provider.of<UserModel>(context).setUser(token, param).then((value) {
+    print("TOKEN "+token);
+    Provider.of<UserModel>(context).setUserOTP(token, param, widget.user.id).then((value) {
+      print("VALUE "+value.toString());
       UIBlock.unblock(context);
       if(value){
         Navigator.pushAndRemoveUntil(context,new MaterialPageRoute(
@@ -93,7 +95,7 @@ class _RegisterOtpScreen extends State<RegisterOtpScreen> {
         ),(_) => false);
       }else{
         final snackBar = SnackBar(
-          content: Text('Terjadi kesalahan pada serve!',style: TextStyle(color: Colors.white)),
+          content: Text('Terjadi kesalahan pada server!',style: TextStyle(color: Colors.white)),
           backgroundColor: Colors.redAccent,
         );
         scaffoldKey.currentState.showSnackBar(snackBar);
@@ -113,6 +115,7 @@ class _RegisterOtpScreen extends State<RegisterOtpScreen> {
   Widget build(BuildContext context) {
     no_telepon.text = widget.user.phone;
     return Scaffold(
+      key: scaffoldKey,
       backgroundColor: Hexcolor('#FCF8F0'),
       appBar: AppBar(
         titleSpacing: 0.0,
