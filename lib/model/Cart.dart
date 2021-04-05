@@ -32,8 +32,12 @@ class CartModel with ChangeNotifier{
   Future<CartResult> addProductToCart(Product product, String token,VarianResult variant) async
   {
     CartResult result;
-     int index = listCardOfitem.indexWhere((element) =>
+     int index;
+     if(variant != null )index = listCardOfitem.indexWhere((element) =>
      element.product.id == product.id && element.variant == variant.varian);
+     else index = listCardOfitem.indexWhere((element) =>
+     element.product.id == product.id);
+
      var param=<String,dynamic>{};
 
      if (index < 0) {

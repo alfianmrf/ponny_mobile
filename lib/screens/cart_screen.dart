@@ -520,7 +520,7 @@ class _CartScreenState extends State<CartScreen> {
                                             ),
                                           ),
                                           Text(
-                                            item.product.name + " - " + item.variant,
+                                            item.variant != null? item.product.name + " - " + item.variant:item.product.name,
                                             maxLines: 2,
                                             overflow: TextOverflow.ellipsis,
                                             style: TextStyle(
@@ -569,9 +569,10 @@ class _CartScreenState extends State<CartScreen> {
                                                           Color(0xffFDF8F0),
                                                       elevation: 0.0,
                                                       highlightElevation: 0.0,
-                                                      heroTag: "btnmin" +
-                                                          item.product.id
-                                                              .toString()+item.variant,
+                                                      heroTag:  item.variant != null?
+                                                      "btnmin" +item.product.id
+                                                              .toString()+"btnmin" +item.variant:item.product.id
+                                                          .toString(),
                                                       child: Text(
                                                         '-',
                                                         style: TextStyle(
@@ -613,9 +614,11 @@ class _CartScreenState extends State<CartScreen> {
                                                           Color(0xffFDF8F0),
                                                       elevation: 0.0,
                                                       highlightElevation: 0.0,
-                                                      heroTag: "btnplus" +
-                                                          item.product.id
-                                                              .toString()+item.variant,
+                                                      heroTag:
+                                                          item.variant != null?
+                                                          "btnplus" + item.product.id
+                                                          .toString()+item.variant:"btnplus" +item.product.id
+                                                          .toString(),
                                                       child: Text(
                                                         '+',
                                                         style: TextStyle(
@@ -629,10 +632,11 @@ class _CartScreenState extends State<CartScreen> {
                                                       onPressed: () {
                                                         var _param;
                                                         if(item.product.varian.toString()!='[]'){
+                                                          if(item.variant != null)
                                                           _param = '{"varian": "${item.variant}", "product_id": ${item.product.id}, "quantity": 1, "price": ${item.product.base_price}}';
                                                         }
-                                                        print("PARAM: "+_param);
-                                                        print(item.variant);
+                                                        // print("PARAM: "+_param);
+                                                        // print(item.variant);
                                                         VarianResult varian_result;
                                                         if(item.variant!=null){
                                                           varian_result = new VarianResult.fromJson(json.decode(_param));
