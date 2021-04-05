@@ -726,7 +726,7 @@ class _CartScreenState extends State<CartScreen> {
                                                           LoadingWidget(
                                                               context));
                                                   value.DeleteProductToCart(
-                                                          item.product,
+                                                          item.id,
                                                           Provider.of<AppModel>(
                                                                   context)
                                                               .auth

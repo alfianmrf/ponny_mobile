@@ -58,9 +58,9 @@ class CartModel with ChangeNotifier{
          // print(res.body);
          if(variant != null){
            param.addAll({"variant":variant.varian});
-           listCardOfitem.add(Cart(1, product,variant.varian,variant.price));
+           listCardOfitem.add(Cart(jsonData["cart_id"], 1, product,variant.varian,variant.price));
          }else{
-           listCardOfitem.add(Cart(1, product,null,product.base_discounted_price));
+           listCardOfitem.add(Cart(jsonData["cart_id"], 1, product,null,product.base_discounted_price));
          }
          await getSummary(token);
          notifyListeners();
@@ -241,11 +241,11 @@ class CartModel with ChangeNotifier{
 
   }
 
-  Future<void> DeleteProductToCart(Product product,String token) async
+  Future<void> DeleteProductToCart(int id,String token) async
   {
-    final res = await http.get(removeCardUrl+"/"+product.id.toString(), headers: { HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: "Bearer $token"});
+    final res = await http.get(removeCardUrl+"/"+id.toString(), headers: { HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: "Bearer $token"});
     if (res.statusCode == 200) {
-      int index = listCardOfitem.indexWhere((element) => element.product.id == product.id);
+      int index = listCardOfitem.indexWhere((element) => element.id == id);
       listCardOfitem.removeAt(index);
       await getSummary(token);
       notifyListeners();
@@ -424,18 +424,20 @@ class CartModel with ChangeNotifier{
 
 
 class Cart{
+  int id;
   int quantity;
   Product product;
   String variant;
   int price;
 
-  Cart(this.quantity, this.product,this.variant,this.price);
+  Cart(this.id, this.quantity, this.product,this.variant,this.price);
   factory Cart.fromJson(Map<String, dynamic> parsedJson){
+    int _id = parsedJson['id'];
     Product  _product = Product.fromJson(parsedJson["product"]["availability"]);
     int _quantity = parsedJson['quantity'];
     String _variant = parsedJson["variation"];
     int _price =parsedJson["price"];
-    return Cart(_quantity, _product,_variant,_price);
+    return Cart(_id, _quantity, _product,_variant,_price);
   }
 
 }
