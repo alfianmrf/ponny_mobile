@@ -630,14 +630,14 @@ class _AccountScreenState extends State<AccountScreen> {
                                               itemBuilder:
                                                   (BuildContext context,
                                                       int index) {
-                                                return GestureDetector(
-                                                  onTap: () {
-                                                    dayClicked = index + 1;
-                                                    pointClicked();
-                                                  },
-                                                  child: Stack(
-                                                    children: [
-                                                      Center(
+                                                return Stack(
+                                                  children: [
+                                                    Center(
+                                                      child: GestureDetector(
+                                                        onTap: () {
+                                                          dayClicked = index + 1;
+                                                          pointClicked();
+                                                        },
                                                         child: Container(
                                                             margin: EdgeInsets
                                                                 .symmetric(
@@ -681,35 +681,35 @@ class _AccountScreenState extends State<AccountScreen> {
                                                               ),
                                                             )),
                                                       ),
-                                                      pointCheck == true &&
-                                                              (index + 1) ==
-                                                                  dayNowInt
-                                                          ? Center(
-                                                              child: Container(
-                                                                  width: 40,
-                                                                  height: 80,
-                                                                  margin: EdgeInsets
-                                                                      .symmetric(
-                                                                          horizontal:
-                                                                              2),
-                                                                  decoration: BoxDecoration(
-                                                                      image: DecorationImage(
-                                                                          image: AssetImage(
-                                                                              "assets/images/icon-checked.png"),
-                                                                          colorFilter: new ColorFilter.mode(
-                                                                              Colors.black.withOpacity(
-                                                                                  0.90),
-                                                                              BlendMode
-                                                                                  .dstATop),
-                                                                          fit: BoxFit
-                                                                              .cover),
-                                                                      borderRadius:
-                                                                          BorderRadius.all(
-                                                                              Radius.circular(5)))),
-                                                            )
-                                                          : Container(),
-                                                    ],
-                                                  ),
+                                                    ),
+                                                    pointCheck == true &&
+                                                            (index + 1) ==
+                                                                dayNowInt
+                                                        ? Center(
+                                                            child: Container(
+                                                                width: 40,
+                                                                height: 80,
+                                                                margin: EdgeInsets
+                                                                    .symmetric(
+                                                                        horizontal:
+                                                                            2),
+                                                                decoration: BoxDecoration(
+                                                                    image: DecorationImage(
+                                                                        image: AssetImage(
+                                                                            "assets/images/icon-checked.png"),
+                                                                        colorFilter: new ColorFilter.mode(
+                                                                            Colors.black.withOpacity(
+                                                                                0.90),
+                                                                            BlendMode
+                                                                                .dstATop),
+                                                                        fit: BoxFit
+                                                                            .cover),
+                                                                    borderRadius:
+                                                                        BorderRadius.all(
+                                                                            Radius.circular(5)))),
+                                                          )
+                                                        : Container(),
+                                                  ],
                                                 );
                                               })),
                                     ],
