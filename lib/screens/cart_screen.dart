@@ -484,7 +484,7 @@ class _CartScreenState extends State<CartScreen> {
                                       padding: EdgeInsets.only(right: 7),
                                       child: GestureDetector(
                                         onTap: (){
-
+                                          if(item.product.is_shown)
                                           Navigator.push(context, new MaterialPageRoute(builder: (BuildContext context)=> new ProductDetailsScreen(product: item.product,)));
                                         },
                                         child: CachedNetworkImage(
@@ -1781,18 +1781,28 @@ class _CartScreenState extends State<CartScreen> {
                                 borderRadius: BorderRadius.circular(7.0),
                               ),
                               onPressed: () {
-                                FocusScope.of(context)
-                                    .requestFocus(FocusNode());
-                                UIBlock.block(context,
-                                    customLoaderChild: LoadingWidget(context));
-                                value.RemoveShipping().then((value) {
-                                  UIBlock.unblock(context);
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => ShippingScreen()),
+                                int index = value.listCardOfitem.indexWhere((element) => element.product.is_shown == false);
+                                if(index<0){
+                                  FocusScope.of(context)
+                                      .requestFocus(FocusNode());
+                                  UIBlock.block(context,
+                                      customLoaderChild: LoadingWidget(context));
+                                  value.RemoveShipping().then((value) {
+                                    UIBlock.unblock(context);
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => ShippingScreen()),
+                                    );
+                                  });
+                                }else{
+                                  String product = value.listCardOfitem[index].product.name;
+                                  final snackBar = SnackBar(
+                                    content: Text("Produk ${product} tidak tersedia",style: TextStyle(color: Colors.white)),
+                                    backgroundColor: Colors.redAccent,
                                   );
-                                });
+                                  scaffoldKey.currentState.showSnackBar(snackBar);
+                                }
                               },
                             ),
                           ),

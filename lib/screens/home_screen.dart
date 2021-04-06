@@ -723,6 +723,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                         Container(
                           width: MediaQuery.of(context).size.width,
+                          margin: EdgeInsets.only(bottom: 10),
                           child: Consumer<CategoryModel>(
                               builder: (context, value, child) {
                             if (value.loadingCategory) {
@@ -1830,7 +1831,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                                 Container(
                                   height:
-                                      MediaQuery.of(context).size.width * 0.95,
+                                      MediaQuery.of(context).size.width * .85,
                                   padding: EdgeInsets.only(top: 10),
                                   child: Consumer<ProductModel>(
                                     builder: (context, value, child) {
@@ -1857,20 +1858,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                               horizontal: 7),
                                                       child: MyProductFlash(
                                                         productFlash: e,
-                                                        IsLiked: Provider.of<
-                                                                            WishModel>(
-                                                                        context)
-                                                                    .rawlist
-                                                                    .firstWhere(
-                                                                        (element) =>
-                                                                            element.productId ==
-                                                                            e.product
-                                                                                .id,
-                                                                        orElse: () =>
-                                                                            null) !=
-                                                                null
-                                                            ? true
-                                                            : false,
+                                                        IsLiked: Provider.of<WishModel>(context).rawlist.firstWhere((element) => element.productId == e.product.id, orElse: () => null) != null ? true : false,
                                                         onFavorit: () {
                                                           if (Provider.of<
                                                                       AppModel>(
@@ -3022,8 +3010,10 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                         loading_youtube
                             ? Container(
+                                width: double.infinity,
+                                color: Color(0xffFBDFD2),
                                 child: Center(
-                                  child: LoadingWidgetFadingCircle(context),
+                                  child: LoadingWidget(context),
                                 ),
                               )
                             : Container(
