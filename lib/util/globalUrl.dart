@@ -91,7 +91,8 @@ const kirimUlangVerifikasi = base_url + "auth/resend/emailverification";
 const affiliateHome = base_url + "account/affiliate";
 const affiliateCustomCode = base_url + "account/custom_code";
 const affiliateWithdraw = base_url + "account/affiliate/withdraw";
-
+const getHistoryPoint = "https://ec2-13-229-239-61.ap-southeast-1.compute.amazonaws.com/api/v2/checkin/get";
+const claimPoint = "https://ec2-13-229-239-61.ap-southeast-1.compute.amazonaws.com/api/v2/checkin/claim";
 //Order
 const urlTracking = base_url + "checkout/tracking";
 const urlTerimaBarang = base_url + "checkout/receipt";

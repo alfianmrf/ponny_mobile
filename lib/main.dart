@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:ponny/common/PushNotificationsManager.dart';
@@ -6,6 +8,7 @@ import 'package:ponny/model/AffiliateWithdraw.dart';
 import 'package:ponny/model/AffiliatesAddCode.dart';
 import 'package:ponny/model/Cart.dart';
 import 'package:ponny/model/Category.dart';
+import 'package:ponny/model/ClaimPointHarian.dart';
 import 'package:ponny/model/MetodePengirimanModel.dart';
 import 'package:ponny/model/Product.dart';
 import 'package:ponny/model/Slider.dart';
@@ -117,6 +120,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   PushNotificationsManager().init();
+  HttpOverrides.global = new MyHttpOverrides();
 
   runApp(
     Phoenix(
@@ -137,6 +141,7 @@ Future<void> main() async {
           ChangeNotifierProvider(create: (context) => AddCodeResult()),
           ChangeNotifierProvider(create: (context) => AffiliateWithdraw()),
           ChangeNotifierProvider(create: (context) => MetodePengiriman()),
+          ChangeNotifierProvider(create: (context) => ClaimPointHarian())
         ],
         child: MyApp(),
       ),
@@ -230,5 +235,13 @@ class MyApp extends StatelessWidget {
         BantuanScreen.id: (context) => BantuanScreen()
       },
     );
+  }
+}
+
+class MyHttpOverrides extends HttpOverrides{
+  @override
+  HttpClient createHttpClient(SecurityContext context){
+    return super.createHttpClient(context)
+      ..badCertificateCallback = (X509Certificate cert, String host, int port)=> true;
   }
 }
