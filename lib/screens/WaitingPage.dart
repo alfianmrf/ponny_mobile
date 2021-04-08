@@ -138,29 +138,34 @@ class _WaitingPageState extends State<WaitingPage> {
       onWillPop: _onWillPop,
       child: Scaffold(
         key: scaffollKey,
-        appBar: AppBar(title: Text(
-          "Konsultasi",
-          style: TextStyle(
-            fontSize: 22,
-            fontFamily: "Yeseva",
-            fontWeight: FontWeight.w500,
-            color: Color(0xffF48262),
-          ),
-        ),
-          leading: Container(
-            margin: EdgeInsets.only(right: 14),
-            child: GestureDetector(
-              child: Icon(
-                Icons.arrow_back_ios,
-                color: Color(0xffF48262),
-                size: 26,
-              ),
-              onTap: () {
-                _onWillPop();
-              },
+        appBar: AppBar(
+          elevation: 0,
+          titleSpacing: 0,
+          leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: Icon(
+              Icons.arrow_back_ios,
+              color: Color(0xffF48262),
+              size: 26,
             ),
           ),
-          toolbarHeight: 70,
+          title: Text(
+            'Konsultasi',
+            style: TextStyle(
+              fontSize: 24,
+              fontFamily: "Yeseva",
+              fontWeight: FontWeight.w500,
+              color: Color(0xffF48262),
+            ),
+          ),
+          bottom: PreferredSize(
+              child: Container(
+                color: Color(0xffF48262),
+                height: 1.0,
+              ),
+              preferredSize: Size.fromHeight(1.0)),
         ),
         body: Container(
           decoration: BoxDecoration(

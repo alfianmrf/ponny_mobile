@@ -167,7 +167,7 @@ Widget LoadingRing(context) => Center(
 );
 
 Widget LoadingWidgetFadingCircle(context) => Center(
-  child: SpinKitFadingCircle(
+  child: SpinKitCircle(
     color:  Color(0xffF48262),
     size: 45.0,
   ),

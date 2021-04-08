@@ -1831,7 +1831,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                                 Container(
                                   height:
-                                      MediaQuery.of(context).size.width * .85,
+                                      MediaQuery.of(context).size.width * .9,
                                   padding: EdgeInsets.only(top: 10),
                                   child: Consumer<ProductModel>(
                                     builder: (context, value, child) {
