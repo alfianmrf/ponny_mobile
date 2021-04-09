@@ -212,53 +212,57 @@ class MyProduct extends StatelessWidget {
           ),
         ),
         if(product.is_flash_deal != null)
-          Center(
-            child: RichText(
-              text: TextSpan(
-                  text: NumberFormat.simpleCurrency(locale: "id_ID",decimalDigits: 0 ).format(product.base_price),
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontFamily: 'Brandon',
-                    fontSize: 12,
-                    decoration: TextDecoration.lineThrough,
-                  ),
-                  children: [
-                    if(product.is_flash_deal.discount_type == 'percent')
-                      TextSpan(
-                        text: '('+product.is_flash_deal.discount.toString()+'%)',
-                        style: TextStyle(
-                          color: Color(0xffF48262),
-                          fontFamily: 'Brandon',
-                          fontSize: 12,
-                          decoration: TextDecoration.none,
+          MarqueeWidget(
+            child: Center(
+              child: RichText(
+                text: TextSpan(
+                    text: product.home_price,
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontFamily: 'Brandon',
+                      fontSize: 12,
+                      decoration: TextDecoration.lineThrough,
+                    ),
+                    children: [
+                      if(product.is_flash_deal.discount_type == 'percent')
+                        TextSpan(
+                          text: '('+product.is_flash_deal.discount.toString()+'%)',
+                          style: TextStyle(
+                            color: Color(0xffF48262),
+                            fontFamily: 'Brandon',
+                            fontSize: 12,
+                            decoration: TextDecoration.none,
+                          ),
                         ),
-                      ),
-                  ]),
+                    ]),
+              ),
             ),
           ),
         if(product.is_flash_deal == null && product.discount>0)
-          Center(
-            child: RichText(
-              text: TextSpan(
-                  text: NumberFormat.simpleCurrency(locale: "id_ID",decimalDigits: 0 ).format(product.base_price),
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontFamily: 'Brandon',
-                    fontSize: 12,
-                    decoration: TextDecoration.lineThrough,
-                  ),
-                  children: [
-                    if(product.discount_type == 'percent')
-                      TextSpan(
-                        text: '('+product.discount.toString()+'%)',
-                        style: TextStyle(
-                          color: Color(0xffF48262),
-                          fontFamily: 'Brandon',
-                          fontSize: 12,
-                          decoration: TextDecoration.none,
+          MarqueeWidget(
+            child: Center(
+              child: RichText(
+                text: TextSpan(
+                    text: product.home_price,
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontFamily: 'Brandon',
+                      fontSize: 12,
+                      decoration: TextDecoration.lineThrough,
+                    ),
+                    children: [
+                      if(product.discount_type == 'percent')
+                        TextSpan(
+                          text: '('+product.discount.toString()+'%)',
+                          style: TextStyle(
+                            color: Color(0xffF48262),
+                            fontFamily: 'Brandon',
+                            fontSize: 12,
+                            decoration: TextDecoration.none,
+                          ),
                         ),
-                      ),
-                  ]),
+                    ]),
+              ),
             ),
           ),
         Text.rich(TextSpan(children: <InlineSpan>[

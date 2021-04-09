@@ -20,7 +20,8 @@
     <application
         android:name="io.flutter.app.FlutterApplication"
         android:label="Ponny Beaute"
-        android:icon="@mipmap/ic_launcher_ponny_baru">
+        android:icon="@mipmap/ic_launcher_ponny_baru"
+        android:requestLegacyExternalStorage="true">
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:ponny/common/constant.dart';
+import 'package:ponny/model/BlogCategory.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -22,6 +23,7 @@ class Blog extends StatefulWidget {
 }
 
 class _BlogState extends State<Blog> {
+  final scaffoldkey = GlobalKey<ScaffoldState>();
   bool onSearch = false;
   String q;
   String currentTag;
@@ -29,12 +31,32 @@ class _BlogState extends State<Blog> {
   int lostData = 0;
   var categoryFilter;
   bool loadingAll= true;
+  bool loading = true;
   List listAll;
   List Trending;
+  BlogCategory result = BlogCategory();
 
-
-
-
+  Future<void> getData() async {
+    try {
+      final res = await http.get(blogUrl);
+      if (res.statusCode == 200) {
+        final responeJson = json.decode(res.body);
+        setState(() {
+          result = BlogCategory.fromJson(responeJson);
+          loading = false;
+        });
+        print("SUCCESS");
+        print(responeJson);
+      }
+    } catch (e) {
+      print("ERROR");
+      print(e.toString());
+      setState(() {
+        loading = false;
+      });
+      scaffoldkey.currentState.showSnackBar(snackBarError);
+    }
+  }
 
   Future<void> filterData(int categoryId) async {
     if(!loadingAll)
@@ -83,6 +105,7 @@ class _BlogState extends State<Blog> {
   @override
   void initState() {
     // TODO: implement initState
+    getData();
     categoryId=widget.category;
     currentTag=widget.tag;
     filterData(categoryId);
@@ -108,9 +131,16 @@ class _BlogState extends State<Blog> {
       child: DefaultTabController(
         length: 5,
         child: Scaffold(
+            key: scaffoldkey,
             resizeToAvoidBottomInset: false,
             backgroundColor: Hexcolor('#FCF8F0'),
-            body: Column(
+            body: loading
+                ? Container(
+              child: Center(
+                child: LoadingWidgetFadingCircle(context),
+              ),
+            )
+                :Column(
               children: [
                 Container(
                   color: Color(0xffF48262),
@@ -215,11 +245,12 @@ class _BlogState extends State<Blog> {
                             ),
                           ),
                         ),
+                        for(var e in result.blogs)
                         InkWell(
                           onTap: () {
                             setState(() {
-                              currentTag = "BASIC SKINCARE";
-                              categoryId = 1;
+                              currentTag = e.title.toUpperCase();
+                              categoryId = e.id;
                             });
                             filterData(categoryId);
                           },
@@ -227,110 +258,110 @@ class _BlogState extends State<Blog> {
                             height: 50,
                             padding: EdgeInsets.symmetric(horizontal: 15),
                             alignment: Alignment.center,
-                            color: categoryId == 1 ? Color(0xffFBDFD2) : null,
+                            color: categoryId == e.id ? Color(0xffFBDFD2) : null,
                             child: Column(
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 Text(
-                                  "BASIC\nSKINCARE",
+                                  e.title.toUpperCase(),
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                       fontSize: 12,
                                       fontFamily: "Brandon",
                                       fontWeight: FontWeight.bold,
-                                      color: categoryId == 1 ? Colors.black : Color(0xffF48262)),
+                                      color: categoryId == e.id ? Colors.black : Color(0xffF48262)),
                                 ),
                               ],
                             ),
                           ),
                         ),
-                        InkWell(
-                          onTap: () {
-                            setState(() {
-                              currentTag = "MASALAH KULIT";
-                              categoryId = 2;
-                            });
-                            filterData(categoryId);
-                          },
-                          child: Container(
-                            height: 50,
-                            padding: EdgeInsets.symmetric(horizontal: 15),
-                            alignment: Alignment.center,
-                            color: categoryId == 2 ? Color(0xffFBDFD2) : null,
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Text(
-                                  "MASALAH\nKULIT",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      fontSize: 12,
-                                      fontFamily: "Brandon",
-                                      fontWeight: FontWeight.bold,
-                                      color: categoryId == 2 ? Colors.black : Color(0xffF48262)),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        InkWell(
-                          onTap: () {
-                            setState(() {
-                              currentTag = "SKINCARE ROUTINE";
-                              categoryId = 3;
-                            });
-                            filterData(categoryId);
-                          },
-                          child: Container(
-                            height: 50,
-                            padding: EdgeInsets.symmetric(horizontal: 15),
-                            alignment: Alignment.center,
-                            color: categoryId == 3 ? Color(0xffFBDFD2) : null,
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Text(
-                                  "SKINCARE\nROUTINE",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      fontSize: 12,
-                                      fontFamily: "Brandon",
-                                      fontWeight: FontWeight.bold,
-                                      color: categoryId == 3 ? Colors.black : Color(0xffF48262)),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        InkWell(
-                          onTap: () {
-                            setState(() {
-                              currentTag = "MITOS ATAU FAKTA";
-                              categoryId = 4;
-                            });
-                            filterData(categoryId);
-                          },
-                          child: Container(
-                            height: 50,
-                            padding: EdgeInsets.symmetric(horizontal: 15),
-                            alignment: Alignment.center,
-                            color: categoryId == 4 ? Color(0xffFBDFD2) : null,
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Text(
-                                  "MITOS\nATAU FAKTA",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      fontSize: 12,
-                                      fontFamily: "Brandon",
-                                      fontWeight: FontWeight.bold,
-                                      color: categoryId == 4 ? Colors.black : Color(0xffF48262)),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
+                        // InkWell(
+                        //   onTap: () {
+                        //     setState(() {
+                        //       currentTag = "MASALAH KULIT";
+                        //       categoryId = 2;
+                        //     });
+                        //     filterData(categoryId);
+                        //   },
+                        //   child: Container(
+                        //     height: 50,
+                        //     padding: EdgeInsets.symmetric(horizontal: 15),
+                        //     alignment: Alignment.center,
+                        //     color: categoryId == 2 ? Color(0xffFBDFD2) : null,
+                        //     child: Column(
+                        //       mainAxisSize: MainAxisSize.min,
+                        //       children: [
+                        //         Text(
+                        //           "MASALAH\nKULIT",
+                        //           textAlign: TextAlign.center,
+                        //           style: TextStyle(
+                        //               fontSize: 12,
+                        //               fontFamily: "Brandon",
+                        //               fontWeight: FontWeight.bold,
+                        //               color: categoryId == 2 ? Colors.black : Color(0xffF48262)),
+                        //         ),
+                        //       ],
+                        //     ),
+                        //   ),
+                        // ),
+                        // InkWell(
+                        //   onTap: () {
+                        //     setState(() {
+                        //       currentTag = "SKINCARE ROUTINE";
+                        //       categoryId = 3;
+                        //     });
+                        //     filterData(categoryId);
+                        //   },
+                        //   child: Container(
+                        //     height: 50,
+                        //     padding: EdgeInsets.symmetric(horizontal: 15),
+                        //     alignment: Alignment.center,
+                        //     color: categoryId == 3 ? Color(0xffFBDFD2) : null,
+                        //     child: Column(
+                        //       mainAxisSize: MainAxisSize.min,
+                        //       children: [
+                        //         Text(
+                        //           "SKINCARE\nROUTINE",
+                        //           textAlign: TextAlign.center,
+                        //           style: TextStyle(
+                        //               fontSize: 12,
+                        //               fontFamily: "Brandon",
+                        //               fontWeight: FontWeight.bold,
+                        //               color: categoryId == 3 ? Colors.black : Color(0xffF48262)),
+                        //         ),
+                        //       ],
+                        //     ),
+                        //   ),
+                        // ),
+                        // InkWell(
+                        //   onTap: () {
+                        //     setState(() {
+                        //       currentTag = "MITOS ATAU FAKTA";
+                        //       categoryId = 4;
+                        //     });
+                        //     filterData(categoryId);
+                        //   },
+                        //   child: Container(
+                        //     height: 50,
+                        //     padding: EdgeInsets.symmetric(horizontal: 15),
+                        //     alignment: Alignment.center,
+                        //     color: categoryId == 4 ? Color(0xffFBDFD2) : null,
+                        //     child: Column(
+                        //       mainAxisSize: MainAxisSize.min,
+                        //       children: [
+                        //         Text(
+                        //           "MITOS\nATAU FAKTA",
+                        //           textAlign: TextAlign.center,
+                        //           style: TextStyle(
+                        //               fontSize: 12,
+                        //               fontFamily: "Brandon",
+                        //               fontWeight: FontWeight.bold,
+                        //               color: categoryId == 4 ? Colors.black : Color(0xffF48262)),
+                        //         ),
+                        //       ],
+                        //     ),
+                        //   ),
+                        // ),
                       ],
                     ),
                   ),
@@ -408,6 +439,7 @@ DateTime convertDateFromString(String strDate){
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
+        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
         itemCount: widget.list.length,
         shrinkWrap: true,
         primary: false,
@@ -469,6 +501,7 @@ DateTime convertDateFromString(String strDate){
 
 Widget categoryListBlog(context, List list, int categoryId) {
   return GridView.builder(
+      keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
       primary: false,
       shrinkWrap: true,
       itemCount: list == null ? 0 : list.length,

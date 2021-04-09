@@ -173,10 +173,12 @@ class ProductModel with ChangeNotifier {
   }
   Future<VarianResult> getValueVariant(param) async {
     VarianResult result;
+    print("PARAM: "+json.encode(param));
     try {
       final result = await http.post(varianPriceUrl, headers: { HttpHeaders.contentTypeHeader: 'application/json'},body: json.encode(param));
       if (result.statusCode == 200) {
         final responseJson = json.decode(result.body);
+        print("response Variant"+responseJson.toString());
         return VarianResult.fromJson(responseJson);
       }
     } catch (err) {
@@ -213,6 +215,7 @@ class Product{
   String penggunaan;
   String bahan_aktif;
   String home_discounted_price;
+  String home_price;
   List<Varian> varian;
   String komposisi;
   String slug;
@@ -245,6 +248,7 @@ class Product{
       this.penggunaan,
       this.bahan_aktif,
       this.home_discounted_price,
+      this.home_price,
       this.varian,
       this.komposisi,
       this.slug,
@@ -291,6 +295,7 @@ class Product{
         parsedJson["penggunaan"],
         parsedJson["bahan_aktif"],
         parsedJson["home_discounted_price"],
+        parsedJson["home_price"],
         _var,
         parsedJson['komposisi'],
         parsedJson["slug"],

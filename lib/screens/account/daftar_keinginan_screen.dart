@@ -63,18 +63,24 @@ void initState() {
 }
 
 
-void showAlertDialog(BuildContext context,Product product) {
+void showAlertDialog(BuildContext context,Product product, String variant) {
   // set up the AlertDialog
   SimpleDialog alert = SimpleDialog(
     backgroundColor: Color(0xfffdf8f0),
     contentPadding: EdgeInsets.all(5.0),
     children: <Widget>[
+      Align(
+        alignment: Alignment.centerRight,
+        child: IconButton(
+            icon: Icon(Icons.close),
+            color: Color(0xffF48262),
+            onPressed: () {
+              Navigator.of(context).pop();
+            }),
+      ),
       Container(
-        padding: EdgeInsets.only(top: 30),
-        child: Icon(
-          Icons.shopping_cart,
-          color: Color(0xffF48262),
-          size: 40,
+        child: ImageIcon(
+          AssetImage('assets/images/home/cart.png'),color: Color(0xffF48262),size: 30,
         ),
       ),
       Padding(
@@ -115,14 +121,16 @@ void showAlertDialog(BuildContext context,Product product) {
                     ),
                   ),
                   Text(
-                   product.name.length > 20 ?product.name.substring(0, 20)+'...' : product.name,
+                   product.name,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                         fontFamily: 'Brandon'
                     ),
                   ),
-                  if(product.varian.isNotEmpty)
+                  if(variant!=null)
                     Text(
-                      '120ml',
+                      variant,
                       style: TextStyle(
                           fontFamily: 'Brandon'
                       ),
@@ -255,6 +263,7 @@ Widget _buildList() {
                 width: 75,
                 child: InkWell(
                   onTap: (){
+                    if(_result[index].product.is_shown)
                     Navigator.push(context, MaterialPageRoute(builder: (context) => ProductDetailsScreen(product: _result[index].product,)));
                   },
                   child: CachedNetworkImage(
@@ -269,6 +278,7 @@ Widget _buildList() {
               Expanded(
                 child: InkWell(
                   onTap: (){
+                    if(_result[index].product.is_shown)
                     Navigator.push(context, MaterialPageRoute(builder: (context) => ProductDetailsScreen(product: _result[index].product,)));
                   },
                   child:  Container(
@@ -354,27 +364,36 @@ Widget _buildList() {
                   children: [
                     GestureDetector(
                       onTap: (){
-                        if(_result[index].product.varian.length>1){
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => ProductDetailsScreen(product: _result[index].product,)));
+                        if(_result[index].product.is_shown){
+                          if(_result[index].product.varian.length>1 || _result[index].product.varian.length>0?_result[index].product.varian[0].values.length>1:false){
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => ProductDetailsScreen(product: _result[index].product,)));
+                          }
+                          else{
+                            VarianResult varian_result;
+                            if(_result[index].product.varian.length==1){
+                              varian_result = new VarianResult.fromJson(json.decode(_param[index]));
+                            }
+                            UIBlock.block(context,customLoaderChild: LoadingWidget(context));
+                            Provider.of<CartModel>(context).addProductToCart(_result[index].product, Provider.of<AppModel>(context).auth.access_token,_result[index].product.varian.length==0?null:varian_result).then((value){
+                              UIBlock.unblock(context);
+                              if(value.statusCode == 200){
+                                showAlertDialog(context, _result[index].product, _result[index].product.varian.length==1?_result[index].product.varian[0].values[0]:null);
+                              }else{
+                                final snackBar = SnackBar(
+                                  content: Text(value.message,style: TextStyle(color: Colors.white)),
+                                  backgroundColor: Colors.redAccent,
+                                );
+                                _scaffoldKey.currentState.showSnackBar(snackBar);
+                              }
+                            });
+                          }
                         }
                         else{
-                          VarianResult varian_result;
-                          if(_result[index].product.varian.length==1){
-                            varian_result = new VarianResult.fromJson(json.decode(_param[index]));
-                          }
-                          UIBlock.block(context,customLoaderChild: LoadingWidget(context));
-                          Provider.of<CartModel>(context).addProductToCart(_result[index].product, Provider.of<AppModel>(context).auth.access_token,_result[index].product.varian.length==0?null:varian_result).then((value){
-                            UIBlock.unblock(context);
-                            if(value.statusCode == 200){
-                              showAlertDialog(context, _result[index].product);
-                            }else{
-                              final snackBar = SnackBar(
-                                content: Text(value.message,style: TextStyle(color: Colors.white)),
-                                backgroundColor: Colors.redAccent,
-                              );
-                              _scaffoldKey.currentState.showSnackBar(snackBar);
-                            }
-                          });
+                          final snackBar = SnackBar(
+                            content: Text("Produk Tidak Tersedia",style: TextStyle(color: Colors.white)),
+                            backgroundColor: Colors.redAccent,
+                          );
+                          _scaffoldKey.currentState.showSnackBar(snackBar);
                         }
                       },
                       child: Container(
@@ -623,29 +642,17 @@ Widget _buildList() {
                                             }
                                           },
                                           onTobag: () {
-                                            if (Provider
-                                                .of<AppModel>(context)
-                                                .loggedIn) {
-                                              UIBlock.block(context,
-                                                  customLoaderChild: LoadingWidget(
-                                                      context));
-                                              Provider.of<CartModel>(context)
-                                                  .addProductToCart(
-                                                  item_product, Provider
-                                                  .of<AppModel>(context)
-                                                  .auth
-                                                  .access_token, null)
-                                                  .then((value) {
+                                            if (Provider.of<AppModel>(context).loggedIn) {
+                                              UIBlock.block(context, customLoaderChild: LoadingWidget(context));
+                                              if(item_product.varian.length==0 || (item_product.varian.length==1&&item_product.varian.length>0?item_product.varian[0].values.length>1:false))
+                                              Provider.of<CartModel>(context).addProductToCart(item_product, Provider.of<AppModel>(context).auth.access_token, null).then((value) {
                                                 UIBlock.unblock(context);
-                                                showAlertDialog(
-                                                    context, item_product);
+                                                showAlertDialog(context, item_product, null);
                                               });
+                                              else
+                                                Navigator.push(context, MaterialPageRoute(builder: (context) => ProductDetailsScreen(product: item_product,)));
                                             } else {
-                                              Navigator.push(context,
-                                                  new MaterialPageRoute(
-                                                    builder: (
-                                                        BuildContext context) => new LoginScreen(),
-                                                  ));
+                                              Navigator.push(context, new MaterialPageRoute(builder: (BuildContext context) => new LoginScreen(),));
                                             }
                                           },
                                         ),
@@ -711,29 +718,17 @@ Widget _buildList() {
                                             }
                                           },
                                           onTobag: () {
-                                            if (Provider
-                                                .of<AppModel>(context)
-                                                .loggedIn) {
-                                              UIBlock.block(context,
-                                                  customLoaderChild: LoadingWidget(
-                                                      context));
-                                              Provider.of<CartModel>(context)
-                                                  .addProductToCart(
-                                                  item_product, Provider
-                                                  .of<AppModel>(context)
-                                                  .auth
-                                                  .access_token, null)
-                                                  .then((value) {
-                                                UIBlock.unblock(context);
-                                                showAlertDialog(
-                                                    context, item_product);
-                                              });
+                                            if (Provider.of<AppModel>(context).loggedIn) {
+                                              UIBlock.block(context, customLoaderChild: LoadingWidget(context));
+                                              if(item_product.varian.length==0 || (item_product.varian.length==1&&item_product.varian.length>0?item_product.varian[0].values.length>1:false))
+                                                Provider.of<CartModel>(context).addProductToCart(item_product, Provider.of<AppModel>(context).auth.access_token, null).then((value) {
+                                                  UIBlock.unblock(context);
+                                                  showAlertDialog(context, item_product, null);
+                                                });
+                                              else
+                                                Navigator.push(context, MaterialPageRoute(builder: (context) => ProductDetailsScreen(product: item_product,)));
                                             } else {
-                                              Navigator.push(context,
-                                                  new MaterialPageRoute(
-                                                    builder: (
-                                                        BuildContext context) => new LoginScreen(),
-                                                  ));
+                                              Navigator.push(context, new MaterialPageRoute(builder: (BuildContext context) => new LoginScreen(),));
                                             }
                                           },
                                         ),
@@ -804,29 +799,17 @@ Widget _buildList() {
                                             }
                                           },
                                           onTobag: () {
-                                            if (Provider
-                                                .of<AppModel>(context)
-                                                .loggedIn) {
-                                              UIBlock.block(context,
-                                                  customLoaderChild: LoadingWidget(
-                                                      context));
-                                              Provider.of<CartModel>(context)
-                                                  .addProductToCart(
-                                                  item_product, Provider
-                                                  .of<AppModel>(context)
-                                                  .auth
-                                                  .access_token, null)
-                                                  .then((value) {
-                                                UIBlock.unblock(context);
-                                                showAlertDialog(
-                                                    context, item_product);
-                                              });
+                                            if (Provider.of<AppModel>(context).loggedIn) {
+                                              UIBlock.block(context, customLoaderChild: LoadingWidget(context));
+                                              if(item_product.varian.length==0 || (item_product.varian.length==1&&item_product.varian.length>0?item_product.varian[0].values.length>1:false))
+                                                Provider.of<CartModel>(context).addProductToCart(item_product, Provider.of<AppModel>(context).auth.access_token, null).then((value) {
+                                                  UIBlock.unblock(context);
+                                                  showAlertDialog(context, item_product, null);
+                                                });
+                                              else
+                                                Navigator.push(context, MaterialPageRoute(builder: (context) => ProductDetailsScreen(product: item_product,)));
                                             } else {
-                                              Navigator.push(context,
-                                                  new MaterialPageRoute(
-                                                    builder: (
-                                                        BuildContext context) => new LoginScreen(),
-                                                  ));
+                                              Navigator.push(context, new MaterialPageRoute(builder: (BuildContext context) => new LoginScreen(),));
                                             }
                                           },
                                         ),
