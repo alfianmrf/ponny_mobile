@@ -74,139 +74,140 @@ class _SearchState extends State<SearchScreen> {
           backgroundColor: Color(0xffFDF8F0),
           appBar: PreferredSize(
             preferredSize: Size.fromHeight(136.0),
-            child: Column(
-              children: [
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  padding: EdgeInsets.symmetric(vertical: 5),
-                  margin: MediaQuery.of(context).padding,
-                  color: Color(0xffF48262),
-                  child: Center(
-                    child: Text(
-                      'GRATIS ONGKIR DENGAN PEMBELANJAAN RP 250.000',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontFamily: 'Brandon',
-                      ),
-                      textScaleFactor: .8,
-                    ),
-                  ),
-                ),
-                new AppBar(
-                  primary: false,
-                  title: Image.asset('assets/images/PonnyBeaute.png', fit: BoxFit.contain, height: 46),
-                  centerTitle: true,
-                  backgroundColor: Color(0xfffdf8f0),
-                  elevation: 0,
-                  leading: IconButton(
-                    onPressed: (){
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => b.Browse()));
-                    },
-                    icon: ImageIcon(
-                        AssetImage('assets/images/home/search.png')
-                    ),
-                  ),
-                  iconTheme: IconThemeData(
+            child: SafeArea(
+              child: Column(
+                children: [
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    padding: EdgeInsets.symmetric(vertical: 5),
                     color: Color(0xffF48262),
+                    child: Center(
+                      child: Text(
+                        'GRATIS ONGKIR DENGAN PEMBELANJAAN RP 250.000',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontFamily: 'Brandon',
+                        ),
+                        textScaleFactor: .8,
+                      ),
+                    ),
                   ),
-                  actions: <Widget>[
-                    IconButton(
-                      icon: new Stack(
-                          children: <Widget>[
-                            Provider.of<AppModel>(context).loggedIn?
-                            new Container(
-                              padding: EdgeInsets.all(5),
-                              child: Provider.of<WishModel>(context).loading ? LoadingRing(context) : ImageIcon(
-                                AssetImage('assets/images/home/wishlist.png'),
+                  new AppBar(
+                    primary: false,
+                    title: Image.asset('assets/images/PonnyBeaute.png', fit: BoxFit.contain, height: 46),
+                    centerTitle: true,
+                    backgroundColor: Color(0xfffdf8f0),
+                    elevation: 0,
+                    leading: IconButton(
+                      onPressed: (){
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) => b.Browse()));
+                      },
+                      icon: ImageIcon(
+                          AssetImage('assets/images/home/search.png')
+                      ),
+                    ),
+                    iconTheme: IconThemeData(
+                      color: Color(0xffF48262),
+                    ),
+                    actions: <Widget>[
+                      IconButton(
+                        icon: new Stack(
+                            children: <Widget>[
+                              Provider.of<AppModel>(context).loggedIn?
+                              new Container(
+                                padding: EdgeInsets.all(5),
+                                child: Provider.of<WishModel>(context).loading ? LoadingRing(context) : ImageIcon(
+                                  AssetImage('assets/images/home/wishlist.png'),
+                                ),
+                              ):new Container(
+                                padding: EdgeInsets.all(5),
+                                child: ImageIcon(
+                                  AssetImage('assets/images/home/wishlist.png'),
+                                ),
                               ),
-                            ):new Container(
-                              padding: EdgeInsets.all(5),
-                              child: ImageIcon(
-                                AssetImage('assets/images/home/wishlist.png'),
-                              ),
-                            ),
-                            if(Provider.of<WishModel>(context).countwishlist > 0 && Provider.of<AppModel>(context).loggedIn)
-                              new Positioned(  // draw a red marble
-                                top: 0.0,
-                                right: 0.0,
-                                child: Container(
-                                  width: 12,
-                                  height: 12,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(40),
-                                    color: Colors.redAccent,
-                                  ),
-                                  child: Center(
-                                    child: Text(
-                                      Provider.of<WishModel>(context).countwishlist.toString(),
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontFamily: 'Brandon',
-                                        fontSize: 8,
+                              if(Provider.of<WishModel>(context).countwishlist > 0 && Provider.of<AppModel>(context).loggedIn)
+                                new Positioned(  // draw a red marble
+                                  top: 0.0,
+                                  right: 0.0,
+                                  child: Container(
+                                    width: 12,
+                                    height: 12,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(40),
+                                      color: Colors.redAccent,
+                                    ),
+                                    child: Center(
+                                      child: Text(
+                                        Provider.of<WishModel>(context).countwishlist.toString(),
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontFamily: 'Brandon',
+                                          fontSize: 8,
+                                        ),
                                       ),
                                     ),
                                   ),
-                                ),
-                              )
-                          ]
+                                )
+                            ]
+                        ),
+                        onPressed: () {
+                          if(Provider.of<AppModel>(context).loggedIn){
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>  DaftarKeinginanScreen()),
+                            );
+                          }else{
+                            Navigator.push(context,new MaterialPageRoute(
+                              builder: (BuildContext context) => new LoginScreen(),
+                            ));
+                          }
+                        },
                       ),
-                      onPressed: () {
-                        if(Provider.of<AppModel>(context).loggedIn){
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>  DaftarKeinginanScreen()),
+                    ],
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                        color: Colors.white),
+                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                    margin: EdgeInsets.only(left: 10, top: 10, right: 10),
+                    child: Row(children: [
+                      Icon(Icons.search, color: Color(0xffF48262)),
+                      Expanded(
+                          child: TextField(
+                            onTap: () {
+                              showSearch(context: null, delegate: b.Search());
+                            },
+                            onSubmitted: (String q){
+                              FocusScope.of(context).requestFocus(new FocusNode());
+                              setState(() {
+                                loading=true;
+                              });
+                              _searchData();
+                            },
+                            controller: _search,
+                            cursorColor: Colors.black,
+                            keyboardType: TextInputType.text,
+                            textInputAction: TextInputAction.go,
+                            decoration:
+                            new InputDecoration.collapsed(),
+                          )),
+                      InkWell(
+                        onTap: (){
+                          Navigator.pushNamedAndRemoveUntil(
+                              context,
+                              b.Browse.id,(_) => false
                           );
-                        }else{
-                          Navigator.push(context,new MaterialPageRoute(
-                            builder: (BuildContext context) => new LoginScreen(),
-                          ));
-                        }
-                      },
-                    ),
-                  ],
-                ),
-                Container(
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
-                      color: Colors.white),
-                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                  margin: EdgeInsets.only(left: 10, top: 10, right: 10),
-                  child: Row(children: [
-                    Icon(Icons.search, color: Color(0xffF48262)),
-                    Expanded(
-                        child: TextField(
-                          onTap: () {
-                            showSearch(context: null, delegate: b.Search());
-                          },
-                          onSubmitted: (String q){
-                            FocusScope.of(context).requestFocus(new FocusNode());
-                            setState(() {
-                              loading=true;
-                            });
-                            _searchData();
-                          },
-                          controller: _search,
-                          cursorColor: Colors.black,
-                          keyboardType: TextInputType.text,
-                          textInputAction: TextInputAction.go,
-                          decoration:
-                          new InputDecoration.collapsed(),
-                        )),
-                    InkWell(
-                      onTap: (){
-                        Navigator.pushNamedAndRemoveUntil(
-                            context,
-                            b.Browse.id,(_) => false
-                        );
-                      },
-                      child: Icon(Icons.close, color: Color(0xffF48262)),
-                    )
-                    ,
-                  ]),
-                ),
-              ],
+                        },
+                        child: Icon(Icons.close, color: Color(0xffF48262)),
+                      )
+                      ,
+                    ]),
+                  ),
+                ],
+              ),
             ),
           ),
           body: loading ?  Container(

@@ -152,6 +152,21 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
+  Future<Null> _updateCart()  async {
+    var token = Provider.of<AppModel>(context).auth.access_token;
+    final response = await http.get(listCarturl,headers: { HttpHeaders.contentTypeHeader: 'application/json',HttpHeaders.authorizationHeader: "Bearer $token" });
+    if(response.statusCode == 200)
+    {
+      final responseJson = json.decode(response.body);
+      print("DATA CART");
+      print(responseJson['data']);
+    }else{
+      print("DATA CART");
+      print(response.statusCode);
+    }
+
+  }
+
   @override
   void initState() {
     super.initState();
@@ -167,6 +182,7 @@ class _HomeScreenState extends State<HomeScreen> {
       getyt();
       print("SUCCESS");
       print(_controllersYoutube);
+      _updateCart();
     });
   }
 

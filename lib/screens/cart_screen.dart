@@ -21,6 +21,8 @@ import 'package:ponny/screens/shipping_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:ponny/model/Cart.dart';
 import 'package:uiblock/uiblock.dart';
+import 'package:http/http.dart' as http;
+import 'dart:io' show HttpHeaders, Platform;
 
 
 class CartScreen extends StatefulWidget {
@@ -33,6 +35,22 @@ class CartScreen extends StatefulWidget {
 class _CartScreenState extends State<CartScreen> {
   TextEditingController _code = TextEditingController();
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+
+  Future<Null> _updateCart()  async {
+    var token = Provider.of<AppModel>(context).auth.access_token;
+    final response = await http.get(listCarturl,headers: { HttpHeaders.contentTypeHeader: 'application/json',HttpHeaders.authorizationHeader: "Bearer $token" });
+    if(response.statusCode == 200)
+    {
+      final responseJson = json.decode(response.body);
+      print("DATA CART");
+      print(responseJson['data']);
+    }else{
+      print("DATA CART");
+      print(response.statusCode);
+    }
+
+  }
+
   @override
   void initState() {
     super.initState();
@@ -40,6 +58,7 @@ class _CartScreenState extends State<CartScreen> {
       await Provider.of<CartModel>(context).RemoveCoupon();
       await Provider.of<UserModel>(context).getUser(
           Provider.of<AppModel>(context, listen: false).auth.access_token);
+      _updateCart();
     });
   }
 
