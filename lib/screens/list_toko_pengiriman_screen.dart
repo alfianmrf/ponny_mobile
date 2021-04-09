@@ -1,6 +1,7 @@
 part of 'pages.dart';
 
 class ListTokoPengirimanScreen extends StatefulWidget {
+  List<Cart> listCardOfitem=[];
   @override
   _ListTokoPengirimanScreenState createState() =>
       _ListTokoPengirimanScreenState();
@@ -8,15 +9,37 @@ class ListTokoPengirimanScreen extends StatefulWidget {
 
 class _ListTokoPengirimanScreenState extends State<ListTokoPengirimanScreen> {
   int _selectedIndex;
-
+  Datum dataCabang;
   _onSelected(int index) {
     setState(() => _selectedIndex = index);
+
+
+  }
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      getListToko();
+    });
+  }
+
+  Future<void>getListToko() async{
+      try{
+          var token = Provider.of<AppModel>(context, listen: false).auth.access_token;
+          print("sukses");
+          await Provider.of<ListCabang>(context).getListCabang(token);
+      }
+      catch(e){
+          print("ERror message"+e.toString());
+      }
   }
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    var method = Provider.of<MetodePengiriman>(context);
+    var method = Provider.of<ListCabang>(context);
+
 
     return Scaffold(
       backgroundColor: Hexcolor('#FCF8F0'),
@@ -41,69 +64,77 @@ class _ListTokoPengirimanScreenState extends State<ListTokoPengirimanScreen> {
               preferredSize: Size.fromHeight(1.0))),
       body: Stack(
         children: [
-          ListView.separated(
-            itemCount: 7,
-            separatorBuilder: (BuildContext context, int index) {
-              return Divider(
-                color: Color(0xffF48262),
-              );
-            },
-            itemBuilder: (BuildContext context, int index) {
-              return GestureDetector(
-                  child: Container(
-                    color: _selectedIndex != null && _selectedIndex == index
-                        ? Hexcolor('#FFF4DE')
-                        : Hexcolor('#FCF8F0'),
-                    padding: EdgeInsets.only(left: 16, top: 10, bottom: 10),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Neo Soho Mall",
-                          style: TextStyle(
-                            fontFamily: "Brandon",
-                            fontWeight: FontWeight.w600,
-                            color: Colors.black,
-                            fontSize: 17,
-                          ),
-                        ),
-                        Text(
-                          "Letjend S. Parman St. No.KAv 28, West Jakarta",
-                          style: TextStyle(
-                            fontFamily: "Brandon",
-                            color: Colors.black,
-                            fontSize: 15,
-                          ),
-                        ),
-                        Text(
-                          "Jam Buka : Pukul 10:00 - 19:00 WIB ",
-                          style: TextStyle(
-                            fontFamily: "Brandon",
-                            color: Colors.black,
-                            fontSize: 15,
-                          ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(top: 12),
-                          padding:
-                              EdgeInsets.symmetric(horizontal: 7, vertical: 4),
-                          decoration: BoxDecoration(
-                              color: Colors.green.withOpacity(0.90),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(8))),
-                          child: Text(
-                            "Stok barang tersedia",
-                            style: TextStyle(
-                              fontFamily: "Brandon",
-                              color: Colors.white,
-                              fontSize: 13,
+          Consumer<ListCabang>(
+            builder: (context, value, child){
+              var cabang = value.dataCabang;
+              return ListView.separated(
+                itemCount: value.dataCabang.length,
+                separatorBuilder: (BuildContext context, int index) {
+                  return Divider(
+                    color: Color(0xffF48262),
+                  );
+                },
+                itemBuilder: (BuildContext context, int index) {
+                  return GestureDetector(
+                      child: Container(
+                        color: _selectedIndex != null && _selectedIndex == index
+                            ? Hexcolor('#FFF4DE')
+                            : Hexcolor('#FCF8F0'),
+                        padding: EdgeInsets.only(left: 16, top: 10, bottom: 10),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              cabang[index].alamatCabang,
+                              style: TextStyle(
+                                fontFamily: "Brandon",
+                                fontWeight: FontWeight.w600,
+                                color: Colors.black,
+                                fontSize: 17,
+                              ),
                             ),
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                  onTap: () => _onSelected(index));
+                            Text(
+                              cabang[index].alamatCabang,
+                              style: TextStyle(
+                                fontFamily: "Brandon",
+                                color: Colors.black,
+                                fontSize: 15,
+                              ),
+                            ),
+                            Text(
+                              "Jam Buka : Pukul ${cabang[index].jamOperasional} ${cabang[index].waktu} ",
+                              style: TextStyle(
+                                fontFamily: "Brandon",
+                                color: Colors.black,
+                                fontSize: 15,
+                              ),
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(top: 12),
+                              padding:
+                              EdgeInsets.symmetric(horizontal: 7, vertical: 4),
+                              decoration: BoxDecoration(
+                                  color: Colors.green.withOpacity(0.90),
+                                  borderRadius:
+                                  BorderRadius.all(Radius.circular(8))),
+                              child: Text(
+                                "Stok barang tersedia",
+                                style: TextStyle(
+                                  fontFamily: "Brandon",
+                                  color: Colors.white,
+                                  fontSize: 13,
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                      onTap: (){
+                        _onSelected(index);
+                        dataCabang = cabang[index];
+                      });
+                },
+              );
             },
           ),
           Positioned(
@@ -129,13 +160,9 @@ class _ListTokoPengirimanScreenState extends State<ListTokoPengirimanScreen> {
                       ),
                     ),
                     onPressed: () {
-                      method.setAddress = "wkwkwk";
-
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => RincianPengambilanScreen()),
-                      );
+                      Provider.of<ListCabang>(context).setDataCabang = dataCabang;
+                      int count = 0;
+                      Navigator.of(context).popUntil((_) => count++ >= 2);
                     }),
               ))
         ],

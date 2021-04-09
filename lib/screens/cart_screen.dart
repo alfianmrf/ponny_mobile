@@ -13,6 +13,7 @@ import 'package:ponny/model/Cart.dart';
 import 'package:ponny/model/Product.dart';
 import 'package:ponny/model/MetodePengirimanModel.dart';
 import 'package:ponny/model/User.dart';
+import 'package:ponny/model/listCabangModel.dart';
 import 'package:ponny/screens/PilihSample.dart';
 import 'package:ponny/screens/account/happy_skin_reward_screen.dart';
 import 'package:ponny/screens/pages.dart';
@@ -77,6 +78,12 @@ class _CartScreenState extends State<CartScreen> {
 
   String dropdownValue = 'One';
 
+  Future<void> getUnavailable(List<Cart> data) {
+    
+    
+  }
+  
+  
   void _methodeModalBottomSheet(context) {
     final size = MediaQuery.of(context).size;
     showModalBottomSheet(
@@ -417,10 +424,13 @@ class _CartScreenState extends State<CartScreen> {
     );
   }
 
+
+
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    var method = Provider.of<MetodePengiriman>(context);
+    var method = Provider.of<ListCabang>(context);
     int jumlahSample =
         Provider.of<CartModel>(context).listUseSample.length ?? 0;
     return Scaffold(
@@ -452,6 +462,7 @@ class _CartScreenState extends State<CartScreen> {
             child: SingleChildScrollView(
               child: Consumer<CartModel>(
                 builder: (context, value, child) {
+                  Provider.of<ListCabang>(context).unavaliable = [];
                   if (value.loadingCard) {
                     return Center(
                       child: LoadingWidgetFadingCircle(context),
@@ -465,9 +476,16 @@ class _CartScreenState extends State<CartScreen> {
                         ),
                       );
                     } else {
+                      for(final item in value.listCardOfitem){
+                        print("waaaw");
+                        Provider.of<ListCabang>(context).addDataUn(item);
+                      }
+                      print("avaliable===>");
+                      print(Provider.of<ListCabang>(context).unavaliable);
                       return new Column(
                         children: <Widget>[
                           for (final item in value.listCardOfitem)
+
                             (Container(
                               width: MediaQuery.of(context).size.width * 0.95,
                               padding: EdgeInsets.all(15),
@@ -492,7 +510,6 @@ class _CartScreenState extends State<CartScreen> {
                                       padding: EdgeInsets.only(right: 7),
                                       child: GestureDetector(
                                         onTap: (){
-
                                           Navigator.push(context, new MaterialPageRoute(builder: (BuildContext context)=> new ProductDetailsScreen(product: item.product,)));
                                         },
                                         child: CachedNetworkImage(
@@ -1332,7 +1349,7 @@ class _CartScreenState extends State<CartScreen> {
                                                             FontWeight.bold,
                                                         fontSize: 13)),
                                                 TextSpan(
-                                                    text: method.setAddress,
+                                                    text: method.cabangClick == null ? "Mau diantar atau diambil sendiri nih? Kamu bisa pilih loh!" : method.cabangClick.alamatCabang,
                                                     style: TextStyle(
                                                       fontFamily: 'Brandon',
                                                       fontSize: 10,
@@ -1348,7 +1365,7 @@ class _CartScreenState extends State<CartScreen> {
                                       ),
                                       Column(
                                         children: [
-                                          Row(
+                                         method.cabangClick != null && method.cabangClick.unavailableProduct != null ? Row(
                                             children: [
                                               Icon(
                                                 Icons.priority_high,
@@ -1366,10 +1383,10 @@ class _CartScreenState extends State<CartScreen> {
                                                 ),
                                               )
                                             ],
-                                          ),
+                                          ) : SizedBox(),
                                         ],
                                       ),
-                                      Padding(
+                                      method.cabangClick != null && method.cabangClick.unavailableProduct != null ? Padding(
                                         padding: EdgeInsets.only(
                                             left: 25, top: 10, bottom: 10),
                                         child: Row(
@@ -1430,24 +1447,25 @@ class _CartScreenState extends State<CartScreen> {
                                             )
                                           ],
                                         ),
-                                      ),
-                                      Container(
+                                      ) : SizedBox(),
+                                      method.cabangClick != null && method.cabangClick.unavailableProduct != null ?  Container(
                                         height: 10,
                                         width:
                                             MediaQuery.of(context).size.width,
                                         color: Colors.white,
-                                      ),
-                                      ListView.separated(
+                                      ) : SizedBox(),
+                                      method.cabangClick != null && method.cabangClick.unavailableProduct != null ?  ListView.separated(
                                         scrollDirection: Axis.vertical,
                                         shrinkWrap: true,
                                         physics: NeverScrollableScrollPhysics(),
-                                        itemCount: 2,
+                                        itemCount: Provider.of<ListCabang>(context).unavaliable.length,
                                         separatorBuilder:
                                             (BuildContext context, int index) {
                                           return Divider();
                                         },
                                         itemBuilder:
                                             (BuildContext context, int index) {
+                                          var unavailable = Provider.of<ListCabang>(context).unavaliable;
                                           return Container(
                                             padding: EdgeInsets.symmetric(
                                                 vertical: 20, horizontal: 10),
@@ -1489,7 +1507,7 @@ class _CartScreenState extends State<CartScreen> {
                                                             .start,
                                                     children: [
                                                       Text(
-                                                        "Skin Game",
+                                                        unavailable[index].product.brand.name,
                                                         style: TextStyle(
                                                           fontWeight:
                                                               FontWeight.w600,
@@ -1498,7 +1516,7 @@ class _CartScreenState extends State<CartScreen> {
                                                         ),
                                                       ),
                                                       TextBuild(
-                                                        value: "Acne Warrior",
+                                                        value: unavailable[index].product.name,
                                                       ),
                                                       SizedBox(height: 7),
                                                       Row(
@@ -1565,7 +1583,7 @@ class _CartScreenState extends State<CartScreen> {
                                             ),
                                           );
                                         },
-                                      ),
+                                      ) : SizedBox(),
                                     ],
                                   ),
                                 )

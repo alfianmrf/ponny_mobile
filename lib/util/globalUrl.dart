@@ -1,14 +1,14 @@
 import 'package:flutter/cupertino.dart';
 
 //prod
-const base_url = "https://ponnybeaute.co.id/api/v1/";
+// const base_url = "https://ponnybeaute.co.id/api/v1/";
 const img_url = "https://ponny-publik.s3-ap-southeast-1.amazonaws.com/public/";
-const urlGlobal = "https://ponnybeaute.co.id/";
+// const urlGlobal = "https://ponnybeaute.co.id/";
 
 //dev
-// const base_url = "http://devponnylb-1174518223.ap-southeast-1.elb.amazonaws.com/api/v1/";
+const base_url = "https://ec2-13-229-239-61.ap-southeast-1.compute.amazonaws.com/api/v1/";
 // const img_url = "https://ponnybeaute.revoapps.id/public/";
-// const urlGlobal = "http://devponnylb-1174518223.ap-southeast-1.elb.amazonaws.com/";
+const urlGlobal = "https://ec2-13-229-239-61.ap-southeast-1.compute.amazonaws.com/";
 
 //Auth
 const filterTrend = base_url + "forum/rooms/";
@@ -96,6 +96,7 @@ const claimPoint = "https://ec2-13-229-239-61.ap-southeast-1.compute.amazonaws.c
 //Order
 const urlTracking = base_url + "checkout/tracking";
 const urlTerimaBarang = base_url + "checkout/receipt";
+const listCabangURL = urlGlobal + "api/v2/cabang/get";
 
 //Redeem
 const rdmProduk = base_url + "product/redeemable";
