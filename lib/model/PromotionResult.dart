@@ -128,10 +128,10 @@ class Coupons {
 }
 
 class DecodeDetail {
-  List<String> categoryId;
-  List<String> subcategoryId;
-  List<String> subsubcategoryId;
-  List<String> productId;
+  String categoryId;
+  String subcategoryId;
+  String subsubcategoryId;
+  String productId;
   String minBuy;
   String maxDiscount;
 
@@ -144,10 +144,10 @@ class DecodeDetail {
         this.maxDiscount});
 
   DecodeDetail.fromJson(Map<String, dynamic> json) {
-    categoryId = json['category_id'].cast<String>();
-    subcategoryId = json['subcategory_id'].cast<String>();
-    subsubcategoryId = json['subsubcategory_id'].cast<String>();
-    productId = json['product_id'].cast<String>();
+    categoryId = json['category_id'];
+    subcategoryId = json['subcategory_id'];
+    subsubcategoryId = json['subsubcategory_id'];
+    productId = json['product_id'];
     minBuy = json['min_buy'];
     maxDiscount = json['max_discount'];
   }

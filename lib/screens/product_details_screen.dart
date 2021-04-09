@@ -200,34 +200,36 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   width: MediaQuery.of(context).size.width*0.2,
                 ),
               ),
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: 5),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      widget.product.brand.name,
-                      style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontFamily: 'Brandon'
+              Expanded(
+                child: Container(
+                  margin: EdgeInsets.symmetric(horizontal: 5),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        widget.product.brand.name,
+                        style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontFamily: 'Brandon'
+                        ),
                       ),
-                    ),
-                    Text(
-                        widget.product.name,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                          fontFamily: 'Brandon'
+                      Text(
+                          widget.product.name,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                            fontFamily: 'Brandon'
+                        ),
                       ),
-                    ),
-                    if(varian !=null)
-                    Text(
-                      varian.varian,
-                      style: TextStyle(
-                          fontFamily: 'Brandon'
+                      if(varian !=null)
+                      Text(
+                        varian.varian,
+                        style: TextStyle(
+                            fontFamily: 'Brandon'
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ],

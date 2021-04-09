@@ -803,34 +803,36 @@ void showAlertDialog(BuildContext context,Product product) {
                 width: MediaQuery.of(context).size.width*0.2,
               ),
             ),
-            Container(
-              margin: EdgeInsets.symmetric(horizontal: 5),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    product.brand.name,
-                    style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontFamily: 'Brandon'
-                    ),
-                  ),
-                  Text(
-                    product.name,
-                    style: TextStyle(
-                        fontFamily: 'Brandon'
-                    ),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  if(product.varian.isNotEmpty)
+            Expanded(
+              child: Container(
+                margin: EdgeInsets.symmetric(horizontal: 5),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
                     Text(
-                      '120ml',
+                      product.brand.name,
                       style: TextStyle(
+                          fontWeight: FontWeight.w600,
                           fontFamily: 'Brandon'
                       ),
                     ),
-                ],
+                    Text(
+                      product.name,
+                      style: TextStyle(
+                          fontFamily: 'Brandon'
+                      ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    if(product.varian.isNotEmpty)
+                      Text(
+                        '120ml',
+                        style: TextStyle(
+                            fontFamily: 'Brandon'
+                        ),
+                      ),
+                  ],
+                ),
               ),
             ),
           ],

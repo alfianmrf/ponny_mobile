@@ -155,9 +155,12 @@ class _PromotionScreenState extends State<PromotionScreen> {
                         child: Container(
                             margin: EdgeInsets.all(10),
                             color: Colors.white,
-                            child: Image.network(
-                              img_url+kupon.banner,
-                              fit: BoxFit.contain,
+                            child: CachedNetworkImage(
+                              imageUrl:kupon.banner != null?   img_url+kupon.banner:"",
+                              placeholder: (context, url) => LoadingWidgetPulse(context),
+                              errorWidget: (context, url, error) => Image.asset('assets/images/basic.jpg'),
+                              width: MediaQuery.of(context).size.width,
+                              fit: BoxFit.cover,
                             ),
                         ),
                       )
