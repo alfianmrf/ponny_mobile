@@ -12,8 +12,6 @@ class _ListTokoPengirimanScreenState extends State<ListTokoPengirimanScreen> {
   Datum dataCabang;
   _onSelected(int index) {
     setState(() => _selectedIndex = index);
-
-
   }
   @override
   void initState() {
@@ -85,7 +83,7 @@ class _ListTokoPengirimanScreenState extends State<ListTokoPengirimanScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              cabang[index].alamatCabang,
+                              cabang[index].namaCabang,
                               style: TextStyle(
                                 fontFamily: "Brandon",
                                 fontWeight: FontWeight.w600,
@@ -161,6 +159,7 @@ class _ListTokoPengirimanScreenState extends State<ListTokoPengirimanScreen> {
                     ),
                     onPressed: () {
                       Provider.of<ListCabang>(context).setDataCabang = dataCabang;
+                      Provider.of<ListCabang>(context).setDataUnavaliable = false;
                       int count = 0;
                       Navigator.of(context).popUntil((_) => count++ >= 2);
                     }),

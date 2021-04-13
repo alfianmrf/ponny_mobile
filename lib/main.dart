@@ -16,6 +16,7 @@ import 'package:ponny/model/User.dart';
 import 'package:ponny/model/Voucher.dart';
 import 'package:ponny/model/chatEmail.dart';
 import 'package:ponny/model/PostandComment.dart';
+import 'package:ponny/model/listCabangModel.dart';
 import 'package:ponny/screens/Skinklopedia_Screen.dart';
 import 'package:ponny/screens/Detail_Brand_Screen.dart';
 import 'package:ponny/screens/bank_transfer_screen.dart';
@@ -141,7 +142,8 @@ Future<void> main() async {
           ChangeNotifierProvider(create: (context) => AddCodeResult()),
           ChangeNotifierProvider(create: (context) => AffiliateWithdraw()),
           ChangeNotifierProvider(create: (context) => MetodePengiriman()),
-          ChangeNotifierProvider(create: (context) => ClaimPointHarian())
+          ChangeNotifierProvider(create: (context) => ClaimPointHarian()),
+          ChangeNotifierProvider(create: (context) => ListCabang()),
         ],
         child: MyApp(),
       ),

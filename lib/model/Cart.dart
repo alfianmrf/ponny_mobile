@@ -245,7 +245,9 @@ class CartModel with ChangeNotifier{
   {
     final res = await http.get(removeCardUrl+"/"+id.toString(), headers: { HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: "Bearer $token"});
     if (res.statusCode == 200) {
+      print("cart ==>"+id.toString());
       int index = listCardOfitem.indexWhere((element) => element.id == id);
+
       listCardOfitem.removeAt(index);
       await getSummary(token);
       notifyListeners();

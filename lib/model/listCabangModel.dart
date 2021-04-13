@@ -20,16 +20,20 @@ class ListCabang with ChangeNotifier {
   List<Cart> unavaliable = [];
   List<Datum> dataCabang = [];
   Datum cabangClick;
-
+  int unavaliableQty = 0;
+  bool isDelivery = false;
 
   void addDataUn(Cart cart){
+   
     dataCabang.indexWhere((element) => element.unavailableProduct == cart.product.id);
       for(var item in dataCabang){
-        for ( var result in item.unavailableProduct){
-          if (result == cart.product.id) unavaliable.add(cart);
+        for ( var result in item.unavailableProduct) {
+          if (result == cart.product.id) {
+            unavaliable.add(cart);
+          }
         }
       }
-      notifyListeners();
+    notifyListeners();
   }
 
   set setDataCabang(value){
@@ -37,7 +41,19 @@ class ListCabang with ChangeNotifier {
     notifyListeners();
   }
 
+  set setUnavailable(value){
+    unavaliable = unavaliable;
+    notifyListeners();
+  }
+
+  set setDataUnavaliable(value){
+      isDelivery = value;
+      notifyListeners();
+  }
+
+  bool get setDataUnavaliable => isDelivery;
   Datum get setDataCabang => cabangClick;
+  List<Cart> get setUnavailable => unavaliable;
 
   ListCabang({
     this.status,

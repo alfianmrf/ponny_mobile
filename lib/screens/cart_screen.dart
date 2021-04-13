@@ -1,8 +1,10 @@
 import 'dart:convert';
+// import 'dart:html';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:intl/intl.dart';
 import 'package:lodash_dart/lodash_dart.dart';
@@ -13,9 +15,11 @@ import 'package:ponny/model/Cart.dart';
 import 'package:ponny/model/Product.dart';
 import 'package:ponny/model/MetodePengirimanModel.dart';
 import 'package:ponny/model/User.dart';
+import 'package:ponny/model/WishProduct.dart';
 import 'package:ponny/model/listCabangModel.dart';
 import 'package:ponny/screens/PilihSample.dart';
 import 'package:ponny/screens/account/happy_skin_reward_screen.dart';
+import 'package:ponny/screens/login.dart';
 import 'package:ponny/screens/pages.dart';
 import 'package:ponny/screens/product_details_screen.dart';
 import 'package:ponny/util/globalUrl.dart';
@@ -43,6 +47,7 @@ class _CartScreenState extends State<CartScreen> {
       await Provider.of<CartModel>(context).RemoveCoupon();
       await Provider.of<UserModel>(context).getUser(
           Provider.of<AppModel>(context, listen: false).auth.access_token);
+       Provider.of<ListCabang>(context).setDataUnavaliable = null;
     });
   }
 
@@ -78,14 +83,10 @@ class _CartScreenState extends State<CartScreen> {
 
   String dropdownValue = 'One';
 
-  Future<void> getUnavailable(List<Cart> data) {
-    
-    
-  }
-  
   
   void _methodeModalBottomSheet(context) {
     final size = MediaQuery.of(context).size;
+    Provider.of<ListCabang>(context).unavaliable = [];
     showModalBottomSheet(
         context: context,
         shape: RoundedRectangleBorder(
@@ -245,22 +246,18 @@ class _CartScreenState extends State<CartScreen> {
                       ),
                     ),
                     Divider(color: Color(0xffF48262)),
-                    GestureDetector(
-                      onTap: () {
-                        Provider.of<MetodePengiriman>(context);
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ListTokoPengirimanScreen()),
-                        );
-                      },
-                      child: Padding(
-                        padding: EdgeInsets.only(bottom: 20),
-                        child: Column(
-                          children: [
-                            Container(
+                    Padding(
+                      padding: EdgeInsets.only(bottom: 20),
+                      child: Column(
+                        children: [
+                          Container(
+                              child: GestureDetector(
+                                onTap: () {
+                                    Provider.of<ListCabang>(context).setDataUnavaliable = true;
+                                    Navigator.pop(context);
+                                },
                                 child: Column(children: [
-                              Padding(
+                            Padding(
                                 padding: EdgeInsets.only(left: 20),
                                 child: Row(children: [
                                   Image.asset(
@@ -280,8 +277,8 @@ class _CartScreenState extends State<CartScreen> {
                                     ),
                                   )
                                 ]),
-                              ),
-                              Container(
+                            ),
+                            Container(
                                 margin: EdgeInsets.symmetric(horizontal: 5),
                                 child: Text(
                                   "Pesanan akan dikirim ke alamat penerima yang sudah kamu pilih",
@@ -291,58 +288,63 @@ class _CartScreenState extends State<CartScreen> {
                                     fontSize: 13,
                                   ),
                                 ),
-                              ),
-                            ])),
-                            Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 15),
-                                child: Divider(
-                                  color: Color(0xffF48262),
-                                )),
-                            GestureDetector(
-                              onTap: () {
-                                print("Pick up");
-                              },
-                              child: Container(
-                                child: Column(
-                                  children: [
-                                    Padding(
-                                        padding: EdgeInsets.only(left: 20),
-                                        child: Row(children: [
-                                          Image.asset(
-                                            'assets/images/perjalanan@4x.png',
-                                            width: 25,
-                                            height: 25,
-                                            fit: BoxFit.contain,
-                                          ),
-                                          SizedBox(width: 7),
-                                          Text(
-                                            "Pick Up",
-                                            style: TextStyle(
-                                              fontFamily: "Brandon",
-                                              fontWeight: FontWeight.w600,
-                                              color: Colors.black,
-                                              fontSize: 15,
-                                            ),
-                                          )
-                                        ])),
-                                    Container(
-                                      margin:
-                                          EdgeInsets.symmetric(horizontal: 5),
-                                      child: Text(
-                                        "Pesanan akan dikirim ke alamat penerima yang sudah kamu pilih",
-                                        style: TextStyle(
-                                          fontFamily: "Brandon",
-                                          color: Colors.black45,
-                                          fontSize: 13,
+                            ),
+                          ]),
+                              )),
+                          Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 15),
+                              child: Divider(
+                                color: Color(0xffF48262),
+                              )),
+                          GestureDetector(
+                            onTap: () {
+                              Provider.of<MetodePengiriman>(context);
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => ListTokoPengirimanScreen()),
+                              );
+                            },
+                            child: Container(
+                              child: Column(
+                                children: [
+                                  Padding(
+                                      padding: EdgeInsets.only(left: 20),
+                                      child: Row(children: [
+                                        Image.asset(
+                                          'assets/images/perjalanan@4x.png',
+                                          width: 25,
+                                          height: 25,
+                                          fit: BoxFit.contain,
                                         ),
+                                        SizedBox(width: 7),
+                                        Text(
+                                          "Pick Up",
+                                          style: TextStyle(
+                                            fontFamily: "Brandon",
+                                            fontWeight: FontWeight.w600,
+                                            color: Colors.black,
+                                            fontSize: 15,
+                                          ),
+                                        )
+                                      ])),
+                                  Container(
+                                    margin:
+                                        EdgeInsets.symmetric(horizontal: 5),
+                                    child: Text(
+                                      "Pesanan akan dikirim ke alamat penerima yang sudah kamu pilih",
+                                      style: TextStyle(
+                                        fontFamily: "Brandon",
+                                        color: Colors.black45,
+                                        fontSize: 13,
                                       ),
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
-                            )
-                          ],
-                        ),
+                            ),
+                          )
+                        ],
                       ),
                     )
                   ],
@@ -424,15 +426,280 @@ class _CartScreenState extends State<CartScreen> {
     );
   }
 
+  Future<void>addWishlistUnavaliable(Product id) async {
+    if(Provider.of<AppModel>(context).loggedIn) {
+        Provider.of<WishModel>(context).addProductToWish(id, Provider.of<AppModel>(context).auth.access_token);
+        if ( Provider.of<WishModel>(context).success == true ) showWishDialog(context, id);
 
+    }else{
+      Navigator.push(context,new MaterialPageRoute(
+        builder: (BuildContext context) => new LoginScreen(),
+      ));
+    }
+  }
+
+
+  void showWishDialog(BuildContext context, Product product) {
+    // set up the AlertDialog
+    SimpleDialog alert = SimpleDialog(
+      backgroundColor: Color(0xfffdf8f0),
+      contentPadding: EdgeInsets.all(5.0),
+      children: <Widget>[
+        Container(
+          padding: EdgeInsets.only(top: 30),
+          child: Icon(
+            Icons.favorite,
+            color: Color(0xffF48262),
+            size: 40,
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: 10),
+          child: Center(
+              child: Text(
+                'DITAMBAHKAN KE WISHLIST',
+                style: TextStyle(
+                  fontFamily: 'Brandon',
+                  fontWeight: FontWeight.w600,
+                  fontSize: 16,
+                  color: Color(0xffF48262),
+                ),
+              )),
+        ),
+        Padding(
+          padding: EdgeInsets.only(top: 15, bottom: 30),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 5),
+                child: Image.network(
+                  img_url+product.thumbnail_image,
+                  width: MediaQuery.of(context).size.width*0.2,
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 5),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      product.brand.name,
+                      style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontFamily: 'Brandon'
+                      ),
+                    ),
+                    Text(
+                      product.name.length > 20 ? product.name.substring(0, 20)+'...' : product.name,
+                      style: TextStyle(
+                          fontFamily: 'Brandon'
+                      ),
+                    ),
+                    if(product.varian.isNotEmpty)
+                      Text(
+                        '120ml',
+                        style: TextStyle(
+                            fontFamily: 'Brandon'
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  void showDeleteDialog(BuildContext context, Product product,int id) {
+    // set up the AlertDialog
+    SimpleDialog alert = SimpleDialog(
+      backgroundColor: Color(0xfffdf8f0),
+      contentPadding: EdgeInsets.all(5.0),
+      children: [
+        Container(
+          padding: EdgeInsets.only(top: 30,bottom: 15),
+          child: Icon(
+            Icons.favorite,
+            color: Color(0xffF48262),
+            size: 40,
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: 10),
+          child: Center(
+              child: Text(
+                'ANDA YAKIN MENGHAPUS DATA ?',
+                style: TextStyle(
+                  fontFamily: 'Brandon',
+                  fontWeight: FontWeight.w600,
+                  fontSize: 16,
+                  color: Color(0xffF48262),
+                ),
+              )),
+        ),
+        Padding(
+          padding: EdgeInsets.only(top: 15, bottom: 30),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 5),
+                child: Image.network(
+                  img_url+product.thumbnail_image,
+                  width: MediaQuery.of(context).size.width*0.2,
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 5),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      product.brand.name,
+                      style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontFamily: 'Brandon'
+                      ),
+                    ),
+                    Text(
+                      product.name.length > 20 ? product.name.substring(0, 20)+'...' : product.name,
+                      style: TextStyle(
+                          fontFamily: 'Brandon'
+                      ),
+                    ),
+                    if(product.varian.isNotEmpty)
+                      Text(
+                        '120ml',
+                        style: TextStyle(
+                            fontFamily: 'Brandon'
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.fromLTRB(20, 0, 20, 15),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              
+              RaisedButton(onPressed: (){
+                Navigator.pop(context);
+              },
+                  color: Color(0xffF48262),
+                  child: Text("Tidak",style: TextStyle(fontFamily: 'Brandon',
+                  fontWeight: FontWeight.w600,
+                  fontSize: 16,
+                  color: Colors.white)),
+              ),
+              RaisedButton(onPressed: (){
+                UIBlock.block(context,
+                    customLoaderChild:
+                    LoadingWidget(
+                        context));
+                Provider.of<CartModel>(context).DeleteProductToCart(
+                    id,
+                    Provider.of<AppModel>(
+                        context)
+                        .auth
+                        .access_token)
+                    .then((value) {
+                      UIBlock.unblock(context);
+                      Navigator.pop(context);
+                });
+              },
+                color: Color(0xffF48262),
+                child: Text("Ya",style: TextStyle(fontFamily: 'Brandon',
+                    fontWeight: FontWeight.w600,
+                    fontSize: 16,
+                    color: Colors.white)),
+              )
+            ],
+          ),
+        )
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  void selectTypeMethodPayment(){
+    print("ini data ==>"+Provider.of<ListCabang>(context).unavaliable.toString());
+    var cabang = Provider.of<ListCabang>(context);
+    if(cabang.isDelivery == false ){
+      if (cabang.unavaliable.length == 0 && cabang.cabangClick != null || cabang.isDelivery == true){
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => RincianPengambilanScreen()),
+        );
+      }
+      else
+        {
+          final snackBar = SnackBar(
+            content: Text(
+                cabang.cabangClick == null && cabang.isDelivery != true ? 'Maaf, Metode pengiriman kosong' : 'Maaf, Produk ada yang tidak tersedia',
+                style: TextStyle(
+                    color: Colors
+                        .white)),
+            backgroundColor:
+            Colors.redAccent,
+          );
+          scaffoldKey
+              .currentState
+              .showSnackBar(
+              snackBar);
+        }
+
+    }
+    else{
+      FocusScope.of(context)
+          .requestFocus(FocusNode());
+      UIBlock.block(context,
+          customLoaderChild: LoadingWidget(context));
+      Provider.of<CartModel>(context).RemoveShipping().then((value) {
+        UIBlock.unblock(context);
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => ShippingScreen()),
+        );
+      });
+    }
+  }
 
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    Provider.of<ListCabang>(context).unavaliable = [];
     var method = Provider.of<ListCabang>(context);
     int jumlahSample =
         Provider.of<CartModel>(context).listUseSample.length ?? 0;
+    for (final item in Provider.of<CartModel>(context).listCardOfitem){
+      Provider.of<ListCabang>(context).addDataUn(item);
+    }
+    print(Provider.of<ListCabang>(context).setUnavailable.toString());
     return Scaffold(
       key: scaffoldKey,
       backgroundColor: Theme.of(context).primaryColor,
@@ -462,7 +729,6 @@ class _CartScreenState extends State<CartScreen> {
             child: SingleChildScrollView(
               child: Consumer<CartModel>(
                 builder: (context, value, child) {
-                  Provider.of<ListCabang>(context).unavaliable = [];
                   if (value.loadingCard) {
                     return Center(
                       child: LoadingWidgetFadingCircle(context),
@@ -476,17 +742,11 @@ class _CartScreenState extends State<CartScreen> {
                         ),
                       );
                     } else {
-                      for(final item in value.listCardOfitem){
-                        print("waaaw");
-                        Provider.of<ListCabang>(context).addDataUn(item);
-                      }
-                      print("avaliable===>");
-                      print(Provider.of<ListCabang>(context).unavaliable);
                       return new Column(
                         children: <Widget>[
                           for (final item in value.listCardOfitem)
-
-                            (Container(
+                            (
+                                Container(
                               width: MediaQuery.of(context).size.width * 0.95,
                               padding: EdgeInsets.all(15),
                               decoration: BoxDecoration(
@@ -1278,7 +1538,9 @@ class _CartScreenState extends State<CartScreen> {
                                 )
                               : Container(),
                           productOutOfStock != null && productOutOfStock == true
-                              ? Container(
+                              ? Consumer<ListCabang>(
+                              builder: (context, value, child){
+                                return Container(
                                   width: MediaQuery.of(context).size.width,
                                   padding: EdgeInsets.symmetric(vertical: 7),
                                   child: Column(
@@ -1323,7 +1585,7 @@ class _CartScreenState extends State<CartScreen> {
                                           margin: EdgeInsets.symmetric(
                                               horizontal: 15, vertical: 8),
                                           width:
-                                              MediaQuery.of(context).size.width,
+                                          MediaQuery.of(context).size.width,
                                           height: 50,
                                           decoration: BoxDecoration(
                                               color: Colors.white,
@@ -1335,27 +1597,27 @@ class _CartScreenState extends State<CartScreen> {
                                                   Radius.circular(10))),
                                           child: Row(
                                             mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
+                                            MainAxisAlignment.spaceBetween,
                                             children: [
                                               RichText(
                                                   text: TextSpan(children: [
-                                                TextSpan(
-                                                    text:
+                                                    TextSpan(
+                                                        text:
                                                         'Pilih metode pengiriman\n',
-                                                    style: TextStyle(
-                                                        color: Colors.black87,
-                                                        fontFamily: 'Brandon',
-                                                        fontWeight:
+                                                        style: TextStyle(
+                                                            color: Colors.black87,
+                                                            fontFamily: 'Brandon',
+                                                            fontWeight:
                                                             FontWeight.bold,
-                                                        fontSize: 13)),
-                                                TextSpan(
-                                                    text: method.cabangClick == null ? "Mau diantar atau diambil sendiri nih? Kamu bisa pilih loh!" : method.cabangClick.alamatCabang,
-                                                    style: TextStyle(
-                                                      fontFamily: 'Brandon',
-                                                      fontSize: 10,
-                                                      color: Colors.black45,
-                                                    ))
-                                              ])),
+                                                            fontSize: 13)),
+                                                    TextSpan(
+                                                        text: value.isDelivery == true ? "Menggunakan Delivery" : value.cabangClick == null ?  "Mau diantar atau diambil sendiri nih? Kamu bisa pilih loh!" : method.cabangClick.alamatCabang,
+                                                        style: TextStyle(
+                                                          fontFamily: 'Brandon',
+                                                          fontSize: 10,
+                                                          color: Colors.black45,
+                                                        ))
+                                                  ])),
                                               Icon(Icons.arrow_forward_ios,
                                                   color: Color(0xffF48262),
                                                   size: 16)
@@ -1365,7 +1627,7 @@ class _CartScreenState extends State<CartScreen> {
                                       ),
                                       Column(
                                         children: [
-                                         method.cabangClick != null && method.cabangClick.unavailableProduct != null ? Row(
+                                          value.cabangClick != null && value.cabangClick.unavailableProduct.length != 0 && value.isDelivery != true ? Row(
                                             children: [
                                               Icon(
                                                 Icons.priority_high,
@@ -1374,45 +1636,51 @@ class _CartScreenState extends State<CartScreen> {
                                               ),
                                               Container(
                                                 width: MediaQuery.of(context)
-                                                        .size
-                                                        .width *
+                                                    .size
+                                                    .width *
                                                     0.9,
                                                 child: TextBuild(
                                                   value:
-                                                      "Oops,sorry! Produk pilihanmu stoknya lagi nggak tersedia untuk pickup di Grand Indonesia, nih.",
+                                                  "Oops,sorry! Produk pilihanmu stoknya lagi nggak tersedia untuk pickup di ${value.cabangClick.namaCabang}, nih.",
                                                 ),
                                               )
                                             ],
                                           ) : SizedBox(),
                                         ],
                                       ),
-                                      method.cabangClick != null && method.cabangClick.unavailableProduct != null ? Padding(
+                                     value.cabangClick != null && value.cabangClick.unavailableProduct.length != 0 && value.isDelivery != true ? Padding(
                                         padding: EdgeInsets.only(
                                             left: 25, top: 10, bottom: 10),
                                         child: Row(
                                           children: [
                                             Container(
                                               margin:
-                                                  EdgeInsets.only(right: 10),
+                                              EdgeInsets.only(right: 10),
                                               height: 25,
                                               decoration: BoxDecoration(
                                                   borderRadius:
-                                                      BorderRadius.circular(20),
+                                                  BorderRadius.circular(20),
                                                   border: Border.all(
                                                       color: Color(0xffF48262)
                                                           .withOpacity(0.22))),
                                               child: FlatButton(
                                                   padding: EdgeInsets.zero,
                                                   materialTapTargetSize:
-                                                      MaterialTapTargetSize
-                                                          .shrinkWrap,
+                                                  MaterialTapTargetSize
+                                                      .shrinkWrap,
                                                   shape: RoundedRectangleBorder(
                                                     borderRadius:
-                                                        BorderRadius.circular(
-                                                            20),
+                                                    BorderRadius.circular(
+                                                        20),
                                                   ),
                                                   color: Colors.white,
-                                                  onPressed: () {},
+                                                  onPressed: () {
+                                                    Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) => ListTokoPengirimanScreen()),
+                                                    );
+                                                  },
                                                   child: TextBuild(
                                                     value: "Ganti Toko",
                                                     size: 12,
@@ -1423,22 +1691,24 @@ class _CartScreenState extends State<CartScreen> {
                                               height: 25,
                                               decoration: BoxDecoration(
                                                   borderRadius:
-                                                      BorderRadius.circular(20),
+                                                  BorderRadius.circular(20),
                                                   border: Border.all(
                                                       color: Color(0xffF48262)
                                                           .withOpacity(0.22))),
                                               child: FlatButton(
                                                   padding: EdgeInsets.zero,
                                                   materialTapTargetSize:
-                                                      MaterialTapTargetSize
-                                                          .shrinkWrap,
+                                                  MaterialTapTargetSize
+                                                      .shrinkWrap,
                                                   shape: RoundedRectangleBorder(
                                                     borderRadius:
-                                                        BorderRadius.circular(
-                                                            20),
+                                                    BorderRadius.circular(
+                                                        20),
                                                   ),
                                                   color: Colors.white,
-                                                  onPressed: () {},
+                                                  onPressed: () {
+                                                    Provider.of<ListCabang>(context).setDataUnavaliable = true;
+                                                  },
                                                   child: TextBuild(
                                                     value: "Coba Delivery",
                                                     size: 12,
@@ -1448,24 +1718,24 @@ class _CartScreenState extends State<CartScreen> {
                                           ],
                                         ),
                                       ) : SizedBox(),
-                                      method.cabangClick != null && method.cabangClick.unavailableProduct != null ?  Container(
+                                      value.cabangClick != null && value.cabangClick.unavailableProduct.length != 0  && value.isDelivery != true ?  Container(
                                         height: 10,
                                         width:
-                                            MediaQuery.of(context).size.width,
+                                        MediaQuery.of(context).size.width,
                                         color: Colors.white,
                                       ) : SizedBox(),
-                                      method.cabangClick != null && method.cabangClick.unavailableProduct != null ?  ListView.separated(
+                                      value.cabangClick != null && value.cabangClick.unavailableProduct.length != 0  && value.isDelivery != true?  ListView.separated(
                                         scrollDirection: Axis.vertical,
                                         shrinkWrap: true,
                                         physics: NeverScrollableScrollPhysics(),
-                                        itemCount: Provider.of<ListCabang>(context).unavaliable.length,
+                                        itemCount: value.setUnavailable.length,
                                         separatorBuilder:
                                             (BuildContext context, int index) {
                                           return Divider();
                                         },
                                         itemBuilder:
                                             (BuildContext context, int index) {
-                                          var unavailable = Provider.of<ListCabang>(context).unavaliable;
+                                          var unavailable = value.setUnavailable;
                                           return Container(
                                             padding: EdgeInsets.symmetric(
                                                 vertical: 20, horizontal: 10),
@@ -1473,44 +1743,44 @@ class _CartScreenState extends State<CartScreen> {
                                               children: [
                                                 Column(
                                                   crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
+                                                  CrossAxisAlignment.start,
                                                   children: [
                                                     detailImage == null
                                                         ? Container(
-                                                            width: 110,
-                                                            height: 110,
-                                                            color: Colors
-                                                                .grey[300],
-                                                            child: Image.asset(
-                                                                'assets/images/210x265.png'),
-                                                          )
+                                                      width: 110,
+                                                      height: 110,
+                                                      color: Colors
+                                                          .grey[300],
+                                                      child: Image.asset(
+                                                          'assets/images/210x265.png'),
+                                                    )
                                                         : Container(
-                                                            width: 110,
-                                                            height: 110,
-                                                            decoration: BoxDecoration(
-                                                                image: DecorationImage(
-                                                                    image: NetworkImage(
-                                                                        "$img_url${detailImage[0]}"),
-                                                                    fit: BoxFit
-                                                                        .cover)),
-                                                          )
+                                                      width: 110,
+                                                      height: 110,
+                                                      decoration: BoxDecoration(
+                                                          image: DecorationImage(
+                                                              image: NetworkImage(
+                                                                  "$img_url${detailImage[0]}"),
+                                                              fit: BoxFit
+                                                                  .cover)),
+                                                    )
                                                   ],
                                                 ),
                                                 Container(
                                                   width: size.width * 0.58,
                                                   padding:
-                                                      EdgeInsets.only(left: 15),
-                                                  height: 110,
+                                                  EdgeInsets.only(left: 15),
+
                                                   child: Column(
                                                     crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
+                                                    CrossAxisAlignment
+                                                        .start,
                                                     children: [
                                                       Text(
                                                         unavailable[index].product.brand.name,
                                                         style: TextStyle(
                                                           fontWeight:
-                                                              FontWeight.w600,
+                                                          FontWeight.w600,
                                                           fontFamily: 'Yeseva',
                                                           fontSize: 16,
                                                         ),
@@ -1523,55 +1793,62 @@ class _CartScreenState extends State<CartScreen> {
                                                         children: [
                                                           Container(
                                                             margin:
-                                                                EdgeInsets.only(
-                                                                    top: 20),
+                                                            EdgeInsets.only(
+                                                                top: 20),
                                                             height: 31,
                                                             decoration: BoxDecoration(
                                                                 borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            20),
+                                                                BorderRadius
+                                                                    .circular(
+                                                                    20),
                                                                 border: Border.all(
                                                                     color: Color(
-                                                                            0xffF48262)
+                                                                        0xffF48262)
                                                                         .withOpacity(
-                                                                            0.22))),
+                                                                        0.22))),
                                                             child: FlatButton(
                                                               padding: EdgeInsets
                                                                   .symmetric(
-                                                                      horizontal:
-                                                                          13),
+                                                                  horizontal:
+                                                                  13),
                                                               materialTapTargetSize:
-                                                                  MaterialTapTargetSize
-                                                                      .shrinkWrap,
+                                                              MaterialTapTargetSize
+                                                                  .shrinkWrap,
                                                               color:
-                                                                  Colors.white,
+                                                              Colors.white,
                                                               shape: RoundedRectangleBorder(
                                                                   borderRadius:
-                                                                      BorderRadius.all(
-                                                                          Radius.circular(
-                                                                              20))),
-                                                              onPressed: () {},
+                                                                  BorderRadius.all(
+                                                                      Radius.circular(
+                                                                          20))),
+                                                              onPressed: () {
+                                                                addWishlistUnavaliable(unavailable[index].product);
+                                                              },
                                                               child: TextBuild(
                                                                 value:
-                                                                    "Masukan daftar keinginan",
+                                                                "Masukan daftar keinginan",
                                                                 size: 12,
                                                                 warna: Color(
                                                                     0xffF48262),
                                                               ),
                                                             ),
                                                           ),
-                                                          Container(
-                                                            margin:
-                                                                EdgeInsets.only(
-                                                                    top: 20,
-                                                                    left: 10),
-                                                            width: 25,
-                                                            height: 25,
-                                                            child: Icon(
-                                                              Icons.delete,
-                                                              color: Color(
-                                                                  0xffF48262),
+                                                          GestureDetector(
+                                                            onTap: (){
+                                                              showDeleteDialog(context, unavailable[index].product,unavailable[index].id);
+                                                            },
+                                                            child: Container(
+                                                              margin:
+                                                              EdgeInsets.only(
+                                                                  top: 20,
+                                                                  left: 10),
+                                                              width: 25,
+                                                              height: 25,
+                                                              child: Icon(
+                                                                Icons.delete,
+                                                                color: Color(
+                                                                    0xffF48262),
+                                                              ),
                                                             ),
                                                           )
                                                         ],
@@ -1586,7 +1863,10 @@ class _CartScreenState extends State<CartScreen> {
                                       ) : SizedBox(),
                                     ],
                                   ),
-                                )
+                                );
+                              }
+
+                              )
                               : Container(),
                           Container(
                             height: 10,
@@ -1807,8 +2087,8 @@ class _CartScreenState extends State<CartScreen> {
                                                     pointValue = value;
                                                   });
                                                 },
-                                                trackColor: Color(0xffF48262),
-                                                activeColor: Colors.grey[200],
+                                                trackColor: Colors.grey[200],
+                                                activeColor: Color(0xffF48262),
                                               ),
                                             ),
                                           ],
@@ -1968,18 +2248,7 @@ class _CartScreenState extends State<CartScreen> {
                                 borderRadius: BorderRadius.circular(7.0),
                               ),
                               onPressed: () {
-                                FocusScope.of(context)
-                                    .requestFocus(FocusNode());
-                                UIBlock.block(context,
-                                    customLoaderChild: LoadingWidget(context));
-                                value.RemoveShipping().then((value) {
-                                  UIBlock.unblock(context);
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => ShippingScreen()),
-                                  );
-                                });
+                                selectTypeMethodPayment();
                               },
                             ),
                           ),

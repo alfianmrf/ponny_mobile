@@ -10,6 +10,9 @@ class _RincianPengambilanScreenState extends State<RincianPengambilanScreen> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    var rincian = Provider.of<ListCabang>(context);
+    var rincianTotal =  Provider.of<CartModel>(context);
+
     return Scaffold(
       backgroundColor: Hexcolor('#FCF8F0'),
       appBar: AppBar(
@@ -65,7 +68,7 @@ class _RincianPengambilanScreenState extends State<RincianPengambilanScreen> {
                       ],
                     ),
                     Text(
-                      "Neo Soho Mall",
+                      rincian.cabangClick.namaCabang,
                       style: TextStyle(
                         fontFamily: "Brandon",
                         fontWeight: FontWeight.w600,
@@ -74,7 +77,7 @@ class _RincianPengambilanScreenState extends State<RincianPengambilanScreen> {
                       ),
                     ),
                     Text(
-                      "Letjend S. Parman St. No.KAv 28, West Jakarta",
+                      rincian.cabangClick.alamatCabang,
                       style: TextStyle(
                         fontFamily: "Brandon",
                         color: Colors.black,
@@ -82,7 +85,7 @@ class _RincianPengambilanScreenState extends State<RincianPengambilanScreen> {
                       ),
                     ),
                     Text(
-                      "Jam Buka : Pukul 10:00 - 19:00 WIB ",
+                      "Jam Buka : Pukul ${rincian.cabangClick.jamOperasional} ${rincian.cabangClick.waktu} ",
                       style: TextStyle(
                         fontFamily: "Brandon",
                         color: Colors.black,
@@ -121,18 +124,18 @@ class _RincianPengambilanScreenState extends State<RincianPengambilanScreen> {
                           value: "SUB TOTAL",
                         ),
                         TextBuild(
-                          value: "Rp.350.000",
+                          value: rincianTotal.summary.subtotal,
                         )
                       ],
                     ),
-                    Row(
+                    rincianTotal.summary.discount == "Rp0" ? SizedBox() : Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         TextBuild(
                           value: "POTONGAN DISKON",
                         ),
                         TextBuild(
-                          value: "Rp.50.000",
+                          value: rincianTotal.summary.discount,
                         )
                       ],
                     ),
@@ -160,7 +163,7 @@ class _RincianPengambilanScreenState extends State<RincianPengambilanScreen> {
                           weight: FontWeight.w600,
                         ),
                         TextBuild(
-                          value: "Rp.350.000",
+                          value: rincianTotal.summary.total,
                           weight: FontWeight.w600,
                         )
                       ],
@@ -198,7 +201,7 @@ class _RincianPengambilanScreenState extends State<RincianPengambilanScreen> {
                           weight: FontWeight.w600,
                         ),
                         TextBuild(
-                          value: "Rp.350.000",
+                          value: rincianTotal.summary.total,
                           weight: FontWeight.w600,
                         )
                       ],
@@ -216,12 +219,12 @@ class _RincianPengambilanScreenState extends State<RincianPengambilanScreen> {
                           ),
                         ),
                         onPressed: () {
-                          // Navigator.push(
-                          //   context,
-                          //   MaterialPageRoute(
-                          //       builder: (context) =>
-                          //           RincianPengambilanScreen()),
-                          // );
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    PaymentScreen()),
+                          );
                         }),
                   ],
                 ),
