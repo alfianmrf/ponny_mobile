@@ -152,6 +152,21 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
+  Future<Null> _updateCart()  async {
+    var token = Provider.of<AppModel>(context).auth.access_token;
+    final response = await http.get(listCarturl,headers: { HttpHeaders.contentTypeHeader: 'application/json',HttpHeaders.authorizationHeader: "Bearer $token" });
+    if(response.statusCode == 200)
+    {
+      final responseJson = json.decode(response.body);
+      print("DATA CART");
+      print(responseJson['data']);
+    }else{
+      print("DATA CART");
+      print(response.statusCode);
+    }
+
+  }
+
   @override
   void initState() {
     super.initState();
@@ -167,6 +182,7 @@ class _HomeScreenState extends State<HomeScreen> {
       getyt();
       print("SUCCESS");
       print(_controllersYoutube);
+      _updateCart();
     });
   }
 
@@ -723,6 +739,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                         Container(
                           width: MediaQuery.of(context).size.width,
+                          margin: EdgeInsets.only(bottom: 10),
                           child: Consumer<CategoryModel>(
                               builder: (context, value, child) {
                             if (value.loadingCategory) {
@@ -1830,7 +1847,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                                 Container(
                                   height:
-                                      MediaQuery.of(context).size.width * 0.95,
+                                      MediaQuery.of(context).size.width * .9,
                                   padding: EdgeInsets.only(top: 10),
                                   child: Consumer<ProductModel>(
                                     builder: (context, value, child) {
@@ -1857,20 +1874,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                               horizontal: 7),
                                                       child: MyProductFlash(
                                                         productFlash: e,
-                                                        IsLiked: Provider.of<
-                                                                            WishModel>(
-                                                                        context)
-                                                                    .rawlist
-                                                                    .firstWhere(
-                                                                        (element) =>
-                                                                            element.productId ==
-                                                                            e.product
-                                                                                .id,
-                                                                        orElse: () =>
-                                                                            null) !=
-                                                                null
-                                                            ? true
-                                                            : false,
+                                                        IsLiked: Provider.of<WishModel>(context).rawlist.firstWhere((element) => element.productId == e.product.id, orElse: () => null) != null ? true : false,
                                                         onFavorit: () {
                                                           if (Provider.of<
                                                                       AppModel>(
@@ -3022,8 +3026,10 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                         loading_youtube
                             ? Container(
+                                width: double.infinity,
+                                color: Color(0xffFBDFD2),
                                 child: Center(
-                                  child: LoadingWidgetFadingCircle(context),
+                                  child: LoadingWidget(context),
                                 ),
                               )
                             : Container(

@@ -53,6 +53,7 @@ class _Browse_BrandsState extends State<Browse_Brands> {
   Widget build(BuildContext context) {
     final alphabetsUniq = Lodash().uniq(array: alphabets);
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: Color(0xffFDF8F0),
       floatingActionButton: LoadingBrand?Container() :Container(
           decoration: BoxDecoration(
@@ -62,6 +63,7 @@ class _Browse_BrandsState extends State<Browse_Brands> {
           width: 38.0,
           height: MediaQuery.of(context).size.height*0.7,
           child: ListView.builder(
+              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
               itemCount: alphabetsUniq.length,
               itemBuilder: (context, i) {
                 return new FlatButton(
@@ -97,6 +99,7 @@ class _Browse_BrandsState extends State<Browse_Brands> {
         ),
       ):
       ListView.builder(
+          keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
           controller: _controller,
           itemCount: alphabetsUniq.length,
           itemBuilder: (context, i) {

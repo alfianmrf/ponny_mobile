@@ -606,7 +606,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                     ),
                                   ),
                                 ),
-                                InkWell(
+                                /*InkWell(
                                   onTap: () {
                                     chekOut(context,"ovo");
                                   },
@@ -641,7 +641,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                       ],
                                     ),
                                   ),
-                                ),
+                                ),*/
                                 InkWell(
                                   onTap: () {
                                     Navigator.push(context,new MaterialPageRoute(
@@ -680,7 +680,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                     ),
                                   ),
                                 ),
-                                InkWell(
+                                /*InkWell(
                                   onTap: () {
                                     chekOut(context,"shopeepay");
                                   },
@@ -715,7 +715,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                       ],
                                     ),
                                   ),
-                                ),
+                                ),*/
                                 /*
                                 Container(
                                   color: Color(0xffFDEDE4),

@@ -184,37 +184,42 @@ class MyProductFlash extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                       maxLines: 2,
                     ),
-                    Text(
-                      NumberFormat.simpleCurrency(locale: "id_ID",decimalDigits: 0 ).format(product.base_discounted_price),
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontFamily: 'Brandon',
-                        fontSize: 14,
+                    MarqueeWidget(
+                      direction: Axis.horizontal,
+                      child: Text(
+                        product.home_discounted_price,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontFamily: 'Brandon',
+                          fontSize: 14,
+                        ),
                       ),
                     ),
                     if(product.is_flash_deal != null)
-                      Center(
-                        child: RichText(
-                          text: TextSpan(
-                              text: NumberFormat.simpleCurrency(locale: "id_ID",decimalDigits: 0 ).format(product.base_price),
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontFamily: 'Brandon',
-                                fontSize: 12,
-                                decoration: TextDecoration.lineThrough,
-                              ),
-                              children: [
-                                if(product.is_flash_deal.discount_type == 'percent')
-                                  TextSpan(
-                                    text: '('+product.is_flash_deal.discount.toString()+'%)',
-                                    style: TextStyle(
-                                      color: Color(0xffF48262),
-                                      fontFamily: 'Brandon',
-                                      fontSize: 12,
-                                      decoration: TextDecoration.none,
+                      MarqueeWidget(
+                        child: Center(
+                          child: RichText(
+                            text: TextSpan(
+                                text: product.home_price,
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontFamily: 'Brandon',
+                                  fontSize: 12,
+                                  decoration: TextDecoration.lineThrough,
+                                ),
+                                children: [
+                                  if(product.is_flash_deal.discount_type == 'percent')
+                                    TextSpan(
+                                      text: '('+product.is_flash_deal.discount.toString()+'%)',
+                                      style: TextStyle(
+                                        color: Color(0xffF48262),
+                                        fontFamily: 'Brandon',
+                                        fontSize: 12,
+                                        decoration: TextDecoration.none,
+                                      ),
                                     ),
-                                  ),
-                              ]),
+                                ]),
+                          ),
                         ),
                       ),
                     Text.rich(TextSpan(children: <InlineSpan>[
@@ -251,7 +256,7 @@ class MyProductFlash extends StatelessWidget {
                       child: ClipRRect(
                         child: LinearProgressIndicator(
                           backgroundColor: Color(0xffFBDFD2),
-                          value: productFlash.percentase/100,
+                          value: productFlash.product.is_flash_deal!=null?productFlash.product.is_flash_deal.stock / (productFlash.product.is_flash_deal.stock + productFlash.product.is_flash_deal.num_of_sale):1,
                           valueColor: AlwaysStoppedAnimation<Color>(Color(0xffF48262)),
                           minHeight: 5,
                         ),

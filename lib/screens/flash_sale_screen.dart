@@ -272,7 +272,7 @@ class _FlashSaleStateScreen extends State<FlashSaleScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       GridView.count(
-                        childAspectRatio: 0.38,
+                        childAspectRatio: 0.35,
                         padding: EdgeInsets.fromLTRB(20.0, 0, 20.0, 10.0),
                         shrinkWrap: true,
                         crossAxisCount: 3,

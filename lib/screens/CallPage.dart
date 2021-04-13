@@ -48,9 +48,15 @@ class _CallPageState extends State<CallPage> {
     Provider.of<VoucherModel>(_context).incallStatus(Provider.of<AppModel>(_context,listen: false).auth.access_token, {"id":widget.voucher.id});
   }
 
+  Future<void> _handleCameraAndMic(Permission permission) async {
+    final status = await permission.request();
+    print(status);
+  }
+
   Future<void> initPlatformState() async {
-    await [Permission.camera, Permission.microphone, Permission.storage]
-        .request();
+    await _handleCameraAndMic(Permission.camera);
+    await _handleCameraAndMic(Permission.microphone);
+    await _handleCameraAndMic(Permission.storage);
 
     var engine = await RtcEngine.create(appID);
     engine.setEventHandler(RtcEngineEventHandler(

@@ -28,6 +28,8 @@ import 'package:ponny/screens/shipping_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:ponny/model/Cart.dart';
 import 'package:uiblock/uiblock.dart';
+import 'package:http/http.dart' as http;
+import 'dart:io' show HttpHeaders, Platform;
 
 
 class CartScreen extends StatefulWidget {
@@ -40,6 +42,22 @@ class CartScreen extends StatefulWidget {
 class _CartScreenState extends State<CartScreen> {
   TextEditingController _code = TextEditingController();
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+
+  Future<Null> _updateCart()  async {
+    var token = Provider.of<AppModel>(context).auth.access_token;
+    final response = await http.get(listCarturl,headers: { HttpHeaders.contentTypeHeader: 'application/json',HttpHeaders.authorizationHeader: "Bearer $token" });
+    if(response.statusCode == 200)
+    {
+      final responseJson = json.decode(response.body);
+      print("DATA CART");
+      print(responseJson['data']);
+    }else{
+      print("DATA CART");
+      print(response.statusCode);
+    }
+
+  }
+
   @override
   void initState() {
     super.initState();
@@ -48,6 +66,7 @@ class _CartScreenState extends State<CartScreen> {
       await Provider.of<UserModel>(context).getUser(
           Provider.of<AppModel>(context, listen: false).auth.access_token);
        Provider.of<ListCabang>(context).setDataUnavaliable = null;
+      _updateCart();
     });
   }
 
@@ -770,6 +789,7 @@ class _CartScreenState extends State<CartScreen> {
                                       padding: EdgeInsets.only(right: 7),
                                       child: GestureDetector(
                                         onTap: (){
+                                          if(item.product.is_shown)
                                           Navigator.push(context, new MaterialPageRoute(builder: (BuildContext context)=> new ProductDetailsScreen(product: item.product,)));
                                         },
                                         child: CachedNetworkImage(
@@ -2249,6 +2269,28 @@ class _CartScreenState extends State<CartScreen> {
                               ),
                               onPressed: () {
                                 selectTypeMethodPayment();
+                                int index = value.listCardOfitem.indexWhere((element) => element.product.is_shown == false);
+                                if(index<0){
+                                  FocusScope.of(context)
+                                      .requestFocus(FocusNode());
+                                  UIBlock.block(context,
+                                      customLoaderChild: LoadingWidget(context));
+                                  value.RemoveShipping().then((value) {
+                                    UIBlock.unblock(context);
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => ShippingScreen()),
+                                    );
+                                  });
+                                }else{
+                                  String product = value.listCardOfitem[index].product.name;
+                                  final snackBar = SnackBar(
+                                    content: Text("Produk ${product} tidak tersedia",style: TextStyle(color: Colors.white)),
+                                    backgroundColor: Colors.redAccent,
+                                  );
+                                  scaffoldKey.currentState.showSnackBar(snackBar);
+                                }
                               },
                             ),
                           ),

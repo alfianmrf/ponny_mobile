@@ -134,7 +134,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     option.forEach((element) {
       param.addAll({"attribute_id_"+element.atributId : element.value });
     });
-    print(param);
+    print("id ke - "+param.toString());
     UIBlock.block(context,customLoaderChild: LoadingWidget(context));
     Provider.of<ProductModel>(context).getValueVariant(param).then((value){
       UIBlock.unblock(context);
@@ -200,32 +200,36 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   width: MediaQuery.of(context).size.width*0.2,
                 ),
               ),
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: 5),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      widget.product.brand.name,
-                      style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontFamily: 'Brandon'
+              Expanded(
+                child: Container(
+                  margin: EdgeInsets.symmetric(horizontal: 5),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        widget.product.brand.name,
+                        style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontFamily: 'Brandon'
+                        ),
                       ),
-                    ),
-                    Text(
-                        widget.product.name.length > 20 ? widget.product.name.substring(0, 20)+'...' : widget.product.name,
-                      style: TextStyle(
-                          fontFamily: 'Brandon'
+                      Text(
+                          widget.product.name,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                            fontFamily: 'Brandon'
+                        ),
                       ),
-                    ),
-                    if(varian !=null)
-                    Text(
-                      varian.varian,
-                      style: TextStyle(
-                          fontFamily: 'Brandon'
+                      if(varian !=null)
+                      Text(
+                        varian.varian,
+                        style: TextStyle(
+                            fontFamily: 'Brandon'
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ],
@@ -592,7 +596,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
               ],
             ),
             body: Container(
-              margin: MediaQuery.of(context).padding,
+              margin: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
               child: SingleChildScrollView(
                 controller: _controller,
                 child: Column(
@@ -708,21 +712,11 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                               padding: EdgeInsets.symmetric(vertical: 7),
                               child: Row(
                                 children: <Widget>[
-
-                                  Text(
-                                    varian != null ? NumberFormat.simpleCurrency(locale: "id_ID",decimalDigits: 0 ).format(varian.base_price ) : widget.product.is_flash_deal != null || widget.product.discount>0 ? NumberFormat.simpleCurrency(locale: "id_ID",decimalDigits: 0 ).format(widget.product.base_price) : widget.product.home_discounted_price,
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontFamily: 'Brandon',
-                                      fontSize: 16,
-                                      decoration: widget.product.is_flash_deal != null || widget.product.discount>0 ? TextDecoration.lineThrough :null,
-                                    ),
-                                  ),
-                                  if(widget.product.is_flash_deal != null)
+                                  if(widget.product.is_flash_deal != null) // tampilan diskon flash sale
                                   Padding(
-                                    padding: EdgeInsets.symmetric(horizontal: 10),
+                                    padding: EdgeInsets.only(right: 10),
                                     child: Text(
-                                      NumberFormat.simpleCurrency(locale: "id_ID",decimalDigits: 0 ).format(widget.product.base_discounted_price),
+                                      varian != null ? NumberFormat.simpleCurrency(locale: "id_ID",decimalDigits: 0 ).format(varian.price ) : widget.product.is_flash_deal != null || widget.product.discount>0 ? widget.product.home_discounted_price : widget.product.home_price,
                                       style: TextStyle(
                                         color: Color(0xffF48262),
                                         fontFamily: 'Brandon',
@@ -733,9 +727,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                   ),
                                   if(widget.product.discount != null && widget.product.discount > 0 && widget.product.is_flash_deal == null)
                                     Padding(
-                                      padding: EdgeInsets.symmetric(horizontal: 10),
+                                      padding: EdgeInsets.only(right: 10),
                                       child: Text(
-                                        varian != null ?  NumberFormat.simpleCurrency(locale: "id_ID",decimalDigits: 0 ).format(varian.price ) :  NumberFormat.simpleCurrency(locale: "id_ID",decimalDigits: 0 ).format(widget.product.base_discounted_price),
+                                        varian != null ?  NumberFormat.simpleCurrency(locale: "id_ID",decimalDigits: 0 ).format(varian.price ) :  widget.product.home_discounted_price,
                                         style: TextStyle(
                                           color: Color(0xffF48262),
                                           fontFamily: 'Brandon',
@@ -791,6 +785,18 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                               ),
                             ),
                           ),
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                                varian != null ? NumberFormat.simpleCurrency(locale: "id_ID",decimalDigits: 0 ).format(varian.base_price ) : widget.product.is_flash_deal != null || widget.product.discount>0 ? widget.product.home_price : widget.product.home_discounted_price,
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontFamily: 'Brandon',
+                                fontSize: 16,
+                                decoration: widget.product.is_flash_deal != null || widget.product.discount>0 ? TextDecoration.lineThrough :null,
+                              ),
+                            ),
+                          ),
                           for(Varian item in widget.product.varian)(
                           Align(
                             alignment: Alignment.centerLeft,
@@ -811,6 +817,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                                     option.firstWhere((element) => element.atributId == item.attribute_id).value = xitem;
                                                   });
                                                   _getPriceVarian();
+
                                                 },
                                                 child: Container(
                                                   margin: EdgeInsets.symmetric(horizontal: 7),
@@ -824,7 +831,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                                   ),
                                                   decoration: BoxDecoration(
                                                     border: Border.all(color: Color(0xffF48262)),
-                                                    color: option.isNotEmpty && (varian != null ? varian.varian : '') == xitem ?  Color(0xffF3C1B5) : Theme.of(context).primaryColor,
+                                                    color: option.isNotEmpty && (varian != null ? option.firstWhere((element) => element.atributId == item.attribute_id).value : '')  == xitem ?  Color(0xffF3C1B5) : Theme.of(context).primaryColor,
                                                     borderRadius: BorderRadius.circular(5),
                                                   ),
                                                 ),
@@ -1498,26 +1505,57 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                           ),
                           color: Color(0xffF48262),
                           onPressed: () {
-                            if(widget.product.currentStock>0 || varian != null && varian.stock_quantity>0){
-                              if(Provider.of<AppModel>(context).loggedIn){
-                                UIBlock.block(context,customLoaderChild: LoadingWidget(context));
-                                cardData.addProductToCart(widget.product,Provider.of<AppModel>(context).auth.access_token,varian != null ? varian:null).then((value){
-                                  UIBlock.unblock(context);
-                                  showAlertDialog(context);
-                                  _getCartOfitem();
-                                });
-                              }else{
-                                Navigator.push(context,new MaterialPageRoute(
-                                  builder: (BuildContext context) => new LoginScreen(),
-                                ));
+                            print(json.encode(varian));
+                            if(widget.product.is_shown){
+                              if(widget.product.currentStock>0 || varian != null && varian.stock_quantity>0){
+                                if(Provider.of<AppModel>(context).loggedIn){
+                                  UIBlock.block(context,customLoaderChild: LoadingWidget(context));
+                                  cardData.addProductToCart(widget.product,Provider.of<AppModel>(context).auth.access_token,varian != null ? varian:null).then((value){
+                                    UIBlock.unblock(context);
+                                    if (value != null &&
+                                        value.statusCode !=
+                                            200) {
+                                      final snackBar =
+                                      SnackBar(
+                                        content: Text(
+                                            value.message,
+                                            style: TextStyle(
+                                                color: Colors
+                                                    .white)),
+                                        backgroundColor:
+                                        Colors
+                                            .redAccent,
+                                      );
+                                      scaffoldKey
+                                          .currentState
+                                          .showSnackBar(
+                                          snackBar);
+                                    }
+                                    else{
+                                      showAlertDialog(context);
+                                      _getCartOfitem();
+                                    }
+                                  });
+                                }else{
+                                  Navigator.push(context,new MaterialPageRoute(
+                                    builder: (BuildContext context) => new LoginScreen(),
+                                  ));
+                                }
+                              }
+                              else if(varian == null){
+                                final snackBarNoVariant = SnackBar(
+                                  content: Text('Mohon pilih varian terlebih dahulu',style: TextStyle(color: Colors.white)),
+                                  backgroundColor: Colors.redAccent,
+                                );
+                                scaffoldKey.currentState.showSnackBar(snackBarNoVariant);
                               }
                             }
-                            else if(varian == null){
-                              final snackBarNoVariant = SnackBar(
-                                content: Text('Mohon pilih varian terlebih dahulu',style: TextStyle(color: Colors.white)),
+                            else{
+                              final snackBar = SnackBar(
+                                content: Text("Produk Tidak Tersedia",style: TextStyle(color: Colors.white)),
                                 backgroundColor: Colors.redAccent,
                               );
-                              scaffoldKey.currentState.showSnackBar(snackBarNoVariant);
+                              scaffoldKey.currentState.showSnackBar(snackBar);
                             }
                           },
                         ),
