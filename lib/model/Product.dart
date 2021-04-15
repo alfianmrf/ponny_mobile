@@ -78,6 +78,7 @@ class ProductModel with ChangeNotifier {
 
   Future<void> getFlashSale() async {
     try {
+      flashsale = null;
       final result = await http.get(flashdealUrl);
       if (result.statusCode == 200) {
         final responseJson = json.decode(result.body);
