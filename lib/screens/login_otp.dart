@@ -324,8 +324,42 @@ class _LoginOTPScreen extends State<LoginOTP> {
         await FirebaseAuth.instance.verifyPhoneNumber(
           phoneNumber: phone,
           timeout: Duration(minutes: 2),
-          verificationCompleted: (PhoneAuthCredential credential) {
-            print(credential.smsCode);
+          verificationCompleted: (AuthCredential credential) async{
+            final FirebaseAuth auth = FirebaseAuth.instance;
+            print("COMPLETED");
+            print(auth.currentUser.uid);
+            print(auth.currentUser.phoneNumber);
+            var param ={
+              "uid":auth.currentUser.uid,
+              "phone":auth.currentUser.phoneNumber,
+            };
+            Provider.of<AppModel>(context).setAuthOtp(param).then((value){
+              UIBlock.unblock(context);
+              if(value!= null){
+                if(value.name == value.phone){
+                  Navigator.pushReplacement(context,new MaterialPageRoute(
+                    builder: (BuildContext context) =>  new RegisterOtpScreen(user: value,),
+                  ));
+                }else{
+                  Navigator.pushReplacement(context,new MaterialPageRoute(
+                    builder: (BuildContext context) =>  new HomeScreen(),
+                  ));
+                }
+
+              }else{
+                setState(() {
+                  pesan = 'Terjadi kesalahan pada server!';
+                  invalidotp = true;
+                });
+              }
+
+            }).catchError((onError){
+              UIBlock.unblock(context);
+              setState(() {
+                pesan = 'Terjadi kesalahan pada server atau kode yang anda masukan salah!';
+                invalidotp = true;
+              });
+            });
           },
           verificationFailed: (FirebaseAuthException e) {
             UIBlock.unblock(context);
