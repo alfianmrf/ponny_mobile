@@ -8,9 +8,11 @@ import 'package:ponny/model/Address.dart';
 import 'package:ponny/model/App.dart';
 import 'package:ponny/model/Cart.dart';
 import 'package:ponny/model/Order.dart';
+import 'package:ponny/model/listCabangModel.dart';
 import 'package:ponny/screens/Qris_screen.dart';
 import 'package:ponny/screens/account/menunggu_pembayaran_sukses_screen.dart';
 import 'package:ponny/screens/home_screen.dart';
+import 'package:ponny/screens/pages.dart';
 import 'package:ponny/screens/pesanan_berhasil_screen.dart';
 import 'package:ponny/screens/bank_transfer_detail_screen.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
@@ -35,6 +37,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
   }
   Future<void> chekOut(BuildContext context,String method){
     final card = Provider.of<CartModel>(context,listen: false);
+    var cabang = Provider.of<ListCabang>(context);
     showDialog(
       context: context,
       builder: (context) => new AlertDialog(
@@ -48,7 +51,13 @@ class _PaymentScreenState extends State<PaymentScreen> {
           new FlatButton(
             onPressed: (){
 
+              // Provider.of<CartModel>(context).NewCheckout(Provider.of<AppModel>(context).auth.access_token, Provider.of<AddressModel>(context).useAddress, method, cabang.cabangClick.id, cabang.pointValue, cabang.cabangClick);
+              // Navigator.pushAndRemoveUntil(context,new MaterialPageRoute(
+              //   builder: (BuildContext context) => new PickupPaymentSuccess()
+              // ),(_) => false);
               UIBlock.block(context,customLoaderChild: LoadingWidget(context));
+
+
               Provider.of<CartModel>(context).Checkout(Provider.of<AppModel>(context).auth.access_token, Provider.of<AddressModel>(context).useAddress, method).then((value) {
                 if(value!= null && value.success){
                   if(method == "qris"){
@@ -440,7 +449,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                   width: MediaQuery.of(context).size.width,
                                   padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
                                   child: Text(
-                                    'BANK TRANSFER (Konfirmasi Manual)',
+                                    Provider.of<ListCabang>(context).cabangClick != null ? 'PEMBAYARAN (COD)': 'BANK TRANSFER (Konfirmasi Manual)',
                                     style: TextStyle(
                                       fontFamily: 'Brandon',
                                       fontSize: 14,
@@ -451,7 +460,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                 ),
                                 InkWell(
                                   onTap: () {
-                                    chekOut(context,"manual_bca");
+                                    chekOut(context,Provider.of<ListCabang>(context).cabangClick != null ? "cash_on_delivery" :"manual_bca");
                                   },
                                   child: Container(
                                     width: MediaQuery.of(context).size.width,
@@ -461,6 +470,11 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                       children: [
                                         Row(
                                           children: [
+                                            Provider.of<ListCabang>(context).cabangClick != null ?
+                                            ImageIcon(
+                                              AssetImage('assets/images/wallet.png'),
+                                              color: Color(0xffF48262),
+                                            ):
                                             Image.asset(
                                               'assets/images/payment/bca-02.png',
                                               height: 40,
@@ -468,7 +482,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                             Padding(
                                               padding: EdgeInsets.only(left: 10),
                                               child: Text(
-                                                'Bank BCA',
+                                                Provider.of<ListCabang>(context).cabangClick != null ? 'Pembayaran Tunai':' Bank BCA',
                                                 style: TextStyle(
                                                   fontFamily: 'Brandon',
                                                   fontSize: 14,

@@ -147,7 +147,7 @@ class _RincianPengambilanScreenState extends State<RincianPengambilanScreen> {
                           warna: Color(0xffF48262),
                         ),
                         TextBuild(
-                          value: "+2.000",
+                          value: "+${rincianTotal.summary.using_point.toString()}",
                           warna: Color(0xffF48262),
                         )
                       ],

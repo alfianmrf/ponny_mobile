@@ -58,23 +58,41 @@ class _CartScreenState extends State<CartScreen> {
 
   }
 
+  Future<void>_getSummaryPoint() async {
+    String available = Provider.of<ListCabang>(context).cabangClick == null ? "" : json.encode(Provider.of<ListCabang>(context).cabangClick.availableProduct);
+    var token = Provider.of<AppModel>(context).auth.access_token;
+    Provider.of<CartModel>(context).shipping = null;
+    Provider.of<CartModel>(context).getPointSummary(Provider.of<ListCabang>(context).setPointValue, available , token);
+  }
+
+  Future<void>_getUnavaliableProduct() async{
+    print("get unav");
+    Provider.of<ListCabang>(context).unavaliable = [];
+    for (var item in Provider.of<CartModel>(context).listCardOfitem){
+      Provider.of<ListCabang>(context).addDataUn(item);
+    }
+  }
+
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
+      _getSummaryPoint();
+      _updateCart();
+      _getUnavaliableProduct();
       await Provider.of<CartModel>(context).RemoveCoupon();
       await Provider.of<UserModel>(context).getUser(
           Provider.of<AppModel>(context, listen: false).auth.access_token);
        Provider.of<ListCabang>(context).setDataUnavaliable = null;
-      _updateCart();
+
     });
   }
 
   int _n1 = 1;
   int _n2 = 1;
   List<dynamic> detailImage;
-  bool pointValue = true;
   bool productOutOfStock = true;
+
 
   void add1() {
     setState(() {
@@ -273,6 +291,7 @@ class _CartScreenState extends State<CartScreen> {
                               child: GestureDetector(
                                 onTap: () {
                                     Provider.of<ListCabang>(context).setDataUnavaliable = true;
+                                    Provider.of<ListCabang>(context).cabangClick = null;
                                     Navigator.pop(context);
                                 },
                                 child: Column(children: [
@@ -663,9 +682,10 @@ class _CartScreenState extends State<CartScreen> {
   }
 
   void selectTypeMethodPayment(){
-    print("ini data ==>"+Provider.of<ListCabang>(context).unavaliable.toString());
+    print("ini data ==>"+Provider.of<ListCabang>(context).isDelivery.toString());
     var cabang = Provider.of<ListCabang>(context);
-    if(cabang.isDelivery == false ){
+
+    if(cabang.isDelivery != true ){
       if (cabang.unavaliable.length == 0 && cabang.cabangClick != null || cabang.isDelivery == true){
         Navigator.push(
           context,
@@ -692,33 +712,42 @@ class _CartScreenState extends State<CartScreen> {
 
     }
     else{
-      FocusScope.of(context)
-          .requestFocus(FocusNode());
-      UIBlock.block(context,
-          customLoaderChild: LoadingWidget(context));
-      Provider.of<CartModel>(context).RemoveShipping().then((value) {
-        UIBlock.unblock(context);
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => ShippingScreen()),
+      var value = Provider.of<CartModel>(context);
+      int index = value.listCardOfitem.indexWhere((element) => element.product.is_shown == false);
+      if(index<0){
+        FocusScope.of(context)
+            .requestFocus(FocusNode());
+        UIBlock.block(context,
+            customLoaderChild: LoadingWidget(context));
+        value.RemoveShipping().then((value) {
+          UIBlock.unblock(context);
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => ShippingScreen()),
+          ).then((value) => _getSummaryPoint());
+        });
+      }else{
+        String product = value.listCardOfitem[index].product.name;
+        final snackBar = SnackBar(
+          content: Text("Produk ${product} tidak tersedia",style: TextStyle(color: Colors.white)),
+          backgroundColor: Colors.redAccent,
         );
-      });
+        scaffoldKey.currentState.showSnackBar(snackBar);
+      }
     }
   }
 
-
   @override
+
   Widget build(BuildContext context) {
+
+    _getUnavaliableProduct();
     final size = MediaQuery.of(context).size;
-    Provider.of<ListCabang>(context).unavaliable = [];
     var method = Provider.of<ListCabang>(context);
     int jumlahSample =
         Provider.of<CartModel>(context).listUseSample.length ?? 0;
-    for (final item in Provider.of<CartModel>(context).listCardOfitem){
-      Provider.of<ListCabang>(context).addDataUn(item);
-    }
-    print(Provider.of<ListCabang>(context).setUnavailable.toString());
+
     return Scaffold(
       key: scaffoldKey,
       backgroundColor: Theme.of(context).primaryColor,
@@ -1031,13 +1060,8 @@ class _CartScreenState extends State<CartScreen> {
                                                       customLoaderChild:
                                                           LoadingWidget(
                                                               context));
-                                                  value.DeleteProductToCart(
-                                                          item.id,
-                                                          Provider.of<AppModel>(
-                                                                  context)
-                                                              .auth
-                                                              .access_token)
-                                                      .then((value) {
+                                                  value.DeleteProductToCart(item.id, Provider.of<AppModel>(context).auth.access_token).then((value) {
+                                                    _getSummaryPoint();
                                                     UIBlock.unblock(context);
                                                   });
                                                 },
@@ -1276,13 +1300,8 @@ class _CartScreenState extends State<CartScreen> {
                                                       customLoaderChild:
                                                           LoadingWidget(
                                                               context));
-                                                  value.DeleteRendemProduct(
-                                                          item,
-                                                          Provider.of<AppModel>(
-                                                                  context)
-                                                              .auth
-                                                              .access_token)
-                                                      .then((value) {
+                                                  value.DeleteRendemProduct(item, Provider.of<AppModel>(context).auth.access_token).then((value) {
+                                                    _getSummaryPoint();
                                                     UIBlock.unblock(context);
                                                   });
                                                 },
@@ -1405,13 +1424,8 @@ class _CartScreenState extends State<CartScreen> {
                                                       customLoaderChild:
                                                           LoadingWidget(
                                                               context));
-                                                  value.DeleteProductSample(
-                                                          item,
-                                                          Provider.of<AppModel>(
-                                                                  context)
-                                                              .auth
-                                                              .access_token)
-                                                      .then((value) {
+                                                  value.DeleteProductSample(item, Provider.of<AppModel>(context).auth.access_token).then((value) {
+                                                    _getSummaryPoint();
                                                     UIBlock.unblock(context);
                                                   });
                                                 },
@@ -1601,12 +1615,12 @@ class _CartScreenState extends State<CartScreen> {
                                         },
                                         child: Container(
                                           padding: EdgeInsets.only(
-                                              left: 13, right: 10),
+                                              left: 14, right: 10,top: 10,bottom: 10),
                                           margin: EdgeInsets.symmetric(
                                               horizontal: 15, vertical: 8),
                                           width:
                                           MediaQuery.of(context).size.width,
-                                          height: 50,
+
                                           decoration: BoxDecoration(
                                               color: Colors.white,
                                               border: Border.all(
@@ -1619,25 +1633,36 @@ class _CartScreenState extends State<CartScreen> {
                                             mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                             children: [
-                                              RichText(
-                                                  text: TextSpan(children: [
-                                                    TextSpan(
-                                                        text:
-                                                        'Pilih metode pengiriman\n',
-                                                        style: TextStyle(
-                                                            color: Colors.black87,
-                                                            fontFamily: 'Brandon',
-                                                            fontWeight:
-                                                            FontWeight.bold,
-                                                            fontSize: 13)),
-                                                    TextSpan(
-                                                        text: value.isDelivery == true ? "Menggunakan Delivery" : value.cabangClick == null ?  "Mau diantar atau diambil sendiri nih? Kamu bisa pilih loh!" : method.cabangClick.alamatCabang,
-                                                        style: TextStyle(
-                                                          fontFamily: 'Brandon',
-                                                          fontSize: 10,
-                                                          color: Colors.black45,
-                                                        ))
-                                                  ])),
+                                              Row(children: [
+                                                value.cabangClick == null ? SizedBox(): Image.asset(
+                                                  'assets/images/perjalanan@4x.png',
+                                                  width: 25,
+                                                  height: 25,
+                                                  fit: BoxFit.contain,
+                                                ),
+                                                SizedBox(width: 7),
+                                                Column(
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: [
+                                                  Text(
+                                                    value.cabangClick == null ? "Pilih metode pengiriman": "Pick Up In Store",
+                                                    style: TextStyle(
+                                                      fontFamily: "Brandon",
+                                                      fontWeight: FontWeight.w600,
+                                                      color: Colors.black,
+                                                      fontSize: 13,
+                                                    ),
+                                                  ),
+                                                  Text(value.isDelivery == true ? "Menggunakan Delivery" : value.cabangClick == null ?  "Mau diantar atau diambil sendiri nih? Kamu bisa pilih loh!" : method.cabangClick.alamatCabang,
+                                                      style: TextStyle(
+                                                        fontFamily: 'Brandon',
+                                                        fontSize: 10,
+                                                        color: Colors.black45,
+                                                      )
+                                                  ),
+                                                ],)
+
+                                              ]),
                                               Icon(Icons.arrow_forward_ios,
                                                   color: Color(0xffF48262),
                                                   size: 16)
@@ -1647,7 +1672,7 @@ class _CartScreenState extends State<CartScreen> {
                                       ),
                                       Column(
                                         children: [
-                                          value.cabangClick != null && value.cabangClick.unavailableProduct.length != 0 && value.isDelivery != true ? Row(
+                                          value.cabangClick != null && value.setUnavailable.length != 0 && value.isDelivery != true ? Row(
                                             children: [
                                               Icon(
                                                 Icons.priority_high,
@@ -1668,7 +1693,7 @@ class _CartScreenState extends State<CartScreen> {
                                           ) : SizedBox(),
                                         ],
                                       ),
-                                     value.cabangClick != null && value.cabangClick.unavailableProduct.length != 0 && value.isDelivery != true ? Padding(
+                                     value.cabangClick != null && value.setUnavailable.length != 0 && value.isDelivery != true ? Padding(
                                         padding: EdgeInsets.only(
                                             left: 25, top: 10, bottom: 10),
                                         child: Row(
@@ -1728,6 +1753,7 @@ class _CartScreenState extends State<CartScreen> {
                                                   color: Colors.white,
                                                   onPressed: () {
                                                     Provider.of<ListCabang>(context).setDataUnavaliable = true;
+                                                    Provider.of<ListCabang>(context).dataCabang = null;
                                                   },
                                                   child: TextBuild(
                                                     value: "Coba Delivery",
@@ -1738,13 +1764,13 @@ class _CartScreenState extends State<CartScreen> {
                                           ],
                                         ),
                                       ) : SizedBox(),
-                                      value.cabangClick != null && value.cabangClick.unavailableProduct.length != 0  && value.isDelivery != true ?  Container(
+                                      value.cabangClick != null && value.setUnavailable.length != 0  && value.isDelivery != true ?  Container(
                                         height: 10,
                                         width:
                                         MediaQuery.of(context).size.width,
                                         color: Colors.white,
                                       ) : SizedBox(),
-                                      value.cabangClick != null && value.cabangClick.unavailableProduct.length != 0  && value.isDelivery != true?  ListView.separated(
+                                      value.cabangClick != null && value.setUnavailable.length != 0  && value.isDelivery != true?  ListView.separated(
                                         scrollDirection: Axis.vertical,
                                         shrinkWrap: true,
                                         physics: NeverScrollableScrollPhysics(),
@@ -2089,7 +2115,7 @@ class _CartScreenState extends State<CartScreen> {
                                                         color: Colors.black54),
                                                   ],
                                                 ),
-                                                Text("-10.000",
+                                                Text("-${value.summary.available_point_to_use}",
                                                     style: TextStyle(
                                                       fontFamily: 'Brandon',
                                                       fontSize: 14,
@@ -2101,11 +2127,10 @@ class _CartScreenState extends State<CartScreen> {
                                             Transform.scale(
                                               scale: 0.72,
                                               child: CupertinoSwitch(
-                                                value: pointValue,
+                                                value: Provider.of<ListCabang>(context).setPointValue,
                                                 onChanged: (value) {
-                                                  setState(() {
-                                                    pointValue = value;
-                                                  });
+                                                  Provider.of<ListCabang>(context).setPointValue = value;
+                                                  _getSummaryPoint();
                                                 },
                                                 trackColor: Colors.grey[200],
                                                 activeColor: Color(0xffF48262),
@@ -2209,7 +2234,7 @@ class _CartScreenState extends State<CartScreen> {
                                           ),
                                         ),
                                         Text(
-                                          value.summary.total,
+                                          value.setSumarry.total,
                                           style: TextStyle(
                                             fontFamily: 'Brandon',
                                             fontSize: 14,
@@ -2269,28 +2294,28 @@ class _CartScreenState extends State<CartScreen> {
                               ),
                               onPressed: () {
                                 selectTypeMethodPayment();
-                                int index = value.listCardOfitem.indexWhere((element) => element.product.is_shown == false);
-                                if(index<0){
-                                  FocusScope.of(context)
-                                      .requestFocus(FocusNode());
-                                  UIBlock.block(context,
-                                      customLoaderChild: LoadingWidget(context));
-                                  value.RemoveShipping().then((value) {
-                                    UIBlock.unblock(context);
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => ShippingScreen()),
-                                    );
-                                  });
-                                }else{
-                                  String product = value.listCardOfitem[index].product.name;
-                                  final snackBar = SnackBar(
-                                    content: Text("Produk ${product} tidak tersedia",style: TextStyle(color: Colors.white)),
-                                    backgroundColor: Colors.redAccent,
-                                  );
-                                  scaffoldKey.currentState.showSnackBar(snackBar);
-                                }
+                                // int index = value.listCardOfitem.indexWhere((element) => element.product.is_shown == false);
+                                // if(index<0){
+                                //   FocusScope.of(context)
+                                //       .requestFocus(FocusNode());
+                                //   UIBlock.block(context,
+                                //       customLoaderChild: LoadingWidget(context));
+                                //   value.RemoveShipping().then((value) {
+                                //     UIBlock.unblock(context);
+                                //     Navigator.push(
+                                //       context,
+                                //       MaterialPageRoute(
+                                //           builder: (context) => ShippingScreen()),
+                                //     );
+                                //   });
+                                // }else{
+                                //   String product = value.listCardOfitem[index].product.name;
+                                //   final snackBar = SnackBar(
+                                //     content: Text("Produk ${product} tidak tersedia",style: TextStyle(color: Colors.white)),
+                                //     backgroundColor: Colors.redAccent,
+                                //   );
+                                //   scaffoldKey.currentState.showSnackBar(snackBar);
+                                // }
                               },
                             ),
                           ),

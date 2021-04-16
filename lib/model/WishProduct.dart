@@ -10,7 +10,7 @@ class WishModel with ChangeNotifier {
   int countwishlist=0;
   bool loading=true;
   List<WishRaw> rawlist =[];
-
+  bool success = false;
 
   Future<void> getCountWislist(String token) async
   {

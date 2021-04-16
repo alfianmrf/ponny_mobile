@@ -22,18 +22,14 @@ class ListCabang with ChangeNotifier {
   Datum cabangClick;
   int unavaliableQty = 0;
   bool isDelivery = false;
+  bool pointValue = false;
 
   void addDataUn(Cart cart){
-   
-    dataCabang.indexWhere((element) => element.unavailableProduct == cart.product.id);
-      for(var item in dataCabang){
-        for ( var result in item.unavailableProduct) {
-          if (result == cart.product.id) {
-            unavaliable.add(cart);
-          }
-        }
+    for ( var result in cabangClick.unavailableProduct) {
+      if (result == cart.product.id) {
+        unavaliable.add(cart);
       }
-    notifyListeners();
+    }
   }
 
   set setDataCabang(value){
@@ -46,12 +42,17 @@ class ListCabang with ChangeNotifier {
     notifyListeners();
   }
 
+  set setPointValue(value) {
+    pointValue = value;
+  }
+
   set setDataUnavaliable(value){
       isDelivery = value;
       notifyListeners();
   }
 
   bool get setDataUnavaliable => isDelivery;
+  bool get setPointValue => pointValue;
   Datum get setDataCabang => cabangClick;
   List<Cart> get setUnavailable => unavaliable;
 
@@ -78,12 +79,13 @@ class ListCabang with ChangeNotifier {
     HttpHeaders.contentTypeHeader: 'application/json',
     HttpHeaders.authorizationHeader: "Bearer $token"});
     final responseJson = json.decode(res.body);
-    if(res.statusCode == 200){
-      dataCabang = [];
+    if(res.statusCode == 200){;
       for(Map item in responseJson["data"]){
+          dataCabang = [];
           print(item);
           dataCabang.add(Datum.fromJson(item));
       }
+      notifyListeners();
     }
   }
 

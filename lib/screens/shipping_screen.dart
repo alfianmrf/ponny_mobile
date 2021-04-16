@@ -7,6 +7,7 @@ import 'package:ponny/model/Address.dart';
 import 'package:ponny/model/App.dart';
 import 'package:ponny/model/Cart.dart';
 import 'package:ponny/model/Courier.dart';
+import 'package:ponny/model/listCabangModel.dart';
 import 'package:ponny/screens/account/tambah_alamat_screen.dart';
 import 'package:ponny/screens/payment_screen.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
@@ -38,6 +39,7 @@ class _ShippingScreenState extends State<ShippingScreen> {
       Provider.of<AddressModel>(context).getListAddress(Provider.of<AppModel>(context).auth.access_token).then((value) async {
         if(Provider.of<AddressModel>(context).useAddress !=null)
         await Provider.of<AddressModel>(context).getListCourier(Provider.of<AppModel>(context).auth.access_token);
+        isloading=false;
         isloading=false;
       });
 
@@ -240,6 +242,7 @@ class _ShippingScreenState extends State<ShippingScreen> {
                             });
                             UIBlock.block(context,customLoaderChild: LoadingWidget(context));
                             Provider.of<CartModel>(context).AppyShipping(valueOfcurier[value],Provider.of<AppModel>(context).auth.access_token).then((value){
+                              Provider.of<CartModel>(context).getPointSummary(Provider.of<ListCabang>(context).pointValue,"", Provider.of<AppModel>(context).auth.access_token);
                               UIBlock.unblock(context);
                             });
                           },

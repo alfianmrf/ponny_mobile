@@ -10,6 +10,7 @@ class ListTokoPengirimanScreen extends StatefulWidget {
 class _ListTokoPengirimanScreenState extends State<ListTokoPengirimanScreen> {
   int _selectedIndex;
   Datum dataCabang;
+  GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   _onSelected(int index) {
     setState(() => _selectedIndex = index);
   }
@@ -25,12 +26,18 @@ class _ListTokoPengirimanScreenState extends State<ListTokoPengirimanScreen> {
   Future<void>getListToko() async{
       try{
           var token = Provider.of<AppModel>(context, listen: false).auth.access_token;
-          print("sukses");
           await Provider.of<ListCabang>(context).getListCabang(token);
       }
       catch(e){
           print("ERror message"+e.toString());
       }
+  }
+
+  Future<Null>_getSummaryPoint() async {
+    String available = Provider.of<ListCabang>(context).cabangClick == null ? "" : json.encode(Provider.of<ListCabang>(context).cabangClick.availableProduct);
+    print("ddd"+available);
+    var token = Provider.of<AppModel>(context).auth.access_token;
+    Provider.of<CartModel>(context).getPointSummary(Provider.of<ListCabang>(context).setPointValue, available , token);
   }
 
   @override
@@ -41,6 +48,7 @@ class _ListTokoPengirimanScreenState extends State<ListTokoPengirimanScreen> {
 
     return Scaffold(
       backgroundColor: Hexcolor('#FCF8F0'),
+      key: scaffoldKey,
       appBar: AppBar(
           elevation: 0,
           titleSpacing: 0,
@@ -112,11 +120,11 @@ class _ListTokoPengirimanScreenState extends State<ListTokoPengirimanScreen> {
                               padding:
                               EdgeInsets.symmetric(horizontal: 7, vertical: 4),
                               decoration: BoxDecoration(
-                                  color: Colors.green.withOpacity(0.90),
+                                  color: cabang[index].unavailableProduct.length > 0 ? Colors.redAccent.withOpacity(0.90) : Colors.green.withOpacity(0.90),
                                   borderRadius:
                                   BorderRadius.all(Radius.circular(8))),
                               child: Text(
-                                "Stok barang tersedia",
+                                cabang[index].unavailableProduct.length > 0 ? "${cabang[index].unavailableProduct.length.toString()} Stok barang tidak tersedia":"Stok barang tersedia",
                                 style: TextStyle(
                                   fontFamily: "Brandon",
                                   color: Colors.white,
@@ -158,10 +166,20 @@ class _ListTokoPengirimanScreenState extends State<ListTokoPengirimanScreen> {
                       ),
                     ),
                     onPressed: () {
-                      Provider.of<ListCabang>(context).setDataCabang = dataCabang;
-                      Provider.of<ListCabang>(context).setDataUnavaliable = false;
-                      int count = 0;
-                      Navigator.of(context).popUntil((_) => count++ >= 2);
+                      if(_selectedIndex == null ){
+                        final snackBar = SnackBar(
+                            content: Text("Mohon untuk memilih cabang",style: TextStyle(color: Colors.white)),
+                          backgroundColor: Colors.redAccent,
+                        );
+                        scaffoldKey.currentState.showSnackBar(snackBar);
+                      }
+                      else {
+                          Provider.of<ListCabang>(context).setDataCabang = dataCabang;
+                          Provider.of<ListCabang>(context).setDataUnavaliable = false;
+                          _getSummaryPoint();
+                          int count = 0;
+                          Navigator.of(context).popUntil((_) => count++ >= 2);
+                      }
                     }),
               ))
         ],

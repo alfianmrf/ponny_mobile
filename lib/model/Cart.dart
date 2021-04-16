@@ -9,6 +9,7 @@ import 'package:ponny/model/Courier.dart';
 import 'package:ponny/model/OrderResult.dart';
 import 'package:ponny/model/Product.dart';
 import 'package:http/http.dart' as http;
+import 'package:ponny/model/listCabangModel.dart';
 import 'package:ponny/util/globalUrl.dart';
 
 import 'Address.dart';
@@ -22,9 +23,9 @@ class CartModel with ChangeNotifier{
   bool loadingCard = true;
   Coupon coupon;
   Summary summary;
+  Summary sumaryPoint;
   MapCost shipping;
   int CurentPoint =0;
-
 
 
   CartModel();
@@ -249,7 +250,7 @@ class CartModel with ChangeNotifier{
       int index = listCardOfitem.indexWhere((element) => element.id == id);
 
       listCardOfitem.removeAt(index);
-      await getSummary(token);
+      // await getSummary(token);
       notifyListeners();
     }
 
@@ -296,6 +297,36 @@ class CartModel with ChangeNotifier{
 
   }
 
+  set setSummary(value){
+    summary = summary;
+    notifyListeners();
+  }
+
+  Summary get setSumarry => summary;
+
+  Future<void> getPointSummary(bool usingPoint, String available, String token ) async {
+    String _coupon;
+    String _courier;
+      var params = <String,dynamic> {
+          "using_point" : usingPoint
+      };
+
+      if (coupon != null)    _coupon =coupon.code;
+      if (shipping != null)  _courier = json.encode(shipping.toJson());
+
+      if (available.length != 2)  params.addAll({"available_item" : available});
+      if (_courier != null)       params.addAll({"courier": _courier});
+      if (_coupon != null)        params.addAll({"coupon_code":_coupon});
+
+      print("param oi"+params.toString());
+      final res = await http.post(cartSummary, headers: { HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: "Bearer $token"},body: json.encode(params));
+      if (res.statusCode == 200) {
+        final responseJson = json.decode(res.body);
+        summary = Summary.fromJson(responseJson);
+        notifyListeners();
+      }
+  }
+
   Future<bool> AppyCoupon(String code, String token) async {
     var param ={
       "code":code
@@ -313,7 +344,8 @@ class CartModel with ChangeNotifier{
 
   Future<bool> AppyShipping(MapCost cost,String token) async {
     shipping = cost;
-    await getSummary(token);
+     print("shipping"+json.encode(shipping));
+    // await getSummary(token);
     notifyListeners();
   }
 
@@ -338,6 +370,34 @@ class CartModel with ChangeNotifier{
     notifyListeners();
   }
 
+  Future<OrderResult> NewCheckout(String token, Address useAddress,String method, int cabang_id, bool using_point, Datum dataCabang) async{
+    OrderResult result;
+    var param = <String,dynamic>{
+      "address_id":dataCabang != null ? 0 :useAddress.id,
+      "courier":  dataCabang != null ? '{ "code" : "null", "services" : "null", "cost": "0"}' : json.encode(shipping.toJson()),
+      "payment_code":method
+    };
+    if(coupon != null){
+      param.addAll({"coupon_code":coupon.code});
+    }
+    if(dataCabang != null){
+      param.addAll({"cabang_id":cabang_id});
+      param.addAll({"using_point":using_point});
+    }
+    print("param oi" + param.toString());
+    final res = await http.post(cartChekouturl, headers: { HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: "Bearer $token"},body: json.encode(param));
+    final responseJson = json.decode(res.body);
+    print("ini hasil"+responseJson.toString());
+    result= OrderResult.fromJson(responseJson);
+    if (res.statusCode == 200) {
+      // print(responseJson);
+      listCardOfitem=[];
+      notifyListeners();
+      return result;
+    }
+    return result;
+  }
+
   Future<OrderResult> Checkout(String token, Address useAddress,String method) async {
    var param;
    OrderResult result;
@@ -354,6 +414,8 @@ class CartModel with ChangeNotifier{
        "courier":  json.encode(shipping.toJson()),
        "payment_code":method
      };
+
+
    }
    final res = await http.post(cartChekouturl, headers: { HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: "Bearer $token"},body: json.encode(param));
    final responseJson = json.decode(res.body);
@@ -450,13 +512,16 @@ class Summary{
   String discount;
   String shipping;
   String total;
+  int available_point_to_use;
+  int using_point;
   int earnPoint;
 
-  Summary(this.subtotal, this.free_shipping, this.discount, this.shipping,
-      this.total, this.earnPoint);
+  Summary(this.subtotal, this.free_shipping, this.discount, this.shipping ,
+      this.total, this.earnPoint, this.available_point_to_use,this.using_point);
 
   factory Summary.fromJson(Map<String, dynamic> parsedJson){
-    return Summary(parsedJson["subtotal"], parsedJson["free_shipping"], parsedJson["discount"], parsedJson["shipping"], parsedJson["total"], parsedJson["earnPoint"]);
+    return Summary(parsedJson["subtotal"], parsedJson["free_shipping"], parsedJson["discount"],
+        parsedJson["shipping"], parsedJson["total"], parsedJson["earnPoint"],parsedJson["available_point_to_use"],parsedJson["using_point"]);
   }
 }
 
