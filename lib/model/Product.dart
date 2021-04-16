@@ -16,12 +16,14 @@ class ProductModel with ChangeNotifier {
   List<Product> Best_sell = [];
   List<Product> PhoebeChoices = [];
   List<Product> Recomendasi = [];
+  List<Product> Recom = [];
   List<Product> Sample = [];
   List<Product> news =[];
   bool loadingLocalProduct = true;
   bool loadingBestSale = true;
   bool loadingPhobe = true;
   bool loadingRekomendasi = true;
+  bool loadingRecom = true;
   bool loadingNews =true;
   FlashDetail flashsale;
 
@@ -31,6 +33,7 @@ class ProductModel with ChangeNotifier {
     getBestSell();
     getPhoebe();
     getRekomendasi();
+    getRecom();
     getFlashSale();
     getNews();
   }
@@ -124,6 +127,24 @@ class ProductModel with ChangeNotifier {
       notifyListeners();
     } catch (err) {
       loadingRekomendasi = false;
+      print("error." + err.toString());
+      notifyListeners();
+    }
+  }
+
+  Future<void> getRecom() async {
+    try {
+      final result = await http.get(recomProduct);
+      if (result.statusCode == 200) {
+        final responseJson = json.decode(result.body);
+        for (Map item in responseJson["products"][0]["data"]) {
+          Recom.add(Product.fromJson(item));
+        }
+      }
+      loadingRecom = false;
+      notifyListeners();
+    } catch (err) {
+      loadingRecom = false;
       print("error." + err.toString());
       notifyListeners();
     }
