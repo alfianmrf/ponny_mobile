@@ -314,6 +314,7 @@ class _LoginOTPScreen extends State<LoginOTP> {
 
   Future<void> sendOtp() async {
     // FocusScope.of(context).requestFocus(new FocusNode());
+    FirebaseAuth _auth = FirebaseAuth.instance;
 
     FormState form = this.formKey.currentState;
     if(form.validate()){
@@ -321,17 +322,15 @@ class _LoginOTPScreen extends State<LoginOTP> {
       var phone = "+62"+phoneNumber.value.text;
       print(phone);
       try{
-        await FirebaseAuth.instance.verifyPhoneNumber(
+        await _auth.verifyPhoneNumber(
           phoneNumber: phone,
           timeout: Duration(minutes: 2),
           verificationCompleted: (AuthCredential credential) async{
-            final FirebaseAuth auth = FirebaseAuth.instance;
-            print("COMPLETED");
-            print(auth.currentUser.uid);
-            print(auth.currentUser.phoneNumber);
+            var result = await _auth.signInWithCredential(credential);
+            print(result);
             var param ={
-              "uid":auth.currentUser.uid,
-              "phone":auth.currentUser.phoneNumber,
+              "uid":_auth.currentUser.uid,
+              "phone":_auth.currentUser.phoneNumber,
             };
             Provider.of<AppModel>(context).setAuthOtp(param).then((value){
               UIBlock.unblock(context);
@@ -347,18 +346,20 @@ class _LoginOTPScreen extends State<LoginOTP> {
                 }
 
               }else{
-                setState(() {
-                  pesan = 'Terjadi kesalahan pada server!';
-                  invalidotp = true;
-                });
+                final snackBar = SnackBar(
+                  content: Text('Terjadi Kesalahan Pada Server',style: TextStyle(color: Colors.white)),
+                  backgroundColor: Colors.redAccent,
+                );
+                scaffoldKey.currentState.showSnackBar(snackBar);
               }
 
             }).catchError((onError){
               UIBlock.unblock(context);
-              setState(() {
-                pesan = 'Terjadi kesalahan pada server atau kode yang anda masukan salah!';
-                invalidotp = true;
-              });
+              final snackBar = SnackBar(
+                content: Text(onError.message,style: TextStyle(color: Colors.white)),
+                backgroundColor: Colors.redAccent,
+              );
+              scaffoldKey.currentState.showSnackBar(snackBar);
             });
           },
           verificationFailed: (FirebaseAuthException e) {

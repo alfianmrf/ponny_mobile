@@ -707,11 +707,9 @@ class _LoginStateScreen extends State<LoginScreen> {
                                               signInWithGoogle().then((value) {
                                                 UIBlock.unblock(context);
                                                 if (value) {
-                                                  Navigator
-                                                      .pushNamedAndRemoveUntil(
-                                                          context,
-                                                          HomeScreen.id,
-                                                          (_) => false);
+                                                  Navigator.pushReplacement(context,new MaterialPageRoute(
+                                                    builder: (BuildContext context) =>  new HomeScreen(),
+                                                  ));
                                                 } else {
                                                   scaffoldKey.currentState
                                                       .showSnackBar(
@@ -796,11 +794,9 @@ class _LoginStateScreen extends State<LoginScreen> {
                                               signInWithFacebook().then((value) {
                                                 UIBlock.unblock(context);
                                                 if (value) {
-                                                  Navigator
-                                                      .pushNamedAndRemoveUntil(
-                                                          context,
-                                                          HomeScreen.id,
-                                                          (_) => false);
+                                                  Navigator.pushReplacement(context,new MaterialPageRoute(
+                                                    builder: (BuildContext context) =>  new HomeScreen(),
+                                                  ));
                                                 } else {
                                                   scaffoldKey.currentState
                                                       .showSnackBar(
@@ -896,11 +892,9 @@ class _LoginStateScreen extends State<LoginScreen> {
                                               signInWithTwitter().then((value) {
                                                 UIBlock.unblock(context);
                                                 if (value) {
-                                                  Navigator
-                                                      .pushNamedAndRemoveUntil(
-                                                          context,
-                                                          HomeScreen.id,
-                                                          (_) => false);
+                                                  Navigator.pushReplacement(context,new MaterialPageRoute(
+                                                    builder: (BuildContext context) =>  new HomeScreen(),
+                                                  ));
                                                 } else {
                                                   scaffoldKey.currentState
                                                       .showSnackBar(
@@ -1035,8 +1029,9 @@ class _LoginStateScreen extends State<LoginScreen> {
                                           signInWithApple().then((value) {
                                             UIBlock.unblock(context);
                                             if (value) {
-                                              Navigator.pushNamedAndRemoveUntil(
-                                                  context, HomeScreen.id, (_) => false);
+                                              Navigator.pushReplacement(context,new MaterialPageRoute(
+                                                builder: (BuildContext context) =>  new HomeScreen(),
+                                              ));
                                             } else {
                                               scaffoldKey.currentState
                                                   .showSnackBar(snackBarError);

@@ -555,10 +555,9 @@ class _PraDaftarScreen extends State<PraDaftarScreen> {
                             signInWithGoogle().then((value) {
                               UIBlock.unblock(context);
                               if(value){
-                                Navigator.pushNamedAndRemoveUntil(
-                                    context,
-                                    HomeScreen.id,(_) => false
-                                );
+                                Navigator.pushReplacement(context,new MaterialPageRoute(
+                                  builder: (BuildContext context) =>  new HomeScreen(),
+                                ));
                               }else{
                                 scaffoldKey.currentState.showSnackBar(snackBarError);
                               }
@@ -580,10 +579,9 @@ class _PraDaftarScreen extends State<PraDaftarScreen> {
                           signInWithGoogle().then((value) {
                             UIBlock.unblock(context);
                             if(value){
-                              Navigator.pushNamedAndRemoveUntil(
-                                  context,
-                                  HomeScreen.id,(_) => false
-                              );
+                              Navigator.pushReplacement(context,new MaterialPageRoute(
+                                builder: (BuildContext context) =>  new HomeScreen(),
+                              ));
                             }else{
                               scaffoldKey.currentState.showSnackBar(snackBarError);
                             }
@@ -649,11 +647,9 @@ class _PraDaftarScreen extends State<PraDaftarScreen> {
                                           signInWithFacebook().then((value) {
                                             UIBlock.unblock(context);
                                             if (value) {
-                                              Navigator
-                                                  .pushNamedAndRemoveUntil(
-                                                  context,
-                                                  HomeScreen.id,
-                                                      (_) => false);
+                                              Navigator.pushReplacement(context,new MaterialPageRoute(
+                                                builder: (BuildContext context) =>  new HomeScreen(),
+                                              ));
                                             } else {
                                               scaffoldKey.currentState
                                                   .showSnackBar(
@@ -695,11 +691,9 @@ class _PraDaftarScreen extends State<PraDaftarScreen> {
                                         signInWithFacebook().then((value) {
                                           UIBlock.unblock(context);
                                           if (value) {
-                                            Navigator
-                                                .pushNamedAndRemoveUntil(
-                                                context,
-                                                HomeScreen.id,
-                                                    (_) => false);
+                                            Navigator.pushReplacement(context,new MaterialPageRoute(
+                                              builder: (BuildContext context) =>  new HomeScreen(),
+                                            ));
                                           } else {
                                             scaffoldKey.currentState
                                                 .showSnackBar(
@@ -774,10 +768,9 @@ class _PraDaftarScreen extends State<PraDaftarScreen> {
                                 signInWithTwitter().then((value) {
                                   UIBlock.unblock(context);
                                   if(value){
-                                    Navigator.pushNamedAndRemoveUntil(
-                                        context,
-                                        HomeScreen.id,(_) => false
-                                    );
+                                    Navigator.pushReplacement(context,new MaterialPageRoute(
+                                      builder: (BuildContext context) =>  new HomeScreen(),
+                                    ));
                                   }else{
                                     scaffoldKey.currentState.showSnackBar(snackBarError);
                                   }
@@ -799,10 +792,9 @@ class _PraDaftarScreen extends State<PraDaftarScreen> {
                               signInWithTwitter().then((value) {
                                 UIBlock.unblock(context);
                                 if(value){
-                                  Navigator.pushNamedAndRemoveUntil(
-                                      context,
-                                      HomeScreen.id,(_) => false
-                                  );
+                                  Navigator.pushReplacement(context,new MaterialPageRoute(
+                                    builder: (BuildContext context) =>  new HomeScreen(),
+                                  ));
                                 }else{
                                   scaffoldKey.currentState.showSnackBar(snackBarError);
                                 }
@@ -920,8 +912,9 @@ class _PraDaftarScreen extends State<PraDaftarScreen> {
                                           signInWithApple().then((value) {
                                             UIBlock.unblock(context);
                                             if (value) {
-                                              Navigator.pushNamedAndRemoveUntil(
-                                                  context, HomeScreen.id, (_) => false);
+                                              Navigator.pushReplacement(context,new MaterialPageRoute(
+                                                builder: (BuildContext context) =>  new HomeScreen(),
+                                              ));
                                             } else {
                                               scaffoldKey.currentState
                                                   .showSnackBar(snackBarError);
