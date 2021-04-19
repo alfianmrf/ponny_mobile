@@ -314,6 +314,7 @@ class _LoginOTPScreen extends State<LoginOTP> {
 
   Future<void> sendOtp() async {
     // FocusScope.of(context).requestFocus(new FocusNode());
+    FirebaseAuth _auth = FirebaseAuth.instance;
 
     FormState form = this.formKey.currentState;
     if(form.validate()){
@@ -321,11 +322,45 @@ class _LoginOTPScreen extends State<LoginOTP> {
       var phone = "+62"+phoneNumber.value.text;
       print(phone);
       try{
-        await FirebaseAuth.instance.verifyPhoneNumber(
+        await _auth.verifyPhoneNumber(
           phoneNumber: phone,
           timeout: Duration(minutes: 2),
-          verificationCompleted: (PhoneAuthCredential credential) {
-            print(credential.smsCode);
+          verificationCompleted: (AuthCredential credential) async{
+            var result = await _auth.signInWithCredential(credential);
+            print(result);
+            var param ={
+              "uid":_auth.currentUser.uid,
+              "phone":_auth.currentUser.phoneNumber,
+            };
+            Provider.of<AppModel>(context).setAuthOtp(param).then((value){
+              UIBlock.unblock(context);
+              if(value!= null){
+                if(value.name == value.phone){
+                  Navigator.pushReplacement(context,new MaterialPageRoute(
+                    builder: (BuildContext context) =>  new RegisterOtpScreen(user: value,),
+                  ));
+                }else{
+                  Navigator.pushReplacement(context,new MaterialPageRoute(
+                    builder: (BuildContext context) =>  new HomeScreen(),
+                  ));
+                }
+
+              }else{
+                final snackBar = SnackBar(
+                  content: Text('Terjadi Kesalahan Pada Server',style: TextStyle(color: Colors.white)),
+                  backgroundColor: Colors.redAccent,
+                );
+                scaffoldKey.currentState.showSnackBar(snackBar);
+              }
+
+            }).catchError((onError){
+              UIBlock.unblock(context);
+              final snackBar = SnackBar(
+                content: Text(onError.message,style: TextStyle(color: Colors.white)),
+                backgroundColor: Colors.redAccent,
+              );
+              scaffoldKey.currentState.showSnackBar(snackBar);
+            });
           },
           verificationFailed: (FirebaseAuthException e) {
             UIBlock.unblock(context);

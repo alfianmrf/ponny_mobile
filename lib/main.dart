@@ -118,26 +118,24 @@ Future<void> main() async {
   PushNotificationsManager().init();
 
   runApp(
-    Phoenix(
-      child: MultiProvider(
-        providers: [
-          ChangeNotifierProvider(create: (context) => AppModel()),
-          ChangeNotifierProvider(create: (context) => CategoryModel()),
-          ChangeNotifierProvider(create: (context) => SliderModel()),
-          ChangeNotifierProvider(create: (context) => ProductModel()),
-          ChangeNotifierProvider(create: (context) => CartModel()),
-          ChangeNotifierProvider(create: (context) => WishModel()),
-          ChangeNotifierProvider(create: (context) => AddressModel()),
-          ChangeNotifierProvider(create: (context) => OrderModel()),
-          ChangeNotifierProvider(create: (context) => UserModel()),
-          ChangeNotifierProvider(create: (context) => VoucherModel()),
-          ChangeNotifierProvider(create: (context) => ChatEmail()),
-          ChangeNotifierProvider(create: (context) => PostandComment()),
-          ChangeNotifierProvider(create: (context) => AddCodeResult()),
-          ChangeNotifierProvider(create: (context) => AffiliateWithdraw()),
-        ],
-        child: MyApp(),
-      ),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => AppModel()),
+        ChangeNotifierProvider(create: (context) => CategoryModel()),
+        ChangeNotifierProvider(create: (context) => SliderModel()),
+        ChangeNotifierProvider(create: (context) => ProductModel()),
+        ChangeNotifierProvider(create: (context) => CartModel()),
+        ChangeNotifierProvider(create: (context) => WishModel()),
+        ChangeNotifierProvider(create: (context) => AddressModel()),
+        ChangeNotifierProvider(create: (context) => OrderModel()),
+        ChangeNotifierProvider(create: (context) => UserModel()),
+        ChangeNotifierProvider(create: (context) => VoucherModel()),
+        ChangeNotifierProvider(create: (context) => ChatEmail()),
+        ChangeNotifierProvider(create: (context) => PostandComment()),
+        ChangeNotifierProvider(create: (context) => AddCodeResult()),
+        ChangeNotifierProvider(create: (context) => AffiliateWithdraw()),
+      ],
+      child: Phoenix(child: MyApp()),
     ),
   );
 }

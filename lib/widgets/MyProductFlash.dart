@@ -256,7 +256,7 @@ class MyProductFlash extends StatelessWidget {
                       child: ClipRRect(
                         child: LinearProgressIndicator(
                           backgroundColor: Color(0xffFBDFD2),
-                          value: productFlash.product.is_flash_deal!=null?productFlash.product.is_flash_deal.stock / (productFlash.product.is_flash_deal.stock + productFlash.product.is_flash_deal.num_of_sale):1,
+                          value: productFlash.qty==0?0:productFlash.product.is_flash_deal.stock / (productFlash.product.is_flash_deal.stock + productFlash.product.is_flash_deal.num_of_sale),
                           valueColor: AlwaysStoppedAnimation<Color>(Color(0xffF48262)),
                           minHeight: 5,
                         ),
