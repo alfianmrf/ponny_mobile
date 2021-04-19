@@ -127,7 +127,8 @@ class AppModel with ChangeNotifier{
     return _result;
   }
 
-  Future<bool> setAuthSocial(param) async {
+  Future<User> setAuthSocial(param) async {
+    User _result;
     final res = await http.post(loginSocial,headers: { HttpHeaders.contentTypeHeader: 'application/json' },body: json.encode(param));
     // print(res.body);
     final LocalStorage storage = LocalStorage("ponnystore");
@@ -135,15 +136,18 @@ class AppModel with ChangeNotifier{
     if(res.statusCode == 200){
       var result = json.decode(res.body);
       auth = LoginAuth.fromLocalJson(result);
+      _result = User.fromLocalJson(result['user']);
+      print(_result.name);
+      print(_result.email);
       loggedIn =true;
       final ready = await storage.ready;
       if (ready) {
         await storage.setItem("auth", result);
         notifyListeners();
-        return true;
+        return _result;
       }
     }
-    return false;
+    return _result;
   }
 
   Future<SearchGlobalResult> search(param) async {
