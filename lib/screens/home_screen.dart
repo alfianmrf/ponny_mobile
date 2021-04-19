@@ -18,6 +18,7 @@ import 'package:ponny/model/Product.dart';
 import 'package:ponny/model/ProductFlashDeal.dart';
 import 'package:ponny/model/Slider.dart';
 import 'package:ponny/model/User.dart';
+import 'package:ponny/model/listCabangModel.dart';
 import 'package:ponny/screens/Barcode_Scanner_Screen.dart';
 import 'package:ponny/screens/Blog_screen.dart';
 import 'package:ponny/screens/Browse_Screen.dart';
@@ -85,6 +86,7 @@ class _HomeScreenState extends State<HomeScreen> {
   int viewer = 0;
   bool isSiaran = false;
   YoutubePlayerController _controllersYoutube;
+
 
   bool _joined = false;
 
@@ -322,6 +324,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void dispose() {
     _controller?.removeListener(_scrollListener);
     _controller?.dispose();
+
     super.dispose();
   }
 
@@ -339,6 +342,7 @@ class _HomeScreenState extends State<HomeScreen> {
       });
     }
   }
+
 
   Future<void> _getCartOfitem() async {
     final auth = Provider.of<AppModel>(context);
@@ -508,7 +512,13 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   // bool checkDialog = false;
-
+  Future<void> _getUnavaliableProduct() async{
+    print("get unav");
+    Provider.of<ListCabang>(context).unavaliable = [];
+    for (var item in Provider.of<CartModel>(context).listCardOfitem){
+      Provider.of<ListCabang>(context).addDataUn(item);
+    }
+  }
   @override
   Widget build(BuildContext context) {
     final silder = Provider.of<SliderModel>(context).listSlider;

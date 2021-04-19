@@ -66,7 +66,8 @@ class _CartScreenState extends State<CartScreen> {
   }
 
   Future<void>_getUnavaliableProduct() async{
-    print("get unav");
+    print("aj ==>");
+    print(Provider.of<CartModel>(context).listCardOfitem);
     Provider.of<ListCabang>(context).unavaliable = [];
     for (var item in Provider.of<CartModel>(context).listCardOfitem){
       Provider.of<ListCabang>(context).addDataUn(item);
@@ -341,7 +342,7 @@ class _CartScreenState extends State<CartScreen> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => ListTokoPengirimanScreen()),
-                              );
+                              ).then((value) => _getUnavaliableProduct());
                             },
                             child: Container(
                               child: Column(
@@ -742,7 +743,7 @@ class _CartScreenState extends State<CartScreen> {
 
   Widget build(BuildContext context) {
 
-    _getUnavaliableProduct();
+    // _getUnavaliableProduct();
     final size = MediaQuery.of(context).size;
     var method = Provider.of<ListCabang>(context);
     int jumlahSample =

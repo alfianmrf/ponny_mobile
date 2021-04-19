@@ -1,13 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ponny/model/OrderResult.dart';
+import 'package:ponny/model/listCabangModel.dart';
 import 'package:ponny/screens/account_screen.dart';
 import 'package:ponny/screens/konsultasi_screen.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
 import 'package:ponny/screens/home_screen.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:ponny/screens/Order_Screen.dart';
+import 'package:intl/intl.dart';
 import 'dart:convert';
+
+import 'package:provider/provider.dart';
 
 class PesananBerhasilScreen extends StatefulWidget {
   static const String id = "pesanan_berhasil_screen";
@@ -50,6 +54,9 @@ class _PesananBerhasilScreenState extends State<PesananBerhasilScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final formatCurrency = new NumberFormat.simpleCurrency(locale: 'id_ID');
+    int _moneyCounter ;
+    var cabang = Provider.of<ListCabang>(context).cabangClick;
     return new WillPopScope(
         onWillPop: _onWillPop,
         child: Scaffold(
@@ -110,11 +117,11 @@ class _PesananBerhasilScreenState extends State<PesananBerhasilScreen> {
                   child: Icon(
                     Icons.check_circle,
                     color: Color(0xffF48262),
-                    size: 75,
+                    size: 65,
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.symmetric(vertical: 20),
+                  margin: EdgeInsets.symmetric(vertical: 16),
                   child: Text(
                     'TERIMA KASIH!',
                     style: TextStyle(
@@ -123,6 +130,7 @@ class _PesananBerhasilScreenState extends State<PesananBerhasilScreen> {
                     ),
                   ),
                 ),
+
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 25, vertical: 5),
                   decoration: BoxDecoration(
@@ -142,7 +150,8 @@ class _PesananBerhasilScreenState extends State<PesananBerhasilScreen> {
                   child: Column(
                     children: [
                       Text(
-                        'Total Pembayaran Rp'+widget.nota.mitransRequest.grossAmount.substring(0, widget.nota.mitransRequest.grossAmount.lastIndexOf('.')),
+                        cabang != null ?  "Total Pembayaran  ${formatCurrency.format(widget.nota.codParam)}" : widget.nota.mitransRequest.grossAmount.substring(0, widget.nota.mitransRequest.grossAmount.lastIndexOf('.')),
+                        // 'Total Pembayaran Rp ${widget.nota.mitransRequest.grossAmount.substring(0, widget.nota.mitransRequest.grossAmount.lastIndexOf('.'))}',
                         style: TextStyle(
                           fontFamily: 'Brandon',
                           fontSize: 12,
@@ -150,21 +159,43 @@ class _PesananBerhasilScreenState extends State<PesananBerhasilScreen> {
                         textAlign: TextAlign.center,
                       ),
                       Text(
-                        'Metode Pembayaran '+widget.nota.mitrans_val.mitrans_val,
+                        cabang != null ? "Metode Pembayaran COD (Cash on Delivery)" : "Metode Pembayaran "+widget.nota.mitrans_val.mitrans_val,
+                        // 'Metode Pembayaran ${widget.nota.mitrans_val.mitrans_val} ',
+                          style: TextStyle(
+                          fontFamily: 'Brandon',
+                          fontSize: 12,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      SizedBox(height: 10,),
+                      Provider.of<ListCabang>(context).cabangClick  == null ? SizedBox() : Text(
+                        "Lokasi Pengambilan :",
+                        style: TextStyle(
+                          fontFamily: 'Brandon',
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      Provider.of<ListCabang>(context).cabangClick == null ? SizedBox() : Container(
+                        margin: EdgeInsets.only(top: 6),
+                        child: Text(
+                          Provider.of<ListCabang>(context).cabangClick.namaCabang,
+                          style: TextStyle(
+                            fontFamily: 'Brandon',
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600
+                          ),
+                        ),
+                      ),
+                      Provider.of<ListCabang>(context).cabangClick  == null ? SizedBox() : Text(
+                        Provider.of<ListCabang>(context).cabangClick.alamatCabang,
                         style: TextStyle(
                           fontFamily: 'Brandon',
                           fontSize: 12,
                         ),
                         textAlign: TextAlign.center,
                       ),
-                      // Text(
-                      //   'No Virtual '+widget.nota.mitransRequest.actions.toString(),
-                      //   style: TextStyle(
-                      //     fontFamily: 'Brandon',
-                      //     fontSize: 12,
-                      //   ),
-                      //   textAlign: TextAlign.center,
-                      // ),
                     ],
                   ),
                 ),
@@ -199,8 +230,12 @@ class _PesananBerhasilScreenState extends State<PesananBerhasilScreen> {
                           borderRadius: BorderRadius.circular(7.0),
                         ),
                         onPressed: (){
+                          Provider.of<ListCabang>(context).cabangClick = null;
+                          Provider.of<ListCabang>(context).isDelivery = null;
+                          Provider.of<ListCabang>(context).pointValue = false;
                           Navigator.of(context)
                               .pushReplacementNamed(HomeScreen.id);
+
                         },
                       ),
                     ),

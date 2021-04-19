@@ -51,14 +51,20 @@ class _PaymentScreenState extends State<PaymentScreen> {
           new FlatButton(
             onPressed: (){
 
-              // Provider.of<CartModel>(context).NewCheckout(Provider.of<AppModel>(context).auth.access_token, Provider.of<AddressModel>(context).useAddress, method, cabang.cabangClick.id, cabang.pointValue, cabang.cabangClick);
+              // Provider.of<CartModel>(context).NewCheckout(Provider.of<AppModel>(context).auth.access_token, Provider.of<AddressModel>(context).useAddress, method, cabang.cabangClick == null ? null : cabang.cabangClick.id, cabang.pointValue, cabang.cabangClick).then((value) => {
+              //   print(value.mitransRequest)
+              // });
+
               // Navigator.pushAndRemoveUntil(context,new MaterialPageRoute(
-              //   builder: (BuildContext context) => new PickupPaymentSuccess()
+              // builder: (BuildContext context) => new PickupPaymentSuccess()
               // ),(_) => false);
+
+
               UIBlock.block(context,customLoaderChild: LoadingWidget(context));
 
 
-              Provider.of<CartModel>(context).Checkout(Provider.of<AppModel>(context).auth.access_token, Provider.of<AddressModel>(context).useAddress, method).then((value) {
+              // Provider.of<CartModel>(context).Checkout(Provider.of<AppModel>(context).auth.access_token, Provider.of<AddressModel>(context).useAddress, method).then((value) {
+              Provider.of<CartModel>(context).NewCheckout(Provider.of<AppModel>(context).auth.access_token, Provider.of<AddressModel>(context).useAddress, method, cabang.cabangClick == null ? null : cabang.cabangClick.id, cabang.pointValue, cabang.cabangClick).then((value) {
                 if(value!= null && value.success){
                   if(method == "qris"){
                     Navigator.pushAndRemoveUntil(context,new MaterialPageRoute(

@@ -197,6 +197,7 @@ class CartModel with ChangeNotifier{
 
   }
 
+
   Future<void> getCart(String token) async
   {
     try{
@@ -372,9 +373,12 @@ class CartModel with ChangeNotifier{
 
   Future<OrderResult> NewCheckout(String token, Address useAddress,String method, int cabang_id, bool using_point, Datum dataCabang) async{
     OrderResult result;
+    if (dataCabang != null){
+      shipping = MapCost.fromJson( { "code" : null, "services" : null, "cost": 0});
+    }
     var param = <String,dynamic>{
       "address_id":dataCabang != null ? 0 :useAddress.id,
-      "courier":  dataCabang != null ? '{ "code" : "null", "services" : "null", "cost": "0"}' : json.encode(shipping.toJson()),
+      "courier": json.encode(shipping.toJson()),
       "payment_code":method
     };
     if(coupon != null){
@@ -384,13 +388,16 @@ class CartModel with ChangeNotifier{
       param.addAll({"cabang_id":cabang_id});
       param.addAll({"using_point":using_point});
     }
-    print("param oi" + param.toString());
+    print("param oi" + json.encode(param));
+    print(shipping.toJson());
+
     final res = await http.post(cartChekouturl, headers: { HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: "Bearer $token"},body: json.encode(param));
+    print(res.body);
     final responseJson = json.decode(res.body);
-    print("ini hasil"+responseJson.toString());
+
     result= OrderResult.fromJson(responseJson);
     if (res.statusCode == 200) {
-      // print(responseJson);
+      print(responseJson);
       listCardOfitem=[];
       notifyListeners();
       return result;
@@ -420,6 +427,7 @@ class CartModel with ChangeNotifier{
    final res = await http.post(cartChekouturl, headers: { HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: "Bearer $token"},body: json.encode(param));
    final responseJson = json.decode(res.body);
    result= OrderResult.fromJson(responseJson);
+   print(res.body);
    if (res.statusCode == 200) {
      // print(responseJson);
      listCardOfitem=[];
