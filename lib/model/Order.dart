@@ -39,13 +39,21 @@ class OrderModel with ChangeNotifier{
 
   }
 
-  Future<ManualInfo> getManualpembayaran(String token,String order_id) async {
+  Future<NewManualInfo> getManualpembayaran(String token,String order_id) async {
 
     final res = await http.get(paymentInfo+"/"+order_id, headers: { HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: "Bearer $token"});
-    ManualInfo result;
+    NewManualInfo result;
+    print("awesome===");
+    print(json.decode(res.body));
+    print(res.statusCode);
     if(res.statusCode == 200){
+
       final responseJson = json.decode(res.body);
-      result = ManualInfo.fromJson(responseJson);
+      print("ini parse");
+      print(responseJson);
+      result = NewManualInfo.fromJson( json.decode(res.body));
+      print("ini result");
+      print(result);
     }
     return result;
   }

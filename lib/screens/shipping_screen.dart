@@ -655,6 +655,8 @@ class _ShippingScreenState extends State<ShippingScreen> {
                                         ),
                                       ),
                                       if(cart.coupon != null)
+                                        if (cart.coupon.coupon_id != null)
+                                          if (cart.summary.discount != "Rp0")
                                         Container(
 
                                           padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),

@@ -18,7 +18,7 @@ import 'package:uiblock/uiblock.dart';
 
 class KonfirmasiPembayaranScreen extends StatefulWidget {
   static const String id = "konfirmasi_pembayaran_screen";
-  ManualInfo manualInfo;
+  NewManualInfo manualInfo;
   KonfirmasiPembayaranScreen({Key key,this.manualInfo});
 
   @override

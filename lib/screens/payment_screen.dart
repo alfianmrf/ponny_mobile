@@ -8,6 +8,7 @@ import 'package:ponny/model/Address.dart';
 import 'package:ponny/model/App.dart';
 import 'package:ponny/model/Cart.dart';
 import 'package:ponny/model/Order.dart';
+import 'package:ponny/model/Product.dart';
 import 'package:ponny/model/listCabangModel.dart';
 import 'package:ponny/screens/Qris_screen.dart';
 import 'package:ponny/screens/account/menunggu_pembayaran_sukses_screen.dart';

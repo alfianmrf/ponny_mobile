@@ -185,6 +185,7 @@ class _HomeScreenState extends State<HomeScreen> {
       print("SUCCESS");
       print(_controllersYoutube);
       _updateCart();
+      Provider.of<ProductModel>(context).getFlashSale();
     });
   }
 
@@ -512,13 +513,17 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   // bool checkDialog = false;
-  Future<void> _getUnavaliableProduct() async{
-    print("get unav");
-    Provider.of<ListCabang>(context).unavaliable = [];
-    for (var item in Provider.of<CartModel>(context).listCardOfitem){
-      Provider.of<ListCabang>(context).addDataUn(item);
-    }
+
+  Future<void> _refresh(BuildContext context) async {
+    _getCartOfitem();
+    _getWishListCount();
+    initChanelBrodcaster();
+    getbrodcaster();
+    getyt();
+    _updateCart();
+    Provider.of<ProductModel>(context).getFlashSale();
   }
+
   @override
   Widget build(BuildContext context) {
     final silder = Provider.of<SliderModel>(context).listSlider;
@@ -531,219 +536,222 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return new WillPopScope(
       onWillPop: _onWillPop,
-      child: Scaffold(
-        backgroundColor: Theme.of(context).primaryColor,
-        body: Stack(children: <Widget>[
-          Scaffold(
-            key: scaffoldKey,
-            backgroundColor: Color(0xffFDF8F0),
-            extendBodyBehindAppBar: true,
-            appBar: PreferredSize(
-              preferredSize: Size.fromHeight(100.0),
-              child: SafeArea(
-                child: Column(
-                  children: [
-                    Container(
-                      width: MediaQuery.of(context).size.width,
-                      padding: EdgeInsets.symmetric(vertical: 5),
-                      color: Color(0xffF48262),
-                      child: Center(
-                        child: Text(
-                          'GRATIS ONGKIR DENGAN PEMBELANJAAN RP 250.000',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontFamily: 'Brandon',
-                          ),
-                          textScaleFactor: .8,
-                        ),
-                      ),
-                    ),
-                    new AppBar(
-                      primary: false,
-                      title: Image.asset('assets/images/PonnyBeaute.png',
-                          fit: BoxFit.contain, height: 46),
-                      centerTitle: true,
-                      backgroundColor: _color,
-                      elevation: _elevation,
-                      leading: IconButton(
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => Browse()));
-                        },
-                        icon: ImageIcon(
-                            AssetImage('assets/images/home/search.png')),
-                      ),
-                      iconTheme: IconThemeData(
+      child: RefreshIndicator(
+        onRefresh: () => _refresh(context),
+        child: Scaffold(
+          backgroundColor: Theme.of(context).primaryColor,
+          body: Stack(children: <Widget>[
+            Scaffold(
+              key: scaffoldKey,
+              backgroundColor: Color(0xffFDF8F0),
+              extendBodyBehindAppBar: true,
+              appBar: PreferredSize(
+                preferredSize: Size.fromHeight(100.0),
+                child: SafeArea(
+                  child: Column(
+                    children: [
+                      Container(
+                        width: MediaQuery.of(context).size.width,
+                        padding: EdgeInsets.symmetric(vertical: 5),
                         color: Color(0xffF48262),
+                        child: Center(
+                          child: Text(
+                            'GRATIS ONGKIR DENGAN PEMBELANJAAN RP 250.000',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontFamily: 'Brandon',
+                            ),
+                            textScaleFactor: .8,
+                          ),
+                        ),
                       ),
-                      actions: <Widget>[
-                        IconButton(
-                          icon: new Stack(children: <Widget>[
-                            Provider.of<AppModel>(context).loggedIn
-                                ? new Container(
-                                    padding: EdgeInsets.all(5),
-                                    child:
-                                        Provider.of<WishModel>(context).loading
-                                            ? LoadingRing(context)
-                                            : ImageIcon(
-                                                AssetImage(
-                                                    'assets/images/home/wishlist.png'),
-                                              ),
-                                  )
-                                : new Container(
-                                    padding: EdgeInsets.all(5),
-                                    child: ImageIcon(
-                                      AssetImage(
-                                          'assets/images/home/wishlist.png'),
+                      new AppBar(
+                        primary: false,
+                        title: Image.asset('assets/images/PonnyBeaute.png',
+                            fit: BoxFit.contain, height: 46),
+                        centerTitle: true,
+                        backgroundColor: _color,
+                        elevation: _elevation,
+                        leading: IconButton(
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Browse()));
+                          },
+                          icon: ImageIcon(
+                              AssetImage('assets/images/home/search.png')),
+                        ),
+                        iconTheme: IconThemeData(
+                          color: Color(0xffF48262),
+                        ),
+                        actions: <Widget>[
+                          IconButton(
+                            icon: new Stack(children: <Widget>[
+                              Provider.of<AppModel>(context).loggedIn
+                                  ? new Container(
+                                      padding: EdgeInsets.all(5),
+                                      child:
+                                          Provider.of<WishModel>(context).loading
+                                              ? LoadingRing(context)
+                                              : ImageIcon(
+                                                  AssetImage(
+                                                      'assets/images/home/wishlist.png'),
+                                                ),
+                                    )
+                                  : new Container(
+                                      padding: EdgeInsets.all(5),
+                                      child: ImageIcon(
+                                        AssetImage(
+                                            'assets/images/home/wishlist.png'),
+                                      ),
                                     ),
-                                  ),
-                            if (Provider.of<WishModel>(context).countwishlist >
-                                    0 &&
-                                Provider.of<AppModel>(context).loggedIn)
-                              new Positioned(
-                                // draw a red marble
-                                top: 0.0,
-                                right: 0.0,
-                                child: Container(
-                                  width: 12,
-                                  height: 12,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(40),
-                                    color: Colors.redAccent,
-                                  ),
-                                  child: Center(
-                                    child: Text(
-                                      Provider.of<WishModel>(context)
-                                          .countwishlist
-                                          .toString(),
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontFamily: 'Brandon',
-                                        fontSize: 8,
+                              if (Provider.of<WishModel>(context).countwishlist >
+                                      0 &&
+                                  Provider.of<AppModel>(context).loggedIn)
+                                new Positioned(
+                                  // draw a red marble
+                                  top: 0.0,
+                                  right: 0.0,
+                                  child: Container(
+                                    width: 12,
+                                    height: 12,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(40),
+                                      color: Colors.redAccent,
+                                    ),
+                                    child: Center(
+                                      child: Text(
+                                        Provider.of<WishModel>(context)
+                                            .countwishlist
+                                            .toString(),
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontFamily: 'Brandon',
+                                          fontSize: 8,
+                                        ),
                                       ),
                                     ),
                                   ),
-                                ),
-                              )
-                          ]),
-                          onPressed: () {
-                            if (Provider.of<AppModel>(context).loggedIn) {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        DaftarKeinginanScreen()),
-                              );
-                            } else {
-                              Navigator.push(
+                                )
+                            ]),
+                            onPressed: () {
+                              if (Provider.of<AppModel>(context).loggedIn) {
+                                Navigator.push(
                                   context,
-                                  new MaterialPageRoute(
-                                    builder: (BuildContext context) =>
-                                        new LoginScreen(),
-                                  ));
-                            }
-                          },
-                        ),
-                        IconButton(
-                          icon: new Stack(children: <Widget>[
-                            Provider.of<AppModel>(context).loggedIn
-                                ? new Container(
-                                    padding: EdgeInsets.all(5),
-                                    child: Provider.of<CartModel>(context)
-                                            .loadingCard
-                                        ? LoadingRing(context)
-                                        : ImageIcon(
-                                            AssetImage(
-                                                'assets/images/home/cart.png'),
-                                          ),
-                                  )
-                                : new Container(
-                                    padding: EdgeInsets.all(5),
-                                    child: ImageIcon(
-                                      AssetImage('assets/images/home/cart.png'),
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          DaftarKeinginanScreen()),
+                                );
+                              } else {
+                                Navigator.push(
+                                    context,
+                                    new MaterialPageRoute(
+                                      builder: (BuildContext context) =>
+                                          new LoginScreen(),
+                                    ));
+                              }
+                            },
+                          ),
+                          IconButton(
+                            icon: new Stack(children: <Widget>[
+                              Provider.of<AppModel>(context).loggedIn
+                                  ? new Container(
+                                      padding: EdgeInsets.all(5),
+                                      child: Provider.of<CartModel>(context)
+                                              .loadingCard
+                                          ? LoadingRing(context)
+                                          : ImageIcon(
+                                              AssetImage(
+                                                  'assets/images/home/cart.png'),
+                                            ),
+                                    )
+                                  : new Container(
+                                      padding: EdgeInsets.all(5),
+                                      child: ImageIcon(
+                                        AssetImage('assets/images/home/cart.png'),
+                                      ),
                                     ),
-                                  ),
-                            if (jmlCard > 0)
-                              new Positioned(
-                                // draw a red marble
-                                top: 0.0,
-                                right: 0.0,
-                                child: Container(
-                                  width: 12,
-                                  height: 12,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(40),
-                                    color: Colors.redAccent,
-                                  ),
-                                  child: Center(
-                                    child: Text(
-                                      jmlCard.toString(),
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontFamily: 'Brandon',
-                                        fontSize: 8,
+                              if (jmlCard > 0)
+                                new Positioned(
+                                  // draw a red marble
+                                  top: 0.0,
+                                  right: 0.0,
+                                  child: Container(
+                                    width: 12,
+                                    height: 12,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(40),
+                                      color: Colors.redAccent,
+                                    ),
+                                    child: Center(
+                                      child: Text(
+                                        jmlCard.toString(),
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontFamily: 'Brandon',
+                                          fontSize: 8,
+                                        ),
                                       ),
                                     ),
                                   ),
-                                ),
-                              )
-                          ]),
-                          onPressed: () {
-                            if (Provider.of<AppModel>(context).loggedIn) {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => CartScreen()),
-                              );
-                            } else {
-                              Navigator.push(
+                                )
+                            ]),
+                            onPressed: () {
+                              if (Provider.of<AppModel>(context).loggedIn) {
+                                Navigator.push(
                                   context,
-                                  new MaterialPageRoute(
-                                    builder: (BuildContext context) =>
-                                        new LoginScreen(),
-                                  ));
-                            }
-                          },
-                        ),
-                      ],
-                    ),
-                  ],
+                                  MaterialPageRoute(
+                                      builder: (context) => CartScreen()),
+                                );
+                              } else {
+                                Navigator.push(
+                                    context,
+                                    new MaterialPageRoute(
+                                      builder: (BuildContext context) =>
+                                          new LoginScreen(),
+                                    ));
+                              }
+                            },
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-            body: new Container(
-                margin:
-                    EdgeInsets.only(top: MediaQuery.of(context).padding.top),
-                child: SingleChildScrollView(
-                    controller: _controller,
-                    child: Column(
-                      children: <Widget>[
-                        Container(
-                          margin: EdgeInsets.only(top: 25),
-                          height: MediaQuery.of(context).size.width * 0.45,
-                          color: Colors.white,
-                          child: Center(
-                            child: new Swiper(
-                              itemBuilder: (BuildContext context, int index) {
-                                return new CachedNetworkImage(
-                                  imageUrl: img_url + silder[index].photo,
-                                  placeholder: (context, url) =>
-                                      LoadingWidgetPulse(context),
-                                  errorWidget: (context, url, error) =>
-                                      Image.asset('assets/images/basic.jpg'),
-                                  fit: BoxFit.fill,
-                                );
-                              },
-                              itemCount: silder.length,
-                              pagination: new SwiperPagination(
-                                  margin: new EdgeInsets.all(5.0),
-                                  builder: new DotSwiperPaginationBuilder(
-                                      color: Color(0xffE6E7E9),
-                                      activeColor: Color(0xffF48262))),
-                              control: null,
-                              autoplay: true,
+              body: new Container(
+                  margin:
+                      EdgeInsets.only(top: MediaQuery.of(context).padding.top),
+                  child: SingleChildScrollView(
+                      controller: _controller,
+                      child: Column(
+                        children: <Widget>[
+                          Container(
+                            margin: EdgeInsets.only(top: 25),
+                            height: MediaQuery.of(context).size.width * 0.45,
+                            color: Colors.white,
+                            child: Center(
+                              child: new Swiper(
+                                itemBuilder: (BuildContext context, int index) {
+                                  return new CachedNetworkImage(
+                                    imageUrl: img_url + silder[index].photo,
+                                    placeholder: (context, url) =>
+                                        LoadingWidgetPulse(context),
+                                    errorWidget: (context, url, error) =>
+                                        Image.asset('assets/images/basic.jpg'),
+                                    fit: BoxFit.fill,
+                                  );
+                                },
+                                itemCount: silder.length,
+                                pagination: new SwiperPagination(
+                                    margin: new EdgeInsets.all(5.0),
+                                    builder: new DotSwiperPaginationBuilder(
+                                        color: Color(0xffE6E7E9),
+                                        activeColor: Color(0xffF48262))),
+                                control: null,
+                                autoplay: true,
+                              ),
                             ),
                           ),
                         ),
@@ -1024,466 +1032,1984 @@ class _HomeScreenState extends State<HomeScreen> {
                                                         color:
                                                             Color(0xffF48262),
                                                       ),
+                                                      child: Image.asset(
+                                                          'assets/images/home/skincare.png'),
                                                     ),
-                                                    child: Image.asset(
-                                                        'assets/images/home/skincare.png'),
                                                   ),
-                                                ),
-                                                Text(
-                                                  'Skincare',
-                                                  style: TextStyle(
-                                                    fontFamily: 'Brandon',
-                                                    fontSize: 12,
+                                                  Text(
+                                                    'Skincare',
+                                                    style: TextStyle(
+                                                      fontFamily: 'Brandon',
+                                                      fontSize: 12,
+                                                    ),
+                                                    textAlign: TextAlign.center,
                                                   ),
-                                                  textAlign: TextAlign.center,
-                                                ),
-                                              ],
+                                                ],
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                        Expanded(
-                                          flex: 1,
-                                          child: InkWell(
-                                            onTap: () {
-                                              final skincare = value.categoris
-                                                  .firstWhere((element) =>
-                                                      element.id == 10);
-                                              Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          Skincare(
-                                                            category: skincare,
-                                                          )));
-                                            },
-                                            child: Column(
-                                              children: [
-                                                AspectRatio(
-                                                  aspectRatio: 1,
-                                                  child: Container(
-                                                    margin: EdgeInsets.all(7),
-                                                    padding: EdgeInsets.all(5),
-                                                    decoration: BoxDecoration(
-                                                      color: Colors.white,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              10),
-                                                      border: Border.all(
-                                                        width: 1,
-                                                        color:
-                                                            Color(0xffF48262),
+                                          Expanded(
+                                            flex: 1,
+                                            child: InkWell(
+                                              onTap: () {
+                                                final skincare = value.categoris
+                                                    .firstWhere((element) =>
+                                                        element.id == 10);
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            Skincare(
+                                                              category: skincare,
+                                                            )));
+                                              },
+                                              child: Column(
+                                                children: [
+                                                  AspectRatio(
+                                                    aspectRatio: 1,
+                                                    child: Container(
+                                                      margin: EdgeInsets.all(7),
+                                                      padding: EdgeInsets.all(5),
+                                                      decoration: BoxDecoration(
+                                                        color: Colors.white,
+                                                        borderRadius:
+                                                            BorderRadius.circular(
+                                                                10),
+                                                        border: Border.all(
+                                                          width: 1,
+                                                          color:
+                                                              Color(0xffF48262),
+                                                        ),
                                                       ),
+                                                      child: Image.asset(
+                                                          'assets/images/home/hair.png'),
                                                     ),
-                                                    child: Image.asset(
-                                                        'assets/images/home/hair.png'),
                                                   ),
-                                                ),
-                                                Text(
-                                                  'Hair & Makeup',
-                                                  style: TextStyle(
-                                                    fontFamily: 'Brandon',
-                                                    fontSize: 12,
+                                                  Text(
+                                                    'Hair & Makeup',
+                                                    style: TextStyle(
+                                                      fontFamily: 'Brandon',
+                                                      fontSize: 12,
+                                                    ),
+                                                    textAlign: TextAlign.center,
                                                   ),
-                                                  textAlign: TextAlign.center,
-                                                ),
-                                              ],
+                                                ],
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                        Expanded(
-                                          flex: 1,
-                                          child: InkWell(
-                                            onTap: () {
-                                              final skincare = value.categoris
-                                                  .firstWhere((element) =>
-                                                      element.id == 11);
-                                              Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          Skincare(
-                                                            category: skincare,
-                                                          )));
-                                            },
-                                            child: Column(
-                                              children: [
-                                                AspectRatio(
-                                                  aspectRatio: 1,
-                                                  child: Container(
-                                                    margin: EdgeInsets.all(7),
-                                                    padding: EdgeInsets.all(5),
-                                                    decoration: BoxDecoration(
-                                                      color: Colors.white,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              10),
-                                                      border: Border.all(
-                                                        width: 1,
-                                                        color:
-                                                            Color(0xffF48262),
+                                          Expanded(
+                                            flex: 1,
+                                            child: InkWell(
+                                              onTap: () {
+                                                final skincare = value.categoris
+                                                    .firstWhere((element) =>
+                                                        element.id == 11);
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            Skincare(
+                                                              category: skincare,
+                                                            )));
+                                              },
+                                              child: Column(
+                                                children: [
+                                                  AspectRatio(
+                                                    aspectRatio: 1,
+                                                    child: Container(
+                                                      margin: EdgeInsets.all(7),
+                                                      padding: EdgeInsets.all(5),
+                                                      decoration: BoxDecoration(
+                                                        color: Colors.white,
+                                                        borderRadius:
+                                                            BorderRadius.circular(
+                                                                10),
+                                                        border: Border.all(
+                                                          width: 1,
+                                                          color:
+                                                              Color(0xffF48262),
+                                                        ),
                                                       ),
+                                                      child: Image.asset(
+                                                          'assets/images/home/peralatan.png'),
                                                     ),
-                                                    child: Image.asset(
-                                                        'assets/images/home/peralatan.png'),
                                                   ),
-                                                ),
-                                                Text(
-                                                  'Peralatan Kecantikan',
-                                                  style: TextStyle(
-                                                    fontFamily: 'Brandon',
-                                                    fontSize: 12,
+                                                  Text(
+                                                    'Peralatan Kecantikan',
+                                                    style: TextStyle(
+                                                      fontFamily: 'Brandon',
+                                                      fontSize: 12,
+                                                    ),
+                                                    textAlign: TextAlign.center,
                                                   ),
-                                                  textAlign: TextAlign.center,
-                                                ),
-                                              ],
+                                                ],
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                        Expanded(
-                                          flex: 1,
-                                          child: InkWell(
-                                            onTap: () {
-                                              Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          LocalPride()));
-                                            },
-                                            child: Column(
-                                              children: [
-                                                AspectRatio(
-                                                  aspectRatio: 1,
-                                                  child: Container(
-                                                    margin: EdgeInsets.all(7),
-                                                    padding: EdgeInsets.all(7),
-                                                    decoration: BoxDecoration(
-                                                      color: Colors.white,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              10),
-                                                      border: Border.all(
-                                                        width: 1,
-                                                        color:
-                                                            Color(0xffF48262),
+                                          Expanded(
+                                            flex: 1,
+                                            child: InkWell(
+                                              onTap: () {
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            LocalPride()));
+                                              },
+                                              child: Column(
+                                                children: [
+                                                  AspectRatio(
+                                                    aspectRatio: 1,
+                                                    child: Container(
+                                                      margin: EdgeInsets.all(7),
+                                                      padding: EdgeInsets.all(7),
+                                                      decoration: BoxDecoration(
+                                                        color: Colors.white,
+                                                        borderRadius:
+                                                            BorderRadius.circular(
+                                                                10),
+                                                        border: Border.all(
+                                                          width: 1,
+                                                          color:
+                                                              Color(0xffF48262),
+                                                        ),
                                                       ),
+                                                      child: Image.asset(
+                                                          'assets/images/home/bangga.png'),
                                                     ),
-                                                    child: Image.asset(
-                                                        'assets/images/home/bangga.png'),
                                                   ),
-                                                ),
-                                                Text(
-                                                  'Bangga Produk Indonesia',
-                                                  style: TextStyle(
-                                                    fontFamily: 'Brandon',
-                                                    fontSize: 12,
+                                                  Text(
+                                                    'Bangga Produk Indonesia',
+                                                    style: TextStyle(
+                                                      fontFamily: 'Brandon',
+                                                      fontSize: 12,
+                                                    ),
+                                                    textAlign: TextAlign.center,
                                                   ),
-                                                  textAlign: TextAlign.center,
-                                                ),
-                                              ],
+                                                ],
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                        Expanded(
-                                          flex: 1,
-                                          child: InkWell(
-                                            onTap: () {
-                                              final skincare = value.categoris
-                                                  .firstWhere((element) =>
-                                                      element.id == 15 ||
-                                                      element.name ==
-                                                          "SKIN CONCERN");
-                                              Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          Skincare(
-                                                            category: skincare,
-                                                          )));
-                                            },
-                                            child: Column(
-                                              children: [
-                                                AspectRatio(
-                                                  aspectRatio: 1,
-                                                  child: Container(
-                                                    margin: EdgeInsets.all(7),
-                                                    padding: EdgeInsets.all(5),
-                                                    decoration: BoxDecoration(
-                                                      color: Colors.white,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              10),
-                                                      border: Border.all(
-                                                        width: 1,
-                                                        color:
-                                                            Color(0xffF48262),
+                                          Expanded(
+                                            flex: 1,
+                                            child: InkWell(
+                                              onTap: () {
+                                                final skincare = value.categoris
+                                                    .firstWhere((element) =>
+                                                        element.id == 15 ||
+                                                        element.name ==
+                                                            "SKIN CONCERN");
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            Skincare(
+                                                              category: skincare,
+                                                            )));
+                                              },
+                                              child: Column(
+                                                children: [
+                                                  AspectRatio(
+                                                    aspectRatio: 1,
+                                                    child: Container(
+                                                      margin: EdgeInsets.all(7),
+                                                      padding: EdgeInsets.all(5),
+                                                      decoration: BoxDecoration(
+                                                        color: Colors.white,
+                                                        borderRadius:
+                                                            BorderRadius.circular(
+                                                                10),
+                                                        border: Border.all(
+                                                          width: 1,
+                                                          color:
+                                                              Color(0xffF48262),
+                                                        ),
                                                       ),
+                                                      child: Image.asset(
+                                                          'assets/images/home/masalah.png'),
                                                     ),
-                                                    child: Image.asset(
-                                                        'assets/images/home/masalah.png'),
                                                   ),
-                                                ),
-                                                Text(
-                                                  'Masalah\nKulit',
-                                                  style: TextStyle(
-                                                    fontFamily: 'Brandon',
-                                                    fontSize: 12,
+                                                  Text(
+                                                    'Masalah\nKulit',
+                                                    style: TextStyle(
+                                                      fontFamily: 'Brandon',
+                                                      fontSize: 12,
+                                                    ),
+                                                    textAlign: TextAlign.center,
                                                   ),
-                                                  textAlign: TextAlign.center,
-                                                ),
-                                              ],
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    IntrinsicHeight(
+                                      child: Row(
+                                        children: [
+                                          Expanded(
+                                            flex: 1,
+                                            child: InkWell(
+                                              onTap: () {
+                                                if (Provider.of<AppModel>(context)
+                                                    .loggedIn) {
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            PromotionScreen()),
+                                                  );
+                                                } else {
+                                                  Navigator.push(
+                                                      context,
+                                                      new MaterialPageRoute(
+                                                        builder: (BuildContext
+                                                                context) =>
+                                                            new LoginScreen(),
+                                                      ));
+                                                }
+                                              },
+                                              child: Column(
+                                                children: [
+                                                  AspectRatio(
+                                                    aspectRatio: 1,
+                                                    child: Container(
+                                                      margin: EdgeInsets.all(7),
+                                                      padding: EdgeInsets.all(5),
+                                                      decoration: BoxDecoration(
+                                                        color: Colors.white,
+                                                        borderRadius:
+                                                            BorderRadius.circular(
+                                                                10),
+                                                        border: Border.all(
+                                                          width: 1,
+                                                          color:
+                                                              Color(0xffF48262),
+                                                        ),
+                                                      ),
+                                                      child: Image.asset(
+                                                          'assets/images/home/promosi.png'),
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    'Promosi',
+                                                    style: TextStyle(
+                                                      fontFamily: 'Brandon',
+                                                      fontSize: 12,
+                                                    ),
+                                                    textAlign: TextAlign.center,
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                          Expanded(
+                                            flex: 1,
+                                            child: InkWell(
+                                              onTap: () {
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            Skinklopedia()));
+                                              },
+                                              child: Column(
+                                                children: [
+                                                  AspectRatio(
+                                                    aspectRatio: 1,
+                                                    child: Container(
+                                                      margin: EdgeInsets.all(7),
+                                                      padding: EdgeInsets.all(5),
+                                                      decoration: BoxDecoration(
+                                                        color: Colors.white,
+                                                        borderRadius:
+                                                            BorderRadius.circular(
+                                                                10),
+                                                        border: Border.all(
+                                                          width: 1,
+                                                          color:
+                                                              Color(0xffF48262),
+                                                        ),
+                                                      ),
+                                                      child: Image.asset(
+                                                          'assets/images/home/skinklopedia.png'),
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    'Skinklopedia',
+                                                    style: TextStyle(
+                                                      fontFamily: 'Brandon',
+                                                      fontSize: 12,
+                                                    ),
+                                                    textAlign: TextAlign.center,
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                          Expanded(
+                                            flex: 1,
+                                            child: InkWell(
+                                              onTap: () {
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            SkinTypeScreen()));
+                                              },
+                                              child: Column(
+                                                children: [
+                                                  AspectRatio(
+                                                    aspectRatio: 1,
+                                                    child: Container(
+                                                      margin: EdgeInsets.all(7),
+                                                      padding: EdgeInsets.all(5),
+                                                      decoration: BoxDecoration(
+                                                        color: Colors.white,
+                                                        borderRadius:
+                                                            BorderRadius.circular(
+                                                                10),
+                                                        border: Border.all(
+                                                          width: 1,
+                                                          color:
+                                                              Color(0xffF48262),
+                                                        ),
+                                                      ),
+                                                      child: Image.asset(
+                                                          'assets/images/home/jenis.png'),
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    'Jenis Kulit',
+                                                    style: TextStyle(
+                                                      fontFamily: 'Brandon',
+                                                      fontSize: 12,
+                                                    ),
+                                                    textAlign: TextAlign.center,
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                          Expanded(
+                                            flex: 1,
+                                            child: InkWell(
+                                              onTap: () {
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            Blog(
+                                                              category: 0,
+                                                              tag: "ALL",
+                                                            )));
+                                              },
+                                              child: Column(
+                                                children: [
+                                                  AspectRatio(
+                                                    aspectRatio: 1,
+                                                    child: Container(
+                                                      margin: EdgeInsets.all(7),
+                                                      padding: EdgeInsets.all(5),
+                                                      decoration: BoxDecoration(
+                                                        color: Colors.white,
+                                                        borderRadius:
+                                                            BorderRadius.circular(
+                                                                10),
+                                                        border: Border.all(
+                                                          width: 1,
+                                                          color:
+                                                              Color(0xffF48262),
+                                                        ),
+                                                      ),
+                                                      child: Image.asset(
+                                                          'assets/images/home/blog.png'),
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    'Blog',
+                                                    style: TextStyle(
+                                                      fontFamily: 'Brandon',
+                                                      fontSize: 12,
+                                                    ),
+                                                    textAlign: TextAlign.center,
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                          Expanded(
+                                            flex: 1,
+                                            child: InkWell(
+                                              onTap: () {
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            BantuanScreen()));
+                                              },
+                                              child: Column(
+                                                children: [
+                                                  AspectRatio(
+                                                    aspectRatio: 1,
+                                                    child: Container(
+                                                      margin: EdgeInsets.all(7),
+                                                      padding: EdgeInsets.all(5),
+                                                      decoration: BoxDecoration(
+                                                        color: Colors.white,
+                                                        borderRadius:
+                                                            BorderRadius.circular(
+                                                                10),
+                                                        border: Border.all(
+                                                          width: 1,
+                                                          color:
+                                                              Color(0xffF48262),
+                                                        ),
+                                                      ),
+                                                      child: Image.asset(
+                                                          'assets/images/home/bantuan.png'),
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    'Butuh Bantuan?',
+                                                    style: TextStyle(
+                                                      fontFamily: 'Brandon',
+                                                      fontSize: 12,
+                                                    ),
+                                                    textAlign: TextAlign.center,
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              }
+                            }),
+                          ),
+                          if (_remoteUid != null)
+                            Container(
+                              width: MediaQuery.of(context).size.width,
+                              child: Stack(
+                                children: [
+                                  Column(
+                                    children: [
+                                      Container(
+                                        height: 20,
+                                        width: double.infinity,
+                                      ),
+                                      Container(
+                                        color: Color(0xffFBDFD2),
+                                        height: 20,
+                                        width: double.infinity,
+                                      ),
+                                    ],
+                                  ),
+                                  Positioned.fill(
+                                    child: Center(
+                                      child: Text(
+                                        'LIVE NOW',
+                                        style: TextStyle(
+                                          fontSize: 24,
+                                          fontFamily: 'Brandon',
+                                          color: Color(0xffF48262),
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          if (_remoteUid != null)
+                            Container(
+                              color: Color(0xffFBDFD2),
+                              padding: EdgeInsets.symmetric(horizontal: 30),
+                              child: Stack(children: [
+                                Container(
+                                  width: double.infinity,
+                                  height: 250,
+                                  color: Colors.grey,
+                                  child: _renderRemoteVideo(),
+                                ),
+                                Positioned(
+                                  top: 10,
+                                  right: 10,
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: 3, horizontal: 5),
+                                    color: Color(0xff000000).withOpacity(0.1),
+                                    child: Row(
+                                      children: [
+                                        Icon(
+                                          Icons.remove_red_eye,
+                                          color: Colors.white,
+                                          size: 12,
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.only(left: 5),
+                                          child: Text(
+                                            viewer.toString(),
+                                            style: TextStyle(
+                                              fontFamily: 'Brandon',
+                                              fontSize: 12,
+                                              color: Colors.white,
                                             ),
                                           ),
                                         ),
                                       ],
                                     ),
                                   ),
-                                  IntrinsicHeight(
+                                ),
+                                Positioned(
+                                  bottom: 10,
+                                  right: 10,
+                                  child: InkWell(
+                                    onTap: () {
+                                      Navigator.push(
+                                          context,
+                                          new MaterialPageRoute(
+                                            builder: (BuildContext context) =>
+                                                new FullSiaran(
+                                              remoteUid: _remoteUid,
+                                            ),
+                                          ));
+                                    },
+                                    child: Icon(
+                                      Icons.fullscreen,
+                                      size: 22,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              ]),
+                            ),
+                          if (_remoteUid != null)
+                            Container(
+                              color: Color(0xffFBDFD2),
+                              width: double.infinity,
+                              padding: EdgeInsets.fromLTRB(30, 10, 30, 30),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    'Menuju Glowing Bersama Phoebe',
+                                    style: TextStyle(
+                                      fontFamily: 'Brandon',
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                  Text(
+                                    'Halo teman Phoebe, kita lagi ada diskon gede-gedean.',
+                                    style: TextStyle(
+                                      fontFamily: 'Brandon',
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          if (flashdeal != null &&
+                              DateTime.now().millisecondsSinceEpoch <
+                                  flashdeal.detail.endDate * 1000 &&
+                              !loading_flashdeal)
+                            Container(
+                              color: Color(0xffFACAC1),
+                              width: MediaQuery.of(context).size.width,
+                              padding: EdgeInsets.only(top: 8, bottom: 3),
+                              child: Image.asset('assets/images/flash-sale.png',
+                                  height: 40),
+                            ),
+                          if (flashdeal != null &&
+                              DateTime.now().millisecondsSinceEpoch <
+                                  flashdeal.detail.endDate * 1000 &&
+                              !loading_flashdeal)
+                            Container(
+                              color: Color(0xffFBDFD2),
+                              child: Column(
+                                children: [
+                                  Container(
+                                    width: double.infinity,
+                                    padding: EdgeInsets.only(top: 10),
+                                    child: Text(
+                                      flashdeal.detail.title,
+                                      style: TextStyle(
+                                        fontFamily: 'Yeseva',
+                                        fontSize: 26,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.symmetric(vertical: 10),
                                     child: Row(
                                       children: [
                                         Expanded(
                                           flex: 1,
-                                          child: InkWell(
-                                            onTap: () {
-                                              if (Provider.of<AppModel>(context)
-                                                  .loggedIn) {
-                                                Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          PromotionScreen()),
-                                                );
-                                              } else {
-                                                Navigator.push(
-                                                    context,
-                                                    new MaterialPageRoute(
-                                                      builder: (BuildContext
-                                                              context) =>
-                                                          new LoginScreen(),
-                                                    ));
-                                              }
-                                            },
-                                            child: Column(
-                                              children: [
-                                                AspectRatio(
-                                                  aspectRatio: 1,
-                                                  child: Container(
-                                                    margin: EdgeInsets.all(7),
-                                                    padding: EdgeInsets.all(5),
-                                                    decoration: BoxDecoration(
-                                                      color: Colors.white,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              10),
-                                                      border: Border.all(
-                                                        width: 1,
-                                                        color:
-                                                            Color(0xffF48262),
-                                                      ),
-                                                    ),
-                                                    child: Image.asset(
-                                                        'assets/images/home/promosi.png'),
-                                                  ),
-                                                ),
-                                                Text(
-                                                  'Promosi',
-                                                  style: TextStyle(
-                                                    fontFamily: 'Brandon',
-                                                    fontSize: 12,
-                                                  ),
-                                                  textAlign: TextAlign.center,
-                                                ),
-                                              ],
+                                          child: Padding(
+                                            padding: EdgeInsets.only(right: 10),
+                                            child: Text(
+                                              DateTime.now().isBefore(DateTime
+                                                      .fromMillisecondsSinceEpoch(
+                                                          flashdeal.detail
+                                                                  .startDate *
+                                                              1000))
+                                                  ? 'DIMULAI DALAM'
+                                                  : 'BERAKHIR DALAM',
+                                              style: TextStyle(
+                                                fontFamily: 'Brandon',
+                                              ),
+                                              textAlign: TextAlign.right,
                                             ),
                                           ),
                                         ),
                                         Expanded(
                                           flex: 1,
-                                          child: InkWell(
-                                            onTap: () {
-                                              Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          Skinklopedia()));
-                                            },
-                                            child: Column(
-                                              children: [
-                                                AspectRatio(
-                                                  aspectRatio: 1,
-                                                  child: Container(
-                                                    margin: EdgeInsets.all(7),
-                                                    padding: EdgeInsets.all(5),
-                                                    decoration: BoxDecoration(
-                                                      color: Colors.white,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              10),
-                                                      border: Border.all(
-                                                        width: 1,
-                                                        color:
-                                                            Color(0xffF48262),
-                                                      ),
-                                                    ),
-                                                    child: Image.asset(
-                                                        'assets/images/home/skinklopedia.png'),
-                                                  ),
-                                                ),
-                                                Text(
-                                                  'Skinklopedia',
-                                                  style: TextStyle(
-                                                    fontFamily: 'Brandon',
-                                                    fontSize: 12,
-                                                  ),
-                                                  textAlign: TextAlign.center,
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                        Expanded(
-                                          flex: 1,
-                                          child: InkWell(
-                                            onTap: () {
-                                              Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          SkinTypeScreen()));
-                                            },
-                                            child: Column(
-                                              children: [
-                                                AspectRatio(
-                                                  aspectRatio: 1,
-                                                  child: Container(
-                                                    margin: EdgeInsets.all(7),
-                                                    padding: EdgeInsets.all(5),
-                                                    decoration: BoxDecoration(
-                                                      color: Colors.white,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              10),
-                                                      border: Border.all(
-                                                        width: 1,
-                                                        color:
-                                                            Color(0xffF48262),
-                                                      ),
-                                                    ),
-                                                    child: Image.asset(
-                                                        'assets/images/home/jenis.png'),
-                                                  ),
-                                                ),
-                                                Text(
-                                                  'Jenis Kulit',
-                                                  style: TextStyle(
-                                                    fontFamily: 'Brandon',
-                                                    fontSize: 12,
-                                                  ),
-                                                  textAlign: TextAlign.center,
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                        Expanded(
-                                          flex: 1,
-                                          child: InkWell(
-                                            onTap: () {
-                                              Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          Blog(
-                                                            category: 0,
-                                                            tag: "ALL",
-                                                          )));
-                                            },
-                                            child: Column(
-                                              children: [
-                                                AspectRatio(
-                                                  aspectRatio: 1,
-                                                  child: Container(
-                                                    margin: EdgeInsets.all(7),
-                                                    padding: EdgeInsets.all(5),
-                                                    decoration: BoxDecoration(
-                                                      color: Colors.white,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              10),
-                                                      border: Border.all(
-                                                        width: 1,
-                                                        color:
-                                                            Color(0xffF48262),
-                                                      ),
-                                                    ),
-                                                    child: Image.asset(
-                                                        'assets/images/home/blog.png'),
-                                                  ),
-                                                ),
-                                                Text(
-                                                  'Blog',
-                                                  style: TextStyle(
-                                                    fontFamily: 'Brandon',
-                                                    fontSize: 12,
-                                                  ),
-                                                  textAlign: TextAlign.center,
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                        Expanded(
-                                          flex: 1,
-                                          child: InkWell(
-                                            onTap: () {
-                                              Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          BantuanScreen()));
-                                            },
-                                            child: Column(
-                                              children: [
-                                                AspectRatio(
-                                                  aspectRatio: 1,
-                                                  child: Container(
-                                                    margin: EdgeInsets.all(7),
-                                                    padding: EdgeInsets.all(5),
-                                                    decoration: BoxDecoration(
-                                                      color: Colors.white,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              10),
-                                                      border: Border.all(
-                                                        width: 1,
-                                                        color:
-                                                            Color(0xffF48262),
-                                                      ),
-                                                    ),
-                                                    child: Image.asset(
-                                                        'assets/images/home/bantuan.png'),
-                                                  ),
-                                                ),
-                                                Text(
-                                                  'Butuh Bantuan?',
-                                                  style: TextStyle(
-                                                    fontFamily: 'Brandon',
-                                                    fontSize: 12,
-                                                  ),
-                                                  textAlign: TextAlign.center,
-                                                ),
-                                              ],
-                                            ),
-                                          ),
+                                          child: Padding(
+                                              padding: EdgeInsets.only(left: 10),
+                                              child: CountdownTimer(
+                                                  onEnd: () {
+                                                    setState(() {
+                                                      loading_flashdeal = true;
+                                                    });
+                                                    UIBlock.block(context,
+                                                        customLoaderChild:
+                                                            LoadingWidget(
+                                                                context));
+                                                    Provider.of<ProductModel>(
+                                                            context)
+                                                        .getFlashSale()
+                                                        .then((value) {
+                                                      UIBlock.unblock(context);
+                                                      setState(() {
+                                                        loading_flashdeal = false;
+                                                      });
+                                                    }).catchError((onError) {
+                                                      UIBlock.unblock(context);
+                                                      setState(() {
+                                                        loading_flashdeal = false;
+                                                      });
+                                                    });
+                                                  },
+                                                  endTime: DateTime.now()
+                                                          .isBefore(DateTime
+                                                              .fromMillisecondsSinceEpoch(
+                                                                  flashdeal.detail
+                                                                          .startDate *
+                                                                      1000))
+                                                      ? flashdeal
+                                                              .detail.startDate *
+                                                          1000
+                                                      : flashdeal.detail.endDate *
+                                                          1000,
+                                                  widgetBuilder: (BuildContext
+                                                          context,
+                                                      CurrentRemainingTime time) {
+                                                    return Row(
+                                                      children: [
+                                                        Container(
+                                                          width: 24,
+                                                          height: 24,
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            color:
+                                                                Color(0xffF48262),
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(3),
+                                                          ),
+                                                          child: Center(
+                                                            child: Text(
+                                                              time.days != null
+                                                                  ? time.days
+                                                                      .toString()
+                                                                  : "00",
+                                                              style: TextStyle(
+                                                                fontFamily:
+                                                                    'Brandon',
+                                                                color:
+                                                                    Colors.white,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        Padding(
+                                                          padding: EdgeInsets
+                                                              .symmetric(
+                                                                  horizontal: 5),
+                                                          child: Text(
+                                                            ':',
+                                                            style: TextStyle(
+                                                              fontFamily:
+                                                                  'Brandon',
+                                                              color: Color(
+                                                                  0xffF48262),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        Container(
+                                                          width: 24,
+                                                          height: 24,
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            color:
+                                                                Color(0xffF48262),
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(3),
+                                                          ),
+                                                          child: Center(
+                                                            child: Text(
+                                                              time.hours != null
+                                                                  ? time.hours
+                                                                      .toString()
+                                                                  : "00",
+                                                              style: TextStyle(
+                                                                fontFamily:
+                                                                    'Brandon',
+                                                                color:
+                                                                    Colors.white,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        Padding(
+                                                          padding: EdgeInsets
+                                                              .symmetric(
+                                                                  horizontal: 5),
+                                                          child: Text(
+                                                            ':',
+                                                            style: TextStyle(
+                                                              fontFamily:
+                                                                  'Brandon',
+                                                              color: Color(
+                                                                  0xffF48262),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        Container(
+                                                          width: 24,
+                                                          height: 24,
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            color:
+                                                                Color(0xffF48262),
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(3),
+                                                          ),
+                                                          child: Center(
+                                                            child: Text(
+                                                              time.min != null
+                                                                  ? time.min
+                                                                      .toString()
+                                                                  : "00",
+                                                              style: TextStyle(
+                                                                fontFamily:
+                                                                    'Brandon',
+                                                                color:
+                                                                    Colors.white,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        Padding(
+                                                          padding: EdgeInsets
+                                                              .symmetric(
+                                                                  horizontal: 5),
+                                                          child: Text(
+                                                            ':',
+                                                            style: TextStyle(
+                                                              fontFamily:
+                                                                  'Brandon',
+                                                              color: Color(
+                                                                  0xffF48262),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        Container(
+                                                          width: 24,
+                                                          height: 24,
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            color:
+                                                                Color(0xffF48262),
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(3),
+                                                          ),
+                                                          child: Center(
+                                                            child: Text(
+                                                              time.sec != null
+                                                                  ? time.sec
+                                                                      .toString()
+                                                                  : "00",
+                                                              style: TextStyle(
+                                                                fontFamily:
+                                                                    'Brandon',
+                                                                color:
+                                                                    Colors.white,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    );
+                                                  })),
                                         ),
                                       ],
                                     ),
                                   ),
+                                  Container(
+                                    height:
+                                        MediaQuery.of(context).size.width * .9,
+                                    padding: EdgeInsets.only(top: 10),
+                                    child: Consumer<ProductModel>(
+                                      builder: (context, value, child) {
+                                        if (value.loadingBestSale) {
+                                          return LoadingWidgetFadingCircle(
+                                              context);
+                                        } else {
+                                          var data = Lodash().chunk(
+                                              array: flashdeal.flash_products,
+                                              size: 3);
+                                          return new Swiper(
+                                            itemBuilder: (BuildContext context,
+                                                int index) {
+                                              if (data[index].length == 3) {
+                                                return Container(
+                                                    child: Row(children: [
+                                                  for (FlashSaleProduct e
+                                                      in data[index])
+                                                    Expanded(
+                                                      flex: 1,
+                                                      child: Container(
+                                                        padding:
+                                                            EdgeInsets.symmetric(
+                                                                horizontal: 7),
+                                                        child: MyProductFlash(
+                                                          productFlash: e,
+                                                          IsLiked: Provider.of<WishModel>(context).rawlist.firstWhere((element) => element.productId == e.product.id, orElse: () => null) != null ? true : false,
+                                                          onFavorit: () {
+                                                            if (Provider.of<
+                                                                        AppModel>(
+                                                                    context)
+                                                                .loggedIn) {
+                                                              Provider.of<WishModel>(
+                                                                      context)
+                                                                  .addProductToWish(
+                                                                      e.product,
+                                                                      Provider.of<AppModel>(
+                                                                              context)
+                                                                          .auth
+                                                                          .access_token);
+                                                            } else {
+                                                              Navigator.push(
+                                                                  context,
+                                                                  new MaterialPageRoute(
+                                                                    builder: (BuildContext
+                                                                            context) =>
+                                                                        new LoginScreen(),
+                                                                  ));
+                                                            }
+                                                          },
+                                                          onUnFavorit: () {
+                                                            if (Provider.of<
+                                                                        AppModel>(
+                                                                    context)
+                                                                .loggedIn) {
+                                                              Provider.of<WishModel>(
+                                                                      context)
+                                                                  .removeProductFromWish(
+                                                                      e.product,
+                                                                      Provider.of<AppModel>(
+                                                                              context)
+                                                                          .auth
+                                                                          .access_token);
+                                                            } else {
+                                                              Navigator.push(
+                                                                  context,
+                                                                  new MaterialPageRoute(
+                                                                    builder: (BuildContext
+                                                                            context) =>
+                                                                        new LoginScreen(),
+                                                                  ));
+                                                            }
+                                                          },
+                                                          onTobag: () {
+                                                            if (Provider.of<
+                                                                        AppModel>(
+                                                                    context)
+                                                                .loggedIn) {
+                                                              UIBlock.block(
+                                                                  context,
+                                                                  customLoaderChild:
+                                                                      LoadingWidget(
+                                                                          context));
+                                                              Provider.of<CartModel>(
+                                                                      context)
+                                                                  .addProductToCart(
+                                                                      e.product,
+                                                                      Provider.of<AppModel>(
+                                                                              context)
+                                                                          .auth
+                                                                          .access_token,
+                                                                      null)
+                                                                  .then((value) {
+                                                                UIBlock.unblock(
+                                                                    context);
+                                                                showAlertDialog(
+                                                                    context,
+                                                                    e.product);
+                                                              });
+                                                            } else {
+                                                              Navigator.push(
+                                                                  context,
+                                                                  new MaterialPageRoute(
+                                                                    builder: (BuildContext
+                                                                            context) =>
+                                                                        new LoginScreen(),
+                                                                  ));
+                                                            }
+                                                          },
+                                                        ),
+                                                      ),
+                                                    ),
+                                                ]));
+                                              } else if (data[index].length ==
+                                                  2) {
+                                                return Container(
+                                                    child: Row(
+                                                  children: [
+                                                    for (FlashSaleProduct e
+                                                        in data[index])
+                                                      Expanded(
+                                                        flex: 1,
+                                                        child: Container(
+                                                          padding: EdgeInsets
+                                                              .symmetric(
+                                                                  horizontal: 7),
+                                                          child: MyProductFlash(
+                                                            productFlash: e,
+                                                            IsLiked: Provider.of<WishModel>(context).rawlist.firstWhere(
+                                                                        (element) =>
+                                                                            element
+                                                                                .productId ==
+                                                                            e.product
+                                                                                .id,
+                                                                        orElse: () =>
+                                                                            null) !=
+                                                                    null
+                                                                ? true
+                                                                : false,
+                                                            onFavorit: () {
+                                                              if (Provider.of<
+                                                                          AppModel>(
+                                                                      context)
+                                                                  .loggedIn) {
+                                                                Provider.of<WishModel>(
+                                                                        context)
+                                                                    .addProductToWish(
+                                                                        e.product,
+                                                                        Provider.of<AppModel>(
+                                                                                context)
+                                                                            .auth
+                                                                            .access_token);
+                                                              } else {
+                                                                Navigator.push(
+                                                                    context,
+                                                                    new MaterialPageRoute(
+                                                                      builder: (BuildContext
+                                                                              context) =>
+                                                                          new LoginScreen(),
+                                                                    ));
+                                                              }
+                                                            },
+                                                            onUnFavorit: () {
+                                                              if (Provider.of<
+                                                                          AppModel>(
+                                                                      context)
+                                                                  .loggedIn) {
+                                                                Provider.of<WishModel>(
+                                                                        context)
+                                                                    .removeProductFromWish(
+                                                                        e.product,
+                                                                        Provider.of<AppModel>(
+                                                                                context)
+                                                                            .auth
+                                                                            .access_token);
+                                                              } else {
+                                                                Navigator.push(
+                                                                    context,
+                                                                    new MaterialPageRoute(
+                                                                      builder: (BuildContext
+                                                                              context) =>
+                                                                          new LoginScreen(),
+                                                                    ));
+                                                              }
+                                                            },
+                                                            onTobag: () {
+                                                              if (Provider.of<
+                                                                          AppModel>(
+                                                                      context)
+                                                                  .loggedIn) {
+                                                                UIBlock.block(
+                                                                    context,
+                                                                    customLoaderChild:
+                                                                        LoadingWidget(
+                                                                            context));
+                                                                Provider.of<CartModel>(
+                                                                        context)
+                                                                    .addProductToCart(
+                                                                        e.product,
+                                                                        Provider.of<AppModel>(
+                                                                                context)
+                                                                            .auth
+                                                                            .access_token,
+                                                                        null)
+                                                                    .then(
+                                                                        (value) {
+                                                                  UIBlock.unblock(
+                                                                      context);
+                                                                  showAlertDialog(
+                                                                      context,
+                                                                      e.product);
+                                                                });
+                                                              } else {
+                                                                Navigator.push(
+                                                                    context,
+                                                                    new MaterialPageRoute(
+                                                                      builder: (BuildContext
+                                                                              context) =>
+                                                                          new LoginScreen(),
+                                                                    ));
+                                                              }
+                                                            },
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    Expanded(
+                                                      flex: 1,
+                                                      child: Container(
+                                                        padding:
+                                                            EdgeInsets.symmetric(
+                                                                horizontal: 7),
+                                                      ),
+                                                    )
+                                                  ],
+                                                ));
+                                              } else {
+                                                return Container(
+                                                    child: Row(
+                                                  children: [
+                                                    for (FlashSaleProduct e
+                                                        in data[index])
+                                                      Expanded(
+                                                        flex: 1,
+                                                        child: Container(
+                                                          padding: EdgeInsets
+                                                              .symmetric(
+                                                                  horizontal: 7),
+                                                          child: MyProductFlash(
+                                                            productFlash: e,
+                                                            IsLiked: Provider.of<WishModel>(context).rawlist.firstWhere(
+                                                                        (element) =>
+                                                                            element
+                                                                                .productId ==
+                                                                            e.product
+                                                                                .id,
+                                                                        orElse: () =>
+                                                                            null) !=
+                                                                    null
+                                                                ? true
+                                                                : false,
+                                                            onFavorit: () {
+                                                              if (Provider.of<
+                                                                          AppModel>(
+                                                                      context)
+                                                                  .loggedIn) {
+                                                                Provider.of<WishModel>(
+                                                                        context)
+                                                                    .addProductToWish(
+                                                                        e.product,
+                                                                        Provider.of<AppModel>(
+                                                                                context)
+                                                                            .auth
+                                                                            .access_token);
+                                                              } else {
+                                                                Navigator.push(
+                                                                    context,
+                                                                    new MaterialPageRoute(
+                                                                      builder: (BuildContext
+                                                                              context) =>
+                                                                          new LoginScreen(),
+                                                                    ));
+                                                              }
+                                                            },
+                                                            onUnFavorit: () {
+                                                              if (Provider.of<
+                                                                          AppModel>(
+                                                                      context)
+                                                                  .loggedIn) {
+                                                                Provider.of<WishModel>(
+                                                                        context)
+                                                                    .removeProductFromWish(
+                                                                        e.product,
+                                                                        Provider.of<AppModel>(
+                                                                                context)
+                                                                            .auth
+                                                                            .access_token);
+                                                              } else {
+                                                                Navigator.push(
+                                                                    context,
+                                                                    new MaterialPageRoute(
+                                                                      builder: (BuildContext
+                                                                              context) =>
+                                                                          new LoginScreen(),
+                                                                    ));
+                                                              }
+                                                            },
+                                                            onTobag: () {
+                                                              if (Provider.of<
+                                                                          AppModel>(
+                                                                      context)
+                                                                  .loggedIn) {
+                                                                UIBlock.block(
+                                                                    context,
+                                                                    customLoaderChild:
+                                                                        LoadingWidget(
+                                                                            context));
+                                                                Provider.of<CartModel>(
+                                                                        context)
+                                                                    .addProductToCart(
+                                                                        e.product,
+                                                                        Provider.of<AppModel>(
+                                                                                context)
+                                                                            .auth
+                                                                            .access_token,
+                                                                        null)
+                                                                    .then(
+                                                                        (value) {
+                                                                  UIBlock.unblock(
+                                                                      context);
+                                                                  showAlertDialog(
+                                                                      context,
+                                                                      e.product);
+                                                                });
+                                                              } else {
+                                                                Navigator.push(
+                                                                    context,
+                                                                    new MaterialPageRoute(
+                                                                      builder: (BuildContext
+                                                                              context) =>
+                                                                          new LoginScreen(),
+                                                                    ));
+                                                              }
+                                                            },
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    Expanded(
+                                                      flex: 1,
+                                                      child: Container(
+                                                        padding:
+                                                            EdgeInsets.symmetric(
+                                                                horizontal: 7),
+                                                      ),
+                                                    ),
+                                                    Expanded(
+                                                      flex: 1,
+                                                      child: Container(
+                                                        padding:
+                                                            EdgeInsets.symmetric(
+                                                                horizontal: 7),
+                                                      ),
+                                                    )
+                                                  ],
+                                                ));
+                                              }
+                                            },
+                                            itemCount: data.length,
+                                            pagination: null,
+                                            control: null,
+                                            autoplay: false,
+                                          );
+                                        }
+                                      },
+                                    ),
+                                  ),
+                                  Container(
+                                    padding: EdgeInsets.symmetric(vertical: 10),
+                                    child: FlatButton(
+                                      height: 30,
+                                      padding:
+                                          EdgeInsets.symmetric(horizontal: 20),
+                                      onPressed: () {
+                                        Navigator.push(
+                                            context,
+                                            new MaterialPageRoute(
+                                              builder: (BuildContext context) =>
+                                                  new FlashSaleScreen(),
+                                            ));
+                                      },
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+                                      color: Color(0xffF48262),
+                                      child: Text(
+                                        'LIHAT SEMUA',
+                                        style: TextStyle(
+                                          fontFamily: 'Brandon',
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
                                 ],
-                              );
-                            }
-                          }),
-                        ),
-                        if (_remoteUid != null)
+                              ),
+                            ),
+                          title("Best Seller"),
+                          Container(
+                            height: MediaQuery.of(context).size.width * .8,
+                            child: Consumer<ProductModel>(
+                              builder: (context, value, child) {
+                                if (value.loadingBestSale) {
+                                  return LoadingWidgetFadingCircle(context);
+                                } else {
+                                  // ListBestsale = getColumProduct(context,value.Best_sell,3);
+                                  var dataBest = Lodash()
+                                      .chunk(array: value.Best_sell, size: 3);
+                                  return new Swiper(
+                                    itemBuilder:
+                                        (BuildContext context, int index) {
+                                      if (dataBest[index].length == 3) {
+                                        return Container(
+                                            child: Row(children: [
+                                          for (Product e in dataBest[index])
+                                            Expanded(
+                                              flex: 1,
+                                              child: Container(
+                                                padding: EdgeInsets.symmetric(
+                                                    horizontal: 7),
+                                                child: MyProduct(
+                                                  product: e,
+                                                  IsLiked: Provider.of<WishModel>(
+                                                                  context)
+                                                              .rawlist
+                                                              .firstWhere(
+                                                                  (element) =>
+                                                                      element
+                                                                          .productId ==
+                                                                      e.id,
+                                                                  orElse: () =>
+                                                                      null) !=
+                                                          null
+                                                      ? true
+                                                      : false,
+                                                  onFavorit: () {
+                                                    if (Provider.of<AppModel>(
+                                                            context)
+                                                        .loggedIn) {
+                                                      Provider.of<WishModel>(
+                                                              context)
+                                                          .addProductToWish(
+                                                              e,
+                                                              Provider.of<AppModel>(
+                                                                      context)
+                                                                  .auth
+                                                                  .access_token);
+                                                    } else {
+                                                      Navigator.push(
+                                                          context,
+                                                          new MaterialPageRoute(
+                                                            builder: (BuildContext
+                                                                    context) =>
+                                                                new LoginScreen(),
+                                                          ));
+                                                    }
+                                                  },
+                                                  onUnFavorit: () {
+                                                    if (Provider.of<AppModel>(
+                                                            context)
+                                                        .loggedIn) {
+                                                      Provider.of<WishModel>(
+                                                              context)
+                                                          .removeProductFromWish(
+                                                              e,
+                                                              Provider.of<AppModel>(
+                                                                      context)
+                                                                  .auth
+                                                                  .access_token);
+                                                    } else {
+                                                      Navigator.push(
+                                                          context,
+                                                          new MaterialPageRoute(
+                                                            builder: (BuildContext
+                                                                    context) =>
+                                                                new LoginScreen(),
+                                                          ));
+                                                    }
+                                                  },
+                                                  onTobag: () {
+                                                    if (Provider.of<AppModel>(
+                                                            context)
+                                                        .loggedIn) {
+                                                      UIBlock.block(context,
+                                                          customLoaderChild:
+                                                              LoadingWidget(
+                                                                  context));
+                                                      Provider.of<CartModel>(
+                                                              context)
+                                                          .addProductToCart(
+                                                              e,
+                                                              Provider.of<AppModel>(
+                                                                      context)
+                                                                  .auth
+                                                                  .access_token,
+                                                              null)
+                                                          .then((value) {
+                                                        UIBlock.unblock(context);
+                                                        showAlertDialog(
+                                                            context, e);
+                                                      });
+                                                    } else {
+                                                      Navigator.push(
+                                                          context,
+                                                          new MaterialPageRoute(
+                                                            builder: (BuildContext
+                                                                    context) =>
+                                                                new LoginScreen(),
+                                                          ));
+                                                    }
+                                                  },
+                                                ),
+                                              ),
+                                            ),
+                                        ]));
+                                      } else if (dataBest[index].length == 2) {
+                                        return Container(
+                                            child: Row(
+                                          children: [
+                                            for (Product e in dataBest[index])
+                                              Expanded(
+                                                flex: 1,
+                                                child: Container(
+                                                  padding: EdgeInsets.symmetric(
+                                                      horizontal: 7),
+                                                  child: MyProduct(
+                                                    product: e,
+                                                    IsLiked: Provider.of<
+                                                                        WishModel>(
+                                                                    context)
+                                                                .rawlist
+                                                                .firstWhere(
+                                                                    (element) =>
+                                                                        element
+                                                                            .productId ==
+                                                                        e.id,
+                                                                    orElse: () =>
+                                                                        null) !=
+                                                            null
+                                                        ? true
+                                                        : false,
+                                                    onFavorit: () {
+                                                      if (Provider.of<AppModel>(
+                                                              context)
+                                                          .loggedIn) {
+                                                        Provider.of<WishModel>(
+                                                                context)
+                                                            .addProductToWish(
+                                                                e,
+                                                                Provider.of<AppModel>(
+                                                                        context)
+                                                                    .auth
+                                                                    .access_token);
+                                                      } else {
+                                                        Navigator.push(
+                                                            context,
+                                                            new MaterialPageRoute(
+                                                              builder: (BuildContext
+                                                                      context) =>
+                                                                  new LoginScreen(),
+                                                            ));
+                                                      }
+                                                    },
+                                                    onUnFavorit: () {
+                                                      if (Provider.of<AppModel>(
+                                                              context)
+                                                          .loggedIn) {
+                                                        Provider.of<WishModel>(
+                                                                context)
+                                                            .removeProductFromWish(
+                                                                e,
+                                                                Provider.of<AppModel>(
+                                                                        context)
+                                                                    .auth
+                                                                    .access_token);
+                                                      } else {
+                                                        Navigator.push(
+                                                            context,
+                                                            new MaterialPageRoute(
+                                                              builder: (BuildContext
+                                                                      context) =>
+                                                                  new LoginScreen(),
+                                                            ));
+                                                      }
+                                                    },
+                                                    onTobag: () {
+                                                      if (Provider.of<AppModel>(
+                                                              context)
+                                                          .loggedIn) {
+                                                        UIBlock.block(context,
+                                                            customLoaderChild:
+                                                                LoadingWidget(
+                                                                    context));
+                                                        Provider.of<CartModel>(
+                                                                context)
+                                                            .addProductToCart(
+                                                                e,
+                                                                Provider.of<AppModel>(
+                                                                        context)
+                                                                    .auth
+                                                                    .access_token,
+                                                                null)
+                                                            .then((value) {
+                                                          UIBlock.unblock(
+                                                              context);
+                                                          showAlertDialog(
+                                                              context, e);
+                                                        });
+                                                      } else {
+                                                        Navigator.push(
+                                                            context,
+                                                            new MaterialPageRoute(
+                                                              builder: (BuildContext
+                                                                      context) =>
+                                                                  new LoginScreen(),
+                                                            ));
+                                                      }
+                                                    },
+                                                  ),
+                                                ),
+                                              ),
+                                            Expanded(
+                                              flex: 1,
+                                              child: Container(
+                                                padding: EdgeInsets.symmetric(
+                                                    horizontal: 7),
+                                              ),
+                                            )
+                                          ],
+                                        ));
+                                      } else {
+                                        return Container(
+                                            child: Row(
+                                          children: [
+                                            for (Product e in dataBest[index])
+                                              Expanded(
+                                                flex: 1,
+                                                child: Container(
+                                                  padding: EdgeInsets.symmetric(
+                                                      horizontal: 7),
+                                                  child: MyProduct(
+                                                    product: e,
+                                                    IsLiked: Provider.of<
+                                                                        WishModel>(
+                                                                    context)
+                                                                .rawlist
+                                                                .firstWhere(
+                                                                    (element) =>
+                                                                        element
+                                                                            .productId ==
+                                                                        e.id,
+                                                                    orElse: () =>
+                                                                        null) !=
+                                                            null
+                                                        ? true
+                                                        : false,
+                                                    onFavorit: () {
+                                                      if (Provider.of<AppModel>(
+                                                              context)
+                                                          .loggedIn) {
+                                                        Provider.of<WishModel>(
+                                                                context)
+                                                            .addProductToWish(
+                                                                e,
+                                                                Provider.of<AppModel>(
+                                                                        context)
+                                                                    .auth
+                                                                    .access_token);
+                                                      } else {
+                                                        Navigator.push(
+                                                            context,
+                                                            new MaterialPageRoute(
+                                                              builder: (BuildContext
+                                                                      context) =>
+                                                                  new LoginScreen(),
+                                                            ));
+                                                      }
+                                                    },
+                                                    onUnFavorit: () {
+                                                      if (Provider.of<AppModel>(
+                                                              context)
+                                                          .loggedIn) {
+                                                        Provider.of<WishModel>(
+                                                                context)
+                                                            .removeProductFromWish(
+                                                                e,
+                                                                Provider.of<AppModel>(
+                                                                        context)
+                                                                    .auth
+                                                                    .access_token);
+                                                      } else {
+                                                        Navigator.push(
+                                                            context,
+                                                            new MaterialPageRoute(
+                                                              builder: (BuildContext
+                                                                      context) =>
+                                                                  new LoginScreen(),
+                                                            ));
+                                                      }
+                                                    },
+                                                    onTobag: () {
+                                                      if (Provider.of<AppModel>(
+                                                              context)
+                                                          .loggedIn) {
+                                                        UIBlock.block(context,
+                                                            customLoaderChild:
+                                                                LoadingWidget(
+                                                                    context));
+                                                        Provider.of<CartModel>(
+                                                                context)
+                                                            .addProductToCart(
+                                                                e,
+                                                                Provider.of<AppModel>(
+                                                                        context)
+                                                                    .auth
+                                                                    .access_token,
+                                                                null)
+                                                            .then((value) {
+                                                          UIBlock.unblock(
+                                                              context);
+                                                          showAlertDialog(
+                                                              context, e);
+                                                        });
+                                                      } else {
+                                                        Navigator.push(
+                                                            context,
+                                                            new MaterialPageRoute(
+                                                              builder: (BuildContext
+                                                                      context) =>
+                                                                  new LoginScreen(),
+                                                            ));
+                                                      }
+                                                    },
+                                                  ),
+                                                ),
+                                              ),
+                                            Expanded(
+                                              flex: 1,
+                                              child: Container(
+                                                padding: EdgeInsets.symmetric(
+                                                    horizontal: 7),
+                                              ),
+                                            ),
+                                            Expanded(
+                                              flex: 1,
+                                              child: Container(
+                                                padding: EdgeInsets.symmetric(
+                                                    horizontal: 7),
+                                              ),
+                                            )
+                                          ],
+                                        ));
+                                      }
+                                    },
+                                    itemCount: dataBest.length,
+                                    pagination: null,
+                                    control: null,
+                                    autoplay: false,
+                                  );
+                                }
+                              },
+                            ),
+                          ),
+                          Container(
+                            height: 1.5,
+                            width: MediaQuery.of(context).size.width * 0.9,
+                            color: Color(0xffF48262),
+                          ),
+                          title("Phoebe's Choice"),
+                          Container(
+                            height: MediaQuery.of(context).size.width * .8,
+                            child: Consumer<ProductModel>(
+                              builder: (context, value, child) {
+                                if (value.loadingPhobe) {
+                                  return LoadingWidgetFadingCircle(context);
+                                } else {
+                                  // ListPhobe = getColumProduct(context,value.PhoebeChoices,3);
+                                  var dataPhoby = Lodash()
+                                      .chunk(array: value.PhoebeChoices, size: 3);
+
+                                  return new Swiper(
+                                    itemBuilder:
+                                        (BuildContext context, int index) {
+                                      if (dataPhoby[index].length == 3) {
+                                        return Container(
+                                            child: Row(children: [
+                                          for (Product e in dataPhoby[index])
+                                            Expanded(
+                                              flex: 1,
+                                              child: Container(
+                                                padding: EdgeInsets.symmetric(
+                                                    horizontal: 7),
+                                                child: MyProduct(
+                                                  product: e,
+                                                  IsLiked: Provider.of<WishModel>(
+                                                                  context)
+                                                              .rawlist
+                                                              .firstWhere(
+                                                                  (element) =>
+                                                                      element
+                                                                          .productId ==
+                                                                      e.id,
+                                                                  orElse: () =>
+                                                                      null) !=
+                                                          null
+                                                      ? true
+                                                      : false,
+                                                  onFavorit: () {
+                                                    if (Provider.of<AppModel>(
+                                                            context)
+                                                        .loggedIn) {
+                                                      Provider.of<WishModel>(
+                                                              context)
+                                                          .addProductToWish(
+                                                              e,
+                                                              Provider.of<AppModel>(
+                                                                      context)
+                                                                  .auth
+                                                                  .access_token);
+                                                    } else {
+                                                      Navigator.push(
+                                                          context,
+                                                          new MaterialPageRoute(
+                                                            builder: (BuildContext
+                                                                    context) =>
+                                                                new LoginScreen(),
+                                                          ));
+                                                    }
+                                                  },
+                                                  onUnFavorit: () {
+                                                    if (Provider.of<AppModel>(
+                                                            context)
+                                                        .loggedIn) {
+                                                      Provider.of<WishModel>(
+                                                              context)
+                                                          .removeProductFromWish(
+                                                              e,
+                                                              Provider.of<AppModel>(
+                                                                      context)
+                                                                  .auth
+                                                                  .access_token);
+                                                    } else {
+                                                      Navigator.push(
+                                                          context,
+                                                          new MaterialPageRoute(
+                                                            builder: (BuildContext
+                                                                    context) =>
+                                                                new LoginScreen(),
+                                                          ));
+                                                    }
+                                                  },
+                                                  onTobag: () {
+                                                    if (Provider.of<AppModel>(
+                                                            context)
+                                                        .loggedIn) {
+                                                      UIBlock.block(context,
+                                                          customLoaderChild:
+                                                              LoadingWidget(
+                                                                  context));
+                                                      Provider.of<CartModel>(
+                                                              context)
+                                                          .addProductToCart(
+                                                              e,
+                                                              Provider.of<AppModel>(
+                                                                      context)
+                                                                  .auth
+                                                                  .access_token,
+                                                              null)
+                                                          .then((value) {
+                                                        UIBlock.unblock(context);
+                                                        showAlertDialog(
+                                                            context, e);
+                                                      });
+                                                    } else {
+                                                      Navigator.push(
+                                                          context,
+                                                          new MaterialPageRoute(
+                                                            builder: (BuildContext
+                                                                    context) =>
+                                                                new LoginScreen(),
+                                                          ));
+                                                    }
+                                                  },
+                                                ),
+                                              ),
+                                            ),
+                                        ]));
+                                      } else if (dataPhoby[index].length == 2) {
+                                        return Container(
+                                            child: Row(
+                                          children: [
+                                            for (Product e in dataPhoby[index])
+                                              Expanded(
+                                                flex: 1,
+                                                child: Container(
+                                                  padding: EdgeInsets.symmetric(
+                                                      horizontal: 7),
+                                                  child: MyProduct(
+                                                    product: e,
+                                                    IsLiked: Provider.of<
+                                                                        WishModel>(
+                                                                    context)
+                                                                .rawlist
+                                                                .firstWhere(
+                                                                    (element) =>
+                                                                        element
+                                                                            .productId ==
+                                                                        e.id,
+                                                                    orElse: () =>
+                                                                        null) !=
+                                                            null
+                                                        ? true
+                                                        : false,
+                                                    onFavorit: () {
+                                                      if (Provider.of<AppModel>(
+                                                              context)
+                                                          .loggedIn) {
+                                                        Provider.of<WishModel>(
+                                                                context)
+                                                            .addProductToWish(
+                                                                e,
+                                                                Provider.of<AppModel>(
+                                                                        context)
+                                                                    .auth
+                                                                    .access_token);
+                                                      } else {
+                                                        Navigator.push(
+                                                            context,
+                                                            new MaterialPageRoute(
+                                                              builder: (BuildContext
+                                                                      context) =>
+                                                                  new LoginScreen(),
+                                                            ));
+                                                      }
+                                                    },
+                                                    onUnFavorit: () {
+                                                      if (Provider.of<AppModel>(
+                                                              context)
+                                                          .loggedIn) {
+                                                        Provider.of<WishModel>(
+                                                                context)
+                                                            .removeProductFromWish(
+                                                                e,
+                                                                Provider.of<AppModel>(
+                                                                        context)
+                                                                    .auth
+                                                                    .access_token);
+                                                      } else {
+                                                        Navigator.push(
+                                                            context,
+                                                            new MaterialPageRoute(
+                                                              builder: (BuildContext
+                                                                      context) =>
+                                                                  new LoginScreen(),
+                                                            ));
+                                                      }
+                                                    },
+                                                    onTobag: () {
+                                                      if (Provider.of<AppModel>(
+                                                              context)
+                                                          .loggedIn) {
+                                                        UIBlock.block(context,
+                                                            customLoaderChild:
+                                                                LoadingWidget(
+                                                                    context));
+                                                        Provider.of<CartModel>(
+                                                                context)
+                                                            .addProductToCart(
+                                                                e,
+                                                                Provider.of<AppModel>(
+                                                                        context)
+                                                                    .auth
+                                                                    .access_token,
+                                                                null)
+                                                            .then((value) {
+                                                          UIBlock.unblock(
+                                                              context);
+                                                          showAlertDialog(
+                                                              context, e);
+                                                        });
+                                                      } else {
+                                                        Navigator.push(
+                                                            context,
+                                                            new MaterialPageRoute(
+                                                              builder: (BuildContext
+                                                                      context) =>
+                                                                  new LoginScreen(),
+                                                            ));
+                                                      }
+                                                    },
+                                                  ),
+                                                ),
+                                              ),
+                                            Expanded(
+                                              flex: 1,
+                                              child: Container(
+                                                padding: EdgeInsets.symmetric(
+                                                    horizontal: 7),
+                                              ),
+                                            )
+                                          ],
+                                        ));
+                                      } else {
+                                        return Container(
+                                            child: Row(
+                                          children: [
+                                            for (Product e in dataPhoby[index])
+                                              Expanded(
+                                                flex: 1,
+                                                child: Container(
+                                                  padding: EdgeInsets.symmetric(
+                                                      horizontal: 7),
+                                                  child: MyProduct(
+                                                    product: e,
+                                                    IsLiked: Provider.of<
+                                                                        WishModel>(
+                                                                    context)
+                                                                .rawlist
+                                                                .firstWhere(
+                                                                    (element) =>
+                                                                        element
+                                                                            .productId ==
+                                                                        e.id,
+                                                                    orElse: () =>
+                                                                        null) !=
+                                                            null
+                                                        ? true
+                                                        : false,
+                                                    onFavorit: () {
+                                                      if (Provider.of<AppModel>(
+                                                              context)
+                                                          .loggedIn) {
+                                                        Provider.of<WishModel>(
+                                                                context)
+                                                            .addProductToWish(
+                                                                e,
+                                                                Provider.of<AppModel>(
+                                                                        context)
+                                                                    .auth
+                                                                    .access_token);
+                                                      } else {
+                                                        Navigator.push(
+                                                            context,
+                                                            new MaterialPageRoute(
+                                                              builder: (BuildContext
+                                                                      context) =>
+                                                                  new LoginScreen(),
+                                                            ));
+                                                      }
+                                                    },
+                                                    onUnFavorit: () {
+                                                      if (Provider.of<AppModel>(
+                                                              context)
+                                                          .loggedIn) {
+                                                        Provider.of<WishModel>(
+                                                                context)
+                                                            .removeProductFromWish(
+                                                                e,
+                                                                Provider.of<AppModel>(
+                                                                        context)
+                                                                    .auth
+                                                                    .access_token);
+                                                      } else {
+                                                        Navigator.push(
+                                                            context,
+                                                            new MaterialPageRoute(
+                                                              builder: (BuildContext
+                                                                      context) =>
+                                                                  new LoginScreen(),
+                                                            ));
+                                                      }
+                                                    },
+                                                    onTobag: () {
+                                                      if (Provider.of<AppModel>(
+                                                              context)
+                                                          .loggedIn) {
+                                                        UIBlock.block(context,
+                                                            customLoaderChild:
+                                                                LoadingWidget(
+                                                                    context));
+                                                        Provider.of<CartModel>(
+                                                                context)
+                                                            .addProductToCart(
+                                                                e,
+                                                                Provider.of<AppModel>(
+                                                                        context)
+                                                                    .auth
+                                                                    .access_token,
+                                                                null)
+                                                            .then((value) {
+                                                          UIBlock.unblock(
+                                                              context);
+                                                          showAlertDialog(
+                                                              context, e);
+                                                        });
+                                                      } else {
+                                                        Navigator.push(
+                                                            context,
+                                                            new MaterialPageRoute(
+                                                              builder: (BuildContext
+                                                                      context) =>
+                                                                  new LoginScreen(),
+                                                            ));
+                                                      }
+                                                    },
+                                                  ),
+                                                ),
+                                              ),
+                                            Expanded(
+                                              flex: 1,
+                                              child: Container(
+                                                padding: EdgeInsets.symmetric(
+                                                    horizontal: 7),
+                                              ),
+                                            ),
+                                            Expanded(
+                                              flex: 1,
+                                              child: Container(
+                                                padding: EdgeInsets.symmetric(
+                                                    horizontal: 7),
+                                              ),
+                                            )
+                                          ],
+                                        ));
+                                      }
+                                    },
+                                    itemCount: dataPhoby.length,
+                                    pagination: null,
+                                    control: null,
+                                    autoplay: false,
+                                  );
+                                }
+                              },
+                            ),
+                          ),
                           Container(
                             width: MediaQuery.of(context).size.width,
                             child: Stack(
@@ -1504,7 +3030,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 Positioned.fill(
                                   child: Center(
                                     child: Text(
-                                      'LIVE NOW',
+                                      'DIARY PHOEBE',
                                       style: TextStyle(
                                         fontSize: 24,
                                         fontFamily: 'Brandon',
@@ -1517,74 +3043,31 @@ class _HomeScreenState extends State<HomeScreen> {
                               ],
                             ),
                           ),
-                        if (_remoteUid != null)
-                          Container(
-                            color: Color(0xffFBDFD2),
-                            padding: EdgeInsets.symmetric(horizontal: 30),
-                            child: Stack(children: [
-                              Container(
-                                width: double.infinity,
-                                height: 250,
-                                color: Colors.grey,
-                                child: _renderRemoteVideo(),
-                              ),
-                              Positioned(
-                                top: 10,
-                                right: 10,
-                                child: Container(
-                                  padding: EdgeInsets.symmetric(
-                                      vertical: 3, horizontal: 5),
-                                  color: Color(0xff000000).withOpacity(0.1),
-                                  child: Row(
-                                    children: [
-                                      Icon(
-                                        Icons.remove_red_eye,
-                                        color: Colors.white,
-                                        size: 12,
-                                      ),
-                                      Padding(
-                                        padding: EdgeInsets.only(left: 5),
-                                        child: Text(
-                                          viewer.toString(),
-                                          style: TextStyle(
-                                            fontFamily: 'Brandon',
-                                            fontSize: 12,
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                      ),
+                          loading_youtube
+                              ? Container(
+                                  width: double.infinity,
+                                  color: Color(0xffFBDFD2),
+                                  child: Center(
+                                    child: LoadingWidget(context),
+                                  ),
+                                )
+                              : Container(
+                                  color: Color(0xffFBDFD2),
+                                  padding: EdgeInsets.symmetric(horizontal: 30),
+                                  child: YoutubePlayer(
+                                    controller: _controllersYoutube,
+                                    bottomActions: [
+                                      CurrentPosition(),
+                                      ProgressBar(isExpanded: true),
+                                      RemainingDuration(),
                                     ],
                                   ),
                                 ),
-                              ),
-                              Positioned(
-                                bottom: 10,
-                                right: 10,
-                                child: InkWell(
-                                  onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        new MaterialPageRoute(
-                                          builder: (BuildContext context) =>
-                                              new FullSiaran(
-                                            remoteUid: _remoteUid,
-                                          ),
-                                        ));
-                                  },
-                                  child: Icon(
-                                    Icons.fullscreen,
-                                    size: 22,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ),
-                            ]),
-                          ),
-                        if (_remoteUid != null)
                           Container(
                             color: Color(0xffFBDFD2),
                             width: double.infinity,
-                            padding: EdgeInsets.fromLTRB(30, 10, 30, 30),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 30, vertical: 10),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
@@ -1597,665 +3080,35 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ),
                                 ),
                                 Text(
-                                  'Halo teman Phoebe, kita lagi ada diskon gede-gedean.',
+                                  'Siapa nih yang masih suka bingung sama skincare routine atau baru mau mulai pakai skincare? Biar nggak salah langkah, kamu bisa tonton video baru dari Ponny Beaute dalam series: Belajar Bareng Phoebe!',
                                   style: TextStyle(
                                     fontFamily: 'Brandon',
                                   ),
                                   textAlign: TextAlign.center,
                                 ),
-                              ],
-                            ),
-                          ),
-                        if (flashdeal != null &&
-                            DateTime.now().millisecondsSinceEpoch <
-                                flashdeal.detail.endDate * 1000 &&
-                            !loading_flashdeal)
-                          Container(
-                            color: Color(0xffFACAC1),
-                            width: MediaQuery.of(context).size.width,
-                            padding: EdgeInsets.only(top: 8, bottom: 3),
-                            child: Image.asset('assets/images/flash-sale.png',
-                                height: 40),
-                          ),
-                        if (flashdeal != null &&
-                            DateTime.now().millisecondsSinceEpoch <
-                                flashdeal.detail.endDate * 1000 &&
-                            !loading_flashdeal)
-                          Container(
-                            color: Color(0xffFBDFD2),
-                            child: Column(
-                              children: [
-                                Padding(
-                                  padding: EdgeInsets.only(top: 10),
-                                  child: Text(
-                                    flashdeal.detail.title,
-                                    style: TextStyle(
-                                      fontFamily: 'Yeseva',
-                                      fontSize: 26,
-                                    ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 10),
-                                  child: Row(
-                                    children: [
-                                      Expanded(
-                                        flex: 1,
-                                        child: Padding(
-                                          padding: EdgeInsets.only(right: 10),
-                                          child: Text(
-                                            DateTime.now().isBefore(DateTime
-                                                    .fromMillisecondsSinceEpoch(
-                                                        flashdeal.detail
-                                                                .startDate *
-                                                            1000))
-                                                ? 'DIMULAI DALAM'
-                                                : 'BERAKHIR DALAM',
-                                            style: TextStyle(
-                                              fontFamily: 'Brandon',
-                                            ),
-                                            textAlign: TextAlign.right,
-                                          ),
-                                        ),
-                                      ),
-                                      Expanded(
-                                        flex: 1,
-                                        child: Padding(
-                                            padding: EdgeInsets.only(left: 10),
-                                            child: CountdownTimer(
-                                                onEnd: () {
-                                                  setState(() {
-                                                    loading_flashdeal = true;
-                                                  });
-                                                  UIBlock.block(context,
-                                                      customLoaderChild:
-                                                          LoadingWidget(
-                                                              context));
-                                                  Provider.of<ProductModel>(
-                                                          context)
-                                                      .getFlashSale()
-                                                      .then((value) {
-                                                    UIBlock.unblock(context);
-                                                    setState(() {
-                                                      loading_flashdeal = false;
-                                                    });
-                                                  }).catchError((onError) {
-                                                    UIBlock.unblock(context);
-                                                    setState(() {
-                                                      loading_flashdeal = false;
-                                                    });
-                                                  });
-                                                },
-                                                endTime: DateTime.now()
-                                                        .isBefore(DateTime
-                                                            .fromMillisecondsSinceEpoch(
-                                                                flashdeal.detail
-                                                                        .startDate *
-                                                                    1000))
-                                                    ? flashdeal
-                                                            .detail.startDate *
-                                                        1000
-                                                    : flashdeal.detail.endDate *
-                                                        1000,
-                                                widgetBuilder: (BuildContext
-                                                        context,
-                                                    CurrentRemainingTime time) {
-                                                  return Row(
-                                                    children: [
-                                                      Container(
-                                                        width: 24,
-                                                        height: 24,
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          color:
-                                                              Color(0xffF48262),
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(3),
-                                                        ),
-                                                        child: Center(
-                                                          child: Text(
-                                                            time.days != null
-                                                                ? time.days
-                                                                    .toString()
-                                                                : "00",
-                                                            style: TextStyle(
-                                                              fontFamily:
-                                                                  'Brandon',
-                                                              color:
-                                                                  Colors.white,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      Padding(
-                                                        padding: EdgeInsets
-                                                            .symmetric(
-                                                                horizontal: 5),
-                                                        child: Text(
-                                                          ':',
-                                                          style: TextStyle(
-                                                            fontFamily:
-                                                                'Brandon',
-                                                            color: Color(
-                                                                0xffF48262),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      Container(
-                                                        width: 24,
-                                                        height: 24,
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          color:
-                                                              Color(0xffF48262),
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(3),
-                                                        ),
-                                                        child: Center(
-                                                          child: Text(
-                                                            time.hours != null
-                                                                ? time.hours
-                                                                    .toString()
-                                                                : "00",
-                                                            style: TextStyle(
-                                                              fontFamily:
-                                                                  'Brandon',
-                                                              color:
-                                                                  Colors.white,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      Padding(
-                                                        padding: EdgeInsets
-                                                            .symmetric(
-                                                                horizontal: 5),
-                                                        child: Text(
-                                                          ':',
-                                                          style: TextStyle(
-                                                            fontFamily:
-                                                                'Brandon',
-                                                            color: Color(
-                                                                0xffF48262),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      Container(
-                                                        width: 24,
-                                                        height: 24,
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          color:
-                                                              Color(0xffF48262),
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(3),
-                                                        ),
-                                                        child: Center(
-                                                          child: Text(
-                                                            time.min != null
-                                                                ? time.min
-                                                                    .toString()
-                                                                : "00",
-                                                            style: TextStyle(
-                                                              fontFamily:
-                                                                  'Brandon',
-                                                              color:
-                                                                  Colors.white,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      Padding(
-                                                        padding: EdgeInsets
-                                                            .symmetric(
-                                                                horizontal: 5),
-                                                        child: Text(
-                                                          ':',
-                                                          style: TextStyle(
-                                                            fontFamily:
-                                                                'Brandon',
-                                                            color: Color(
-                                                                0xffF48262),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      Container(
-                                                        width: 24,
-                                                        height: 24,
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          color:
-                                                              Color(0xffF48262),
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(3),
-                                                        ),
-                                                        child: Center(
-                                                          child: Text(
-                                                            time.sec != null
-                                                                ? time.sec
-                                                                    .toString()
-                                                                : "00",
-                                                            style: TextStyle(
-                                                              fontFamily:
-                                                                  'Brandon',
-                                                              color:
-                                                                  Colors.white,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  );
-                                                })),
-                                      ),
-                                    ],
-                                  ),
-                                ),
                                 Container(
-                                  height:
-                                      MediaQuery.of(context).size.width * .9,
-                                  padding: EdgeInsets.only(top: 10),
-                                  child: Consumer<ProductModel>(
-                                    builder: (context, value, child) {
-                                      if (value.loadingBestSale) {
-                                        return LoadingWidgetFadingCircle(
-                                            context);
-                                      } else {
-                                        var data = Lodash().chunk(
-                                            array: flashdeal.flash_products,
-                                            size: 3);
-                                        return new Swiper(
-                                          itemBuilder: (BuildContext context,
-                                              int index) {
-                                            if (data[index].length == 3) {
-                                              return Container(
-                                                  child: Row(children: [
-                                                for (FlashSaleProduct e
-                                                    in data[index])
-                                                  Expanded(
-                                                    flex: 1,
-                                                    child: Container(
-                                                      padding:
-                                                          EdgeInsets.symmetric(
-                                                              horizontal: 7),
-                                                      child: MyProductFlash(
-                                                        productFlash: e,
-                                                        IsLiked: Provider.of<WishModel>(context).rawlist.firstWhere((element) => element.productId == e.product.id, orElse: () => null) != null ? true : false,
-                                                        onFavorit: () {
-                                                          if (Provider.of<
-                                                                      AppModel>(
-                                                                  context)
-                                                              .loggedIn) {
-                                                            Provider.of<WishModel>(
-                                                                    context)
-                                                                .addProductToWish(
-                                                                    e.product,
-                                                                    Provider.of<AppModel>(
-                                                                            context)
-                                                                        .auth
-                                                                        .access_token);
-                                                          } else {
-                                                            Navigator.push(
-                                                                context,
-                                                                new MaterialPageRoute(
-                                                                  builder: (BuildContext
-                                                                          context) =>
-                                                                      new LoginScreen(),
-                                                                ));
-                                                          }
-                                                        },
-                                                        onUnFavorit: () {
-                                                          if (Provider.of<
-                                                                      AppModel>(
-                                                                  context)
-                                                              .loggedIn) {
-                                                            Provider.of<WishModel>(
-                                                                    context)
-                                                                .removeProductFromWish(
-                                                                    e.product,
-                                                                    Provider.of<AppModel>(
-                                                                            context)
-                                                                        .auth
-                                                                        .access_token);
-                                                          } else {
-                                                            Navigator.push(
-                                                                context,
-                                                                new MaterialPageRoute(
-                                                                  builder: (BuildContext
-                                                                          context) =>
-                                                                      new LoginScreen(),
-                                                                ));
-                                                          }
-                                                        },
-                                                        onTobag: () {
-                                                          if (Provider.of<
-                                                                      AppModel>(
-                                                                  context)
-                                                              .loggedIn) {
-                                                            UIBlock.block(
-                                                                context,
-                                                                customLoaderChild:
-                                                                    LoadingWidget(
-                                                                        context));
-                                                            Provider.of<CartModel>(
-                                                                    context)
-                                                                .addProductToCart(
-                                                                    e.product,
-                                                                    Provider.of<AppModel>(
-                                                                            context)
-                                                                        .auth
-                                                                        .access_token,
-                                                                    null)
-                                                                .then((value) {
-                                                              UIBlock.unblock(
-                                                                  context);
-                                                              showAlertDialog(
-                                                                  context,
-                                                                  e.product);
-                                                            });
-                                                          } else {
-                                                            Navigator.push(
-                                                                context,
-                                                                new MaterialPageRoute(
-                                                                  builder: (BuildContext
-                                                                          context) =>
-                                                                      new LoginScreen(),
-                                                                ));
-                                                          }
-                                                        },
-                                                      ),
-                                                    ),
-                                                  ),
-                                              ]));
-                                            } else if (data[index].length ==
-                                                2) {
-                                              return Container(
-                                                  child: Row(
-                                                children: [
-                                                  for (FlashSaleProduct e
-                                                      in data[index])
-                                                    Expanded(
-                                                      flex: 1,
-                                                      child: Container(
-                                                        padding: EdgeInsets
-                                                            .symmetric(
-                                                                horizontal: 7),
-                                                        child: MyProductFlash(
-                                                          productFlash: e,
-                                                          IsLiked: Provider.of<WishModel>(context).rawlist.firstWhere(
-                                                                      (element) =>
-                                                                          element
-                                                                              .productId ==
-                                                                          e.product
-                                                                              .id,
-                                                                      orElse: () =>
-                                                                          null) !=
-                                                                  null
-                                                              ? true
-                                                              : false,
-                                                          onFavorit: () {
-                                                            if (Provider.of<
-                                                                        AppModel>(
-                                                                    context)
-                                                                .loggedIn) {
-                                                              Provider.of<WishModel>(
-                                                                      context)
-                                                                  .addProductToWish(
-                                                                      e.product,
-                                                                      Provider.of<AppModel>(
-                                                                              context)
-                                                                          .auth
-                                                                          .access_token);
-                                                            } else {
-                                                              Navigator.push(
-                                                                  context,
-                                                                  new MaterialPageRoute(
-                                                                    builder: (BuildContext
-                                                                            context) =>
-                                                                        new LoginScreen(),
-                                                                  ));
-                                                            }
-                                                          },
-                                                          onUnFavorit: () {
-                                                            if (Provider.of<
-                                                                        AppModel>(
-                                                                    context)
-                                                                .loggedIn) {
-                                                              Provider.of<WishModel>(
-                                                                      context)
-                                                                  .removeProductFromWish(
-                                                                      e.product,
-                                                                      Provider.of<AppModel>(
-                                                                              context)
-                                                                          .auth
-                                                                          .access_token);
-                                                            } else {
-                                                              Navigator.push(
-                                                                  context,
-                                                                  new MaterialPageRoute(
-                                                                    builder: (BuildContext
-                                                                            context) =>
-                                                                        new LoginScreen(),
-                                                                  ));
-                                                            }
-                                                          },
-                                                          onTobag: () {
-                                                            if (Provider.of<
-                                                                        AppModel>(
-                                                                    context)
-                                                                .loggedIn) {
-                                                              UIBlock.block(
-                                                                  context,
-                                                                  customLoaderChild:
-                                                                      LoadingWidget(
-                                                                          context));
-                                                              Provider.of<CartModel>(
-                                                                      context)
-                                                                  .addProductToCart(
-                                                                      e.product,
-                                                                      Provider.of<AppModel>(
-                                                                              context)
-                                                                          .auth
-                                                                          .access_token,
-                                                                      null)
-                                                                  .then(
-                                                                      (value) {
-                                                                UIBlock.unblock(
-                                                                    context);
-                                                                showAlertDialog(
-                                                                    context,
-                                                                    e.product);
-                                                              });
-                                                            } else {
-                                                              Navigator.push(
-                                                                  context,
-                                                                  new MaterialPageRoute(
-                                                                    builder: (BuildContext
-                                                                            context) =>
-                                                                        new LoginScreen(),
-                                                                  ));
-                                                            }
-                                                          },
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  Expanded(
-                                                    flex: 1,
-                                                    child: Container(
-                                                      padding:
-                                                          EdgeInsets.symmetric(
-                                                              horizontal: 7),
-                                                    ),
-                                                  )
-                                                ],
-                                              ));
-                                            } else {
-                                              return Container(
-                                                  child: Row(
-                                                children: [
-                                                  for (FlashSaleProduct e
-                                                      in data[index])
-                                                    Expanded(
-                                                      flex: 1,
-                                                      child: Container(
-                                                        padding: EdgeInsets
-                                                            .symmetric(
-                                                                horizontal: 7),
-                                                        child: MyProductFlash(
-                                                          productFlash: e,
-                                                          IsLiked: Provider.of<WishModel>(context).rawlist.firstWhere(
-                                                                      (element) =>
-                                                                          element
-                                                                              .productId ==
-                                                                          e.product
-                                                                              .id,
-                                                                      orElse: () =>
-                                                                          null) !=
-                                                                  null
-                                                              ? true
-                                                              : false,
-                                                          onFavorit: () {
-                                                            if (Provider.of<
-                                                                        AppModel>(
-                                                                    context)
-                                                                .loggedIn) {
-                                                              Provider.of<WishModel>(
-                                                                      context)
-                                                                  .addProductToWish(
-                                                                      e.product,
-                                                                      Provider.of<AppModel>(
-                                                                              context)
-                                                                          .auth
-                                                                          .access_token);
-                                                            } else {
-                                                              Navigator.push(
-                                                                  context,
-                                                                  new MaterialPageRoute(
-                                                                    builder: (BuildContext
-                                                                            context) =>
-                                                                        new LoginScreen(),
-                                                                  ));
-                                                            }
-                                                          },
-                                                          onUnFavorit: () {
-                                                            if (Provider.of<
-                                                                        AppModel>(
-                                                                    context)
-                                                                .loggedIn) {
-                                                              Provider.of<WishModel>(
-                                                                      context)
-                                                                  .removeProductFromWish(
-                                                                      e.product,
-                                                                      Provider.of<AppModel>(
-                                                                              context)
-                                                                          .auth
-                                                                          .access_token);
-                                                            } else {
-                                                              Navigator.push(
-                                                                  context,
-                                                                  new MaterialPageRoute(
-                                                                    builder: (BuildContext
-                                                                            context) =>
-                                                                        new LoginScreen(),
-                                                                  ));
-                                                            }
-                                                          },
-                                                          onTobag: () {
-                                                            if (Provider.of<
-                                                                        AppModel>(
-                                                                    context)
-                                                                .loggedIn) {
-                                                              UIBlock.block(
-                                                                  context,
-                                                                  customLoaderChild:
-                                                                      LoadingWidget(
-                                                                          context));
-                                                              Provider.of<CartModel>(
-                                                                      context)
-                                                                  .addProductToCart(
-                                                                      e.product,
-                                                                      Provider.of<AppModel>(
-                                                                              context)
-                                                                          .auth
-                                                                          .access_token,
-                                                                      null)
-                                                                  .then(
-                                                                      (value) {
-                                                                UIBlock.unblock(
-                                                                    context);
-                                                                showAlertDialog(
-                                                                    context,
-                                                                    e.product);
-                                                              });
-                                                            } else {
-                                                              Navigator.push(
-                                                                  context,
-                                                                  new MaterialPageRoute(
-                                                                    builder: (BuildContext
-                                                                            context) =>
-                                                                        new LoginScreen(),
-                                                                  ));
-                                                            }
-                                                          },
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  Expanded(
-                                                    flex: 1,
-                                                    child: Container(
-                                                      padding:
-                                                          EdgeInsets.symmetric(
-                                                              horizontal: 7),
-                                                    ),
-                                                  ),
-                                                  Expanded(
-                                                    flex: 1,
-                                                    child: Container(
-                                                      padding:
-                                                          EdgeInsets.symmetric(
-                                                              horizontal: 7),
-                                                    ),
-                                                  )
-                                                ],
-                                              ));
-                                            }
-                                          },
-                                          itemCount: data.length,
-                                          pagination: null,
-                                          control: null,
-                                          autoplay: false,
-                                        );
-                                      }
-                                    },
-                                  ),
-                                ),
-                                Container(
-                                  padding: EdgeInsets.symmetric(vertical: 10),
+                                  padding: EdgeInsets.only(top: 30),
                                   child: FlatButton(
-                                    height: 30,
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 20),
                                     onPressed: () {
-                                      Navigator.push(
-                                          context,
-                                          new MaterialPageRoute(
-                                            builder: (BuildContext context) =>
-                                                new FlashSaleScreen(),
-                                          ));
+                                      _launchURL(
+                                          "https://www.youtube.com/c/PonnyBeaute");
                                     },
+                                    padding: EdgeInsets.symmetric(horizontal: 10),
+                                    materialTapTargetSize:
+                                        MaterialTapTargetSize.shrinkWrap,
                                     shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(20),
+                                      borderRadius: BorderRadius.circular(10),
+                                      side: BorderSide(
+                                        width: 1.0,
+                                        color: Color(0xffF48262),
+                                      ),
                                     ),
-                                    color: Color(0xffF48262),
                                     child: Text(
-                                      'LIHAT SEMUA',
+                                      'LIHAT LEBIH BANYAK',
                                       style: TextStyle(
                                         fontFamily: 'Brandon',
-                                        color: Colors.white,
+                                        color: Color(0xffF48262),
+                                        fontWeight: FontWeight.w600,
                                       ),
                                     ),
                                   ),
@@ -2263,855 +3116,12 @@ class _HomeScreenState extends State<HomeScreen> {
                               ],
                             ),
                           ),
-                        title("Best Seller"),
-                        Container(
-                          height: MediaQuery.of(context).size.width * .8,
-                          child: Consumer<ProductModel>(
-                            builder: (context, value, child) {
-                              if (value.loadingBestSale) {
-                                return LoadingWidgetFadingCircle(context);
-                              } else {
-                                // ListBestsale = getColumProduct(context,value.Best_sell,3);
-                                var dataBest = Lodash()
-                                    .chunk(array: value.Best_sell, size: 3);
-                                return new Swiper(
-                                  itemBuilder:
-                                      (BuildContext context, int index) {
-                                    if (dataBest[index].length == 3) {
-                                      return Container(
-                                          child: Row(children: [
-                                        for (Product e in dataBest[index])
-                                          Expanded(
-                                            flex: 1,
-                                            child: Container(
-                                              padding: EdgeInsets.symmetric(
-                                                  horizontal: 7),
-                                              child: MyProduct(
-                                                product: e,
-                                                IsLiked: Provider.of<WishModel>(
-                                                                context)
-                                                            .rawlist
-                                                            .firstWhere(
-                                                                (element) =>
-                                                                    element
-                                                                        .productId ==
-                                                                    e.id,
-                                                                orElse: () =>
-                                                                    null) !=
-                                                        null
-                                                    ? true
-                                                    : false,
-                                                onFavorit: () {
-                                                  if (Provider.of<AppModel>(
-                                                          context)
-                                                      .loggedIn) {
-                                                    Provider.of<WishModel>(
-                                                            context)
-                                                        .addProductToWish(
-                                                            e,
-                                                            Provider.of<AppModel>(
-                                                                    context)
-                                                                .auth
-                                                                .access_token);
-                                                  } else {
-                                                    Navigator.push(
-                                                        context,
-                                                        new MaterialPageRoute(
-                                                          builder: (BuildContext
-                                                                  context) =>
-                                                              new LoginScreen(),
-                                                        ));
-                                                  }
-                                                },
-                                                onUnFavorit: () {
-                                                  if (Provider.of<AppModel>(
-                                                          context)
-                                                      .loggedIn) {
-                                                    Provider.of<WishModel>(
-                                                            context)
-                                                        .removeProductFromWish(
-                                                            e,
-                                                            Provider.of<AppModel>(
-                                                                    context)
-                                                                .auth
-                                                                .access_token);
-                                                  } else {
-                                                    Navigator.push(
-                                                        context,
-                                                        new MaterialPageRoute(
-                                                          builder: (BuildContext
-                                                                  context) =>
-                                                              new LoginScreen(),
-                                                        ));
-                                                  }
-                                                },
-                                                onTobag: () {
-                                                  if (Provider.of<AppModel>(
-                                                          context)
-                                                      .loggedIn) {
-                                                    UIBlock.block(context,
-                                                        customLoaderChild:
-                                                            LoadingWidget(
-                                                                context));
-                                                    Provider.of<CartModel>(
-                                                            context)
-                                                        .addProductToCart(
-                                                            e,
-                                                            Provider.of<AppModel>(
-                                                                    context)
-                                                                .auth
-                                                                .access_token,
-                                                            null)
-                                                        .then((value) {
-                                                      UIBlock.unblock(context);
-                                                      showAlertDialog(
-                                                          context, e);
-                                                    });
-                                                  } else {
-                                                    Navigator.push(
-                                                        context,
-                                                        new MaterialPageRoute(
-                                                          builder: (BuildContext
-                                                                  context) =>
-                                                              new LoginScreen(),
-                                                        ));
-                                                  }
-                                                },
-                                              ),
-                                            ),
-                                          ),
-                                      ]));
-                                    } else if (dataBest[index].length == 2) {
-                                      return Container(
-                                          child: Row(
-                                        children: [
-                                          for (Product e in dataBest[index])
-                                            Expanded(
-                                              flex: 1,
-                                              child: Container(
-                                                padding: EdgeInsets.symmetric(
-                                                    horizontal: 7),
-                                                child: MyProduct(
-                                                  product: e,
-                                                  IsLiked: Provider.of<
-                                                                      WishModel>(
-                                                                  context)
-                                                              .rawlist
-                                                              .firstWhere(
-                                                                  (element) =>
-                                                                      element
-                                                                          .productId ==
-                                                                      e.id,
-                                                                  orElse: () =>
-                                                                      null) !=
-                                                          null
-                                                      ? true
-                                                      : false,
-                                                  onFavorit: () {
-                                                    if (Provider.of<AppModel>(
-                                                            context)
-                                                        .loggedIn) {
-                                                      Provider.of<WishModel>(
-                                                              context)
-                                                          .addProductToWish(
-                                                              e,
-                                                              Provider.of<AppModel>(
-                                                                      context)
-                                                                  .auth
-                                                                  .access_token);
-                                                    } else {
-                                                      Navigator.push(
-                                                          context,
-                                                          new MaterialPageRoute(
-                                                            builder: (BuildContext
-                                                                    context) =>
-                                                                new LoginScreen(),
-                                                          ));
-                                                    }
-                                                  },
-                                                  onUnFavorit: () {
-                                                    if (Provider.of<AppModel>(
-                                                            context)
-                                                        .loggedIn) {
-                                                      Provider.of<WishModel>(
-                                                              context)
-                                                          .removeProductFromWish(
-                                                              e,
-                                                              Provider.of<AppModel>(
-                                                                      context)
-                                                                  .auth
-                                                                  .access_token);
-                                                    } else {
-                                                      Navigator.push(
-                                                          context,
-                                                          new MaterialPageRoute(
-                                                            builder: (BuildContext
-                                                                    context) =>
-                                                                new LoginScreen(),
-                                                          ));
-                                                    }
-                                                  },
-                                                  onTobag: () {
-                                                    if (Provider.of<AppModel>(
-                                                            context)
-                                                        .loggedIn) {
-                                                      UIBlock.block(context,
-                                                          customLoaderChild:
-                                                              LoadingWidget(
-                                                                  context));
-                                                      Provider.of<CartModel>(
-                                                              context)
-                                                          .addProductToCart(
-                                                              e,
-                                                              Provider.of<AppModel>(
-                                                                      context)
-                                                                  .auth
-                                                                  .access_token,
-                                                              null)
-                                                          .then((value) {
-                                                        UIBlock.unblock(
-                                                            context);
-                                                        showAlertDialog(
-                                                            context, e);
-                                                      });
-                                                    } else {
-                                                      Navigator.push(
-                                                          context,
-                                                          new MaterialPageRoute(
-                                                            builder: (BuildContext
-                                                                    context) =>
-                                                                new LoginScreen(),
-                                                          ));
-                                                    }
-                                                  },
-                                                ),
-                                              ),
-                                            ),
-                                          Expanded(
-                                            flex: 1,
-                                            child: Container(
-                                              padding: EdgeInsets.symmetric(
-                                                  horizontal: 7),
-                                            ),
-                                          )
-                                        ],
-                                      ));
-                                    } else {
-                                      return Container(
-                                          child: Row(
-                                        children: [
-                                          for (Product e in dataBest[index])
-                                            Expanded(
-                                              flex: 1,
-                                              child: Container(
-                                                padding: EdgeInsets.symmetric(
-                                                    horizontal: 7),
-                                                child: MyProduct(
-                                                  product: e,
-                                                  IsLiked: Provider.of<
-                                                                      WishModel>(
-                                                                  context)
-                                                              .rawlist
-                                                              .firstWhere(
-                                                                  (element) =>
-                                                                      element
-                                                                          .productId ==
-                                                                      e.id,
-                                                                  orElse: () =>
-                                                                      null) !=
-                                                          null
-                                                      ? true
-                                                      : false,
-                                                  onFavorit: () {
-                                                    if (Provider.of<AppModel>(
-                                                            context)
-                                                        .loggedIn) {
-                                                      Provider.of<WishModel>(
-                                                              context)
-                                                          .addProductToWish(
-                                                              e,
-                                                              Provider.of<AppModel>(
-                                                                      context)
-                                                                  .auth
-                                                                  .access_token);
-                                                    } else {
-                                                      Navigator.push(
-                                                          context,
-                                                          new MaterialPageRoute(
-                                                            builder: (BuildContext
-                                                                    context) =>
-                                                                new LoginScreen(),
-                                                          ));
-                                                    }
-                                                  },
-                                                  onUnFavorit: () {
-                                                    if (Provider.of<AppModel>(
-                                                            context)
-                                                        .loggedIn) {
-                                                      Provider.of<WishModel>(
-                                                              context)
-                                                          .removeProductFromWish(
-                                                              e,
-                                                              Provider.of<AppModel>(
-                                                                      context)
-                                                                  .auth
-                                                                  .access_token);
-                                                    } else {
-                                                      Navigator.push(
-                                                          context,
-                                                          new MaterialPageRoute(
-                                                            builder: (BuildContext
-                                                                    context) =>
-                                                                new LoginScreen(),
-                                                          ));
-                                                    }
-                                                  },
-                                                  onTobag: () {
-                                                    if (Provider.of<AppModel>(
-                                                            context)
-                                                        .loggedIn) {
-                                                      UIBlock.block(context,
-                                                          customLoaderChild:
-                                                              LoadingWidget(
-                                                                  context));
-                                                      Provider.of<CartModel>(
-                                                              context)
-                                                          .addProductToCart(
-                                                              e,
-                                                              Provider.of<AppModel>(
-                                                                      context)
-                                                                  .auth
-                                                                  .access_token,
-                                                              null)
-                                                          .then((value) {
-                                                        UIBlock.unblock(
-                                                            context);
-                                                        showAlertDialog(
-                                                            context, e);
-                                                      });
-                                                    } else {
-                                                      Navigator.push(
-                                                          context,
-                                                          new MaterialPageRoute(
-                                                            builder: (BuildContext
-                                                                    context) =>
-                                                                new LoginScreen(),
-                                                          ));
-                                                    }
-                                                  },
-                                                ),
-                                              ),
-                                            ),
-                                          Expanded(
-                                            flex: 1,
-                                            child: Container(
-                                              padding: EdgeInsets.symmetric(
-                                                  horizontal: 7),
-                                            ),
-                                          ),
-                                          Expanded(
-                                            flex: 1,
-                                            child: Container(
-                                              padding: EdgeInsets.symmetric(
-                                                  horizontal: 7),
-                                            ),
-                                          )
-                                        ],
-                                      ));
-                                    }
-                                  },
-                                  itemCount: dataBest.length,
-                                  pagination: null,
-                                  control: null,
-                                  autoplay: false,
-                                );
-                              }
-                            },
-                          ),
-                        ),
-                        Container(
-                          height: 1.5,
-                          width: MediaQuery.of(context).size.width * 0.9,
-                          color: Color(0xffF48262),
-                        ),
-                        title("Phoebe's Choice"),
-                        Container(
-                          height: MediaQuery.of(context).size.width * .8,
-                          child: Consumer<ProductModel>(
-                            builder: (context, value, child) {
-                              if (value.loadingPhobe) {
-                                return LoadingWidgetFadingCircle(context);
-                              } else {
-                                // ListPhobe = getColumProduct(context,value.PhoebeChoices,3);
-                                var dataPhoby = Lodash()
-                                    .chunk(array: value.PhoebeChoices, size: 3);
-
-                                return new Swiper(
-                                  itemBuilder:
-                                      (BuildContext context, int index) {
-                                    if (dataPhoby[index].length == 3) {
-                                      return Container(
-                                          child: Row(children: [
-                                        for (Product e in dataPhoby[index])
-                                          Expanded(
-                                            flex: 1,
-                                            child: Container(
-                                              padding: EdgeInsets.symmetric(
-                                                  horizontal: 7),
-                                              child: MyProduct(
-                                                product: e,
-                                                IsLiked: Provider.of<WishModel>(
-                                                                context)
-                                                            .rawlist
-                                                            .firstWhere(
-                                                                (element) =>
-                                                                    element
-                                                                        .productId ==
-                                                                    e.id,
-                                                                orElse: () =>
-                                                                    null) !=
-                                                        null
-                                                    ? true
-                                                    : false,
-                                                onFavorit: () {
-                                                  if (Provider.of<AppModel>(
-                                                          context)
-                                                      .loggedIn) {
-                                                    Provider.of<WishModel>(
-                                                            context)
-                                                        .addProductToWish(
-                                                            e,
-                                                            Provider.of<AppModel>(
-                                                                    context)
-                                                                .auth
-                                                                .access_token);
-                                                  } else {
-                                                    Navigator.push(
-                                                        context,
-                                                        new MaterialPageRoute(
-                                                          builder: (BuildContext
-                                                                  context) =>
-                                                              new LoginScreen(),
-                                                        ));
-                                                  }
-                                                },
-                                                onUnFavorit: () {
-                                                  if (Provider.of<AppModel>(
-                                                          context)
-                                                      .loggedIn) {
-                                                    Provider.of<WishModel>(
-                                                            context)
-                                                        .removeProductFromWish(
-                                                            e,
-                                                            Provider.of<AppModel>(
-                                                                    context)
-                                                                .auth
-                                                                .access_token);
-                                                  } else {
-                                                    Navigator.push(
-                                                        context,
-                                                        new MaterialPageRoute(
-                                                          builder: (BuildContext
-                                                                  context) =>
-                                                              new LoginScreen(),
-                                                        ));
-                                                  }
-                                                },
-                                                onTobag: () {
-                                                  if (Provider.of<AppModel>(
-                                                          context)
-                                                      .loggedIn) {
-                                                    UIBlock.block(context,
-                                                        customLoaderChild:
-                                                            LoadingWidget(
-                                                                context));
-                                                    Provider.of<CartModel>(
-                                                            context)
-                                                        .addProductToCart(
-                                                            e,
-                                                            Provider.of<AppModel>(
-                                                                    context)
-                                                                .auth
-                                                                .access_token,
-                                                            null)
-                                                        .then((value) {
-                                                      UIBlock.unblock(context);
-                                                      showAlertDialog(
-                                                          context, e);
-                                                    });
-                                                  } else {
-                                                    Navigator.push(
-                                                        context,
-                                                        new MaterialPageRoute(
-                                                          builder: (BuildContext
-                                                                  context) =>
-                                                              new LoginScreen(),
-                                                        ));
-                                                  }
-                                                },
-                                              ),
-                                            ),
-                                          ),
-                                      ]));
-                                    } else if (dataPhoby[index].length == 2) {
-                                      return Container(
-                                          child: Row(
-                                        children: [
-                                          for (Product e in dataPhoby[index])
-                                            Expanded(
-                                              flex: 1,
-                                              child: Container(
-                                                padding: EdgeInsets.symmetric(
-                                                    horizontal: 7),
-                                                child: MyProduct(
-                                                  product: e,
-                                                  IsLiked: Provider.of<
-                                                                      WishModel>(
-                                                                  context)
-                                                              .rawlist
-                                                              .firstWhere(
-                                                                  (element) =>
-                                                                      element
-                                                                          .productId ==
-                                                                      e.id,
-                                                                  orElse: () =>
-                                                                      null) !=
-                                                          null
-                                                      ? true
-                                                      : false,
-                                                  onFavorit: () {
-                                                    if (Provider.of<AppModel>(
-                                                            context)
-                                                        .loggedIn) {
-                                                      Provider.of<WishModel>(
-                                                              context)
-                                                          .addProductToWish(
-                                                              e,
-                                                              Provider.of<AppModel>(
-                                                                      context)
-                                                                  .auth
-                                                                  .access_token);
-                                                    } else {
-                                                      Navigator.push(
-                                                          context,
-                                                          new MaterialPageRoute(
-                                                            builder: (BuildContext
-                                                                    context) =>
-                                                                new LoginScreen(),
-                                                          ));
-                                                    }
-                                                  },
-                                                  onUnFavorit: () {
-                                                    if (Provider.of<AppModel>(
-                                                            context)
-                                                        .loggedIn) {
-                                                      Provider.of<WishModel>(
-                                                              context)
-                                                          .removeProductFromWish(
-                                                              e,
-                                                              Provider.of<AppModel>(
-                                                                      context)
-                                                                  .auth
-                                                                  .access_token);
-                                                    } else {
-                                                      Navigator.push(
-                                                          context,
-                                                          new MaterialPageRoute(
-                                                            builder: (BuildContext
-                                                                    context) =>
-                                                                new LoginScreen(),
-                                                          ));
-                                                    }
-                                                  },
-                                                  onTobag: () {
-                                                    if (Provider.of<AppModel>(
-                                                            context)
-                                                        .loggedIn) {
-                                                      UIBlock.block(context,
-                                                          customLoaderChild:
-                                                              LoadingWidget(
-                                                                  context));
-                                                      Provider.of<CartModel>(
-                                                              context)
-                                                          .addProductToCart(
-                                                              e,
-                                                              Provider.of<AppModel>(
-                                                                      context)
-                                                                  .auth
-                                                                  .access_token,
-                                                              null)
-                                                          .then((value) {
-                                                        UIBlock.unblock(
-                                                            context);
-                                                        showAlertDialog(
-                                                            context, e);
-                                                      });
-                                                    } else {
-                                                      Navigator.push(
-                                                          context,
-                                                          new MaterialPageRoute(
-                                                            builder: (BuildContext
-                                                                    context) =>
-                                                                new LoginScreen(),
-                                                          ));
-                                                    }
-                                                  },
-                                                ),
-                                              ),
-                                            ),
-                                          Expanded(
-                                            flex: 1,
-                                            child: Container(
-                                              padding: EdgeInsets.symmetric(
-                                                  horizontal: 7),
-                                            ),
-                                          )
-                                        ],
-                                      ));
-                                    } else {
-                                      return Container(
-                                          child: Row(
-                                        children: [
-                                          for (Product e in dataPhoby[index])
-                                            Expanded(
-                                              flex: 1,
-                                              child: Container(
-                                                padding: EdgeInsets.symmetric(
-                                                    horizontal: 7),
-                                                child: MyProduct(
-                                                  product: e,
-                                                  IsLiked: Provider.of<
-                                                                      WishModel>(
-                                                                  context)
-                                                              .rawlist
-                                                              .firstWhere(
-                                                                  (element) =>
-                                                                      element
-                                                                          .productId ==
-                                                                      e.id,
-                                                                  orElse: () =>
-                                                                      null) !=
-                                                          null
-                                                      ? true
-                                                      : false,
-                                                  onFavorit: () {
-                                                    if (Provider.of<AppModel>(
-                                                            context)
-                                                        .loggedIn) {
-                                                      Provider.of<WishModel>(
-                                                              context)
-                                                          .addProductToWish(
-                                                              e,
-                                                              Provider.of<AppModel>(
-                                                                      context)
-                                                                  .auth
-                                                                  .access_token);
-                                                    } else {
-                                                      Navigator.push(
-                                                          context,
-                                                          new MaterialPageRoute(
-                                                            builder: (BuildContext
-                                                                    context) =>
-                                                                new LoginScreen(),
-                                                          ));
-                                                    }
-                                                  },
-                                                  onUnFavorit: () {
-                                                    if (Provider.of<AppModel>(
-                                                            context)
-                                                        .loggedIn) {
-                                                      Provider.of<WishModel>(
-                                                              context)
-                                                          .removeProductFromWish(
-                                                              e,
-                                                              Provider.of<AppModel>(
-                                                                      context)
-                                                                  .auth
-                                                                  .access_token);
-                                                    } else {
-                                                      Navigator.push(
-                                                          context,
-                                                          new MaterialPageRoute(
-                                                            builder: (BuildContext
-                                                                    context) =>
-                                                                new LoginScreen(),
-                                                          ));
-                                                    }
-                                                  },
-                                                  onTobag: () {
-                                                    if (Provider.of<AppModel>(
-                                                            context)
-                                                        .loggedIn) {
-                                                      UIBlock.block(context,
-                                                          customLoaderChild:
-                                                              LoadingWidget(
-                                                                  context));
-                                                      Provider.of<CartModel>(
-                                                              context)
-                                                          .addProductToCart(
-                                                              e,
-                                                              Provider.of<AppModel>(
-                                                                      context)
-                                                                  .auth
-                                                                  .access_token,
-                                                              null)
-                                                          .then((value) {
-                                                        UIBlock.unblock(
-                                                            context);
-                                                        showAlertDialog(
-                                                            context, e);
-                                                      });
-                                                    } else {
-                                                      Navigator.push(
-                                                          context,
-                                                          new MaterialPageRoute(
-                                                            builder: (BuildContext
-                                                                    context) =>
-                                                                new LoginScreen(),
-                                                          ));
-                                                    }
-                                                  },
-                                                ),
-                                              ),
-                                            ),
-                                          Expanded(
-                                            flex: 1,
-                                            child: Container(
-                                              padding: EdgeInsets.symmetric(
-                                                  horizontal: 7),
-                                            ),
-                                          ),
-                                          Expanded(
-                                            flex: 1,
-                                            child: Container(
-                                              padding: EdgeInsets.symmetric(
-                                                  horizontal: 7),
-                                            ),
-                                          )
-                                        ],
-                                      ));
-                                    }
-                                  },
-                                  itemCount: dataPhoby.length,
-                                  pagination: null,
-                                  control: null,
-                                  autoplay: false,
-                                );
-                              }
-                            },
-                          ),
-                        ),
-                        Container(
-                          width: MediaQuery.of(context).size.width,
-                          child: Stack(
-                            children: [
-                              Column(
-                                children: [
-                                  Container(
-                                    height: 20,
-                                    width: double.infinity,
-                                  ),
-                                  Container(
-                                    color: Color(0xffFBDFD2),
-                                    height: 20,
-                                    width: double.infinity,
-                                  ),
-                                ],
-                              ),
-                              Positioned.fill(
-                                child: Center(
-                                  child: Text(
-                                    'DIARY PHOEBE',
-                                    style: TextStyle(
-                                      fontSize: 24,
-                                      fontFamily: 'Brandon',
-                                      color: Color(0xffF48262),
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        loading_youtube
-                            ? Container(
-                                width: double.infinity,
-                                color: Color(0xffFBDFD2),
-                                child: Center(
-                                  child: LoadingWidget(context),
-                                ),
-                              )
-                            : Container(
-                                color: Color(0xffFBDFD2),
-                                padding: EdgeInsets.symmetric(horizontal: 30),
-                                child: YoutubePlayer(
-                                  controller: _controllersYoutube,
-                                  bottomActions: [
-                                    CurrentPosition(),
-                                    ProgressBar(isExpanded: true),
-                                    RemainingDuration(),
-                                  ],
-                                ),
-                              ),
-                        Container(
-                          color: Color(0xffFBDFD2),
-                          width: double.infinity,
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 30, vertical: 10),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text(
-                                'Menuju Glowing Bersama Phoebe',
-                                style: TextStyle(
-                                  fontFamily: 'Brandon',
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                              Text(
-                                'Siapa nih yang masih suka bingung sama skincare routine atau baru mau mulai pakai skincare? Biar nggak salah langkah, kamu bisa tonton video baru dari Ponny Beaute dalam series: Belajar Bareng Phoebe!',
-                                style: TextStyle(
-                                  fontFamily: 'Brandon',
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
-                              Container(
-                                padding: EdgeInsets.only(top: 30),
-                                child: FlatButton(
-                                  onPressed: () {
-                                    _launchURL(
-                                        "https://www.youtube.com/c/PonnyBeaute");
-                                  },
-                                  padding: EdgeInsets.symmetric(horizontal: 10),
-                                  materialTapTargetSize:
-                                      MaterialTapTargetSize.shrinkWrap,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                    side: BorderSide(
-                                      width: 1.0,
-                                      color: Color(0xffF48262),
-                                    ),
-                                  ),
-                                  child: Text(
-                                    'LIHAT LEBIH BANYAK',
-                                    style: TextStyle(
-                                      fontFamily: 'Brandon',
-                                      color: Color(0xffF48262),
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ))),
-          ),
-        ]),
-        bottomNavigationBar: new PonnyBottomNavbar(selectedIndex: 0),
+                        ],
+                      ))),
+            ),
+          ]),
+          bottomNavigationBar: new PonnyBottomNavbar(selectedIndex: 0),
+        ),
       ),
     );
   }

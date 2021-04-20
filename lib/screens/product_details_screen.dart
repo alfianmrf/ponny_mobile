@@ -89,8 +89,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
         for(Varian item in widget.product.varian ){
           option.add(ChoiceOptionsValue(atributId: item.attribute_id,value: item.values[0]));
         }
-        // if(option.length>0)
-        // _getPriceVarian();
+        if(option.length==1&&widget.product.varian[0].values.length==1)
+        _getPriceVarian();
       }
 
     });

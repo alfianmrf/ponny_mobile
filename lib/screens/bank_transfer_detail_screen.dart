@@ -83,10 +83,13 @@ class _BankTransferDetailScreenState extends State<BankTransferDetailScreen> {
         body: Stack(children: <Widget>[
           Scaffold(
             backgroundColor: Color(0xffFDF8F0),
-            body: FutureBuilder<ManualInfo>(
+            body: FutureBuilder<NewManualInfo>(
               future: Provider.of<OrderModel>(context).getManualpembayaran(Provider.of<AppModel>(context).auth.access_token, widget.order_id.toString()),
-              builder: (BuildContext context, AsyncSnapshot<ManualInfo> snapshot){
+              builder: (BuildContext context, AsyncSnapshot<NewManualInfo> snapshot){
+                print("snaaaap");
+                print(snapshot.data);
                 if(snapshot.hasData){
+                  print("sukses dong");
                   return Container(
                     margin: MediaQuery.of(context).padding,
                     child: SingleChildScrollView(
@@ -155,7 +158,7 @@ class _BankTransferDetailScreenState extends State<BankTransferDetailScreen> {
                                           ),
                                         ),
                                         Text(
-                                          nm_format.format(snapshot.data.grandTotal),
+                                          nm_format.format(int.parse(snapshot.data.grandTotal)),
                                           style: TextStyle(
                                             fontFamily: 'Brandon',
                                             color: Colors.white,
@@ -189,7 +192,7 @@ class _BankTransferDetailScreenState extends State<BankTransferDetailScreen> {
                                           ),
                                         ),
                                         Text(
-                                          nm_format.format(snapshot.data.uniqTfManual),
+                                          nm_format.format(int.parse(snapshot.data.uniqTfManual)),
                                           style: TextStyle(
                                             fontFamily: 'Brandon',
                                             color: Colors.white,
@@ -300,7 +303,7 @@ class _BankTransferDetailScreenState extends State<BankTransferDetailScreen> {
                                 ),
                                 highlightedBorderColor: Color(0xffF48262),
                                 onPressed: (){
-                                  int total = snapshot.data.grandTotal+snapshot.data.uniqTfManual;
+                                  int total = int.parse(snapshot.data.grandTotal)+int.parse(snapshot.data.uniqTfManual);
                                   Clipboard.setData(new ClipboardData(text: total.toString()));
                                   key.currentState.showSnackBar(
                                       new SnackBar(content: new Text("Copied to Clipboard"),));
@@ -349,6 +352,7 @@ class _BankTransferDetailScreenState extends State<BankTransferDetailScreen> {
                     ),
                   );
                 }else{
+                  print("fail dong");
                   return Container(
                     height: MediaQuery.of(context).size.height,
                     child: Center(
