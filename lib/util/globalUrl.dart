@@ -15,6 +15,7 @@ const filterTrend = base_url + "forum/rooms/";
 const loginUrl = base_url + "auth/login";
 const register = base_url + "auth/signup";
 const blogUrl = base_url + "blog";
+const blogCategory = base_url + "blog/categories";
 const blogCari = base_url + "blog/cari";
 const forumUrl = base_url + "forum";
 const detailforum = base_url + "forum/detail/";

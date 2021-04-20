@@ -212,7 +212,7 @@ class _UntungRewardState extends State<UntungReward> {
             children: [
               Container(
                 width: double.infinity,
-                color: Color(0xffF3C1B5),
+                color: Color(0xffFBDFD2),
                 padding: EdgeInsets.symmetric(vertical: 10),
                 child: Column(
                   children: [
@@ -230,7 +230,7 @@ class _UntungRewardState extends State<UntungReward> {
                     FittedBox(
                       fit: BoxFit.fitWidth,
                       child: Text(
-                        user.name+" "+user.last_name,
+                        user.last_name!=null?user.name+" "+user.last_name:user.name,
                         style: TextStyle(
                           fontSize: 18,
                           fontFamily: "Brandon",
@@ -243,39 +243,30 @@ class _UntungRewardState extends State<UntungReward> {
                         children: [
                           Row(
                             children: [
-                              Expanded(
-                                child: FittedBox(
-                                  fit: BoxFit.fitWidth,
-                                  child: Text(
-                                    user.dashboard.membershipTitle
-                                        .toUpperCase(),
-                                    style: TextStyle(
-                                        color: Hexcolor('#b08d00'),
-                                        fontSize: 24,
-                                        fontFamily: "Brandon",
-                                        fontWeight: FontWeight.w800),
-                                  ),
-                                ),
+                              Text(
+                                user.dashboard.membershipTitle
+                                    .toUpperCase(),
+                                style: TextStyle(
+                                    color: Hexcolor('#b08d00'),
+                                    fontSize: 16,
+                                    fontFamily: "Brandon",
+                                    fontWeight: FontWeight.w800),
                               ),
                               Expanded(
-                                  flex: 3,
                                   child: new LinearPercentIndicator(
-                                    percent: user.dashboard.percent / 100,
+                                    percent: user.dashboard.membershipTitle.toUpperCase()=="OH HAPPY"
+                                        ? 1
+                                        : user.dashboard.percent / 100,
                                     progressColor: Colors.red,
                                     backgroundColor: Color(0xffF3B5B5),
                                   )),
-                              Expanded(
-                                child: FittedBox(
-                                  fit: BoxFit.fitWidth,
-                                  child: Text(
-                                    user.dashboard.next.toUpperCase(),
-                                    style: TextStyle(
-                                        color: Hexcolor('#b08d00'),
-                                        fontSize: 24,
-                                        fontFamily: "Brandon",
-                                        fontWeight: FontWeight.w800),
-                                  ),
-                                ),
+                              Text(
+                                user.dashboard.next.toUpperCase(),
+                                style: TextStyle(
+                                    color: Hexcolor('#b08d00'),
+                                    fontSize: 16,
+                                    fontFamily: "Brandon",
+                                    fontWeight: FontWeight.w800),
                               ),
                             ],
                           ),

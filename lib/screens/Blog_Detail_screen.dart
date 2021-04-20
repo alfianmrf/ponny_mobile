@@ -5,6 +5,7 @@ import 'package:flutter_html/style.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:ponny/common/constant.dart';
+import 'package:ponny/model/BlogCategories.dart';
 import 'package:ponny/model/Product.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
 import 'package:ponny/util/globalUrl.dart';
@@ -30,6 +31,9 @@ class _BlogDetailScreenState extends State<BlogDetailScreen> {
   String currentTag;
   int categoryId;
   bool onSearch = false;
+  bool loading = true;
+  List<BlogCategories> result = [];
+  final scaffoldkey = GlobalKey<ScaffoldState>();
 
   DateTime convertDateFromString(String strDate) {
     DateTime todayDate = DateTime.parse(strDate);
@@ -43,6 +47,36 @@ class _BlogDetailScreenState extends State<BlogDetailScreen> {
     List<dynamic> data = map['products'];
     print(data);
     return data;
+  }
+
+  Future<void> getData() async {
+    try {
+      final res = await http.get(blogCategory);
+      if (res.statusCode == 200) {
+        final responeJson = json.decode(res.body);
+        for (Map item in responeJson) {
+          result.add(BlogCategories.fromJson(item));
+        }
+        setState(() {
+          loading = false;
+        });
+        print("SUCCESS");
+        print(result);
+      }
+    } catch (e) {
+      print("ERROR");
+      print(e.toString());
+      setState(() {
+        loading = false;
+      });
+      scaffoldkey.currentState.showSnackBar(snackBarError);
+    }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    getData();
   }
 
   @override
@@ -60,6 +94,7 @@ class _BlogDetailScreenState extends State<BlogDetailScreen> {
       child: DefaultTabController(
         length: 5,
         child: Scaffold(
+            key: scaffoldkey,
             resizeToAvoidBottomInset: false,
             backgroundColor: Hexcolor('#FCF8F0'),
             body: Column(
@@ -158,21 +193,22 @@ class _BlogDetailScreenState extends State<BlogDetailScreen> {
                             ),
                           ),
                         ),
+                        for (var e in result)
                         InkWell(
                           onTap: () {
                             Navigator.push(context,
-                                MaterialPageRoute(builder: (context) => Blog(category: 1, tag: "BASIC SKINCARE",)));
+                                MaterialPageRoute(builder: (context) => Blog(category: e.id, tag: e.title.toUpperCase(),)));
                           },
                           child: Container(
                             height: 50,
                             padding: EdgeInsets.symmetric(horizontal: 15),
                             alignment: Alignment.center,
-                            color: categoryId == 1 ? Color(0xffFBDFD2) : null,
+                            color: categoryId == e.id ? Color(0xffFBDFD2) : null,
                             child: Column(
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 Text(
-                                  "BASIC\nSKINCARE",
+                                  e.title.toUpperCase(),
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                       fontSize: 12,
@@ -184,84 +220,84 @@ class _BlogDetailScreenState extends State<BlogDetailScreen> {
                             ),
                           ),
                         ),
-                        InkWell(
-                          onTap: () {
-                            Navigator.push(context,
-                                MaterialPageRoute(builder: (context) => Blog(category: 2, tag: "MASALAH KULIT",)));
-                          },
-                          child: Container(
-                            height: 50,
-                            padding: EdgeInsets.symmetric(horizontal: 15),
-                            alignment: Alignment.center,
-                            color: categoryId == 2 ? Color(0xffFBDFD2) : null,
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Text(
-                                  "MASALAH\nKULIT",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      fontSize: 12,
-                                      fontFamily: "Brandon",
-                                      fontWeight: FontWeight.bold,
-                                      color: categoryId == 2 ? Colors.black : Color(0xffF48262)),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        InkWell(
-                          onTap: () {
-                            Navigator.push(context,
-                                MaterialPageRoute(builder: (context) => Blog(category: 3, tag: "SKINCARE ROUTINE",)));
-                          },
-                          child: Container(
-                            height: 50,
-                            padding: EdgeInsets.symmetric(horizontal: 15),
-                            alignment: Alignment.center,
-                            color: categoryId == 3 ? Color(0xffFBDFD2) : null,
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Text(
-                                  "SKINCARE\nROUTINE",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      fontSize: 12,
-                                      fontFamily: "Brandon",
-                                      fontWeight: FontWeight.bold,
-                                      color: categoryId == 3 ? Colors.black : Color(0xffF48262)),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        InkWell(
-                          onTap: () {
-                            Navigator.push(context,
-                                MaterialPageRoute(builder: (context) => Blog(category: 4, tag: "MITOS ATAU FAKTA",)));
-                          },
-                          child: Container(
-                            height: 50,
-                            padding: EdgeInsets.symmetric(horizontal: 15),
-                            alignment: Alignment.center,
-                            color: categoryId == 4 ? Color(0xffFBDFD2) : null,
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Text(
-                                  "MITOS\nATAU FAKTA",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      fontSize: 12,
-                                      fontFamily: "Brandon",
-                                      fontWeight: FontWeight.bold,
-                                      color: categoryId == 4 ? Colors.black : Color(0xffF48262)),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
+                        // InkWell(
+                        //   onTap: () {
+                        //     Navigator.push(context,
+                        //         MaterialPageRoute(builder: (context) => Blog(category: 2, tag: "MASALAH KULIT",)));
+                        //   },
+                        //   child: Container(
+                        //     height: 50,
+                        //     padding: EdgeInsets.symmetric(horizontal: 15),
+                        //     alignment: Alignment.center,
+                        //     color: categoryId == 2 ? Color(0xffFBDFD2) : null,
+                        //     child: Column(
+                        //       mainAxisSize: MainAxisSize.min,
+                        //       children: [
+                        //         Text(
+                        //           "MASALAH\nKULIT",
+                        //           textAlign: TextAlign.center,
+                        //           style: TextStyle(
+                        //               fontSize: 12,
+                        //               fontFamily: "Brandon",
+                        //               fontWeight: FontWeight.bold,
+                        //               color: categoryId == 2 ? Colors.black : Color(0xffF48262)),
+                        //         ),
+                        //       ],
+                        //     ),
+                        //   ),
+                        // ),
+                        // InkWell(
+                        //   onTap: () {
+                        //     Navigator.push(context,
+                        //         MaterialPageRoute(builder: (context) => Blog(category: 3, tag: "SKINCARE ROUTINE",)));
+                        //   },
+                        //   child: Container(
+                        //     height: 50,
+                        //     padding: EdgeInsets.symmetric(horizontal: 15),
+                        //     alignment: Alignment.center,
+                        //     color: categoryId == 3 ? Color(0xffFBDFD2) : null,
+                        //     child: Column(
+                        //       mainAxisSize: MainAxisSize.min,
+                        //       children: [
+                        //         Text(
+                        //           "SKINCARE\nROUTINE",
+                        //           textAlign: TextAlign.center,
+                        //           style: TextStyle(
+                        //               fontSize: 12,
+                        //               fontFamily: "Brandon",
+                        //               fontWeight: FontWeight.bold,
+                        //               color: categoryId == 3 ? Colors.black : Color(0xffF48262)),
+                        //         ),
+                        //       ],
+                        //     ),
+                        //   ),
+                        // ),
+                        // InkWell(
+                        //   onTap: () {
+                        //     Navigator.push(context,
+                        //         MaterialPageRoute(builder: (context) => Blog(category: 4, tag: "MITOS ATAU FAKTA",)));
+                        //   },
+                        //   child: Container(
+                        //     height: 50,
+                        //     padding: EdgeInsets.symmetric(horizontal: 15),
+                        //     alignment: Alignment.center,
+                        //     color: categoryId == 4 ? Color(0xffFBDFD2) : null,
+                        //     child: Column(
+                        //       mainAxisSize: MainAxisSize.min,
+                        //       children: [
+                        //         Text(
+                        //           "MITOS\nATAU FAKTA",
+                        //           textAlign: TextAlign.center,
+                        //           style: TextStyle(
+                        //               fontSize: 12,
+                        //               fontFamily: "Brandon",
+                        //               fontWeight: FontWeight.bold,
+                        //               color: categoryId == 4 ? Colors.black : Color(0xffF48262)),
+                        //         ),
+                        //       ],
+                        //     ),
+                        //   ),
+                        // ),
                       ],
                     ),
                   ),
@@ -476,15 +512,15 @@ class _BlogDetailDataState extends State<BlogDetailData> {
   @override
   Widget build(BuildContext context) {
     return new FutureBuilder<Map>(
-        future: getTitle(),
-        builder: (context, snapshot) {
-          if (snapshot.hasError) print(snapshot.error);
-          return snapshot.hasData
-              ? BlogDetailScreen(
-                  title: snapshot.data,
-                )
-              : Center(child: new CircularProgressIndicator());
-        });
+      future: getTitle(),
+      builder: (context, snapshot) {
+        if (snapshot.hasError) print(snapshot.error);
+        return snapshot.hasData
+            ? BlogDetailScreen(
+                title: snapshot.data,
+              )
+            : Center(child: new CircularProgressIndicator());
+      });
   }
 }
 
