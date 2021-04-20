@@ -2300,6 +2300,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                     .logout()
                                     .then((value) {
                                   UIBlock.unblock(context);
+                                  Provider.of<UserModel>(context).user = null;
                                   Phoenix.rebirth(context);
                                   // Provider.of<ProductModel>(context).getBestSell();
                                   // Navigator.pushReplacement(

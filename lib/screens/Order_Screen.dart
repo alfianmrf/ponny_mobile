@@ -94,18 +94,25 @@ class _OrderScreenState extends State<OrderScreen> {
       NextPage=null;
       orders=[];
     });
+
     final response = await http.get(urlOrder+"/"+widget.type, headers: { HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: "Bearer $token"});
+    print("Order berhasil"+widget.type);
+    print(response.statusCode);
+    print(response.body);
     if(response.statusCode == 200)
     {
       print(response.body);
       final responseJson = json.decode(response.body);
-
+      
 
       setState(() {
+        print("Response JSON ===2 ");
         for (Map item in responseJson["data"]) {
-          print(Order.fromJson(item).code);
+          // print(Order.fromJson(item).code);
           orders.add(Order.fromJson(item));
         }
+        print("Response JSON === ");
+        print(orders);
         isLoading =false;
         current_page = responseJson['pagination']['current_page'];
         last_page = responseJson['pagination']['last_page'];
@@ -209,7 +216,7 @@ class _OrderScreenState extends State<OrderScreen> {
                           bottom: 5,
                         ),
                         child: Text(
-                          nm_format.format(order.grand_total),
+                          nm_format.format(int.parse(order.grand_total)),
                           style: TextStyle(
                             fontFamily: "Brandon",
                             fontWeight: FontWeight.w500,
@@ -309,7 +316,7 @@ class _OrderScreenState extends State<OrderScreen> {
                                                   margin: EdgeInsets.only(top: 1),
                                                   width: 90,
                                                   child: Text(
-                                                    nm_format.format(e.price)+" ("+e.quantity.toString()+")",
+                                                    nm_format.format(int.parse(e.price))+" ("+e.quantity+")",
                                                     textAlign: TextAlign.left,
                                                     style: TextStyle(
                                                       fontFamily: "Brandon",
@@ -619,7 +626,7 @@ class _OrderScreenState extends State<OrderScreen> {
                             Container(
                               width: 80,
                               child: Text(
-                                nm_format.format(order.coupon_discount),
+                                nm_format.format(int.parse(order.coupon_discount)),
                                 style: TextStyle(
                                   fontFamily: "Brandon",
                                   fontWeight: FontWeight.w300,
@@ -671,7 +678,7 @@ class _OrderScreenState extends State<OrderScreen> {
                             Container(
                               width: 80,
                               child: Text(
-                                nm_format.format(order.free_ongkir),
+                                nm_format.format(int.parse(order.free_ongkir)),
                                 style: TextStyle(
                                   fontFamily: "Brandon",
                                   fontWeight: FontWeight.w300,
@@ -697,7 +704,7 @@ class _OrderScreenState extends State<OrderScreen> {
                             Container(
                               width: 80,
                               child: Text(
-                                nm_format.format(order.grand_total),
+                                nm_format.format(int.parse(order.grand_total)),
                                 style: TextStyle(
                                   fontFamily: "Brandon",
                                   fontWeight: FontWeight.w300,
@@ -736,7 +743,7 @@ class _OrderScreenState extends State<OrderScreen> {
                                 ),
                               )else
 
-                              Container(
+                              order.typePayment != null ?  Container(
                                 width: 100,
                                 child: Text(
                                   order.typePayment,
@@ -746,7 +753,7 @@ class _OrderScreenState extends State<OrderScreen> {
                                     fontFamily: "Brandon",
                                   ),
                                 ),
-                              ),
+                              ): Text("-"),
                             Container(
                               width: 100,
                               margin: EdgeInsets.only(top: 10),
@@ -759,7 +766,7 @@ class _OrderScreenState extends State<OrderScreen> {
                                 ),
                               ),
                             ),
-                            Container(
+                            order.user_order_address != null ?  Container(
                               width: 100,
                               child: Text(
                                 order.user_order_address.nama_depan+" "+order.user_order_address.nama_belakang+",",
@@ -770,8 +777,8 @@ class _OrderScreenState extends State<OrderScreen> {
                                   decoration: TextDecoration.underline,
                                 ),
                               ),
-                            ),
-                            Container(
+                            ) : Container(),
+                            order.user_order_address != null ? Container(
                               width: 100,
                               child: Text(
                                 "+62"+order.user_order_address.nomor_hp,
@@ -781,8 +788,8 @@ class _OrderScreenState extends State<OrderScreen> {
                                   fontFamily: "Brandon",
                                 ),
                               ),
-                            ),
-                            Container(
+                            ) : Container(),
+                            order.user_order_address != null ? Container(
                               width: 100,
                               child: Text(
                                 order.user_order_address.alamat_lengkap,
@@ -792,7 +799,7 @@ class _OrderScreenState extends State<OrderScreen> {
                                   fontFamily: "Brandon",
                                 ),
                               ),
-                            ),
+                            ): Text("-"),
                             Container(
                               width: 100,
                               margin: EdgeInsets.only(top: 10),
@@ -805,7 +812,7 @@ class _OrderScreenState extends State<OrderScreen> {
                                 ),
                               ),
                             ),
-                            Container(
+                            order.user_order_address != null ? Container(
                               width: 100,
                               child: Text(
                                 order.user_order_address.kecamatan+", "+order.user_order_address.city_name+", "+order.user_order_address.province+", "+order.user_order_address.postal_code,
@@ -815,7 +822,7 @@ class _OrderScreenState extends State<OrderScreen> {
                                   fontFamily: "Brandon",
                                 ),
                               ),
-                            ),
+                            ):Text("-"),
                           ],
                         ),
                       ),

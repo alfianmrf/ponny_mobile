@@ -88,18 +88,18 @@ class Order {
   String payment_type;
   String payment_status;
   int subtotal;
-  int grand_total;
-  int coupon_discount;
+  String grand_total; //dev
+  String coupon_discount; //dev
   Address user_order_address;
   MapCost shipping_info;
   Midtrans mitrans_val;
-  int free_ongkir;
+  String free_ongkir; //dev
   List<OrderDetail> order_details;
   List<OrderDetailSample> orderDetailSample;
   List<OrderDetailPoint> orderDetailPoint;
   List<OrderDetailVoucher> orderDetailVoucher;
   StatusOrder status;
-  StatusOrder payment;
+  TypePayment payment;
   String typePayment;
   String confrimCourier;
   String confrimResi;
@@ -142,8 +142,8 @@ class Order {
     List<OrderDetailPoint> _orderDetailPoint=[];
     List<OrderDetailVoucher> _orderDetailVoucher=[];
     StatusOrder _status = parsedJson["statusOrder"] != null ? StatusOrder.fromJson(parsedJson["statusOrder"]) : null;
-    StatusOrder _payment= StatusOrder.fromJson(parsedJson["typePayment"]);
-    
+    TypePayment _payment= parsedJson["typePayment"] != null ? TypePayment.fromJson(parsedJson["typePayment"]): null;
+    String _typePayment = parsedJson["typePayment"] != null ? parsedJson["typePayment"]["param_2"] : null;
     for(Map item in parsedJson["orderDetails"]){
       _order_details.add(OrderDetail.fromJson(item));
     }
@@ -174,7 +174,7 @@ class Order {
       _orderDetailPoint,
       _status,
       _payment,
-        parsedJson["typePayment"]["param_2"],
+      _typePayment,
       parsedJson["confrim_courier"],
       parsedJson["confrim_resi"],
       parsedJson["delivery_status"],
@@ -218,10 +218,10 @@ class Midtrans{
 
 class OrderDetail {
   int id;
-  int quantity;
-  int price;
+  String quantity;
+  String price;
   Product product;
-  int reviewed;
+  String reviewed;
   OrderDetail(this.id, this.quantity, this.product,this.price,this.reviewed);
   factory OrderDetail.fromJson(Map<String, dynamic> parsedJson){
     return OrderDetail(parsedJson["id"],parsedJson["quantity"],Product.fromJson(parsedJson["product"]["availability"]),parsedJson["price"],parsedJson["reviewed"]);
@@ -230,9 +230,9 @@ class OrderDetail {
 
 class OrderDetailSample  {
   int id;
-  int quantity;
+  String quantity;
   Product product;
-  int reviewed;
+  String reviewed;
   OrderDetailSample (this.id, this.quantity, this.product,this.reviewed);
   factory OrderDetailSample.fromJson(Map<String, dynamic> parsedJson){
     return OrderDetailSample(parsedJson["id"],parsedJson["quantity"],Product.fromJson(parsedJson["product"]["availability"]),parsedJson["reviewed"]);
@@ -241,10 +241,10 @@ class OrderDetailSample  {
 
 class OrderDetailPoint  {
   int id;
-  int quantity;
-  int jml_point;
+  String quantity;
+  String jml_point;
   Product product;
-  int reviewed;
+  String reviewed;
   OrderDetailPoint (this.id, this.quantity, this.product,this.jml_point,this.reviewed);
   factory OrderDetailPoint.fromJson(Map<String, dynamic> parsedJson){
     return OrderDetailPoint(parsedJson["id"],parsedJson["quantity"],Product.fromJson(parsedJson["product"]["availability"]),parsedJson["log_product_point"]["jml_point"],parsedJson["reviewed"]);
@@ -384,6 +384,71 @@ class StatusOrder {
     return data;
   }
 }
+
+class TypePayment {
+  int _id;
+  String _param1;
+  String _param2;
+  String _param3;
+  Null _param4;
+  String _varId;
+  String _isDeleted;
+
+  TypePayment(
+      {int id,
+        String param1,
+        String param2,
+        String param3,
+        Null param4,
+        String varId,
+        String isDeleted}) {
+    this._id = id;
+    this._param1 = param1;
+    this._param2 = param2;
+    this._param3 = param3;
+    this._param4 = param4;
+    this._varId = varId;
+    this._isDeleted = isDeleted;
+  }
+
+  int get id => _id;
+  set id(int id) => _id = id;
+  String get param1 => _param1;
+  set param1(String param1) => _param1 = param1;
+  String get param2 => _param2;
+  set param2(String param2) => _param2 = param2;
+  String get param3 => _param3;
+  set param3(String param3) => _param3 = param3;
+  Null get param4 => _param4;
+  set param4(Null param4) => _param4 = param4;
+  String get varId => _varId;
+  set varId(String varId) => _varId = varId;
+  String get isDeleted => _isDeleted;
+  set isDeleted(String isDeleted) => _isDeleted = isDeleted;
+
+  TypePayment.fromJson(Map<String, dynamic> json) {
+    _id = json['id'];
+    _param1 = json['param_1'];
+    _param2 = json['param_2'];
+    _param3 = json['param_3'];
+    _param4 = json['param_4'];
+    _varId = json['var_id'];
+    _isDeleted = json['is_deleted'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this._id;
+    data['param_1'] = this._param1;
+    data['param_2'] = this._param2;
+    data['param_3'] = this._param3;
+    data['param_4'] = this._param4;
+    data['var_id'] = this._varId;
+    data['is_deleted'] = this._isDeleted;
+    return data;
+  }
+}
+
 
 class MidtransRaw {
   String statusCode;

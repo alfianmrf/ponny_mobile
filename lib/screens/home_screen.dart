@@ -754,7 +754,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                             ),
                           ),
-                        ),
+
                         Container(
                           width: MediaQuery.of(context).size.width,
                           margin: EdgeInsets.only(bottom: 10),
@@ -964,35 +964,46 @@ class _HomeScreenState extends State<HomeScreen> {
                                             EdgeInsets.symmetric(vertical: 10),
                                         child: VerticalDivider(),
                                       ),
-                                      Row(
-                                        children: [
-                                          Container(
-                                              margin: EdgeInsets.only(left: 6),
-                                              width: 30,
-                                              child: Image.asset(
-                                                  'assets/images/Asset 13.png')),
-                                          Container(
-                                            margin: EdgeInsets.only(left: 7),
-                                            child: RichText(
-                                                text: TextSpan(children: [
-                                              TextSpan(
-                                                  text: '1200 POIN\n',
-                                                  style: TextStyle(
-                                                      color: Colors.black87,
+                                      GestureDetector(
+                                        onTap: (){
+                                          Provider.of<UserModel>(context).user == null ? Navigator.push(
+                                              context,
+                                              new MaterialPageRoute(
+                                                builder: (BuildContext
+                                                context) =>
+                                                new LoginScreen(),
+                                              )) : null;
+                                        },
+                                        child: Row(
+                                          children: [
+                                            Container(
+                                                margin: EdgeInsets.only(left: 6),
+                                                width: 30,
+                                                child: Image.asset(
+                                                    'assets/images/Asset 13.png')),
+                                            Container(
+                                              margin: EdgeInsets.only(left: 7),
+                                              child: RichText(
+                                                  text: TextSpan(children: [
+                                                TextSpan(
+                                                    text: Provider.of<UserModel>(context).user == null ? "Point Reward\n":'${Provider.of<UserModel>(context).user.point} POIN\n',
+                                                    style: TextStyle(
+                                                        color: Colors.black87,
+                                                        fontFamily: 'Brandon',
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        fontSize: 12)),
+                                                TextSpan(
+                                                    text: 'Happy Skin Rewards',
+                                                    style: TextStyle(
                                                       fontFamily: 'Brandon',
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontSize: 12)),
-                                              TextSpan(
-                                                  text: 'Happy Skin Rewards',
-                                                  style: TextStyle(
-                                                    fontFamily: 'Brandon',
-                                                    fontSize: 9,
-                                                    color: Colors.black45,
-                                                  ))
-                                            ])),
-                                          ),
-                                        ],
+                                                      fontSize: 9,
+                                                      color: Colors.black45,
+                                                    ))
+                                              ])),
+                                            ),
+                                          ],
+                                        ),
                                       )
                                     ]),
                                   ),
@@ -1025,27 +1036,28 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     decoration: BoxDecoration(
                                                       color: Colors.white,
                                                       borderRadius:
-                                                          BorderRadius.circular(
-                                                              10),
+                                                      BorderRadius.circular(
+                                                          10),
                                                       border: Border.all(
                                                         width: 1,
                                                         color:
-                                                            Color(0xffF48262),
+                                                        Color(0xffF48262),
                                                       ),
-                                                      child: Image.asset(
-                                                          'assets/images/home/skincare.png'),
                                                     ),
+                                                    child: Image.asset(
+                                                        'assets/images/home/skincare.png'),
                                                   ),
-                                                  Text(
-                                                    'Skincare',
-                                                    style: TextStyle(
-                                                      fontFamily: 'Brandon',
-                                                      fontSize: 12,
-                                                    ),
-                                                    textAlign: TextAlign.center,
+                                                ),
+                                                Text(
+                                                  'Skincare',
+                                                  style: TextStyle(
+                                                    fontFamily: 'Brandon',
+                                                    fontSize: 12,
                                                   ),
-                                                ],
-                                              ),
+                                                  textAlign: TextAlign.center,
+                                                ),
+                                              ],
+                                            ),
                                             ),
                                           ),
                                           Expanded(

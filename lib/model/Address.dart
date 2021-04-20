@@ -152,11 +152,11 @@ class Address {
   String kecamatan;
   String postal_code;
   String alamat_lengkap;
-  int user_id;
+  String user_id; // dev
   String results_raw;
   String created_at;
   String updated_at;
-  int is_deleted;
+  String is_deleted; // dev
   String lat;
   String lng;
 
