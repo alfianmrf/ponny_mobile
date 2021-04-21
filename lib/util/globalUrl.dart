@@ -97,6 +97,7 @@ const claimPoint = "https://ec2-13-229-239-61.ap-southeast-1.compute.amazonaws.c
 const urlTracking = base_url + "checkout/tracking";
 const urlTerimaBarang = base_url + "checkout/receipt";
 const listCabangURL = urlGlobal + "api/v2/cabang/get";
+const qrCodeURL = urlGlobal + "api/v2/qr/scan";
 
 //Redeem
 const rdmProduk = base_url + "product/redeemable";

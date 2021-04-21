@@ -19,7 +19,7 @@ import 'package:ponny/model/ProductFlashDeal.dart';
 import 'package:ponny/model/Slider.dart';
 import 'package:ponny/model/User.dart';
 import 'package:ponny/model/listCabangModel.dart';
-import 'package:ponny/screens/Barcode_Scanner_Screen.dart';
+import 'package:ponny/screens/pages.dart';
 import 'package:ponny/screens/Blog_screen.dart';
 import 'package:ponny/screens/Browse_Screen.dart';
 import 'package:ponny/screens/FullSiaran.dart';
@@ -986,7 +986,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                               child: RichText(
                                                   text: TextSpan(children: [
                                                 TextSpan(
-                                                    text: Provider.of<UserModel>(context).user == null ? "Point Reward\n":'${Provider.of<UserModel>(context).user.point} POIN\n',
+                                                    text: Provider.of<AppModel>(context).loggedIn ? '${Provider.of<CartModel>(context).CurentPoint} POIN\n' : "Point Reward\n",
                                                     style: TextStyle(
                                                         color: Colors.black87,
                                                         fontFamily: 'Brandon',

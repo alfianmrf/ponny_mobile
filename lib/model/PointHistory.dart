@@ -1,16 +1,17 @@
 class PointHistory {
-  int userId;
-  int points;
+  String userId;
+  String points;
   String createdAt;
   String keterangan;
-  int status;
+  String status;
 
   PointHistory(
       {this.userId, this.points, this.createdAt, this.keterangan, this.status});
 
   PointHistory.fromJson(Map<String, dynamic> json) {
     userId = json['user_id'];
-    points = json['points'].round();
+    // points = json['points'].round();
+    points = json['points'];
     createdAt = json['created_at'];
     keterangan = json['keterangan'];
     status = json['status'];

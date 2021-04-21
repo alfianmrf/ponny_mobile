@@ -25,8 +25,7 @@ class CartModel with ChangeNotifier{
   Summary summary;
   Summary sumaryPoint;
   MapCost shipping;
-  int CurentPoint =0;
-
+  int CurentPoint = 0;
 
   CartModel();
 
@@ -211,8 +210,11 @@ class CartModel with ChangeNotifier{
         listSample =[];
         listUseSample=[];
         listProductPoin=[];
+        CurentPoint = 0;
 
         final responseJson = json.decode(result.body);
+
+        CurentPoint = responseJson["currentPoint"];
 
         for (Map item in responseJson["cart"]) {
           listCardOfitem.add(Cart.fromJson(item));

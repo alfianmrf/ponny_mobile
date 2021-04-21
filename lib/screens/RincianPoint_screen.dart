@@ -69,6 +69,10 @@ class _RincianPointState extends State<RincianPoint> {
     });
     var token = Provider.of<AppModel>(context, listen: false).auth.access_token;
     final response = await http.get(historyPointurl,headers: { HttpHeaders.contentTypeHeader: 'application/json',HttpHeaders.authorizationHeader: "Bearer $token" });
+
+    print("response statusss");
+    print(response.statusCode);
+
     if(response.statusCode == 200)
     {
       final responseJson = json.decode(response.body);
@@ -82,10 +86,8 @@ class _RincianPointState extends State<RincianPoint> {
         last_page = responseJson['last_page'];
         NextPage = responseJson["next_page_url"];
       });
-      print(_result.length);
-
     }else{
-
+      print("errorrrrrrrrrrrrrrrrrrrrrr");
     }
 
   }
@@ -144,7 +146,7 @@ class _RincianPointState extends State<RincianPoint> {
                       flex: 1,
                       child: Center(
                         child: Text(
-                          item.points.toString()+" POIN",
+                          int.parse(item.points).round().toString()+" POIN",
                           style: TextStyle(
                             fontSize: 18,
                             fontFamily: "Brandon",

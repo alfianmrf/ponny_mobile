@@ -1,13 +1,4 @@
-import 'package:flutter/foundation.dart';
-import 'package:qr_code_scanner/qr_code_scanner.dart';
-import 'package:flutter_icons/flutter_icons.dart';
-
-import 'dart:async';
-import 'dart:collection';
-import 'dart:convert';
-//import 'dart:wasm';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+part of 'pages.dart';
 
 class QRScreen extends StatefulWidget {
   @override
@@ -18,6 +9,22 @@ class _QRScreenState extends State<QRScreen> {
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
   Barcode result;
   QRViewController controller;
+
+  Future<void>getQR() async{
+      controller.stopCamera();
+      Provider.of<ProductModel>(context).getQRCode(Provider.of<AppModel>(context).auth.access_token, result.code).then((value){
+          print("ini hasilnya--------");
+          print(value);
+          if (value != null)
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                  ProductDetailsScreen(product: value,isScan: true,)),
+            );
+      });
+  }
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -124,6 +131,7 @@ class _QRScreenState extends State<QRScreen> {
     controller.scannedDataStream.listen((scanData) {
       setState(() {
         result = scanData;
+        getQR();
       });
     });
   }

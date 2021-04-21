@@ -18,15 +18,14 @@ class ProductModel with ChangeNotifier {
   List<Product> Recomendasi = [];
   List<Product> Recom = [];
   List<Product> Sample = [];
-  List<Product> news =[];
+  List<Product> news = [];
   bool loadingLocalProduct = true;
   bool loadingBestSale = true;
   bool loadingPhobe = true;
   bool loadingRekomendasi = true;
   bool loadingRecom = true;
-  bool loadingNews =true;
+  bool loadingNews = true;
   FlashDetail flashsale;
-
 
   ProductModel() {
     getLocalProduct();
@@ -77,7 +76,6 @@ class ProductModel with ChangeNotifier {
       notifyListeners();
     }
   }
-
 
   Future<void> getFlashSale() async {
     try {
@@ -168,52 +166,80 @@ class ProductModel with ChangeNotifier {
     }
   }
 
-  Future<SearchResult> searchProduct(String url,param) async {
-    SearchResult resultSearch =null;
+  Future<SearchResult> searchProduct(String url, param) async {
+    SearchResult resultSearch = null;
     // try {
     print(json.encode(param));
-      print(param);
-      final result = await http.post(url,headers: { HttpHeaders.contentTypeHeader: 'application/json'} ,body: json.encode(param));
-      print(result.body);
-      if (result.statusCode == 200) {
-        final responseJson = json.decode(result.body);
+    print(param);
+    final result = await http.post(url,
+        headers: {HttpHeaders.contentTypeHeader: 'application/json'},
+        body: json.encode(param));
+    print(result.body);
+    if (result.statusCode == 200) {
+      final responseJson = json.decode(result.body);
 
-        List<Product> _tmp=[];
-        for (Map item in responseJson["data"]) {
-          _tmp.add(Product.fromJson(item));
-        }
-
-        print(_tmp.length);
-
-        return SearchResult(products: _tmp,nextUrl: responseJson["links"]["next"],total: responseJson["meta"]["total"], meta: Meta.fromJson(responseJson["meta"]));
+      List<Product> _tmp = [];
+      for (Map item in responseJson["data"]) {
+        _tmp.add(Product.fromJson(item));
       }
+
+      print(_tmp.length);
+
+      return SearchResult(
+          products: _tmp,
+          nextUrl: responseJson["links"]["next"],
+          total: responseJson["meta"]["total"],
+          meta: Meta.fromJson(responseJson["meta"]));
+    }
 
     // } catch (err) {
     //   print("error." + err.toString());
     // }
     return resultSearch;
   }
+
   Future<VarianResult> getValueVariant(param) async {
     VarianResult result;
-    print("PARAM: "+json.encode(param));
+    print("PARAM: " + json.encode(param));
     try {
-      final result = await http.post(varianPriceUrl, headers: { HttpHeaders.contentTypeHeader: 'application/json'},body: json.encode(param));
+      final result = await http.post(varianPriceUrl,
+          headers: {HttpHeaders.contentTypeHeader: 'application/json'},
+          body: json.encode(param));
       if (result.statusCode == 200) {
         final responseJson = json.decode(result.body);
-        print("response Variant"+responseJson.toString());
+        print("response Variant" + responseJson.toString());
         return VarianResult.fromJson(responseJson);
       }
     } catch (err) {
       print("error." + err.toString());
-
     }
     return result;
   }
 
+  Future<Product> getQRCode(String token, String qr) async {
+    Product result;
+    try {
+      var param = <String, dynamic>{"id": qr, "type": "mobile"};
 
+      final result = await http.post(qrCodeURL,
+          headers: {HttpHeaders.contentTypeHeader: 'application/json'},
+          body: json.encode(param));
+      if (result.statusCode == 200) {
+        final responseJson = json.decode(result.body);
+        print("response Variant" + responseJson.toString());
+        print("dataa ===>");
+        print(responseJson['product_data']['data'][0]);
+        return Product.fromJson(responseJson['product_data']['data'][0]);
+      }
 
+    } catch (e) {
+      print("error." + e.toString());
+    }
+    return result;
+  }
 }
-class Product{
+
+class Product {
   int id;
   String name;
   List<String> photos;
@@ -244,8 +270,6 @@ class Product{
   int currentStock;
   bool is_shown;
 
-
-
   Product(
       this.id,
       this.name,
@@ -275,21 +299,18 @@ class Product{
       this.komposisi,
       this.slug,
       this.currentStock,
-      this.is_shown
-      );
+      this.is_shown);
 
+  factory Product.fromJson(Map<String, dynamic> parsedJson) {
+    List<String> _tmp = [];
+    List<Varian> _var = [];
 
+    if (parsedJson["photos"] != null)
+      for (String item in parsedJson['photos']) {
+        _tmp.add(item);
+      }
 
-  factory Product.fromJson(Map<String, dynamic> parsedJson){
-    List<String> _tmp=[];
-    List<Varian> _var=[];
-
-    if(parsedJson["photos"] != null)
-    for(String item in parsedJson['photos']){
-      _tmp.add(item);
-    }
-
-    for(Map item in parsedJson['varian']){
+    for (Map item in parsedJson['varian']) {
       _var.add(Varian.fromJson(item));
     }
     print(parsedJson['varian']);
@@ -310,7 +331,9 @@ class Product{
         double.parse(parsedJson["rating"].toString()),
         parsedJson["sales"],
         Brand.fromJson(parsedJson["brand"]),
-        parsedJson["is_flash_deal"] != null ? ProductFlashDeal.fromJson(parsedJson["is_flash_deal"]): null,
+        parsedJson["is_flash_deal"] != null
+            ? ProductFlashDeal.fromJson(parsedJson["is_flash_deal"])
+            : null,
         parsedJson['review_count'],
         parsedJson["nomer_bpom"],
         parsedJson["description"],
@@ -322,8 +345,7 @@ class Product{
         parsedJson['komposisi'],
         parsedJson["slug"],
         parsedJson["current_stock"],
-        parsedJson["is_shown"]
-    );
+        parsedJson["is_shown"]);
   }
 }
 
@@ -334,24 +356,23 @@ class Varian {
 
   Varian(this.attribute_id, this.atribut_name, this.values);
 
-  factory Varian.fromJson(Map<String, dynamic> parsedJson){
-    List<String> _tmp=[];
-    for(String item in parsedJson['values']){
+  factory Varian.fromJson(Map<String, dynamic> parsedJson) {
+    List<String> _tmp = [];
+    for (String item in parsedJson['values']) {
       _tmp.add(item);
     }
     return Varian(parsedJson["attribute_id"], parsedJson["atribut_name"], _tmp);
   }
-
-
 }
-class SearchResult{
+
+class SearchResult {
   List<Product> products;
   String nextUrl;
   int total;
   Meta meta;
-  SearchResult({this.products,this.nextUrl,this.total,this.meta});
-
+  SearchResult({this.products, this.nextUrl, this.total, this.meta});
 }
+
 class Meta {
   int currentPage;
   int from;
@@ -363,12 +384,12 @@ class Meta {
 
   Meta(
       {this.currentPage,
-        this.from,
-        this.lastPage,
-        this.path,
-        this.perPage,
-        this.to,
-        this.total});
+      this.from,
+      this.lastPage,
+      this.path,
+      this.perPage,
+      this.to,
+      this.total});
 
   Meta.fromJson(Map<String, dynamic> json) {
     currentPage = json['current_page'];
@@ -401,13 +422,20 @@ class VarianResult {
   int base_price;
   String gambar;
 
-  VarianResult({this.productId, this.varian, this.price, this.stock_quantity,this.base_price,this.gambar});
+  VarianResult(
+      {this.productId,
+      this.varian,
+      this.price,
+      this.stock_quantity,
+      this.base_price,
+      this.gambar});
 
   VarianResult.fromJson(Map<String, dynamic> json) {
     productId = json['product_id'];
     varian = json['varian'];
     price = json['price'];
-    stock_quantity = json['stock_quantity'] != null ? json['stock_quantity'] : 0;
+    stock_quantity =
+        json['stock_quantity'] != null ? json['stock_quantity'] : 0;
     base_price = json["base_price"];
     gambar = json["gambar"];
   }
@@ -421,6 +449,3 @@ class VarianResult {
     return data;
   }
 }
-
-
-

@@ -16,6 +16,7 @@ import 'package:ponny/model/Product.dart';
 import 'package:ponny/model/Review.dart';
 import 'package:ponny/model/WishProduct.dart';
 import 'package:ponny/screens/cart_screen.dart';
+import 'package:ponny/screens/home_screen.dart';
 import 'package:ponny/screens/review_screen.dart';
 import 'package:ponny/util/globalUrl.dart';
 import 'package:ponny/widgets/MyProduct.dart';
@@ -32,7 +33,8 @@ import 'package:ponny/common/constant.dart' as cost;
 class ProductDetailsScreen extends StatefulWidget {
   static const String id = "product_details_screen";
   Product product;
-  ProductDetailsScreen({Key key,this.product});
+  bool isScan;
+  ProductDetailsScreen({Key key,this.product, this.isScan = false});
 
   @override
   _ProductDetailsScreenState createState() => _ProductDetailsScreenState();
@@ -477,6 +479,10 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
         });
   }
 
+  Future<bool> _onWillPop() async {
+
+  }
+
   @override
   Widget build(BuildContext context) {
     List<String> listBahanAktif = widget.product.bahan_aktif != null? widget.product.bahan_aktif.split(',') : [];
@@ -485,251 +491,245 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     List<Widget> ListRekomedasi;
 
     
-    return Scaffold(
-      key: scaffoldKey,
-      backgroundColor: Theme.of(context).primaryColor,
-      body: Stack(
-        children: <Widget>[
-          Scaffold(
-            backgroundColor: Color(0xffFDF8F0),
-            extendBodyBehindAppBar: true,
-            appBar: AppBar(
-              backgroundColor: _color,
-              elevation: _elevation,
-              leading:IconButton(
-                icon: Icon(Icons.arrow_back_ios),
-                onPressed: () =>Navigator.pop(context),
-              ),
-              iconTheme: IconThemeData(
-                color: Color(0xffF48262),
-              ),
-              actions: <Widget>[
-
-                IconButton(
-
-                  icon: new Stack(
-                      children: <Widget>[
-                        Provider.of<AppModel>(context).loggedIn?
-                        new Container(
-                          padding: EdgeInsets.all(5),
-                          child: Provider.of<WishModel>(context).loading ? LoadingRing(context) : Icon(Icons.favorite_border),
-                        ):new Container(
-                          padding: EdgeInsets.all(5),
-                          child: Icon(Icons.favorite_border),
-                        ),
-                        if(Provider.of<WishModel>(context).countwishlist > 0)
-                          new Positioned(  // draw a red marble
-                            top: 0.0,
-                            right: 0.0,
-                            child: Container(
-                              width: 12,
-                              height: 12,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(40),
-                                color: Colors.redAccent,
-                              ),
-                              child: Center(
-                                child: Text(
-                                  Provider.of<WishModel>(context).countwishlist.toString(),
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontFamily: 'Brandon',
-                                    fontSize: 8,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          )
-                      ]
-                  ),
-                  onPressed: () {
-                    if(Provider.of<AppModel>(context).loggedIn){
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>  DaftarKeinginanScreen()),
-                      );
-                    }else{
-                      Navigator.push(context,new MaterialPageRoute(
-                        builder: (BuildContext context) => new LoginScreen(),
-                      ));
-                    }
-                  },
+    return WillPopScope(
+      onWillPop: () async {
+        if (widget.isScan == true){
+          Navigator.of(context).pushReplacementNamed(HomeScreen.id);
+        }
+        return true;
+      },
+      child: Scaffold(
+        key: scaffoldKey,
+        backgroundColor: Theme.of(context).primaryColor,
+        body: Stack(
+          children: <Widget>[
+            Scaffold(
+              backgroundColor: Color(0xffFDF8F0),
+              extendBodyBehindAppBar: true,
+              appBar: AppBar(
+                backgroundColor: _color,
+                elevation: _elevation,
+                leading:IconButton(
+                  icon: Icon(Icons.arrow_back_ios),
+                  onPressed: () => widget.isScan == true ? Navigator.of(context).pushReplacementNamed(HomeScreen.id) : Navigator.pop(context),
                 ),
-                IconButton(
-                  icon: new Stack(
-                      children: <Widget>[
-                        new Container(
-                          padding: EdgeInsets.all(5),
-                          child: ImageIcon(
-                            AssetImage('assets/images/home/cart.png')),
-                        ),
-                        if(jmlCard>0)
-                          new Positioned(  // draw a red marble
-                            top: 0.0,
-                            right: 0.0,
-                            child: Container(
-                              width: 12,
-                              height: 12,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(40),
-                                color: Colors.redAccent,
-                              ),
-                              child: Center(
-                                child: Text(
-                                  jmlCard.toString(),
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontFamily: 'Brandon',
-                                    fontSize: 8,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          )
-                      ]
-                  ),
-                  onPressed: () {
-                    Navigator.of(context).pushReplacementNamed(CartScreen.id);
-                  },
+                iconTheme: IconThemeData(
+                  color: Color(0xffF48262),
                 ),
-              ],
-            ),
-            body: Container(
-              margin: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
-              child: SingleChildScrollView(
-                controller: _controller,
-                child: Column(
-                  children: <Widget>[
-                    Container(
-                      height: MediaQuery.of(context).size.width * 1.2,
-                      child: pictures.length >0 ? new Swiper(
-                        itemBuilder: (BuildContext context, int index) {
-                          return new CachedNetworkImage(
-                            imageUrl:  pictures[index] != null ?  img_url+pictures[index] :"",
-                            placeholder: (context, url) => LoadingWidgetPulse(context),
-                            errorWidget: (context, url, error) => Image.asset('assets/images/210x265.png'),
-                            width: MediaQuery.of(context).size.width,
-                            fit: BoxFit.cover,
-                            useOldImageOnUrlChange: true,
+                actions: <Widget>[
 
-                          );
-                        },
-                        itemCount: pictures.length,
-                        pagination: new SwiperPagination(
-                            margin: new EdgeInsets.all(5.0),
-                            builder: new DotSwiperPaginationBuilder(
-                                color: Color(0xffE6E7E9), activeColor: Color(0xffF48262))),
-                        controller: controller,
-                        autoplay: false,
-                      ): Image.asset('assets/images/210x265.png',fit:BoxFit.cover ,),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(top: 10, left: 15, right: 15),
-                      child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              widget.product.brand.name,
-                              style: TextStyle(
-                                fontFamily: 'Brandon',
-                                fontSize: 20,
-                              ),
-                            ),
-                            Row(
-                              children: <Widget>[
-                                if(widget.product.nomer_bpom != null)
-                                Container(
-                                  padding: EdgeInsets.symmetric(horizontal: 7, vertical: 3),
-                                  margin: EdgeInsets.only(right: 10),
-                                  child: Text(widget.product.nomer_bpom != null ? widget.product.nomer_bpom :"", style: TextStyle(fontSize: 12, fontFamily: 'Brandon'),),
-                                  decoration: BoxDecoration(
-                                      border: Border.all(color: Colors.black),
-                                      borderRadius: BorderRadius.circular(5),
-                                  ),
-                                ),
-                                IconButton(icon: Icon(
-                                  Icons.share,
-                                  color: Color(0xffF48262),
-                                ), onPressed: (){
-                                  // _launchURL("https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fponnybeaute.co.id%2Fproduct%2FElsheSkin-Radiant-Skin-Serum-20ml-qjUU4");
-                                  // SocialShare.shareInstagramStory(img_url+widget.product.thumbnail_image,"#ffffff","#000000",
-                                  //     "https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fponnybeaute.co.id%2Fproduct%2FElsheSkin-Radiant-Skin-Serum-20ml-qjUU4");
-                                  _settingModalBottomSheet(context);
-                                })
-                              ],
-                            ),
-                          ]
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 15),
-                      child: Column(
+                  IconButton(
+
+                    icon: new Stack(
                         children: <Widget>[
-                          Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              widget.product.name,
-                              style: TextStyle(
-                                fontFamily: 'Brandon',
+                          Provider.of<AppModel>(context).loggedIn?
+                          new Container(
+                            padding: EdgeInsets.all(5),
+                            child: Provider.of<WishModel>(context).loading ? LoadingRing(context) : Icon(Icons.favorite_border),
+                          ):new Container(
+                            padding: EdgeInsets.all(5),
+                            child: Icon(Icons.favorite_border),
+                          ),
+                          if(Provider.of<WishModel>(context).countwishlist > 0)
+                            new Positioned(  // draw a red marble
+                              top: 0.0,
+                              right: 0.0,
+                              child: Container(
+                                width: 12,
+                                height: 12,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(40),
+                                  color: Colors.redAccent,
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    Provider.of<WishModel>(context).countwishlist.toString(),
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontFamily: 'Brandon',
+                                      fontSize: 8,
+                                    ),
+                                  ),
+                                ),
                               ),
-                              textAlign: TextAlign.left,
-                            ),
+                            )
+                        ]
+                    ),
+                    onPressed: () {
+                      if(Provider.of<AppModel>(context).loggedIn){
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>  DaftarKeinginanScreen()),
+                        );
+                      }else{
+                        Navigator.push(context,new MaterialPageRoute(
+                          builder: (BuildContext context) => new LoginScreen(),
+                        ));
+                      }
+                    },
+                  ),
+                  IconButton(
+                    icon: new Stack(
+                        children: <Widget>[
+                          new Container(
+                            padding: EdgeInsets.all(5),
+                            child: ImageIcon(
+                              AssetImage('assets/images/home/cart.png')),
                           ),
-                          Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text.rich(
-                                TextSpan(children: <InlineSpan>[
-                                  WidgetSpan(
-                                    child: RatingBar.builder(
-                                      initialRating: widget.product.rating,
-                                      minRating: 0,
-                                      direction: Axis.horizontal,
-                                      allowHalfRating: true,
-                                      itemCount: 5,
-                                      itemSize: 14.0,
-                                      itemPadding: EdgeInsets.symmetric(horizontal: 1.0),
-                                      itemBuilder: (context, index) => Icon(
-                                        Icons.favorite,
-                                        color: Color(0xffF48262),
-                                      ),
-                                      unratedColor: Color(0xffFBD2CD),
+                          if(jmlCard>0)
+                            new Positioned(  // draw a red marble
+                              top: 0.0,
+                              right: 0.0,
+                              child: Container(
+                                width: 12,
+                                height: 12,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(40),
+                                  color: Colors.redAccent,
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    jmlCard.toString(),
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontFamily: 'Brandon',
+                                      fontSize: 8,
                                     ),
                                   ),
-                                  TextSpan(
-                                      text: '('+widget.product.review_count.toString()+')',
-                                      style: TextStyle(
-                                        fontSize: 12,
-                                      )
-                                  )
-                                ]
-                                )
-                            ),
-                          ),
-                          Align(
-                            alignment: Alignment.centerLeft,
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(vertical: 7),
-                              child: Row(
+                                ),
+                              ),
+                            )
+                        ]
+                    ),
+                    onPressed: () {
+                      Navigator.of(context).pushReplacementNamed(CartScreen.id);
+                    },
+                  ),
+                ],
+              ),
+              body: Container(
+                margin: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
+                child: SingleChildScrollView(
+                  controller: _controller,
+                  child: Column(
+                    children: <Widget>[
+                      Container(
+                        height: MediaQuery.of(context).size.width * 1.2,
+                        child: pictures.length >0 ? new Swiper(
+                          itemBuilder: (BuildContext context, int index) {
+                            return new CachedNetworkImage(
+                              imageUrl:  pictures[index] != null ?  img_url+pictures[index] :"",
+                              placeholder: (context, url) => LoadingWidgetPulse(context),
+                              errorWidget: (context, url, error) => Image.asset('assets/images/210x265.png'),
+                              width: MediaQuery.of(context).size.width,
+                              fit: BoxFit.cover,
+                              useOldImageOnUrlChange: true,
+
+                            );
+                          },
+                          itemCount: pictures.length,
+                          pagination: new SwiperPagination(
+                              margin: new EdgeInsets.all(5.0),
+                              builder: new DotSwiperPaginationBuilder(
+                                  color: Color(0xffE6E7E9), activeColor: Color(0xffF48262))),
+                          controller: controller,
+                          autoplay: false,
+                        ): Image.asset('assets/images/210x265.png',fit:BoxFit.cover ,),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(top: 10, left: 15, right: 15),
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                widget.product.brand.name,
+                                style: TextStyle(
+                                  fontFamily: 'Brandon',
+                                  fontSize: 20,
+                                ),
+                              ),
+                              Row(
                                 children: <Widget>[
-                                  if(widget.product.is_flash_deal != null) // tampilan diskon flash sale
-                                  Padding(
-                                    padding: EdgeInsets.only(right: 10),
-                                    child: Text(
-                                      varian != null ? NumberFormat.simpleCurrency(locale: "id_ID",decimalDigits: 0 ).format(varian.price ) : widget.product.is_flash_deal != null || widget.product.discount>0 ? widget.product.home_discounted_price : widget.product.home_price,
-                                      style: TextStyle(
-                                        color: Color(0xffF48262),
-                                        fontFamily: 'Brandon',
-                                        fontSize: 18,
-                                        decoration: TextDecoration.none,
-                                      ),
+                                  if(widget.product.nomer_bpom != null)
+                                  Container(
+                                    padding: EdgeInsets.symmetric(horizontal: 7, vertical: 3),
+                                    margin: EdgeInsets.only(right: 10),
+                                    child: Text(widget.product.nomer_bpom != null ? widget.product.nomer_bpom :"", style: TextStyle(fontSize: 12, fontFamily: 'Brandon'),),
+                                    decoration: BoxDecoration(
+                                        border: Border.all(color: Colors.black),
+                                        borderRadius: BorderRadius.circular(5),
                                     ),
                                   ),
-                                  if(widget.product.discount != null && widget.product.discount > 0 && widget.product.is_flash_deal == null)
+                                  IconButton(icon: Icon(
+                                    Icons.share,
+                                    color: Color(0xffF48262),
+                                  ), onPressed: (){
+                                    // _launchURL("https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fponnybeaute.co.id%2Fproduct%2FElsheSkin-Radiant-Skin-Serum-20ml-qjUU4");
+                                    // SocialShare.shareInstagramStory(img_url+widget.product.thumbnail_image,"#ffffff","#000000",
+                                    //     "https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fponnybeaute.co.id%2Fproduct%2FElsheSkin-Radiant-Skin-Serum-20ml-qjUU4");
+                                    _settingModalBottomSheet(context);
+                                  })
+                                ],
+                              ),
+                            ]
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 15),
+                        child: Column(
+                          children: <Widget>[
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                widget.product.name,
+                                style: TextStyle(
+                                  fontFamily: 'Brandon',
+                                ),
+                                textAlign: TextAlign.left,
+                              ),
+                            ),
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text.rich(
+                                  TextSpan(children: <InlineSpan>[
+                                    WidgetSpan(
+                                      child: RatingBar.builder(
+                                        initialRating: widget.product.rating,
+                                        minRating: 0,
+                                        direction: Axis.horizontal,
+                                        allowHalfRating: true,
+                                        itemCount: 5,
+                                        itemSize: 14.0,
+                                        itemPadding: EdgeInsets.symmetric(horizontal: 1.0),
+                                        itemBuilder: (context, index) => Icon(
+                                          Icons.favorite,
+                                          color: Color(0xffF48262),
+                                        ),
+                                        unratedColor: Color(0xffFBD2CD),
+                                      ),
+                                    ),
+                                    TextSpan(
+                                        text: '('+widget.product.review_count.toString()+')',
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                        )
+                                    )
+                                  ]
+                                  )
+                              ),
+                            ),
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(vertical: 7),
+                                child: Row(
+                                  children: <Widget>[
+                                    if(widget.product.is_flash_deal != null) // tampilan diskon flash sale
                                     Padding(
                                       padding: EdgeInsets.only(right: 10),
                                       child: Text(
-                                        varian != null ?  NumberFormat.simpleCurrency(locale: "id_ID",decimalDigits: 0 ).format(varian.price ) :  widget.product.home_discounted_price,
+                                        varian != null ? NumberFormat.simpleCurrency(locale: "id_ID",decimalDigits: 0 ).format(varian.price ) : widget.product.is_flash_deal != null || widget.product.discount>0 ? widget.product.home_discounted_price : widget.product.home_price,
                                         style: TextStyle(
                                           color: Color(0xffF48262),
                                           fontFamily: 'Brandon',
@@ -738,38 +738,30 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                         ),
                                       ),
                                     ),
-                                  if(widget.product.is_flash_deal != null)
-                                  Container(
-                                    padding: EdgeInsets.symmetric(horizontal: 7),
-                                    child:  widget.product.is_flash_deal.discount_type == "percent"? Text(
-                                      '('+widget.product.is_flash_deal.discount.toString()+'%)',
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontFamily: 'Brandon'
+                                    if(widget.product.discount != null && widget.product.discount > 0 && widget.product.is_flash_deal == null)
+                                      Padding(
+                                        padding: EdgeInsets.only(right: 10),
+                                        child: Text(
+                                          varian != null ?  NumberFormat.simpleCurrency(locale: "id_ID",decimalDigits: 0 ).format(varian.price ) :  widget.product.home_discounted_price,
+                                          style: TextStyle(
+                                            color: Color(0xffF48262),
+                                            fontFamily: 'Brandon',
+                                            fontSize: 18,
+                                            decoration: TextDecoration.none,
+                                          ),
+                                        ),
                                       ),
-                                    ) : Text(
-                                      "- "+NumberFormat.simpleCurrency(locale: "id_ID",decimalDigits: 0 ).format(widget.product.is_flash_deal.discount),
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontFamily: 'Brandon'
-                                      ),
-                                    ),
-                                    decoration: BoxDecoration(
-                                      color: Color(0xffF48262),
-                                      borderRadius: BorderRadius.circular(3),
-                                    ),
-                                  ),
-                                  if(widget.product.discount != null && widget.product.discount > 0 && widget.product.is_flash_deal == null)
+                                    if(widget.product.is_flash_deal != null)
                                     Container(
                                       padding: EdgeInsets.symmetric(horizontal: 7),
-                                      child:  widget.product.discount_type == "percent"? Text(
-                                        '('+widget.product.discount.toString()+'%)',
+                                      child:  widget.product.is_flash_deal.discount_type == "percent"? Text(
+                                        '('+widget.product.is_flash_deal.discount.toString()+'%)',
                                         style: TextStyle(
                                             color: Colors.white,
                                             fontFamily: 'Brandon'
                                         ),
                                       ) : Text(
-                                        "- "+NumberFormat.simpleCurrency(locale: "id_ID",decimalDigits: 0 ).format(widget.product.discount),
+                                        "- "+NumberFormat.simpleCurrency(locale: "id_ID",decimalDigits: 0 ).format(widget.product.is_flash_deal.discount),
                                         style: TextStyle(
                                             color: Colors.white,
                                             fontFamily: 'Brandon'
@@ -780,227 +772,176 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                         borderRadius: BorderRadius.circular(3),
                                       ),
                                     ),
-
-                                ],
-                              ),
-                            ),
-                          ),
-                          Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                                varian != null ? NumberFormat.simpleCurrency(locale: "id_ID",decimalDigits: 0 ).format(varian.base_price ) : widget.product.is_flash_deal != null || widget.product.discount>0 ? widget.product.home_price : widget.product.home_discounted_price,
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontFamily: 'Brandon',
-                                fontSize: 16,
-                                decoration: widget.product.is_flash_deal != null || widget.product.discount>0 ? TextDecoration.lineThrough :null,
-                              ),
-                            ),
-                          ),
-                          for(Varian item in widget.product.varian)(
-                          Align(
-                            alignment: Alignment.centerLeft,
-                            child: Container(
-                              padding: EdgeInsets.only(top: 9.0),
-                              child: Row(
-                                children: <Widget>[
-                                  Text(item.atribut_name+" :", style: TextStyle(fontFamily: 'Brandon'),),
-                                  Expanded(
-                                    child: SingleChildScrollView(
-                                      scrollDirection: Axis.horizontal,
-                                      child: Row(
-                                        children: [
-                                          for(String xitem in item.values)(
-                                              InkWell(
-                                                onTap: (){
-                                                  setState(() {
-                                                    option.firstWhere((element) => element.atributId == item.attribute_id).value = xitem;
-                                                  });
-                                                  _getPriceVarian();
-
-                                                },
-                                                child: Container(
-                                                  margin: EdgeInsets.symmetric(horizontal: 7),
-                                                  padding: EdgeInsets.symmetric(horizontal: 7),
-                                                  child: Text(
-                                                    xitem,
-                                                    style: TextStyle(
-                                                        color: Colors.black,
-                                                        fontFamily: 'Brandon'
-                                                    ),
-                                                  ),
-                                                  decoration: BoxDecoration(
-                                                    border: Border.all(color: Color(0xffF48262)),
-                                                    color: option.isNotEmpty && (varian != null ? option.firstWhere((element) => element.atributId == item.attribute_id).value : '')  == xitem ?  Color(0xffF3C1B5) : Theme.of(context).primaryColor,
-                                                    borderRadius: BorderRadius.circular(5),
-                                                  ),
-                                                ),
-                                              )
-
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                  )
-
-                                ],
-                              ),
-                            )
-                          )
-                          ),
-                          Container(
-                            margin: EdgeInsets.symmetric(vertical: 30),
-                            width: MediaQuery.of(context).size.width,
-                            decoration: BoxDecoration(
-                              border: Border.all(color: Color(0xffF48262)),
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                            child: Column(
-                              children: <Widget>[
-                                Container(
-                                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 7),
-                                  child: Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(
-                                      'KETERANGAN',
-                                      style: TextStyle(
-                                        fontFamily: 'Brandon',
-                                        fontSize: 15,
-                                        height: 1.7,
-                                      ),
-                                    ),
-                                  ),
-                                  decoration: BoxDecoration(
-                                    border: Border(
-                                      bottom: BorderSide( //                   <--- left side
-                                        color: Color(0xffF48262),
-                                        width: 5.0,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Container(
-                                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 7),
-                                  child: Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(
-                                       widget.product.description,
-                                      style: TextStyle(
-                                        fontFamily: 'Brandon',
-                                        fontSize: 13,
-                                      ),
-                                      textAlign: TextAlign.justify,
-                                    ),
-                                  ),
-                                  decoration: BoxDecoration(
-                                    border: Border(
-                                      bottom: BorderSide( //                   <--- left side
-                                        color: Color(0xffF48262),
-                                        width: 5.0,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Row(
-                                  children: <Widget>[
-                                    Expanded(
-                                      flex: 4,
-                                      child: Container(
-                                        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 7),
-                                        child: Align(
-                                          alignment: Alignment.centerLeft,
-                                          child: Text(
-                                            'BAHAN AKTIF',
-                                            style: TextStyle(
-                                              fontFamily: 'Brandon',
-                                              fontSize: 15,
-                                              height: 1.7,
-                                            ),
+                                    if(widget.product.discount != null && widget.product.discount > 0 && widget.product.is_flash_deal == null)
+                                      Container(
+                                        padding: EdgeInsets.symmetric(horizontal: 7),
+                                        child:  widget.product.discount_type == "percent"? Text(
+                                          '('+widget.product.discount.toString()+'%)',
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontFamily: 'Brandon'
+                                          ),
+                                        ) : Text(
+                                          "- "+NumberFormat.simpleCurrency(locale: "id_ID",decimalDigits: 0 ).format(widget.product.discount),
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontFamily: 'Brandon'
                                           ),
                                         ),
                                         decoration: BoxDecoration(
-                                          border: Border(
-                                            bottom: BorderSide( //                   <--- left side
-                                              color: Color(0xffF48262),
-                                              width: 5.0,
-                                            ),
-                                            right: BorderSide( //                   <--- left side
-                                              color: Color(0xffF48262),
-                                              width: 5.0,
-                                            ),
-                                          ),
+                                          color: Color(0xffF48262),
+                                          borderRadius: BorderRadius.circular(3),
                                         ),
                                       ),
-                                    ),
-                                    Expanded(
-                                      flex: 6,
-                                      child: Container(
-                                        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 7),
-                                        child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          children: <Widget>[
-                                            Align(
-                                              alignment: Alignment.centerLeft,
-                                              child: Text(
-                                                'KOMPOSISI',
-                                                style: TextStyle(
-                                                  fontFamily: 'Brandon',
-                                                  fontSize: 15,
-                                                  height: 1.7,
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        decoration: BoxDecoration(
-                                          border: Border(
-                                            bottom: BorderSide(
-                                              color: Color(0xffF48262),
-                                              width: 5.0,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
+
                                   ],
                                 ),
-                                IntrinsicHeight(
-                                  child: Row(
+                              ),
+                            ),
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                  varian != null ? NumberFormat.simpleCurrency(locale: "id_ID",decimalDigits: 0 ).format(varian.base_price ) : widget.product.is_flash_deal != null || widget.product.discount>0 ? widget.product.home_price : widget.product.home_discounted_price,
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontFamily: 'Brandon',
+                                  fontSize: 16,
+                                  decoration: widget.product.is_flash_deal != null || widget.product.discount>0 ? TextDecoration.lineThrough :null,
+                                ),
+                              ),
+                            ),
+                            for(Varian item in widget.product.varian)(
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Container(
+                                padding: EdgeInsets.only(top: 9.0),
+                                child: Row(
+                                  children: <Widget>[
+                                    Text(item.atribut_name+" :", style: TextStyle(fontFamily: 'Brandon'),),
+                                    Expanded(
+                                      child: SingleChildScrollView(
+                                        scrollDirection: Axis.horizontal,
+                                        child: Row(
+                                          children: [
+                                            for(String xitem in item.values)(
+                                                InkWell(
+                                                  onTap: (){
+                                                    setState(() {
+                                                      option.firstWhere((element) => element.atributId == item.attribute_id).value = xitem;
+                                                    });
+                                                    _getPriceVarian();
+
+                                                  },
+                                                  child: Container(
+                                                    margin: EdgeInsets.symmetric(horizontal: 7),
+                                                    padding: EdgeInsets.symmetric(horizontal: 7),
+                                                    child: Text(
+                                                      xitem,
+                                                      style: TextStyle(
+                                                          color: Colors.black,
+                                                          fontFamily: 'Brandon'
+                                                      ),
+                                                    ),
+                                                    decoration: BoxDecoration(
+                                                      border: Border.all(color: Color(0xffF48262)),
+                                                      color: option.isNotEmpty && (varian != null ? option.firstWhere((element) => element.atributId == item.attribute_id).value : '')  == xitem ?  Color(0xffF3C1B5) : Theme.of(context).primaryColor,
+                                                      borderRadius: BorderRadius.circular(5),
+                                                    ),
+                                                  ),
+                                                )
+
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                    )
+
+                                  ],
+                                ),
+                              )
+                            )
+                            ),
+                            Container(
+                              margin: EdgeInsets.symmetric(vertical: 30),
+                              width: MediaQuery.of(context).size.width,
+                              decoration: BoxDecoration(
+                                border: Border.all(color: Color(0xffF48262)),
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                              child: Column(
+                                children: <Widget>[
+                                  Container(
+                                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 7),
+                                    child: Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: Text(
+                                        'KETERANGAN',
+                                        style: TextStyle(
+                                          fontFamily: 'Brandon',
+                                          fontSize: 15,
+                                          height: 1.7,
+                                        ),
+                                      ),
+                                    ),
+                                    decoration: BoxDecoration(
+                                      border: Border(
+                                        bottom: BorderSide( //                   <--- left side
+                                          color: Color(0xffF48262),
+                                          width: 5.0,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Container(
+                                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 7),
+                                    child: Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: Text(
+                                         widget.product.description,
+                                        style: TextStyle(
+                                          fontFamily: 'Brandon',
+                                          fontSize: 13,
+                                        ),
+                                        textAlign: TextAlign.justify,
+                                      ),
+                                    ),
+                                    decoration: BoxDecoration(
+                                      border: Border(
+                                        bottom: BorderSide( //                   <--- left side
+                                          color: Color(0xffF48262),
+                                          width: 5.0,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Row(
                                     children: <Widget>[
                                       Expanded(
                                         flex: 4,
                                         child: Container(
+                                          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 7),
+                                          child: Align(
+                                            alignment: Alignment.centerLeft,
+                                            child: Text(
+                                              'BAHAN AKTIF',
+                                              style: TextStyle(
+                                                fontFamily: 'Brandon',
+                                                fontSize: 15,
+                                                height: 1.7,
+                                              ),
+                                            ),
+                                          ),
                                           decoration: BoxDecoration(
                                             border: Border(
+                                              bottom: BorderSide( //                   <--- left side
+                                                color: Color(0xffF48262),
+                                                width: 5.0,
+                                              ),
                                               right: BorderSide( //                   <--- left side
                                                 color: Color(0xffF48262),
                                                 width: 5.0,
                                               ),
                                             ),
-                                          ),
-                                          child: Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: List.generate(listBahanAktif.length, (index){
-                                              return Container(
-                                                width: MediaQuery.of(context).size.width,
-                                                decoration: BoxDecoration(
-                                                  border: Border(
-                                                    bottom: BorderSide( //                   <--- left side
-                                                      color: Color(0xffF48262),
-                                                      width: 1.0,
-                                                    ),
-                                                  ),
-                                                ),
-                                                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 7),
-                                                child: Text(
-                                                  listBahanAktif[index],
-                                                  style: TextStyle(
-                                                    fontFamily: 'Brandon',
-                                                    fontSize: 13,
-                                                  ),
-                                                ),
-                                              );
-                                            }),
                                           ),
                                         ),
                                       ),
@@ -1008,114 +949,233 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                         flex: 6,
                                         child: Container(
                                           padding: EdgeInsets.symmetric(horizontal: 10, vertical: 7),
-                                          child: Align(
-                                            alignment: Alignment.topLeft,
-                                            child: Text(
-                                              widget.product.komposisi,
-                                              style: TextStyle(
-                                                fontFamily: 'Brandon',
-                                                fontSize: 13,
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: <Widget>[
+                                              Align(
+                                                alignment: Alignment.centerLeft,
+                                                child: Text(
+                                                  'KOMPOSISI',
+                                                  style: TextStyle(
+                                                    fontFamily: 'Brandon',
+                                                    fontSize: 15,
+                                                    height: 1.7,
+                                                  ),
+                                                ),
                                               ),
-                                              textAlign: TextAlign.justify,
+                                            ],
+                                          ),
+                                          decoration: BoxDecoration(
+                                            border: Border(
+                                              bottom: BorderSide(
+                                                color: Color(0xffF48262),
+                                                width: 5.0,
+                                              ),
                                             ),
                                           ),
                                         ),
                                       ),
                                     ],
                                   ),
-                                ),
-                                Container(
-                                  decoration: BoxDecoration(
-                                    border: Border(
-                                      bottom: BorderSide(
-                                        color: Color(0xffF48262),
-                                        width: 5.0,
+                                  IntrinsicHeight(
+                                    child: Row(
+                                      children: <Widget>[
+                                        Expanded(
+                                          flex: 4,
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                              border: Border(
+                                                right: BorderSide( //                   <--- left side
+                                                  color: Color(0xffF48262),
+                                                  width: 5.0,
+                                                ),
+                                              ),
+                                            ),
+                                            child: Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: List.generate(listBahanAktif.length, (index){
+                                                return Container(
+                                                  width: MediaQuery.of(context).size.width,
+                                                  decoration: BoxDecoration(
+                                                    border: Border(
+                                                      bottom: BorderSide( //                   <--- left side
+                                                        color: Color(0xffF48262),
+                                                        width: 1.0,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 7),
+                                                  child: Text(
+                                                    listBahanAktif[index],
+                                                    style: TextStyle(
+                                                      fontFamily: 'Brandon',
+                                                      fontSize: 13,
+                                                    ),
+                                                  ),
+                                                );
+                                              }),
+                                            ),
+                                          ),
+                                        ),
+                                        Expanded(
+                                          flex: 6,
+                                          child: Container(
+                                            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 7),
+                                            child: Align(
+                                              alignment: Alignment.topLeft,
+                                              child: Text(
+                                                widget.product.komposisi,
+                                                style: TextStyle(
+                                                  fontFamily: 'Brandon',
+                                                  fontSize: 13,
+                                                ),
+                                                textAlign: TextAlign.justify,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      border: Border(
+                                        bottom: BorderSide(
+                                          color: Color(0xffF48262),
+                                          width: 5.0,
+                                        ),
+                                        top: BorderSide(
+                                          color: Color(0xffF48262),
+                                          width: 5.0,
+                                        ),
                                       ),
-                                      top: BorderSide(
-                                        color: Color(0xffF48262),
-                                        width: 5.0,
+                                    ),
+                                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 7),
+                                    child: Container(
+                                      alignment: Alignment.centerLeft,
+                                      child: Text(
+                                        'CARA PENGGUNAAN',
+                                        style: TextStyle(
+                                          fontFamily: 'Brandon',
+                                          fontSize: 15,
+                                          height: 1.7,
+                                        ),
                                       ),
                                     ),
                                   ),
-                                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 7),
-                                  child: Container(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(
-                                      'CARA PENGGUNAAN',
-                                      style: TextStyle(
-                                        fontFamily: 'Brandon',
-                                        fontSize: 15,
-                                        height: 1.7,
+                                  Container(
+                                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 7),
+                                    child: Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: Text(
+                                        widget.product.penggunaan != null ? widget.product.penggunaan : "",
+                                        style: TextStyle(
+                                          fontFamily: 'Brandon',
+                                          fontSize: 13,
+                                        ),
+                                        textAlign: TextAlign.justify,
                                       ),
                                     ),
                                   ),
-                                ),
-                                Container(
-                                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 7),
-                                  child: Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(
-                                      widget.product.penggunaan != null ? widget.product.penggunaan : "",
-                                      style: TextStyle(
-                                        fontFamily: 'Brandon',
-                                        fontSize: 13,
-                                      ),
-                                      textAlign: TextAlign.justify,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          if(Provider.of<ProductModel>(context).Recomendasi.length>0)
-                          Container(
-                            margin: EdgeInsets.only(bottom: 20),
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              'Produk Rekomendasi',
-                              style: TextStyle(
-                                fontFamily: 'Brandon',
-                                fontWeight: FontWeight.w600,
-                                fontSize: 15,
+                                ],
                               ),
                             ),
-                          ),
-                          if(Provider.of<ProductModel>(context).Recomendasi.length>0)
-                          Container(
-                            height: MediaQuery.of(context).size.width * .75,
-                            child: Consumer<ProductModel>(
-                              builder: (context,value,child){
-                                if(value.loadingRekomendasi){
-                                  return LoadingWidgetFadingCircle(context);
-                                }else{
-                                  // ListRekomedasi = getColumProduct(context,value.Recomendasi,3);
-                                  var dataRekomedasi  =Lodash().chunk(array: value.Recomendasi,size: 3);
-                                  return  new Swiper(
-                                    itemBuilder: (BuildContext context, int index) {
-                                      if(dataRekomedasi[index].length == 3){
-                                        return Container(
-                                            child: Row(
+                            if(Provider.of<ProductModel>(context).Recomendasi.length>0)
+                            Container(
+                              margin: EdgeInsets.only(bottom: 20),
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                'Produk Rekomendasi',
+                                style: TextStyle(
+                                  fontFamily: 'Brandon',
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 15,
+                                ),
+                              ),
+                            ),
+                            if(Provider.of<ProductModel>(context).Recomendasi.length>0)
+                            Container(
+                              height: MediaQuery.of(context).size.width * .75,
+                              child: Consumer<ProductModel>(
+                                builder: (context,value,child){
+                                  if(value.loadingRekomendasi){
+                                    return LoadingWidgetFadingCircle(context);
+                                  }else{
+                                    // ListRekomedasi = getColumProduct(context,value.Recomendasi,3);
+                                    var dataRekomedasi  =Lodash().chunk(array: value.Recomendasi,size: 3);
+                                    return  new Swiper(
+                                      itemBuilder: (BuildContext context, int index) {
+                                        if(dataRekomedasi[index].length == 3){
+                                          return Container(
+                                              child: Row(
+                                                  children: [
+                                                    for(Product e in dataRekomedasi[index])
+                                                      Expanded(
+                                                        flex: 1,
+                                                        child: Container(
+                                                          padding: EdgeInsets.symmetric(horizontal: 5),
+                                                          child: MyProduct(
+                                                            product: e,
+                                                            IsLiked: Provider.of<WishModel>(context).rawlist.firstWhere((element) => element.productId == e.id, orElse: () => null) != null ? true:false,
+                                                            onFavorit: (){
+                                                              if(Provider.of<AppModel>(context).loggedIn) {
+                                                                Provider.of<WishModel>(context).addProductToWish(e, Provider.of<AppModel>(context).auth.access_token);
+                                                              }else{
+                                                                Navigator.push(context,new MaterialPageRoute(
+                                                                  builder: (BuildContext context) => new LoginScreen(),
+                                                                ));
+                                                              }
+                                                            },
+                                                            onUnFavorit: (){
+                                                              if(Provider.of<AppModel>(context).loggedIn) {
+                                                                Provider.of<WishModel>(context).removeProductFromWish(e, Provider.of<AppModel>(context).auth.access_token);
+                                                              }else{
+                                                                Navigator.push(context,new MaterialPageRoute(
+                                                                  builder: (BuildContext context) => new LoginScreen(),
+                                                                ));
+                                                              }
+                                                            },
+                                                            onTobag: (){
+                                                              if(Provider.of<AppModel>(context).loggedIn){
+                                                                UIBlock.block(context,customLoaderChild: LoadingWidget(context));
+                                                                Provider.of<CartModel>(context).addProductToCart(e,Provider.of<AppModel>(context).auth.access_token,null).then((value){
+                                                                  UIBlock.unblock(context);
+                                                                  cost.showAlertDialog(context,e);
+                                                                });
+                                                              }else{
+                                                                Navigator.push(context,new MaterialPageRoute(
+                                                                  builder: (BuildContext context) => new LoginScreen(),
+                                                                ));
+                                                              }
+                                                            },
+                                                          ),
+                                                        ),
+                                                      ),
+                                                  ]
+                                              )
+                                          );
+                                        }else if(dataRekomedasi[index].length ==2){
+                                          return Container(
+                                              child: Row(
                                                 children: [
                                                   for(Product e in dataRekomedasi[index])
                                                     Expanded(
                                                       flex: 1,
                                                       child: Container(
-                                                        padding: EdgeInsets.symmetric(horizontal: 5),
+                                                        padding: EdgeInsets.symmetric(horizontal: 7),
                                                         child: MyProduct(
                                                           product: e,
-                                                          IsLiked: Provider.of<WishModel>(context).rawlist.firstWhere((element) => element.productId == e.id, orElse: () => null) != null ? true:false,
                                                           onFavorit: (){
                                                             if(Provider.of<AppModel>(context).loggedIn) {
-                                                              Provider.of<WishModel>(context).addProductToWish(e, Provider.of<AppModel>(context).auth.access_token);
-                                                            }else{
-                                                              Navigator.push(context,new MaterialPageRoute(
-                                                                builder: (BuildContext context) => new LoginScreen(),
-                                                              ));
-                                                            }
-                                                          },
-                                                          onUnFavorit: (){
-                                                            if(Provider.of<AppModel>(context).loggedIn) {
-                                                              Provider.of<WishModel>(context).removeProductFromWish(e, Provider.of<AppModel>(context).auth.access_token);
+                                                              UIBlock.block(context,customLoaderChild: LoadingWidget(context));
+                                                              Provider.of<WishModel>(context).addProductToWish(e, Provider.of<AppModel>(context).auth.access_token).then((value){
+                                                                UIBlock.unblock(context);
+                                                                if(value){
+                                                                  cost.showWishDialog(context,e);
+                                                                }else{
+                                                                  scaffoldKey.currentState.showSnackBar(snackBarError);
+                                                                }
+                                                              });
                                                             }else{
                                                               Navigator.push(context,new MaterialPageRoute(
                                                                 builder: (BuildContext context) => new LoginScreen(),
@@ -1138,435 +1198,389 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                                         ),
                                                       ),
                                                     ),
-                                                ]
-                                            )
-                                        );
-                                      }else if(dataRekomedasi[index].length ==2){
-                                        return Container(
-                                            child: Row(
-                                              children: [
-                                                for(Product e in dataRekomedasi[index])
                                                   Expanded(
                                                     flex: 1,
                                                     child: Container(
                                                       padding: EdgeInsets.symmetric(horizontal: 7),
-                                                      child: MyProduct(
-                                                        product: e,
-                                                        onFavorit: (){
-                                                          if(Provider.of<AppModel>(context).loggedIn) {
-                                                            UIBlock.block(context,customLoaderChild: LoadingWidget(context));
-                                                            Provider.of<WishModel>(context).addProductToWish(e, Provider.of<AppModel>(context).auth.access_token).then((value){
-                                                              UIBlock.unblock(context);
-                                                              if(value){
-                                                                cost.showWishDialog(context,e);
-                                                              }else{
-                                                                scaffoldKey.currentState.showSnackBar(snackBarError);
-                                                              }
-                                                            });
-                                                          }else{
-                                                            Navigator.push(context,new MaterialPageRoute(
-                                                              builder: (BuildContext context) => new LoginScreen(),
-                                                            ));
-                                                          }
-                                                        },
-                                                        onTobag: (){
-                                                          if(Provider.of<AppModel>(context).loggedIn){
-                                                            UIBlock.block(context,customLoaderChild: LoadingWidget(context));
-                                                            Provider.of<CartModel>(context).addProductToCart(e,Provider.of<AppModel>(context).auth.access_token,null).then((value){
-                                                              UIBlock.unblock(context);
-                                                              cost.showAlertDialog(context,e);
-                                                            });
-                                                          }else{
-                                                            Navigator.push(context,new MaterialPageRoute(
-                                                              builder: (BuildContext context) => new LoginScreen(),
-                                                            ));
-                                                          }
-                                                        },
+
+                                                    ),
+                                                  )
+
+
+                                                ],
+                                              )
+                                          );
+                                        }else{
+                                          return Container(
+                                              child: Row(
+                                                children: [
+                                                  for(Product e in dataRekomedasi[index])
+                                                    Expanded(
+                                                      flex: 1,
+                                                      child: Container(
+                                                        padding: EdgeInsets.symmetric(horizontal: 7),
+                                                        child: MyProduct(
+                                                          product: e,
+                                                          onFavorit: (){
+                                                            if(Provider.of<AppModel>(context).loggedIn) {
+                                                              UIBlock.block(context,customLoaderChild: LoadingWidget(context));
+                                                              Provider.of<WishModel>(context).addProductToWish(e, Provider.of<AppModel>(context).auth.access_token).then((value){
+                                                                UIBlock.unblock(context);
+                                                                if(value){
+                                                                  cost.showWishDialog(context,e);
+                                                                }else{
+                                                                  scaffoldKey.currentState.showSnackBar(snackBarError);
+                                                                }
+                                                              });
+                                                            }else{
+                                                              Navigator.push(context,new MaterialPageRoute(
+                                                                builder: (BuildContext context) => new LoginScreen(),
+                                                              ));
+                                                            }
+                                                          },
+                                                          onTobag: (){
+                                                            if(Provider.of<AppModel>(context).loggedIn){
+                                                              UIBlock.block(context,customLoaderChild: LoadingWidget(context));
+                                                              Provider.of<CartModel>(context).addProductToCart(e,Provider.of<AppModel>(context).auth.access_token,null).then((value){
+                                                                UIBlock.unblock(context);
+                                                                cost.showAlertDialog(context,e);
+                                                              });
+                                                            }else{
+                                                              Navigator.push(context,new MaterialPageRoute(
+                                                                builder: (BuildContext context) => new LoginScreen(),
+                                                              ));
+                                                            }
+                                                          },
+                                                        ),
                                                       ),
                                                     ),
-                                                  ),
-                                                Expanded(
-                                                  flex: 1,
-                                                  child: Container(
-                                                    padding: EdgeInsets.symmetric(horizontal: 7),
-
-                                                  ),
-                                                )
-
-
-                                              ],
-                                            )
-                                        );
-                                      }else{
-                                        return Container(
-                                            child: Row(
-                                              children: [
-                                                for(Product e in dataRekomedasi[index])
                                                   Expanded(
                                                     flex: 1,
                                                     child: Container(
                                                       padding: EdgeInsets.symmetric(horizontal: 7),
-                                                      child: MyProduct(
-                                                        product: e,
-                                                        onFavorit: (){
-                                                          if(Provider.of<AppModel>(context).loggedIn) {
-                                                            UIBlock.block(context,customLoaderChild: LoadingWidget(context));
-                                                            Provider.of<WishModel>(context).addProductToWish(e, Provider.of<AppModel>(context).auth.access_token).then((value){
-                                                              UIBlock.unblock(context);
-                                                              if(value){
-                                                                cost.showWishDialog(context,e);
-                                                              }else{
-                                                                scaffoldKey.currentState.showSnackBar(snackBarError);
-                                                              }
-                                                            });
-                                                          }else{
-                                                            Navigator.push(context,new MaterialPageRoute(
-                                                              builder: (BuildContext context) => new LoginScreen(),
-                                                            ));
-                                                          }
-                                                        },
-                                                        onTobag: (){
-                                                          if(Provider.of<AppModel>(context).loggedIn){
-                                                            UIBlock.block(context,customLoaderChild: LoadingWidget(context));
-                                                            Provider.of<CartModel>(context).addProductToCart(e,Provider.of<AppModel>(context).auth.access_token,null).then((value){
-                                                              UIBlock.unblock(context);
-                                                              cost.showAlertDialog(context,e);
-                                                            });
-                                                          }else{
-                                                            Navigator.push(context,new MaterialPageRoute(
-                                                              builder: (BuildContext context) => new LoginScreen(),
-                                                            ));
-                                                          }
-                                                        },
-                                                      ),
+
                                                     ),
                                                   ),
-                                                Expanded(
-                                                  flex: 1,
-                                                  child: Container(
-                                                    padding: EdgeInsets.symmetric(horizontal: 7),
+                                                  Expanded(
+                                                    flex: 1,
+                                                    child: Container(
+                                                      padding: EdgeInsets.symmetric(horizontal: 7),
 
-                                                  ),
-                                                ),
-                                                Expanded(
-                                                  flex: 1,
-                                                  child: Container(
-                                                    padding: EdgeInsets.symmetric(horizontal: 7),
-
-                                                  ),
-                                                )
+                                                    ),
+                                                  )
 
 
-                                              ],
-                                            )
-                                        );
+                                                ],
+                                              )
+                                          );
 
-                                      }
-                                    },
-                                    itemCount: dataRekomedasi.length,
-                                    pagination: null,
-                                    control: null,
-                                    autoplay: false,
-                                  );
-                                }
-                              },
-                            ),
-                          ),
-                          Align(
-                            alignment: Alignment.centerLeft,
-                            child: Container(
-                              margin: EdgeInsets.only(top: 25, bottom: 15),
-                              child: InkWell(
-                                onTap: (){
-                                  if(Provider.of<AppModel>(context).loggedIn){
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => ReviewScreen(product: widget.product,),
-                                      ),
-                                    ).then((value){
-                                      _getData();
-                                    });
-                                  }else{
-                                  Navigator.push(context,new MaterialPageRoute(
-                                    builder: (BuildContext context) => new LoginScreen(),
-                                    ));
+                                        }
+                                      },
+                                      itemCount: dataRekomedasi.length,
+                                      pagination: null,
+                                      control: null,
+                                      autoplay: false,
+                                    );
                                   }
                                 },
-                                child: Container(
-                                  padding: EdgeInsets.symmetric(horizontal: 15),
-                                  child: Text(
-                                    'TULIS REVIEW',
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontFamily: 'Brandon',
-                                      fontSize: 15,
+                              ),
+                            ),
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Container(
+                                margin: EdgeInsets.only(top: 25, bottom: 15),
+                                child: InkWell(
+                                  onTap: (){
+                                    if(Provider.of<AppModel>(context).loggedIn){
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => ReviewScreen(product: widget.product,),
+                                        ),
+                                      ).then((value){
+                                        _getData();
+                                      });
+                                    }else{
+                                    Navigator.push(context,new MaterialPageRoute(
+                                      builder: (BuildContext context) => new LoginScreen(),
+                                      ));
+                                    }
+                                  },
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(horizontal: 15),
+                                    child: Text(
+                                      'TULIS REVIEW',
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontFamily: 'Brandon',
+                                        fontSize: 15,
+                                      ),
                                     ),
-                                  ),
-                                  decoration: BoxDecoration(
-                                    border: Border.all(color: Color(0xffF48262)),
-                                    borderRadius: BorderRadius.circular(5),
+                                    decoration: BoxDecoration(
+                                      border: Border.all(color: Color(0xffF48262)),
+                                      borderRadius: BorderRadius.circular(5),
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
-                          ),
-                          for(Review review in listReview)
-                          Container(
-                            width: MediaQuery.of(context).size.width,
-                            padding: EdgeInsets.all(10),
-                            margin: EdgeInsets.only(bottom: 10),
-                            decoration: BoxDecoration(
-                              border: Border.all(color: Color(0xffF48262)),
-                              color: Color(0xffFDDCC3),
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Expanded(
-                                  flex: 1,
-                                  child: AspectRatio(
-                                    aspectRatio: 1,
-                                    child: Container(
-                                      width: MediaQuery.of(context).size.width,
-                                      decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          image: DecorationImage(
-                                              fit: BoxFit.cover,
-                                              image:  NetworkImage(review.user.avatarOriginal != null ? img_url+ review.user.avatarOriginal : review.user.gender == "P" ? img_url+"frontend/images/avatar/avatar-female.png" : img_url+ "frontend/images/avatar/avatar-male.png" )
-                                          )
-                                      ),
-                                    ),
-                                  )
-                                ),
-                                Expanded(
-                                  flex: 4,
-                                  child: Container(
-                                    alignment: Alignment.topLeft,
-                                    padding: EdgeInsets.only(left: 10),
-                                    child: Column(
-                                      children: <Widget>[
-                                        Container(
-                                          alignment: Alignment.centerLeft,
-                                          child: Text(
-                                            review.user.name,
-                                            style: TextStyle(
-                                              fontFamily: 'Yeseva',
-                                              fontSize: 15,
-                                            ),
-                                          ),
+                            for(Review review in listReview)
+                            Container(
+                              width: MediaQuery.of(context).size.width,
+                              padding: EdgeInsets.all(10),
+                              margin: EdgeInsets.only(bottom: 10),
+                              decoration: BoxDecoration(
+                                border: Border.all(color: Color(0xffF48262)),
+                                color: Color(0xffFDDCC3),
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Expanded(
+                                    flex: 1,
+                                    child: AspectRatio(
+                                      aspectRatio: 1,
+                                      child: Container(
+                                        width: MediaQuery.of(context).size.width,
+                                        decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            image: DecorationImage(
+                                                fit: BoxFit.cover,
+                                                image:  NetworkImage(review.user.avatarOriginal != null ? img_url+ review.user.avatarOriginal : review.user.gender == "P" ? img_url+"frontend/images/avatar/avatar-female.png" : img_url+ "frontend/images/avatar/avatar-male.png" )
+                                            )
                                         ),
-                                        Container(
-                                          alignment: Alignment.centerLeft,
-                                          margin: EdgeInsets.symmetric(vertical: 5),
-                                          child: Text.rich(TextSpan(children: <InlineSpan>[
-                                            WidgetSpan(
-                                              child:  RatingBar.builder(
-                                                initialRating: review.rating,
-                                                minRating: 0,
-                                                direction: Axis.horizontal,
-                                                allowHalfRating: true,
-                                                itemCount: 5,
-                                                itemSize: 14.0,
-                                                itemPadding: EdgeInsets.symmetric(horizontal: 1.0),
-                                                itemBuilder: (context, index) => Icon(
-                                                  Icons.favorite,
-                                                  color: Color(0xffF48262),
-                                                ),
-                                                unratedColor: Color(0xffFBD2CD),
+                                      ),
+                                    )
+                                  ),
+                                  Expanded(
+                                    flex: 4,
+                                    child: Container(
+                                      alignment: Alignment.topLeft,
+                                      padding: EdgeInsets.only(left: 10),
+                                      child: Column(
+                                        children: <Widget>[
+                                          Container(
+                                            alignment: Alignment.centerLeft,
+                                            child: Text(
+                                              review.user.name,
+                                              style: TextStyle(
+                                                fontFamily: 'Yeseva',
+                                                fontSize: 15,
                                               ),
                                             ),
-                                            if(review.statusBeli == 1)
-                                            WidgetSpan(
-                                              child: Container(
-                                                margin: EdgeInsets.only(left: 10),
-                                                padding: EdgeInsets.symmetric(horizontal: 5),
-                                                child: Text(
-                                                  'Verified by Phoebe',
-                                                  style: TextStyle(
-                                                      fontFamily: 'Brandon',
-                                                      fontSize: 10
+                                          ),
+                                          Container(
+                                            alignment: Alignment.centerLeft,
+                                            margin: EdgeInsets.symmetric(vertical: 5),
+                                            child: Text.rich(TextSpan(children: <InlineSpan>[
+                                              WidgetSpan(
+                                                child:  RatingBar.builder(
+                                                  initialRating: review.rating,
+                                                  minRating: 0,
+                                                  direction: Axis.horizontal,
+                                                  allowHalfRating: true,
+                                                  itemCount: 5,
+                                                  itemSize: 14.0,
+                                                  itemPadding: EdgeInsets.symmetric(horizontal: 1.0),
+                                                  itemBuilder: (context, index) => Icon(
+                                                    Icons.favorite,
+                                                    color: Color(0xffF48262),
+                                                  ),
+                                                  unratedColor: Color(0xffFBD2CD),
+                                                ),
+                                              ),
+                                              if(review.statusBeli == 1)
+                                              WidgetSpan(
+                                                child: Container(
+                                                  margin: EdgeInsets.only(left: 10),
+                                                  padding: EdgeInsets.symmetric(horizontal: 5),
+                                                  child: Text(
+                                                    'Verified by Phoebe',
+                                                    style: TextStyle(
+                                                        fontFamily: 'Brandon',
+                                                        fontSize: 10
+                                                    ),
+                                                  ),
+                                                  decoration: BoxDecoration(
+                                                    color: Colors.white,
+                                                    borderRadius: BorderRadius.circular(3),
                                                   ),
                                                 ),
-                                                decoration: BoxDecoration(
-                                                  color: Colors.white,
-                                                  borderRadius: BorderRadius.circular(3),
-                                                ),
-                                              ),
-                                            )
-                                          ])),
-                                        ),
-                                        Text(
-                                          review.comment,
-                                          style: TextStyle(
-                                            fontFamily: 'Brandon',
-                                            fontSize: 12,
-                                          ),
-                                        ),
-                                        Container(
-                                          margin: EdgeInsets.only(top: 5),
-                                          child: Row(
-                                            children: review.photos.map((e) => Container(
-                                              margin: EdgeInsets.only(right: 7),
-                                              child:  CachedNetworkImage(
-                                              imageUrl: img_url+e,
-                                              placeholder: (context, url) => LoadingWidgetPulse(context),
-                                              errorWidget: (context, url, error) => Image.asset('assets/images/basic.jpg'),
-                                              width: MediaQuery.of(context).size.width*0.15,
-                                              fit: BoxFit.cover,
                                               )
-                                            )).toList()
-
+                                            ])),
                                           ),
-                                        ),
-                                      ],
+                                          Text(
+                                            review.comment,
+                                            style: TextStyle(
+                                              fontFamily: 'Brandon',
+                                              fontSize: 12,
+                                            ),
+                                          ),
+                                          Container(
+                                            margin: EdgeInsets.only(top: 5),
+                                            child: Row(
+                                              children: review.photos.map((e) => Container(
+                                                margin: EdgeInsets.only(right: 7),
+                                                child:  CachedNetworkImage(
+                                                imageUrl: img_url+e,
+                                                placeholder: (context, url) => LoadingWidgetPulse(context),
+                                                errorWidget: (context, url, error) => Image.asset('assets/images/basic.jpg'),
+                                                width: MediaQuery.of(context).size.width*0.15,
+                                                fit: BoxFit.cover,
+                                                )
+                                              )).toList()
+
+                                            ),
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
-                          ),
-                          if(isLoading)
-                            _buildProgressIndicator()
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            bottomNavigationBar: Container(
-              width: MediaQuery.of(context).size.width,
-              height: 58,
-              decoration: BoxDecoration(
-                color: Color(0xfffdf8f0),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    spreadRadius: 5,
-                    blurRadius: 7,
-                    offset: Offset(0, 3),
-                  ),
-                ],
-              ),
-              child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 15),
-                child: Row(
-                  children: [
-                    FlatButton(
-                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                      padding: EdgeInsets.all(10),
-                      minWidth: 0,
-                      child: Icon(
-                        Icons.favorite_border,
-                        color: Colors.white,
-                        size: 20,
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(7.0),
-                      ),
-                      color: Color(0xffF48262),
-                      onPressed: () {
-                        if(Provider.of<AppModel>(context).loggedIn) {
-                          UIBlock.block(context,customLoaderChild: LoadingWidget(context));
-                          Provider.of<WishModel>(context).addProductToWish(widget.product, Provider.of<AppModel>(context).auth.access_token).then((value){
-                            UIBlock.unblock(context);
-                            if(value){
-                              showWishDialog(context);
-                            }else{
-                              scaffoldKey.currentState.showSnackBar(snackBarError);
-                            }
-                          });
-                        }else{
-                          Navigator.push(context,new MaterialPageRoute(
-                            builder: (BuildContext context) => new LoginScreen(),
-                          ));
-                        }
-                      },
-                    ),
-                    Expanded(
-                      child: Container(
-                        margin: EdgeInsets.only(left: 15),
-                        child: FlatButton(
-                          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                          padding: EdgeInsets.all(10),
-                          minWidth: 0,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(7.0),
-                          ),
-                          child:  Text(
-                              widget.product.currentStock > 0 ||  varian != null && varian.stock_quantity > 0 ? 'MASUKKAN KERANJANG' : varian == null ? "MASUKKAN KERANJANG" : "STOK KOSONG ",
-                            style: TextStyle(
-                              fontFamily: 'Brandon',
-                              fontWeight: FontWeight.w700,
-                              color: Colors.white,
-                            ),
-                          ),
-                          color: Color(0xffF48262),
-                          onPressed: () {
-                            print(json.encode(varian));
-                            if(widget.product.is_shown){
-                              if(widget.product.currentStock>0 || varian != null && varian.stock_quantity>0){
-                                if(Provider.of<AppModel>(context).loggedIn){
-                                  UIBlock.block(context,customLoaderChild: LoadingWidget(context));
-                                  cardData.addProductToCart(widget.product,Provider.of<AppModel>(context).auth.access_token,varian != null ? varian:null).then((value){
-                                    UIBlock.unblock(context);
-                                    if (value != null &&
-                                        value.statusCode !=
-                                            200) {
-                                      final snackBar =
-                                      SnackBar(
-                                        content: Text(
-                                            value.message,
-                                            style: TextStyle(
-                                                color: Colors
-                                                    .white)),
-                                        backgroundColor:
-                                        Colors
-                                            .redAccent,
-                                      );
-                                      scaffoldKey
-                                          .currentState
-                                          .showSnackBar(
-                                          snackBar);
-                                    }
-                                    else{
-                                      showAlertDialog(context);
-                                      _getCartOfitem();
-                                    }
-                                  });
-                                }else{
-                                  Navigator.push(context,new MaterialPageRoute(
-                                    builder: (BuildContext context) => new LoginScreen(),
-                                  ));
-                                }
-                              }
-                              else if(varian == null){
-                                final snackBarNoVariant = SnackBar(
-                                  content: Text('Mohon pilih varian terlebih dahulu',style: TextStyle(color: Colors.white)),
-                                  backgroundColor: Colors.redAccent,
-                                );
-                                scaffoldKey.currentState.showSnackBar(snackBarNoVariant);
-                              }
-                            }
-                            else{
-                              final snackBar = SnackBar(
-                                content: Text("Produk Tidak Tersedia",style: TextStyle(color: Colors.white)),
-                                backgroundColor: Colors.redAccent,
-                              );
-                              scaffoldKey.currentState.showSnackBar(snackBar);
-                            }
-                          },
+                            if(isLoading)
+                              _buildProgressIndicator()
+                          ],
                         ),
                       ),
+                    ],
+                  ),
+                ),
+              ),
+              bottomNavigationBar: Container(
+                width: MediaQuery.of(context).size.width,
+                height: 58,
+                decoration: BoxDecoration(
+                  color: Color(0xfffdf8f0),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 5,
+                      blurRadius: 7,
+                      offset: Offset(0, 3),
                     ),
                   ],
                 ),
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 15),
+                  child: Row(
+                    children: [
+                      FlatButton(
+                        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        padding: EdgeInsets.all(10),
+                        minWidth: 0,
+                        child: Icon(
+                          Icons.favorite_border,
+                          color: Colors.white,
+                          size: 20,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(7.0),
+                        ),
+                        color: Color(0xffF48262),
+                        onPressed: () {
+                          if(Provider.of<AppModel>(context).loggedIn) {
+                            UIBlock.block(context,customLoaderChild: LoadingWidget(context));
+                            Provider.of<WishModel>(context).addProductToWish(widget.product, Provider.of<AppModel>(context).auth.access_token).then((value){
+                              UIBlock.unblock(context);
+                              if(value){
+                                showWishDialog(context);
+                              }else{
+                                scaffoldKey.currentState.showSnackBar(snackBarError);
+                              }
+                            });
+                          }else{
+                            Navigator.push(context,new MaterialPageRoute(
+                              builder: (BuildContext context) => new LoginScreen(),
+                            ));
+                          }
+                        },
+                      ),
+                      Expanded(
+                        child: Container(
+                          margin: EdgeInsets.only(left: 15),
+                          child: FlatButton(
+                            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                            padding: EdgeInsets.all(10),
+                            minWidth: 0,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(7.0),
+                            ),
+                            child:  Text(
+                                widget.product.currentStock > 0 ||  varian != null && varian.stock_quantity > 0 ? 'MASUKKAN KERANJANG' : varian == null ? "MASUKKAN KERANJANG" : "STOK KOSONG ",
+                              style: TextStyle(
+                                fontFamily: 'Brandon',
+                                fontWeight: FontWeight.w700,
+                                color: Colors.white,
+                              ),
+                            ),
+                            color: Color(0xffF48262),
+                            onPressed: () {
+                              print(json.encode(varian));
+                              if(widget.product.is_shown){
+                                if(widget.product.currentStock>0 || varian != null && varian.stock_quantity>0){
+                                  if(Provider.of<AppModel>(context).loggedIn){
+                                    UIBlock.block(context,customLoaderChild: LoadingWidget(context));
+                                    cardData.addProductToCart(widget.product,Provider.of<AppModel>(context).auth.access_token,varian != null ? varian:null).then((value){
+                                      UIBlock.unblock(context);
+                                      if (value != null &&
+                                          value.statusCode !=
+                                              200) {
+                                        final snackBar =
+                                        SnackBar(
+                                          content: Text(
+                                              value.message,
+                                              style: TextStyle(
+                                                  color: Colors
+                                                      .white)),
+                                          backgroundColor:
+                                          Colors
+                                              .redAccent,
+                                        );
+                                        scaffoldKey
+                                            .currentState
+                                            .showSnackBar(
+                                            snackBar);
+                                      }
+                                      else{
+                                        showAlertDialog(context);
+                                        _getCartOfitem();
+                                      }
+                                    });
+                                  }else{
+                                    Navigator.push(context,new MaterialPageRoute(
+                                      builder: (BuildContext context) => new LoginScreen(),
+                                    ));
+                                  }
+                                }
+                                else if(varian == null){
+                                  final snackBarNoVariant = SnackBar(
+                                    content: Text('Mohon pilih varian terlebih dahulu',style: TextStyle(color: Colors.white)),
+                                    backgroundColor: Colors.redAccent,
+                                  );
+                                  scaffoldKey.currentState.showSnackBar(snackBarNoVariant);
+                                }
+                              }
+                              else{
+                                final snackBar = SnackBar(
+                                  content: Text("Produk Tidak Tersedia",style: TextStyle(color: Colors.white)),
+                                  backgroundColor: Colors.redAccent,
+                                );
+                                scaffoldKey.currentState.showSnackBar(snackBar);
+                              }
+                            },
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ),
-            ),
-          )
-        ],
+            )
+          ],
+        ),
       ),
     );
   }
