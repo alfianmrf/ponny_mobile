@@ -146,7 +146,7 @@ class _RincianPointState extends State<RincianPoint> {
                       flex: 1,
                       child: Center(
                         child: Text(
-                          int.parse(item.points).round().toString()+" POIN",
+                          double.parse(item.points)>0&&double.parse(item.points)<1?double.parse(item.points).ceil().toString()+" POIN":double.parse(item.points).round().toString()+" POIN",
                           style: TextStyle(
                             fontSize: 18,
                             fontFamily: "Brandon",
@@ -212,7 +212,7 @@ class _RincianPointState extends State<RincianPoint> {
                       flex: 1,
                       child: Center(
                         child: Text(
-                          item.points.toString()+" POIN",
+                          double.parse(item.points)>0&&double.parse(item.points)<1?double.parse(item.points).ceil().toString()+" POIN":double.parse(item.points).round().toString()+" POIN",
                           style: TextStyle(
                             fontSize: 18,
                             fontFamily: "Brandon",
@@ -279,7 +279,7 @@ class _RincianPointState extends State<RincianPoint> {
                       flex: 1,
                       child: Center(
                         child: Text(
-                          item.points.toString()+" POIN",
+                          double.parse(item.points)>0&&double.parse(item.points)<1?double.parse(item.points).ceil().toString()+" POIN":double.parse(item.points).round().toString()+" POIN",
                           style: TextStyle(
                             fontSize: 18,
                             fontFamily: "Brandon",

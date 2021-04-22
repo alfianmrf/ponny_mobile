@@ -95,6 +95,8 @@ class _HappySkinRewardStateScreen extends State<HappySkinRewardScreen>
         loading =false;
         });
 
+        print("KURANG DARI 200");
+        print(lessThan200);
       }
 
     }
@@ -382,7 +384,9 @@ class _SeratusPointScreen extends State<seratus_point> {
                                           disabledColor: Colors.grey,
                                           disabledTextColor: Colors.black,
                                           padding: EdgeInsets.all(8.0),
-                                          splashColor: Colors.blueAccent,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(10),
+                                          ),
                                           onPressed: () {
                                             UIBlock.block(context,customLoaderChild: LoadingWidget(context));
                                             Provider.of<CartModel>(context).addRedemToCart(productPoin, Provider.of<AppModel>(context,listen: false).auth.access_token).then((value) {
@@ -517,7 +521,9 @@ class _SeratusPointScreen extends State<seratus_point> {
                                             disabledColor: Colors.grey,
                                             disabledTextColor: Colors.black,
                                             padding: EdgeInsets.all(8.0),
-                                            splashColor: Colors.blueAccent,
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(10),
+                                            ),
                                             onPressed: () {
                                               UIBlock.block(context,customLoaderChild: LoadingWidget(context));
                                               Provider.of<CartModel>(context).addRedemToCart(productPoin, Provider.of<AppModel>(context,listen: false).auth.access_token).then((value) {
@@ -682,7 +688,9 @@ class _LebihDuaRatusPointScreen extends State<lebih_duaratus_point> {
                                               disabledColor: Colors.grey,
                                               disabledTextColor: Colors.black,
                                               padding: EdgeInsets.all(8.0),
-                                              splashColor: Colors.blueAccent,
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.circular(10),
+                                              ),
                                               onPressed: () {
                                                 UIBlock.block(context,customLoaderChild: LoadingWidget(context));
                                                 Provider.of<CartModel>(context).addRedemToCart(productPoin, Provider.of<AppModel>(context,listen: false).auth.access_token).then((value) {
@@ -817,7 +825,9 @@ class _LebihDuaRatusPointScreen extends State<lebih_duaratus_point> {
                                               disabledColor: Colors.grey,
                                               disabledTextColor: Colors.black,
                                               padding: EdgeInsets.all(8.0),
-                                              splashColor: Colors.blueAccent,
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.circular(10),
+                                              ),
                                               onPressed: () {
                                                 UIBlock.block(context,customLoaderChild: LoadingWidget(context));
                                                 Provider.of<CartModel>(context).addRedemToCart(productPoin, Provider.of<AppModel>(context,listen: false).auth.access_token).then((value) {
@@ -982,7 +992,9 @@ class _LebihLimaRatusPointScreen extends State<lebih_500_point> {
                                               disabledColor: Colors.grey,
                                               disabledTextColor: Colors.black,
                                               padding: EdgeInsets.all(8.0),
-                                              splashColor: Colors.blueAccent,
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.circular(10),
+                                              ),
                                               onPressed: () {
                                                 UIBlock.block(context,customLoaderChild: LoadingWidget(context));
                                                 Provider.of<CartModel>(context).addRedemToCart(productPoin, Provider.of<AppModel>(context,listen: false).auth.access_token).then((value) {
@@ -1117,7 +1129,9 @@ class _LebihLimaRatusPointScreen extends State<lebih_500_point> {
                                               disabledColor: Colors.grey,
                                               disabledTextColor: Colors.black,
                                               padding: EdgeInsets.all(8.0),
-                                              splashColor: Colors.blueAccent,
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.circular(10),
+                                              ),
                                               onPressed: () {
                                                 UIBlock.block(context,customLoaderChild: LoadingWidget(context));
                                                 Provider.of<CartModel>(context).addRedemToCart(productPoin, Provider.of<AppModel>(context,listen: false).auth.access_token).then((value) {

@@ -246,7 +246,7 @@ class User {
   Null country;
   Null city;
   Null postalCode;
-  Null phone;
+  String phone;
   int balance;
   Null referralCode;
   Null customerPackageId;

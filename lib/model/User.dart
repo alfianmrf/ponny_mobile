@@ -14,6 +14,7 @@ class UserModel with ChangeNotifier{
   User user;
   bool loggedIn = false;
   bool loading = false;
+  bool loadingUser = true;
 
   UserModel();
 
@@ -44,6 +45,7 @@ class UserModel with ChangeNotifier{
       final responseJson = json.decode(response.body);
       if(response.statusCode == 200){
         user = User.fromLocalJson(responseJson);
+        loadingUser = false;
         notifyListeners();
       }
     } catch (err) {

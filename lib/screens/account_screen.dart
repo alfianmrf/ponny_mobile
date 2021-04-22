@@ -173,7 +173,7 @@ class _AccountScreenState extends State<AccountScreen> {
           child: Consumer<ClaimPointHarian>(
             builder: (context, value, child){
               return SingleChildScrollView(
-                child: value.isLoading
+                child: value.isLoading && Provider.of<UserModel>(context).loadingUser
                     ? Container(
                   height: MediaQuery.of(context).size.height,
                   child: Center(
@@ -601,19 +601,22 @@ class _AccountScreenState extends State<AccountScreen> {
                                                 text: value.InfoPoint.claimToday == false ? 'Kunjungan kamu hari ini mendapat ':'Checkin besok untuk mendapatkan ',
                                                 style: TextStyle(
                                                     color: Colors.black87,
-                                                    fontSize: 12)),
+                                                    fontSize: 12,
+                                                    fontFamily: 'Brandon')),
                                             TextSpan(
                                                 text: "${value.InfoPoint.point} Point",
                                                 style: TextStyle(
                                                     fontWeight: FontWeight.bold,
                                                     color: Colors.black87,
-                                                    fontSize: 12))
+                                                    fontSize: 12,
+                                                    fontFamily: 'Brandon'))
                                           ])),
                                     ),
                                     Container(
                                         width: size.width * 0.87,
                                         height: size.width * 0.17,
                                         child: GridView.builder(
+                                            physics: NeverScrollableScrollPhysics(),
                                             itemCount: value.HistoryPoint.length,
                                             gridDelegate:
                                             SliverGridDelegateWithFixedCrossAxisCount(

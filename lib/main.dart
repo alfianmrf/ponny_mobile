@@ -167,6 +167,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primaryColor: Color(0xFFFDF8F0),
         accentColor: Colors.red,
+        fontFamily: 'Brandon',
       ),
       initialRoute: SplashScreen.id,
       routes: {
