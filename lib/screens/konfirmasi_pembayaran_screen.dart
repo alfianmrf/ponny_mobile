@@ -205,7 +205,7 @@ class _KonfirmasiPembayaranScreenState extends State<KonfirmasiPembayaranScreen>
                                   ),
                                 ),
                                 Text(
-                                  nm_format.format(widget.manualInfo.grandTotal+widget.manualInfo.uniqTfManual),
+                                  nm_format.format(int.parse(widget.manualInfo.grandTotal)+int.parse(widget.manualInfo.uniqTfManual)),
                                   style: TextStyle(
                                     fontFamily: 'Brandon',
                                     color: Colors.white,

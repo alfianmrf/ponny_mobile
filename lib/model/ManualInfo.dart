@@ -203,7 +203,7 @@ class NewManualInfo {
   String paymentType;
   String paymentStatus;
   dynamic paymentDetails;
-  String grandTotal;
+  var grandTotal;
   String couponDiscount;
   String code;
   String date;
@@ -220,7 +220,7 @@ class NewManualInfo {
   dynamic confrimResi;
   String deliveryStatus;
   String userConfrimOrder;
-  String uniqTfManual;
+  var uniqTfManual;
   String freeOngkir;
   dynamic tglTerkirim;
   dynamic deliveryInfo;
