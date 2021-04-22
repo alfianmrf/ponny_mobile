@@ -62,6 +62,8 @@ class AddressModel with ChangeNotifier{
         // print(Address.fromJson(item).id);
         listAdress.add(Address.fromJson(item));
       }
+      print("Address ==");
+      print(listAdress);
       notifyListeners();
 
     }
@@ -152,11 +154,13 @@ class Address {
   String kecamatan;
   String postal_code;
   String alamat_lengkap;
-  String user_id; // dev
+  // int user_id;
+  var user_id;
   String results_raw;
   String created_at;
   String updated_at;
-  String is_deleted; // dev
+  // int is_deleted;
+  var is_deleted;
   String lat;
   String lng;
 
