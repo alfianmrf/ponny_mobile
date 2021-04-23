@@ -116,7 +116,7 @@ class _RincianPointState extends State<RincianPoint> {
   }
 
   Widget tabDiperoleh() {
-    List<PointHistory> diperOleh = _result.where((element) => element.status == 1).toList();
+    List<PointHistory> diperOleh = _result.where((element) => element.status == "1").toList();
     return ListView.builder(
         itemCount: diperOleh.length,
         itemBuilder: (builder, i) {
@@ -249,7 +249,7 @@ class _RincianPointState extends State<RincianPoint> {
   }
 
   Widget tabTerpakai() {
-    List<PointHistory> terpakai = _result.where((element) => element.status == 0).toList();
+    List<PointHistory> terpakai = _result.where((element) => element.status == "0").toList();
     return ListView.builder(
         itemCount: terpakai.length,
         itemBuilder: (builder, i) {
