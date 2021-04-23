@@ -9,12 +9,11 @@ class _QRScreenState extends State<QRScreen> {
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
   Barcode result;
   QRViewController controller;
+  bool is_on = false;
 
   Future<void>getQR() async{
       controller.stopCamera();
       Provider.of<ProductModel>(context).getQRCode(Provider.of<AppModel>(context).auth.access_token, result.code).then((value){
-          print("ini hasilnya--------");
-          print(value);
           if (value != null)
             Navigator.push(
               context,
@@ -23,6 +22,14 @@ class _QRScreenState extends State<QRScreen> {
                   ProductDetailsScreen(product: value,isScan: true,)),
             );
       });
+  }
+
+  Future<void>FlashToggle() async{
+    setState(() {
+      if(is_on == false) is_on = true;
+      else if(is_on == true) is_on = false;
+    });
+    await controller.toggleFlash();
   }
 
   @override
@@ -101,13 +108,18 @@ class _QRScreenState extends State<QRScreen> {
                   bottom: 30,
                   left: 0,
                   right: 0,
-                  child: Container(
-                      padding: EdgeInsets.all(20),
-                      child: Icon(
-                        FlutterIcons.flash_on_mdi,
-                        color: Colors.white,
-                        size: 35,
-                      )),
+                  child: GestureDetector(
+                    onTap: (){
+                      FlashToggle();
+                    },
+                    child: Container(
+                        padding: EdgeInsets.all(20),
+                        child: Icon(
+                          is_on == true ? FlutterIcons.flash_on_mdi : FlutterIcons.flash_off_mdi,
+                          color: Colors.white,
+                          size: 35,
+                        )),
+                  ),
                 )
               ],
             ),
