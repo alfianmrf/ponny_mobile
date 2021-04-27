@@ -19,13 +19,15 @@ import 'package:uiblock/uiblock.dart';
 class KonfirmasiPembayaranScreen extends StatefulWidget {
   static const String id = "konfirmasi_pembayaran_screen";
   NewManualInfo manualInfo;
-  KonfirmasiPembayaranScreen({Key key,this.manualInfo});
+  KonfirmasiPembayaranScreen({Key key, this.manualInfo});
 
   @override
-  _KonfirmasiPembayaranScreenState createState() => _KonfirmasiPembayaranScreenState();
+  _KonfirmasiPembayaranScreenState createState() =>
+      _KonfirmasiPembayaranScreenState();
 }
 
-class _KonfirmasiPembayaranScreenState extends State<KonfirmasiPembayaranScreen> {
+class _KonfirmasiPembayaranScreenState
+    extends State<KonfirmasiPembayaranScreen> {
   File _image;
   final _formKey = GlobalKey<FormState>();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -37,7 +39,7 @@ class _KonfirmasiPembayaranScreenState extends State<KonfirmasiPembayaranScreen>
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      if(widget.manualInfo.orderConfrim != null){
+      if (widget.manualInfo.orderConfrim != null) {
         setState(() {
           bank.text = widget.manualInfo.orderConfrim.bank;
           rek.text = widget.manualInfo.orderConfrim.noRek;
@@ -50,7 +52,7 @@ class _KonfirmasiPembayaranScreenState extends State<KonfirmasiPembayaranScreen>
   Future getImage() async {
     FilePickerResult result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
-      allowedExtensions: ['jpg','png'],
+      allowedExtensions: ['jpg', 'png'],
     );
 
     setState(() {
@@ -59,21 +61,20 @@ class _KonfirmasiPembayaranScreenState extends State<KonfirmasiPembayaranScreen>
         print(_image.path);
       } else {
         print('No image selected.');
-
       }
     });
   }
 
   _fetchInsert() async {
-    UIBlock.block(context,customLoaderChild: LoadingWidget(context));
-    var token = Provider.of<AppModel>(context,listen: false).auth.access_token;
-    Map<String, String> headers = { "Authorization": "Bearer $token"};
-    var request = http.MultipartRequest(
-        "POST", Uri.parse(paymentConfrim+"/"+widget.manualInfo.id.toString()));
-    if(_image != null){
+    UIBlock.block(context, customLoaderChild: LoadingWidget(context));
+    var token = Provider.of<AppModel>(context, listen: false).auth.access_token;
+    Map<String, String> headers = {"Authorization": "Bearer $token"};
+    var request = http.MultipartRequest("POST",
+        Uri.parse(paymentConfrim + "/" + widget.manualInfo.id.toString()));
+    if (_image != null) {
       var multipartFile = await http.MultipartFile.fromPath(
           "photo", _image.path,
-          contentType:  MediaType('image', 'jpeg'));
+          contentType: MediaType('image', 'jpeg'));
 
       request.files.add(multipartFile);
     }
@@ -83,38 +84,40 @@ class _KonfirmasiPembayaranScreenState extends State<KonfirmasiPembayaranScreen>
     request.headers.addAll(headers);
     http.StreamedResponse response = await request.send();
 
-    if(response.statusCode == 200)
-    {
+    if (response.statusCode == 200) {
       _scaffoldKey.currentState.showSnackBar(snackBarSuccess);
       Future.delayed(const Duration(milliseconds: 1000), () {
         Navigator.pop(context);
       });
-    }else{
-
+    } else {
       _scaffoldKey.currentState.showSnackBar(snackBarError);
     }
     UIBlock.unblock(context);
-
   }
 
-  Widget _imageFile(){
+  Widget _imageFile() {
     return InkWell(
-      onTap: getImage ,
+      onTap: getImage,
       child: Center(
-        child: _image != null ? Image.file(_image):Image.network(img_url+widget.manualInfo.orderConfrim.uploadImg),
+        child: _image != null
+            ? Image.file(_image)
+            : Image.network(img_url + widget.manualInfo.orderConfrim.uploadImg),
       ),
     );
   }
 
-  Widget _iconUpload(){
+  Widget _iconUpload() {
     return InkWell(
       onTap: getImage,
-      child: Icon(Icons.add,size: 50,color: Colors.black12,),
+      child: Icon(
+        Icons.add,
+        size: 50,
+        color: Colors.black12,
+      ),
     );
   }
 
-
-    @override
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
@@ -177,7 +180,7 @@ class _KonfirmasiPembayaranScreenState extends State<KonfirmasiPembayaranScreen>
                                   ),
                                 ),
                                 Text(
-                                  "#"+widget.manualInfo.code,
+                                  "#" + widget.manualInfo.code,
                                   style: TextStyle(
                                     fontFamily: 'Brandon',
                                     color: Colors.white,
@@ -205,7 +208,10 @@ class _KonfirmasiPembayaranScreenState extends State<KonfirmasiPembayaranScreen>
                                   ),
                                 ),
                                 Text(
-                                  nm_format.format(int.parse(widget.manualInfo.grandTotal)+int.parse(widget.manualInfo.uniqTfManual)),
+                                  nm_format.format(
+                                      int.parse(widget.manualInfo.grandTotal) +
+                                          int.parse(
+                                              widget.manualInfo.uniqTfManual)),
                                   style: TextStyle(
                                     fontFamily: 'Brandon',
                                     color: Colors.white,
@@ -253,7 +259,7 @@ class _KonfirmasiPembayaranScreenState extends State<KonfirmasiPembayaranScreen>
                     ),
                   ),
                   Container(
-                    width: MediaQuery.of(context).size.width*0.9,
+                    width: MediaQuery.of(context).size.width * 0.9,
                     decoration: BoxDecoration(
                       border: Border.all(color: Color(0xffF48262)),
                       borderRadius: BorderRadius.circular(5),
@@ -267,9 +273,11 @@ class _KonfirmasiPembayaranScreenState extends State<KonfirmasiPembayaranScreen>
                             children: <Widget>[
                               Container(
                                 width: MediaQuery.of(context).size.width,
-                                padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 15, vertical: 5),
                                 child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
                                       'Nama Bank',
@@ -288,9 +296,11 @@ class _KonfirmasiPembayaranScreenState extends State<KonfirmasiPembayaranScreen>
                               ),
                               Container(
                                 width: MediaQuery.of(context).size.width,
-                                padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 15, vertical: 5),
                                 child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
                                       'Nomor Rekening',
@@ -309,7 +319,8 @@ class _KonfirmasiPembayaranScreenState extends State<KonfirmasiPembayaranScreen>
                               ),
                               Container(
                                 width: MediaQuery.of(context).size.width,
-                                padding: EdgeInsets.only(left: 15, right: 15, top: 5, bottom: 15),
+                                padding: EdgeInsets.only(
+                                    left: 15, right: 15, top: 5, bottom: 15),
                                 decoration: BoxDecoration(
                                   border: Border(
                                     bottom: BorderSide(
@@ -319,7 +330,8 @@ class _KonfirmasiPembayaranScreenState extends State<KonfirmasiPembayaranScreen>
                                   ),
                                 ),
                                 child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
                                       'Nama Pemilik Rekening',
@@ -337,7 +349,7 @@ class _KonfirmasiPembayaranScreenState extends State<KonfirmasiPembayaranScreen>
                                 ),
                               ),
                               InkWell(
-                                onTap: (){
+                                onTap: () {
                                   showDialog(
                                       context: context,
                                       builder: (BuildContext context) {
@@ -354,42 +366,68 @@ class _KonfirmasiPembayaranScreenState extends State<KonfirmasiPembayaranScreen>
                                                     Navigator.of(context).pop();
                                                   },
                                                   child: CircleAvatar(
-                                                    child: Icon(Icons.close,color: Colors.white,),
-                                                    backgroundColor: Color(0xffF48262),
+                                                    child: Icon(
+                                                      Icons.close,
+                                                      color: Colors.white,
+                                                    ),
+                                                    backgroundColor:
+                                                        Color(0xffF48262),
                                                   ),
                                                 ),
                                               ),
                                               Form(
                                                 key: _formKey,
                                                 child: Column(
-                                                  mainAxisSize: MainAxisSize.min,
+                                                  mainAxisSize:
+                                                      MainAxisSize.min,
                                                   children: <Widget>[
                                                     Padding(
-                                                      padding: EdgeInsets.all(8.0),
+                                                      padding:
+                                                          EdgeInsets.all(8.0),
                                                       child: TextFormField(
                                                         controller: bank,
-                                                        decoration: InputDecoration(
+                                                        decoration:
+                                                            InputDecoration(
                                                           filled: true,
-                                                          fillColor: Colors.white,
+                                                          fillColor:
+                                                              Colors.white,
                                                           hintText: 'Nama Bank',
-                                                          labelText: 'Nama Bank:',
-                                                          labelStyle: TextStyle(color: Colors.black),
-                                                          focusedBorder: OutlineInputBorder(
-                                                            borderRadius: BorderRadius.circular(8.0),
-                                                            borderSide: BorderSide(
-                                                              color: Hexcolor('#F48262'),
+                                                          labelText:
+                                                              'Nama Bank:',
+                                                          labelStyle: TextStyle(
+                                                              color:
+                                                                  Colors.black),
+                                                          focusedBorder:
+                                                              OutlineInputBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        8.0),
+                                                            borderSide:
+                                                                BorderSide(
+                                                              color: Hexcolor(
+                                                                  '#F48262'),
                                                             ),
                                                           ),
-                                                          enabledBorder: OutlineInputBorder(
-                                                            borderRadius: BorderRadius.circular(8.0),
-                                                            borderSide: BorderSide(
-                                                              color: Hexcolor('#F48262'),
+                                                          enabledBorder:
+                                                              OutlineInputBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        8.0),
+                                                            borderSide:
+                                                                BorderSide(
+                                                              color: Hexcolor(
+                                                                  '#F48262'),
                                                               width: 2.0,
                                                             ),
                                                           ),
                                                         ),
-                                                        keyboardType: TextInputType.emailAddress,
-                                                        validator: (String value) {
+                                                        keyboardType:
+                                                            TextInputType
+                                                                .emailAddress,
+                                                        validator:
+                                                            (String value) {
                                                           if (value.isEmpty) {
                                                             return 'Nama Bank tidak boleh kosong';
                                                           }
@@ -397,31 +435,53 @@ class _KonfirmasiPembayaranScreenState extends State<KonfirmasiPembayaranScreen>
                                                       ),
                                                     ),
                                                     Padding(
-                                                      padding: EdgeInsets.all(8.0),
+                                                      padding:
+                                                          EdgeInsets.all(8.0),
                                                       child: TextFormField(
                                                         controller: rek,
-                                                        decoration: InputDecoration(
+                                                        decoration:
+                                                            InputDecoration(
                                                           filled: true,
-                                                          fillColor: Colors.white,
-                                                          hintText: 'Nomor Rekening',
-                                                          labelText: 'Nomor Rekening:',
-                                                          labelStyle: TextStyle(color: Colors.black),
-                                                          focusedBorder: OutlineInputBorder(
-                                                            borderRadius: BorderRadius.circular(8.0),
-                                                            borderSide: BorderSide(
-                                                              color: Hexcolor('#F48262'),
+                                                          fillColor:
+                                                              Colors.white,
+                                                          hintText:
+                                                              'Nomor Rekening',
+                                                          labelText:
+                                                              'Nomor Rekening:',
+                                                          labelStyle: TextStyle(
+                                                              color:
+                                                                  Colors.black),
+                                                          focusedBorder:
+                                                              OutlineInputBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        8.0),
+                                                            borderSide:
+                                                                BorderSide(
+                                                              color: Hexcolor(
+                                                                  '#F48262'),
                                                             ),
                                                           ),
-                                                          enabledBorder: OutlineInputBorder(
-                                                            borderRadius: BorderRadius.circular(8.0),
-                                                            borderSide: BorderSide(
-                                                              color: Hexcolor('#F48262'),
+                                                          enabledBorder:
+                                                              OutlineInputBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        8.0),
+                                                            borderSide:
+                                                                BorderSide(
+                                                              color: Hexcolor(
+                                                                  '#F48262'),
                                                               width: 2.0,
                                                             ),
                                                           ),
                                                         ),
-                                                        keyboardType: TextInputType.number,
-                                                        validator: (String value) {
+                                                        keyboardType:
+                                                            TextInputType
+                                                                .number,
+                                                        validator:
+                                                            (String value) {
                                                           if (value.isEmpty) {
                                                             return 'Nomor Rekening tidak boleh kosong';
                                                           }
@@ -429,30 +489,50 @@ class _KonfirmasiPembayaranScreenState extends State<KonfirmasiPembayaranScreen>
                                                       ),
                                                     ),
                                                     Padding(
-                                                      padding: EdgeInsets.all(8.0),
+                                                      padding:
+                                                          EdgeInsets.all(8.0),
                                                       child: TextFormField(
                                                         controller: an,
-                                                        decoration: InputDecoration(
+                                                        decoration:
+                                                            InputDecoration(
                                                           filled: true,
-                                                          fillColor: Colors.white,
-                                                          hintText: 'Nama Pemilik Rekening',
-                                                          labelText: 'Nama Pemilik Rekening:',
-                                                          labelStyle: TextStyle(color: Colors.black),
-                                                          focusedBorder: OutlineInputBorder(
-                                                            borderRadius: BorderRadius.circular(8.0),
-                                                            borderSide: BorderSide(
-                                                              color: Hexcolor('#F48262'),
+                                                          fillColor:
+                                                              Colors.white,
+                                                          hintText:
+                                                              'Nama Pemilik Rekening',
+                                                          labelText:
+                                                              'Nama Pemilik Rekening:',
+                                                          labelStyle: TextStyle(
+                                                              color:
+                                                                  Colors.black),
+                                                          focusedBorder:
+                                                              OutlineInputBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        8.0),
+                                                            borderSide:
+                                                                BorderSide(
+                                                              color: Hexcolor(
+                                                                  '#F48262'),
                                                             ),
                                                           ),
-                                                          enabledBorder: OutlineInputBorder(
-                                                            borderRadius: BorderRadius.circular(8.0),
-                                                            borderSide: BorderSide(
-                                                              color: Hexcolor('#F48262'),
+                                                          enabledBorder:
+                                                              OutlineInputBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        8.0),
+                                                            borderSide:
+                                                                BorderSide(
+                                                              color: Hexcolor(
+                                                                  '#F48262'),
                                                               width: 2.0,
                                                             ),
                                                           ),
                                                         ),
-                                                        validator: (String value) {
+                                                        validator:
+                                                            (String value) {
                                                           if (value.isEmpty) {
                                                             return 'Nama Pemilik Rekening tidak boleh kosong';
                                                           }
@@ -460,15 +540,24 @@ class _KonfirmasiPembayaranScreenState extends State<KonfirmasiPembayaranScreen>
                                                       ),
                                                     ),
                                                     Padding(
-                                                      padding: const EdgeInsets.all(8.0),
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              8.0),
                                                       child: RaisedButton(
-                                                        color: Color(0xffF48262),
+                                                        color:
+                                                            Color(0xffF48262),
                                                         textColor: Colors.white,
                                                         child: Text("Simpan"),
                                                         onPressed: () {
-                                                          if (_formKey.currentState.validate()) {
-                                                            _formKey.currentState.save();
-                                                            Navigator.of(context).pop();
+                                                          if (_formKey
+                                                              .currentState
+                                                              .validate()) {
+                                                            _formKey
+                                                                .currentState
+                                                                .save();
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop();
                                                           }
                                                         },
                                                       ),
@@ -483,7 +572,8 @@ class _KonfirmasiPembayaranScreenState extends State<KonfirmasiPembayaranScreen>
                                 },
                                 child: Container(
                                   width: MediaQuery.of(context).size.width,
-                                  padding: EdgeInsets.only(left: 15, right: 15, top: 10, bottom: 0),
+                                  padding: EdgeInsets.only(
+                                      left: 15, right: 15, top: 10, bottom: 0),
                                   child: Center(
                                     child: Text(
                                       'UBAH',
@@ -503,7 +593,7 @@ class _KonfirmasiPembayaranScreenState extends State<KonfirmasiPembayaranScreen>
                   ),
                   Container(
                     margin: EdgeInsets.symmetric(vertical: 10),
-                    width: MediaQuery.of(context).size.width*0.9,
+                    width: MediaQuery.of(context).size.width * 0.9,
                     decoration: BoxDecoration(
                       color: Color(0xffFDEDE3),
                       border: Border.all(color: Color(0xffF48262)),
@@ -514,18 +604,21 @@ class _KonfirmasiPembayaranScreenState extends State<KonfirmasiPembayaranScreen>
                       child: Container(
                         padding: EdgeInsets.symmetric(vertical: 30),
                         child: Column(
-
                           children: [
-                            widget.manualInfo.orderConfrim != null ?
-                            Container(
-                              padding: EdgeInsets.only(bottom: 10),
-                              child:  _imageFile(),
-                            ) : Container(
-                              padding: EdgeInsets.only(bottom: 10),
-                              child:   _image != null ? _imageFile() : _iconUpload(),
-                            )
-
-                            ,
+                            widget.manualInfo.orderConfrim != null
+                                ? Provider.of<OrderModel>(context).imageBukti ==
+                                        null
+                                    ? Container()
+                                    : Container(
+                                        padding: EdgeInsets.only(bottom: 10),
+                                        child: _imageFile(),
+                                      )
+                                : Container(
+                                    padding: EdgeInsets.only(bottom: 10),
+                                    child: _image != null
+                                        ? _imageFile()
+                                        : _iconUpload(),
+                                  ),
                             Text(
                               'Upload Bukti Pembayaran',
                               style: TextStyle(
@@ -568,7 +661,7 @@ class _KonfirmasiPembayaranScreenState extends State<KonfirmasiPembayaranScreen>
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(7.0),
                               ),
-                              onPressed: (){
+                              onPressed: () {
                                 Navigator.of(context).pop();
                               },
                             ),
@@ -591,21 +684,28 @@ class _KonfirmasiPembayaranScreenState extends State<KonfirmasiPembayaranScreen>
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(7.0),
                               ),
-                              onPressed: (){
-                                if(bank.text.isNotEmpty && rek.text.isNotEmpty && an.text.isNotEmpty && _image != null && widget.manualInfo.orderConfrim == null){
+                              onPressed: () {
+                                if (bank.text.isNotEmpty &&
+                                    rek.text.isNotEmpty &&
+                                    an.text.isNotEmpty &&
+                                    _image != null &&
+                                    widget.manualInfo.orderConfrim == null) {
                                   _fetchInsert();
-                                } else if(bank.text.isNotEmpty && rek.text.isNotEmpty && an.text.isNotEmpty && widget.manualInfo.orderConfrim != null){
+                                } else if (bank.text.isNotEmpty &&
+                                    rek.text.isNotEmpty &&
+                                    an.text.isNotEmpty &&
+                                    widget.manualInfo.orderConfrim != null) {
                                   _fetchInsert();
-                                } else{
+                                } else {
                                   final snackBar = SnackBar(
-                                    content: Text('Bukti pembayaran belum lengkap.!',style: TextStyle(color: Colors.white)),
+                                    content: Text(
+                                        'Bukti pembayaran belum lengkap.!',
+                                        style: TextStyle(color: Colors.white)),
                                     backgroundColor: Colors.redAccent,
                                   );
-                                  _scaffoldKey.currentState.showSnackBar(snackBar);
-
+                                  _scaffoldKey.currentState
+                                      .showSnackBar(snackBar);
                                 }
-
-
                               },
                             ),
                           ),

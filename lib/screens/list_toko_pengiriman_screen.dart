@@ -1,7 +1,7 @@
 part of 'pages.dart';
 
 class ListTokoPengirimanScreen extends StatefulWidget {
-  List<Cart> listCardOfitem=[];
+  List<Cart> listCardOfitem = [];
   @override
   _ListTokoPengirimanScreenState createState() =>
       _ListTokoPengirimanScreenState();
@@ -14,6 +14,7 @@ class _ListTokoPengirimanScreenState extends State<ListTokoPengirimanScreen> {
   _onSelected(int index) {
     setState(() => _selectedIndex = index);
   }
+
   @override
   void initState() {
     // TODO: implement initState
@@ -23,28 +24,31 @@ class _ListTokoPengirimanScreenState extends State<ListTokoPengirimanScreen> {
     });
   }
 
-  Future<void>getListToko() async{
-      try{
-          var token = Provider.of<AppModel>(context, listen: false).auth.access_token;
-          await Provider.of<ListCabang>(context).getListCabang(token);
-      }
-      catch(e){
-          print("ERror message"+e.toString());
-      }
+  Future<void> getListToko() async {
+    try {
+      var token =
+          Provider.of<AppModel>(context, listen: false).auth.access_token;
+      await Provider.of<ListCabang>(context).getListCabang(token);
+    } catch (e) {
+      print("ERror message" + e.toString());
+    }
   }
 
-  Future<Null>_getSummaryPoint() async {
-    String available = Provider.of<ListCabang>(context).cabangClick == null ? "" : json.encode(Provider.of<ListCabang>(context).cabangClick.availableProduct);
-    print("ddd"+available);
+  Future<Null> _getSummaryPoint() async {
+    String available = Provider.of<ListCabang>(context).cabangClick == null
+        ? ""
+        : json.encode(
+            Provider.of<ListCabang>(context).cabangClick.availableProduct);
+    print("ddd" + available);
     var token = Provider.of<AppModel>(context).auth.access_token;
-    Provider.of<CartModel>(context).getPointSummary(Provider.of<ListCabang>(context).setPointValue, available , token);
+    Provider.of<CartModel>(context).getPointSummary(
+        Provider.of<ListCabang>(context).setPointValue, available, token);
   }
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     var method = Provider.of<ListCabang>(context);
-
 
     return Scaffold(
       backgroundColor: Hexcolor('#FCF8F0'),
@@ -71,7 +75,7 @@ class _ListTokoPengirimanScreenState extends State<ListTokoPengirimanScreen> {
       body: Stack(
         children: [
           Consumer<ListCabang>(
-            builder: (context, value, child){
+            builder: (context, value, child) {
               var cabang = value.dataCabang;
               return ListView.separated(
                 itemCount: value.dataCabang.length,
@@ -117,14 +121,28 @@ class _ListTokoPengirimanScreenState extends State<ListTokoPengirimanScreen> {
                             ),
                             Container(
                               margin: EdgeInsets.only(top: 12),
-                              padding:
-                              EdgeInsets.symmetric(horizontal: 7, vertical: 4),
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 7, vertical: 4),
                               decoration: BoxDecoration(
-                                  color: cabang[index].unavailableProduct.length > 0 ? Colors.redAccent.withOpacity(0.90) : Colors.green.withOpacity(0.90),
+                                  color:
+                                      cabang[index].unavailableProduct.length >
+                                              0
+                                          ? Colors.redAccent.withOpacity(0.90)
+                                          : Colors.green.withOpacity(0.90),
                                   borderRadius:
-                                  BorderRadius.all(Radius.circular(8))),
+                                      BorderRadius.all(Radius.circular(8))),
                               child: Text(
-                                cabang[index].unavailableProduct.length > 0 ? "${cabang[index].unavailableProduct.length.toString()} Stok barang tidak tersedia":"Stok barang tersedia",
+                                cabang[index].unavailableProduct.length > 0
+                                    ? cabang[index].unavailableProduct.length +
+                                                cabang[index]
+                                                    .availableProduct
+                                                    .length ==
+                                            cabang[index]
+                                                .availableProduct
+                                                .length
+                                        ? "Stok barang tidak tersedia"
+                                        : "${cabang[index].unavailableProduct.length.toString()} Stok barang tidak tersedia"
+                                    : "Stok barang tersedia",
                                 style: TextStyle(
                                   fontFamily: "Brandon",
                                   color: Colors.white,
@@ -135,7 +153,7 @@ class _ListTokoPengirimanScreenState extends State<ListTokoPengirimanScreen> {
                           ],
                         ),
                       ),
-                      onTap: (){
+                      onTap: () {
                         _onSelected(index);
                         dataCabang = cabang[index];
                       });
@@ -166,19 +184,21 @@ class _ListTokoPengirimanScreenState extends State<ListTokoPengirimanScreen> {
                       ),
                     ),
                     onPressed: () {
-                      if(_selectedIndex == null ){
+                      if (_selectedIndex == null) {
                         final snackBar = SnackBar(
-                            content: Text("Mohon untuk memilih cabang",style: TextStyle(color: Colors.white)),
+                          content: Text("Mohon untuk memilih cabang",
+                              style: TextStyle(color: Colors.white)),
                           backgroundColor: Colors.redAccent,
                         );
                         scaffoldKey.currentState.showSnackBar(snackBar);
-                      }
-                      else {
-                          Provider.of<ListCabang>(context).setDataCabang = dataCabang;
-                          Provider.of<ListCabang>(context).setDataUnavaliable = false;
-                          _getSummaryPoint();
-                          int count = 0;
-                          Navigator.of(context).popUntil((_) => count++ >= 2);
+                      } else {
+                        Provider.of<ListCabang>(context).setDataCabang =
+                            dataCabang;
+                        Provider.of<ListCabang>(context).setDataUnavaliable =
+                            false;
+                        _getSummaryPoint();
+                        int count = 0;
+                        Navigator.of(context).popUntil((_) => count++ >= 2);
                       }
                     }),
               ))

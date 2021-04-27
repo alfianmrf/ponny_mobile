@@ -11,7 +11,7 @@ class _RincianPengambilanScreenState extends State<RincianPengambilanScreen> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     var rincian = Provider.of<ListCabang>(context);
-    var rincianTotal =  Provider.of<CartModel>(context);
+    var rincianTotal = Provider.of<CartModel>(context);
 
     return Scaffold(
       backgroundColor: Hexcolor('#FCF8F0'),
@@ -128,26 +128,44 @@ class _RincianPengambilanScreenState extends State<RincianPengambilanScreen> {
                         )
                       ],
                     ),
-                    rincianTotal.summary.discount == "Rp0" ? SizedBox() : Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        TextBuild(
-                          value: "POTONGAN DISKON",
-                        ),
-                        TextBuild(
-                          value: rincianTotal.summary.discount,
-                        )
-                      ],
-                    ),
+                    rincianTotal.summary.discount == "Rp0"
+                        ? SizedBox()
+                        : Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              TextBuild(
+                                value: "POTONGAN DISKON",
+                              ),
+                              TextBuild(
+                                value: rincianTotal.summary.discount,
+                              )
+                            ],
+                          ),
+                    rincianTotal.summary.using_point == null
+                        ? Container()
+                        : Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              TextBuild(
+                                value: "POIN DIPAKAI",
+                                // warna: Color(0xffF48262),
+                              ),
+                              TextBuild(
+                                value:
+                                    "${rincianTotal.summary.using_point.toString()}",
+                                // warna: Color(0xffF48262),
+                              )
+                            ],
+                          ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         TextBuild(
-                          value: "POIN DIPAKAI",
+                          value: "POIN DIDAPAT",
                           warna: Color(0xffF48262),
                         ),
                         TextBuild(
-                          value: "+${rincianTotal.summary.using_point.toString()}",
+                          value: "+${rincianTotal.summary.earnPoint}",
                           warna: Color(0xffF48262),
                         )
                       ],
@@ -222,8 +240,7 @@ class _RincianPengambilanScreenState extends State<RincianPengambilanScreen> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) =>
-                                    PaymentScreen()),
+                                builder: (context) => PaymentScreen()),
                           );
                         }),
                   ],

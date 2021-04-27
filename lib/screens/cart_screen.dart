@@ -31,7 +31,6 @@ import 'package:uiblock/uiblock.dart';
 import 'package:http/http.dart' as http;
 import 'dart:io' show HttpHeaders, Platform;
 
-
 class CartScreen extends StatefulWidget {
   static const String id = "cart_screen";
 
@@ -43,33 +42,38 @@ class _CartScreenState extends State<CartScreen> {
   TextEditingController _code = TextEditingController();
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
-  Future<Null> _updateCart()  async {
+  Future<Null> _updateCart() async {
     var token = Provider.of<AppModel>(context).auth.access_token;
-    final response = await http.get(listCarturl,headers: { HttpHeaders.contentTypeHeader: 'application/json',HttpHeaders.authorizationHeader: "Bearer $token" });
-    if(response.statusCode == 200)
-    {
+    final response = await http.get(listCarturl, headers: {
+      HttpHeaders.contentTypeHeader: 'application/json',
+      HttpHeaders.authorizationHeader: "Bearer $token"
+    });
+    if (response.statusCode == 200) {
       final responseJson = json.decode(response.body);
       print("DATA CART");
       print(responseJson['data']);
-    }else{
+    } else {
       print("DATA CART");
       print(response.statusCode);
     }
-
   }
 
-  Future<void>_getSummaryPoint() async {
-    String available = Provider.of<ListCabang>(context).cabangClick == null ? "" : json.encode(Provider.of<ListCabang>(context).cabangClick.availableProduct);
+  Future<void> _getSummaryPoint() async {
+    String available = Provider.of<ListCabang>(context).cabangClick == null
+        ? ""
+        : json.encode(
+            Provider.of<ListCabang>(context).cabangClick.availableProduct);
     var token = Provider.of<AppModel>(context).auth.access_token;
     Provider.of<CartModel>(context).shipping = null;
-    Provider.of<CartModel>(context).getPointSummary(Provider.of<ListCabang>(context).setPointValue, available , token);
+    Provider.of<CartModel>(context).getPointSummary(
+        Provider.of<ListCabang>(context).setPointValue, available, token);
   }
 
-  Future<void>_getUnavaliableProduct() async{
+  Future<void> _getUnavaliableProduct() async {
     print("aj ==>");
     print(Provider.of<CartModel>(context).listCardOfitem);
     Provider.of<ListCabang>(context).unavaliable = [];
-    for (var item in Provider.of<CartModel>(context).listCardOfitem){
+    for (var item in Provider.of<CartModel>(context).listCardOfitem) {
       Provider.of<ListCabang>(context).addDataUn(item);
     }
   }
@@ -84,8 +88,7 @@ class _CartScreenState extends State<CartScreen> {
       await Provider.of<CartModel>(context).RemoveCoupon();
       await Provider.of<UserModel>(context).getUser(
           Provider.of<AppModel>(context, listen: false).auth.access_token);
-       Provider.of<ListCabang>(context).setDataUnavaliable = null;
-
+      Provider.of<ListCabang>(context).setDataUnavaliable = null;
     });
   }
 
@@ -93,7 +96,6 @@ class _CartScreenState extends State<CartScreen> {
   int _n2 = 1;
   List<dynamic> detailImage;
   bool productOutOfStock = true;
-
 
   void add1() {
     setState(() {
@@ -121,7 +123,6 @@ class _CartScreenState extends State<CartScreen> {
 
   String dropdownValue = 'One';
 
-  
   void _methodeModalBottomSheet(context) {
     final size = MediaQuery.of(context).size;
     Provider.of<ListCabang>(context).unavaliable = [];
@@ -290,13 +291,15 @@ class _CartScreenState extends State<CartScreen> {
                         children: [
                           Container(
                               child: GestureDetector(
-                                onTap: () {
-                                    Provider.of<ListCabang>(context).setDataUnavaliable = true;
-                                    Provider.of<ListCabang>(context).cabangClick = null;
-                                    Navigator.pop(context);
-                                },
-                                child: Column(children: [
-                            Padding(
+                            onTap: () {
+                              Provider.of<ListCabang>(context)
+                                  .setDataUnavaliable = true;
+                              Provider.of<ListCabang>(context).cabangClick =
+                                  null;
+                              Navigator.pop(context);
+                            },
+                            child: Column(children: [
+                              Padding(
                                 padding: EdgeInsets.only(left: 20),
                                 child: Row(children: [
                                   Image.asset(
@@ -316,8 +319,8 @@ class _CartScreenState extends State<CartScreen> {
                                     ),
                                   )
                                 ]),
-                            ),
-                            Container(
+                              ),
+                              Container(
                                 margin: EdgeInsets.symmetric(horizontal: 5),
                                 child: Text(
                                   "Pesanan akan dikirim ke alamat penerima yang sudah kamu pilih",
@@ -327,9 +330,9 @@ class _CartScreenState extends State<CartScreen> {
                                     fontSize: 13,
                                   ),
                                 ),
-                            ),
-                          ]),
-                              )),
+                              ),
+                            ]),
+                          )),
                           Padding(
                               padding: EdgeInsets.symmetric(horizontal: 15),
                               child: Divider(
@@ -341,7 +344,8 @@ class _CartScreenState extends State<CartScreen> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => ListTokoPengirimanScreen()),
+                                    builder: (context) =>
+                                        ListTokoPengirimanScreen()),
                               ).then((value) => _getUnavaliableProduct());
                             },
                             child: Container(
@@ -368,8 +372,7 @@ class _CartScreenState extends State<CartScreen> {
                                         )
                                       ])),
                                   Container(
-                                    margin:
-                                        EdgeInsets.symmetric(horizontal: 5),
+                                    margin: EdgeInsets.symmetric(horizontal: 5),
                                     child: Text(
                                       "Pesanan akan dikirim ke alamat penerima yang sudah kamu pilih",
                                       style: TextStyle(
@@ -465,18 +468,20 @@ class _CartScreenState extends State<CartScreen> {
     );
   }
 
-  Future<void>addWishlistUnavaliable(Product id) async {
-    if(Provider.of<AppModel>(context).loggedIn) {
-        Provider.of<WishModel>(context).addProductToWish(id, Provider.of<AppModel>(context).auth.access_token);
-        if ( Provider.of<WishModel>(context).success == true ) showWishDialog(context, id);
-
-    }else{
-      Navigator.push(context,new MaterialPageRoute(
-        builder: (BuildContext context) => new LoginScreen(),
-      ));
+  Future<void> addWishlistUnavaliable(Product id) async {
+    if (Provider.of<AppModel>(context).loggedIn) {
+      Provider.of<WishModel>(context).addProductToWish(
+          id, Provider.of<AppModel>(context).auth.access_token);
+      if (Provider.of<WishModel>(context).success == true)
+        showWishDialog(context, id);
+    } else {
+      Navigator.push(
+          context,
+          new MaterialPageRoute(
+            builder: (BuildContext context) => new LoginScreen(),
+          ));
     }
   }
-
 
   void showWishDialog(BuildContext context, Product product) {
     // set up the AlertDialog
@@ -496,14 +501,14 @@ class _CartScreenState extends State<CartScreen> {
           padding: EdgeInsets.symmetric(vertical: 10),
           child: Center(
               child: Text(
-                'DITAMBAHKAN KE WISHLIST',
-                style: TextStyle(
-                  fontFamily: 'Brandon',
-                  fontWeight: FontWeight.w600,
-                  fontSize: 16,
-                  color: Color(0xffF48262),
-                ),
-              )),
+            'DITAMBAHKAN KE WISHLIST',
+            style: TextStyle(
+              fontFamily: 'Brandon',
+              fontWeight: FontWeight.w600,
+              fontSize: 16,
+              color: Color(0xffF48262),
+            ),
+          )),
         ),
         Padding(
           padding: EdgeInsets.only(top: 15, bottom: 30),
@@ -513,8 +518,8 @@ class _CartScreenState extends State<CartScreen> {
               Container(
                 margin: EdgeInsets.symmetric(horizontal: 5),
                 child: Image.network(
-                  img_url+product.thumbnail_image,
-                  width: MediaQuery.of(context).size.width*0.2,
+                  img_url + product.thumbnail_image,
+                  width: MediaQuery.of(context).size.width * 0.2,
                 ),
               ),
               Container(
@@ -525,22 +530,18 @@ class _CartScreenState extends State<CartScreen> {
                     Text(
                       product.brand.name,
                       style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontFamily: 'Brandon'
-                      ),
+                          fontWeight: FontWeight.w600, fontFamily: 'Brandon'),
                     ),
                     Text(
-                      product.name.length > 20 ? product.name.substring(0, 20)+'...' : product.name,
-                      style: TextStyle(
-                          fontFamily: 'Brandon'
-                      ),
+                      product.name.length > 20
+                          ? product.name.substring(0, 20) + '...'
+                          : product.name,
+                      style: TextStyle(fontFamily: 'Brandon'),
                     ),
-                    if(product.varian.isNotEmpty)
+                    if (product.varian.isNotEmpty)
                       Text(
                         '120ml',
-                        style: TextStyle(
-                            fontFamily: 'Brandon'
-                        ),
+                        style: TextStyle(fontFamily: 'Brandon'),
                       ),
                   ],
                 ),
@@ -560,16 +561,16 @@ class _CartScreenState extends State<CartScreen> {
     );
   }
 
-  void showDeleteDialog(BuildContext context, Product product,int id) {
+  void showDeleteDialog(BuildContext context, Product product, int id) {
     // set up the AlertDialog
     SimpleDialog alert = SimpleDialog(
       backgroundColor: Color(0xfffdf8f0),
       contentPadding: EdgeInsets.all(5.0),
       children: [
         Container(
-          padding: EdgeInsets.only(top: 30,bottom: 15),
+          padding: EdgeInsets.only(top: 30, bottom: 15),
           child: Icon(
-            Icons.favorite,
+            Icons.delete,
             color: Color(0xffF48262),
             size: 40,
           ),
@@ -578,14 +579,14 @@ class _CartScreenState extends State<CartScreen> {
           padding: EdgeInsets.symmetric(vertical: 10),
           child: Center(
               child: Text(
-                'ANDA YAKIN MENGHAPUS DATA ?',
-                style: TextStyle(
-                  fontFamily: 'Brandon',
-                  fontWeight: FontWeight.w600,
-                  fontSize: 16,
-                  color: Color(0xffF48262),
-                ),
-              )),
+            'ANDA YAKIN MENGHAPUS DATA ?',
+            style: TextStyle(
+              fontFamily: 'Brandon',
+              fontWeight: FontWeight.w600,
+              fontSize: 16,
+              color: Color(0xffF48262),
+            ),
+          )),
         ),
         Padding(
           padding: EdgeInsets.only(top: 15, bottom: 30),
@@ -595,8 +596,8 @@ class _CartScreenState extends State<CartScreen> {
               Container(
                 margin: EdgeInsets.symmetric(horizontal: 5),
                 child: Image.network(
-                  img_url+product.thumbnail_image,
-                  width: MediaQuery.of(context).size.width*0.2,
+                  img_url + product.thumbnail_image,
+                  width: MediaQuery.of(context).size.width * 0.2,
                 ),
               ),
               Container(
@@ -607,22 +608,18 @@ class _CartScreenState extends State<CartScreen> {
                     Text(
                       product.brand.name,
                       style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontFamily: 'Brandon'
-                      ),
+                          fontWeight: FontWeight.w600, fontFamily: 'Brandon'),
                     ),
                     Text(
-                      product.name.length > 20 ? product.name.substring(0, 20)+'...' : product.name,
-                      style: TextStyle(
-                          fontFamily: 'Brandon'
-                      ),
+                      product.name.length > 20
+                          ? product.name.substring(0, 20) + '...'
+                          : product.name,
+                      style: TextStyle(fontFamily: 'Brandon'),
                     ),
-                    if(product.varian.isNotEmpty)
+                    if (product.varian.isNotEmpty)
                       Text(
                         '120ml',
-                        style: TextStyle(
-                            fontFamily: 'Brandon'
-                        ),
+                        style: TextStyle(fontFamily: 'Brandon'),
                       ),
                   ],
                 ),
@@ -635,37 +632,37 @@ class _CartScreenState extends State<CartScreen> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              
-              RaisedButton(onPressed: (){
-                Navigator.pop(context);
-              },
-                  color: Color(0xffF48262),
-                  child: Text("Tidak",style: TextStyle(fontFamily: 'Brandon',
-                  fontWeight: FontWeight.w600,
-                  fontSize: 16,
-                  color: Colors.white)),
-              ),
-              RaisedButton(onPressed: (){
-                UIBlock.block(context,
-                    customLoaderChild:
-                    LoadingWidget(
-                        context));
-                Provider.of<CartModel>(context).DeleteProductToCart(
-                    id,
-                    Provider.of<AppModel>(
-                        context)
-                        .auth
-                        .access_token)
-                    .then((value) {
-                      UIBlock.unblock(context);
-                      Navigator.pop(context);
-                });
-              },
+              RaisedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
                 color: Color(0xffF48262),
-                child: Text("Ya",style: TextStyle(fontFamily: 'Brandon',
-                    fontWeight: FontWeight.w600,
-                    fontSize: 16,
-                    color: Colors.white)),
+                child: Text("Tidak",
+                    style: TextStyle(
+                        fontFamily: 'Brandon',
+                        fontWeight: FontWeight.w600,
+                        fontSize: 16,
+                        color: Colors.white)),
+              ),
+              RaisedButton(
+                onPressed: () {
+                  UIBlock.block(context,
+                      customLoaderChild: LoadingWidget(context));
+                  Provider.of<CartModel>(context)
+                      .DeleteProductToCart(
+                          id, Provider.of<AppModel>(context).auth.access_token)
+                      .then((value) {
+                    UIBlock.unblock(context);
+                    Navigator.pop(context);
+                  });
+                },
+                color: Color(0xffF48262),
+                child: Text("Ya",
+                    style: TextStyle(
+                        fontFamily: 'Brandon',
+                        fontWeight: FontWeight.w600,
+                        fontSize: 16,
+                        color: Colors.white)),
               )
             ],
           ),
@@ -682,56 +679,48 @@ class _CartScreenState extends State<CartScreen> {
     );
   }
 
-  void selectTypeMethodPayment(){
-    print("ini data ==>"+Provider.of<ListCabang>(context).isDelivery.toString());
+  void selectTypeMethodPayment() {
+    print("ini data ==>" +
+        Provider.of<ListCabang>(context).isDelivery.toString());
     var cabang = Provider.of<ListCabang>(context);
 
-    if(cabang.isDelivery != true ){
-      if (cabang.unavaliable.length == 0 && cabang.cabangClick != null || cabang.isDelivery == true){
+    if (cabang.isDelivery != true) {
+      if (cabang.unavaliable.length == 0 && cabang.cabangClick != null ||
+          cabang.isDelivery == true) {
         Navigator.push(
           context,
-          MaterialPageRoute(
-              builder: (context) => RincianPengambilanScreen()),
+          MaterialPageRoute(builder: (context) => RincianPengambilanScreen()),
         );
+      } else {
+        final snackBar = SnackBar(
+          content: Text(
+              cabang.cabangClick == null && cabang.isDelivery != true
+                  ? 'Maaf, Metode pengiriman kosong'
+                  : 'Maaf, Produk ada yang tidak tersedia',
+              style: TextStyle(color: Colors.white)),
+          backgroundColor: Colors.redAccent,
+        );
+        scaffoldKey.currentState.showSnackBar(snackBar);
       }
-      else
-        {
-          final snackBar = SnackBar(
-            content: Text(
-                cabang.cabangClick == null && cabang.isDelivery != true ? 'Maaf, Metode pengiriman kosong' : 'Maaf, Produk ada yang tidak tersedia',
-                style: TextStyle(
-                    color: Colors
-                        .white)),
-            backgroundColor:
-            Colors.redAccent,
-          );
-          scaffoldKey
-              .currentState
-              .showSnackBar(
-              snackBar);
-        }
-
-    }
-    else{
+    } else {
       var value = Provider.of<CartModel>(context);
-      int index = value.listCardOfitem.indexWhere((element) => element.product.is_shown == false);
-      if(index<0){
-        FocusScope.of(context)
-            .requestFocus(FocusNode());
-        UIBlock.block(context,
-            customLoaderChild: LoadingWidget(context));
+      int index = value.listCardOfitem
+          .indexWhere((element) => element.product.is_shown == false);
+      if (index < 0) {
+        FocusScope.of(context).requestFocus(FocusNode());
+        UIBlock.block(context, customLoaderChild: LoadingWidget(context));
         value.RemoveShipping().then((value) {
           UIBlock.unblock(context);
           Navigator.push(
             context,
-            MaterialPageRoute(
-                builder: (context) => ShippingScreen()),
+            MaterialPageRoute(builder: (context) => ShippingScreen()),
           ).then((value) => _getSummaryPoint());
         });
-      }else{
+      } else {
         String product = value.listCardOfitem[index].product.name;
         final snackBar = SnackBar(
-          content: Text("Produk ${product} tidak tersedia",style: TextStyle(color: Colors.white)),
+          content: Text("Produk ${product} tidak tersedia",
+              style: TextStyle(color: Colors.white)),
           backgroundColor: Colors.redAccent,
         );
         scaffoldKey.currentState.showSnackBar(snackBar);
@@ -740,9 +729,7 @@ class _CartScreenState extends State<CartScreen> {
   }
 
   @override
-
   Widget build(BuildContext context) {
-
     // _getUnavaliableProduct();
     final size = MediaQuery.of(context).size;
     var method = Provider.of<ListCabang>(context);
@@ -794,8 +781,7 @@ class _CartScreenState extends State<CartScreen> {
                       return new Column(
                         children: <Widget>[
                           for (final item in value.listCardOfitem)
-                            (
-                                Container(
+                            (Container(
                               width: MediaQuery.of(context).size.width * 0.95,
                               padding: EdgeInsets.all(15),
                               decoration: BoxDecoration(
@@ -818,16 +804,24 @@ class _CartScreenState extends State<CartScreen> {
                                           0.25,
                                       padding: EdgeInsets.only(right: 7),
                                       child: GestureDetector(
-                                        onTap: (){
-                                          if(item.product.is_shown)
-                                          Navigator.push(context, new MaterialPageRoute(builder: (BuildContext context)=> new ProductDetailsScreen(product: item.product,)));
+                                        onTap: () {
+                                          if (item.product.is_shown)
+                                            Navigator.push(
+                                                context,
+                                                new MaterialPageRoute(
+                                                    builder: (BuildContext
+                                                            context) =>
+                                                        new ProductDetailsScreen(
+                                                          product: item.product,
+                                                        )));
                                         },
                                         child: CachedNetworkImage(
-                                          imageUrl:
-                                              item.product.thumbnail_image != null
-                                                  ? img_url +
-                                                      item.product.thumbnail_image
-                                                  : "",
+                                          imageUrl: item.product
+                                                      .thumbnail_image !=
+                                                  null
+                                              ? img_url +
+                                                  item.product.thumbnail_image
+                                              : "",
                                           placeholder: (context, url) =>
                                               LoadingWidgetPulse(context),
                                           errorWidget: (context, url, error) =>
@@ -855,7 +849,11 @@ class _CartScreenState extends State<CartScreen> {
                                             ),
                                           ),
                                           Text(
-                                            item.variant != null? item.product.name + " - " + item.variant:item.product.name,
+                                            item.variant != null
+                                                ? item.product.name +
+                                                    " - " +
+                                                    item.variant
+                                                : item.product.name,
                                             maxLines: 2,
                                             overflow: TextOverflow.ellipsis,
                                             style: TextStyle(
@@ -863,7 +861,6 @@ class _CartScreenState extends State<CartScreen> {
                                               fontSize: 14,
                                             ),
                                           ),
-
                                           Text(
                                             NumberFormat.simpleCurrency(
                                                     locale: "id_ID",
@@ -905,10 +902,15 @@ class _CartScreenState extends State<CartScreen> {
                                                           Color(0xffFDF8F0),
                                                       elevation: 0.0,
                                                       highlightElevation: 0.0,
-                                                      heroTag:  item.variant != null?
-                                                      "btnmin" +item.product.id
-                                                              .toString()+"btnmin" +item.variant:item.product.id
-                                                          .toString(),
+                                                      heroTag: item.variant !=
+                                                              null
+                                                          ? "btnmin" +
+                                                              item.product.id
+                                                                  .toString() +
+                                                              "btnmin" +
+                                                              item.variant
+                                                          : item.product.id
+                                                              .toString(),
                                                       child: Text(
                                                         '-',
                                                         style: TextStyle(
@@ -929,7 +931,8 @@ class _CartScreenState extends State<CartScreen> {
                                                                 Provider.of<AppModel>(
                                                                         context)
                                                                     .auth
-                                                                    .access_token, item.variant)
+                                                                    .access_token,
+                                                                item.variant)
                                                             .then((value) {
                                                           UIBlock.unblock(
                                                               context);
@@ -950,11 +953,15 @@ class _CartScreenState extends State<CartScreen> {
                                                           Color(0xffFDF8F0),
                                                       elevation: 0.0,
                                                       highlightElevation: 0.0,
-                                                      heroTag:
-                                                          item.variant != null?
-                                                          "btnplus" + item.product.id
-                                                          .toString()+item.variant:"btnplus" +item.product.id
-                                                          .toString(),
+                                                      heroTag: item.variant !=
+                                                              null
+                                                          ? "btnplus" +
+                                                              item.product.id
+                                                                  .toString() +
+                                                              item.variant
+                                                          : "btnplus" +
+                                                              item.product.id
+                                                                  .toString(),
                                                       child: Text(
                                                         '+',
                                                         style: TextStyle(
@@ -967,15 +974,25 @@ class _CartScreenState extends State<CartScreen> {
                                                       ),
                                                       onPressed: () {
                                                         var _param;
-                                                        if(item.product.varian.toString()!='[]'){
-                                                          if(item.variant != null)
-                                                          _param = '{"varian": "${item.variant}", "product_id": ${item.product.id}, "quantity": 1, "price": ${item.product.base_price}}';
+                                                        if (item.product.varian
+                                                                .toString() !=
+                                                            '[]') {
+                                                          if (item.variant !=
+                                                              null)
+                                                            _param =
+                                                                '{"varian": "${item.variant}", "product_id": ${item.product.id}, "quantity": 1, "price": ${item.product.base_price}}';
                                                         }
                                                         // print("PARAM: "+_param);
                                                         // print(item.variant);
-                                                        VarianResult varian_result;
-                                                        if(item.variant!=null){
-                                                          varian_result = new VarianResult.fromJson(json.decode(_param));
+                                                        VarianResult
+                                                            varian_result;
+                                                        if (item.variant !=
+                                                            null) {
+                                                          varian_result =
+                                                              new VarianResult
+                                                                      .fromJson(
+                                                                  json.decode(
+                                                                      _param));
                                                         }
                                                         UIBlock.block(context,
                                                             customLoaderChild:
@@ -988,7 +1005,10 @@ class _CartScreenState extends State<CartScreen> {
                                                                         context)
                                                                     .auth
                                                                     .access_token,
-                                                            item.variant==null?null:varian_result)
+                                                                item.variant ==
+                                                                        null
+                                                                    ? null
+                                                                    : varian_result)
                                                             // null)
                                                             .then((value) {
                                                           UIBlock.unblock(
@@ -1061,7 +1081,13 @@ class _CartScreenState extends State<CartScreen> {
                                                       customLoaderChild:
                                                           LoadingWidget(
                                                               context));
-                                                  value.DeleteProductToCart(item.id, Provider.of<AppModel>(context).auth.access_token).then((value) {
+                                                  value.DeleteProductToCart(
+                                                          item.id,
+                                                          Provider.of<AppModel>(
+                                                                  context)
+                                                              .auth
+                                                              .access_token)
+                                                      .then((value) {
                                                     _getSummaryPoint();
                                                     UIBlock.unblock(context);
                                                   });
@@ -1301,7 +1327,13 @@ class _CartScreenState extends State<CartScreen> {
                                                       customLoaderChild:
                                                           LoadingWidget(
                                                               context));
-                                                  value.DeleteRendemProduct(item, Provider.of<AppModel>(context).auth.access_token).then((value) {
+                                                  value.DeleteRendemProduct(
+                                                          item,
+                                                          Provider.of<AppModel>(
+                                                                  context)
+                                                              .auth
+                                                              .access_token)
+                                                      .then((value) {
                                                     _getSummaryPoint();
                                                     UIBlock.unblock(context);
                                                   });
@@ -1425,7 +1457,13 @@ class _CartScreenState extends State<CartScreen> {
                                                       customLoaderChild:
                                                           LoadingWidget(
                                                               context));
-                                                  value.DeleteProductSample(item, Provider.of<AppModel>(context).auth.access_token).then((value) {
+                                                  value.DeleteProductSample(
+                                                          item,
+                                                          Provider.of<AppModel>(
+                                                                  context)
+                                                              .auth
+                                                              .access_token)
+                                                      .then((value) {
                                                     _getSummaryPoint();
                                                     UIBlock.unblock(context);
                                                   });
@@ -1574,346 +1612,455 @@ class _CartScreenState extends State<CartScreen> {
                               : Container(),
                           productOutOfStock != null && productOutOfStock == true
                               ? Consumer<ListCabang>(
-                              builder: (context, value, child){
-                                return Container(
-                                  width: MediaQuery.of(context).size.width,
-                                  padding: EdgeInsets.symmetric(vertical: 7),
-                                  child: Column(
-                                    children: [
-                                      Row(
-                                        children: [
-                                          Container(
-                                            padding: EdgeInsets.symmetric(
-                                                horizontal: 15),
-                                            child: Text(
-                                              'METODE PENGIRIMAN',
-                                              style: TextStyle(
-                                                fontFamily: 'Brandon',
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                              textAlign: TextAlign.left,
-                                            ),
-                                          ),
-                                          Spacer(),
-                                          GestureDetector(
-                                            onTap: () {
-                                              _methodeModalBottomSheet(context);
-                                            },
-                                            child: Container(
-                                                padding: EdgeInsets.symmetric(
-                                                    horizontal: 15),
-                                                child: Icon(Icons.help_outline,
-                                                    color: Colors.black54,
-                                                    size: 20)),
-                                          )
-                                        ],
-                                      ),
-                                      GestureDetector(
-                                        onTap: () {
-                                          _changeMethodeModalBottomSheet(
-                                              context);
-                                        },
-                                        child: Container(
-                                          padding: EdgeInsets.only(
-                                              left: 14, right: 10,top: 10,bottom: 10),
-                                          margin: EdgeInsets.symmetric(
-                                              horizontal: 15, vertical: 8),
-                                          width:
-                                          MediaQuery.of(context).size.width,
-
-                                          decoration: BoxDecoration(
-                                              color: Colors.white,
-                                              border: Border.all(
-                                                  width: 1,
-                                                  color: Color(0xffF48262)
-                                                      .withOpacity(0.37)),
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(10))),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Row(children: [
-                                                value.cabangClick == null ? SizedBox(): Image.asset(
-                                                  'assets/images/perjalanan@4x.png',
-                                                  width: 25,
-                                                  height: 25,
-                                                  fit: BoxFit.contain,
-                                                ),
-                                                SizedBox(width: 7),
-                                                Column(
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                                  children: [
-                                                  Text(
-                                                    value.cabangClick == null ? "Pilih metode pengiriman": "Pick Up In Store",
-                                                    style: TextStyle(
-                                                      fontFamily: "Brandon",
-                                                      fontWeight: FontWeight.w600,
-                                                      color: Colors.black,
-                                                      fontSize: 13,
-                                                    ),
-                                                  ),
-                                                  Text(value.isDelivery == true ? "Menggunakan Delivery" : value.cabangClick == null ?  "Mau diantar atau diambil sendiri nih? Kamu bisa pilih loh!" : method.cabangClick.alamatCabang,
-                                                      style: TextStyle(
-                                                        fontFamily: 'Brandon',
-                                                        fontSize: 10,
-                                                        color: Colors.black45,
-                                                      )
-                                                  ),
-                                                ],)
-
-                                              ]),
-                                              Icon(Icons.arrow_forward_ios,
-                                                  color: Color(0xffF48262),
-                                                  size: 16)
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                      Column(
-                                        children: [
-                                          value.cabangClick != null && value.setUnavailable.length != 0 && value.isDelivery != true ? Row(
-                                            children: [
-                                              Icon(
-                                                Icons.priority_high,
-                                                color: Color(0xffF48262),
-                                                size: 27,
-                                              ),
-                                              Container(
-                                                width: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                    0.9,
-                                                child: TextBuild(
-                                                  value:
-                                                  "Oops,sorry! Produk pilihanmu stoknya lagi nggak tersedia untuk pickup di ${value.cabangClick.namaCabang}, nih.",
-                                                ),
-                                              )
-                                            ],
-                                          ) : SizedBox(),
-                                        ],
-                                      ),
-                                     value.cabangClick != null && value.setUnavailable.length != 0 && value.isDelivery != true ? Padding(
-                                        padding: EdgeInsets.only(
-                                            left: 25, top: 10, bottom: 10),
-                                        child: Row(
+                                  builder: (context, value, child) {
+                                  return Container(
+                                    width: MediaQuery.of(context).size.width,
+                                    padding: EdgeInsets.symmetric(vertical: 7),
+                                    child: Column(
+                                      children: [
+                                        Row(
                                           children: [
                                             Container(
-                                              margin:
-                                              EdgeInsets.only(right: 10),
-                                              height: 25,
-                                              decoration: BoxDecoration(
-                                                  borderRadius:
-                                                  BorderRadius.circular(20),
-                                                  border: Border.all(
-                                                      color: Color(0xffF48262)
-                                                          .withOpacity(0.22))),
-                                              child: FlatButton(
-                                                  padding: EdgeInsets.zero,
-                                                  materialTapTargetSize:
-                                                  MaterialTapTargetSize
-                                                      .shrinkWrap,
-                                                  shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                    BorderRadius.circular(
-                                                        20),
-                                                  ),
-                                                  color: Colors.white,
-                                                  onPressed: () {
-                                                    Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                          builder: (context) => ListTokoPengirimanScreen()),
-                                                    );
-                                                  },
-                                                  child: TextBuild(
-                                                    value: "Ganti Toko",
-                                                    size: 12,
-                                                    warna: Color(0xffF48262),
-                                                  )),
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 15),
+                                              child: Text(
+                                                'METODE PENGIRIMAN',
+                                                style: TextStyle(
+                                                  fontFamily: 'Brandon',
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                                textAlign: TextAlign.left,
+                                              ),
                                             ),
-                                            Container(
-                                              height: 25,
-                                              decoration: BoxDecoration(
-                                                  borderRadius:
-                                                  BorderRadius.circular(20),
-                                                  border: Border.all(
-                                                      color: Color(0xffF48262)
-                                                          .withOpacity(0.22))),
-                                              child: FlatButton(
-                                                  padding: EdgeInsets.zero,
-                                                  materialTapTargetSize:
-                                                  MaterialTapTargetSize
-                                                      .shrinkWrap,
-                                                  shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                    BorderRadius.circular(
-                                                        20),
-                                                  ),
-                                                  color: Colors.white,
-                                                  onPressed: () {
-                                                    Provider.of<ListCabang>(context).setDataUnavaliable = true;
-                                                    Provider.of<ListCabang>(context).dataCabang = null;
-                                                  },
-                                                  child: TextBuild(
-                                                    value: "Coba Delivery",
-                                                    size: 12,
-                                                    warna: Color(0xffF48262),
-                                                  )),
+                                            Spacer(),
+                                            GestureDetector(
+                                              onTap: () {
+                                                _methodeModalBottomSheet(
+                                                    context);
+                                              },
+                                              child: Container(
+                                                  padding: EdgeInsets.symmetric(
+                                                      horizontal: 15),
+                                                  child: Icon(
+                                                      Icons.help_outline,
+                                                      color: Colors.black54,
+                                                      size: 20)),
                                             )
                                           ],
                                         ),
-                                      ) : SizedBox(),
-                                      value.cabangClick != null && value.setUnavailable.length != 0  && value.isDelivery != true ?  Container(
-                                        height: 10,
-                                        width:
-                                        MediaQuery.of(context).size.width,
-                                        color: Colors.white,
-                                      ) : SizedBox(),
-                                      value.cabangClick != null && value.setUnavailable.length != 0  && value.isDelivery != true?  ListView.separated(
-                                        scrollDirection: Axis.vertical,
-                                        shrinkWrap: true,
-                                        physics: NeverScrollableScrollPhysics(),
-                                        itemCount: value.setUnavailable.length,
-                                        separatorBuilder:
-                                            (BuildContext context, int index) {
-                                          return Divider();
-                                        },
-                                        itemBuilder:
-                                            (BuildContext context, int index) {
-                                          var unavailable = value.setUnavailable;
-                                          return Container(
-                                            padding: EdgeInsets.symmetric(
-                                                vertical: 20, horizontal: 10),
+                                        GestureDetector(
+                                          onTap: () {
+                                            _changeMethodeModalBottomSheet(
+                                                context);
+                                          },
+                                          child: Container(
+                                            padding: EdgeInsets.only(
+                                                left: 14,
+                                                right: 10,
+                                                top: 10,
+                                                bottom: 10),
+                                            margin: EdgeInsets.symmetric(
+                                                horizontal: 15, vertical: 8),
+                                            width: MediaQuery.of(context)
+                                                .size
+                                                .width,
+                                            decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                border: Border.all(
+                                                    width: 1,
+                                                    color: Color(0xffF48262)
+                                                        .withOpacity(0.37)),
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(10))),
                                             child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
                                               children: [
-                                                Column(
-                                                  crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
+                                                Row(children: [
+                                                  value.cabangClick == null
+                                                      ? SizedBox()
+                                                      : Image.asset(
+                                                          'assets/images/perjalanan@4x.png',
+                                                          width: 25,
+                                                          height: 25,
+                                                          fit: BoxFit.contain,
+                                                        ),
+                                                  SizedBox(width: 7),
+                                                  Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Text(
+                                                        value.cabangClick ==
+                                                                null
+                                                            ? "Pilih metode pengiriman"
+                                                            : "Pick Up In Store",
+                                                        style: TextStyle(
+                                                          fontFamily: "Brandon",
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                          color: Colors.black,
+                                                          fontSize: 13,
+                                                        ),
+                                                      ),
+                                                      Text(
+                                                          value.isDelivery ==
+                                                                  true
+                                                              ? "Menggunakan Delivery"
+                                                              : value.cabangClick ==
+                                                                      null
+                                                                  ? "Mau diantar atau diambil sendiri nih? Kamu bisa pilih loh!"
+                                                                  : method
+                                                                      .cabangClick
+                                                                      .alamatCabang,
+                                                          style: TextStyle(
+                                                            fontFamily:
+                                                                'Brandon',
+                                                            fontSize: 10,
+                                                            color:
+                                                                Colors.black45,
+                                                          )),
+                                                    ],
+                                                  )
+                                                ]),
+                                                Icon(Icons.arrow_forward_ios,
+                                                    color: Color(0xffF48262),
+                                                    size: 16)
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                        Column(
+                                          children: [
+                                            value.cabangClick != null &&
+                                                    value.setUnavailable
+                                                            .length !=
+                                                        0 &&
+                                                    value.isDelivery != true
+                                                ? Row(
+                                                    children: [
+                                                      Icon(
+                                                        Icons.priority_high,
+                                                        color:
+                                                            Color(0xffF48262),
+                                                        size: 27,
+                                                      ),
+                                                      Container(
+                                                        width: MediaQuery.of(
+                                                                    context)
+                                                                .size
+                                                                .width *
+                                                            0.9,
+                                                        child: TextBuild(
+                                                          value:
+                                                              "Oops,sorry! Produk pilihanmu stoknya lagi nggak tersedia untuk pickup di ${value.cabangClick.namaCabang}, nih.",
+                                                        ),
+                                                      )
+                                                    ],
+                                                  )
+                                                : SizedBox(),
+                                          ],
+                                        ),
+                                        value.cabangClick != null &&
+                                                value.setUnavailable.length !=
+                                                    0 &&
+                                                value.isDelivery != true
+                                            ? Padding(
+                                                padding: EdgeInsets.only(
+                                                    left: 25,
+                                                    top: 10,
+                                                    bottom: 10),
+                                                child: Row(
                                                   children: [
-                                                    detailImage == null
-                                                        ? Container(
-                                                      width: 110,
-                                                      height: 110,
-                                                      color: Colors
-                                                          .grey[300],
-                                                      child: Image.asset(
-                                                          'assets/images/210x265.png'),
-                                                    )
-                                                        : Container(
-                                                      width: 110,
-                                                      height: 110,
+                                                    Container(
+                                                      margin: EdgeInsets.only(
+                                                          right: 10),
+                                                      height: 25,
                                                       decoration: BoxDecoration(
-                                                          image: DecorationImage(
-                                                              image: NetworkImage(
-                                                                  "$img_url${detailImage[0]}"),
-                                                              fit: BoxFit
-                                                                  .cover)),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(20),
+                                                          border: Border.all(
+                                                              color: Color(
+                                                                      0xffF48262)
+                                                                  .withOpacity(
+                                                                      0.22))),
+                                                      child: FlatButton(
+                                                          padding:
+                                                              EdgeInsets.zero,
+                                                          materialTapTargetSize:
+                                                              MaterialTapTargetSize
+                                                                  .shrinkWrap,
+                                                          shape:
+                                                              RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        20),
+                                                          ),
+                                                          color: Colors.white,
+                                                          onPressed: () {
+                                                            Navigator.push(
+                                                              context,
+                                                              MaterialPageRoute(
+                                                                  builder:
+                                                                      (context) =>
+                                                                          ListTokoPengirimanScreen()),
+                                                            );
+                                                          },
+                                                          child: TextBuild(
+                                                            value: "Ganti Toko",
+                                                            size: 12,
+                                                            warna: Color(
+                                                                0xffF48262),
+                                                          )),
+                                                    ),
+                                                    Container(
+                                                      height: 25,
+                                                      decoration: BoxDecoration(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(20),
+                                                          border: Border.all(
+                                                              color: Color(
+                                                                      0xffF48262)
+                                                                  .withOpacity(
+                                                                      0.22))),
+                                                      child: FlatButton(
+                                                          padding:
+                                                              EdgeInsets.zero,
+                                                          materialTapTargetSize:
+                                                              MaterialTapTargetSize
+                                                                  .shrinkWrap,
+                                                          shape:
+                                                              RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        20),
+                                                          ),
+                                                          color: Colors.white,
+                                                          onPressed: () {
+                                                            Provider.of<ListCabang>(
+                                                                        context)
+                                                                    .setDataUnavaliable =
+                                                                true;
+                                                            Provider.of<ListCabang>(
+                                                                        context)
+                                                                    .dataCabang =
+                                                                null;
+                                                          },
+                                                          child: TextBuild(
+                                                            value:
+                                                                "Coba Delivery",
+                                                            size: 12,
+                                                            warna: Color(
+                                                                0xffF48262),
+                                                          )),
                                                     )
                                                   ],
                                                 ),
-                                                Container(
-                                                  width: size.width * 0.58,
-                                                  padding:
-                                                  EdgeInsets.only(left: 15),
-
-                                                  child: Column(
-                                                    crossAxisAlignment:
-                                                    CrossAxisAlignment
-                                                        .start,
-                                                    children: [
-                                                      Text(
-                                                        unavailable[index].product.brand.name,
-                                                        style: TextStyle(
-                                                          fontWeight:
-                                                          FontWeight.w600,
-                                                          fontFamily: 'Yeseva',
-                                                          fontSize: 16,
+                                              )
+                                            : SizedBox(),
+                                        value.cabangClick != null &&
+                                                value.setUnavailable.length !=
+                                                    0 &&
+                                                value.isDelivery != true
+                                            ? Container(
+                                                height: 10,
+                                                width: MediaQuery.of(context)
+                                                    .size
+                                                    .width,
+                                                color: Colors.white,
+                                              )
+                                            : SizedBox(),
+                                        value.cabangClick != null &&
+                                                value.setUnavailable.length !=
+                                                    0 &&
+                                                value.isDelivery != true
+                                            ? ListView.separated(
+                                                scrollDirection: Axis.vertical,
+                                                shrinkWrap: true,
+                                                physics:
+                                                    NeverScrollableScrollPhysics(),
+                                                itemCount:
+                                                    value.setUnavailable.length,
+                                                separatorBuilder:
+                                                    (BuildContext context,
+                                                        int index) {
+                                                  return Divider();
+                                                },
+                                                itemBuilder:
+                                                    (BuildContext context,
+                                                        int index) {
+                                                  var unavailable =
+                                                      value.setUnavailable;
+                                                  return Container(
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                            vertical: 20,
+                                                            horizontal: 10),
+                                                    child: Row(
+                                                      children: [
+                                                        Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            value
+                                                                        .unavaliable[
+                                                                            index]
+                                                                        .product
+                                                                        .thumbnail_image ==
+                                                                    null
+                                                                ? Container(
+                                                                    width: 110,
+                                                                    height: 110,
+                                                                    color: Colors
+                                                                            .grey[
+                                                                        300],
+                                                                    child: Image
+                                                                        .asset(
+                                                                            'assets/images/210x265.png'),
+                                                                  )
+                                                                : Container(
+                                                                    width: 110,
+                                                                    height: 110,
+                                                                    decoration: BoxDecoration(
+                                                                        image: DecorationImage(
+                                                                            image:
+                                                                                NetworkImage("$img_url${value.unavaliable[index].product.thumbnail_image}"),
+                                                                            fit: BoxFit.cover)),
+                                                                  )
+                                                          ],
                                                         ),
-                                                      ),
-                                                      TextBuild(
-                                                        value: unavailable[index].product.name,
-                                                      ),
-                                                      SizedBox(height: 7),
-                                                      Row(
-                                                        children: [
-                                                          Container(
-                                                            margin:
-                                                            EdgeInsets.only(
-                                                                top: 20),
-                                                            height: 31,
-                                                            decoration: BoxDecoration(
-                                                                borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                    20),
-                                                                border: Border.all(
-                                                                    color: Color(
-                                                                        0xffF48262)
-                                                                        .withOpacity(
-                                                                        0.22))),
-                                                            child: FlatButton(
-                                                              padding: EdgeInsets
-                                                                  .symmetric(
-                                                                  horizontal:
-                                                                  13),
-                                                              materialTapTargetSize:
-                                                              MaterialTapTargetSize
-                                                                  .shrinkWrap,
-                                                              color:
-                                                              Colors.white,
-                                                              shape: RoundedRectangleBorder(
-                                                                  borderRadius:
-                                                                  BorderRadius.all(
-                                                                      Radius.circular(
-                                                                          20))),
-                                                              onPressed: () {
-                                                                addWishlistUnavaliable(unavailable[index].product);
-                                                              },
-                                                              child: TextBuild(
-                                                                value:
-                                                                "Masukan daftar keinginan",
-                                                                size: 12,
-                                                                warna: Color(
-                                                                    0xffF48262),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                          GestureDetector(
-                                                            onTap: (){
-                                                              showDeleteDialog(context, unavailable[index].product,unavailable[index].id);
-                                                            },
-                                                            child: Container(
-                                                              margin:
+                                                        Container(
+                                                          width:
+                                                              size.width * 0.58,
+                                                          padding:
                                                               EdgeInsets.only(
-                                                                  top: 20,
-                                                                  left: 10),
-                                                              width: 25,
-                                                              height: 25,
-                                                              child: Icon(
-                                                                Icons.delete,
-                                                                color: Color(
-                                                                    0xffF48262),
+                                                                  left: 15),
+                                                          child: Column(
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .start,
+                                                            children: [
+                                                              Text(
+                                                                unavailable[
+                                                                        index]
+                                                                    .product
+                                                                    .brand
+                                                                    .name,
+                                                                style:
+                                                                    TextStyle(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w600,
+                                                                  fontFamily:
+                                                                      'Yeseva',
+                                                                  fontSize: 16,
+                                                                ),
                                                               ),
-                                                            ),
-                                                          )
-                                                        ],
-                                                      )
-                                                    ],
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          );
-                                        },
-                                      ) : SizedBox(),
-                                    ],
-                                  ),
-                                );
-                              }
-
-                              )
+                                                              TextBuild(
+                                                                value:
+                                                                    unavailable[
+                                                                            index]
+                                                                        .product
+                                                                        .name,
+                                                              ),
+                                                              SizedBox(
+                                                                  height: 7),
+                                                              Row(
+                                                                children: [
+                                                                  Container(
+                                                                    margin: EdgeInsets
+                                                                        .only(
+                                                                            top:
+                                                                                20),
+                                                                    height: 31,
+                                                                    decoration: BoxDecoration(
+                                                                        borderRadius:
+                                                                            BorderRadius.circular(
+                                                                                20),
+                                                                        border: Border.all(
+                                                                            color:
+                                                                                Color(0xffF48262).withOpacity(0.22))),
+                                                                    child:
+                                                                        FlatButton(
+                                                                      padding: EdgeInsets.symmetric(
+                                                                          horizontal:
+                                                                              13),
+                                                                      materialTapTargetSize:
+                                                                          MaterialTapTargetSize
+                                                                              .shrinkWrap,
+                                                                      color: Colors
+                                                                          .white,
+                                                                      shape: RoundedRectangleBorder(
+                                                                          borderRadius:
+                                                                              BorderRadius.all(Radius.circular(20))),
+                                                                      onPressed:
+                                                                          () {
+                                                                        showWishDialog(
+                                                                            context,
+                                                                            value.unavaliable[index].product);
+                                                                      },
+                                                                      child:
+                                                                          TextBuild(
+                                                                        value:
+                                                                            "Masukan daftar keinginan",
+                                                                        size:
+                                                                            12,
+                                                                        warna: Color(
+                                                                            0xffF48262),
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                  GestureDetector(
+                                                                    onTap: () {
+                                                                      showDeleteDialog(
+                                                                          context,
+                                                                          unavailable[index]
+                                                                              .product,
+                                                                          unavailable[index]
+                                                                              .id);
+                                                                    },
+                                                                    child:
+                                                                        Container(
+                                                                      margin: EdgeInsets.only(
+                                                                          top:
+                                                                              20,
+                                                                          left:
+                                                                              10),
+                                                                      width: 25,
+                                                                      height:
+                                                                          25,
+                                                                      child:
+                                                                          Icon(
+                                                                        Icons
+                                                                            .delete,
+                                                                        color: Color(
+                                                                            0xffF48262),
+                                                                      ),
+                                                                    ),
+                                                                  )
+                                                                ],
+                                                              )
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  );
+                                                },
+                                              )
+                                            : SizedBox(),
+                                      ],
+                                    ),
+                                  );
+                                })
                               : Container(),
                           Container(
                             height: 10,
@@ -2037,6 +2184,7 @@ class _CartScreenState extends State<CartScreen> {
                                                           .showSnackBar(
                                                               snackBar);
                                                     } else {
+                                                      _getSummaryPoint();
                                                       final snackBar = SnackBar(
                                                         content: Text(
                                                             'Success.',
@@ -2116,7 +2264,8 @@ class _CartScreenState extends State<CartScreen> {
                                                         color: Colors.black54),
                                                   ],
                                                 ),
-                                                Text("-${value.summary.available_point_to_use}",
+                                                Text(
+                                                    "-${value.summary.available_point_to_use}",
                                                     style: TextStyle(
                                                       fontFamily: 'Brandon',
                                                       fontSize: 14,
@@ -2128,9 +2277,13 @@ class _CartScreenState extends State<CartScreen> {
                                             Transform.scale(
                                               scale: 0.72,
                                               child: CupertinoSwitch(
-                                                value: Provider.of<ListCabang>(context).setPointValue,
+                                                value: Provider.of<ListCabang>(
+                                                        context)
+                                                    .setPointValue,
                                                 onChanged: (value) {
-                                                  Provider.of<ListCabang>(context).setPointValue = value;
+                                                  Provider.of<ListCabang>(
+                                                          context)
+                                                      .setPointValue = value;
                                                   _getSummaryPoint();
                                                 },
                                                 trackColor: Colors.grey[200],

@@ -21,13 +21,10 @@ class MenungguPembayaranScreen extends StatefulWidget {
 }
 
 class _MenungguPembayaranStateScreen extends State<MenungguPembayaranScreen> {
-
   @override
   void initState() {
     super.initState();
   }
-
-
 
   @override
   Widget build(BuildContext context) {

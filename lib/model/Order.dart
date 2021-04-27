@@ -10,76 +10,84 @@ import 'package:ponny/model/Product.dart';
 import 'package:http/http.dart' as http;
 import 'package:ponny/util/globalUrl.dart';
 
-class OrderModel with ChangeNotifier{
+class OrderModel with ChangeNotifier {
   List<Order> unpaid;
   List<Order> paid;
   List<Order> on_delivery;
   List<Order> completed;
-  bool loading=true;
+  bool loading = true;
+  String imageBukti;
+  String namaBank;
+  int noRek;
+  String namaNasabah;
   OrderModel();
 
-  Future<void> getOrder(String token) async
-  {
+  Future<void> getOrder(String token) async {
     print("get order");
-    final res = await http.get(urlOrder, headers: { HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: "Bearer $token"});
-
+    final res = await http.get(urlOrder, headers: {
+      HttpHeaders.contentTypeHeader: 'application/json',
+      HttpHeaders.authorizationHeader: "Bearer $token"
+    });
 
     if (res.statusCode == 200) {
-      unpaid=[];
+      unpaid = [];
       print(res.body);
       final responseJson = json.decode(res.body);
       for (Map item in responseJson["unpaid"]) {
         print(Order.fromJson(item).code);
         unpaid.add(Order.fromJson(item));
       }
-
     }
-    loading=false;
+    loading = false;
     notifyListeners();
-
   }
 
-  Future<NewManualInfo> getManualpembayaran(String token,String order_id) async {
-
-    final res = await http.get(paymentInfo+"/"+order_id, headers: { HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: "Bearer $token"});
+  Future<NewManualInfo> getManualpembayaran(
+      String token, String order_id) async {
+    final res = await http.get(paymentInfo + "/" + order_id, headers: {
+      HttpHeaders.contentTypeHeader: 'application/json',
+      HttpHeaders.authorizationHeader: "Bearer $token"
+    });
     NewManualInfo result;
     print("awesome===");
     print(json.decode(res.body));
     print(res.statusCode);
-    if(res.statusCode == 200){
-
+    if (res.statusCode == 200) {
       final responseJson = json.decode(res.body);
       print("ini parse");
       print(responseJson);
-      result = NewManualInfo.fromJson( json.decode(res.body));
+      result = NewManualInfo.fromJson(json.decode(res.body));
       print("ini result");
       print(result);
     }
     return result;
   }
 
-  Future<LacakResult> getLacak(String token,String order_id) async {
-    final res = await http.get(urlTracking+"/"+order_id, headers: { HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: "Bearer $token"});
+  Future<LacakResult> getLacak(String token, String order_id) async {
+    final res = await http.get(urlTracking + "/" + order_id, headers: {
+      HttpHeaders.contentTypeHeader: 'application/json',
+      HttpHeaders.authorizationHeader: "Bearer $token"
+    });
     LacakResult result;
-    if(res.statusCode == 200){
+    if (res.statusCode == 200) {
       final responseJson = json.decode(res.body);
       result = LacakResult.fromJson(responseJson);
     }
     return result;
-
   }
 
-  Future<bool> konfirmasiTerima(String token,String order_id) async {
-    final res = await http.get(urlTerimaBarang+"/"+order_id, headers: { HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: "Bearer $token"});
-    bool result =false;
-    if(res.statusCode == 200){
+  Future<bool> konfirmasiTerima(String token, String order_id) async {
+    final res = await http.get(urlTerimaBarang + "/" + order_id, headers: {
+      HttpHeaders.contentTypeHeader: 'application/json',
+      HttpHeaders.authorizationHeader: "Bearer $token"
+    });
+    bool result = false;
+    if (res.statusCode == 200) {
       result = true;
     }
     return result;
   }
-
 }
-
 
 class Order {
   int id;
@@ -105,6 +113,9 @@ class Order {
   String confrimResi;
   String deliveryStatus;
   MidtransRaw mitransVal;
+  int usingPoint;
+  bool pickUp;
+  CabangInfo cabangInfo;
 
   Order(
       this.id,
@@ -130,34 +141,56 @@ class Order {
       this.deliveryStatus,
       this.orderDetailVoucher,
       this.mitransVal,
-      );
+      this.usingPoint,
+      this.pickUp,
+      this.cabangInfo);
 
-  factory Order.fromJson(Map<String, dynamic> parsedJson){
-    List<OrderDetail> _order_details=[];
-    Address _user_order_address = parsedJson["user_order_address"] != null ? Address.fromJson(parsedJson["user_order_address"]) :null;
-    MapCost _shipping_info = parsedJson["shipping_info"] != null ?  MapCost.fromJson(parsedJson["shipping_info"]) :null;
-    Midtrans _mitrans_val = parsedJson["mitrans_val"] != null ? Midtrans.fromJson(parsedJson["mitrans_val"]) : null;
-    MidtransRaw _mitrans_raw = parsedJson["mitrans_val"] != null ? MidtransRaw.fromJson(parsedJson["mitrans_val"]) : null;
-    List<OrderDetailSample> _orderDetailSample=[];
-    List<OrderDetailPoint> _orderDetailPoint=[];
-    List<OrderDetailVoucher> _orderDetailVoucher=[];
-    StatusOrder _status = parsedJson["statusOrder"] != null ? StatusOrder.fromJson(parsedJson["statusOrder"]) : null;
-    TypePayment _payment= parsedJson["typePayment"] != null ? TypePayment.fromJson(parsedJson["typePayment"]): null;
-    String _typePayment = parsedJson["typePayment"] != null ? parsedJson["typePayment"]["param_2"] : null;
-    for(Map item in parsedJson["orderDetails"]){
+  factory Order.fromJson(Map<String, dynamic> parsedJson) {
+    List<OrderDetail> _order_details = [];
+    Address _user_order_address = parsedJson["user_order_address"] != null
+        ? Address.fromJson(parsedJson["user_order_address"])
+        : null;
+    MapCost _shipping_info = parsedJson["shipping_info"] != null
+        ? MapCost.fromJson(parsedJson["shipping_info"])
+        : null;
+    Midtrans _mitrans_val = parsedJson["mitrans_val"] != null
+        ? Midtrans.fromJson(parsedJson["mitrans_val"])
+        : null;
+    MidtransRaw _mitrans_raw = parsedJson["mitrans_val"] != null
+        ? MidtransRaw.fromJson(parsedJson["mitrans_val"])
+        : null;
+    List<OrderDetailSample> _orderDetailSample = [];
+    List<OrderDetailPoint> _orderDetailPoint = [];
+    List<OrderDetailVoucher> _orderDetailVoucher = [];
+    StatusOrder _status = parsedJson["statusOrder"] != null
+        ? StatusOrder.fromJson(parsedJson["statusOrder"])
+        : null;
+    TypePayment _payment = parsedJson["typePayment"] != null
+        ? TypePayment.fromJson(parsedJson["typePayment"])
+        : null;
+    String _typePayment = parsedJson["typePayment"] != null
+        ? parsedJson["typePayment"]["param_2"]
+        : null;
+    CabangInfo _cabangInfo = parsedJson["cabang_info"].length != 0
+        ? CabangInfo.fromJson(parsedJson["cabang_info"])
+        : null;
+    int _usingPoint =
+        parsedJson["using_point"] != null ? parsedJson["using_point"] : null;
+    for (Map item in parsedJson["orderDetails"]) {
       _order_details.add(OrderDetail.fromJson(item));
     }
 
-    for(Map item in parsedJson["orderDetailSample"]){
+    for (Map item in parsedJson["orderDetailSample"]) {
       _orderDetailSample.add(OrderDetailSample.fromJson(item));
     }
-    for(Map item in parsedJson["orderDetailPoint"]){
+    for (Map item in parsedJson["orderDetailPoint"]) {
       _orderDetailPoint.add(OrderDetailPoint.fromJson(item));
     }
-    for(Map item in parsedJson["orderVoucher"]){
+    for (Map item in parsedJson["orderVoucher"]) {
       _orderDetailVoucher.add(OrderDetailVoucher.fromJson(item));
     }
-    return Order(parsedJson["id"],
+    return Order(
+        parsedJson["id"],
         parsedJson["code"],
         parsedJson["date"],
         parsedJson["payment_type"],
@@ -170,49 +203,59 @@ class Order {
         _mitrans_val,
         parsedJson["free_ongkir"],
         _order_details,
-      _orderDetailSample,
-      _orderDetailPoint,
-      _status,
-      _payment,
-      _typePayment,
-      parsedJson["confrim_courier"],
-      parsedJson["confrim_resi"],
-      parsedJson["delivery_status"],
+        _orderDetailSample,
+        _orderDetailPoint,
+        _status,
+        _payment,
+        _typePayment,
+        parsedJson["confrim_courier"],
+        parsedJson["confrim_resi"],
+        parsedJson["delivery_status"],
         _orderDetailVoucher,
-        _mitrans_raw
-    );
+        _mitrans_raw,
+        _usingPoint,
+        parsedJson["pickup"],
+        _cabangInfo);
   }
-
-
-
 }
 
-class Midtrans{
+class Midtrans {
   String payment_type;
   String mitrans_val;
 
   Midtrans(this.payment_type, this.mitrans_val);
 
-  factory Midtrans.fromJson(Map<String, dynamic> parsedJson){
+  factory Midtrans.fromJson(Map<String, dynamic> parsedJson) {
     String _va_numbers;
-    if(parsedJson != null && parsedJson["payment_type"] == "bank_transfer" && parsedJson["va_numbers"] != null){
-      for(Map item in parsedJson["va_numbers"]){
-        _va_numbers= item["bank"].toString().toUpperCase()+" Virtual \nCode: "+item["va_number"];
-
+    if (parsedJson != null &&
+        parsedJson["payment_type"] == "bank_transfer" &&
+        parsedJson["va_numbers"] != null) {
+      for (Map item in parsedJson["va_numbers"]) {
+        _va_numbers = item["bank"].toString().toUpperCase() +
+            " Virtual \nCode: " +
+            item["va_number"];
       }
-      return Midtrans(parsedJson["payment_type"],_va_numbers);
-    }else if( parsedJson != null && parsedJson["payment_type"] == "cstore"){
-      _va_numbers= parsedJson["store"].toString().toUpperCase()+"\nCode: "+parsedJson["payment_code"];
-      return Midtrans(parsedJson["payment_type"],_va_numbers);
-    }else if( parsedJson != null && parsedJson["payment_type"] == "echannel"){
-      _va_numbers= "Mandiri Bill Payment"+"\nBill key: "+parsedJson["bill_key"]+"\nBiller Code: "+parsedJson["biller_code"];
-      return Midtrans(parsedJson["payment_type"],_va_numbers);
-    }else if(parsedJson != null && parsedJson["payment_type"] == "bank_transfer" && parsedJson["permata_va_number"] != null){
-      _va_numbers= "Permata Virtual"+"\nCode: "+parsedJson["permata_va_number"];
-      return Midtrans(parsedJson["payment_type"],_va_numbers);
-    }
-    else
-    return null;
+      return Midtrans(parsedJson["payment_type"], _va_numbers);
+    } else if (parsedJson != null && parsedJson["payment_type"] == "cstore") {
+      _va_numbers = parsedJson["store"].toString().toUpperCase() +
+          "\nCode: " +
+          parsedJson["payment_code"];
+      return Midtrans(parsedJson["payment_type"], _va_numbers);
+    } else if (parsedJson != null && parsedJson["payment_type"] == "echannel") {
+      _va_numbers = "Mandiri Bill Payment" +
+          "\nBill key: " +
+          parsedJson["bill_key"] +
+          "\nBiller Code: " +
+          parsedJson["biller_code"];
+      return Midtrans(parsedJson["payment_type"], _va_numbers);
+    } else if (parsedJson != null &&
+        parsedJson["payment_type"] == "bank_transfer" &&
+        parsedJson["permata_va_number"] != null) {
+      _va_numbers =
+          "Permata Virtual" + "\nCode: " + parsedJson["permata_va_number"];
+      return Midtrans(parsedJson["payment_type"], _va_numbers);
+    } else
+      return null;
   }
 }
 
@@ -222,32 +265,66 @@ class OrderDetail {
   String price;
   Product product;
   String reviewed;
-  OrderDetail(this.id, this.quantity, this.product,this.price,this.reviewed);
-  factory OrderDetail.fromJson(Map<String, dynamic> parsedJson){
-    return OrderDetail(parsedJson["id"],parsedJson["quantity"],Product.fromJson(parsedJson["product"]["availability"]),parsedJson["price"],parsedJson["reviewed"]);
+  OrderDetail(this.id, this.quantity, this.product, this.price, this.reviewed);
+  factory OrderDetail.fromJson(Map<String, dynamic> parsedJson) {
+    return OrderDetail(
+        parsedJson["id"],
+        parsedJson["quantity"],
+        Product.fromJson(parsedJson["product"]["availability"]),
+        parsedJson["price"],
+        parsedJson["reviewed"]);
   }
 }
 
-class OrderDetailSample  {
+class CabangInfo {
+  String namaCabang;
+  String alamatCabang;
+
+  CabangInfo({this.namaCabang, this.alamatCabang});
+
+  CabangInfo.fromJson(Map<String, dynamic> json) {
+    namaCabang = json['nama_cabang'];
+    alamatCabang = json['alamat_cabang'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['nama_cabang'] = this.namaCabang;
+    data['alamat_cabang'] = this.alamatCabang;
+    return data;
+  }
+}
+
+class OrderDetailSample {
   int id;
   String quantity;
   Product product;
   String reviewed;
-  OrderDetailSample (this.id, this.quantity, this.product,this.reviewed);
-  factory OrderDetailSample.fromJson(Map<String, dynamic> parsedJson){
-    return OrderDetailSample(parsedJson["id"],parsedJson["quantity"],Product.fromJson(parsedJson["product"]["availability"]),parsedJson["reviewed"]);
+  OrderDetailSample(this.id, this.quantity, this.product, this.reviewed);
+  factory OrderDetailSample.fromJson(Map<String, dynamic> parsedJson) {
+    return OrderDetailSample(
+        parsedJson["id"],
+        parsedJson["quantity"],
+        Product.fromJson(parsedJson["product"]["availability"]),
+        parsedJson["reviewed"]);
   }
 }
 
-class OrderDetailPoint  {
+class OrderDetailPoint {
   int id;
   String quantity;
   String jml_point;
   Product product;
   String reviewed;
-  OrderDetailPoint (this.id, this.quantity, this.product,this.jml_point,this.reviewed);
-  factory OrderDetailPoint.fromJson(Map<String, dynamic> parsedJson){
-    return OrderDetailPoint(parsedJson["id"],parsedJson["quantity"],Product.fromJson(parsedJson["product"]["availability"]),parsedJson["log_product_point"]["jml_point"],parsedJson["reviewed"]);
+  OrderDetailPoint(
+      this.id, this.quantity, this.product, this.jml_point, this.reviewed);
+  factory OrderDetailPoint.fromJson(Map<String, dynamic> parsedJson) {
+    return OrderDetailPoint(
+        parsedJson["id"],
+        parsedJson["quantity"],
+        Product.fromJson(parsedJson["product"]["availability"]),
+        parsedJson["log_product_point"]["jml_point"],
+        parsedJson["reviewed"]);
   }
 }
 
@@ -269,19 +346,19 @@ class OrderDetailVoucher {
 
   OrderDetailVoucher(
       {this.id,
-        this.durasi,
-        this.expDate,
-        this.harga,
-        this.orderId,
-        this.userId,
-        this.isActive,
-        this.createdAt,
-        this.updatedAt,
-        this.masaBerlaku,
-        this.dokterId,
-        this.durasiPanggilan,
-        this.waktuPanggilan,
-        this.waktuPanggilanBerakhir});
+      this.durasi,
+      this.expDate,
+      this.harga,
+      this.orderId,
+      this.userId,
+      this.isActive,
+      this.createdAt,
+      this.updatedAt,
+      this.masaBerlaku,
+      this.dokterId,
+      this.durasiPanggilan,
+      this.waktuPanggilan,
+      this.waktuPanggilanBerakhir});
 
   OrderDetailVoucher.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -320,7 +397,6 @@ class OrderDetailVoucher {
   }
 }
 
-
 class StatusOrder {
   int _id;
   String _param1;
@@ -332,12 +408,12 @@ class StatusOrder {
 
   StatusOrder(
       {int id,
-        String param1,
-        String param2,
-        String param3,
-        Null param4,
-        String varId,
-        int isDeleted}) {
+      String param1,
+      String param2,
+      String param3,
+      Null param4,
+      String varId,
+      int isDeleted}) {
     this._id = id;
     this._param1 = param1;
     this._param2 = param2;
@@ -363,7 +439,7 @@ class StatusOrder {
   set isDeleted(int isDeleted) => _isDeleted = isDeleted;
 
   StatusOrder.fromJson(Map<String, dynamic> json) {
-    _id = json['id'] ;
+    _id = json['id'];
     _param1 = json['param_1'];
     _param2 = json['param_2'];
     _param3 = json['param_3'];
@@ -396,12 +472,12 @@ class TypePayment {
 
   TypePayment(
       {int id,
-        String param1,
-        String param2,
-        String param3,
-        Null param4,
-        String varId,
-        String isDeleted}) {
+      String param1,
+      String param2,
+      String param3,
+      Null param4,
+      String varId,
+      String isDeleted}) {
     this._id = id;
     this._param1 = param1;
     this._param2 = param2;
@@ -449,7 +525,6 @@ class TypePayment {
   }
 }
 
-
 class MidtransRaw {
   String statusCode;
   String statusMessage;
@@ -466,17 +541,17 @@ class MidtransRaw {
 
   MidtransRaw(
       {this.statusCode,
-        this.statusMessage,
-        this.transactionId,
-        this.orderId,
-        this.merchantId,
-        this.grossAmount,
-        this.currency,
-        this.paymentType,
-        this.transactionTime,
-        this.transactionStatus,
-        this.fraudStatus,
-        this.actions});
+      this.statusMessage,
+      this.transactionId,
+      this.orderId,
+      this.merchantId,
+      this.grossAmount,
+      this.currency,
+      this.paymentType,
+      this.transactionTime,
+      this.transactionStatus,
+      this.fraudStatus,
+      this.actions});
 
   MidtransRaw.fromJson(Map<String, dynamic> json) {
     statusCode = json['status_code'];
@@ -539,8 +614,3 @@ class Actions {
     return data;
   }
 }
-
-
-
-
-
