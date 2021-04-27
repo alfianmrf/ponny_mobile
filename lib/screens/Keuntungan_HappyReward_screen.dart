@@ -47,15 +47,36 @@ class _UntungRewardState extends State<UntungReward> {
 
       setState(() {
         for(Map item in responseJson["lessThan200"]){
-          if(item["product"]!= null)
+          int s =0;
+          if(item["product"]!= null && item["product"]["stocks"] != null){
+            s= item["product"]["current_stock"];
+            item["product"]["stocks"].forEach((v) {
+              s+=v["qty"];
+            });
+          }
+          if(item["product"]!= null && s>0)
           reward.add(ProductPoin(item["id"],item["jml_point"],Product.fromJson(item["product"]["availability"]),1));
         }
         for(Map item in responseJson["200to500"]){
-          if(item["product"]!= null)
+          int s =0;
+          if(item["product"]!= null && item["product"]["stocks"] != null){
+            s= item["product"]["current_stock"];
+            item["product"]["stocks"].forEach((v) {
+              s+=v["qty"];
+            });
+          }
+          if(item["product"]!= null && s>0)
           reward.add(ProductPoin(item["id"],item["jml_point"],Product.fromJson(item["product"]["availability"]),1));
         }
         for(Map item in responseJson["moreThan500"]){
-          if(item["product"]!= null)
+          int s =0;
+          if(item["product"]!= null && item["product"]["stocks"] != null){
+            s= item["product"]["current_stock"];
+            item["product"]["stocks"].forEach((v) {
+              s+=v["qty"];
+            });
+          }
+          if(item["product"]!= null && s>0)
           reward.add(ProductPoin(item["id"],item["jml_point"],Product.fromJson(item["product"]["availability"]),1));
         }
         loading =false;
@@ -273,7 +294,9 @@ class _UntungRewardState extends State<UntungReward> {
                           FittedBox(
                             fit: BoxFit.fitWidth,
                             child: Text(
-                              "Belanja "+
+                              user.dashboard.membershipTitle.toUpperCase()=="OH HAPPY"
+                                  ? "Luar biasa! anda sudah mencapai level maksimum"
+                                  : "Belanja "+
                                   nm_format
                                       .format(user.dashboard.toNext) +" lagi untuk naik tingkat ke " + user.dashboard.next + " Skin",
                               style: TextStyle(

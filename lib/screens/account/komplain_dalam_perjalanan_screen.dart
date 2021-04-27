@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -528,9 +529,12 @@ class _KomplainDalamPerjalananStateScreen extends State<KomplainDalamPerjalananS
                                     ),
                                     Container(
                                       width: MediaQuery.of(context).size.width,
-                                      child:  Image.network(img_url+komplainProduct.label.thumbnail_image,
+                                      child: CachedNetworkImage(
+                                        imageUrl: komplainProduct.label.thumbnail_image != null ? img_url+komplainProduct.label.thumbnail_image : '',
+                                        placeholder: (context, url) => LoadingWidgetPulse(context),
+                                        errorWidget: (context, url, error) => Image.asset('assets/images/210x265.png'),
+                                        width: MediaQuery.of(context).size.width,
                                         fit: BoxFit.cover,
-
                                       ),
                                     ),
 

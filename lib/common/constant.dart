@@ -770,12 +770,19 @@ void showAlertDialog(BuildContext context,Product product) {
     backgroundColor: Color(0xfffdf8f0),
     contentPadding: EdgeInsets.all(5.0),
     children: <Widget>[
+      Align(
+        alignment: Alignment.centerRight,
+        child: IconButton(
+            icon: Icon(Icons.close),
+            color: Color(0xffF48262),
+            onPressed: () {
+              Navigator.of(context).pop();
+            }),
+      ),
       Container(
         padding: EdgeInsets.only(top: 30),
-        child: Icon(
-          Icons.shopping_cart,
-          color: Color(0xffF48262),
-          size: 40,
+        child: ImageIcon(
+          AssetImage('assets/images/home/cart.png'),color: Color(0xffF48262),size: 30,
         ),
       ),
       Padding(
@@ -798,8 +805,10 @@ void showAlertDialog(BuildContext context,Product product) {
           children: <Widget>[
             Container(
               margin: EdgeInsets.symmetric(horizontal: 5),
-              child: Image.network(
-                img_url+product.thumbnail_image,
+              child: CachedNetworkImage(
+                imageUrl:  product.thumbnail_image != null ? img_url+product.thumbnail_image : "",
+                placeholder: (context, url) => LoadingWidgetPulse(context),
+                errorWidget: (context, url, error) => Image.asset('assets/images/210x265.png'),
                 width: MediaQuery.of(context).size.width*0.2,
               ),
             ),
@@ -883,8 +892,10 @@ void showWishDialog(BuildContext context, Product product) {
           children: <Widget>[
             Container(
               margin: EdgeInsets.symmetric(horizontal: 5),
-              child: Image.network(
-                img_url+product.thumbnail_image,
+              child: CachedNetworkImage(
+                imageUrl:  product.thumbnail_image != null ? img_url+product.thumbnail_image : "",
+                placeholder: (context, url) => LoadingWidgetPulse(context),
+                errorWidget: (context, url, error) => Image.asset('assets/images/210x265.png'),
                 width: MediaQuery.of(context).size.width*0.2,
               ),
             ),
