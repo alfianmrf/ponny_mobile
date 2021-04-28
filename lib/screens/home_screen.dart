@@ -170,7 +170,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    // showModal();
     _controller = ScrollController();
     _controller.addListener(_scrollListener);
 
@@ -184,6 +183,8 @@ class _HomeScreenState extends State<HomeScreen> {
       print(_controllersYoutube);
       _updateCart();
       Provider.of<ProductModel>(context).getFlashSale();
+      if (!Provider.of<AppModel>(context).loggedIn)
+        showModal();
     });
   }
 

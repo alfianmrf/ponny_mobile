@@ -536,9 +536,8 @@ class _ReviewStateScreen extends State<ReviewScreen> {
                               InkWell(
                                 onTap: () async {
                                   FilePickerResult result = await FilePicker.platform.pickFiles(
-                                    type: FileType.custom,
+                                    type: FileType.image,
                                     allowMultiple: true,
-                                    allowedExtensions: ['jpg', 'png', 'gif'],
                                   );
 
                                   if(result != null) {

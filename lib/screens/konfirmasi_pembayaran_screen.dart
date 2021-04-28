@@ -49,8 +49,7 @@ class _KonfirmasiPembayaranScreenState extends State<KonfirmasiPembayaranScreen>
 
   Future getImage() async {
     FilePickerResult result = await FilePicker.platform.pickFiles(
-      type: FileType.custom,
-      allowedExtensions: ['jpg','png'],
+      type: FileType.image,
     );
 
     setState(() {

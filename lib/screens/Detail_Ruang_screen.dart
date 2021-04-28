@@ -58,8 +58,7 @@ class _DetailForumState extends State<DetailForum> {
 
   Future getImage() async {
     FilePickerResult result = await FilePicker.platform.pickFiles(
-      type: FileType.custom,
-      allowedExtensions: ['jpg', 'png', 'PNG'],
+      type: FileType.image,
     );
 
     setState(() {

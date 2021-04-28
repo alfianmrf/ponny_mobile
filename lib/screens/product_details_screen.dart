@@ -1076,7 +1076,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                               ],
                             ),
                           ),
-                          if(Provider.of<ProductModel>(context).Recomendasi.length>0)
+                          if(Provider.of<ProductModel>(context).Recom.length>0)
                           Container(
                             margin: EdgeInsets.only(bottom: 20),
                             alignment: Alignment.centerLeft,
@@ -1089,16 +1089,16 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                               ),
                             ),
                           ),
-                          if(Provider.of<ProductModel>(context).Recomendasi.length>0)
+                          if(Provider.of<ProductModel>(context).Recom.length>0)
                           Container(
                             height: MediaQuery.of(context).size.width * .75,
                             child: Consumer<ProductModel>(
                               builder: (context,value,child){
-                                if(value.loadingRekomendasi){
+                                if(value.loadingRecom){
                                   return LoadingWidgetFadingCircle(context);
                                 }else{
                                   // ListRekomedasi = getColumProduct(context,value.Recomendasi,3);
-                                  var dataRekomedasi  =Lodash().chunk(array: value.Recomendasi,size: 3);
+                                  var dataRekomedasi  =Lodash().chunk(array: value.Recom,size: 3);
                                   return  new Swiper(
                                     itemBuilder: (BuildContext context, int index) {
                                       if(dataRekomedasi[index].length == 3){
