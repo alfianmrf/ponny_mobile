@@ -36,22 +36,22 @@ class _PaymentScreenState extends State<PaymentScreen> {
   void initState() {
     super.initState();
   }
-  Future<void> chekOut(BuildContext context,String method){
-    final card = Provider.of<CartModel>(context,listen: false);
+
+  Future<void> chekOut(BuildContext context, String method) {
+    final card = Provider.of<CartModel>(context, listen: false);
     var cabang = Provider.of<ListCabang>(context);
     showDialog(
       context: context,
       builder: (context) => new AlertDialog(
         title: new Text('Konfirmasi Pesanan'),
-        content:  Text("Total Pembayaran: "+card.summary.total),
+        content: Text("Total Pembayaran: " + card.summary.total),
         actions: <Widget>[
           new FlatButton(
             onPressed: () => Navigator.of(context).pop(false),
             child: new Text('No'),
           ),
           new FlatButton(
-            onPressed: (){
-
+            onPressed: () {
               // Provider.of<CartModel>(context).NewCheckout(Provider.of<AppModel>(context).auth.access_token, Provider.of<AddressModel>(context).useAddress, method, cabang.cabangClick == null ? null : cabang.cabangClick.id, cabang.pointValue, cabang.cabangClick).then((value) => {
               //   print(value.mitransRequest)
               // });
@@ -60,54 +60,100 @@ class _PaymentScreenState extends State<PaymentScreen> {
               // builder: (BuildContext context) => new PickupPaymentSuccess()
               // ),(_) => false);
 
-
-              UIBlock.block(context,customLoaderChild: LoadingWidget(context));
-
+              UIBlock.block(context, customLoaderChild: LoadingWidget(context));
 
               // Provider.of<CartModel>(context).Checkout(Provider.of<AppModel>(context).auth.access_token, Provider.of<AddressModel>(context).useAddress, method).then((value) {
-              Provider.of<CartModel>(context).NewCheckout(Provider.of<AppModel>(context).auth.access_token, Provider.of<AddressModel>(context).useAddress, method, cabang.cabangClick == null ? null : cabang.cabangClick.id, cabang.pointValue, cabang.cabangClick).then((value) {
-                if(value!= null && value.success){
-                  if(method == "qris"){
-                    Navigator.pushAndRemoveUntil(context,new MaterialPageRoute(
-                      builder: (BuildContext context) => new QrisScreen(title: "QRIS",urlQR: value.mitransRequest.actions.firstWhere((element) => element.name == "generate-qr-code").url,type:QrisScreen.qris),
-                    ),(_) => false);
-                  }else if(method == "ovo"){
-                    Navigator.pushAndRemoveUntil(context,new MaterialPageRoute(
-                      builder: (BuildContext context) => new QrisScreen(title: "OVO",urlQR: value.mitransRequest.actions.firstWhere((element) => element.name == "generate-qr-code").url, type:QrisScreen.ovo),
-                    ),(_) => false);
-                  }else if(method == "shopeepay"){
-                    Navigator.pushAndRemoveUntil(context,new MaterialPageRoute(
-                      builder: (BuildContext context) => new QrisScreen(title: "SHOPEEPAY",urlQR: value.mitransRequest.actions.firstWhere((element) => element.name == "generate-qr-code").url,type:QrisScreen.shopee),
-                    ),(_) => false);
+              Provider.of<CartModel>(context)
+                  .NewCheckout(
+                      Provider.of<AppModel>(context).auth.access_token,
+                      Provider.of<AddressModel>(context).useAddress,
+                      method,
+                      cabang.cabangClick == null ? null : cabang.cabangClick.id,
+                      cabang.pointValue,
+                      cabang.cabangClick)
+                  .then((value) {
+                if (value != null && value.success) {
+                  if (method == "qris") {
+                    Navigator.pushAndRemoveUntil(
+                        context,
+                        new MaterialPageRoute(
+                          builder: (BuildContext context) => new QrisScreen(
+                              title: "QRIS",
+                              urlQR: value.mitransRequest.actions
+                                  .firstWhere((element) =>
+                                      element.name == "generate-qr-code")
+                                  .url,
+                              type: QrisScreen.qris),
+                        ),
+                        (_) => false);
+                  } else if (method == "ovo") {
+                    Navigator.pushAndRemoveUntil(
+                        context,
+                        new MaterialPageRoute(
+                          builder: (BuildContext context) => new QrisScreen(
+                              title: "OVO",
+                              urlQR: value.mitransRequest.actions
+                                  .firstWhere((element) =>
+                                      element.name == "generate-qr-code")
+                                  .url,
+                              type: QrisScreen.ovo),
+                        ),
+                        (_) => false);
+                  } else if (method == "shopeepay") {
+                    Navigator.pushAndRemoveUntil(
+                        context,
+                        new MaterialPageRoute(
+                          builder: (BuildContext context) => new QrisScreen(
+                              title: "SHOPEEPAY",
+                              urlQR: value.mitransRequest.actions
+                                  .firstWhere((element) =>
+                                      element.name == "generate-qr-code")
+                                  .url,
+                              type: QrisScreen.shopee),
+                        ),
+                        (_) => false);
+                  } else if (method == "manual_bca" ||
+                      method == "manual_mandiri" ||
+                      method == "manual_permata" ||
+                      method == "transfer_manual") {
+                    Navigator.pushAndRemoveUntil(
+                        context,
+                        new MaterialPageRoute(
+                          builder: (BuildContext context) =>
+                              new BankTransferDetailScreen(
+                                  order_id: value.orderId),
+                        ),
+                        (_) => false);
+                  } else {
+                    Navigator.pushAndRemoveUntil(
+                        context,
+                        new MaterialPageRoute(
+                          builder: (BuildContext context) =>
+                              new PesananBerhasilScreen(
+                                  code: value.orderCode, nota: value),
+                        ),
+                        (_) => false);
                   }
-                  else if(method == "manual_bca" || method == "manual_mandiri" || method == "manual_permata" || method == "transfer_manual"){
-                    Navigator.pushAndRemoveUntil(context,new MaterialPageRoute(
-                      builder: (BuildContext context) => new BankTransferDetailScreen(order_id: value.orderId),
-                    ),(_) => false);
-                  }
-                  else{
-                    Navigator.pushAndRemoveUntil(context,new MaterialPageRoute(
-                      builder: (BuildContext context) => new PesananBerhasilScreen(code: value.orderCode, nota: value),
-                    ),(_) => false);
-                  }
-                }else{
+                } else {
                   UIBlock.unblock(context);
                   // print(value.message);
                   Navigator.pop(context);
                   final snackBar = SnackBar(
-                    content: Text(value.message,style: TextStyle(color: Colors.white)),
+                    content: Text(value.message,
+                        style: TextStyle(color: Colors.white)),
                     backgroundColor: Colors.redAccent,
                   );
                   scaffoldKey.currentState.showSnackBar(snackBar);
                 }
-              }).catchError((onError){
+              }).catchError((onError) {
                 // print(onError);
                 UIBlock.unblock(context);
                 final snackBar = SnackBar(
-                  content: Text(onError,style: TextStyle(color: Colors.white)),
+                  content: Text(onError, style: TextStyle(color: Colors.white)),
                   backgroundColor: Colors.redAccent,
                 );
                 scaffoldKey.currentState.showSnackBar(snackBar);
+                Provider.of<CartModel>(context).listCardOfitem = [];
                 // print(onError);
               });
             },
@@ -126,7 +172,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
         titleSpacing: 0.0,
         elevation: 0.0,
         leading: IconButton(
-          onPressed: () =>Navigator.pop(context),
+          onPressed: () => Navigator.pop(context),
           icon: Icon(
             Icons.arrow_back_ios_rounded,
             color: Color(0xffF48262),
@@ -160,7 +206,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                   Container(
                     child: Container(
                       margin: EdgeInsets.only(top: 25, bottom: 25),
-                      width: MediaQuery.of(context).size.width*0.9,
+                      width: MediaQuery.of(context).size.width * 0.9,
                       decoration: BoxDecoration(
                         border: Border.all(color: Color(0xffF48262)),
                         borderRadius: BorderRadius.circular(5),
@@ -174,7 +220,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                 Container(
                                   color: Color(0xffFDEDE4),
                                   width: MediaQuery.of(context).size.width,
-                                  padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 15, vertical: 10),
                                   child: Text(
                                     'VIRTUAL ACCOUNT (Konfirmasi Otomatis)',
                                     style: TextStyle(
@@ -187,13 +234,15 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                 ),
                                 InkWell(
                                   onTap: () {
-                                    chekOut(context,"mt_tf_bca");
+                                    chekOut(context, "mt_tf_bca");
                                   },
                                   child: Container(
                                     width: MediaQuery.of(context).size.width,
-                                    padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 15, vertical: 5),
                                     child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
                                         Row(
                                           children: [
@@ -202,7 +251,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                               height: 40,
                                             ),
                                             Padding(
-                                              padding: EdgeInsets.only(left: 10),
+                                              padding:
+                                                  EdgeInsets.only(left: 10),
                                               child: Text(
                                                 'BCA Virtual Account',
                                                 style: TextStyle(
@@ -223,13 +273,15 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                 ),
                                 InkWell(
                                   onTap: () {
-                                    chekOut(context,"mt_tf_mdr");
+                                    chekOut(context, "mt_tf_mdr");
                                   },
                                   child: Container(
                                     width: MediaQuery.of(context).size.width,
-                                    padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 15, vertical: 5),
                                     child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
                                         Row(
                                           children: [
@@ -238,7 +290,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                               height: 40,
                                             ),
                                             Padding(
-                                              padding: EdgeInsets.only(left: 10),
+                                              padding:
+                                                  EdgeInsets.only(left: 10),
                                               child: Text(
                                                 'Mandiri Virtual Account',
                                                 style: TextStyle(
@@ -259,13 +312,15 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                 ),
                                 InkWell(
                                   onTap: () {
-                                    chekOut(context,"mt_tf_bni");
+                                    chekOut(context, "mt_tf_bni");
                                   },
                                   child: Container(
                                     width: MediaQuery.of(context).size.width,
-                                    padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 15, vertical: 5),
                                     child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
                                         Row(
                                           children: [
@@ -274,7 +329,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                               height: 40,
                                             ),
                                             Padding(
-                                              padding: EdgeInsets.only(left: 10),
+                                              padding:
+                                                  EdgeInsets.only(left: 10),
                                               child: Text(
                                                 'BNI Virtual Account',
                                                 style: TextStyle(
@@ -295,13 +351,15 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                 ),
                                 InkWell(
                                   onTap: () {
-                                    chekOut(context,"mt_tf_bri");
+                                    chekOut(context, "mt_tf_bri");
                                   },
                                   child: Container(
                                     width: MediaQuery.of(context).size.width,
-                                    padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 15, vertical: 5),
                                     child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
                                         Row(
                                           children: [
@@ -310,7 +368,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                               height: 40,
                                             ),
                                             Padding(
-                                              padding: EdgeInsets.only(left: 10),
+                                              padding:
+                                                  EdgeInsets.only(left: 10),
                                               child: Text(
                                                 'BRI Virtual Account (BRIVA)',
                                                 style: TextStyle(
@@ -331,13 +390,15 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                 ),
                                 InkWell(
                                   onTap: () {
-                                    chekOut(context,"mt_tf_permata");
+                                    chekOut(context, "mt_tf_permata");
                                   },
                                   child: Container(
                                     width: MediaQuery.of(context).size.width,
-                                    padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 15, vertical: 5),
                                     child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
                                         Row(
                                           children: [
@@ -346,7 +407,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                               height: 40,
                                             ),
                                             Padding(
-                                              padding: EdgeInsets.only(left: 10),
+                                              padding:
+                                                  EdgeInsets.only(left: 10),
                                               child: Text(
                                                 'Permata Virtual Account',
                                                 style: TextStyle(
@@ -368,7 +430,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                 Container(
                                   color: Color(0xffFDEDE4),
                                   width: MediaQuery.of(context).size.width,
-                                  padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 15, vertical: 10),
                                   child: Text(
                                     'OVER THE COUNTER (Alfamart/Indomart)',
                                     style: TextStyle(
@@ -417,13 +480,15 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                 // ),
                                 InkWell(
                                   onTap: () {
-                                    chekOut(context,"alfamart");
+                                    chekOut(context, "alfamart");
                                   },
                                   child: Container(
                                     width: MediaQuery.of(context).size.width,
-                                    padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 15, vertical: 5),
                                     child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
                                         Row(
                                           children: [
@@ -432,7 +497,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                               height: 40,
                                             ),
                                             Padding(
-                                              padding: EdgeInsets.only(left: 10),
+                                              padding:
+                                                  EdgeInsets.only(left: 10),
                                               child: Text(
                                                 'Alfamart',
                                                 style: TextStyle(
@@ -454,9 +520,14 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                 Container(
                                   color: Color(0xffFDEDE4),
                                   width: MediaQuery.of(context).size.width,
-                                  padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 15, vertical: 10),
                                   child: Text(
-                                    Provider.of<ListCabang>(context).cabangClick != null ? 'PEMBAYARAN (COD)': 'BANK TRANSFER (Konfirmasi Manual)',
+                                    Provider.of<ListCabang>(context)
+                                                .cabangClick !=
+                                            null
+                                        ? 'PEMBAYARAN (COD)'
+                                        : 'BANK TRANSFER (Konfirmasi Manual)',
                                     style: TextStyle(
                                       fontFamily: 'Brandon',
                                       fontSize: 14,
@@ -467,29 +538,45 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                 ),
                                 InkWell(
                                   onTap: () {
-                                    chekOut(context,Provider.of<ListCabang>(context).cabangClick != null ? "cash_on_delivery" :"manual_bca");
+                                    chekOut(
+                                        context,
+                                        Provider.of<ListCabang>(context)
+                                                    .cabangClick !=
+                                                null
+                                            ? "cash_on_delivery"
+                                            : "manual_bca");
                                   },
                                   child: Container(
                                     width: MediaQuery.of(context).size.width,
-                                    padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 15, vertical: 5),
                                     child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
                                         Row(
                                           children: [
-                                            Provider.of<ListCabang>(context).cabangClick != null ?
-                                            ImageIcon(
-                                              AssetImage('assets/images/wallet.png'),
-                                              color: Color(0xffF48262),
-                                            ):
-                                            Image.asset(
-                                              'assets/images/payment/bca-02.png',
-                                              height: 40,
-                                            ),
+                                            Provider.of<ListCabang>(context)
+                                                        .cabangClick !=
+                                                    null
+                                                ? ImageIcon(
+                                                    AssetImage(
+                                                        'assets/images/wallet.png'),
+                                                    color: Color(0xffF48262),
+                                                  )
+                                                : Image.asset(
+                                                    'assets/images/payment/bca-02.png',
+                                                    height: 40,
+                                                  ),
                                             Padding(
-                                              padding: EdgeInsets.only(left: 10),
+                                              padding:
+                                                  EdgeInsets.only(left: 10),
                                               child: Text(
-                                                Provider.of<ListCabang>(context).cabangClick != null ? 'Pembayaran Tunai':' Bank BCA',
+                                                Provider.of<ListCabang>(context)
+                                                            .cabangClick !=
+                                                        null
+                                                    ? 'Pembayaran Tunai'
+                                                    : ' Bank BCA',
                                                 style: TextStyle(
                                                   fontFamily: 'Brandon',
                                                   fontSize: 14,
@@ -612,11 +699,11 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                   ),
                                 ),*/
 
-
                                 Container(
                                   color: Color(0xffFDEDE4),
                                   width: MediaQuery.of(context).size.width,
-                                  padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 15, vertical: 10),
                                   child: Text(
                                     'MOBILE PAYMENT',
                                     style: TextStyle(
@@ -665,15 +752,22 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                 ),*/
                                 InkWell(
                                   onTap: () {
-                                    Navigator.push(context,new MaterialPageRoute(
-                                      builder: (BuildContext context) => new PembayaranGopayScreen(method:PembayaranGopayScreen.gopay,),
-                                    ));
+                                    Navigator.push(
+                                        context,
+                                        new MaterialPageRoute(
+                                          builder: (BuildContext context) =>
+                                              new PembayaranGopayScreen(
+                                            method: PembayaranGopayScreen.gopay,
+                                          ),
+                                        ));
                                   },
                                   child: Container(
                                     width: MediaQuery.of(context).size.width,
-                                    padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 15, vertical: 5),
                                     child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
                                         Row(
                                           children: [
@@ -682,7 +776,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                               height: 40,
                                             ),
                                             Padding(
-                                              padding: EdgeInsets.only(left: 10),
+                                              padding:
+                                                  EdgeInsets.only(left: 10),
                                               child: Text(
                                                 'GOPAY',
                                                 style: TextStyle(

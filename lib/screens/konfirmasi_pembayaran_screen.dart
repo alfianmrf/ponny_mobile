@@ -606,13 +606,10 @@ class _KonfirmasiPembayaranScreenState
                         child: Column(
                           children: [
                             widget.manualInfo.orderConfrim != null
-                                ? Provider.of<OrderModel>(context).imageBukti ==
-                                        null
-                                    ? Container()
-                                    : Container(
-                                        padding: EdgeInsets.only(bottom: 10),
-                                        child: _imageFile(),
-                                      )
+                                ? Container(
+                                    padding: EdgeInsets.only(bottom: 10),
+                                    child: _imageFile(),
+                                  )
                                 : Container(
                                     padding: EdgeInsets.only(bottom: 10),
                                     child: _image != null

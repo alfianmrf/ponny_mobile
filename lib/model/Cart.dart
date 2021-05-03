@@ -26,6 +26,7 @@ class CartModel with ChangeNotifier {
   Summary sumaryPoint;
   MapCost shipping;
   int CurentPoint = 0;
+  int poinBoong = 0;
 
   CartModel();
 
@@ -439,6 +440,8 @@ class CartModel with ChangeNotifier {
           HttpHeaders.authorizationHeader: "Bearer $token"
         },
         body: json.encode(param));
+    print("headerya");
+    print(res.statusCode);
     print(res.body);
     final responseJson = json.decode(res.body);
 

@@ -205,7 +205,7 @@ class _CartScreenState extends State<CartScreen> {
                             ),
                           ),
                           Image.asset(
-                            'assets/images/perjalanan@4x.png',
+                            'assets/images/Icon-Ponny-10.png',
                             width: 46,
                             height: 46,
                             fit: BoxFit.contain,
@@ -355,7 +355,7 @@ class _CartScreenState extends State<CartScreen> {
                                       padding: EdgeInsets.only(left: 20),
                                       child: Row(children: [
                                         Image.asset(
-                                          'assets/images/perjalanan@4x.png',
+                                          'assets/images/Icon-Ponny-10.png',
                                           width: 25,
                                           height: 25,
                                           fit: BoxFit.contain,
@@ -2153,6 +2153,7 @@ class _CartScreenState extends State<CartScreen> {
                                               textAlign: TextAlign.right,
                                             ),
                                             onPressed: () {
+                                              FocusScope.of(context).unfocus();
                                               if (_code.value.text.isNotEmpty) {
                                                 UIBlock.block(context,
                                                     customLoaderChild:
@@ -2277,15 +2278,14 @@ class _CartScreenState extends State<CartScreen> {
                                             Transform.scale(
                                               scale: 0.72,
                                               child: CupertinoSwitch(
-                                                value: Provider.of<ListCabang>(
-                                                        context)
-                                                    .setPointValue,
-                                                onChanged: (value) {
-                                                  Provider.of<ListCabang>(
-                                                          context)
-                                                      .setPointValue = value;
+                                                value: Provider.of<ListCabang>(context).setPointValue,
+                                                onChanged: (newvalue) {
+                                                  value.summary.available_point_to_use == 0
+                                                  ? null
+                                                  : Provider.of<ListCabang>(context).setPointValue = newvalue;
                                                   _getSummaryPoint();
                                                 },
+                                                
                                                 trackColor: Colors.grey[200],
                                                 activeColor: Color(0xffF48262),
                                               ),

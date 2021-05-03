@@ -138,7 +138,7 @@ class _ListTokoPengirimanScreenState extends State<ListTokoPengirimanScreen> {
                                                     .availableProduct
                                                     .length ==
                                             cabang[index]
-                                                .availableProduct
+                                                .unavailableProduct
                                                 .length
                                         ? "Stok barang tidak tersedia"
                                         : "${cabang[index].unavailableProduct.length.toString()} Stok barang tidak tersedia"

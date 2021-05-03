@@ -4,6 +4,7 @@ import 'package:ponny/common/constant.dart';
 import 'package:ponny/model/Address.dart';
 import 'package:ponny/model/App.dart';
 import 'package:ponny/model/Cart.dart';
+import 'package:ponny/model/listCabangModel.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
 import 'package:ponny/screens/pesanan_berhasil_screen.dart';
 import 'package:flutter_html/flutter_html.dart';
@@ -14,9 +15,9 @@ import 'package:url_launcher/url_launcher.dart';
 
 class PembayaranGopayScreen extends StatefulWidget {
   static const String id = "pembayaran_gopay_screen";
-  static const String ovo ="ovo";
-  static const String shopeepay ="shopeepay";
-  static const String gopay ="gopay";
+  static const String ovo = "ovo";
+  static const String shopeepay = "shopeepay";
+  static const String gopay = "gopay";
 
   String method;
   PembayaranGopayScreen({Key key, this.method});
@@ -42,7 +43,8 @@ class _PembayaranGopayScreenState extends State<PembayaranGopayScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final card = Provider.of<CartModel>(context,listen: false);
+    final card = Provider.of<CartModel>(context, listen: false);
+    var cabang = Provider.of<ListCabang>(context);
 
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
@@ -83,7 +85,6 @@ class _PembayaranGopayScreenState extends State<PembayaranGopayScreen> {
             // margin: MediaQuery.of(context).padding,
             child: Column(
               children: <Widget>[
-
                 Container(
                   width: MediaQuery.of(context).size.width,
                   padding: EdgeInsets.symmetric(vertical: 20),
@@ -114,7 +115,7 @@ class _PembayaranGopayScreenState extends State<PembayaranGopayScreen> {
                 ),
                 Container(
                   margin: EdgeInsets.only(top: 10),
-                  width: MediaQuery.of(context).size.width*0.9,
+                  width: MediaQuery.of(context).size.width * 0.9,
                   child: Align(
                     alignment: Alignment.centerLeft,
                     child: Image.asset(
@@ -123,12 +124,12 @@ class _PembayaranGopayScreenState extends State<PembayaranGopayScreen> {
                     ),
                   ),
                 ),
-                if(widget.method == PembayaranGopayScreen.gopay)
-                Container(
-                  alignment: Alignment.centerLeft,
-                  width: MediaQuery.of(context).size.width*0.9,
-                  child: Html(
-                    data: """
+                if (widget.method == PembayaranGopayScreen.gopay)
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    width: MediaQuery.of(context).size.width * 0.9,
+                    child: Html(
+                      data: """
                       <div>
                         <p>Cara Pembayaran Melalui GOPAY</p>
                         <ol>
@@ -137,18 +138,18 @@ class _PembayaranGopayScreenState extends State<PembayaranGopayScreen> {
                         </ol>
                       </div>
                     """,
-                    style: {
-                      "div": Style(
-                        fontFamily: 'Brandon',
-                        textAlign: TextAlign.justify,
-                      ),
-                    },
+                      style: {
+                        "div": Style(
+                          fontFamily: 'Brandon',
+                          textAlign: TextAlign.justify,
+                        ),
+                      },
+                    ),
                   ),
-                ),
-                if(widget.method == PembayaranGopayScreen.ovo)
+                if (widget.method == PembayaranGopayScreen.ovo)
                   Container(
                     alignment: Alignment.centerLeft,
-                    width: MediaQuery.of(context).size.width*0.9,
+                    width: MediaQuery.of(context).size.width * 0.9,
                     child: Html(
                       data: """
                        <div>
@@ -173,10 +174,10 @@ class _PembayaranGopayScreenState extends State<PembayaranGopayScreen> {
                       },
                     ),
                   ),
-                if(widget.method == PembayaranGopayScreen.shopeepay)
+                if (widget.method == PembayaranGopayScreen.shopeepay)
                   Container(
                     alignment: Alignment.centerLeft,
-                    width: MediaQuery.of(context).size.width*0.9,
+                    width: MediaQuery.of(context).size.width * 0.9,
                     child: Html(
                       data: """
                        <div>
@@ -206,7 +207,8 @@ class _PembayaranGopayScreenState extends State<PembayaranGopayScreen> {
                     alignment: FractionalOffset.bottomCenter,
                     child: Container(
                       width: MediaQuery.of(context).size.width * 0.95,
-                      padding: EdgeInsets.symmetric(horizontal: 15, vertical: 7),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 15, vertical: 7),
                       child: FlatButton(
                         color: Color(0xffF48262),
                         child: Text(
@@ -220,40 +222,58 @@ class _PembayaranGopayScreenState extends State<PembayaranGopayScreen> {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(7.0),
                         ),
-                        onPressed: (){
-                          UIBlock.block(context,customLoaderChild: LoadingWidget(context));
-                          Provider.of<CartModel>(context).Checkout(Provider.of<AppModel>(context).auth.access_token, Provider.of<AddressModel>(context).useAddress, widget.method).then((value) {
+                        onPressed: () {
+                          UIBlock.block(context,
+                              customLoaderChild: LoadingWidget(context));
+                          // Provider.of<CartModel>(context).Checkout(Provider.of<AppModel>(context).auth.access_token, Provider.of<AddressModel>(context).useAddress, widget.method).then((value) {
+                          Provider.of<CartModel>(context)
+                              .NewCheckout(
+                                  Provider.of<AppModel>(context)
+                                      .auth
+                                      .access_token,
+                                  Provider.of<AddressModel>(context).useAddress,
+                                  widget.method,
+                                  cabang.cabangClick == null
+                                      ? null
+                                      : cabang.cabangClick.id,
+                                  cabang.pointValue,
+                                  cabang.cabangClick)
+                              .then((value) {
                             UIBlock.unblock(context);
-                            if(value!= null && value.success){
-                              if(widget.method == PembayaranGopayScreen.gopay){
+                            if (value != null && value.success) {
+                              if (widget.method ==
+                                  PembayaranGopayScreen.gopay) {
                                 print(value.mitransRequest.actions.length);
-                                final redirect = value.mitransRequest.actions.firstWhere((element) => element.name == "deeplink-redirect");
+                                final redirect = value.mitransRequest.actions
+                                    .firstWhere((element) =>
+                                        element.name == "deeplink-redirect");
                                 print(redirect.name);
-                                if(redirect != null){
+                                if (redirect != null) {
                                   _launchURL(redirect.url);
                                 }
-
                               }
-
-                            }else{
+                            } else {
                               UIBlock.unblock(context);
                               print(value.message);
                               final snackBar = SnackBar(
-                                content: Text('Terjadi kesalah Pada Server, Silakan coba kembali nanti!',style: TextStyle(color: Colors.white)),
+                                content: Text(
+                                    'Terjadi kesalah Pada Server, Silakan coba kembali nanti!',
+                                    style: TextStyle(color: Colors.white)),
                                 backgroundColor: Colors.redAccent,
                               );
                               scaffoldKey.currentState.showSnackBar(snackBar);
                             }
-                          }).catchError((onError){
+                          }).catchError((onError) {
                             UIBlock.unblock(context);
                             final snackBar = SnackBar(
-                              content: Text('Terjadi kesalah Pada Server, Silakan coba kembali nanti!',style: TextStyle(color: Colors.white)),
+                              content: Text(
+                                  'Terjadi kesalah Pada Server, Silakan coba kembali nanti!',
+                                  style: TextStyle(color: Colors.white)),
                               backgroundColor: Colors.redAccent,
                             );
                             scaffoldKey.currentState.showSnackBar(snackBar);
                             print(onError);
                           });
-
                         },
                       ),
                     ),
