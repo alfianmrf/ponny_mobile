@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -7,6 +9,8 @@ import 'package:ponny/model/Address.dart';
 import 'package:ponny/model/App.dart';
 import 'package:ponny/model/Cart.dart';
 import 'package:ponny/screens/Order_Screen.dart';
+import 'package:ponny/screens/account_screen.dart';
+import 'package:ponny/screens/midtrans_otp.dart';
 import 'package:ponny/screens/midtrans_token_request.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
 import 'package:ponny/screens/pesanan_berhasil_screen.dart';
@@ -98,19 +102,23 @@ class _PembayaranCreditCardScreenState extends State<PembayaranCreditCardScreen>
   Widget build(BuildContext context) {
     final card = Provider.of<CartModel>(context,listen: false);
 
+    goBack(dynamic value){
+      UIBlock.unblock(context);
+      return Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => AccountScreen(),
+        ),
+      );
+    }
+
     onGoBack(dynamic value){
       if(Provider.of<CartModel>(context).tokenMidtrans!=null){
         Provider.of<CartModel>(context).Checkout(Provider.of<AppModel>(context).auth.access_token, Provider.of<AddressModel>(context).useAddress, 'credit_card', Provider.of<CartModel>(context).tokenMidtrans).then((value){
           if(value.success){
-            UIBlock.unblock(context);
-            return Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => OrderScreen(
-                  type: OrderScreen.paid,
-                ),
-              ),
-            );
+            Navigator.push(context,new MaterialPageRoute(
+              builder: (BuildContext context) => new MidtransOTP(url: value.redirectURL)
+            )).then(goBack);
           }
           else{
             UIBlock.unblock(context);

@@ -245,7 +245,79 @@ class _OrderScreenState extends State<OrderScreen> {
                                   Container(
                                     alignment: Alignment.topCenter,
                                     padding: EdgeInsets.only(bottom: 10, right: 10),
-                                    child:  Row(
+                                    child: e.product==null
+                                        ? Row(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Expanded(
+                                          child: Container(
+                                            alignment: Alignment.topCenter,
+                                            padding: EdgeInsets.only(right: 10),
+                                            width: MediaQuery.of(context).size.width*0.35,
+                                            child: CachedNetworkImage(
+                                              imageUrl: "",
+                                              placeholder: (context, url) => LoadingWidgetPulse(context),
+                                              errorWidget: (context, url, error) => Image.asset('assets/images/210x265.png'),
+                                              width: MediaQuery.of(context).size.width,
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ),
+                                        ),
+                                        Expanded(
+                                          child:Container(
+                                            alignment: Alignment.topCenter,
+                                            child: Column(
+                                              children: [
+                                                Container(
+                                                  margin: EdgeInsets.only(top: 0),
+                                                  // color: Colors.redAccent,
+                                                  width: 90,
+                                                  child: MarqueeWidget(
+                                                    direction: Axis.horizontal,
+                                                    child: Text(
+                                                      "",
+                                                      textAlign: TextAlign.left,
+                                                      style: TextStyle(
+                                                        fontFamily: "Yeseva",
+                                                        fontSize: 14,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                                Container(
+                                                  margin: EdgeInsets.only(top: 1),
+                                                  width: 90,
+                                                  child: Text(
+                                                    "Produk tidak ditemukan",
+                                                    textAlign: TextAlign.left,
+                                                    style: TextStyle(
+                                                      fontFamily: "Brandon",
+                                                      fontWeight: FontWeight.w200,
+                                                      fontSize: 13,
+                                                      fontStyle: FontStyle.italic,
+                                                    ),
+                                                  ),
+                                                ),
+                                                Container(
+                                                  margin: EdgeInsets.only(top: 1),
+                                                  width: 90,
+                                                  child: Text(
+                                                    "-",
+                                                    textAlign: TextAlign.left,
+                                                    style: TextStyle(
+                                                      fontFamily: "Brandon",
+                                                      fontWeight: FontWeight.w600,
+                                                      fontSize: 13,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    )
+                                        : Row(
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Expanded(
@@ -359,7 +431,79 @@ class _OrderScreenState extends State<OrderScreen> {
                                   Container(
                                     alignment: Alignment.topCenter,
                                     padding: EdgeInsets.only(bottom: 10, right: 10),
-                                    child:  Row(
+                                    child:  e.product==null
+                                        ? Row(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Expanded(
+                                          child: Container(
+                                            alignment: Alignment.topCenter,
+                                            padding: EdgeInsets.only(right: 10),
+                                            width: MediaQuery.of(context).size.width*0.35,
+                                            child: CachedNetworkImage(
+                                              imageUrl: "",
+                                              placeholder: (context, url) => LoadingWidgetPulse(context),
+                                              errorWidget: (context, url, error) => Image.asset('assets/images/210x265.png'),
+                                              width: MediaQuery.of(context).size.width,
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ),
+                                        ),
+                                        Expanded(
+                                          child:Container(
+                                            alignment: Alignment.topCenter,
+                                            child: Column(
+                                              children: [
+                                                Container(
+                                                  margin: EdgeInsets.only(top: 0),
+                                                  // color: Colors.redAccent,
+                                                  width: 90,
+                                                  child: MarqueeWidget(
+                                                    direction: Axis.horizontal,
+                                                    child: Text(
+                                                      "",
+                                                      textAlign: TextAlign.left,
+                                                      style: TextStyle(
+                                                        fontFamily: "Yeseva",
+                                                        fontSize: 14,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                                Container(
+                                                  margin: EdgeInsets.only(top: 1),
+                                                  width: 90,
+                                                  child: Text(
+                                                    "Produk tidak ditemukan",
+                                                    textAlign: TextAlign.left,
+                                                    style: TextStyle(
+                                                      fontFamily: "Brandon",
+                                                      fontWeight: FontWeight.w200,
+                                                      fontSize: 13,
+                                                      fontStyle: FontStyle.italic,
+                                                    ),
+                                                  ),
+                                                ),
+                                                Container(
+                                                  margin: EdgeInsets.only(top: 1),
+                                                  width: 90,
+                                                  child: Text(
+                                                    "-",
+                                                    textAlign: TextAlign.left,
+                                                    style: TextStyle(
+                                                      fontFamily: "Brandon",
+                                                      fontWeight: FontWeight.w600,
+                                                      fontSize: 13,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    )
+                                        : Row(
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Expanded(
@@ -464,7 +608,79 @@ class _OrderScreenState extends State<OrderScreen> {
                                   Container(
                                     alignment: Alignment.topCenter,
                                     padding: EdgeInsets.only(bottom: 10, right: 10),
-                                    child:  Row(
+                                    child:  e.product==null
+                                        ? Row(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Expanded(
+                                          child: Container(
+                                            alignment: Alignment.topCenter,
+                                            padding: EdgeInsets.only(right: 10),
+                                            width: MediaQuery.of(context).size.width*0.35,
+                                            child: CachedNetworkImage(
+                                              imageUrl: "",
+                                              placeholder: (context, url) => LoadingWidgetPulse(context),
+                                              errorWidget: (context, url, error) => Image.asset('assets/images/210x265.png'),
+                                              width: MediaQuery.of(context).size.width,
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ),
+                                        ),
+                                        Expanded(
+                                          child:Container(
+                                            alignment: Alignment.topCenter,
+                                            child: Column(
+                                              children: [
+                                                Container(
+                                                  margin: EdgeInsets.only(top: 0),
+                                                  // color: Colors.redAccent,
+                                                  width: 90,
+                                                  child: MarqueeWidget(
+                                                    direction: Axis.horizontal,
+                                                    child: Text(
+                                                      "",
+                                                      textAlign: TextAlign.left,
+                                                      style: TextStyle(
+                                                        fontFamily: "Yeseva",
+                                                        fontSize: 14,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                                Container(
+                                                  margin: EdgeInsets.only(top: 1),
+                                                  width: 90,
+                                                  child: Text(
+                                                    "Produk tidak ditemukan",
+                                                    textAlign: TextAlign.left,
+                                                    style: TextStyle(
+                                                      fontFamily: "Brandon",
+                                                      fontWeight: FontWeight.w200,
+                                                      fontSize: 13,
+                                                      fontStyle: FontStyle.italic,
+                                                    ),
+                                                  ),
+                                                ),
+                                                Container(
+                                                  margin: EdgeInsets.only(top: 1),
+                                                  width: 90,
+                                                  child: Text(
+                                                    "-",
+                                                    textAlign: TextAlign.left,
+                                                    style: TextStyle(
+                                                      fontFamily: "Brandon",
+                                                      fontWeight: FontWeight.w600,
+                                                      fontSize: 13,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    )
+                                        : Row(
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Expanded(
@@ -1009,13 +1225,13 @@ class _OrderScreenState extends State<OrderScreen> {
                                                           crossAxisAlignment: CrossAxisAlignment.start,
                                                           children: [
                                                             Text(
-                                                              snapshot.data.query.courier,
+                                                              snapshot.data.courier.company.toUpperCase(),
                                                               style: TextStyle(
                                                                 fontFamily: 'Brandon',
                                                               ),
                                                             ),
                                                             Text(
-                                                              'No Resi: '+snapshot.data.query.waybill,
+                                                              'No Resi: '+snapshot.data.waybillId,
                                                               style: TextStyle(
                                                                 fontFamily: 'Brandon',
                                                               ),
@@ -1024,7 +1240,7 @@ class _OrderScreenState extends State<OrderScreen> {
                                                         ),
                                                         InkWell(
                                                           onTap: (){
-                                                            Clipboard.setData(new ClipboardData(text: snapshot.data.query.waybill));
+                                                            Clipboard.setData(new ClipboardData(text: snapshot.data.waybillId));
                                                             Fluttertoast.showToast(
                                                                 msg: "Copied to Clipboard",
                                                                 toastLength: Toast.LENGTH_SHORT,
@@ -1056,7 +1272,7 @@ class _OrderScreenState extends State<OrderScreen> {
                                                   color: Color(0xffFEF9F0),
                                                   padding: EdgeInsets.all(20),
                                                   child: ListView(
-                                                      children: snapshot.data.result.manifest.map(
+                                                      children: snapshot.data.history.reversed.map(
                                                               (e) => IntrinsicHeight(
                                                             child: Row(
                                                               children: [
@@ -1088,13 +1304,13 @@ class _OrderScreenState extends State<OrderScreen> {
                                                                       crossAxisAlignment: CrossAxisAlignment.start,
                                                                       children: [
                                                                         Text(
-                                                                          e.manifestDescription,
+                                                                          e.note,
                                                                           style: TextStyle(
                                                                             fontFamily: 'Brandon',
                                                                           ),
                                                                         ),
                                                                         Text(
-                                                                          e.manifestDate+' '+e.manifestTime,
+                                                                          DateFormat("dd-MM-yyyy").format(DateTime.parse(e.updatedAt)).toString(),
                                                                           style: TextStyle(
                                                                             fontFamily: 'Brandon',
                                                                             color: Color(0xff6D6E71),

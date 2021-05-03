@@ -8,6 +8,7 @@ class OrderResult {
   MitransRequest mitransRequest;
   Midtrans mitrans_val;
   String orderCode;
+  String redirectURL;
 
   OrderResult(
       {this.orderId,
@@ -16,7 +17,8 @@ class OrderResult {
         this.emailSuccess,
         this.mitransRequest,
         this.orderCode,
-        this.mitrans_val
+        this.mitrans_val,
+        this.redirectURL
       });
 
   OrderResult.fromJson(Map<String, dynamic> json) {
@@ -29,6 +31,7 @@ class OrderResult {
         : null;
     orderCode = json['order_code'];
     mitrans_val = json["mitrans_request"] != null ? Midtrans.fromJson(json["mitrans_request"]) : null;
+    redirectURL = json['redirect_url'];
   }
 
   Map<String, dynamic> toJson() {
@@ -40,6 +43,7 @@ class OrderResult {
       data['mitrans_request'] = this.mitransRequest.toJson();
     }
     data['order_code'] = this.orderCode;
+    data['redirect_url'] = this.redirectURL;
     return data;
   }
 }
