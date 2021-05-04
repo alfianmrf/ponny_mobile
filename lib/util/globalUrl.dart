@@ -93,6 +93,10 @@ const affiliateHome = base_url + "account/affiliate";
 const affiliateCustomCode = base_url + "account/custom_code";
 const affiliateWithdraw = base_url + "account/affiliate/withdraw";
 
+//Affiliate
+const affiliateBanner = base_url + "affiliate/banner";
+const affiliateRegister = base_url + "affiliate/register";
+
 //Order
 const urlTracking = base_url + "checkout/tracking";
 const urlTerimaBarang = base_url + "checkout/receipt";

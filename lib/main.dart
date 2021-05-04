@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:ponny/common/PushNotificationsManager.dart';
 import 'package:ponny/model/Address.dart';
+import 'package:ponny/model/AffiliateResult.dart';
 import 'package:ponny/model/AffiliateWithdraw.dart';
 import 'package:ponny/model/AffiliatesAddCode.dart';
 import 'package:ponny/model/Cart.dart';
@@ -134,6 +135,7 @@ Future<void> main() async {
         ChangeNotifierProvider(create: (context) => PostandComment()),
         ChangeNotifierProvider(create: (context) => AddCodeResult()),
         ChangeNotifierProvider(create: (context) => AffiliateWithdraw()),
+        ChangeNotifierProvider(create: (context) => AffiliateModel()),
       ],
       child: Phoenix(child: MyApp()),
     ),

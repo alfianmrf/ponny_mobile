@@ -1,4 +1,28 @@
-class AffiliateResult {
+import 'dart:convert';
+
+import 'package:flutter/material.dart';
+import 'package:ponny/util/globalUrl.dart';
+import 'package:http/http.dart' as http;
+
+class AffiliateModel with ChangeNotifier{
+  String banner;
+  AffiliateModel(){
+    getBanner();
+  }
+
+  Future<void> getBanner() async {
+    final response = await http.get(affiliateBanner);
+    if (response.statusCode == 200) {
+      final res = json.decode(response.body);
+      banner = res['photo'];
+      notifyListeners();
+    } else {
+      throw Exception('Failed to load data');
+    }
+  }
+}
+
+class AffiliateResult{
   String firstName;
   String lastName;
   BannerAffiliate banner;
