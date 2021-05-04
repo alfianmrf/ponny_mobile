@@ -356,7 +356,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                   width: MediaQuery.of(context).size.width,
                                   padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
                                   child: Text(
-                                    'OVER THE COUNTER (Alfamart/Indomart)',
+                                    'OVER THE COUNTER (Alfamart/Indomaret)',
                                     style: TextStyle(
                                       fontFamily: 'Brandon',
                                       fontSize: 14,

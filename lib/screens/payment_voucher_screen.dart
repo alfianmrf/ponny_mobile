@@ -12,6 +12,7 @@ import 'package:ponny/model/Voucher.dart';
 import 'package:ponny/screens/Qris_screen.dart';
 import 'package:ponny/screens/account/menunggu_pembayaran_sukses_screen.dart';
 import 'package:ponny/screens/home_screen.dart';
+import 'package:ponny/screens/pembayaran_credit_card_screen.dart';
 import 'package:ponny/screens/pembayaran_gopay_voucher_screen.dart';
 import 'package:ponny/screens/pesanan_berhasil_screen.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
@@ -344,7 +345,7 @@ class _PaymentVoucherScreenState extends State<PaymentVoucherScreen> {
                                 width: MediaQuery.of(context).size.width,
                                 padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
                                 child: Text(
-                                  'OVER THE COUNTER (Alfamart/Indomart)',
+                                  'OVER THE COUNTER (Alfamart/Indomaret)',
                                   style: TextStyle(
                                     fontFamily: 'Brandon',
                                     fontSize: 14,
@@ -353,43 +354,42 @@ class _PaymentVoucherScreenState extends State<PaymentVoucherScreen> {
                                   ),
                                 ),
                               ),
-                              /*
-                              InkWell(
-                                onTap: () {
-                                  chekOut(context,"Indomaret");
-                                },
-                                child: Container(
-                                  width: MediaQuery.of(context).size.width,
-                                  padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Row(
-                                        children: [
-                                          Image.asset(
-                                            'assets/images/payment/indomaret-02.png',
-                                            height: 40,
-                                          ),
-                                          Padding(
-                                            padding: EdgeInsets.only(left: 10),
-                                            child: Text(
-                                              'Indomaret',
-                                              style: TextStyle(
-                                                fontFamily: 'Brandon',
-                                                fontSize: 14,
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      Icon(
-                                        Icons.chevron_right,
-                                        color: Color(0xffF48262),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),*/
+                              // InkWell(
+                              //   onTap: () {
+                              //     chekOut(context,"Indomaret");
+                              //   },
+                              //   child: Container(
+                              //     width: MediaQuery.of(context).size.width,
+                              //     padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                              //     child: Row(
+                              //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              //       children: [
+                              //         Row(
+                              //           children: [
+                              //             Image.asset(
+                              //               'assets/images/payment/indomaret-02.png',
+                              //               height: 40,
+                              //             ),
+                              //             Padding(
+                              //               padding: EdgeInsets.only(left: 10),
+                              //               child: Text(
+                              //                 'Indomaret',
+                              //                 style: TextStyle(
+                              //                   fontFamily: 'Brandon',
+                              //                   fontSize: 14,
+                              //                 ),
+                              //               ),
+                              //             ),
+                              //           ],
+                              //         ),
+                              //         Icon(
+                              //           Icons.chevron_right,
+                              //           color: Color(0xffF48262),
+                              //         ),
+                              //       ],
+                              //     ),
+                              //   ),
+                              // ),
                               InkWell(
                                 onTap: () {
                                   chekOut(context,"alfamart");
@@ -550,56 +550,49 @@ class _PaymentVoucherScreenState extends State<PaymentVoucherScreen> {
                                     ],
                                   ),
                                 ),
-                              ),
-                              Container(
-                                color: Color(0xffFDEDE4),
-                                width: MediaQuery.of(context).size.width,
-                                padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                                child: Text(
-                                  'KARTU KREDIT/DEBIT',
-                                  style: TextStyle(
-                                    fontFamily: 'Brandon',
-                                    fontSize: 14,
-                                    color: Color(0xffF48262),
-                                    fontWeight: FontWeight.w600,
+                              ),*/
+                              InkWell(
+                                onTap: (){
+                                  Navigator.push(context,new MaterialPageRoute(
+                                    builder: (BuildContext context) => new PembayaranCreditCardScreen(),
+                                  ));
+                                },
+                                child: Container(
+                                  width: MediaQuery.of(context).size.width,
+                                  padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Image.asset(
+                                            'assets/images/payment/visa-02.png',
+                                            height: 20,
+                                          ),
+                                          Image.asset(
+                                            'assets/images/payment/mastercard-02.png',
+                                            height: 20,
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.only(left: 10),
+                                            child: Text(
+                                              'Credit Card / Debit Card',
+                                              style: TextStyle(
+                                                fontFamily: 'Brandon',
+                                                fontSize: 14,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      Icon(
+                                        Icons.chevron_right,
+                                        color: Color(0xffF48262),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ),
-                              Container(
-                                width: MediaQuery.of(context).size.width,
-                                padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Image.asset(
-                                          'assets/images/payment/visa-02.png',
-                                          height: 20,
-                                        ),
-                                        Image.asset(
-                                          'assets/images/payment/mastercard-02.png',
-                                          height: 20,
-                                        ),
-                                        Padding(
-                                          padding: EdgeInsets.only(left: 10),
-                                          child: Text(
-                                            'Credit Card / Debit Card',
-                                            style: TextStyle(
-                                              fontFamily: 'Brandon',
-                                              fontSize: 14,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    Icon(
-                                      Icons.chevron_right,
-                                      color: Color(0xffF48262),
-                                    ),
-                                  ],
-                                ),
-                              ),*/
                               /*InkWell(
                                 onTap: (){
                                   chekOut(context,"qris");
