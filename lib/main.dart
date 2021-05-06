@@ -7,6 +7,7 @@ import 'package:ponny/model/AffiliateWithdraw.dart';
 import 'package:ponny/model/AffiliatesAddCode.dart';
 import 'package:ponny/model/Cart.dart';
 import 'package:ponny/model/Category.dart';
+import 'package:ponny/model/PaymentMethod.dart';
 import 'package:ponny/model/Product.dart';
 import 'package:ponny/model/Slider.dart';
 import 'package:ponny/model/User.dart';
@@ -136,6 +137,7 @@ Future<void> main() async {
         ChangeNotifierProvider(create: (context) => AddCodeResult()),
         ChangeNotifierProvider(create: (context) => AffiliateWithdraw()),
         ChangeNotifierProvider(create: (context) => AffiliateModel()),
+        ChangeNotifierProvider(create: (context) => PaymentMethodModel()),
       ],
       child: Phoenix(child: MyApp()),
     ),

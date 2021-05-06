@@ -72,6 +72,7 @@ const removePoinProduct = base_url + "cart/delete/point";
 //payment
 const paymentInfo = base_url + "payment/detail";
 const paymentConfrim = base_url + "payment/confirmation";
+const paymentMethod = base_url + "payment-methods";
 
 //wishlist
 const listOfwishlist = base_url + "product/wishlist";

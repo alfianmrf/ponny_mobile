@@ -8,6 +8,7 @@ import 'package:ponny/model/Address.dart';
 import 'package:ponny/model/App.dart';
 import 'package:ponny/model/Cart.dart';
 import 'package:ponny/model/Order.dart';
+import 'package:ponny/model/PaymentMethod.dart';
 import 'package:ponny/model/Voucher.dart';
 import 'package:ponny/screens/Qris_screen.dart';
 import 'package:ponny/screens/account/menunggu_pembayaran_sukses_screen.dart';
@@ -34,9 +35,13 @@ class PaymentVoucherScreen extends StatefulWidget {
 
 class _PaymentVoucherScreenState extends State<PaymentVoucherScreen> {
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+  bool isLoading = true;
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      Provider.of<PaymentMethodModel>(context).getListPayment().then((value) => isLoading=false);
+    });
   }
 
   Future<bool> chekOut(BuildContext context,String method) async {
@@ -119,7 +124,8 @@ class _PaymentVoucherScreenState extends State<PaymentVoucherScreen> {
             child: SingleChildScrollView(
               child: Column(
                 children: <Widget>[
-                  Container(
+                  isLoading?
+                  Container( height: MediaQuery.of(context).size.width*.2, child: Center(child: LoadingWidgetFadingCircle(context),),):Container(
                     margin: EdgeInsets.only(top: 25, bottom: 25),
                     width: MediaQuery.of(context).size.width*0.9,
                     decoration: BoxDecoration(
@@ -132,6 +138,12 @@ class _PaymentVoucherScreenState extends State<PaymentVoucherScreen> {
                         child: IntrinsicHeight(
                           child: Column(
                             children: <Widget>[
+                              // Virtual Account
+                              if(Provider.of<PaymentMethodModel>(context).listPayment.where((element) => element.code == 'mt_tf_bca' && element.status == 1).isNotEmpty
+                                  || Provider.of<PaymentMethodModel>(context).listPayment.where((element) => element.code == 'mt_tf_mdr' && element.status == 1).isNotEmpty
+                                  || Provider.of<PaymentMethodModel>(context).listPayment.where((element) => element.code == 'mt_tf_bni' && element.status == 1).isNotEmpty
+                                  || Provider.of<PaymentMethodModel>(context).listPayment.where((element) => element.code == 'mt_tf_bri' && element.status == 1).isNotEmpty
+                                  || Provider.of<PaymentMethodModel>(context).listPayment.where((element) => element.code == 'mt_tf_permata' && element.status == 1).isNotEmpty)
                               Container(
                                 color: Color(0xffFDEDE4),
                                 width: MediaQuery.of(context).size.width,
@@ -146,6 +158,7 @@ class _PaymentVoucherScreenState extends State<PaymentVoucherScreen> {
                                   ),
                                 ),
                               ),
+                              if(Provider.of<PaymentMethodModel>(context).listPayment.where((element) => element.code == 'mt_tf_bca' && element.status == 1).isNotEmpty)
                               InkWell(
                                 onTap: () async {
                                   final result = await chekOut(context,"mt_tf_bca");
@@ -185,6 +198,7 @@ class _PaymentVoucherScreenState extends State<PaymentVoucherScreen> {
                                   ),
                                 ),
                               ),
+                              if(Provider.of<PaymentMethodModel>(context).listPayment.where((element) => element.code == 'mt_tf_mdr' && element.status == 1).isNotEmpty)
                               InkWell(
                                 onTap: () async {
                                   final result = await chekOut(context,"mt_tf_mdr");
@@ -224,7 +238,7 @@ class _PaymentVoucherScreenState extends State<PaymentVoucherScreen> {
                                   ),
                                 ),
                               ),
-
+                              if(Provider.of<PaymentMethodModel>(context).listPayment.where((element) => element.code == 'mt_tf_bni' && element.status == 1).isNotEmpty)
                               InkWell(
                                 onTap: () async {
 
@@ -265,6 +279,7 @@ class _PaymentVoucherScreenState extends State<PaymentVoucherScreen> {
                                   ),
                                 ),
                               ),
+                              if(Provider.of<PaymentMethodModel>(context).listPayment.where((element) => element.code == 'mt_tf_bri' && element.status == 1).isNotEmpty)
                               InkWell(
                                 onTap: () {
                                   chekOut(context,"mt_tf_bri");
@@ -301,6 +316,7 @@ class _PaymentVoucherScreenState extends State<PaymentVoucherScreen> {
                                   ),
                                 ),
                               ),
+                              if(Provider.of<PaymentMethodModel>(context).listPayment.where((element) => element.code == 'mt_tf_permata' && element.status == 1).isNotEmpty)
                               InkWell(
                                 onTap: () async {
                                   final result = await chekOut(context,"mt_tf_permata");
@@ -340,6 +356,9 @@ class _PaymentVoucherScreenState extends State<PaymentVoucherScreen> {
                                   ),
                                 ),
                               ),
+                              // Indomaret & Alfamart
+                              if(Provider.of<PaymentMethodModel>(context).listPayment.where((element) => element.code == 'Indomaret' && element.status == 1).isNotEmpty
+                              || Provider.of<PaymentMethodModel>(context).listPayment.where((element) => element.code == 'alfamart' && element.status == 1).isNotEmpty)
                               Container(
                                 color: Color(0xffFDEDE4),
                                 width: MediaQuery.of(context).size.width,
@@ -354,42 +373,44 @@ class _PaymentVoucherScreenState extends State<PaymentVoucherScreen> {
                                   ),
                                 ),
                               ),
-                              // InkWell(
-                              //   onTap: () {
-                              //     chekOut(context,"Indomaret");
-                              //   },
-                              //   child: Container(
-                              //     width: MediaQuery.of(context).size.width,
-                              //     padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-                              //     child: Row(
-                              //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              //       children: [
-                              //         Row(
-                              //           children: [
-                              //             Image.asset(
-                              //               'assets/images/payment/indomaret-02.png',
-                              //               height: 40,
-                              //             ),
-                              //             Padding(
-                              //               padding: EdgeInsets.only(left: 10),
-                              //               child: Text(
-                              //                 'Indomaret',
-                              //                 style: TextStyle(
-                              //                   fontFamily: 'Brandon',
-                              //                   fontSize: 14,
-                              //                 ),
-                              //               ),
-                              //             ),
-                              //           ],
-                              //         ),
-                              //         Icon(
-                              //           Icons.chevron_right,
-                              //           color: Color(0xffF48262),
-                              //         ),
-                              //       ],
-                              //     ),
-                              //   ),
-                              // ),
+                              if(Provider.of<PaymentMethodModel>(context).listPayment.where((element) => element.code == 'Indomaret' && element.status == 1).isNotEmpty)
+                              InkWell(
+                                onTap: () {
+                                  chekOut(context,"Indomaret");
+                                },
+                                child: Container(
+                                  width: MediaQuery.of(context).size.width,
+                                  padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Image.asset(
+                                            'assets/images/payment/indomaret-02.png',
+                                            height: 40,
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.only(left: 10),
+                                            child: Text(
+                                              'Indomaret',
+                                              style: TextStyle(
+                                                fontFamily: 'Brandon',
+                                                fontSize: 14,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      Icon(
+                                        Icons.chevron_right,
+                                        color: Color(0xffF48262),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              if(Provider.of<PaymentMethodModel>(context).listPayment.where((element) => element.code == 'alfamart' && element.status == 1).isNotEmpty)
                               InkWell(
                                 onTap: () {
                                   chekOut(context,"alfamart");
@@ -426,8 +447,11 @@ class _PaymentVoucherScreenState extends State<PaymentVoucherScreen> {
                                   ),
                                 ),
                               ),
-
-                              /*Container(
+                              // Mobile Payment
+                              if(Provider.of<PaymentMethodModel>(context).listPayment.where((element) => element.code == 'ovo' && element.status == 1).isNotEmpty
+                              || Provider.of<PaymentMethodModel>(context).listPayment.where((element) => element.code == 'gopay' && element.status == 1).isNotEmpty
+                              || Provider.of<PaymentMethodModel>(context).listPayment.where((element) => element.code == 'shopeepay' && element.status == 1).isNotEmpty)
+                              Container(
                                 color: Color(0xffFDEDE4),
                                 width: MediaQuery.of(context).size.width,
                                 padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
@@ -441,6 +465,7 @@ class _PaymentVoucherScreenState extends State<PaymentVoucherScreen> {
                                   ),
                                 ),
                               ),
+                              if(Provider.of<PaymentMethodModel>(context).listPayment.where((element) => element.code == 'ovo' && element.status == 1).isNotEmpty)
                               InkWell(
                                 onTap: () {
                                   chekOut(context,"ovo");
@@ -477,6 +502,7 @@ class _PaymentVoucherScreenState extends State<PaymentVoucherScreen> {
                                   ),
                                 ),
                               ),
+                              if(Provider.of<PaymentMethodModel>(context).listPayment.where((element) => element.code == 'gopay' && element.status == 1).isNotEmpty)
                               InkWell(
                                 onTap: () {
                                   Navigator.push(context,new MaterialPageRoute(
@@ -514,8 +540,9 @@ class _PaymentVoucherScreenState extends State<PaymentVoucherScreen> {
                                     ],
                                   ),
                                 ),
-                              ),*/
-                              /*InkWell(
+                              ),
+                              if(Provider.of<PaymentMethodModel>(context).listPayment.where((element) => element.code == 'shopeepay' && element.status == 1).isNotEmpty)
+                              InkWell(
                                 onTap: () {
                                   chekOut(context,"shopeepay");
                                 },
@@ -550,7 +577,24 @@ class _PaymentVoucherScreenState extends State<PaymentVoucherScreen> {
                                     ],
                                   ),
                                 ),
-                              ),*/
+                              ),
+                              // Kartu Kredit
+                              if(Provider.of<PaymentMethodModel>(context).listPayment.where((element) => element.code == 'credit_card' && element.status == 1).isNotEmpty)
+                              Container(
+                                  color: Color(0xffFDEDE4),
+                                  width: MediaQuery.of(context).size.width,
+                                  padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                                  child: Text(
+                                    'KARTU KREDIT/DEBIT',
+                                    style: TextStyle(
+                                      fontFamily: 'Brandon',
+                                      fontSize: 14,
+                                      color: Color(0xffF48262),
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ),
+                              if(Provider.of<PaymentMethodModel>(context).listPayment.where((element) => element.code == 'credit_card' && element.status == 1).isNotEmpty)
                               InkWell(
                                 onTap: (){
                                   Navigator.push(context,new MaterialPageRoute(
@@ -593,7 +637,24 @@ class _PaymentVoucherScreenState extends State<PaymentVoucherScreen> {
                                   ),
                                 ),
                               ),
-                              /*InkWell(
+                              // Metode Pembayaran Lainnya
+                              if(Provider.of<PaymentMethodModel>(context).listPayment.where((element) => element.code == 'qris' && element.status == 1).isNotEmpty)
+                              Container(
+                                  color: Color(0xffFDEDE4),
+                                  width: MediaQuery.of(context).size.width,
+                                  padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                                  child: Text(
+                                    'METODE PEMBAYARAN LAINNYA',
+                                    style: TextStyle(
+                                      fontFamily: 'Brandon',
+                                      fontSize: 14,
+                                      color: Color(0xffF48262),
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ),
+                              if(Provider.of<PaymentMethodModel>(context).listPayment.where((element) => element.code == 'qris' && element.status == 1).isNotEmpty)
+                              InkWell(
                                 onTap: (){
                                   chekOut(context,"qris");
                                 },
@@ -632,7 +693,7 @@ class _PaymentVoucherScreenState extends State<PaymentVoucherScreen> {
                                     ],
                                   ),
                                 ) ,
-                              ),*/
+                              ),
                             ],
                           ),
                         ),
