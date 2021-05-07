@@ -35,8 +35,10 @@ class _AffiliateUsStateScreen extends State<AffiliateUsScreen> {
   int total;
   bool codeReferal, income;
   List<dynamic> detailImage;
+  RegExp regex = RegExp(r"([.]*0)(?!.*\d)");
 
-  final formatCurrency = new NumberFormat.simpleCurrency(locale: 'id_ID');
+  final formatCurrency =
+      new NumberFormat.simpleCurrency(locale: 'id_ID', decimalDigits: 0);
 
   void _sumSales() {
     total = 0;
@@ -310,7 +312,12 @@ class _AffiliateUsStateScreen extends State<AffiliateUsScreen> {
                                       children: [
                                         Container(
                                           child: Text(
-                                            user.last_name!=null?(user.name + " " + user.last_name).toUpperCase():user.name.toUpperCase(),
+                                            user.last_name != null
+                                                ? (user.name +
+                                                        " " +
+                                                        user.last_name)
+                                                    .toUpperCase()
+                                                : user.name.toUpperCase(),
                                             style: TextStyle(
                                               fontFamily: "Brandon",
                                               fontSize: 20,
@@ -1156,9 +1163,9 @@ class _AffiliateUsStateScreen extends State<AffiliateUsScreen> {
   Container statusAffiliatesReedem(String statusName) {
     Color colors;
     if (statusName == "paid") {
-      colors = Color(0xffF6DE6E);
-    } else {
       colors = Color(0xFF40a153);
+    } else {
+      colors = Color(0xffF6DE6E);
     }
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 5),

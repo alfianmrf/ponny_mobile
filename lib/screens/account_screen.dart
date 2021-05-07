@@ -499,9 +499,13 @@ class _AccountScreenState extends State<AccountScreen> {
                                           child: Container(
                                             child: LinearPercentIndicator(
                                               lineHeight: 8.0,
-                                              percent: user.dashboard.membershipTitle.toUpperCase()=="OH HAPPY"
-                                              ? 1
-                                              : user.dashboard.percent / 100,
+                                              percent: user.dashboard
+                                                          .membershipTitle
+                                                          .toUpperCase() ==
+                                                      "OH HAPPY"
+                                                  ? 1
+                                                  : user.dashboard.percent /
+                                                      100,
                                               progressColor: Colors.white,
                                             ),
                                           ),
@@ -543,9 +547,14 @@ class _AccountScreenState extends State<AccountScreen> {
                                       children: <Widget>[
                                         Container(
                                           child: Text(
-                                            user.dashboard.membershipTitle.toUpperCase()=="OH HAPPY"
-                                            ? "Luar biasa! anda sudah mencapai level maksimum"
-                                            : "Belanja " + nm_format.format(user.dashboard.toNext) + " lagi untuk naik tingkat",
+                                            user.dashboard.membershipTitle
+                                                        .toUpperCase() ==
+                                                    "OH HAPPY"
+                                                ? "Luar biasa! anda sudah mencapai level maksimum"
+                                                : "Belanja " +
+                                                    nm_format.format(
+                                                        user.dashboard.toNext) +
+                                                    " lagi untuk naik tingkat",
                                             style: TextStyle(
                                               fontSize: 10,
                                               color: Colors.white,
@@ -554,19 +563,21 @@ class _AccountScreenState extends State<AccountScreen> {
                                             ),
                                           ),
                                         ),
-                                        if(user.dashboard.membershipTitle.toUpperCase()!="OH HAPPY")
-                                        Container(
-                                          child: Text(
-                                              "ke " +
-                                                  user.dashboard.next +
-                                                  " Skin",
-                                              style: TextStyle(
-                                                fontSize: 10,
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.w800,
-                                                fontFamily: "Brandon",
-                                              )),
-                                        ),
+                                        if (user.dashboard.membershipTitle
+                                                .toUpperCase() !=
+                                            "OH HAPPY")
+                                          Container(
+                                            child: Text(
+                                                "ke " +
+                                                    user.dashboard.next +
+                                                    " Skin",
+                                                style: TextStyle(
+                                                  fontSize: 10,
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.w800,
+                                                  fontFamily: "Brandon",
+                                                )),
+                                          ),
                                       ],
                                     ),
                                   ),

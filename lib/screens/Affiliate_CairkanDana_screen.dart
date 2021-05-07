@@ -19,7 +19,8 @@ class CairkanDanaScreen extends StatefulWidget {
 }
 
 class _CairkanDanaScreenState extends State<CairkanDanaScreen> {
-  final formatCurrency = new NumberFormat.simpleCurrency(locale: 'id_ID');
+  final formatCurrency =
+      new NumberFormat.simpleCurrency(locale: 'id_ID', decimalDigits: 0);
 
   final norek = TextEditingController();
   final atasnama = TextEditingController();
@@ -154,46 +155,50 @@ class _CairkanDanaScreenState extends State<CairkanDanaScreen> {
             children: [
               Expanded(
                 child: SingleChildScrollView(
-                  child: Stack(
+                  child: Column(
                     children: [
-                      Container(
-                        width: size.width,
-                        height: size.height * 0.28,
-                        color: Colors.red,
-                        child: CachedNetworkImage(
-                          imageUrl: "$img_url${widget.img}",
-                          placeholder: (context, url) =>
-                              LoadingWidgetPulse(context),
-                          errorWidget: (context, url, error) =>
-                              Image.asset('assets/images/basic.jpg'),
-                          fit: BoxFit.fill,
-                        ),
+                      Stack(
+                        children: [
+                          Container(
+                            width: size.width,
+                            height: 180,
+                            color: Colors.red,
+                            child: CachedNetworkImage(
+                              imageUrl: "$img_url${widget.img}",
+                              placeholder: (context, url) =>
+                                  LoadingWidgetPulse(context),
+                              errorWidget: (context, url, error) =>
+                                  Image.asset('assets/images/basic.jpg'),
+                              fit: BoxFit.fill,
+                            ),
+                          ),
+                          Container(
+                            width: double.infinity,
+                            margin: EdgeInsets.fromLTRB(20, 130, 20, 0),
+                            padding: EdgeInsets.all(30),
+                            decoration: BoxDecoration(
+                              color: Hexcolor('#FCF8F0'),
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(10),
+                              ),
+                            ),
+                            child: Text(
+                              "CAIRKAN DANA",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontFamily: "Yeseva",
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                       Form(
                         key: formKey,
                         child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Container(
-                                width: double.infinity,
-                                margin: EdgeInsets.fromLTRB(20, 130, 20, 0),
-                                padding: EdgeInsets.all(30),
-                                decoration: BoxDecoration(
-                                  color: Hexcolor('#FCF8F0'),
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(10),
-                                  ),
-                                ),
-                                child: Text(
-                                  "CAIRKAN DANA",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    fontFamily: "Yeseva",
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                              ),
                               Container(
                                 margin: EdgeInsets.fromLTRB(20, 10, 20, 0),
                                 child: Row(
