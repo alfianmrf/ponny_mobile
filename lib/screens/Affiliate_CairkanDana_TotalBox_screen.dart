@@ -291,7 +291,8 @@ class _CairkanDanaTotalScreenState extends State<CairkanDanaTotalScreen> {
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) => AboutRefund()));
+                                          builder: (context) =>
+                                              AboutRefund(widget.img)));
                                 },
                                 child: Container(
                                     width: 40,

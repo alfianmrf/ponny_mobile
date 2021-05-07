@@ -97,6 +97,7 @@ const affiliateWithdraw = base_url + "account/affiliate/withdraw";
 //Affiliate
 const affiliateBanner = base_url + "affiliate/banner";
 const affiliateRegister = base_url + "affiliate/register";
+const affiliateAbout = base_url + "affiliate/pencairan";
 
 //Order
 const urlTracking = base_url + "checkout/tracking";
