@@ -24,6 +24,7 @@ class CartModel with ChangeNotifier{
   Summary summary;
   MapCost shipping;
   int CurentPoint =0;
+  String tokenMidtrans;
 
 
 
@@ -336,7 +337,7 @@ class CartModel with ChangeNotifier{
     notifyListeners();
   }
 
-  Future<OrderResult> Checkout(String token, Address useAddress,String method) async {
+  Future<OrderResult> Checkout(String token, Address useAddress,String method, String token_id) async {
    var param;
    OrderResult result;
    if(coupon != null){
@@ -344,13 +345,15 @@ class CartModel with ChangeNotifier{
        "address_id":useAddress.id,
        "courier":  json.encode(shipping.toJson()),
        "coupon_code":coupon.code,
-       "payment_code":method
+       "payment_code":method,
+       "token_id": token_id
      };
    }else{
      param={
        "address_id":useAddress.id,
        "courier":  json.encode(shipping.toJson()),
-       "payment_code":method
+       "payment_code":method,
+       "token_id": token_id
      };
    }
    final res = await http.post(cartChekouturl, headers: { HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: "Bearer $token"},body: json.encode(param));

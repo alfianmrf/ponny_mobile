@@ -310,8 +310,7 @@ class _AffiliateUsStateScreen extends State<AffiliateUsScreen> {
                                       children: [
                                         Container(
                                           child: Text(
-                                            (user.name + " " + user.last_name)
-                                                .toUpperCase(),
+                                            user.last_name!=null?(user.name + " " + user.last_name).toUpperCase():user.name.toUpperCase(),
                                             style: TextStyle(
                                               fontFamily: "Brandon",
                                               fontSize: 20,

@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:ponny/common/PushNotificationsManager.dart';
 import 'package:ponny/model/Address.dart';
+import 'package:ponny/model/AffiliateResult.dart';
 import 'package:ponny/model/AffiliateWithdraw.dart';
 import 'package:ponny/model/AffiliatesAddCode.dart';
 import 'package:ponny/model/Cart.dart';
 import 'package:ponny/model/Category.dart';
+import 'package:ponny/model/PaymentMethod.dart';
 import 'package:ponny/model/Product.dart';
 import 'package:ponny/model/Slider.dart';
 import 'package:ponny/model/User.dart';
@@ -134,6 +136,8 @@ Future<void> main() async {
         ChangeNotifierProvider(create: (context) => PostandComment()),
         ChangeNotifierProvider(create: (context) => AddCodeResult()),
         ChangeNotifierProvider(create: (context) => AffiliateWithdraw()),
+        ChangeNotifierProvider(create: (context) => AffiliateModel()),
+        ChangeNotifierProvider(create: (context) => PaymentMethodModel()),
       ],
       child: Phoenix(child: MyApp()),
     ),
@@ -158,6 +162,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primaryColor: Color(0xFFFDF8F0),
         accentColor: Colors.red,
+        fontFamily: 'Brandon',
       ),
       initialRoute: SplashScreen.id,
       routes: {

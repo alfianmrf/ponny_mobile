@@ -222,7 +222,7 @@ class _PembayaranGopayScreenState extends State<PembayaranGopayScreen> {
                         ),
                         onPressed: (){
                           UIBlock.block(context,customLoaderChild: LoadingWidget(context));
-                          Provider.of<CartModel>(context).Checkout(Provider.of<AppModel>(context).auth.access_token, Provider.of<AddressModel>(context).useAddress, widget.method).then((value) {
+                          Provider.of<CartModel>(context).Checkout(Provider.of<AppModel>(context).auth.access_token, Provider.of<AddressModel>(context).useAddress, widget.method, null).then((value) {
                             UIBlock.unblock(context);
                             if(value!= null && value.success){
                               if(widget.method == PembayaranGopayScreen.gopay){

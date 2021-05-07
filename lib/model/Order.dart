@@ -216,7 +216,7 @@ class OrderDetail {
   int reviewed;
   OrderDetail(this.id, this.quantity, this.product,this.price,this.reviewed);
   factory OrderDetail.fromJson(Map<String, dynamic> parsedJson){
-    return OrderDetail(parsedJson["id"],parsedJson["quantity"],Product.fromJson(parsedJson["product"]["availability"]),parsedJson["price"],parsedJson["reviewed"]);
+    return OrderDetail(parsedJson["id"],parsedJson["quantity"],parsedJson["product"]!=null?Product.fromJson(parsedJson["product"]["availability"]):null,parsedJson["price"],parsedJson["reviewed"]);
   }
 }
 

@@ -15,6 +15,7 @@ const filterTrend = base_url + "forum/rooms/";
 const loginUrl = base_url + "auth/login";
 const register = base_url + "auth/signup";
 const blogUrl = base_url + "blog";
+const blogCategory = base_url + "blog/categories";
 const blogCari = base_url + "blog/cari";
 const forumUrl = base_url + "forum";
 const detailforum = base_url + "forum/detail/";
@@ -71,6 +72,7 @@ const removePoinProduct = base_url + "cart/delete/point";
 //payment
 const paymentInfo = base_url + "payment/detail";
 const paymentConfrim = base_url + "payment/confirmation";
+const paymentMethod = base_url + "payment-methods";
 
 //wishlist
 const listOfwishlist = base_url + "product/wishlist";
@@ -91,6 +93,10 @@ const kirimUlangVerifikasi = base_url + "auth/resend/emailverification";
 const affiliateHome = base_url + "account/affiliate";
 const affiliateCustomCode = base_url + "account/custom_code";
 const affiliateWithdraw = base_url + "account/affiliate/withdraw";
+
+//Affiliate
+const affiliateBanner = base_url + "affiliate/banner";
+const affiliateRegister = base_url + "affiliate/register";
 
 //Order
 const urlTracking = base_url + "checkout/tracking";

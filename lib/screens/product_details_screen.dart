@@ -253,6 +253,15 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
       backgroundColor: Color(0xfffdf8f0),
       contentPadding: EdgeInsets.all(5.0),
       children: <Widget>[
+        Align(
+          alignment: Alignment.centerRight,
+          child: IconButton(
+              icon: Icon(Icons.close),
+              color: Color(0xffF48262),
+              onPressed: () {
+                Navigator.of(context).pop();
+              }),
+        ),
         Container(
           padding: EdgeInsets.only(top: 30),
           child: Icon(
@@ -1067,7 +1076,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                               ],
                             ),
                           ),
-                          if(Provider.of<ProductModel>(context).Recomendasi.length>0)
+                          if(Provider.of<ProductModel>(context).Recom.length>0)
                           Container(
                             margin: EdgeInsets.only(bottom: 20),
                             alignment: Alignment.centerLeft,
@@ -1080,16 +1089,16 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                               ),
                             ),
                           ),
-                          if(Provider.of<ProductModel>(context).Recomendasi.length>0)
+                          if(Provider.of<ProductModel>(context).Recom.length>0)
                           Container(
                             height: MediaQuery.of(context).size.width * .75,
                             child: Consumer<ProductModel>(
                               builder: (context,value,child){
-                                if(value.loadingRekomendasi){
+                                if(value.loadingRecom){
                                   return LoadingWidgetFadingCircle(context);
                                 }else{
                                   // ListRekomedasi = getColumProduct(context,value.Recomendasi,3);
-                                  var dataRekomedasi  =Lodash().chunk(array: value.Recomendasi,size: 3);
+                                  var dataRekomedasi  =Lodash().chunk(array: value.Recom,size: 3);
                                   return  new Swiper(
                                     itemBuilder: (BuildContext context, int index) {
                                       if(dataRekomedasi[index].length == 3){
@@ -1459,7 +1468,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                       padding: EdgeInsets.all(10),
                       minWidth: 0,
                       child: Icon(
-                        Icons.favorite_border,
+                        Provider.of<WishModel>(context).rawlist.firstWhere((element) => element.productId == widget.product.id, orElse: () => null) != null ? Icons.favorite : Icons.favorite_border,
                         color: Colors.white,
                         size: 20,
                       ),
@@ -1470,7 +1479,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                       onPressed: () {
                         if(Provider.of<AppModel>(context).loggedIn) {
                           UIBlock.block(context,customLoaderChild: LoadingWidget(context));
-                          Provider.of<WishModel>(context).addProductToWish(widget.product, Provider.of<AppModel>(context).auth.access_token).then((value){
+                          Provider.of<WishModel>(context).rawlist.firstWhere((element) => element.productId == widget.product.id, orElse: () => null) != null
+                              ? Provider.of<WishModel>(context).removeProductFromWish(widget.product, Provider.of<AppModel>(context).auth.access_token).then((value) => UIBlock.unblock(context))
+                              : Provider.of<WishModel>(context).addProductToWish(widget.product, Provider.of<AppModel>(context).auth.access_token).then((value){
                             UIBlock.unblock(context);
                             if(value){
                               showWishDialog(context);
@@ -1496,7 +1507,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                             borderRadius: BorderRadius.circular(7.0),
                           ),
                           child:  Text(
-                              widget.product.currentStock > 0 ||  varian != null && varian.stock_quantity > 0 ? 'MASUKKAN KERANJANG' : varian == null ? "MASUKKAN KERANJANG" : "STOK KOSONG ",
+                            (varian != null && varian.stock_quantity > 0) || (widget.product.varian.isEmpty && widget.product.currentStock > 0) || (widget.product.varian.isNotEmpty && varian == null) ? 'MASUKKAN KERANJANG' : "STOK KOSONG",
                             style: TextStyle(
                               fontFamily: 'Brandon',
                               fontWeight: FontWeight.w700,
@@ -1507,7 +1518,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                           onPressed: () {
                             print(json.encode(varian));
                             if(widget.product.is_shown){
-                              if(widget.product.currentStock>0 || varian != null && varian.stock_quantity>0){
+                              if(!(widget.product.varian.isNotEmpty && varian == null)){
                                 if(Provider.of<AppModel>(context).loggedIn){
                                   UIBlock.block(context,customLoaderChild: LoadingWidget(context));
                                   cardData.addProductToCart(widget.product,Provider.of<AppModel>(context).auth.access_token,varian != null ? varian:null).then((value){
@@ -1542,7 +1553,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                   ));
                                 }
                               }
-                              else if(varian == null){
+                              else{
                                 final snackBarNoVariant = SnackBar(
                                   content: Text('Mohon pilih varian terlebih dahulu',style: TextStyle(color: Colors.white)),
                                   backgroundColor: Colors.redAccent,

@@ -14,6 +14,7 @@ import 'package:ponny/screens/home_screen.dart';
 import 'package:ponny/screens/login.dart';
 import 'package:ponny/screens/login_otp.dart';
 import 'package:ponny/screens/register.dart';
+import 'package:ponny/model/User.dart' as User;
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart' as FirebasePakage;
 import 'package:google_sign_in/google_sign_in.dart' as google;
@@ -60,9 +61,9 @@ class _PraDaftarScreen extends State<PraDaftarScreen> {
     });
   }
 
-  Future<bool> signInWithGoogle() async {
+  Future<User.User> signInWithGoogle() async {
     await Firebase.initializeApp();
-    bool result =false;
+    User.User result;
 
     final google.GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
     final google.GoogleSignInAuthentication googleSignInAuthentication = await googleSignInAccount.authentication;
@@ -89,9 +90,9 @@ class _PraDaftarScreen extends State<PraDaftarScreen> {
     }
     return result;
   }
-    Future<bool> signInWithApple() async {
+    Future<User.User> signInWithApple() async {
     await Firebase.initializeApp();
-    bool result = false;
+    User.User result;
    
     final credential = await SignInWithApple.getAppleIDCredential(
       scopes: [
@@ -142,9 +143,9 @@ class _PraDaftarScreen extends State<PraDaftarScreen> {
     }
   }
 
-  Future<bool> signInWithTwitter() async {
+  Future<User.User> signInWithTwitter() async {
     // Create a TwitterLogin instance
-    bool result =false;
+    User.User result;
     final TwitterLogin twitterLogin = new TwitterLogin(
       consumerKey: TWITTER_CLIENT_ID,
       consumerSecret: TWITTER_CLIENT_SECRET,
@@ -176,7 +177,7 @@ class _PraDaftarScreen extends State<PraDaftarScreen> {
       print(param);
       result = await Provider.of<AppModel>(context).setAuthSocial(param);
 
-      print('signInWithGoogle succeeded: $user');
+      print('signInWithTwitter succeeded: $user');
 
       return result;
     }
@@ -184,8 +185,8 @@ class _PraDaftarScreen extends State<PraDaftarScreen> {
 
     return result;
   }
-   Future<bool> signInWithFacebook() async {
-    bool result = false;
+   Future<User.User> signInWithFacebook() async {
+     User.User result;
     final FirebaseAuth _auth = FirebaseAuth.instance;
     final FacebookLogin facebookSignIn = new FacebookLogin();
     final FacebookLoginResult results = await facebookSignIn.logIn(['email']);
@@ -212,7 +213,7 @@ class _PraDaftarScreen extends State<PraDaftarScreen> {
         print(param);
         result = await Provider.of<AppModel>(context).setAuthSocial(param);
 
-        print('signInWithGoogle succeeded: ${profile['name']}');
+        print('signInWithFacebook succeeded: ${profile['name']}');
 
         print('''
          Logged in!
@@ -554,7 +555,7 @@ class _PraDaftarScreen extends State<PraDaftarScreen> {
                             UIBlock.block(context,customLoaderChild: LoadingWidgetFadingCircle(context));
                             signInWithGoogle().then((value) {
                               UIBlock.unblock(context);
-                              if(value){
+                              if(value!=null){
                                 Navigator.pushReplacement(context,new MaterialPageRoute(
                                   builder: (BuildContext context) =>  new HomeScreen(),
                                 ));
@@ -578,7 +579,7 @@ class _PraDaftarScreen extends State<PraDaftarScreen> {
                           UIBlock.block(context,customLoaderChild: LoadingWidgetFadingCircle(context));
                           signInWithGoogle().then((value) {
                             UIBlock.unblock(context);
-                            if(value){
+                            if(value!=null){
                               Navigator.pushReplacement(context,new MaterialPageRoute(
                                 builder: (BuildContext context) =>  new HomeScreen(),
                               ));
@@ -646,7 +647,7 @@ class _PraDaftarScreen extends State<PraDaftarScreen> {
 
                                           signInWithFacebook().then((value) {
                                             UIBlock.unblock(context);
-                                            if (value) {
+                                            if (value!=null) {
                                               Navigator.pushReplacement(context,new MaterialPageRoute(
                                                 builder: (BuildContext context) =>  new HomeScreen(),
                                               ));
@@ -690,7 +691,7 @@ class _PraDaftarScreen extends State<PraDaftarScreen> {
 
                                         signInWithFacebook().then((value) {
                                           UIBlock.unblock(context);
-                                          if (value) {
+                                          if (value!=null) {
                                             Navigator.pushReplacement(context,new MaterialPageRoute(
                                               builder: (BuildContext context) =>  new HomeScreen(),
                                             ));
@@ -767,7 +768,7 @@ class _PraDaftarScreen extends State<PraDaftarScreen> {
                                 UIBlock.block(context,customLoaderChild: LoadingWidgetFadingCircle(context));
                                 signInWithTwitter().then((value) {
                                   UIBlock.unblock(context);
-                                  if(value){
+                                  if(value!=null){
                                     Navigator.pushReplacement(context,new MaterialPageRoute(
                                       builder: (BuildContext context) =>  new HomeScreen(),
                                     ));
@@ -791,7 +792,7 @@ class _PraDaftarScreen extends State<PraDaftarScreen> {
                               UIBlock.block(context,customLoaderChild: LoadingWidgetFadingCircle(context));
                               signInWithTwitter().then((value) {
                                 UIBlock.unblock(context);
-                                if(value){
+                                if(value!=null){
                                   Navigator.pushReplacement(context,new MaterialPageRoute(
                                     builder: (BuildContext context) =>  new HomeScreen(),
                                   ));
@@ -911,7 +912,7 @@ class _PraDaftarScreen extends State<PraDaftarScreen> {
                                                   LoadingWidgetFadingCircle(context));
                                           signInWithApple().then((value) {
                                             UIBlock.unblock(context);
-                                            if (value) {
+                                            if (value!=null) {
                                               Navigator.pushReplacement(context,new MaterialPageRoute(
                                                 builder: (BuildContext context) =>  new HomeScreen(),
                                               ));

@@ -12,7 +12,7 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:package_info/package_info.dart';
 import 'package:ponny/common/constant.dart';
 import 'package:ponny/model/App.dart';
-import 'package:ponny/model/User.dart';
+import 'package:ponny/model/User.dart' as User;
 import 'package:ponny/screens/account_screen.dart';
 import 'package:ponny/screens/lupa_password_screen.dart';
 import 'package:ponny/screens/pra_daftar.dart';
@@ -147,9 +147,9 @@ class _LoginStateScreen extends State<LoginScreen> {
     }
   }
 
-  Future<bool> signInWithGoogle() async {
+  Future<User.User> signInWithGoogle() async {
     await Firebase.initializeApp();
-    bool result = false;
+    User.User result;
 
     final google.GoogleSignInAccount googleSignInAccount =
         await googleSignIn.signIn();
@@ -181,9 +181,9 @@ class _LoginStateScreen extends State<LoginScreen> {
     return result;
   }
 
-  Future<bool> signInWithApple() async {
+  Future<User.User> signInWithApple() async {
     await Firebase.initializeApp();
-    bool result = false;
+    User.User result;
 
     final credential = await SignInWithApple.getAppleIDCredential(
       scopes: [
@@ -243,9 +243,9 @@ class _LoginStateScreen extends State<LoginScreen> {
     }
   }
 
-  Future<bool> signInWithTwitter() async {
+  Future<User.User> signInWithTwitter() async {
     // Create a TwitterLogin instance
-    bool result = false;
+    User.User result;
     final TwitterLogin twitterLogin = new TwitterLogin(
       consumerKey: TWITTER_CLIENT_ID,
       consumerSecret: TWITTER_CLIENT_SECRET,
@@ -278,7 +278,7 @@ class _LoginStateScreen extends State<LoginScreen> {
       print(param);
       result = await Provider.of<AppModel>(context).setAuthSocial(param);
 
-      print('signInWithGoogle succeeded: $user');
+      print('signInWithTwitter succeeded: $user');
 
       return result;
     }
@@ -292,8 +292,8 @@ class _LoginStateScreen extends State<LoginScreen> {
     print("User Signed Out");
   }
 
-  Future<bool> signInWithFacebook() async {
-    bool result = false;
+  Future<User.User> signInWithFacebook() async {
+    User.User result;
     final FirebaseAuth _auth = FirebaseAuth.instance;
     final FacebookLogin facebookSignIn = new FacebookLogin();
     final FacebookLoginResult results = await facebookSignIn.logIn(['email']);
@@ -320,7 +320,7 @@ class _LoginStateScreen extends State<LoginScreen> {
         print(param);
         result = await Provider.of<AppModel>(context).setAuthSocial(param);
 
-        print('signInWithGoogle succeeded: ${profile['name']}');
+        print('signInWithFacebook succeeded: ${profile['name']}');
 
         print('''
          Logged in!
@@ -706,7 +706,7 @@ class _LoginStateScreen extends State<LoginScreen> {
                                                           context));
                                               signInWithGoogle().then((value) {
                                                 UIBlock.unblock(context);
-                                                if (value) {
+                                                if (value!=null) {
                                                   Navigator.pushReplacement(context,new MaterialPageRoute(
                                                     builder: (BuildContext context) =>  new HomeScreen(),
                                                   ));
@@ -793,7 +793,7 @@ class _LoginStateScreen extends State<LoginScreen> {
 
                                               signInWithFacebook().then((value) {
                                                 UIBlock.unblock(context);
-                                                if (value) {
+                                                if (value!=null) {
                                                   Navigator.pushReplacement(context,new MaterialPageRoute(
                                                     builder: (BuildContext context) =>  new HomeScreen(),
                                                   ));
@@ -891,7 +891,7 @@ class _LoginStateScreen extends State<LoginScreen> {
                                                           context));
                                               signInWithTwitter().then((value) {
                                                 UIBlock.unblock(context);
-                                                if (value) {
+                                                if (value!=null) {
                                                   Navigator.pushReplacement(context,new MaterialPageRoute(
                                                     builder: (BuildContext context) =>  new HomeScreen(),
                                                   ));
@@ -1028,7 +1028,7 @@ class _LoginStateScreen extends State<LoginScreen> {
                                                   LoadingWidgetFadingCircle(context));
                                           signInWithApple().then((value) {
                                             UIBlock.unblock(context);
-                                            if (value) {
+                                            if (value!=null) {
                                               Navigator.pushReplacement(context,new MaterialPageRoute(
                                                 builder: (BuildContext context) =>  new HomeScreen(),
                                               ));
