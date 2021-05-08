@@ -108,6 +108,9 @@ class _PaymentScreenState extends State<PaymentScreen> {
                   } else if (method == "manual_bca" ||
                       method == "manual_mandiri" ||
                       method == "manual_permata" ||
+                      method == "manual_bni" ||
+                      method == "manual_bri" ||
+                      method == "manual_nobu" ||
                       method == "transfer_manual") {
                     Navigator.pushAndRemoveUntil(
                         context,
@@ -959,42 +962,51 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                             ),
                                           ),
                                         ),
-                                      // InkWell(
-                                      //   onTap: () {
-                                      //     chekOut(context, "transfer_manual");
-                                      //   },
-                                      //   child: Container(
-                                      //     width:
-                                      //         MediaQuery.of(context).size.width,
-                                      //     padding: EdgeInsets.symmetric(
-                                      //         horizontal: 15, vertical: 10),
-                                      //     child: Row(
-                                      //       mainAxisAlignment:
-                                      //           MainAxisAlignment.spaceBetween,
-                                      //       children: [
-                                      //         Row(
-                                      //           children: [
-                                      //             Padding(
-                                      //               padding: EdgeInsets.only(
-                                      //                   left: 5),
-                                      //               child: Text(
-                                      //                 'Bank Lain',
-                                      //                 style: TextStyle(
-                                      //                   fontFamily: 'Brandon',
-                                      //                   fontSize: 14,
-                                      //                 ),
-                                      //               ),
-                                      //             ),
-                                      //           ],
-                                      //         ),
-                                      //         Icon(
-                                      //           Icons.chevron_right,
-                                      //           color: Color(0xffF48262),
-                                      //         ),
-                                      //       ],
-                                      //     ),
-                                      //   ),
-                                      // ),
+                                      if (Provider.of<PaymentMethodModel>(
+                                              context)
+                                          .listPayment
+                                          .where((element) =>
+                                              element.name == 'BANK LAIN' &&
+                                              element.status == 1)
+                                          .isNotEmpty)
+                                        InkWell(
+                                          onTap: () {
+                                            chekOut(context, "transfer_manual");
+                                          },
+                                          child: Container(
+                                            width: MediaQuery.of(context)
+                                                .size
+                                                .width,
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 15, vertical: 10),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Row(
+                                                  children: [
+                                                    Padding(
+                                                      padding: EdgeInsets.only(
+                                                          left: 5),
+                                                      child: Text(
+                                                        'Bank Lain',
+                                                        style: TextStyle(
+                                                          fontFamily: 'Brandon',
+                                                          fontSize: 14,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                                Icon(
+                                                  Icons.chevron_right,
+                                                  color: Color(0xffF48262),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
                                       // Mobile Payment
                                       if (Provider.of<PaymentMethodModel>(
                                                   context)
