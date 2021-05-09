@@ -10,68 +10,73 @@ import 'package:ponny/model/Product.dart';
 import 'package:http/http.dart' as http;
 import 'package:ponny/util/globalUrl.dart';
 
-class OrderModel with ChangeNotifier{
+class OrderModel with ChangeNotifier {
   List<Order> unpaid;
   List<Order> paid;
   List<Order> on_delivery;
   List<Order> completed;
-  bool loading=true;
+  bool loading = true;
   OrderModel();
 
-  Future<void> getOrder(String token) async
-  {
+  Future<void> getOrder(String token) async {
     print("get order");
-    final res = await http.get(urlOrder, headers: { HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: "Bearer $token"});
-
+    final res = await http.get(urlOrder, headers: {
+      HttpHeaders.contentTypeHeader: 'application/json',
+      HttpHeaders.authorizationHeader: "Bearer $token"
+    });
 
     if (res.statusCode == 200) {
-      unpaid=[];
+      unpaid = [];
       print(res.body);
       final responseJson = json.decode(res.body);
       for (Map item in responseJson["unpaid"]) {
         print(Order.fromJson(item).code);
         unpaid.add(Order.fromJson(item));
       }
-
     }
-    loading=false;
+    loading = false;
     notifyListeners();
-
   }
 
-  Future<ManualInfo> getManualpembayaran(String token,String order_id) async {
-
-    final res = await http.get(paymentInfo+"/"+order_id, headers: { HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: "Bearer $token"});
+  Future<ManualInfo> getManualpembayaran(String token, String order_id) async {
+    final res = await http.get(paymentInfo + "/" + order_id, headers: {
+      HttpHeaders.contentTypeHeader: 'application/json',
+      HttpHeaders.authorizationHeader: "Bearer $token"
+    });
     ManualInfo result;
-    if(res.statusCode == 200){
+    print("ID===" + order_id + "Seerrrr =" + res.body);
+    if (res.statusCode == 200) {
       final responseJson = json.decode(res.body);
       result = ManualInfo.fromJson(responseJson);
     }
     return result;
   }
 
-  Future<LacakResult> getLacak(String token,String order_id) async {
-    final res = await http.get(urlTracking+"/"+order_id, headers: { HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: "Bearer $token"});
+  Future<LacakResult> getLacak(String token, String order_id) async {
+    final res = await http.get(urlTracking + "/" + order_id, headers: {
+      HttpHeaders.contentTypeHeader: 'application/json',
+      HttpHeaders.authorizationHeader: "Bearer $token"
+    });
     LacakResult result;
-    if(res.statusCode == 200){
+    if (res.statusCode == 200) {
       final responseJson = json.decode(res.body);
       result = LacakResult.fromJson(responseJson);
     }
     return result;
-
   }
 
-  Future<bool> konfirmasiTerima(String token,String order_id) async {
-    final res = await http.get(urlTerimaBarang+"/"+order_id, headers: { HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: "Bearer $token"});
-    bool result =false;
-    if(res.statusCode == 200){
+  Future<bool> konfirmasiTerima(String token, String order_id) async {
+    final res = await http.get(urlTerimaBarang + "/" + order_id, headers: {
+      HttpHeaders.contentTypeHeader: 'application/json',
+      HttpHeaders.authorizationHeader: "Bearer $token"
+    });
+    bool result = false;
+    if (res.statusCode == 200) {
       result = true;
     }
     return result;
   }
-
 }
-
 
 class Order {
   int id;
@@ -99,57 +104,68 @@ class Order {
   MidtransRaw mitransVal;
 
   Order(
-      this.id,
-      this.code,
-      this.date,
-      this.payment_type,
-      this.payment_status,
-      this.grand_total,
-      this.subtotal,
-      this.coupon_discount,
-      this.user_order_address,
-      this.shipping_info,
-      this.mitrans_val,
-      this.free_ongkir,
-      this.order_details,
-      this.orderDetailSample,
-      this.orderDetailPoint,
-      this.status,
-      this.payment,
-      this.typePayment,
-      this.confrimCourier,
-      this.confrimResi,
-      this.deliveryStatus,
-      this.orderDetailVoucher,
-      this.mitransVal,
-      );
+    this.id,
+    this.code,
+    this.date,
+    this.payment_type,
+    this.payment_status,
+    this.grand_total,
+    this.subtotal,
+    this.coupon_discount,
+    this.user_order_address,
+    this.shipping_info,
+    this.mitrans_val,
+    this.free_ongkir,
+    this.order_details,
+    this.orderDetailSample,
+    this.orderDetailPoint,
+    this.status,
+    this.payment,
+    this.typePayment,
+    this.confrimCourier,
+    this.confrimResi,
+    this.deliveryStatus,
+    this.orderDetailVoucher,
+    this.mitransVal,
+  );
 
-  factory Order.fromJson(Map<String, dynamic> parsedJson){
-    List<OrderDetail> _order_details=[];
-    Address _user_order_address = parsedJson["user_order_address"] != null ? Address.fromJson(parsedJson["user_order_address"]) :null;
-    MapCost _shipping_info = parsedJson["shipping_info"] != null ?  MapCost.fromJson(parsedJson["shipping_info"]) :null;
-    Midtrans _mitrans_val = parsedJson["mitrans_val"] != null ? Midtrans.fromJson(parsedJson["mitrans_val"]) : null;
-    MidtransRaw _mitrans_raw = parsedJson["mitrans_val"] != null ? MidtransRaw.fromJson(parsedJson["mitrans_val"]) : null;
-    List<OrderDetailSample> _orderDetailSample=[];
-    List<OrderDetailPoint> _orderDetailPoint=[];
-    List<OrderDetailVoucher> _orderDetailVoucher=[];
-    StatusOrder _status = parsedJson["statusOrder"] != null ? StatusOrder.fromJson(parsedJson["statusOrder"]) : null;
-    StatusOrder _payment= StatusOrder.fromJson(parsedJson["typePayment"]);
-    
-    for(Map item in parsedJson["orderDetails"]){
+  factory Order.fromJson(Map<String, dynamic> parsedJson) {
+    List<OrderDetail> _order_details = [];
+    Address _user_order_address = parsedJson["user_order_address"] != null
+        ? Address.fromJson(parsedJson["user_order_address"])
+        : null;
+    MapCost _shipping_info = parsedJson["shipping_info"] != null
+        ? MapCost.fromJson(parsedJson["shipping_info"])
+        : null;
+    Midtrans _mitrans_val = parsedJson["mitrans_val"] != null
+        ? Midtrans.fromJson(parsedJson["mitrans_val"])
+        : null;
+    MidtransRaw _mitrans_raw = parsedJson["mitrans_val"] != null
+        ? MidtransRaw.fromJson(parsedJson["mitrans_val"])
+        : null;
+    List<OrderDetailSample> _orderDetailSample = [];
+    List<OrderDetailPoint> _orderDetailPoint = [];
+    List<OrderDetailVoucher> _orderDetailVoucher = [];
+    StatusOrder _status = parsedJson["statusOrder"] != null
+        ? StatusOrder.fromJson(parsedJson["statusOrder"])
+        : null;
+    StatusOrder _payment = StatusOrder.fromJson(parsedJson["typePayment"]);
+
+    for (Map item in parsedJson["orderDetails"]) {
       _order_details.add(OrderDetail.fromJson(item));
     }
 
-    for(Map item in parsedJson["orderDetailSample"]){
+    for (Map item in parsedJson["orderDetailSample"]) {
       _orderDetailSample.add(OrderDetailSample.fromJson(item));
     }
-    for(Map item in parsedJson["orderDetailPoint"]){
+    for (Map item in parsedJson["orderDetailPoint"]) {
       _orderDetailPoint.add(OrderDetailPoint.fromJson(item));
     }
-    for(Map item in parsedJson["orderVoucher"]){
+    for (Map item in parsedJson["orderVoucher"]) {
       _orderDetailVoucher.add(OrderDetailVoucher.fromJson(item));
     }
-    return Order(parsedJson["id"],
+    return Order(
+        parsedJson["id"],
         parsedJson["code"],
         parsedJson["date"],
         parsedJson["payment_type"],
@@ -162,49 +178,56 @@ class Order {
         _mitrans_val,
         parsedJson["free_ongkir"],
         _order_details,
-      _orderDetailSample,
-      _orderDetailPoint,
-      _status,
-      _payment,
+        _orderDetailSample,
+        _orderDetailPoint,
+        _status,
+        _payment,
         parsedJson["typePayment"]["param_2"],
-      parsedJson["confrim_courier"],
-      parsedJson["confrim_resi"],
-      parsedJson["delivery_status"],
+        parsedJson["confrim_courier"],
+        parsedJson["confrim_resi"],
+        parsedJson["delivery_status"],
         _orderDetailVoucher,
-        _mitrans_raw
-    );
+        _mitrans_raw);
   }
-
-
-
 }
 
-class Midtrans{
+class Midtrans {
   String payment_type;
   String mitrans_val;
 
   Midtrans(this.payment_type, this.mitrans_val);
 
-  factory Midtrans.fromJson(Map<String, dynamic> parsedJson){
+  factory Midtrans.fromJson(Map<String, dynamic> parsedJson) {
     String _va_numbers;
-    if(parsedJson != null && parsedJson["payment_type"] == "bank_transfer" && parsedJson["va_numbers"] != null){
-      for(Map item in parsedJson["va_numbers"]){
-        _va_numbers= item["bank"].toString().toUpperCase()+" Virtual \nCode: "+item["va_number"];
-
+    if (parsedJson != null &&
+        parsedJson["payment_type"] == "bank_transfer" &&
+        parsedJson["va_numbers"] != null) {
+      for (Map item in parsedJson["va_numbers"]) {
+        _va_numbers = item["bank"].toString().toUpperCase() +
+            " Virtual \nCode: " +
+            item["va_number"];
       }
-      return Midtrans(parsedJson["payment_type"],_va_numbers);
-    }else if( parsedJson != null && parsedJson["payment_type"] == "cstore"){
-      _va_numbers= parsedJson["store"].toString().toUpperCase()+"\nCode: "+parsedJson["payment_code"];
-      return Midtrans(parsedJson["payment_type"],_va_numbers);
-    }else if( parsedJson != null && parsedJson["payment_type"] == "echannel"){
-      _va_numbers= "Mandiri Bill Payment"+"\nBill key: "+parsedJson["bill_key"]+"\nBiller Code: "+parsedJson["biller_code"];
-      return Midtrans(parsedJson["payment_type"],_va_numbers);
-    }else if(parsedJson != null && parsedJson["payment_type"] == "bank_transfer" && parsedJson["permata_va_number"] != null){
-      _va_numbers= "Permata Virtual"+"\nCode: "+parsedJson["permata_va_number"];
-      return Midtrans(parsedJson["payment_type"],_va_numbers);
-    }
-    else
-    return null;
+      return Midtrans(parsedJson["payment_type"], _va_numbers);
+    } else if (parsedJson != null && parsedJson["payment_type"] == "cstore") {
+      _va_numbers = parsedJson["store"].toString().toUpperCase() +
+          "\nCode: " +
+          parsedJson["payment_code"];
+      return Midtrans(parsedJson["payment_type"], _va_numbers);
+    } else if (parsedJson != null && parsedJson["payment_type"] == "echannel") {
+      _va_numbers = "Mandiri Bill Payment" +
+          "\nBill key: " +
+          parsedJson["bill_key"] +
+          "\nBiller Code: " +
+          parsedJson["biller_code"];
+      return Midtrans(parsedJson["payment_type"], _va_numbers);
+    } else if (parsedJson != null &&
+        parsedJson["payment_type"] == "bank_transfer" &&
+        parsedJson["permata_va_number"] != null) {
+      _va_numbers =
+          "Permata Virtual" + "\nCode: " + parsedJson["permata_va_number"];
+      return Midtrans(parsedJson["payment_type"], _va_numbers);
+    } else
+      return null;
   }
 }
 
@@ -214,32 +237,49 @@ class OrderDetail {
   int price;
   Product product;
   int reviewed;
-  OrderDetail(this.id, this.quantity, this.product,this.price,this.reviewed);
-  factory OrderDetail.fromJson(Map<String, dynamic> parsedJson){
-    return OrderDetail(parsedJson["id"],parsedJson["quantity"],parsedJson["product"]!=null?Product.fromJson(parsedJson["product"]["availability"]):null,parsedJson["price"],parsedJson["reviewed"]);
+  OrderDetail(this.id, this.quantity, this.product, this.price, this.reviewed);
+  factory OrderDetail.fromJson(Map<String, dynamic> parsedJson) {
+    return OrderDetail(
+        parsedJson["id"],
+        parsedJson["quantity"],
+        parsedJson["product"] != null
+            ? Product.fromJson(parsedJson["product"]["availability"])
+            : null,
+        parsedJson["price"],
+        parsedJson["reviewed"]);
   }
 }
 
-class OrderDetailSample  {
+class OrderDetailSample {
   int id;
   int quantity;
   Product product;
   int reviewed;
-  OrderDetailSample (this.id, this.quantity, this.product,this.reviewed);
-  factory OrderDetailSample.fromJson(Map<String, dynamic> parsedJson){
-    return OrderDetailSample(parsedJson["id"],parsedJson["quantity"],Product.fromJson(parsedJson["product"]["availability"]),parsedJson["reviewed"]);
+  OrderDetailSample(this.id, this.quantity, this.product, this.reviewed);
+  factory OrderDetailSample.fromJson(Map<String, dynamic> parsedJson) {
+    return OrderDetailSample(
+        parsedJson["id"],
+        parsedJson["quantity"],
+        Product.fromJson(parsedJson["product"]["availability"]),
+        parsedJson["reviewed"]);
   }
 }
 
-class OrderDetailPoint  {
+class OrderDetailPoint {
   int id;
   int quantity;
   int jml_point;
   Product product;
   int reviewed;
-  OrderDetailPoint (this.id, this.quantity, this.product,this.jml_point,this.reviewed);
-  factory OrderDetailPoint.fromJson(Map<String, dynamic> parsedJson){
-    return OrderDetailPoint(parsedJson["id"],parsedJson["quantity"],Product.fromJson(parsedJson["product"]["availability"]),parsedJson["log_product_point"]["jml_point"],parsedJson["reviewed"]);
+  OrderDetailPoint(
+      this.id, this.quantity, this.product, this.jml_point, this.reviewed);
+  factory OrderDetailPoint.fromJson(Map<String, dynamic> parsedJson) {
+    return OrderDetailPoint(
+        parsedJson["id"],
+        parsedJson["quantity"],
+        Product.fromJson(parsedJson["product"]["availability"]),
+        parsedJson["log_product_point"]["jml_point"],
+        parsedJson["reviewed"]);
   }
 }
 
@@ -261,19 +301,19 @@ class OrderDetailVoucher {
 
   OrderDetailVoucher(
       {this.id,
-        this.durasi,
-        this.expDate,
-        this.harga,
-        this.orderId,
-        this.userId,
-        this.isActive,
-        this.createdAt,
-        this.updatedAt,
-        this.masaBerlaku,
-        this.dokterId,
-        this.durasiPanggilan,
-        this.waktuPanggilan,
-        this.waktuPanggilanBerakhir});
+      this.durasi,
+      this.expDate,
+      this.harga,
+      this.orderId,
+      this.userId,
+      this.isActive,
+      this.createdAt,
+      this.updatedAt,
+      this.masaBerlaku,
+      this.dokterId,
+      this.durasiPanggilan,
+      this.waktuPanggilan,
+      this.waktuPanggilanBerakhir});
 
   OrderDetailVoucher.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -312,7 +352,6 @@ class OrderDetailVoucher {
   }
 }
 
-
 class StatusOrder {
   int _id;
   String _param1;
@@ -324,12 +363,12 @@ class StatusOrder {
 
   StatusOrder(
       {int id,
-        String param1,
-        String param2,
-        String param3,
-        Null param4,
-        String varId,
-        int isDeleted}) {
+      String param1,
+      String param2,
+      String param3,
+      Null param4,
+      String varId,
+      int isDeleted}) {
     this._id = id;
     this._param1 = param1;
     this._param2 = param2;
@@ -355,7 +394,7 @@ class StatusOrder {
   set isDeleted(int isDeleted) => _isDeleted = isDeleted;
 
   StatusOrder.fromJson(Map<String, dynamic> json) {
-    _id = json['id'] ;
+    _id = json['id'];
     _param1 = json['param_1'];
     _param2 = json['param_2'];
     _param3 = json['param_3'];
@@ -393,17 +432,17 @@ class MidtransRaw {
 
   MidtransRaw(
       {this.statusCode,
-        this.statusMessage,
-        this.transactionId,
-        this.orderId,
-        this.merchantId,
-        this.grossAmount,
-        this.currency,
-        this.paymentType,
-        this.transactionTime,
-        this.transactionStatus,
-        this.fraudStatus,
-        this.actions});
+      this.statusMessage,
+      this.transactionId,
+      this.orderId,
+      this.merchantId,
+      this.grossAmount,
+      this.currency,
+      this.paymentType,
+      this.transactionTime,
+      this.transactionStatus,
+      this.fraudStatus,
+      this.actions});
 
   MidtransRaw.fromJson(Map<String, dynamic> json) {
     statusCode = json['status_code'];
@@ -466,8 +505,3 @@ class Actions {
     return data;
   }
 }
-
-
-
-
-
