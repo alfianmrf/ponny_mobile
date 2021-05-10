@@ -1940,12 +1940,18 @@ class _OrderScreenState extends State<OrderScreen> {
   }
 
   Future<bool> _onWillPop() async {
-    return Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (context) => AccountScreen(),
-      ),
-    );
+    // return Navigator.pushReplacement(
+    //   context,
+    //   MaterialPageRoute(
+    //     builder: (context) => AccountScreen(),
+    //   ),
+    // );
+    return Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+          builder: (context) => AccountScreen(),
+        ),
+        (_) => false);
   }
 
   @override

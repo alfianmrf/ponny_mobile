@@ -191,7 +191,6 @@ class _AffiliateUsStateScreen extends State<AffiliateUsScreen> {
     onGoBack(dynamic value) {
       getData();
       setState(() {});
-      print("ulala");
     }
 
     void affiliateAddCodePage() {
@@ -808,7 +807,12 @@ class _AffiliateUsStateScreen extends State<AffiliateUsScreen> {
                                                 CrossAxisAlignment.start,
                                             children: [
                                               statusAffiliatesStatus(
-                                                  result.codes[index].isActive),
+                                                  result.codes[index].isActive,
+                                                  result.codes[index].coupon
+                                                      .modStartDate,
+                                                  result.codes[index].coupon
+                                                      .modEndDate,
+                                                  result.codes[index].kodeId),
                                             ],
                                           ),
                                         ),
@@ -1184,11 +1188,17 @@ class _AffiliateUsStateScreen extends State<AffiliateUsScreen> {
     );
   }
 
-  Container statusAffiliatesStatus(int isActive) {
+  Container statusAffiliatesStatus(
+      int isActive, String mod_start, String mod_end, String nama) {
     Color colors;
     String statusName;
+    DateTime now = DateTime.now();
 
-    if (isActive == 1) {
+    DateTime dateend = DateTime.parse(mod_end);
+
+    bool valend = now.isBefore(dateend);
+
+    if (isActive == 1 && valend == true) {
       statusName = "Active";
       colors = Color(0xffF6DE6E);
     } else {
