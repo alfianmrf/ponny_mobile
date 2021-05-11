@@ -470,8 +470,8 @@ class _otherArticlesScreenState extends State<otherArticlesScreen> {
                   leading: Container(
                     width: 100,
                     child: CachedNetworkImage(
-                      memCacheHeight: 300,
-                      memCacheWidth: 300,
+                      memCacheHeight: 200,
+                      memCacheWidth: 400,
                       imageUrl: img_url +
                           "uploads/blog/thumbnail/" +
                           widget.list[i]["thumbnail"].toString(),
@@ -544,8 +544,8 @@ Widget categoryListBlog(context, List list, int categoryId) {
                   child: Container(
                       width: double.infinity,
                       child: CachedNetworkImage(
-                        memCacheHeight: 300,
-                        memCacheWidth: 300,
+                        memCacheHeight: 200,
+                        memCacheWidth: 400,
                         imageUrl: img_url +
                             "uploads/blog/thumbnail/" +
                             list[i]["thumbnail"].toString(),
