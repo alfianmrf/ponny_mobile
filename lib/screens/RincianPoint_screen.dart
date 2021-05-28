@@ -20,15 +20,16 @@ class RincianPoint extends StatefulWidget {
 }
 
 class _RincianPointState extends State<RincianPoint> {
-  List<PointHistory> _result=[];
+  List<PointHistory> result = [];
+  List<PointHistory> _result = [];
 
-  int current_page=0;
-  int last_page =0;
+  int current_page = 0;
+  int last_page = 0;
   String _valFriends;
-  String _q ="";
+  String _q = "";
   String NextPage;
   bool isLoading = true;
-  bool loadingmore =false;
+  bool loadingmore = false;
   ScrollController _scrollController = new ScrollController();
 
   @override
@@ -45,7 +46,6 @@ class _RincianPointState extends State<RincianPoint> {
         _getMoreData();
       }
     });
-
   }
 
   Widget _buildProgressIndicator() {
@@ -60,46 +60,53 @@ class _RincianPointState extends State<RincianPoint> {
     );
   }
 
-
-  Future<Null> _getData()  async {
+  Future<Null> _getData() async {
     setState(() {
       isLoading = true;
-      NextPage=null;
-      _result=[];
+      NextPage = null;
+      _result = [];
     });
     var token = Provider.of<AppModel>(context, listen: false).auth.access_token;
-    final response = await http.get(historyPointurl,headers: { HttpHeaders.contentTypeHeader: 'application/json',HttpHeaders.authorizationHeader: "Bearer $token" });
+    final response = await http.get(historyPointurl, headers: {
+      HttpHeaders.contentTypeHeader: 'application/json',
+      HttpHeaders.authorizationHeader: "Bearer $token"
+    });
 
     print("response statusss");
     print(response.statusCode);
 
-    if(response.statusCode == 200)
-    {
+    if (response.statusCode == 200) {
       final responseJson = json.decode(response.body);
 
       setState(() {
-        for (Map item in responseJson['data']){
-          _result.add(PointHistory.fromJson(item));
+        for (Map item in responseJson['data']) {
+          result.add(PointHistory.fromJson(item));
         }
-        isLoading =false;
+        _result = result;
+        Comparator<PointHistory> filter =
+            (a, b) => b.createdAt.compareTo(a.createdAt);
+        _result.sort(filter);
+        isLoading = false;
         current_page = responseJson['current_page'];
         last_page = responseJson['last_page'];
         NextPage = responseJson["next_page_url"];
       });
-    }else{
+    } else {
       print("errorrrrrrrrrrrrrrrrrrrrrr");
     }
-
   }
 
   void _getMoreData() async {
-    if(NextPage != null && !isLoading  && current_page <= last_page){
+    if (NextPage != null && !isLoading && current_page <= last_page) {
       setState(() {
         isLoading = true;
-        current_page ++;
+        current_page++;
       });
       var token = Provider.of<AppModel>(context).auth.access_token;
-      final response = await http.get(NextPage,headers: { HttpHeaders.contentTypeHeader: 'application/json',HttpHeaders.authorizationHeader: "Bearer $token" });
+      final response = await http.get(NextPage, headers: {
+        HttpHeaders.contentTypeHeader: 'application/json',
+        HttpHeaders.authorizationHeader: "Bearer $token"
+      });
       final responseJson = json.decode(response.body);
       print(responseJson);
       setState(() {
@@ -108,7 +115,7 @@ class _RincianPointState extends State<RincianPoint> {
         }
       });
       setState(() {
-        isLoading =false;
+        isLoading = false;
         NextPage = responseJson["next_page_url"];
         last_page = responseJson['last_page'];
       });
@@ -116,11 +123,12 @@ class _RincianPointState extends State<RincianPoint> {
   }
 
   Widget tabDiperoleh() {
-    List<PointHistory> diperOleh = _result.where((element) => element.status == "1").toList();
+    List<PointHistory> diperOleh =
+        _result.where((element) => element.status == "1").toList();
     return ListView.builder(
         itemCount: diperOleh.length,
         itemBuilder: (builder, i) {
-          final item =diperOleh[i] ;
+          final item = diperOleh[i];
           return Container(
             margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             child: Column(
@@ -146,7 +154,12 @@ class _RincianPointState extends State<RincianPoint> {
                       flex: 1,
                       child: Center(
                         child: Text(
-                          double.parse(item.points)>0&&double.parse(item.points)<1?double.parse(item.points).ceil().toString()+" POIN":double.parse(item.points).round().toString()+" POIN",
+                          double.parse(item.points) > 0 &&
+                                  double.parse(item.points) < 1
+                              ? double.parse(item.points).ceil().toString() +
+                                  " POIN"
+                              : double.parse(item.points).round().toString() +
+                                  " POIN",
                           style: TextStyle(
                             fontSize: 18,
                             fontFamily: "Brandon",
@@ -186,7 +199,7 @@ class _RincianPointState extends State<RincianPoint> {
     return ListView.builder(
         itemCount: _result.length,
         itemBuilder: (builder, i) {
-          final item =_result[i] ;
+          final item = _result[i];
           return Container(
             margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             child: Column(
@@ -212,7 +225,12 @@ class _RincianPointState extends State<RincianPoint> {
                       flex: 1,
                       child: Center(
                         child: Text(
-                          double.parse(item.points)>0&&double.parse(item.points)<1?double.parse(item.points).ceil().toString()+" POIN":double.parse(item.points).round().toString()+" POIN",
+                          double.parse(item.points) > 0 &&
+                                  double.parse(item.points) < 1
+                              ? double.parse(item.points).ceil().toString() +
+                                  " POIN"
+                              : double.parse(item.points).round().toString() +
+                                  " POIN",
                           style: TextStyle(
                             fontSize: 18,
                             fontFamily: "Brandon",
@@ -249,11 +267,12 @@ class _RincianPointState extends State<RincianPoint> {
   }
 
   Widget tabTerpakai() {
-    List<PointHistory> terpakai = _result.where((element) => element.status == "0").toList();
+    List<PointHistory> terpakai =
+        _result.where((element) => element.status == "0").toList();
     return ListView.builder(
         itemCount: terpakai.length,
         itemBuilder: (builder, i) {
-          final item =terpakai[i] ;
+          final item = terpakai[i];
           return Container(
             margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             child: Column(
@@ -279,7 +298,12 @@ class _RincianPointState extends State<RincianPoint> {
                       flex: 1,
                       child: Center(
                         child: Text(
-                          double.parse(item.points)>0&&double.parse(item.points)<1?double.parse(item.points).ceil().toString()+" POIN":double.parse(item.points).round().toString()+" POIN",
+                          double.parse(item.points) > 0 &&
+                                  double.parse(item.points) < 1
+                              ? double.parse(item.points).ceil().toString() +
+                                  " POIN"
+                              : double.parse(item.points).round().toString() +
+                                  " POIN",
                           style: TextStyle(
                             fontSize: 18,
                             fontFamily: "Brandon",
@@ -457,19 +481,20 @@ class _RincianPointState extends State<RincianPoint> {
                     ),
                     Flexible(
                       fit: FlexFit.loose,
-                      child: isLoading? Container(
-                        height: 250,
-                        child: Center(
-
-                          child: LoadingWidgetFadingCircle(context),
-                        ),
-                      ) : TabBarView(
-                        children: [
-                          tabSemua(),
-                          tabDiperoleh(),
-                          tabTerpakai(),
-                        ],
-                      ),
+                      child: isLoading
+                          ? Container(
+                              height: 250,
+                              child: Center(
+                                child: LoadingWidgetFadingCircle(context),
+                              ),
+                            )
+                          : TabBarView(
+                              children: [
+                                tabSemua(),
+                                tabDiperoleh(),
+                                tabTerpakai(),
+                              ],
+                            ),
                     )
                   ],
                 ),
@@ -480,5 +505,3 @@ class _RincianPointState extends State<RincianPoint> {
     );
   }
 }
-
-

@@ -865,7 +865,10 @@ class _OrderScreenState extends State<OrderScreen> {
                                       ? Container(
                                           width: 100,
                                           child: Text(
-                                            order.payment_type == "cash_on_delivery" ? "Pembayaran Di Toko" : order.payment_type,
+                                            order.payment_type ==
+                                                    "cash_on_delivery"
+                                                ? "Pembayaran Di Toko"
+                                                : order.payment_type,
                                             style: TextStyle(
                                               fontSize: 12,
                                               fontWeight: FontWeight.w400,

@@ -87,7 +87,6 @@ class _HomeScreenState extends State<HomeScreen> {
   bool isSiaran = false;
   YoutubePlayerController _controllersYoutube;
 
-
   bool _joined = false;
 
   var _channel;
@@ -154,19 +153,20 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  Future<Null> _updateCart()  async {
+  Future<Null> _updateCart() async {
     var token = Provider.of<AppModel>(context).auth.access_token;
-    final response = await http.get(listCarturl,headers: { HttpHeaders.contentTypeHeader: 'application/json',HttpHeaders.authorizationHeader: "Bearer $token" });
-    if(response.statusCode == 200)
-    {
+    final response = await http.get(listCarturl, headers: {
+      HttpHeaders.contentTypeHeader: 'application/json',
+      HttpHeaders.authorizationHeader: "Bearer $token"
+    });
+    if (response.statusCode == 200) {
       final responseJson = json.decode(response.body);
       print("DATA CART");
       print(responseJson['data']);
-    }else{
+    } else {
       print("DATA CART");
       print(response.statusCode);
     }
-
   }
 
   @override
@@ -343,7 +343,6 @@ class _HomeScreenState extends State<HomeScreen> {
       });
     }
   }
-
 
   Future<void> _getCartOfitem() async {
     final auth = Provider.of<AppModel>(context);
@@ -591,13 +590,13 @@ class _HomeScreenState extends State<HomeScreen> {
                               Provider.of<AppModel>(context).loggedIn
                                   ? new Container(
                                       padding: EdgeInsets.all(5),
-                                      child:
-                                          Provider.of<WishModel>(context).loading
-                                              ? LoadingRing(context)
-                                              : ImageIcon(
-                                                  AssetImage(
-                                                      'assets/images/home/wishlist.png'),
-                                                ),
+                                      child: Provider.of<WishModel>(context)
+                                              .loading
+                                          ? LoadingRing(context)
+                                          : ImageIcon(
+                                              AssetImage(
+                                                  'assets/images/home/wishlist.png'),
+                                            ),
                                     )
                                   : new Container(
                                       padding: EdgeInsets.all(5),
@@ -606,7 +605,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                             'assets/images/home/wishlist.png'),
                                       ),
                                     ),
-                              if (Provider.of<WishModel>(context).countwishlist >
+                              if (Provider.of<WishModel>(context)
+                                          .countwishlist >
                                       0 &&
                                   Provider.of<AppModel>(context).loggedIn)
                                 new Positioned(
@@ -669,7 +669,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                   : new Container(
                                       padding: EdgeInsets.all(5),
                                       child: ImageIcon(
-                                        AssetImage('assets/images/home/cart.png'),
+                                        AssetImage(
+                                            'assets/images/home/cart.png'),
                                       ),
                                     ),
                               if (jmlCard > 0)
@@ -754,310 +755,325 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                             ),
                           ),
-
-                        Container(
-                          width: MediaQuery.of(context).size.width,
-                          margin: EdgeInsets.only(bottom: 10),
-                          child: Consumer<CategoryModel>(
-                              builder: (context, value, child) {
-                            if (value.loadingCategory) {
-                              return LoadingWidgetFadingCircle(context);
-                            } else {
-                              return Column(
-                                children: [
-                                  // IntrinsicHeight(
-                                  //   child: Row(
-                                  //     children: [
-                                  //       Expanded(
-                                  //           flex: 1,
-                                  //           child: Container(
-                                  //               color: Color(0xffFACAC1),
-                                  //               padding: EdgeInsets.symmetric(
-                                  //                   vertical: 5),
-                                  //               child: Column(children: [
-                                  //                 Container(
-                                  //                   height: 20,
-                                  //                   child: Image.asset(
-                                  //                     'assets/images/home/asli.png',
-                                  //                     fit: BoxFit.contain,
-                                  //                   ),
-                                  //                 ),
-                                  //                 Container(
-                                  //                   child: Text(
-                                  //                     '100%\nASLI',
-                                  //                     style: TextStyle(
-                                  //                       fontFamily: 'Brandon',
-                                  //                       fontSize: 12,
-                                  //                       color:
-                                  //                           Color(0xffF48262),
-                                  //                       fontWeight:
-                                  //                           FontWeight.w600,
-                                  //                     ),
-                                  //                     textAlign:
-                                  //                         TextAlign.center,
-                                  //                   ),
-                                  //                 ),
-                                  //               ]))),
-                                  //       Expanded(
-                                  //         flex: 1,
-                                  //         child: Container(
-                                  //           color: Color(0xffFBDFD2),
-                                  //           padding: EdgeInsets.symmetric(
-                                  //               vertical: 5),
-                                  //           child: Column(
-                                  //             children: [
-                                  //               Container(
-                                  //                 height: 20,
-                                  //                 child: Image.asset(
-                                  //                   'assets/images/home/bpom.png',
-                                  //                   fit: BoxFit.contain,
-                                  //                 ),
-                                  //               ),
-                                  //               Container(
-                                  //                 child: Text(
-                                  //                   'PRODUK\nBER-BPOM',
-                                  //                   style: TextStyle(
-                                  //                     fontFamily: 'Brandon',
-                                  //                     fontSize: 12,
-                                  //                     color: Color(0xffF48262),
-                                  //                     fontWeight:
-                                  //                         FontWeight.w600,
-                                  //                   ),
-                                  //                   textAlign: TextAlign.center,
-                                  //                 ),
-                                  //               ),
-                                  //             ],
-                                  //           ),
-                                  //         ),
-                                  //       ),
-                                  //       Expanded(
-                                  //         flex: 1,
-                                  //         child: Container(
-                                  //           color: Color(0xffFACAC1),
-                                  //           padding: EdgeInsets.symmetric(
-                                  //               vertical: 5),
-                                  //           child: Column(
-                                  //             children: [
-                                  //               Container(
-                                  //                 height: 20,
-                                  //                 child: Image.asset(
-                                  //                   'assets/images/home/konsumen.png',
-                                  //                   fit: BoxFit.contain,
-                                  //                 ),
-                                  //               ),
-                                  //               Container(
-                                  //                 child: Text(
-                                  //                   'LAYANAN\nKONSUMEN',
-                                  //                   style: TextStyle(
-                                  //                     fontFamily: 'Brandon',
-                                  //                     fontSize: 12,
-                                  //                     color: Color(0xffF48262),
-                                  //                     fontWeight:
-                                  //                         FontWeight.w600,
-                                  //                   ),
-                                  //                   textAlign: TextAlign.center,
-                                  //                 ),
-                                  //               ),
-                                  //             ],
-                                  //           ),
-                                  //         ),
-                                  //       ),
-                                  //       Expanded(
-                                  //           flex: 1,
-                                  //           child: Container(
-                                  //             color: Color(0xffFBDFD2),
-                                  //             padding: EdgeInsets.symmetric(
-                                  //                 vertical: 5),
-                                  //             child: Column(
-                                  //               children: [
-                                  //                 Container(
-                                  //                   height: 20,
-                                  //                   child: Image.asset(
-                                  //                     'assets/images/home/aman.png',
-                                  //                     fit: BoxFit.contain,
-                                  //                   ),
-                                  //                 ),
-                                  //                 Container(
-                                  //                   child: Text(
-                                  //                     'KEMASAN\nAMAN',
-                                  //                     style: TextStyle(
-                                  //                       fontFamily: 'Brandon',
-                                  //                       fontSize: 12,
-                                  //                       color:
-                                  //                           Color(0xffF48262),
-                                  //                       fontWeight:
-                                  //                           FontWeight.w600,
-                                  //                     ),
-                                  //                     textAlign:
-                                  //                         TextAlign.center,
-                                  //                   ),
-                                  //                 ),
-                                  //               ],
-                                  //             ),
-                                  //           ))
-                                  //     ],
-                                  //   ),
-                                  // ),
-                                  Container(
-                                    width: MediaQuery.of(context).size.width,
-                                    margin: EdgeInsets.symmetric(
-                                        horizontal:
-                                            MediaQuery.of(context).size.width *
-                                                0.030,
-                                        vertical: 7),
-                                    height: 60,
-                                    decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(18)),
-                                        boxShadow: [
-                                          BoxShadow(
-                                              offset: Offset(0, 0),
-                                              blurRadius: 2,
-                                              color: Colors.grey[300])
-                                        ]),
-                                    child: Row(children: [
-                                      GestureDetector(
-                                        onTap: () {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    QRScreen()),
-                                          );
-                                        },
-                                        child: Row(
-                                          children: [
-                                            Container(
-                                                margin:
-                                                    EdgeInsets.only(left: 15),
-                                                width: 35,
-                                                child: Image.asset(
-                                                    'assets/images/icon-scan.png')),
-                                            Container(
-                                              margin: EdgeInsets.only(left: 7),
-                                              child: RichText(
-                                                  text: TextSpan(children: [
-                                                TextSpan(
-                                                    text: 'Scan QR Produk\n',
-                                                    style: TextStyle(
-                                                        color: Colors.black87,
-                                                        fontFamily: 'Brandon',
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        fontSize: 12)),
-                                                TextSpan(
-                                                    text:
-                                                        'Untuk belanja di toko Ponny Beaute',
-                                                    style: TextStyle(
-                                                      fontFamily: 'Brandon',
-                                                      fontSize: 9,
-                                                      color: Colors.black45,
-                                                    ))
-                                              ])),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding:
-                                            EdgeInsets.symmetric(vertical: 10),
-                                        child: VerticalDivider(),
-                                      ),
-                                      GestureDetector(
-                                        onTap: (){
-                                          Provider.of<UserModel>(context).user == null ? Navigator.push(
+                          Container(
+                            width: MediaQuery.of(context).size.width,
+                            margin: EdgeInsets.only(bottom: 10),
+                            child: Consumer<CategoryModel>(
+                                builder: (context, value, child) {
+                              if (value.loadingCategory) {
+                                return LoadingWidgetFadingCircle(context);
+                              } else {
+                                return Column(
+                                  children: [
+                                    // IntrinsicHeight(
+                                    //   child: Row(
+                                    //     children: [
+                                    //       Expanded(
+                                    //           flex: 1,
+                                    //           child: Container(
+                                    //               color: Color(0xffFACAC1),
+                                    //               padding: EdgeInsets.symmetric(
+                                    //                   vertical: 5),
+                                    //               child: Column(children: [
+                                    //                 Container(
+                                    //                   height: 20,
+                                    //                   child: Image.asset(
+                                    //                     'assets/images/home/asli.png',
+                                    //                     fit: BoxFit.contain,
+                                    //                   ),
+                                    //                 ),
+                                    //                 Container(
+                                    //                   child: Text(
+                                    //                     '100%\nASLI',
+                                    //                     style: TextStyle(
+                                    //                       fontFamily: 'Brandon',
+                                    //                       fontSize: 12,
+                                    //                       color:
+                                    //                           Color(0xffF48262),
+                                    //                       fontWeight:
+                                    //                           FontWeight.w600,
+                                    //                     ),
+                                    //                     textAlign:
+                                    //                         TextAlign.center,
+                                    //                   ),
+                                    //                 ),
+                                    //               ]))),
+                                    //       Expanded(
+                                    //         flex: 1,
+                                    //         child: Container(
+                                    //           color: Color(0xffFBDFD2),
+                                    //           padding: EdgeInsets.symmetric(
+                                    //               vertical: 5),
+                                    //           child: Column(
+                                    //             children: [
+                                    //               Container(
+                                    //                 height: 20,
+                                    //                 child: Image.asset(
+                                    //                   'assets/images/home/bpom.png',
+                                    //                   fit: BoxFit.contain,
+                                    //                 ),
+                                    //               ),
+                                    //               Container(
+                                    //                 child: Text(
+                                    //                   'PRODUK\nBER-BPOM',
+                                    //                   style: TextStyle(
+                                    //                     fontFamily: 'Brandon',
+                                    //                     fontSize: 12,
+                                    //                     color: Color(0xffF48262),
+                                    //                     fontWeight:
+                                    //                         FontWeight.w600,
+                                    //                   ),
+                                    //                   textAlign: TextAlign.center,
+                                    //                 ),
+                                    //               ),
+                                    //             ],
+                                    //           ),
+                                    //         ),
+                                    //       ),
+                                    //       Expanded(
+                                    //         flex: 1,
+                                    //         child: Container(
+                                    //           color: Color(0xffFACAC1),
+                                    //           padding: EdgeInsets.symmetric(
+                                    //               vertical: 5),
+                                    //           child: Column(
+                                    //             children: [
+                                    //               Container(
+                                    //                 height: 20,
+                                    //                 child: Image.asset(
+                                    //                   'assets/images/home/konsumen.png',
+                                    //                   fit: BoxFit.contain,
+                                    //                 ),
+                                    //               ),
+                                    //               Container(
+                                    //                 child: Text(
+                                    //                   'LAYANAN\nKONSUMEN',
+                                    //                   style: TextStyle(
+                                    //                     fontFamily: 'Brandon',
+                                    //                     fontSize: 12,
+                                    //                     color: Color(0xffF48262),
+                                    //                     fontWeight:
+                                    //                         FontWeight.w600,
+                                    //                   ),
+                                    //                   textAlign: TextAlign.center,
+                                    //                 ),
+                                    //               ),
+                                    //             ],
+                                    //           ),
+                                    //         ),
+                                    //       ),
+                                    //       Expanded(
+                                    //           flex: 1,
+                                    //           child: Container(
+                                    //             color: Color(0xffFBDFD2),
+                                    //             padding: EdgeInsets.symmetric(
+                                    //                 vertical: 5),
+                                    //             child: Column(
+                                    //               children: [
+                                    //                 Container(
+                                    //                   height: 20,
+                                    //                   child: Image.asset(
+                                    //                     'assets/images/home/aman.png',
+                                    //                     fit: BoxFit.contain,
+                                    //                   ),
+                                    //                 ),
+                                    //                 Container(
+                                    //                   child: Text(
+                                    //                     'KEMASAN\nAMAN',
+                                    //                     style: TextStyle(
+                                    //                       fontFamily: 'Brandon',
+                                    //                       fontSize: 12,
+                                    //                       color:
+                                    //                           Color(0xffF48262),
+                                    //                       fontWeight:
+                                    //                           FontWeight.w600,
+                                    //                     ),
+                                    //                     textAlign:
+                                    //                         TextAlign.center,
+                                    //                   ),
+                                    //                 ),
+                                    //               ],
+                                    //             ),
+                                    //           ))
+                                    //     ],
+                                    //   ),
+                                    // ),
+                                    Container(
+                                      width: MediaQuery.of(context).size.width,
+                                      margin: EdgeInsets.symmetric(
+                                          horizontal: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.030,
+                                          vertical: 7),
+                                      height: 60,
+                                      decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(18)),
+                                          boxShadow: [
+                                            BoxShadow(
+                                                offset: Offset(0, 0),
+                                                blurRadius: 2,
+                                                color: Colors.grey[300])
+                                          ]),
+                                      child: Row(children: [
+                                        GestureDetector(
+                                          onTap: () {
+                                            Navigator.push(
                                               context,
-                                              new MaterialPageRoute(
-                                                builder: (BuildContext
-                                                context) =>
-                                                new LoginScreen(),
-                                              )) : null;
-                                        },
-                                        child: Row(
-                                          children: [
-                                            Container(
-                                                margin: EdgeInsets.only(left: 6),
-                                                width: 30,
-                                                child: Image.asset(
-                                                    'assets/images/Asset 13.png')),
-                                            Container(
-                                              margin: EdgeInsets.only(left: 7),
-                                              child: RichText(
-                                                  text: TextSpan(children: [
-                                                TextSpan(
-                                                    text: Provider.of<AppModel>(context).loggedIn ? '${Provider.of<CartModel>(context).CurentPoint} POIN\n' : "Point Reward\n",
-                                                    style: TextStyle(
-                                                        color: Colors.black87,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      QRScreen()),
+                                            );
+                                          },
+                                          child: Row(
+                                            children: [
+                                              Container(
+                                                  margin:
+                                                      EdgeInsets.only(left: 15),
+                                                  width: 35,
+                                                  child: Image.asset(
+                                                      'assets/images/icon-scan.png')),
+                                              Container(
+                                                margin:
+                                                    EdgeInsets.only(left: 7),
+                                                child: RichText(
+                                                    text: TextSpan(children: [
+                                                  TextSpan(
+                                                      text: 'Scan QR Produk\n',
+                                                      style: TextStyle(
+                                                          color: Colors.black87,
+                                                          fontFamily: 'Brandon',
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize: 12)),
+                                                  TextSpan(
+                                                      text:
+                                                          'Untuk belanja di toko Ponny Beaute',
+                                                      style: TextStyle(
                                                         fontFamily: 'Brandon',
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        fontSize: 12)),
-                                                TextSpan(
-                                                    text: 'Happy Skin Rewards',
+                                                        fontSize: 9,
+                                                        color: Colors.black45,
+                                                      ))
+                                                ])),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.symmetric(
+                                              vertical: 10),
+                                          child: VerticalDivider(),
+                                        ),
+                                        GestureDetector(
+                                          onTap: () {
+                                            Provider.of<UserModel>(context)
+                                                        .user ==
+                                                    null
+                                                ? Navigator.push(
+                                                    context,
+                                                    new MaterialPageRoute(
+                                                      builder: (BuildContext
+                                                              context) =>
+                                                          new LoginScreen(),
+                                                    ))
+                                                : null;
+                                          },
+                                          child: Row(
+                                            children: [
+                                              Container(
+                                                  margin:
+                                                      EdgeInsets.only(left: 6),
+                                                  width: 30,
+                                                  child: Image.asset(
+                                                      'assets/images/Asset 13.png')),
+                                              Container(
+                                                margin:
+                                                    EdgeInsets.only(left: 7),
+                                                child: RichText(
+                                                    text: TextSpan(children: [
+                                                  TextSpan(
+                                                      text: Provider.of<
+                                                                      AppModel>(
+                                                                  context)
+                                                              .loggedIn
+                                                          ? '${Provider.of<CartModel>(context).CurentPoint} POIN\n'
+                                                          : "Point Reward\n",
+                                                      style: TextStyle(
+                                                          color: Colors.black87,
+                                                          fontFamily: 'Brandon',
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize: 12)),
+                                                  TextSpan(
+                                                      text:
+                                                          'Happy Skin Rewards',
+                                                      style: TextStyle(
+                                                        fontFamily: 'Brandon',
+                                                        fontSize: 9,
+                                                        color: Colors.black45,
+                                                      ))
+                                                ])),
+                                              ),
+                                            ],
+                                          ),
+                                        )
+                                      ]),
+                                    ),
+                                    // SizedBox(height: 20),
+                                    IntrinsicHeight(
+                                      child: Row(
+                                        children: [
+                                          Expanded(
+                                            flex: 1,
+                                            child: InkWell(
+                                              onTap: () {
+                                                final skincare = value.categoris
+                                                    .firstWhere((element) =>
+                                                        element.id == 9);
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            Skincare(
+                                                              category:
+                                                                  skincare,
+                                                            )));
+                                              },
+                                              child: Column(
+                                                children: [
+                                                  AspectRatio(
+                                                    aspectRatio: 1,
+                                                    child: Container(
+                                                      margin: EdgeInsets.all(7),
+                                                      padding:
+                                                          EdgeInsets.all(5),
+                                                      decoration: BoxDecoration(
+                                                        color: Colors.white,
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(10),
+                                                        border: Border.all(
+                                                          width: 1,
+                                                          color:
+                                                              Color(0xffF48262),
+                                                        ),
+                                                      ),
+                                                      child: Image.asset(
+                                                          'assets/images/home/skincare.png'),
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    'Skincare',
                                                     style: TextStyle(
                                                       fontFamily: 'Brandon',
-                                                      fontSize: 9,
-                                                      color: Colors.black45,
-                                                    ))
-                                              ])),
-                                            ),
-                                          ],
-                                        ),
-                                      )
-                                    ]),
-                                  ),
-                                  // SizedBox(height: 20),
-                                  IntrinsicHeight(
-                                    child: Row(
-                                      children: [
-                                        Expanded(
-                                          flex: 1,
-                                          child: InkWell(
-                                            onTap: () {
-                                              final skincare = value.categoris
-                                                  .firstWhere((element) =>
-                                                      element.id == 9);
-                                              Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          Skincare(
-                                                            category: skincare,
-                                                          )));
-                                            },
-                                            child: Column(
-                                              children: [
-                                                AspectRatio(
-                                                  aspectRatio: 1,
-                                                  child: Container(
-                                                    margin: EdgeInsets.all(7),
-                                                    padding: EdgeInsets.all(5),
-                                                    decoration: BoxDecoration(
-                                                      color: Colors.white,
-                                                      borderRadius:
-                                                      BorderRadius.circular(
-                                                          10),
-                                                      border: Border.all(
-                                                        width: 1,
-                                                        color:
-                                                        Color(0xffF48262),
-                                                      ),
+                                                      fontSize: 12,
                                                     ),
-                                                    child: Image.asset(
-                                                        'assets/images/home/skincare.png'),
+                                                    textAlign: TextAlign.center,
                                                   ),
-                                                ),
-                                                Text(
-                                                  'Skincare',
-                                                  style: TextStyle(
-                                                    fontFamily: 'Brandon',
-                                                    fontSize: 12,
-                                                  ),
-                                                  textAlign: TextAlign.center,
-                                                ),
-                                              ],
-                                            ),
+                                                ],
+                                              ),
                                             ),
                                           ),
                                           Expanded(
@@ -1072,7 +1088,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     MaterialPageRoute(
                                                         builder: (context) =>
                                                             Skincare(
-                                                              category: skincare,
+                                                              category:
+                                                                  skincare,
                                                             )));
                                               },
                                               child: Column(
@@ -1081,12 +1098,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     aspectRatio: 1,
                                                     child: Container(
                                                       margin: EdgeInsets.all(7),
-                                                      padding: EdgeInsets.all(5),
+                                                      padding:
+                                                          EdgeInsets.all(5),
                                                       decoration: BoxDecoration(
                                                         color: Colors.white,
                                                         borderRadius:
-                                                            BorderRadius.circular(
-                                                                10),
+                                                            BorderRadius
+                                                                .circular(10),
                                                         border: Border.all(
                                                           width: 1,
                                                           color:
@@ -1121,7 +1139,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     MaterialPageRoute(
                                                         builder: (context) =>
                                                             Skincare(
-                                                              category: skincare,
+                                                              category:
+                                                                  skincare,
                                                             )));
                                               },
                                               child: Column(
@@ -1130,12 +1149,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     aspectRatio: 1,
                                                     child: Container(
                                                       margin: EdgeInsets.all(7),
-                                                      padding: EdgeInsets.all(5),
+                                                      padding:
+                                                          EdgeInsets.all(5),
                                                       decoration: BoxDecoration(
                                                         color: Colors.white,
                                                         borderRadius:
-                                                            BorderRadius.circular(
-                                                                10),
+                                                            BorderRadius
+                                                                .circular(10),
                                                         border: Border.all(
                                                           width: 1,
                                                           color:
@@ -1174,12 +1194,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     aspectRatio: 1,
                                                     child: Container(
                                                       margin: EdgeInsets.all(7),
-                                                      padding: EdgeInsets.all(7),
+                                                      padding:
+                                                          EdgeInsets.all(7),
                                                       decoration: BoxDecoration(
                                                         color: Colors.white,
                                                         borderRadius:
-                                                            BorderRadius.circular(
-                                                                10),
+                                                            BorderRadius
+                                                                .circular(10),
                                                         border: Border.all(
                                                           width: 1,
                                                           color:
@@ -1216,7 +1237,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     MaterialPageRoute(
                                                         builder: (context) =>
                                                             Skincare(
-                                                              category: skincare,
+                                                              category:
+                                                                  skincare,
                                                             )));
                                               },
                                               child: Column(
@@ -1225,12 +1247,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     aspectRatio: 1,
                                                     child: Container(
                                                       margin: EdgeInsets.all(7),
-                                                      padding: EdgeInsets.all(5),
+                                                      padding:
+                                                          EdgeInsets.all(5),
                                                       decoration: BoxDecoration(
                                                         color: Colors.white,
                                                         borderRadius:
-                                                            BorderRadius.circular(
-                                                                10),
+                                                            BorderRadius
+                                                                .circular(10),
                                                         border: Border.all(
                                                           width: 1,
                                                           color:
@@ -1263,7 +1286,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                             flex: 1,
                                             child: InkWell(
                                               onTap: () {
-                                                if (Provider.of<AppModel>(context)
+                                                if (Provider.of<AppModel>(
+                                                        context)
                                                     .loggedIn) {
                                                   Navigator.push(
                                                     context,
@@ -1287,12 +1311,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     aspectRatio: 1,
                                                     child: Container(
                                                       margin: EdgeInsets.all(7),
-                                                      padding: EdgeInsets.all(5),
+                                                      padding:
+                                                          EdgeInsets.all(5),
                                                       decoration: BoxDecoration(
                                                         color: Colors.white,
                                                         borderRadius:
-                                                            BorderRadius.circular(
-                                                                10),
+                                                            BorderRadius
+                                                                .circular(10),
                                                         border: Border.all(
                                                           width: 1,
                                                           color:
@@ -1331,12 +1356,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     aspectRatio: 1,
                                                     child: Container(
                                                       margin: EdgeInsets.all(7),
-                                                      padding: EdgeInsets.all(5),
+                                                      padding:
+                                                          EdgeInsets.all(5),
                                                       decoration: BoxDecoration(
                                                         color: Colors.white,
                                                         borderRadius:
-                                                            BorderRadius.circular(
-                                                                10),
+                                                            BorderRadius
+                                                                .circular(10),
                                                         border: Border.all(
                                                           width: 1,
                                                           color:
@@ -1375,12 +1401,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     aspectRatio: 1,
                                                     child: Container(
                                                       margin: EdgeInsets.all(7),
-                                                      padding: EdgeInsets.all(5),
+                                                      padding:
+                                                          EdgeInsets.all(5),
                                                       decoration: BoxDecoration(
                                                         color: Colors.white,
                                                         borderRadius:
-                                                            BorderRadius.circular(
-                                                                10),
+                                                            BorderRadius
+                                                                .circular(10),
                                                         border: Border.all(
                                                           width: 1,
                                                           color:
@@ -1422,12 +1449,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     aspectRatio: 1,
                                                     child: Container(
                                                       margin: EdgeInsets.all(7),
-                                                      padding: EdgeInsets.all(5),
+                                                      padding:
+                                                          EdgeInsets.all(5),
                                                       decoration: BoxDecoration(
                                                         color: Colors.white,
                                                         borderRadius:
-                                                            BorderRadius.circular(
-                                                                10),
+                                                            BorderRadius
+                                                                .circular(10),
                                                         border: Border.all(
                                                           width: 1,
                                                           color:
@@ -1466,12 +1494,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     aspectRatio: 1,
                                                     child: Container(
                                                       margin: EdgeInsets.all(7),
-                                                      padding: EdgeInsets.all(5),
+                                                      padding:
+                                                          EdgeInsets.all(5),
                                                       decoration: BoxDecoration(
                                                         color: Colors.white,
                                                         borderRadius:
-                                                            BorderRadius.circular(
-                                                                10),
+                                                            BorderRadius
+                                                                .circular(10),
                                                         border: Border.all(
                                                           width: 1,
                                                           color:
@@ -1682,7 +1711,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                         Expanded(
                                           flex: 1,
                                           child: Padding(
-                                              padding: EdgeInsets.only(left: 10),
+                                              padding:
+                                                  EdgeInsets.only(left: 10),
                                               child: CountdownTimer(
                                                   onEnd: () {
                                                     setState(() {
@@ -1698,29 +1728,32 @@ class _HomeScreenState extends State<HomeScreen> {
                                                         .then((value) {
                                                       UIBlock.unblock(context);
                                                       setState(() {
-                                                        loading_flashdeal = false;
+                                                        loading_flashdeal =
+                                                            false;
                                                       });
                                                     }).catchError((onError) {
                                                       UIBlock.unblock(context);
                                                       setState(() {
-                                                        loading_flashdeal = false;
+                                                        loading_flashdeal =
+                                                            false;
                                                       });
                                                     });
                                                   },
-                                                  endTime: DateTime.now()
-                                                          .isBefore(DateTime
-                                                              .fromMillisecondsSinceEpoch(
-                                                                  flashdeal.detail
-                                                                          .startDate *
-                                                                      1000))
-                                                      ? flashdeal
-                                                              .detail.startDate *
+                                                  endTime: DateTime.now().isBefore(
+                                                          DateTime.fromMillisecondsSinceEpoch(
+                                                              flashdeal.detail
+                                                                      .startDate *
+                                                                  1000))
+                                                      ? flashdeal.detail
+                                                              .startDate *
                                                           1000
-                                                      : flashdeal.detail.endDate *
+                                                      : flashdeal
+                                                              .detail.endDate *
                                                           1000,
-                                                  widgetBuilder: (BuildContext
-                                                          context,
-                                                      CurrentRemainingTime time) {
+                                                  widgetBuilder:
+                                                      (BuildContext context,
+                                                          CurrentRemainingTime
+                                                              time) {
                                                     return Row(
                                                       children: [
                                                         Container(
@@ -1728,11 +1761,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                                           height: 24,
                                                           decoration:
                                                               BoxDecoration(
-                                                            color:
-                                                                Color(0xffF48262),
+                                                            color: Color(
+                                                                0xffF48262),
                                                             borderRadius:
                                                                 BorderRadius
-                                                                    .circular(3),
+                                                                    .circular(
+                                                                        3),
                                                           ),
                                                           child: Center(
                                                             child: Text(
@@ -1743,8 +1777,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                               style: TextStyle(
                                                                 fontFamily:
                                                                     'Brandon',
-                                                                color:
-                                                                    Colors.white,
+                                                                color: Colors
+                                                                    .white,
                                                               ),
                                                             ),
                                                           ),
@@ -1752,7 +1786,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                         Padding(
                                                           padding: EdgeInsets
                                                               .symmetric(
-                                                                  horizontal: 5),
+                                                                  horizontal:
+                                                                      5),
                                                           child: Text(
                                                             ':',
                                                             style: TextStyle(
@@ -1768,11 +1803,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                                           height: 24,
                                                           decoration:
                                                               BoxDecoration(
-                                                            color:
-                                                                Color(0xffF48262),
+                                                            color: Color(
+                                                                0xffF48262),
                                                             borderRadius:
                                                                 BorderRadius
-                                                                    .circular(3),
+                                                                    .circular(
+                                                                        3),
                                                           ),
                                                           child: Center(
                                                             child: Text(
@@ -1783,8 +1819,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                               style: TextStyle(
                                                                 fontFamily:
                                                                     'Brandon',
-                                                                color:
-                                                                    Colors.white,
+                                                                color: Colors
+                                                                    .white,
                                                               ),
                                                             ),
                                                           ),
@@ -1792,7 +1828,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                         Padding(
                                                           padding: EdgeInsets
                                                               .symmetric(
-                                                                  horizontal: 5),
+                                                                  horizontal:
+                                                                      5),
                                                           child: Text(
                                                             ':',
                                                             style: TextStyle(
@@ -1808,11 +1845,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                                           height: 24,
                                                           decoration:
                                                               BoxDecoration(
-                                                            color:
-                                                                Color(0xffF48262),
+                                                            color: Color(
+                                                                0xffF48262),
                                                             borderRadius:
                                                                 BorderRadius
-                                                                    .circular(3),
+                                                                    .circular(
+                                                                        3),
                                                           ),
                                                           child: Center(
                                                             child: Text(
@@ -1823,8 +1861,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                               style: TextStyle(
                                                                 fontFamily:
                                                                     'Brandon',
-                                                                color:
-                                                                    Colors.white,
+                                                                color: Colors
+                                                                    .white,
                                                               ),
                                                             ),
                                                           ),
@@ -1832,7 +1870,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                         Padding(
                                                           padding: EdgeInsets
                                                               .symmetric(
-                                                                  horizontal: 5),
+                                                                  horizontal:
+                                                                      5),
                                                           child: Text(
                                                             ':',
                                                             style: TextStyle(
@@ -1848,11 +1887,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                                           height: 24,
                                                           decoration:
                                                               BoxDecoration(
-                                                            color:
-                                                                Color(0xffF48262),
+                                                            color: Color(
+                                                                0xffF48262),
                                                             borderRadius:
                                                                 BorderRadius
-                                                                    .circular(3),
+                                                                    .circular(
+                                                                        3),
                                                           ),
                                                           child: Center(
                                                             child: Text(
@@ -1863,8 +1903,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                               style: TextStyle(
                                                                 fontFamily:
                                                                     'Brandon',
-                                                                color:
-                                                                    Colors.white,
+                                                                color: Colors
+                                                                    .white,
                                                               ),
                                                             ),
                                                           ),
@@ -1900,12 +1940,22 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     Expanded(
                                                       flex: 1,
                                                       child: Container(
-                                                        padding:
-                                                            EdgeInsets.symmetric(
+                                                        padding: EdgeInsets
+                                                            .symmetric(
                                                                 horizontal: 7),
                                                         child: MyProductFlash(
                                                           productFlash: e,
-                                                          IsLiked: Provider.of<WishModel>(context).rawlist.firstWhere((element) => element.productId == e.product.id, orElse: () => null) != null ? true : false,
+                                                          IsLiked: Provider.of<WishModel>(context).rawlist.firstWhere(
+                                                                      (element) =>
+                                                                          element
+                                                                              .productId ==
+                                                                          e.product
+                                                                              .id,
+                                                                      orElse: () =>
+                                                                          null) !=
+                                                                  null
+                                                              ? true
+                                                              : false,
                                                           onFavorit: () {
                                                             if (Provider.of<
                                                                         AppModel>(
@@ -1971,7 +2021,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                           .auth
                                                                           .access_token,
                                                                       null)
-                                                                  .then((value) {
+                                                                  .then(
+                                                                      (value) {
                                                                 UIBlock.unblock(
                                                                     context);
                                                                 showAlertDialog(
@@ -2004,13 +2055,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                                         child: Container(
                                                           padding: EdgeInsets
                                                               .symmetric(
-                                                                  horizontal: 7),
+                                                                  horizontal:
+                                                                      7),
                                                           child: MyProductFlash(
                                                             productFlash: e,
                                                             IsLiked: Provider.of<WishModel>(context).rawlist.firstWhere(
                                                                         (element) =>
-                                                                            element
-                                                                                .productId ==
+                                                                            element.productId ==
                                                                             e.product
                                                                                 .id,
                                                                         orElse: () =>
@@ -2026,9 +2077,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                 Provider.of<WishModel>(
                                                                         context)
                                                                     .addProductToWish(
-                                                                        e.product,
-                                                                        Provider.of<AppModel>(
-                                                                                context)
+                                                                        e
+                                                                            .product,
+                                                                        Provider.of<AppModel>(context)
                                                                             .auth
                                                                             .access_token);
                                                               } else {
@@ -2049,9 +2100,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                 Provider.of<WishModel>(
                                                                         context)
                                                                     .removeProductFromWish(
-                                                                        e.product,
-                                                                        Provider.of<AppModel>(
-                                                                                context)
+                                                                        e
+                                                                            .product,
+                                                                        Provider.of<AppModel>(context)
                                                                             .auth
                                                                             .access_token);
                                                               } else {
@@ -2077,9 +2128,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                 Provider.of<CartModel>(
                                                                         context)
                                                                     .addProductToCart(
-                                                                        e.product,
-                                                                        Provider.of<AppModel>(
-                                                                                context)
+                                                                        e
+                                                                            .product,
+                                                                        Provider.of<AppModel>(context)
                                                                             .auth
                                                                             .access_token,
                                                                         null)
@@ -2107,8 +2158,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     Expanded(
                                                       flex: 1,
                                                       child: Container(
-                                                        padding:
-                                                            EdgeInsets.symmetric(
+                                                        padding: EdgeInsets
+                                                            .symmetric(
                                                                 horizontal: 7),
                                                       ),
                                                     )
@@ -2125,13 +2176,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                                         child: Container(
                                                           padding: EdgeInsets
                                                               .symmetric(
-                                                                  horizontal: 7),
+                                                                  horizontal:
+                                                                      7),
                                                           child: MyProductFlash(
                                                             productFlash: e,
                                                             IsLiked: Provider.of<WishModel>(context).rawlist.firstWhere(
                                                                         (element) =>
-                                                                            element
-                                                                                .productId ==
+                                                                            element.productId ==
                                                                             e.product
                                                                                 .id,
                                                                         orElse: () =>
@@ -2147,9 +2198,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                 Provider.of<WishModel>(
                                                                         context)
                                                                     .addProductToWish(
-                                                                        e.product,
-                                                                        Provider.of<AppModel>(
-                                                                                context)
+                                                                        e
+                                                                            .product,
+                                                                        Provider.of<AppModel>(context)
                                                                             .auth
                                                                             .access_token);
                                                               } else {
@@ -2170,9 +2221,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                 Provider.of<WishModel>(
                                                                         context)
                                                                     .removeProductFromWish(
-                                                                        e.product,
-                                                                        Provider.of<AppModel>(
-                                                                                context)
+                                                                        e
+                                                                            .product,
+                                                                        Provider.of<AppModel>(context)
                                                                             .auth
                                                                             .access_token);
                                                               } else {
@@ -2198,9 +2249,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                 Provider.of<CartModel>(
                                                                         context)
                                                                     .addProductToCart(
-                                                                        e.product,
-                                                                        Provider.of<AppModel>(
-                                                                                context)
+                                                                        e
+                                                                            .product,
+                                                                        Provider.of<AppModel>(context)
                                                                             .auth
                                                                             .access_token,
                                                                         null)
@@ -2228,16 +2279,16 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     Expanded(
                                                       flex: 1,
                                                       child: Container(
-                                                        padding:
-                                                            EdgeInsets.symmetric(
+                                                        padding: EdgeInsets
+                                                            .symmetric(
                                                                 horizontal: 7),
                                                       ),
                                                     ),
                                                     Expanded(
                                                       flex: 1,
                                                       child: Container(
-                                                        padding:
-                                                            EdgeInsets.symmetric(
+                                                        padding: EdgeInsets
+                                                            .symmetric(
                                                                 horizontal: 7),
                                                       ),
                                                     )
@@ -2309,7 +2360,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     horizontal: 7),
                                                 child: MyProduct(
                                                   product: e,
-                                                  IsLiked: Provider.of<WishModel>(
+                                                  IsLiked: Provider.of<
+                                                                      WishModel>(
                                                                   context)
                                                               .rawlist
                                                               .firstWhere(
@@ -2384,7 +2436,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                   .access_token,
                                                               null)
                                                           .then((value) {
-                                                        UIBlock.unblock(context);
+                                                        UIBlock.unblock(
+                                                            context);
                                                         showAlertDialog(
                                                             context, e);
                                                       });
@@ -2664,8 +2717,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                   return LoadingWidgetFadingCircle(context);
                                 } else {
                                   // ListPhobe = getColumProduct(context,value.PhoebeChoices,3);
-                                  var dataPhoby = Lodash()
-                                      .chunk(array: value.PhoebeChoices, size: 3);
+                                  var dataPhoby = Lodash().chunk(
+                                      array: value.PhoebeChoices, size: 3);
 
                                   return new Swiper(
                                     itemBuilder:
@@ -2681,7 +2734,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     horizontal: 7),
                                                 child: MyProduct(
                                                   product: e,
-                                                  IsLiked: Provider.of<WishModel>(
+                                                  IsLiked: Provider.of<
+                                                                      WishModel>(
                                                                   context)
                                                               .rawlist
                                                               .firstWhere(
@@ -2756,7 +2810,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                   .access_token,
                                                               null)
                                                           .then((value) {
-                                                        UIBlock.unblock(context);
+                                                        UIBlock.unblock(
+                                                            context);
                                                         showAlertDialog(
                                                             context, e);
                                                       });
@@ -3105,7 +3160,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                       _launchURL(
                                           "https://www.youtube.com/c/PonnyBeaute");
                                     },
-                                    padding: EdgeInsets.symmetric(horizontal: 10),
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 10),
                                     materialTapTargetSize:
                                         MaterialTapTargetSize.shrinkWrap,
                                     shape: RoundedRectangleBorder(
