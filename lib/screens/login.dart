@@ -376,11 +376,9 @@ class _LoginStateScreen extends State<LoginScreen> {
           elevation: 0.0,
           leading: IconButton(
             onPressed: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => HomeScreen(),
-                ),
+              Navigator.pushNamedAndRemoveUntil(
+                  context,
+                  HomeScreen.id,(_) => false
               );
             },
             icon: Icon(

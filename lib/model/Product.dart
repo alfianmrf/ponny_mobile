@@ -39,7 +39,6 @@ class ProductModel with ChangeNotifier {
   }
 
   Future<void> getLocalProduct() async {
-    loadingLocalProduct = false;
     try {
       final result = await http.get(localprideUrl);
       if (result.statusCode == 200) {
@@ -60,7 +59,6 @@ class ProductModel with ChangeNotifier {
   }
 
   Future<void> getBestSell() async {
-    loadingBestSale = false;
     try {
       final result = await http.get(best_sale);
       if (result.statusCode == 200) {
