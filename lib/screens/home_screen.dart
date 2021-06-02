@@ -117,40 +117,40 @@ class _HomeScreenState extends State<HomeScreen> {
     return categoris;
   }
 
-  Future<void> getbrodcaster() async {
-    String urls =
-        "https://api.agora.io/dev/v1/channel/user/1a2ac884df8a4c4c886353e5580a8580/broadcast";
-    final res = await http.get(urls, headers: {
-      HttpHeaders.contentTypeHeader: 'application/json',
-      HttpHeaders.authorizationHeader:
-          "Basic OGI4YjdiYjA2NGU5NDFlMDhkMTFlNDg0Y2Q5MTY1MjM6OGJhNWMzNjczM2RkNDQzY2IzZjE3ZjE2Mzc3YjIwOTQ="
-    });
-    print(res.body);
-    if (res.statusCode == 200) {
-      final responejson = json.decode(res.body);
-      final channelbc = ChanelBroadcast.fromJson(responejson);
-      print(responejson);
-      if (channelbc.success == true &&
-          channelbc.data.broadcasters.length > 0 &&
-          channelbc.data.broadcasters[0] == 1) {
-        setState(() {
-          _remoteUid = 1;
-        });
-        print(responejson);
-        print(_remoteUid);
-      } else {
-        setState(() {
-          _remoteUid = null;
-        });
-        print(responejson);
-        print(_remoteUid);
-      }
-    } else {
-      setState(() {
-        _remoteUid = null;
-      });
-    }
-  }
+  // Future<void> getbrodcaster() async {
+  //   String urls =
+  //       "https://api.agora.io/dev/v1/channel/user/1a2ac884df8a4c4c886353e5580a8580/broadcast";
+  //   final res = await http.get(urls, headers: {
+  //     HttpHeaders.contentTypeHeader: 'application/json',
+  //     HttpHeaders.authorizationHeader:
+  //         "Basic OGI4YjdiYjA2NGU5NDFlMDhkMTFlNDg0Y2Q5MTY1MjM6OGJhNWMzNjczM2RkNDQzY2IzZjE3ZjE2Mzc3YjIwOTQ="
+  //   });
+  //   print(res.body);
+  //   if (res.statusCode == 200) {
+  //     final responejson = json.decode(res.body);
+  //     final channelbc = ChanelBroadcast.fromJson(responejson);
+  //     print(responejson);
+  //     if (channelbc.success == true &&
+  //         channelbc.data.broadcasters.length > 0 &&
+  //         channelbc.data.broadcasters[0] == 1) {
+  //       setState(() {
+  //         _remoteUid = 1;
+  //       });
+  //       print(responejson);
+  //       print(_remoteUid);
+  //     } else {
+  //       setState(() {
+  //         _remoteUid = null;
+  //       });
+  //       print(responejson);
+  //       print(_remoteUid);
+  //     }
+  //   } else {
+  //     setState(() {
+  //       _remoteUid = null;
+  //     });
+  //   }
+  // }
 
   Future<Null> _updateCart()  async {
     var token = Provider.of<AppModel>(context).auth.access_token;
@@ -176,119 +176,121 @@ class _HomeScreenState extends State<HomeScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       _getCartOfitem();
       _getWishListCount();
-      initChanelBrodcaster();
-      getbrodcaster();
+      // initChanelBrodcaster();
+      // getbrodcaster();
       getyt();
       print("SUCCESS");
       print(_controllersYoutube);
       Provider.of<ProductModel>(context).getFlashSale();
-      if (!Provider.of<AppModel>(context).loggedIn){
+      if (Provider.of<AppModel>(context).loggedIn){
         _updateCart();
+      }
+      else{
         showModal();
       }
     });
   }
 
-  Future<void> initChanelBrodcaster() async {
-    var engine = await RtcE.RtcEngine.create(appID);
-    engine.setEventHandler(RtcE.RtcEngineEventHandler(
-      joinChannelSuccess: (
-        String channel,
-        int uid,
-        int elapsed,
-      ) {
-        print('joinChannelSuccess ${channel} ${uid}');
-        setState(() {
-          _joined = true;
-        });
-      },
-      userJoined: (int uid, int elapsed) async {
-        print('userJoined ${uid}');
-        String urls =
-            "https://api.agora.io/dev/v1/channel/user/1a2ac884df8a4c4c886353e5580a8580/broadcast";
-        final res = await http.get(urls, headers: {
-          HttpHeaders.contentTypeHeader: 'application/json',
-          HttpHeaders.authorizationHeader:
-              "Basic OGI4YjdiYjA2NGU5NDFlMDhkMTFlNDg0Y2Q5MTY1MjM6OGJhNWMzNjczM2RkNDQzY2IzZjE3ZjE2Mzc3YjIwOTQ="
-        });
-        final responejson = json.decode(res.body);
-        final channelbc = ChanelBroadcast.fromJson(responejson);
-        if (channelbc.success == true &&
-            channelbc.data.broadcasters.length > 0 &&
-            channelbc.data.broadcasters[0] == 1) {
-          setState(() {
-            _remoteUid = 1;
-          });
-        }
-      },
-      userOffline: (int uid, RtcE.UserOfflineReason reason) {
-        print('userOffline ${uid}');
-        setState(() {
-          _remoteUid = null;
-        });
-      },
-      streamMessage: (uid, streamId, data) {
-        print(data);
-      },
-    ));
-    engine.enableVideo();
-    engine.enableLocalAudio(false);
-    engine.enableLocalVideo(false);
-    engine.enableVideo();
-    engine.setParameters(
-        '''{\"che.video.lowBitRateStreamParameter\":{\"width\":320,\"height\":180,\"frameRate\":15,\"bitRate\":140}}''');
-    await engine.joinChannel(null, "broadcast", null, 0);
+  // Future<void> initChanelBrodcaster() async {
+  //   var engine = await RtcE.RtcEngine.create(appID);
+  //   engine.setEventHandler(RtcE.RtcEngineEventHandler(
+  //     joinChannelSuccess: (
+  //       String channel,
+  //       int uid,
+  //       int elapsed,
+  //     ) {
+  //       print('joinChannelSuccess ${channel} ${uid}');
+  //       setState(() {
+  //         _joined = true;
+  //       });
+  //     },
+  //     userJoined: (int uid, int elapsed) async {
+  //       print('userJoined ${uid}');
+  //       String urls =
+  //           "https://api.agora.io/dev/v1/channel/user/1a2ac884df8a4c4c886353e5580a8580/broadcast";
+  //       final res = await http.get(urls, headers: {
+  //         HttpHeaders.contentTypeHeader: 'application/json',
+  //         HttpHeaders.authorizationHeader:
+  //             "Basic OGI4YjdiYjA2NGU5NDFlMDhkMTFlNDg0Y2Q5MTY1MjM6OGJhNWMzNjczM2RkNDQzY2IzZjE3ZjE2Mzc3YjIwOTQ="
+  //       });
+  //       final responejson = json.decode(res.body);
+  //       final channelbc = ChanelBroadcast.fromJson(responejson);
+  //       if (channelbc.success == true &&
+  //           channelbc.data.broadcasters.length > 0 &&
+  //           channelbc.data.broadcasters[0] == 1) {
+  //         setState(() {
+  //           _remoteUid = 1;
+  //         });
+  //       }
+  //     },
+  //     userOffline: (int uid, RtcE.UserOfflineReason reason) {
+  //       print('userOffline ${uid}');
+  //       setState(() {
+  //         _remoteUid = null;
+  //       });
+  //     },
+  //     streamMessage: (uid, streamId, data) {
+  //       print(data);
+  //     },
+  //   ));
+  //   engine.enableVideo();
+  //   engine.enableLocalAudio(false);
+  //   engine.enableLocalVideo(false);
+  //   engine.enableVideo();
+  //   engine.setParameters(
+  //       '''{\"che.video.lowBitRateStreamParameter\":{\"width\":320,\"height\":180,\"frameRate\":15,\"bitRate\":140}}''');
+  //   await engine.joinChannel(null, "broadcast", null, 0);
+  //
+  //   _client = await AgoraRtmClient.createInstance(appID);
+  //   await _client.login(
+  //       null,
+  //       Provider.of<UserModel>(context).loading
+  //           ? Provider.of<UserModel>(context).user.id.toString()
+  //           : DateTime.now().toString());
+  //   _channel = await _createChannel("broadcast");
+  //   await _channel.join();
+  //   _channel.getMembers().then((value) {
+  //     setState(() {
+  //       viewer = value.length;
+  //     });
+  //     print("jumlah :" + value.length.toString());
+  //   });
+  // }
 
-    _client = await AgoraRtmClient.createInstance(appID);
-    await _client.login(
-        null,
-        Provider.of<UserModel>(context).loading
-            ? Provider.of<UserModel>(context).user.id.toString()
-            : DateTime.now().toString());
-    _channel = await _createChannel("broadcast");
-    await _channel.join();
-    _channel.getMembers().then((value) {
-      setState(() {
-        viewer = value.length;
-      });
-      print("jumlah :" + value.length.toString());
-    });
-  }
+  // Future<AgoraRtmChannel> _createChannel(String name) async {
+  //   AgoraRtmChannel channel = await _client.createChannel(name);
+  //   channel.onMemberJoined = (AgoraRtmMember member) async {
+  //     _channel.getMembers().then((value) {
+  //       setState(() {
+  //         viewer = value.length;
+  //       });
+  //     });
+  //   };
+  //   channel.onMemberLeft = (AgoraRtmMember member) {
+  //     var len;
+  //     _channel.getMembers().then((value) {
+  //       setState(() {
+  //         viewer = value.length;
+  //       });
+  //     });
+  //   };
+  //   channel.onMemberJoined = (AgoraRtmMember member) {
+  //     _channel.getMembers().then((value) {
+  //       setState(() {
+  //         viewer = value.length;
+  //       });
+  //     });
+  //   };
+  //   return channel;
+  // }
 
-  Future<AgoraRtmChannel> _createChannel(String name) async {
-    AgoraRtmChannel channel = await _client.createChannel(name);
-    channel.onMemberJoined = (AgoraRtmMember member) async {
-      _channel.getMembers().then((value) {
-        setState(() {
-          viewer = value.length;
-        });
-      });
-    };
-    channel.onMemberLeft = (AgoraRtmMember member) {
-      var len;
-      _channel.getMembers().then((value) {
-        setState(() {
-          viewer = value.length;
-        });
-      });
-    };
-    channel.onMemberJoined = (AgoraRtmMember member) {
-      _channel.getMembers().then((value) {
-        setState(() {
-          viewer = value.length;
-        });
-      });
-    };
-    return channel;
-  }
-
-  Widget _renderRemoteVideo() {
-    if (_remoteUid != null) {
-      return RtcRemoteView.SurfaceView(uid: _remoteUid);
-    } else {
-      return Container();
-    }
-  }
+  // Widget _renderRemoteVideo() {
+  //   if (_remoteUid != null) {
+  //     return RtcRemoteView.SurfaceView(uid: _remoteUid);
+  //   } else {
+  //     return Container();
+  //   }
+  // }
 
   Future ytplayer() async {
     videoId = YoutubePlayer.convertUrlToId(
@@ -515,11 +517,11 @@ class _HomeScreenState extends State<HomeScreen> {
   Future<void> _refresh(BuildContext context) async {
     _getCartOfitem();
     _getWishListCount();
-    initChanelBrodcaster();
-    getbrodcaster();
+    // initChanelBrodcaster();
+    // getbrodcaster();
     getyt();
     Provider.of<ProductModel>(context).getFlashSale();
-    if (!Provider.of<AppModel>(context).loggedIn){
+    if (Provider.of<AppModel>(context).loggedIn){
       _updateCart();
     }
   }
@@ -1490,129 +1492,129 @@ class _HomeScreenState extends State<HomeScreen> {
                               }
                             }),
                           ),
-                          if (_remoteUid != null)
-                            Container(
-                              width: MediaQuery.of(context).size.width,
-                              child: Stack(
-                                children: [
-                                  Column(
-                                    children: [
-                                      Container(
-                                        height: 20,
-                                        width: double.infinity,
-                                      ),
-                                      Container(
-                                        color: Color(0xffFBDFD2),
-                                        height: 20,
-                                        width: double.infinity,
-                                      ),
-                                    ],
-                                  ),
-                                  Positioned.fill(
-                                    child: Center(
-                                      child: Text(
-                                        'LIVE NOW',
-                                        style: TextStyle(
-                                          fontSize: 24,
-                                          fontFamily: 'Brandon',
-                                          color: Color(0xffF48262),
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          if (_remoteUid != null)
-                            Container(
-                              color: Color(0xffFBDFD2),
-                              padding: EdgeInsets.symmetric(horizontal: 30),
-                              child: Stack(children: [
-                                Container(
-                                  width: double.infinity,
-                                  height: 250,
-                                  color: Colors.grey,
-                                  child: _renderRemoteVideo(),
-                                ),
-                                Positioned(
-                                  top: 10,
-                                  right: 10,
-                                  child: Container(
-                                    padding: EdgeInsets.symmetric(
-                                        vertical: 3, horizontal: 5),
-                                    color: Color(0xff000000).withOpacity(0.1),
-                                    child: Row(
-                                      children: [
-                                        Icon(
-                                          Icons.remove_red_eye,
-                                          color: Colors.white,
-                                          size: 12,
-                                        ),
-                                        Padding(
-                                          padding: EdgeInsets.only(left: 5),
-                                          child: Text(
-                                            viewer.toString(),
-                                            style: TextStyle(
-                                              fontFamily: 'Brandon',
-                                              fontSize: 12,
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                Positioned(
-                                  bottom: 10,
-                                  right: 10,
-                                  child: InkWell(
-                                    onTap: () {
-                                      Navigator.push(
-                                          context,
-                                          new MaterialPageRoute(
-                                            builder: (BuildContext context) =>
-                                                new FullSiaran(
-                                              remoteUid: _remoteUid,
-                                            ),
-                                          ));
-                                    },
-                                    child: Icon(
-                                      Icons.fullscreen,
-                                      size: 22,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                ),
-                              ]),
-                            ),
-                          if (_remoteUid != null)
-                            Container(
-                              color: Color(0xffFBDFD2),
-                              width: double.infinity,
-                              padding: EdgeInsets.fromLTRB(30, 10, 30, 30),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    'Menuju Glowing Bersama Phoebe',
-                                    style: TextStyle(
-                                      fontFamily: 'Brandon',
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                  Text(
-                                    'Halo teman Phoebe, kita lagi ada diskon gede-gedean.',
-                                    style: TextStyle(
-                                      fontFamily: 'Brandon',
-                                    ),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ],
-                              ),
-                            ),
+                          // if (_remoteUid != null)
+                          //   Container(
+                          //     width: MediaQuery.of(context).size.width,
+                          //     child: Stack(
+                          //       children: [
+                          //         Column(
+                          //           children: [
+                          //             Container(
+                          //               height: 20,
+                          //               width: double.infinity,
+                          //             ),
+                          //             Container(
+                          //               color: Color(0xffFBDFD2),
+                          //               height: 20,
+                          //               width: double.infinity,
+                          //             ),
+                          //           ],
+                          //         ),
+                          //         Positioned.fill(
+                          //           child: Center(
+                          //             child: Text(
+                          //               'LIVE NOW',
+                          //               style: TextStyle(
+                          //                 fontSize: 24,
+                          //                 fontFamily: 'Brandon',
+                          //                 color: Color(0xffF48262),
+                          //                 fontWeight: FontWeight.bold,
+                          //               ),
+                          //             ),
+                          //           ),
+                          //         ),
+                          //       ],
+                          //     ),
+                          //   ),
+                          // if (_remoteUid != null)
+                          //   Container(
+                          //     color: Color(0xffFBDFD2),
+                          //     padding: EdgeInsets.symmetric(horizontal: 30),
+                          //     child: Stack(children: [
+                          //       Container(
+                          //         width: double.infinity,
+                          //         height: 250,
+                          //         color: Colors.grey,
+                          //         child: _renderRemoteVideo(),
+                          //       ),
+                          //       Positioned(
+                          //         top: 10,
+                          //         right: 10,
+                          //         child: Container(
+                          //           padding: EdgeInsets.symmetric(
+                          //               vertical: 3, horizontal: 5),
+                          //           color: Color(0xff000000).withOpacity(0.1),
+                          //           child: Row(
+                          //             children: [
+                          //               Icon(
+                          //                 Icons.remove_red_eye,
+                          //                 color: Colors.white,
+                          //                 size: 12,
+                          //               ),
+                          //               Padding(
+                          //                 padding: EdgeInsets.only(left: 5),
+                          //                 child: Text(
+                          //                   viewer.toString(),
+                          //                   style: TextStyle(
+                          //                     fontFamily: 'Brandon',
+                          //                     fontSize: 12,
+                          //                     color: Colors.white,
+                          //                   ),
+                          //                 ),
+                          //               ),
+                          //             ],
+                          //           ),
+                          //         ),
+                          //       ),
+                          //       Positioned(
+                          //         bottom: 10,
+                          //         right: 10,
+                          //         child: InkWell(
+                          //           onTap: () {
+                          //             Navigator.push(
+                          //                 context,
+                          //                 new MaterialPageRoute(
+                          //                   builder: (BuildContext context) =>
+                          //                       new FullSiaran(
+                          //                     remoteUid: _remoteUid,
+                          //                   ),
+                          //                 ));
+                          //           },
+                          //           child: Icon(
+                          //             Icons.fullscreen,
+                          //             size: 22,
+                          //             color: Colors.white,
+                          //           ),
+                          //         ),
+                          //       ),
+                          //     ]),
+                          //   ),
+                          // if (_remoteUid != null)
+                          //   Container(
+                          //     color: Color(0xffFBDFD2),
+                          //     width: double.infinity,
+                          //     padding: EdgeInsets.fromLTRB(30, 10, 30, 30),
+                          //     child: Column(
+                          //       crossAxisAlignment: CrossAxisAlignment.center,
+                          //       children: [
+                          //         Text(
+                          //           'Menuju Glowing Bersama Phoebe',
+                          //           style: TextStyle(
+                          //             fontFamily: 'Brandon',
+                          //             fontSize: 16,
+                          //             fontWeight: FontWeight.w600,
+                          //           ),
+                          //         ),
+                          //         Text(
+                          //           'Halo teman Phoebe, kita lagi ada diskon gede-gedean.',
+                          //           style: TextStyle(
+                          //             fontFamily: 'Brandon',
+                          //           ),
+                          //           textAlign: TextAlign.center,
+                          //         ),
+                          //       ],
+                          //     ),
+                          //   ),
                           if (flashdeal != null &&
                               DateTime.now().millisecondsSinceEpoch <
                                   flashdeal.detail.endDate * 1000 &&

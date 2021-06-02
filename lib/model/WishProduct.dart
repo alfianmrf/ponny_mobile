@@ -30,6 +30,7 @@ class WishModel with ChangeNotifier {
       }
 
     }catch(err){
+      print("GET COUNT WISHLIST");
       print("error."+err.toString());
     }
 

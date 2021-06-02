@@ -274,6 +274,7 @@ class CartModel with ChangeNotifier {
         notifyListeners();
       }
     } catch (err) {
+      print("GET CART");
       print("error." + err.toString());
       notifyListeners();
     }
