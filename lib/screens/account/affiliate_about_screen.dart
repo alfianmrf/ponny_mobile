@@ -1,14 +1,43 @@
+import 'dart:io';
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:ponny/screens/Affiliate_CairkanDana_screen.dart';
+import 'package:ponny/util/globalUrl.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
+import 'package:http/http.dart' as http;
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:ponny/common/constant.dart';
 
 class AboutRefund extends StatefulWidget {
   @override
+  String img;
+  AboutRefund(this.img);
   _AboutRefundState createState() => _AboutRefundState();
 }
 
+String konten;
+
 class _AboutRefundState extends State<AboutRefund> {
+  @override
+  void initState() {
+    super.initState();
+    getContent();
+  }
+
+  Future<void> getContent() async {
+    final res = await http.get(affiliateAbout,
+        headers: {HttpHeaders.contentTypeHeader: 'application/json'});
+
+    if (res.statusCode == 200) {
+      final responeJson = json.decode(res.body);
+      setState(() {
+        konten = responeJson["content"];
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -28,7 +57,7 @@ class _AboutRefundState extends State<AboutRefund> {
             ),
           ),
           title: Text(
-            'About Refund',
+            'PENCAIRAN DANA',
             style: TextStyle(
               fontSize: 24,
               fontFamily: "Yeseva",
@@ -48,15 +77,21 @@ class _AboutRefundState extends State<AboutRefund> {
             children: [
               Container(
                   width: size.width,
-                  height: size.height * 0.46,
+                  height: 226,
                   decoration: BoxDecoration(color: Hexcolor('#FCF8F0')),
                   child: Stack(
                     children: [
                       Container(
                         width: size.width,
-                        child: Image.network(
-                          "https://via.placeholder.com/288x188",
-                          fit: BoxFit.cover,
+                        height: 180,
+                        color: Hexcolor('#FCF8F0'),
+                        child: CachedNetworkImage(
+                          imageUrl: "$img_url${widget.img}",
+                          placeholder: (context, url) =>
+                              LoadingWidgetPulse(context),
+                          errorWidget: (context, url, error) =>
+                              Image.asset('assets/images/basic.jpg'),
+                          fit: BoxFit.fill,
                         ),
                       ),
                       Positioned(
@@ -64,33 +99,35 @@ class _AboutRefundState extends State<AboutRefund> {
                         right: 0,
                         left: 0,
                         child: Container(
+                          padding: EdgeInsets.all(20),
                           margin: EdgeInsets.symmetric(
                               horizontal: size.width * 0.05),
                           width: size.width,
-                          height: size.height * 0.14,
                           decoration: BoxDecoration(
                               color: Hexcolor('#FCF8F0'),
                               borderRadius:
                                   BorderRadius.all(Radius.circular(20))),
-                          child: Padding(
-                            padding: EdgeInsets.only(top: size.height * 0.021),
-                            child: Column(
-                              children: [
-                                Text(
-                                  "Tentang Refund",
-                                  style: TextStyle(
-                                    fontFamily: "Yeseva",
-                                    fontSize: size.height * 0.034,
-                                    fontWeight: FontWeight.w600,
-                                  ),
+                          child: Column(
+                            children: [
+                              Text(
+                                "INFORMASI LENGKAP MENGENAI PENCAIRAN DANA",
+                                style: TextStyle(
+                                  fontFamily: "Yeseva",
+                                  fontSize: 19,
+                                  fontWeight: FontWeight.w600,
                                 ),
-                              ],
-                            ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ],
                           ),
                         ),
                       ),
                     ],
                   )),
+              Container(
+                  padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                  width: double.infinity,
+                  child: Text(konten))
             ],
           ),
         ),

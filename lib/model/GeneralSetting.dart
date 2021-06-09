@@ -12,21 +12,27 @@ class GeneralSetting {
   String googlePlus;
   String embedVideo;
   String announcementBar;
+  String newsletterLogo;
+  String newsletterTitle;
+  String newsletterDescription;
 
   GeneralSetting(
       {this.logo,
-        this.siteName,
-        this.address,
-        this.description,
-        this.phone,
-        this.email,
-        this.facebook,
-        this.twitter,
-        this.instagram,
-        this.youtube,
-        this.googlePlus,
-        this.embedVideo,
-        this.announcementBar});
+      this.siteName,
+      this.address,
+      this.description,
+      this.phone,
+      this.email,
+      this.facebook,
+      this.twitter,
+      this.instagram,
+      this.youtube,
+      this.googlePlus,
+      this.embedVideo,
+      this.announcementBar,
+      this.newsletterLogo,
+      this.newsletterTitle,
+      this.newsletterDescription});
 
   GeneralSetting.fromJson(Map<String, dynamic> json) {
     logo = json['logo'];
@@ -42,6 +48,9 @@ class GeneralSetting {
     googlePlus = json['google_plus'];
     embedVideo = json['embed_video'];
     announcementBar = json['announcement_bar'];
+    newsletterLogo = json["newsletter_logo"];
+    newsletterTitle = json["newsletter_title"];
+    newsletterDescription = json["newsletter_description"];
   }
 
   Map<String, dynamic> toJson() {
@@ -59,6 +68,9 @@ class GeneralSetting {
     data['google_plus'] = this.googlePlus;
     data['embed_video'] = this.embedVideo;
     data['announcement_bar'] = this.announcementBar;
+    data['newsletter_logo'] = this.newsletterLogo;
+    data['newsletter_title'] = this.newsletterTitle;
+    data['newsletter_description'] = this.newsletterDescription;
     return data;
   }
 }

@@ -49,7 +49,7 @@ class OrderModel with ChangeNotifier {
       HttpHeaders.authorizationHeader: "Bearer $token"
     });
     NewManualInfo result;
-    print("awesome===");
+    print("awesome===" + order_id);
     print(json.decode(res.body));
     print(res.statusCode);
     if (res.statusCode == 200) {

@@ -6,9 +6,11 @@ const img_url = "https://ponny-publik.s3-ap-southeast-1.amazonaws.com/public/";
 // const urlGlobal = "https://ponnybeaute.co.id/";
 
 //dev
-const base_url = "https://ec2-13-229-239-61.ap-southeast-1.compute.amazonaws.com/api/v1/";
+const base_url =
+    "https://ec2-54-179-25-132.ap-southeast-1.compute.amazonaws.com/api/v1/";
 // const img_url = "https://ponnybeaute.revoapps.id/public/";
-const urlGlobal = "https://ec2-13-229-239-61.ap-southeast-1.compute.amazonaws.com/";
+const urlGlobal =
+    "https://ec2-54-179-25-132.ap-southeast-1.compute.amazonaws.com/";
 
 //Auth
 const filterTrend = base_url + "forum/rooms/";
@@ -72,6 +74,7 @@ const removePoinProduct = base_url + "cart/delete/point";
 //payment
 const paymentInfo = base_url + "payment/detail";
 const paymentConfrim = base_url + "payment/confirmation";
+const paymentMethod = base_url + "payment-methods";
 
 //wishlist
 const listOfwishlist = base_url + "product/wishlist";
@@ -92,8 +95,16 @@ const kirimUlangVerifikasi = base_url + "auth/resend/emailverification";
 const affiliateHome = base_url + "account/affiliate";
 const affiliateCustomCode = base_url + "account/custom_code";
 const affiliateWithdraw = base_url + "account/affiliate/withdraw";
-const getHistoryPoint = "https://ec2-13-229-239-61.ap-southeast-1.compute.amazonaws.com/api/v2/checkin/get";
-const claimPoint = "https://ec2-13-229-239-61.ap-southeast-1.compute.amazonaws.com/api/v2/checkin/claim";
+const getHistoryPoint =
+    "https://ec2-54-179-25-132.ap-southeast-1.compute.amazonaws.com/api/v2/checkin/get";
+const claimPoint =
+    "https://ec2-54-179-25-132.ap-southeast-1.compute.amazonaws.com/api/v2/checkin/claim";
+
+//Affiliate
+const affiliateBanner = base_url + "affiliate/banner";
+const affiliateRegister = base_url + "affiliate/register";
+const affiliateAbout = base_url + "affiliate/pencairan";
+
 //Order
 const urlTracking = base_url + "checkout/tracking";
 const urlTerimaBarang = base_url + "checkout/receipt";

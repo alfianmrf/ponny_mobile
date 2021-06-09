@@ -30,6 +30,7 @@ class ListCabang with ChangeNotifier {
         unavaliable.add(cart);
       }
     }
+    notifyListeners();
   }
 
   set setDataCabang(value){
@@ -74,19 +75,21 @@ class ListCabang with ChangeNotifier {
     "data": List<dynamic>.from(data.map((x) => x.toJson())),
   };
 
-  Future<void>getListCabang(String token) async{
+  Future<bool>getListCabang(String token) async{
     var res = await http.get(listCabangURL,headers: {
     HttpHeaders.contentTypeHeader: 'application/json',
     HttpHeaders.authorizationHeader: "Bearer $token"});
     final responseJson = json.decode(res.body);
-    if(res.statusCode == 200){;
+    if(res.statusCode == 200){
       for(Map item in responseJson["data"]){
           dataCabang = [];
           print(item);
           dataCabang.add(Datum.fromJson(item));
       }
       notifyListeners();
+      return true;
     }
+    return false;
   }
 
 

@@ -94,26 +94,21 @@ class _OrderScreenState extends State<OrderScreen> {
       NextPage = null;
       orders = [];
     });
-
     final response = await http.get(urlOrder + "/" + widget.type, headers: {
       HttpHeaders.contentTypeHeader: 'application/json',
       HttpHeaders.authorizationHeader: "Bearer $token"
     });
-    print("Order berhasil" + widget.type);
-    print(response.statusCode);
-    print(response.body);
     if (response.statusCode == 200) {
+      print("asdasd");
+      print(urlOrder + "/" + widget.type);
       print(response.body);
       final responseJson = json.decode(response.body);
 
       setState(() {
-        print("Response JSON ===2 ");
         for (Map item in responseJson["data"]) {
-          // print(Order.fromJson(item).code);
+          print(Order.fromJson(item).code);
           orders.add(Order.fromJson(item));
         }
-        print("Response JSON === ");
-        print(orders);
         isLoading = false;
         current_page = responseJson['pagination']['current_page'];
         last_page = responseJson['pagination']['last_page'];
@@ -258,273 +253,513 @@ class _OrderScreenState extends State<OrderScreen> {
                                   alignment: Alignment.topCenter,
                                   padding:
                                       EdgeInsets.only(bottom: 10, right: 10),
-                                  child: Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Expanded(
-                                        child: InkWell(
-                                          onTap: () {
-                                            if (e.product.is_shown)
-                                              Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          ProductDetailsScreen(
-                                                            product: e.product,
-                                                          )));
-                                          },
-                                          child: Container(
-                                            alignment: Alignment.topCenter,
-                                            padding: EdgeInsets.only(right: 10),
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.35,
-                                            child: CachedNetworkImage(
-                                              imageUrl: e.product
-                                                          .thumbnail_image !=
-                                                      null
-                                                  ? img_url +
-                                                      e.product.thumbnail_image
-                                                  : "",
-                                              placeholder: (context, url) =>
-                                                  LoadingWidgetPulse(context),
-                                              errorWidget: (context, url,
-                                                      error) =>
-                                                  Image.asset(
-                                                      'assets/images/210x265.png'),
-                                              width: MediaQuery.of(context)
-                                                  .size
-                                                  .width,
-                                              fit: BoxFit.cover,
+                                  child: e.product == null
+                                      ? Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Expanded(
+                                              child: Container(
+                                                alignment: Alignment.topCenter,
+                                                padding:
+                                                    EdgeInsets.only(right: 10),
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    0.35,
+                                                child: CachedNetworkImage(
+                                                  imageUrl: "",
+                                                  placeholder: (context, url) =>
+                                                      LoadingWidgetPulse(
+                                                          context),
+                                                  errorWidget: (context, url,
+                                                          error) =>
+                                                      Image.asset(
+                                                          'assets/images/210x265.png'),
+                                                  width: MediaQuery.of(context)
+                                                      .size
+                                                      .width,
+                                                  fit: BoxFit.cover,
+                                                ),
+                                              ),
                                             ),
-                                          ),
-                                        ),
-                                      ),
-                                      Expanded(
-                                        child: Container(
-                                          alignment: Alignment.topCenter,
-                                          child: Column(
-                                            children: [
-                                              Container(
-                                                margin: EdgeInsets.only(top: 0),
-                                                // color: Colors.redAccent,
-                                                width: 90,
-                                                child: MarqueeWidget(
-                                                  direction: Axis.horizontal,
-                                                  child: Text(
-                                                    e.product.brand.name,
-                                                    textAlign: TextAlign.left,
-                                                    style: TextStyle(
-                                                      fontFamily: "Yeseva",
-                                                      fontSize: 14,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                              Container(
-                                                margin: EdgeInsets.only(top: 1),
-                                                width: 90,
-                                                child: Text(
-                                                  e.product.name,
-                                                  textAlign: TextAlign.left,
-                                                  style: TextStyle(
-                                                    fontFamily: "Brandon",
-                                                    fontWeight: FontWeight.w200,
-                                                    fontSize: 13,
-                                                  ),
-                                                ),
-                                              ),
-                                              Container(
-                                                margin: EdgeInsets.only(top: 1),
-                                                width: 90,
-                                                child: Text(
-                                                  nm_format.format(
-                                                          int.parse(e.price)) +
-                                                      " (" +
-                                                      e.quantity +
-                                                      ")",
-                                                  textAlign: TextAlign.left,
-                                                  style: TextStyle(
-                                                    fontFamily: "Brandon",
-                                                    fontWeight: FontWeight.w600,
-                                                    fontSize: 13,
-                                                  ),
-                                                ),
-                                              ),
-                                              if (order.deliveryStatus ==
-                                                      OrderScreen.completed &&
-                                                  e.reviewed == 0)
-                                                Container(
-                                                  margin:
-                                                      EdgeInsets.only(top: 4),
-                                                  child: FlatButton(
-                                                    shape:
-                                                        RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              10),
-                                                      side: BorderSide(
-                                                        width: 1,
-                                                        color:
-                                                            Color(0xffF48262),
-                                                      ),
-                                                    ),
-                                                    onPressed: () {
-                                                      Navigator.push(
-                                                        context,
-                                                        MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              ReviewScreen(
-                                                            product: e.product,
-                                                            orderReview:
-                                                                OrderReview(
-                                                                    e.id,
-                                                                    "order_detail_id"),
+                                            Expanded(
+                                              child: Container(
+                                                alignment: Alignment.topCenter,
+                                                child: Column(
+                                                  children: [
+                                                    Container(
+                                                      margin: EdgeInsets.only(
+                                                          top: 0),
+                                                      // color: Colors.redAccent,
+                                                      width: 90,
+                                                      child: MarqueeWidget(
+                                                        direction:
+                                                            Axis.horizontal,
+                                                        child: Text(
+                                                          "",
+                                                          textAlign:
+                                                              TextAlign.left,
+                                                          style: TextStyle(
+                                                            fontFamily:
+                                                                "Yeseva",
+                                                            fontSize: 14,
                                                           ),
                                                         ),
-                                                      ).then((_value) {
-                                                        if (_value) {
-                                                          _getData();
-                                                        }
-                                                      });
-                                                    },
-                                                    child: Text(
-                                                      "ULAS",
-                                                      style: TextStyle(
-                                                          color:
-                                                              Color(0xffF48262),
-                                                          fontFamily:
-                                                              "Brandon"),
+                                                      ),
                                                     ),
+                                                    Container(
+                                                      margin: EdgeInsets.only(
+                                                          top: 1),
+                                                      width: 90,
+                                                      child: Text(
+                                                        "Produk tidak ditemukan",
+                                                        textAlign:
+                                                            TextAlign.left,
+                                                        style: TextStyle(
+                                                          fontFamily: "Brandon",
+                                                          fontWeight:
+                                                              FontWeight.w200,
+                                                          fontSize: 13,
+                                                          fontStyle:
+                                                              FontStyle.italic,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Container(
+                                                      margin: EdgeInsets.only(
+                                                          top: 1),
+                                                      width: 90,
+                                                      child: Text(
+                                                        "-",
+                                                        textAlign:
+                                                            TextAlign.left,
+                                                        style: TextStyle(
+                                                          fontFamily: "Brandon",
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                          fontSize: 13,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            )
+                                          ],
+                                        )
+                                      : Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Expanded(
+                                              child: InkWell(
+                                                onTap: () {
+                                                  if (e.product.is_shown)
+                                                    Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                ProductDetailsScreen(
+                                                                  product:
+                                                                      e.product,
+                                                                )));
+                                                },
+                                                child: Container(
+                                                  alignment:
+                                                      Alignment.topCenter,
+                                                  padding: EdgeInsets.only(
+                                                      right: 10),
+                                                  width: MediaQuery.of(context)
+                                                          .size
+                                                          .width *
+                                                      0.35,
+                                                  child: CachedNetworkImage(
+                                                    imageUrl: e.product
+                                                                .thumbnail_image !=
+                                                            null
+                                                        ? img_url +
+                                                            e.product
+                                                                .thumbnail_image
+                                                        : "",
+                                                    placeholder:
+                                                        (context, url) =>
+                                                            LoadingWidgetPulse(
+                                                                context),
+                                                    errorWidget: (context, url,
+                                                            error) =>
+                                                        Image.asset(
+                                                            'assets/images/210x265.png'),
+                                                    width:
+                                                        MediaQuery.of(context)
+                                                            .size
+                                                            .width,
+                                                    fit: BoxFit.cover,
                                                   ),
-                                                  height: 30,
-                                                )
-                                            ],
-                                          ),
+                                                ),
+                                              ),
+                                            ),
+                                            Expanded(
+                                              child: Container(
+                                                alignment: Alignment.topCenter,
+                                                child: Column(
+                                                  children: [
+                                                    Container(
+                                                      margin: EdgeInsets.only(
+                                                          top: 0),
+                                                      // color: Colors.redAccent,
+                                                      width: 90,
+                                                      child: MarqueeWidget(
+                                                        direction:
+                                                            Axis.horizontal,
+                                                        child: Text(
+                                                          e.product.brand.name,
+                                                          textAlign:
+                                                              TextAlign.left,
+                                                          style: TextStyle(
+                                                            fontFamily:
+                                                                "Yeseva",
+                                                            fontSize: 14,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Container(
+                                                      margin: EdgeInsets.only(
+                                                          top: 1),
+                                                      width: 90,
+                                                      child: Text(
+                                                        e.product.name,
+                                                        textAlign:
+                                                            TextAlign.left,
+                                                        style: TextStyle(
+                                                          fontFamily: "Brandon",
+                                                          fontWeight:
+                                                              FontWeight.w200,
+                                                          fontSize: 13,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Container(
+                                                      margin: EdgeInsets.only(
+                                                          top: 1),
+                                                      width: 90,
+                                                      child: Text(
+                                                        nm_format.format(
+                                                                int.parse(
+                                                                    e.price)) +
+                                                            " (" +
+                                                            e.quantity
+                                                                .toString() +
+                                                            ")",
+                                                        textAlign:
+                                                            TextAlign.left,
+                                                        style: TextStyle(
+                                                          fontFamily: "Brandon",
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                          fontSize: 13,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    if (order.deliveryStatus ==
+                                                            OrderScreen
+                                                                .completed &&
+                                                        e.reviewed == 0)
+                                                      Container(
+                                                        margin: EdgeInsets.only(
+                                                            top: 4),
+                                                        child: FlatButton(
+                                                          shape:
+                                                              RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        10),
+                                                            side: BorderSide(
+                                                              width: 1,
+                                                              color: Color(
+                                                                  0xffF48262),
+                                                            ),
+                                                          ),
+                                                          onPressed: () {
+                                                            Navigator.push(
+                                                              context,
+                                                              MaterialPageRoute(
+                                                                builder:
+                                                                    (context) =>
+                                                                        ReviewScreen(
+                                                                  product:
+                                                                      e.product,
+                                                                  orderReview:
+                                                                      OrderReview(
+                                                                          e.id,
+                                                                          "order_detail_id"),
+                                                                ),
+                                                              ),
+                                                            ).then((_value) {
+                                                              if (_value) {
+                                                                _getData();
+                                                              }
+                                                            });
+                                                          },
+                                                          child: Text(
+                                                            "ULAS",
+                                                            style: TextStyle(
+                                                                color: Color(
+                                                                    0xffF48262),
+                                                                fontFamily:
+                                                                    "Brandon"),
+                                                          ),
+                                                        ),
+                                                        height: 30,
+                                                      )
+                                                  ],
+                                                ),
+                                              ),
+                                            )
+                                          ],
                                         ),
-                                      )
-                                    ],
-                                  ),
                                 )),
                               for (OrderDetailPoint e in order.orderDetailPoint)
                                 (Container(
                                   alignment: Alignment.topCenter,
                                   padding:
                                       EdgeInsets.only(bottom: 10, right: 10),
-                                  child: Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Expanded(
-                                        child: InkWell(
-                                          child: Container(
-                                            alignment: Alignment.topCenter,
-                                            padding: EdgeInsets.only(right: 10),
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.35,
-                                            child: CachedNetworkImage(
-                                              imageUrl: img_url +
-                                                  e.product.thumbnail_image,
-                                              placeholder: (context, url) =>
-                                                  LoadingWidgetPulse(context),
-                                              errorWidget: (context, url,
-                                                      error) =>
-                                                  Image.asset(
-                                                      'assets/images/210x265.png'),
-                                              width: MediaQuery.of(context)
-                                                  .size
-                                                  .width,
-                                              fit: BoxFit.cover,
+                                  child: e.product == null
+                                      ? Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Expanded(
+                                              child: Container(
+                                                alignment: Alignment.topCenter,
+                                                padding:
+                                                    EdgeInsets.only(right: 10),
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    0.35,
+                                                child: CachedNetworkImage(
+                                                  imageUrl: e.product
+                                                              .thumbnail_image !=
+                                                          null
+                                                      ? img_url +
+                                                          e.product
+                                                              .thumbnail_image
+                                                      : "",
+                                                  placeholder: (context, url) =>
+                                                      LoadingWidgetPulse(
+                                                          context),
+                                                  errorWidget: (context, url,
+                                                          error) =>
+                                                      Image.asset(
+                                                          'assets/images/210x265.png'),
+                                                  width: MediaQuery.of(context)
+                                                      .size
+                                                      .width,
+                                                  fit: BoxFit.cover,
+                                                ),
+                                              ),
                                             ),
-                                          ),
-                                        ),
-                                      ),
-                                      Expanded(
-                                        child: Container(
-                                          alignment: Alignment.topCenter,
-                                          child: Column(
-                                            children: [
-                                              Container(
-                                                margin: EdgeInsets.only(top: 0),
-                                                // color: Colors.redAccent,
-                                                width: 90,
-                                                child: MarqueeWidget(
-                                                  direction: Axis.horizontal,
-                                                  child: Text(
-                                                    e.product.brand.name,
-                                                    textAlign: TextAlign.left,
-                                                    style: TextStyle(
-                                                      fontFamily: "Yeseva",
-                                                      fontSize: 14,
+                                            Expanded(
+                                              child: Container(
+                                                alignment: Alignment.topCenter,
+                                                child: Column(
+                                                  children: [
+                                                    Container(
+                                                      margin: EdgeInsets.only(
+                                                          top: 0),
+                                                      // color: Colors.redAccent,
+                                                      width: 90,
+                                                      child: MarqueeWidget(
+                                                        direction:
+                                                            Axis.horizontal,
+                                                        child: Text(
+                                                          "",
+                                                          textAlign:
+                                                              TextAlign.left,
+                                                          style: TextStyle(
+                                                            fontFamily:
+                                                                "Yeseva",
+                                                            fontSize: 14,
+                                                          ),
+                                                        ),
+                                                      ),
                                                     ),
+                                                    Container(
+                                                      margin: EdgeInsets.only(
+                                                          top: 1),
+                                                      width: 90,
+                                                      child: Text(
+                                                        "Produk tidak ditemukan",
+                                                        textAlign:
+                                                            TextAlign.left,
+                                                        style: TextStyle(
+                                                          fontFamily: "Brandon",
+                                                          fontWeight:
+                                                              FontWeight.w200,
+                                                          fontSize: 13,
+                                                          fontStyle:
+                                                              FontStyle.italic,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Container(
+                                                      margin: EdgeInsets.only(
+                                                          top: 1),
+                                                      width: 90,
+                                                      child: Text(
+                                                        "-",
+                                                        textAlign:
+                                                            TextAlign.left,
+                                                        style: TextStyle(
+                                                          fontFamily: "Brandon",
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                          fontSize: 13,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            )
+                                          ],
+                                        )
+                                      : Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Expanded(
+                                              child: InkWell(
+                                                child: Container(
+                                                  alignment:
+                                                      Alignment.topCenter,
+                                                  padding: EdgeInsets.only(
+                                                      right: 10),
+                                                  width: MediaQuery.of(context)
+                                                          .size
+                                                          .width *
+                                                      0.35,
+                                                  child: CachedNetworkImage(
+                                                    imageUrl: e.product
+                                                                .thumbnail_image !=
+                                                            null
+                                                        ? img_url +
+                                                            e.product
+                                                                .thumbnail_image
+                                                        : "",
+                                                    placeholder:
+                                                        (context, url) =>
+                                                            LoadingWidgetPulse(
+                                                                context),
+                                                    errorWidget: (context, url,
+                                                            error) =>
+                                                        Image.asset(
+                                                            'assets/images/210x265.png'),
+                                                    width:
+                                                        MediaQuery.of(context)
+                                                            .size
+                                                            .width,
+                                                    fit: BoxFit.cover,
                                                   ),
                                                 ),
                                               ),
-                                              Container(
-                                                margin: EdgeInsets.only(top: 1),
-                                                width: 90,
-                                                child: Text(
-                                                  e.product.name,
-                                                  textAlign: TextAlign.left,
-                                                  style: TextStyle(
-                                                    fontFamily: "Brandon",
-                                                    fontWeight: FontWeight.w200,
-                                                    fontSize: 13,
-                                                  ),
+                                            ),
+                                            Expanded(
+                                              child: Container(
+                                                alignment: Alignment.topCenter,
+                                                child: Column(
+                                                  children: [
+                                                    Container(
+                                                      margin: EdgeInsets.only(
+                                                          top: 0),
+                                                      // color: Colors.redAccent,
+                                                      width: 90,
+                                                      child: MarqueeWidget(
+                                                        direction:
+                                                            Axis.horizontal,
+                                                        child: Text(
+                                                          e.product.brand.name,
+                                                          textAlign:
+                                                              TextAlign.left,
+                                                          style: TextStyle(
+                                                            fontFamily:
+                                                                "Yeseva",
+                                                            fontSize: 14,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Container(
+                                                      margin: EdgeInsets.only(
+                                                          top: 1),
+                                                      width: 90,
+                                                      child: Text(
+                                                        e.product.name,
+                                                        textAlign:
+                                                            TextAlign.left,
+                                                        style: TextStyle(
+                                                          fontFamily: "Brandon",
+                                                          fontWeight:
+                                                              FontWeight.w200,
+                                                          fontSize: 13,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Container(
+                                                      margin: EdgeInsets.only(
+                                                          top: 1),
+                                                      width: 90,
+                                                      child: Text(
+                                                        "Tukar Poin (" +
+                                                            e.quantity
+                                                                .toString() +
+                                                            ")",
+                                                        textAlign:
+                                                            TextAlign.left,
+                                                        style: TextStyle(
+                                                          fontFamily: "Brandon",
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                          fontSize: 13,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    // if(order.deliveryStatus == OrderScreen.completed && e.reviewed == 0)
+                                                    //   Container(
+                                                    //     margin:EdgeInsets.only(top: 4),
+                                                    //     child: RaisedButton(
+                                                    //       color: Color(0xffF48262),
+                                                    //       onPressed: () {
+                                                    //         Navigator.push(
+                                                    //           context,
+                                                    //           MaterialPageRoute(
+                                                    //             builder: (context) => ReviewScreen(product: e.product,orderReview: OrderReview(e.id,"order_point_id"),), ),
+                                                    //         ).then(( _value){
+                                                    //           if(_value){
+                                                    //             _getData();
+                                                    //           }
+                                                    //         });
+                                                    //       },
+                                                    //       child: Text(
+                                                    //         "Review",
+                                                    //         style: TextStyle(
+                                                    //             color: Colors.white,
+                                                    //             fontSize: 12,
+                                                    //             fontFamily:
+                                                    //             "Brandon"),
+                                                    //       ),
+                                                    //     ),
+                                                    //     height: 30,
+                                                    //   )
+                                                  ],
                                                 ),
                                               ),
-                                              Container(
-                                                margin: EdgeInsets.only(top: 1),
-                                                width: 90,
-                                                child: Text(
-                                                  "Tukar Poin (" +
-                                                      e.quantity.toString() +
-                                                      ")",
-                                                  textAlign: TextAlign.left,
-                                                  style: TextStyle(
-                                                    fontFamily: "Brandon",
-                                                    fontWeight: FontWeight.w600,
-                                                    fontSize: 13,
-                                                  ),
-                                                ),
-                                              ),
-                                              // if(order.deliveryStatus == OrderScreen.completed && e.reviewed == 0)
-                                              //   Container(
-                                              //     margin:EdgeInsets.only(top: 4),
-                                              //     child: RaisedButton(
-                                              //       color: Color(0xffF48262),
-                                              //       onPressed: () {
-                                              //         Navigator.push(
-                                              //           context,
-                                              //           MaterialPageRoute(
-                                              //             builder: (context) => ReviewScreen(product: e.product,orderReview: OrderReview(e.id,"order_point_id"),), ),
-                                              //         ).then(( _value){
-                                              //           if(_value){
-                                              //             _getData();
-                                              //           }
-                                              //         });
-                                              //       },
-                                              //       child: Text(
-                                              //         "Review",
-                                              //         style: TextStyle(
-                                              //             color: Colors.white,
-                                              //             fontSize: 12,
-                                              //             fontFamily:
-                                              //             "Brandon"),
-                                              //       ),
-                                              //     ),
-                                              //     height: 30,
-                                              //   )
-                                            ],
-                                          ),
+                                            )
+                                          ],
                                         ),
-                                      )
-                                    ],
-                                  ),
                                 )),
                               for (OrderDetailSample e
                                   in order.orderDetailSample)
@@ -532,119 +767,240 @@ class _OrderScreenState extends State<OrderScreen> {
                                   alignment: Alignment.topCenter,
                                   padding:
                                       EdgeInsets.only(bottom: 10, right: 10),
-                                  child: Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Expanded(
-                                        child: InkWell(
-                                          child: Container(
-                                            alignment: Alignment.topCenter,
-                                            padding: EdgeInsets.only(right: 10),
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.35,
-                                            child: CachedNetworkImage(
-                                              imageUrl: img_url +
-                                                  e.product.thumbnail_image,
-                                              placeholder: (context, url) =>
-                                                  LoadingWidgetPulse(context),
-                                              errorWidget: (context, url,
-                                                      error) =>
-                                                  Image.asset(
-                                                      'assets/images/210x265.png'),
-                                              width: MediaQuery.of(context)
-                                                  .size
-                                                  .width,
-                                              fit: BoxFit.cover,
+                                  child: e.product == null
+                                      ? Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Expanded(
+                                              child: Container(
+                                                alignment: Alignment.topCenter,
+                                                padding:
+                                                    EdgeInsets.only(right: 10),
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    0.35,
+                                                child: CachedNetworkImage(
+                                                  imageUrl: e.product
+                                                              .thumbnail_image !=
+                                                          null
+                                                      ? img_url +
+                                                          e.product
+                                                              .thumbnail_image
+                                                      : "",
+                                                  placeholder: (context, url) =>
+                                                      LoadingWidgetPulse(
+                                                          context),
+                                                  errorWidget: (context, url,
+                                                          error) =>
+                                                      Image.asset(
+                                                          'assets/images/210x265.png'),
+                                                  width: MediaQuery.of(context)
+                                                      .size
+                                                      .width,
+                                                  fit: BoxFit.cover,
+                                                ),
+                                              ),
                                             ),
-                                          ),
-                                        ),
-                                      ),
-                                      Expanded(
-                                        child: Container(
-                                          alignment: Alignment.topCenter,
-                                          child: Column(
-                                            children: [
-                                              Container(
-                                                margin: EdgeInsets.only(top: 0),
-                                                // color: Colors.redAccent,
-                                                width: 90,
-                                                child: MarqueeWidget(
-                                                  direction: Axis.horizontal,
-                                                  child: Text(
-                                                    e.product.brand.name,
-                                                    textAlign: TextAlign.left,
-                                                    style: TextStyle(
-                                                      fontFamily: "Yeseva",
-                                                      fontSize: 14,
+                                            Expanded(
+                                              child: Container(
+                                                alignment: Alignment.topCenter,
+                                                child: Column(
+                                                  children: [
+                                                    Container(
+                                                      margin: EdgeInsets.only(
+                                                          top: 0),
+                                                      // color: Colors.redAccent,
+                                                      width: 90,
+                                                      child: MarqueeWidget(
+                                                        direction:
+                                                            Axis.horizontal,
+                                                        child: Text(
+                                                          "",
+                                                          textAlign:
+                                                              TextAlign.left,
+                                                          style: TextStyle(
+                                                            fontFamily:
+                                                                "Yeseva",
+                                                            fontSize: 14,
+                                                          ),
+                                                        ),
+                                                      ),
                                                     ),
+                                                    Container(
+                                                      margin: EdgeInsets.only(
+                                                          top: 1),
+                                                      width: 90,
+                                                      child: Text(
+                                                        "Produk tidak ditemukan",
+                                                        textAlign:
+                                                            TextAlign.left,
+                                                        style: TextStyle(
+                                                          fontFamily: "Brandon",
+                                                          fontWeight:
+                                                              FontWeight.w200,
+                                                          fontSize: 13,
+                                                          fontStyle:
+                                                              FontStyle.italic,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Container(
+                                                      margin: EdgeInsets.only(
+                                                          top: 1),
+                                                      width: 90,
+                                                      child: Text(
+                                                        "-",
+                                                        textAlign:
+                                                            TextAlign.left,
+                                                        style: TextStyle(
+                                                          fontFamily: "Brandon",
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                          fontSize: 13,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            )
+                                          ],
+                                        )
+                                      : Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Expanded(
+                                              child: InkWell(
+                                                child: Container(
+                                                  alignment:
+                                                      Alignment.topCenter,
+                                                  padding: EdgeInsets.only(
+                                                      right: 10),
+                                                  width: MediaQuery.of(context)
+                                                          .size
+                                                          .width *
+                                                      0.35,
+                                                  child: CachedNetworkImage(
+                                                    imageUrl: e.product
+                                                                .thumbnail_image !=
+                                                            null
+                                                        ? img_url +
+                                                            e.product
+                                                                .thumbnail_image
+                                                        : "",
+                                                    placeholder:
+                                                        (context, url) =>
+                                                            LoadingWidgetPulse(
+                                                                context),
+                                                    errorWidget: (context, url,
+                                                            error) =>
+                                                        Image.asset(
+                                                            'assets/images/210x265.png'),
+                                                    width:
+                                                        MediaQuery.of(context)
+                                                            .size
+                                                            .width,
+                                                    fit: BoxFit.cover,
                                                   ),
                                                 ),
                                               ),
-                                              Container(
-                                                margin: EdgeInsets.only(top: 1),
-                                                width: 90,
-                                                child: Text(
-                                                  e.product.name,
-                                                  textAlign: TextAlign.left,
-                                                  style: TextStyle(
-                                                    fontFamily: "Brandon",
-                                                    fontWeight: FontWeight.w200,
-                                                    fontSize: 13,
-                                                  ),
+                                            ),
+                                            Expanded(
+                                              child: Container(
+                                                alignment: Alignment.topCenter,
+                                                child: Column(
+                                                  children: [
+                                                    Container(
+                                                      margin: EdgeInsets.only(
+                                                          top: 0),
+                                                      // color: Colors.redAccent,
+                                                      width: 90,
+                                                      child: MarqueeWidget(
+                                                        direction:
+                                                            Axis.horizontal,
+                                                        child: Text(
+                                                          e.product.brand.name,
+                                                          textAlign:
+                                                              TextAlign.left,
+                                                          style: TextStyle(
+                                                            fontFamily:
+                                                                "Yeseva",
+                                                            fontSize: 14,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Container(
+                                                      margin: EdgeInsets.only(
+                                                          top: 1),
+                                                      width: 90,
+                                                      child: Text(
+                                                        e.product.name,
+                                                        textAlign:
+                                                            TextAlign.left,
+                                                        style: TextStyle(
+                                                          fontFamily: "Brandon",
+                                                          fontWeight:
+                                                              FontWeight.w200,
+                                                          fontSize: 13,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Container(
+                                                      margin: EdgeInsets.only(
+                                                          top: 1),
+                                                      width: 90,
+                                                      child: Text(
+                                                        "Sample",
+                                                        textAlign:
+                                                            TextAlign.left,
+                                                        style: TextStyle(
+                                                          fontFamily: "Brandon",
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                          fontSize: 13,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    // if(order.deliveryStatus == OrderScreen.completed && e.reviewed == 0)
+                                                    //   Container(
+                                                    //     margin:EdgeInsets.only(top: 4),
+                                                    //     child: RaisedButton(
+                                                    //       color: Color(0xffF48262),
+                                                    //       onPressed: () {
+                                                    //
+                                                    //         Navigator.push(
+                                                    //           context,
+                                                    //           MaterialPageRoute(
+                                                    //             builder: (context) => ReviewScreen(product: e.product,orderReview: OrderReview(e.id,"order_sample_id"),), ),
+                                                    //         ).then((_value) async {
+                                                    //           if(_value){
+                                                    //             print("get dta");
+                                                    //             await _getData();
+                                                    //           }
+                                                    //         });
+                                                    //
+                                                    //       },
+                                                    //       child: Text(
+                                                    //         "Review",
+                                                    //         style: TextStyle(
+                                                    //             color: Colors.white,
+                                                    //             fontSize: 12,
+                                                    //             fontFamily:
+                                                    //             "Brandon"),
+                                                    //       ),
+                                                    //     ),
+                                                    //     height: 30,
+                                                    //   )
+                                                  ],
                                                 ),
                                               ),
-                                              Container(
-                                                margin: EdgeInsets.only(top: 1),
-                                                width: 90,
-                                                child: Text(
-                                                  "Sample",
-                                                  textAlign: TextAlign.left,
-                                                  style: TextStyle(
-                                                    fontFamily: "Brandon",
-                                                    fontWeight: FontWeight.w600,
-                                                    fontSize: 13,
-                                                  ),
-                                                ),
-                                              ),
-                                              // if(order.deliveryStatus == OrderScreen.completed && e.reviewed == 0)
-                                              //   Container(
-                                              //     margin:EdgeInsets.only(top: 4),
-                                              //     child: RaisedButton(
-                                              //       color: Color(0xffF48262),
-                                              //       onPressed: () {
-                                              //
-                                              //         Navigator.push(
-                                              //           context,
-                                              //           MaterialPageRoute(
-                                              //             builder: (context) => ReviewScreen(product: e.product,orderReview: OrderReview(e.id,"order_sample_id"),), ),
-                                              //         ).then((_value) async {
-                                              //           if(_value){
-                                              //             print("get dta");
-                                              //             await _getData();
-                                              //           }
-                                              //         });
-                                              //
-                                              //       },
-                                              //       child: Text(
-                                              //         "Review",
-                                              //         style: TextStyle(
-                                              //             color: Colors.white,
-                                              //             fontSize: 12,
-                                              //             fontFamily:
-                                              //             "Brandon"),
-                                              //       ),
-                                              //     ),
-                                              //     height: 30,
-                                              //   )
-                                            ],
-                                          ),
+                                            )
+                                          ],
                                         ),
-                                      )
-                                    ],
-                                  ),
                                 ))
                             ]),
                       ),
@@ -668,6 +1024,29 @@ class _OrderScreenState extends State<OrderScreen> {
                               width: 80,
                               child: Text(
                                 nm_format.format(order.subtotal),
+                                style: TextStyle(
+                                  fontFamily: "Brandon",
+                                  fontWeight: FontWeight.w300,
+                                  fontSize: 13,
+                                ),
+                              ),
+                            ),
+                            Container(
+                              width: 80,
+                              child: Text(
+                                "Diskon Point",
+                                textAlign: TextAlign.left,
+                                style: TextStyle(
+                                  fontFamily: "Brandon",
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 13,
+                                ),
+                              ),
+                            ),
+                            Container(
+                              width: 80,
+                              child: Text(
+                                nm_format.format(order.usingPoint),
                                 style: TextStyle(
                                   fontFamily: "Brandon",
                                   fontWeight: FontWeight.w300,
@@ -702,36 +1081,6 @@ class _OrderScreenState extends State<OrderScreen> {
                                 ),
                               ),
                             ),
-                            order.usingPoint == 0
-                                ? Container()
-                                : Container(
-                                    margin: EdgeInsets.only(
-                                      top: 5,
-                                    ),
-                                    width: 80,
-                                    child: Text(
-                                      "Using Point",
-                                      textAlign: TextAlign.left,
-                                      style: TextStyle(
-                                        fontFamily: "Brandon",
-                                        fontWeight: FontWeight.w500,
-                                        fontSize: 13,
-                                      ),
-                                    ),
-                                  ),
-                            order.usingPoint == 0
-                                ? Container()
-                                : Container(
-                                    width: 80,
-                                    child: Text(
-                                      nm_format.format(order.usingPoint),
-                                      style: TextStyle(
-                                        fontFamily: "Brandon",
-                                        fontWeight: FontWeight.w300,
-                                        fontSize: 13,
-                                      ),
-                                    ),
-                                  ),
                             Container(
                               margin: EdgeInsets.only(
                                 top: 5,
@@ -881,9 +1230,7 @@ class _OrderScreenState extends State<OrderScreen> {
                               width: 100,
                               margin: EdgeInsets.only(top: 10),
                               child: Text(
-                                order.pickUp == true
-                                    ? "Pickup In Store "
-                                    : "Alamat Pengiriman",
+                                "Alamat Pengiriman",
                                 style: TextStyle(
                                   fontSize: 12,
                                   fontWeight: FontWeight.w600,
@@ -951,9 +1298,7 @@ class _OrderScreenState extends State<OrderScreen> {
                               width: 100,
                               margin: EdgeInsets.only(top: 10),
                               child: Text(
-                                order.pickUp == true
-                                    ? "Area Pengambilan"
-                                    : "Area Pengiriman",
+                                "Area Pengiriman",
                                 style: TextStyle(
                                   fontSize: 12,
                                   fontWeight: FontWeight.w600,
@@ -999,7 +1344,10 @@ class _OrderScreenState extends State<OrderScreen> {
                   ),
                 ),
                 if (order.payment_status == 'unpaid' &&
-                    (order.payment_type == "manual_bca" ||
+                    (order.payment_type == "manual_bri" ||
+                        order.payment_type == "manual_nobu" ||
+                        order.payment_type == "manual_bni" ||
+                        order.payment_type == "manual_bca" ||
                         order.payment_type == "manual_mandiri" ||
                         order.payment_type == "manual_permata" ||
                         order.payment_type == "transfer_manual"))
@@ -1258,8 +1606,9 @@ class _OrderScreenState extends State<OrderScreen> {
                                                             Text(
                                                               snapshot
                                                                   .data
-                                                                  .query
-                                                                  .courier,
+                                                                  .courier
+                                                                  .company
+                                                                  .toUpperCase(),
                                                               style: TextStyle(
                                                                 fontFamily:
                                                                     'Brandon',
@@ -1267,10 +1616,8 @@ class _OrderScreenState extends State<OrderScreen> {
                                                             ),
                                                             Text(
                                                               'No Resi: ' +
-                                                                  snapshot
-                                                                      .data
-                                                                      .query
-                                                                      .waybill,
+                                                                  snapshot.data
+                                                                      .waybillId,
                                                               style: TextStyle(
                                                                 fontFamily:
                                                                     'Brandon',
@@ -1284,8 +1631,7 @@ class _OrderScreenState extends State<OrderScreen> {
                                                                 new ClipboardData(
                                                                     text: snapshot
                                                                         .data
-                                                                        .query
-                                                                        .waybill));
+                                                                        .waybillId));
                                                             Fluttertoast.showToast(
                                                                 msg:
                                                                     "Copied to Clipboard",
@@ -1327,7 +1673,7 @@ class _OrderScreenState extends State<OrderScreen> {
                                                   padding: EdgeInsets.all(20),
                                                   child: ListView(
                                                       children: snapshot
-                                                          .data.result.manifest
+                                                          .data.history.reversed
                                                           .map((e) =>
                                                               IntrinsicHeight(
                                                                 child: Row(
@@ -1377,13 +1723,13 @@ class _OrderScreenState extends State<OrderScreen> {
                                                                               CrossAxisAlignment.start,
                                                                           children: [
                                                                             Text(
-                                                                              e.manifestDescription,
+                                                                              e.note,
                                                                               style: TextStyle(
                                                                                 fontFamily: 'Brandon',
                                                                               ),
                                                                             ),
                                                                             Text(
-                                                                              e.manifestDate + ' ' + e.manifestTime,
+                                                                              DateFormat("dd-MM-yyyy").format(DateTime.parse(e.updatedAt)).toString(),
                                                                               style: TextStyle(
                                                                                 fontFamily: 'Brandon',
                                                                                 color: Color(0xff6D6E71),
@@ -1691,12 +2037,18 @@ class _OrderScreenState extends State<OrderScreen> {
   }
 
   Future<bool> _onWillPop() async {
-    return Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (context) => AccountScreen(),
-      ),
-    );
+    // return Navigator.pushReplacement(
+    //   context,
+    //   MaterialPageRoute(
+    //     builder: (context) => AccountScreen(),
+    //   ),
+    // );
+    return Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+          builder: (context) => AccountScreen(),
+        ),
+        (_) => false);
   }
 
   @override

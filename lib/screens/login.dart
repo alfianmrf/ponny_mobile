@@ -189,7 +189,6 @@ class _LoginStateScreen extends State<LoginScreen> {
       scopes: [
         AppleIDAuthorizationScopes.email,
         AppleIDAuthorizationScopes.fullName,
-        
       ],
       webAuthenticationOptions: WebAuthenticationOptions(
         // TODO: Set the `clientId` and `redirectUri` arguments to the values you entered in the Apple Developer portal during the setup
@@ -219,14 +218,13 @@ class _LoginStateScreen extends State<LoginScreen> {
       signInWithAppleEndpoint,
     );
     final AuthCredential credentials = OAuthProvider('apple.com').credential(
-        accessToken: credential.authorizationCode,
-        idToken: credential.identityToken,
-      );
+      accessToken: credential.authorizationCode,
+      idToken: credential.identityToken,
+    );
 
-      final users =
-        await FirebaseAuth.instance.signInWithCredential(credentials);
-      FirebasePakage.User user = users.user;
-      print(user);
+    final users = await FirebaseAuth.instance.signInWithCredential(credentials);
+    FirebasePakage.User user = users.user;
+    print(user);
     // If we got this far, a session based on the Apple ID credential has been created in your system,
     // and you can now set this as the app's session
     if (session.statusCode == 200) {
@@ -305,7 +303,7 @@ class _LoginStateScreen extends State<LoginScreen> {
         final FacebookAuthCredential credential =
             FacebookAuthProvider.credential(accessToken.token);
         //  final FirebasePakage.User user = await FirebaseAuth.instance.signInWithCredential(credential);
-        
+
         print(credential);
         var graphResponse = await http.get(
             'https://graph.facebook.com/v2.12/me?fields=name,first_name,last_name,email&access_token=${results.accessToken.token}');
@@ -352,7 +350,7 @@ class _LoginStateScreen extends State<LoginScreen> {
     //  Permissions: ${accessToken.permissions}
     //  Declined permissions: ${accessToken.declinedPermissions}
     //  ''');
-       return result;
+    return result;
   }
 
   Future<bool> _onWillPop() async {
@@ -376,12 +374,7 @@ class _LoginStateScreen extends State<LoginScreen> {
           elevation: 0.0,
           leading: IconButton(
             onPressed: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => HomeScreen(),
-                ),
-              );
+              Navigator.of(context).pushReplacementNamed(HomeScreen.id);
             },
             icon: Icon(
               Icons.arrow_back_ios_rounded,
@@ -452,7 +445,8 @@ class _LoginStateScreen extends State<LoginScreen> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => PraDaftarScreen()),
+                                        builder: (context) =>
+                                            PraDaftarScreen()),
                                   );
                                 },
                                 child: Text(
@@ -494,7 +488,8 @@ class _LoginStateScreen extends State<LoginScreen> {
                               hintText: 'Email',
                               hintStyle: TextStyle(fontFamily: 'Brandon'),
                               labelText: 'Email :',
-                              labelStyle: TextStyle(fontFamily: 'Brandon', color: Colors.black),
+                              labelStyle: TextStyle(
+                                  fontFamily: 'Brandon', color: Colors.black),
                               focusedBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(8.0),
                                 borderSide: BorderSide(
@@ -537,7 +532,8 @@ class _LoginStateScreen extends State<LoginScreen> {
                               hintText: 'Password',
                               hintStyle: TextStyle(fontFamily: 'Brandon'),
                               labelText: 'Password :',
-                              labelStyle: TextStyle(fontFamily: 'Brandon', color: Colors.black),
+                              labelStyle: TextStyle(
+                                  fontFamily: 'Brandon', color: Colors.black),
                               focusedBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(8.0),
                                 borderSide: BorderSide(
@@ -628,7 +624,8 @@ class _LoginStateScreen extends State<LoginScreen> {
                                     width: double.infinity,
                                     height: 1,
                                     color: Hexcolor('#F48262'),
-                                    margin: EdgeInsets.symmetric(horizontal: 20),
+                                    margin:
+                                        EdgeInsets.symmetric(horizontal: 20),
                                   ),
                                 ),
                                 Expanded(
@@ -652,7 +649,8 @@ class _LoginStateScreen extends State<LoginScreen> {
                                     width: double.infinity,
                                     height: 1,
                                     color: Hexcolor('#F48262'),
-                                    margin: EdgeInsets.symmetric(horizontal: 20),
+                                    margin:
+                                        EdgeInsets.symmetric(horizontal: 20),
                                   ),
                                 ),
                               ],
@@ -706,10 +704,14 @@ class _LoginStateScreen extends State<LoginScreen> {
                                                           context));
                                               signInWithGoogle().then((value) {
                                                 UIBlock.unblock(context);
-                                                if (value!=null) {
-                                                  Navigator.pushReplacement(context,new MaterialPageRoute(
-                                                    builder: (BuildContext context) =>  new HomeScreen(),
-                                                  ));
+                                                if (value != null) {
+                                                  Navigator.pushReplacement(
+                                                      context,
+                                                      new MaterialPageRoute(
+                                                        builder: (BuildContext
+                                                                context) =>
+                                                            new HomeScreen(),
+                                                      ));
                                                 } else {
                                                   scaffoldKey.currentState
                                                       .showSnackBar(
@@ -719,7 +721,8 @@ class _LoginStateScreen extends State<LoginScreen> {
                                                 print(onError);
                                                 UIBlock.unblock(context);
                                                 scaffoldKey.currentState
-                                                    .showSnackBar(snackBarError);
+                                                    .showSnackBar(
+                                                        snackBarError);
                                               });
                                             },
                                             child: SizedBox(
@@ -791,12 +794,17 @@ class _LoginStateScreen extends State<LoginScreen> {
                                                       LoadingWidgetFadingCircle(
                                                           context));
 
-                                              signInWithFacebook().then((value) {
+                                              signInWithFacebook()
+                                                  .then((value) {
                                                 UIBlock.unblock(context);
-                                                if (value!=null) {
-                                                  Navigator.pushReplacement(context,new MaterialPageRoute(
-                                                    builder: (BuildContext context) =>  new HomeScreen(),
-                                                  ));
+                                                if (value != null) {
+                                                  Navigator.pushReplacement(
+                                                      context,
+                                                      new MaterialPageRoute(
+                                                        builder: (BuildContext
+                                                                context) =>
+                                                            new HomeScreen(),
+                                                      ));
                                                 } else {
                                                   scaffoldKey.currentState
                                                       .showSnackBar(
@@ -805,7 +813,8 @@ class _LoginStateScreen extends State<LoginScreen> {
                                               }).catchError((onError) {
                                                 UIBlock.unblock(context);
                                                 scaffoldKey.currentState
-                                                    .showSnackBar(snackBarError);
+                                                    .showSnackBar(
+                                                        snackBarError);
                                               });
 
                                               // Create a credential from the access token
@@ -891,10 +900,14 @@ class _LoginStateScreen extends State<LoginScreen> {
                                                           context));
                                               signInWithTwitter().then((value) {
                                                 UIBlock.unblock(context);
-                                                if (value!=null) {
-                                                  Navigator.pushReplacement(context,new MaterialPageRoute(
-                                                    builder: (BuildContext context) =>  new HomeScreen(),
-                                                  ));
+                                                if (value != null) {
+                                                  Navigator.pushReplacement(
+                                                      context,
+                                                      new MaterialPageRoute(
+                                                        builder: (BuildContext
+                                                                context) =>
+                                                            new HomeScreen(),
+                                                      ));
                                                 } else {
                                                   scaffoldKey.currentState
                                                       .showSnackBar(
@@ -904,7 +917,8 @@ class _LoginStateScreen extends State<LoginScreen> {
                                                 print(onError);
                                                 UIBlock.unblock(context);
                                                 scaffoldKey.currentState
-                                                    .showSnackBar(snackBarError);
+                                                    .showSnackBar(
+                                                        snackBarError);
                                               });
                                             },
                                             child: SizedBox(
@@ -1013,8 +1027,7 @@ class _LoginStateScreen extends State<LoginScreen> {
                           ),
                         ),
                         Platform.isIOS
-                            ?
-                            Container(
+                            ? Container(
                                 margin: EdgeInsets.symmetric(vertical: 5),
                                 child: Row(
                                   children: [
@@ -1025,13 +1038,18 @@ class _LoginStateScreen extends State<LoginScreen> {
                                         onPressed: () async {
                                           UIBlock.block(context,
                                               customLoaderChild:
-                                                  LoadingWidgetFadingCircle(context));
+                                                  LoadingWidgetFadingCircle(
+                                                      context));
                                           signInWithApple().then((value) {
                                             UIBlock.unblock(context);
-                                            if (value!=null) {
-                                              Navigator.pushReplacement(context,new MaterialPageRoute(
-                                                builder: (BuildContext context) =>  new HomeScreen(),
-                                              ));
+                                            if (value != null) {
+                                              Navigator.pushReplacement(
+                                                  context,
+                                                  new MaterialPageRoute(
+                                                    builder: (BuildContext
+                                                            context) =>
+                                                        new HomeScreen(),
+                                                  ));
                                             } else {
                                               scaffoldKey.currentState
                                                   .showSnackBar(snackBarError);
@@ -1051,14 +1069,14 @@ class _LoginStateScreen extends State<LoginScreen> {
                             : Container(
                                 height: 20,
                               ),
-                        _loadingVersion?
-                        Container():
-                        Text(
-                          'Version '+_versionName,
-                          style: TextStyle(
-                            fontFamily: 'Brandon',
-                          ),
-                        ),
+                        _loadingVersion
+                            ? Container()
+                            : Text(
+                                'Version ' + _versionName,
+                                style: TextStyle(
+                                  fontFamily: 'Brandon',
+                                ),
+                              ),
                         Container(
                           height: 20,
                         ),

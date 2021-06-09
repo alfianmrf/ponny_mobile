@@ -78,6 +78,26 @@ class _CartScreenState extends State<CartScreen> {
     }
   }
 
+  Future<void> getListToko(int id) async {
+    try {
+      // var token =
+      //     Provider.of<AppModel>(context, listen: false).auth.access_token;
+      // await Provider.of<ListCabang>(context).getListCabang(token).then((value){
+      //   if(value == true) {
+          Provider.of<CartModel>(context)
+              .DeleteProductToCart(
+              id, Provider.of<AppModel>(context).auth.access_token)
+              .then((value) {
+            _getUnavaliableProduct();
+            UIBlock.unblock(context);
+            Navigator.pop(context);});
+      //   }
+      // } );
+    } catch (e) {
+      print("ERror message" + e.toString());
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -292,10 +312,8 @@ class _CartScreenState extends State<CartScreen> {
                           Container(
                               child: GestureDetector(
                             onTap: () {
-                              Provider.of<ListCabang>(context)
-                                  .setDataUnavaliable = true;
-                              Provider.of<ListCabang>(context).cabangClick =
-                                  null;
+                              Provider.of<ListCabang>(context).setDataUnavaliable = true;
+                              Provider.of<ListCabang>(context).cabangClick = null;
                               Navigator.pop(context);
                             },
                             child: Column(children: [
@@ -648,13 +666,7 @@ class _CartScreenState extends State<CartScreen> {
                 onPressed: () {
                   UIBlock.block(context,
                       customLoaderChild: LoadingWidget(context));
-                  Provider.of<CartModel>(context)
-                      .DeleteProductToCart(
-                          id, Provider.of<AppModel>(context).auth.access_token)
-                      .then((value) {
-                    UIBlock.unblock(context);
-                    Navigator.pop(context);
-                  });
+                  getListToko(id);
                 },
                 color: Color(0xffF48262),
                 child: Text("Ya",
@@ -1077,20 +1089,24 @@ class _CartScreenState extends State<CartScreen> {
                                               alignment: Alignment.bottomRight,
                                               child: GestureDetector(
                                                 onTap: () {
-                                                  UIBlock.block(context,
-                                                      customLoaderChild:
-                                                          LoadingWidget(
-                                                              context));
-                                                  value.DeleteProductToCart(
-                                                          item.id,
-                                                          Provider.of<AppModel>(
-                                                                  context)
-                                                              .auth
-                                                              .access_token)
-                                                      .then((value) {
-                                                    _getSummaryPoint();
-                                                    UIBlock.unblock(context);
-                                                  });
+                                                  // UIBlock.block(context,
+                                                  //     customLoaderChild:
+                                                  //         LoadingWidget(
+                                                  //             context));
+                                                  showDeleteDialog(
+                                                      context,
+                                                      item.product,
+                                                      item.id);
+                                                  // value.DeleteProductToCart(
+                                                  //         item.id,
+                                                  //         Provider.of<AppModel>(
+                                                  //                 context)
+                                                  //             .auth
+                                                  //             .access_token)
+                                                  //     .then((value) {
+                                                  //   _getSummaryPoint();
+                                                  //   UIBlock.unblock(context);
+                                                  // });
                                                 },
                                                 child: ImageIcon(
                                                   AssetImage(
@@ -1910,31 +1926,20 @@ class _CartScreenState extends State<CartScreen> {
                                                               CrossAxisAlignment
                                                                   .start,
                                                           children: [
-                                                            value
-                                                                        .unavaliable[
-                                                                            index]
-                                                                        .product
-                                                                        .thumbnail_image ==
-                                                                    null
-                                                                ? Container(
-                                                                    width: 110,
-                                                                    height: 110,
-                                                                    color: Colors
-                                                                            .grey[
-                                                                        300],
-                                                                    child: Image
-                                                                        .asset(
-                                                                            'assets/images/210x265.png'),
-                                                                  )
-                                                                : Container(
-                                                                    width: 110,
-                                                                    height: 110,
-                                                                    decoration: BoxDecoration(
-                                                                        image: DecorationImage(
-                                                                            image:
-                                                                                NetworkImage("$img_url${value.unavaliable[index].product.thumbnail_image}"),
-                                                                            fit: BoxFit.cover)),
-                                                                  )
+                                                            CachedNetworkImage(
+                                                              imageUrl: unavailable[index].product.thumbnail_image != null ? img_url + unavailable[index].product.thumbnail_image : "",
+                                                              placeholder: (context, url) =>
+                                                                  LoadingWidgetPulse(
+                                                                      context),
+                                                              errorWidget: (context, url,
+                                                                  error) =>
+                                                                  Image.asset(
+                                                                      'assets/images/210x265.png'),
+                                                              width: 110,
+                                                              height: 110,
+                                                              fit: BoxFit.cover,
+                                                            ),
+
                                                           ],
                                                         ),
                                                         Container(

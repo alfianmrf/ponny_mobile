@@ -9,29 +9,34 @@ class OrderResult {
   Midtrans mitrans_val;
   String orderCode;
   int codParam;
+  String redirectURL;
 
   OrderResult(
       {this.orderId,
-        this.message,
-        this.success,
-        this.emailSuccess,
-        this.mitransRequest,
-        this.orderCode,
-        this.mitrans_val,
-        this.codParam
-      });
+      this.message,
+      this.success,
+      this.emailSuccess,
+      this.mitransRequest,
+      this.orderCode,
+      this.mitrans_val,
+      this.codParam,
+      this.redirectURL});
 
   OrderResult.fromJson(Map<String, dynamic> json) {
     orderId = json['order_id'];
     message = json['message'];
-    success = json['success'] != null ? json['success'] :false;
-    emailSuccess = json['email_success'] != null ? json['email_success'] :false ;
+    success = json['success'] != null ? json['success'] : false;
+    emailSuccess =
+        json['email_success'] != null ? json['email_success'] : false;
     mitransRequest = json['mitrans_request'] != null
         ? new MitransRequest.fromJson(json['mitrans_request'])
         : null;
     orderCode = json['order_code'];
     codParam = json['cod_param'];
-    mitrans_val = json["mitrans_request"] != null ? Midtrans.fromJson(json["mitrans_request"]) : null;
+    mitrans_val = json["mitrans_request"] != null
+        ? Midtrans.fromJson(json["mitrans_request"])
+        : null;
+    redirectURL = json['redirect_url'];
   }
 
   Map<String, dynamic> toJson() {
@@ -43,9 +48,11 @@ class OrderResult {
       data['mitrans_request'] = this.mitransRequest.toJson();
     }
     data['order_code'] = this.orderCode;
+    data['redirect_url'] = this.redirectURL;
     return data;
   }
 }
+
 class MitransRequest {
   String statusCode;
   String statusMessage;
@@ -62,17 +69,17 @@ class MitransRequest {
 
   MitransRequest(
       {this.statusCode,
-        this.statusMessage,
-        this.transactionId,
-        this.orderId,
-        this.merchantId,
-        this.grossAmount,
-        this.currency,
-        this.paymentType,
-        this.transactionTime,
-        this.transactionStatus,
-        this.fraudStatus,
-        this.actions});
+      this.statusMessage,
+      this.transactionId,
+      this.orderId,
+      this.merchantId,
+      this.grossAmount,
+      this.currency,
+      this.paymentType,
+      this.transactionTime,
+      this.transactionStatus,
+      this.fraudStatus,
+      this.actions});
 
   MitransRequest.fromJson(Map<String, dynamic> json) {
     statusCode = json['status_code'];

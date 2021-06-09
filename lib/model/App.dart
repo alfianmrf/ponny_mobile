@@ -18,15 +18,15 @@ import 'package:ponny/util/AppId.dart';
 import 'package:ponny/util/globalUrl.dart';
 import 'package:http/http.dart' as http;
 
-class AppModel with ChangeNotifier{
+class AppModel with ChangeNotifier {
   LoginAuth auth;
   WaContact waContact;
   GeneralSetting setting;
-  List<FaqHeader> listFaq =[];
-  bool loggedIn =false;
-  bool loadingFaq =true;
-  bool loadingSetting= true;
-  AppModel(){
+  List<FaqHeader> listFaq = [];
+  bool loggedIn = false;
+  bool loadingFaq = true;
+  bool loadingSetting = true;
+  AppModel() {
     getAuth();
     getFAQ();
     getWA();
@@ -36,12 +36,12 @@ class AppModel with ChangeNotifier{
   Future<void> generalSettings() async {
     final response = await http.get(generalSetting);
     if (response.statusCode == 200) {
-      //print('sukses');
+      print('sukses');
       final res = json.decode(response.body);
       setting = GeneralSetting.fromJson(res['data'][0]);
       loadingSetting = false;
       notifyListeners();
-      //print(data);
+      print(setting);
       // return data;
     } else {
       throw Exception('Failed to load data');
@@ -59,7 +59,6 @@ class AppModel with ChangeNotifier{
           auth = LoginAuth.fromLocalJson(json);
           loggedIn = true;
           notifyListeners();
-
         }
       }
     } catch (err) {
@@ -68,15 +67,20 @@ class AppModel with ChangeNotifier{
   }
 
   Future<LoginResult> setAuth(param) async {
-    LoginResult _result = LoginResult(status: 500,message: "Terjadi kesalahan pada server, mohon ulangi beberapa saat lagi." );
-    final res = await http.post(loginUrl,headers: { HttpHeaders.contentTypeHeader: 'application/json' },body: json.encode(param));
+    LoginResult _result = LoginResult(
+        status: 500,
+        message:
+            "Terjadi kesalahan pada server, mohon ulangi beberapa saat lagi.");
+    final res = await http.post(loginUrl,
+        headers: {HttpHeaders.contentTypeHeader: 'application/json'},
+        body: json.encode(param));
     final LocalStorage storage = LocalStorage("ponnystore");
     var result = json.decode(res.body);
-    _result = LoginResult(status: res.statusCode,message:result['message'] );
-    if(res.statusCode == 200){
+    _result = LoginResult(status: res.statusCode, message: result['message']);
+    if (res.statusCode == 200) {
       auth = LoginAuth.fromLocalJson(result);
-      loggedIn =true;
-      _result = LoginResult(status: res.statusCode,message: result['message']);
+      loggedIn = true;
+      _result = LoginResult(status: res.statusCode, message: result['message']);
       final ready = await storage.ready;
       if (ready) {
         await storage.setItem("auth", result);
@@ -87,22 +91,21 @@ class AppModel with ChangeNotifier{
     return _result;
   }
 
-
   Future<void> getFAQ() async {
-    listFaq =[];
+    listFaq = [];
     final res = await http.get(faqUrl);
-    if(res.statusCode == 200){
+    if (res.statusCode == 200) {
       var result = json.decode(res.body);
-      for(Map item in result){
+      for (Map item in result) {
         listFaq.add(FaqHeader.fromJson(item));
       }
     }
-    loadingFaq =false;
+    loadingFaq = false;
   }
 
   Future<void> getWA() async {
     final res = await http.get(waContacturl);
-    if(res.statusCode == 200){
+    if (res.statusCode == 200) {
       var result = json.decode(res.body);
       waContact = WaContact.fromJson(result);
     }
@@ -110,13 +113,15 @@ class AppModel with ChangeNotifier{
 
   Future<User> setAuthOtp(param) async {
     User _result;
-    final res = await http.post(loginOtp,headers: { HttpHeaders.contentTypeHeader: 'application/json' },body: json.encode(param));
+    final res = await http.post(loginOtp,
+        headers: {HttpHeaders.contentTypeHeader: 'application/json'},
+        body: json.encode(param));
     final LocalStorage storage = LocalStorage("ponnystore");
-    if(res.statusCode == 200){
+    if (res.statusCode == 200) {
       var result = json.decode(res.body);
       auth = LoginAuth.fromLocalJson(result);
       _result = User.fromLocalJson(result['user']);
-      loggedIn =true;
+      loggedIn = true;
       final ready = await storage.ready;
       if (ready) {
         await storage.setItem("auth", result);
@@ -129,17 +134,19 @@ class AppModel with ChangeNotifier{
 
   Future<User> setAuthSocial(param) async {
     User _result;
-    final res = await http.post(loginSocial,headers: { HttpHeaders.contentTypeHeader: 'application/json' },body: json.encode(param));
+    final res = await http.post(loginSocial,
+        headers: {HttpHeaders.contentTypeHeader: 'application/json'},
+        body: json.encode(param));
     // print(res.body);
     final LocalStorage storage = LocalStorage("ponnystore");
 
-    if(res.statusCode == 200){
+    if (res.statusCode == 200) {
       var result = json.decode(res.body);
       auth = LoginAuth.fromLocalJson(result);
       _result = User.fromLocalJson(result['user']);
       print(_result.name);
       print(_result.email);
-      loggedIn =true;
+      loggedIn = true;
       final ready = await storage.ready;
       if (ready) {
         await storage.setItem("auth", result);
@@ -151,9 +158,11 @@ class AppModel with ChangeNotifier{
   }
 
   Future<SearchGlobalResult> search(param) async {
-    final res = await http.post(globalSearch,headers: { HttpHeaders.contentTypeHeader: 'application/json' },body: json.encode(param));
+    final res = await http.post(globalSearch,
+        headers: {HttpHeaders.contentTypeHeader: 'application/json'},
+        body: json.encode(param));
 
-    if(res.statusCode == 200){
+    if (res.statusCode == 200) {
       var result = json.decode(res.body);
       return SearchGlobalResult.fromJson(result);
     }
@@ -161,9 +170,11 @@ class AppModel with ChangeNotifier{
   }
 
   Future<List<Faq>> searchFaqData(param) async {
-    final res = await http.post(faqSearch,headers: { HttpHeaders.contentTypeHeader: 'application/json' },body: json.encode(param));
-    List<Faq> _result=[];
-    if(res.statusCode == 200){
+    final res = await http.post(faqSearch,
+        headers: {HttpHeaders.contentTypeHeader: 'application/json'},
+        body: json.encode(param));
+    List<Faq> _result = [];
+    if (res.statusCode == 200) {
       var result = json.decode(res.body);
       result.forEach((v) {
         _result.add(new Faq.fromJson(v));
@@ -173,9 +184,11 @@ class AppModel with ChangeNotifier{
   }
 
   Future<List<ItemSkinklopedia>> searchSkinklopedia(param) async {
-    final res = await http.post(skinklopediaSearch,headers: { HttpHeaders.contentTypeHeader: 'application/json' },body: json.encode(param));
-    List<ItemSkinklopedia> _result=[];
-    if(res.statusCode == 200){
+    final res = await http.post(skinklopediaSearch,
+        headers: {HttpHeaders.contentTypeHeader: 'application/json'},
+        body: json.encode(param));
+    List<ItemSkinklopedia> _result = [];
+    if (res.statusCode == 200) {
       var result = json.decode(res.body);
       result.forEach((v) {
         _result.add(new ItemSkinklopedia.fromJson(v));
@@ -186,7 +199,8 @@ class AppModel with ChangeNotifier{
 
   Future<void> logout() async {
     final GoogleSignIn googleSignIn = GoogleSignIn();
-    final TwitterLogin twitterLogin = TwitterLogin(consumerKey: TWITTER_CLIENT_ID, consumerSecret: TWITTER_CLIENT_SECRET);
+    final TwitterLogin twitterLogin = TwitterLogin(
+        consumerKey: TWITTER_CLIENT_ID, consumerSecret: TWITTER_CLIENT_SECRET);
     final LocalStorage storage = LocalStorage("ponnystore");
     try {
       final ready = await storage.ready;
@@ -194,10 +208,9 @@ class AppModel with ChangeNotifier{
         await storage.deleteItem("auth");
         await storage.deleteItem("useAddress");
         final googleSinginStatus = await googleSignIn.isSignedIn();
-        if(googleSinginStatus)
-        await googleSignIn.signOut();
-        final twitterStatus =await twitterLogin.isSessionActive;
-        if(twitterStatus) await twitterLogin.logOut();
+        if (googleSinginStatus) await googleSignIn.signOut();
+        final twitterStatus = await twitterLogin.isSessionActive;
+        if (twitterStatus) await twitterLogin.logOut();
         auth = null;
         loggedIn = false;
         notifyListeners();
@@ -205,10 +218,9 @@ class AppModel with ChangeNotifier{
     } catch (err) {
       print(err);
     }
-
   }
-
 }
+
 class LoginAuth {
   String access_token;
   String token_type;
@@ -216,9 +228,9 @@ class LoginAuth {
   LoginAuth(this.access_token, this.token_type, this.expires_at);
 
   factory LoginAuth.fromLocalJson(Map<String, dynamic> json) {
-    return LoginAuth(json["access_token"], json["token_type"], json["expires_at"]);
+    return LoginAuth(
+        json["access_token"], json["token_type"], json["expires_at"]);
   }
-
 }
 
 class WaContact {
@@ -243,14 +255,13 @@ class WaContact {
   }
 }
 
-class SearchGlobalResult{
-  List<Product> products=[];
-  List<Brand> brands=[];
-  List<Category> categorys=[];
+class SearchGlobalResult {
+  List<Product> products = [];
+  List<Brand> brands = [];
+  List<Category> categorys = [];
   List<ItemBlog> blogs = [];
-  SearchGlobalResult(this.products,this.brands,this.categorys,this.blogs);
+  SearchGlobalResult(this.products, this.brands, this.categorys, this.blogs);
   SearchGlobalResult.fromJson(Map<String, dynamic> json) {
-
     json['products'].forEach((v) {
       products.add(new Product.fromJson(v['availability']));
     });
@@ -263,11 +274,11 @@ class SearchGlobalResult{
     json['brand'].forEach((v) {
       brands.add(new Brand.fromJson(v));
     });
-
   }
 }
-class LoginResult{
+
+class LoginResult {
   int status;
   String message;
-  LoginResult({this.status,this.message});
+  LoginResult({this.status, this.message});
 }

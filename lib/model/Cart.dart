@@ -27,6 +27,7 @@ class CartModel with ChangeNotifier {
   MapCost shipping;
   int CurentPoint = 0;
   int poinBoong = 0;
+  String tokenMidtrans;
 
   CartModel();
 
@@ -151,6 +152,8 @@ class CartModel with ChangeNotifier {
     }
   }
 
+  Future<void> getNews() {}
+
   Future<void> RemoveProductToCart(
       Product product, String token, String variant) async {
     int index = listCardOfitem.indexWhere((element) =>
@@ -230,12 +233,14 @@ class CartModel with ChangeNotifier {
     }
   }
 
-  Future<void> getCart(String token) async {
+  Future<bool> getCart(String token) async {
     try {
       final result = await http.get(preChekout, headers: {
         HttpHeaders.contentTypeHeader: 'application/json',
         HttpHeaders.authorizationHeader: "Bearer $token"
       });
+      print("home");
+      print(result.body);
       if (result.statusCode == 200) {
         listCardOfitem = [];
         loadingCard = true;
@@ -277,11 +282,13 @@ class CartModel with ChangeNotifier {
         summary = Summary.fromJson(responseJson["summary"]);
         loadingCard = false;
         notifyListeners();
+        return true;
       }
     } catch (err) {
       print("error." + err.toString());
       notifyListeners();
     }
+    return false;
   }
 
   Future<void> DeleteProductToCart(int id, String token) async {
@@ -456,7 +463,7 @@ class CartModel with ChangeNotifier {
   }
 
   Future<OrderResult> Checkout(
-      String token, Address useAddress, String method) async {
+      String token, Address useAddress, String method, String token_id) async {
     var param;
     OrderResult result;
     if (coupon != null) {
@@ -464,13 +471,15 @@ class CartModel with ChangeNotifier {
         "address_id": useAddress.id,
         "courier": json.encode(shipping.toJson()),
         "coupon_code": coupon.code,
-        "payment_code": method
+        "payment_code": method,
+        "token_id": token_id
       };
     } else {
       param = {
         "address_id": useAddress.id,
         "courier": json.encode(shipping.toJson()),
-        "payment_code": method
+        "payment_code": method,
+        "token_id": token_id
       };
     }
     final res = await http.post(cartChekouturl,

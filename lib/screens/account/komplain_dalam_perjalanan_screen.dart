@@ -319,9 +319,8 @@ class _KomplainDalamPerjalananStateScreen extends State<KomplainDalamPerjalananS
                               InkWell(
                                 onTap: () async {
                                   FilePickerResult result = await FilePicker.platform.pickFiles(
-                                    type: FileType.custom,
+                                    type: FileType.image,
                                     allowMultiple: true,
-                                    allowedExtensions: ['jpg', 'png', 'gif'],
                                   );
 
                                   if(result != null) {

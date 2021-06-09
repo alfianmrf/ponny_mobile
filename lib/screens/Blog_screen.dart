@@ -30,7 +30,7 @@ class _BlogState extends State<Blog> {
   int categoryId;
   int lostData = 0;
   var categoryFilter;
-  bool loadingAll= true;
+  bool loadingAll = true;
   bool loading = true;
   List listAll;
   List Trending;
@@ -59,9 +59,9 @@ class _BlogState extends State<Blog> {
   }
 
   Future<void> filterData(int categoryId) async {
-    if(!loadingAll)
+    if (!loadingAll)
       setState(() {
-        loadingAll=true;
+        loadingAll = true;
       });
     final response = await http.get(blogUrl +
         (() {
@@ -78,23 +78,21 @@ class _BlogState extends State<Blog> {
   }
 
   Future<void> search() async {
-    if(!loadingAll)
+    if (!loadingAll)
       setState(() {
-        loadingAll=true;
+        loadingAll = true;
       });
-    var param =<String,dynamic>{};
-    if(q.isNotEmpty){
-      param.addAll({
-        "q":q
-      });
+    var param = <String, dynamic>{};
+    if (q.isNotEmpty) {
+      param.addAll({"q": q});
     }
-    if(categoryId > 0){
-      param.addAll({
-        "category_id":categoryId
-      });
+    if (categoryId > 0) {
+      param.addAll({"category_id": categoryId});
     }
-    final res = await http.post(blogCari,headers: { HttpHeaders.contentTypeHeader: 'application/json' },body: json.encode(param));
-    if(res.statusCode == 200){
+    final res = await http.post(blogCari,
+        headers: {HttpHeaders.contentTypeHeader: 'application/json'},
+        body: json.encode(param));
+    if (res.statusCode == 200) {
       setState(() {
         listAll = json.decode(res.body);
         loadingAll = false;
@@ -106,8 +104,8 @@ class _BlogState extends State<Blog> {
   void initState() {
     // TODO: implement initState
     getData();
-    categoryId=widget.category;
-    currentTag=widget.tag;
+    categoryId = widget.category;
+    currentTag = widget.tag;
     filterData(categoryId);
   }
 
@@ -118,9 +116,9 @@ class _BlogState extends State<Blog> {
     List<dynamic> data = map["other_articles"];
     return data;
   }
+
   @override
   Widget build(BuildContext context) {
-
     return WillPopScope(
       onWillPop: () {
         setState(() {
@@ -136,284 +134,299 @@ class _BlogState extends State<Blog> {
             backgroundColor: Hexcolor('#FCF8F0'),
             body: loading
                 ? Container(
-              child: Center(
-                child: LoadingWidgetFadingCircle(context),
-              ),
-            )
-                :Column(
-              children: [
-                Container(
-                  color: Color(0xffF48262),
-                  height: 35,
-                ),
-                onSearch
-                    ? Container(
-                        width: double.infinity,
+                    child: Center(
+                      child: LoadingWidgetFadingCircle(context),
+                    ),
+                  )
+                : Column(
+                    children: [
+                      Container(
                         color: Color(0xffF48262),
-                        child: Container(
-                          decoration: BoxDecoration(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10)),
-                              color: Colors.white),
-                          padding: EdgeInsets.all(10),
-                          margin: EdgeInsets.all(10),
-                          child: Row(children: [
-                            Icon(Icons.search, color: Color(0xffF48262)),
-                            Expanded(
-                                child: TextField(
-                              cursorColor: Colors.black,
-                              keyboardType: TextInputType.text,
-                              onSubmitted: (String _q){
-                                    setState(() {
-                                      q=_q;
-                                    });
-                                    search();
-                              },
-                              textInputAction: TextInputAction.go,
-                              decoration: new InputDecoration.collapsed(
-                                  hintText: "Search..."),
-                            ))
-                          ]),
-                        ),
-                      )
-                    : Container(
-                        width: double.infinity,
-                        color: Color(0xffF48262),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              flex: 1,
+                        height: 35,
+                      ),
+                      onSearch
+                          ? Container(
+                              width: double.infinity,
+                              color: Color(0xffF48262),
                               child: Container(
-                                alignment: Alignment.centerLeft,
-                                child: IconButton(
-                                  icon: Icon(
-                                    Icons.search,
-                                    color: Colors.white,
+                                decoration: BoxDecoration(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(10)),
+                                    color: Colors.white),
+                                padding: EdgeInsets.all(10),
+                                margin: EdgeInsets.all(10),
+                                child: Row(children: [
+                                  Icon(Icons.search, color: Color(0xffF48262)),
+                                  Expanded(
+                                      child: TextField(
+                                    cursorColor: Colors.black,
+                                    keyboardType: TextInputType.text,
+                                    onSubmitted: (String _q) {
+                                      setState(() {
+                                        q = _q;
+                                      });
+                                      search();
+                                    },
+                                    textInputAction: TextInputAction.go,
+                                    decoration: new InputDecoration.collapsed(
+                                        hintText: "Search..."),
+                                  ))
+                                ]),
+                              ),
+                            )
+                          : Container(
+                              width: double.infinity,
+                              color: Color(0xffF48262),
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    flex: 1,
+                                    child: Container(
+                                      alignment: Alignment.centerLeft,
+                                      child: IconButton(
+                                        icon: Icon(
+                                          Icons.search,
+                                          color: Colors.white,
+                                        ),
+                                        onPressed: () {
+                                          setState(() {
+                                            onSearch = true;
+                                          });
+                                        },
+                                      ),
+                                    ),
                                   ),
-                                  onPressed: () {
-                                    setState(() {
-                                      onSearch = true;
-                                    });
-                                  },
-                                ),
+                                  Expanded(
+                                    flex: 2,
+                                    child: Container(
+                                        child: Image.asset(
+                                      "assets/images/blogTitle.png",
+                                      color: Colors.white,
+                                    )),
+                                  ),
+                                  Expanded(flex: 1, child: Container())
+                                ],
                               ),
                             ),
-                            Expanded(
-                              flex: 2,
-                              child: Container(
-                                  child: Image.asset(
-                                "assets/images/blogTitle.png",
-                                color: Colors.white,
-                              )),
-                            ),
-                            Expanded(flex: 1, child: Container())
-                          ],
+                      Container(
+                        width: double.infinity,
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            children: [
+                              InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    currentTag = "ALL";
+                                    categoryId = 0;
+                                  });
+                                  filterData(categoryId);
+                                },
+                                child: Container(
+                                  height: 50,
+                                  padding: EdgeInsets.symmetric(horizontal: 15),
+                                  alignment: Alignment.center,
+                                  color: categoryId == 0
+                                      ? Color(0xffFBDFD2)
+                                      : null,
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Text(
+                                        "ALL",
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            fontSize: 12,
+                                            fontFamily: "Brandon",
+                                            fontWeight: FontWeight.bold,
+                                            color: categoryId == 0
+                                                ? Colors.black
+                                                : Color(0xffF48262)),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              for (var e in result.blogs)
+                                InkWell(
+                                  onTap: () {
+                                    setState(() {
+                                      currentTag = e.title.toUpperCase();
+                                      categoryId = e.id;
+                                    });
+                                    filterData(categoryId);
+                                  },
+                                  child: Container(
+                                    height: 50,
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 15),
+                                    alignment: Alignment.center,
+                                    color: categoryId == e.id
+                                        ? Color(0xffFBDFD2)
+                                        : null,
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Text(
+                                          e.title.toUpperCase(),
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              fontSize: 12,
+                                              fontFamily: "Brandon",
+                                              fontWeight: FontWeight.bold,
+                                              color: categoryId == e.id
+                                                  ? Colors.black
+                                                  : Color(0xffF48262)),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              // InkWell(
+                              //   onTap: () {
+                              //     setState(() {
+                              //       currentTag = "MASALAH KULIT";
+                              //       categoryId = 2;
+                              //     });
+                              //     filterData(categoryId);
+                              //   },
+                              //   child: Container(
+                              //     height: 50,
+                              //     padding: EdgeInsets.symmetric(horizontal: 15),
+                              //     alignment: Alignment.center,
+                              //     color: categoryId == 2 ? Color(0xffFBDFD2) : null,
+                              //     child: Column(
+                              //       mainAxisSize: MainAxisSize.min,
+                              //       children: [
+                              //         Text(
+                              //           "MASALAH\nKULIT",
+                              //           textAlign: TextAlign.center,
+                              //           style: TextStyle(
+                              //               fontSize: 12,
+                              //               fontFamily: "Brandon",
+                              //               fontWeight: FontWeight.bold,
+                              //               color: categoryId == 2 ? Colors.black : Color(0xffF48262)),
+                              //         ),
+                              //       ],
+                              //     ),
+                              //   ),
+                              // ),
+                              // InkWell(
+                              //   onTap: () {
+                              //     setState(() {
+                              //       currentTag = "SKINCARE ROUTINE";
+                              //       categoryId = 3;
+                              //     });
+                              //     filterData(categoryId);
+                              //   },
+                              //   child: Container(
+                              //     height: 50,
+                              //     padding: EdgeInsets.symmetric(horizontal: 15),
+                              //     alignment: Alignment.center,
+                              //     color: categoryId == 3 ? Color(0xffFBDFD2) : null,
+                              //     child: Column(
+                              //       mainAxisSize: MainAxisSize.min,
+                              //       children: [
+                              //         Text(
+                              //           "SKINCARE\nROUTINE",
+                              //           textAlign: TextAlign.center,
+                              //           style: TextStyle(
+                              //               fontSize: 12,
+                              //               fontFamily: "Brandon",
+                              //               fontWeight: FontWeight.bold,
+                              //               color: categoryId == 3 ? Colors.black : Color(0xffF48262)),
+                              //         ),
+                              //       ],
+                              //     ),
+                              //   ),
+                              // ),
+                              // InkWell(
+                              //   onTap: () {
+                              //     setState(() {
+                              //       currentTag = "MITOS ATAU FAKTA";
+                              //       categoryId = 4;
+                              //     });
+                              //     filterData(categoryId);
+                              //   },
+                              //   child: Container(
+                              //     height: 50,
+                              //     padding: EdgeInsets.symmetric(horizontal: 15),
+                              //     alignment: Alignment.center,
+                              //     color: categoryId == 4 ? Color(0xffFBDFD2) : null,
+                              //     child: Column(
+                              //       mainAxisSize: MainAxisSize.min,
+                              //       children: [
+                              //         Text(
+                              //           "MITOS\nATAU FAKTA",
+                              //           textAlign: TextAlign.center,
+                              //           style: TextStyle(
+                              //               fontSize: 12,
+                              //               fontFamily: "Brandon",
+                              //               fontWeight: FontWeight.bold,
+                              //               color: categoryId == 4 ? Colors.black : Color(0xffF48262)),
+                              //         ),
+                              //       ],
+                              //     ),
+                              //   ),
+                              // ),
+                            ],
+                          ),
                         ),
                       ),
-                Container(
-                  width: double.infinity,
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      children: [
-                        InkWell(
-                          onTap: () {
-                            setState(() {
-                              currentTag = "ALL";
-                              categoryId = 0;
-                            });
-                            filterData(categoryId);
-                          },
-                          child: Container(
-                            height: 50,
-                            padding: EdgeInsets.symmetric(horizontal: 15),
-                            alignment: Alignment.center,
-                            color: categoryId == 0 ? Color(0xffFBDFD2) : null,
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Text(
-                                  "ALL",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      fontSize: 12,
-                                      fontFamily: "Brandon",
-                                      fontWeight: FontWeight.bold,
-                                      color: categoryId == 0 ? Colors.black : Color(0xffF48262)),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        for(var e in result.blogs)
-                        InkWell(
-                          onTap: () {
-                            setState(() {
-                              currentTag = e.title.toUpperCase();
-                              categoryId = e.id;
-                            });
-                            filterData(categoryId);
-                          },
-                          child: Container(
-                            height: 50,
-                            padding: EdgeInsets.symmetric(horizontal: 15),
-                            alignment: Alignment.center,
-                            color: categoryId == e.id ? Color(0xffFBDFD2) : null,
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Text(
-                                  e.title.toUpperCase(),
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      fontSize: 12,
-                                      fontFamily: "Brandon",
-                                      fontWeight: FontWeight.bold,
-                                      color: categoryId == e.id ? Colors.black : Color(0xffF48262)),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        // InkWell(
-                        //   onTap: () {
-                        //     setState(() {
-                        //       currentTag = "MASALAH KULIT";
-                        //       categoryId = 2;
-                        //     });
-                        //     filterData(categoryId);
-                        //   },
-                        //   child: Container(
-                        //     height: 50,
-                        //     padding: EdgeInsets.symmetric(horizontal: 15),
-                        //     alignment: Alignment.center,
-                        //     color: categoryId == 2 ? Color(0xffFBDFD2) : null,
-                        //     child: Column(
-                        //       mainAxisSize: MainAxisSize.min,
-                        //       children: [
-                        //         Text(
-                        //           "MASALAH\nKULIT",
-                        //           textAlign: TextAlign.center,
-                        //           style: TextStyle(
-                        //               fontSize: 12,
-                        //               fontFamily: "Brandon",
-                        //               fontWeight: FontWeight.bold,
-                        //               color: categoryId == 2 ? Colors.black : Color(0xffF48262)),
-                        //         ),
-                        //       ],
-                        //     ),
-                        //   ),
-                        // ),
-                        // InkWell(
-                        //   onTap: () {
-                        //     setState(() {
-                        //       currentTag = "SKINCARE ROUTINE";
-                        //       categoryId = 3;
-                        //     });
-                        //     filterData(categoryId);
-                        //   },
-                        //   child: Container(
-                        //     height: 50,
-                        //     padding: EdgeInsets.symmetric(horizontal: 15),
-                        //     alignment: Alignment.center,
-                        //     color: categoryId == 3 ? Color(0xffFBDFD2) : null,
-                        //     child: Column(
-                        //       mainAxisSize: MainAxisSize.min,
-                        //       children: [
-                        //         Text(
-                        //           "SKINCARE\nROUTINE",
-                        //           textAlign: TextAlign.center,
-                        //           style: TextStyle(
-                        //               fontSize: 12,
-                        //               fontFamily: "Brandon",
-                        //               fontWeight: FontWeight.bold,
-                        //               color: categoryId == 3 ? Colors.black : Color(0xffF48262)),
-                        //         ),
-                        //       ],
-                        //     ),
-                        //   ),
-                        // ),
-                        // InkWell(
-                        //   onTap: () {
-                        //     setState(() {
-                        //       currentTag = "MITOS ATAU FAKTA";
-                        //       categoryId = 4;
-                        //     });
-                        //     filterData(categoryId);
-                        //   },
-                        //   child: Container(
-                        //     height: 50,
-                        //     padding: EdgeInsets.symmetric(horizontal: 15),
-                        //     alignment: Alignment.center,
-                        //     color: categoryId == 4 ? Color(0xffFBDFD2) : null,
-                        //     child: Column(
-                        //       mainAxisSize: MainAxisSize.min,
-                        //       children: [
-                        //         Text(
-                        //           "MITOS\nATAU FAKTA",
-                        //           textAlign: TextAlign.center,
-                        //           style: TextStyle(
-                        //               fontSize: 12,
-                        //               fontFamily: "Brandon",
-                        //               fontWeight: FontWeight.bold,
-                        //               color: categoryId == 4 ? Colors.black : Color(0xffF48262)),
-                        //         ),
-                        //       ],
-                        //     ),
-                        //   ),
-                        // ),
-                      ],
-                    ),
-                  ),
-                ),
-                Container(
-                    alignment: Alignment.center,
-                    padding: EdgeInsets.all(10),
-                    width: double.infinity,
-                    color: Color(0xffFACAC1),
-                    child: Text(
-                      currentTag,
-                      style: TextStyle(color: Color(0xffF48262), fontSize: 20),
-                    )),
-                Expanded(
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        Container(
-                          padding: EdgeInsets.symmetric(horizontal: 10),
-                            child: loadingAll?Center(
-                                child:
-                                LoadingWidgetFadingCircle(context)) : categoryListBlog(
-                                context, listAll.reversed.toList(), categoryId)
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(top: 30, bottom: 30),
-                          height: 1,
-                          color: Color(0xffF3C1B5),
-                        ),
-                        Container(
+                      Container(
+                          alignment: Alignment.center,
+                          padding: EdgeInsets.all(10),
+                          width: double.infinity,
+                          color: Color(0xffFACAC1),
                           child: Text(
-                            "TRENDING",
+                            currentTag,
                             style: TextStyle(
                                 color: Color(0xffF48262), fontSize: 20),
+                          )),
+                      Expanded(
+                        child: SingleChildScrollView(
+                          child: Column(
+                            children: [
+                              Container(
+                                  padding: EdgeInsets.symmetric(horizontal: 10),
+                                  child: loadingAll
+                                      ? Center(
+                                          child: LoadingWidgetFadingCircle(
+                                              context))
+                                      : categoryListBlog(
+                                          context,
+                                          listAll.reversed.toList(),
+                                          categoryId)),
+                              Container(
+                                margin: EdgeInsets.only(top: 30, bottom: 30),
+                                height: 1,
+                                color: Color(0xffF3C1B5),
+                              ),
+                              Container(
+                                child: Text(
+                                  "TRENDING",
+                                  style: TextStyle(
+                                      color: Color(0xffF48262), fontSize: 20),
+                                ),
+                                margin: EdgeInsets.only(bottom: 30),
+                              ),
+                              new FutureBuilder<List>(
+                                  future: getOtherArticles(),
+                                  builder: (context, snapshot) {
+                                    if (snapshot.hasError)
+                                      print(snapshot.error);
+                                    return snapshot.hasData
+                                        ? otherArticlesScreen(snapshot.data)
+                                        : Center(
+                                            child:
+                                                new CircularProgressIndicator());
+                                  })
+                            ],
                           ),
-                          margin: EdgeInsets.only(bottom: 30),
                         ),
-                        new FutureBuilder<List>(
-                            future: getOtherArticles(),
-                            builder: (context, snapshot) {
-                              if (snapshot.hasError) print(snapshot.error);
-                              return snapshot.hasData
-                                  ? otherArticlesScreen(snapshot.data)
-                                  : Center(
-                                      child: new CircularProgressIndicator());
-                            })
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                ),
-              ],
-            ),
             bottomNavigationBar: new PonnyBottomNavbar(selectedIndex: 0)),
       ),
     );
@@ -429,12 +442,11 @@ class otherArticlesScreen extends StatefulWidget {
 }
 
 class _otherArticlesScreenState extends State<otherArticlesScreen> {
+  DateTime convertDateFromString(String strDate) {
+    DateTime todayDate = DateTime.parse(strDate);
 
-DateTime convertDateFromString(String strDate){
-   DateTime todayDate = DateTime.parse(strDate);
-  
     return todayDate;
- }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -446,8 +458,11 @@ DateTime convertDateFromString(String strDate){
         itemBuilder: (context, i) {
           return GestureDetector(
             onTap: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => BlogDetailData(contentId:widget.list[i]["id"])));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          BlogDetailData(contentId: widget.list[i]["id"])));
             },
             child: Container(
                 margin: EdgeInsets.only(bottom: 10),
@@ -455,9 +470,15 @@ DateTime convertDateFromString(String strDate){
                   leading: Container(
                     width: 100,
                     child: CachedNetworkImage(
-                      imageUrl:img_url+"uploads/blog/thumbnail/"+widget.list[i]["thumbnail"].toString(),
-                      placeholder: (context, url) => LoadingWidgetPulse(context),
-                      errorWidget: (context, url, error) => Image.asset('assets/images/basic.jpg'),
+                      memCacheHeight: 200,
+                      memCacheWidth: 400,
+                      imageUrl: img_url +
+                          "uploads/blog/thumbnail/" +
+                          widget.list[i]["thumbnail"].toString(),
+                      placeholder: (context, url) =>
+                          LoadingWidgetPulse(context),
+                      errorWidget: (context, url, error) =>
+                          Image.asset('assets/images/basic.jpg'),
                       width: MediaQuery.of(context).size.width,
                       fit: BoxFit.cover,
                     ),
@@ -482,7 +503,8 @@ DateTime convertDateFromString(String strDate){
                         ),
                       ),
                       Text(
-                        DateFormat('dd MMMM yyyy').format(convertDateFromString(widget.list[i]["created_at"])),
+                        DateFormat('dd MMMM yyyy').format(convertDateFromString(
+                            widget.list[i]["created_at"])),
                         style: TextStyle(
                           fontSize: 14,
                           fontFamily: "Brandon",
@@ -497,21 +519,22 @@ DateTime convertDateFromString(String strDate){
   }
 }
 
-
-
 Widget categoryListBlog(context, List list, int categoryId) {
   return GridView.builder(
       keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
       primary: false,
       shrinkWrap: true,
       itemCount: list == null ? 0 : list.length,
-      gridDelegate:
-          SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, childAspectRatio: 1),
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2, childAspectRatio: 1),
       itemBuilder: (BuildContext context, int i) {
         return GestureDetector(
           onTap: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => BlogDetailData(contentId:list[i]["id"])));
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        BlogDetailData(contentId: list[i]["id"])));
           },
           child: Container(
             margin: EdgeInsets.all(5),
@@ -521,14 +544,18 @@ Widget categoryListBlog(context, List list, int categoryId) {
                   child: Container(
                       width: double.infinity,
                       child: CachedNetworkImage(
-                        imageUrl:img_url+"uploads/blog/thumbnail/"+list[i]["thumbnail"].toString(),
-                        placeholder: (context, url) => LoadingWidgetPulse(context),
-                        errorWidget: (context, url, error) => Image.asset('assets/images/basic.jpg'),
+                        memCacheHeight: 200,
+                        memCacheWidth: 400,
+                        imageUrl: img_url +
+                            "uploads/blog/thumbnail/" +
+                            list[i]["thumbnail"].toString(),
+                        placeholder: (context, url) =>
+                            LoadingWidgetPulse(context),
+                        errorWidget: (context, url, error) =>
+                            Image.asset('assets/images/basic.jpg'),
                         width: MediaQuery.of(context).size.width,
                         fit: BoxFit.contain,
-                      )
-                  )
-              ),
+                      ))),
               Container(height: 5),
               Expanded(
                 flex: 1,

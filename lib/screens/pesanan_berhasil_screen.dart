@@ -154,11 +154,7 @@ class _PesananBerhasilScreenState extends State<PesananBerhasilScreen> {
                                 ? widget.nota.mitransRequest != null
                                     ? 'Total Pembayaran Rp ${widget.nota.mitransRequest.grossAmount.substring(0, widget.nota.mitransRequest.grossAmount.lastIndexOf('.'))}'
                                     : "Total Pembayaran  ${formatCurrency.format(widget.nota.codParam)}"
-                                : widget.nota.mitransRequest.grossAmount
-                                    .substring(
-                                        0,
-                                        widget.nota.mitransRequest.grossAmount
-                                            .lastIndexOf('.')),
+                                : 'Total Pembayaran Rp ${widget.nota.mitransRequest.grossAmount.substring(0, widget.nota.mitransRequest.grossAmount.lastIndexOf('.'))}',
                             // 'Total Pembayaran Rp ${widget.nota.mitransRequest.grossAmount.substring(0, widget.nota.mitransRequest.grossAmount.lastIndexOf('.'))}',
                             style: TextStyle(
                               fontFamily: 'Brandon',

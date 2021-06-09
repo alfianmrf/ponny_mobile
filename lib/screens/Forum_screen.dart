@@ -127,29 +127,44 @@ class _ForumScreenState extends State<ForumScreen> {
                           Expanded(
                             flex: 3,
                             child: ListView.builder(
-                                itemCount:
-                                    widget.list == null ? 0 : widget.list.length,
+                                itemCount: widget.list == null
+                                    ? 0
+                                    : widget.list.length,
                                 itemBuilder: (context, i) {
-                                  String gambar = widget.list[i]["thumbnail"].toString();
+                                  String gambar =
+                                      widget.list[i]["thumbnail"].toString();
                                   return Container(
                                     margin: EdgeInsets.symmetric(vertical: 10),
                                     child: Column(
                                       children: [
                                         InkWell(
-                                          onTap:(){
-                                            Navigator.push(context, MaterialPageRoute(builder: (ctx)=>DetailKomenScreen(id:widget.list[i]["id"])));
+                                          onTap: () {
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (ctx) =>
+                                                        DetailKomenScreen(
+                                                            id: widget.list[i]
+                                                                ["id"])));
                                           },
-                                                                                child: Container(
-                                            height: 200,
-                                            width: double.infinity,
-                                            child: CachedNetworkImage(
-                                            imageUrl: img_url+gambar,
-                                              placeholder: (context, url) => LoadingWidgetPulse(context),
-                                              errorWidget: (context, url, error) => Image.asset('assets/images/new-placeholder-rect.png'),
-                                              width: MediaQuery.of(context).size.width,
-                                              fit: BoxFit.cover,
-                                            )
-                                          ),
+                                          child: Container(
+                                              height: 200,
+                                              width: double.infinity,
+                                              child: CachedNetworkImage(
+                                                memCacheHeight: 330,
+                                                memCacheWidth: 330,
+                                                imageUrl: img_url + gambar,
+                                                placeholder: (context, url) =>
+                                                    LoadingWidgetPulse(context),
+                                                errorWidget: (context, url,
+                                                        error) =>
+                                                    Image.asset(
+                                                        'assets/images/new-placeholder-rect.png'),
+                                                width: MediaQuery.of(context)
+                                                    .size
+                                                    .width,
+                                                fit: BoxFit.cover,
+                                              )),
                                         ),
                                         Text(
                                           widget.list[i]["title"],
@@ -212,12 +227,10 @@ class _ForumDataState extends State<ForumData> {
                   list: snapshot.data,
                 )
               : Scaffold(
-            body: Container(
-              child: Center(child: LoadingWidgetFadingCircle(context)),
-
-            ),
-              bottomNavigationBar: new PonnyBottomNavbar(selectedIndex: 3)
-          );
+                  body: Container(
+                    child: Center(child: LoadingWidgetFadingCircle(context)),
+                  ),
+                  bottomNavigationBar: new PonnyBottomNavbar(selectedIndex: 3));
         });
   }
 }

@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:ponny/common/constant.dart';
 import 'package:ponny/model/AffiliateResult.dart';
+import 'package:ponny/model/User.dart';
 import 'package:ponny/screens/Affiliate_CairkanDana_screen.dart';
 import 'package:ponny/screens/account/affiliate_about_screen.dart';
 import 'package:ponny/widgets/PonnyBottomNavbar.dart';
 import 'package:intl/intl.dart';
 import 'package:ponny/util/globalUrl.dart';
+import 'package:provider/provider.dart';
 
 class CairkanDanaTotalScreen extends StatefulWidget {
   int total, use, session;
@@ -23,7 +25,10 @@ class _CairkanDanaTotalScreenState extends State<CairkanDanaTotalScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final formatCurrency = new NumberFormat.simpleCurrency(locale: 'id_ID');
+    final formatCurrency =
+        new NumberFormat.simpleCurrency(locale: 'id_ID', decimalDigits: 0);
+
+    final user = Provider.of<UserModel>(context).user;
 
     final size = MediaQuery.of(context).size;
     return Scaffold(
@@ -53,7 +58,7 @@ class _CairkanDanaTotalScreenState extends State<CairkanDanaTotalScreen> {
             children: [
               Container(
                   width: size.width,
-                  height: size.height * 0.37,
+                  height: 210,
                   decoration: BoxDecoration(color: Hexcolor('#FCF8F0')),
                   child: Stack(
                     children: [
@@ -93,12 +98,16 @@ class _CairkanDanaTotalScreenState extends State<CairkanDanaTotalScreen> {
                                         fontSize: size.height * 0.034,
                                         fontWeight: FontWeight.w600)),
                                 Text(
-                                  "tytan tyra".toUpperCase(),
+                                  user.last_name != null
+                                      ? (user.name + " " + user.last_name)
+                                          .toUpperCase()
+                                      : user.name.toUpperCase(),
                                   style: TextStyle(
-                                      color: Hexcolor('#ffF48262'),
-                                      fontFamily: "Yeseva",
-                                      fontSize: size.height * 0.037,
-                                      fontWeight: FontWeight.w600),
+                                    fontFamily: "Brandon",
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w600,
+                                    color: Color(0xffF48262),
+                                  ),
                                 )
                               ],
                             ),
@@ -282,7 +291,8 @@ class _CairkanDanaTotalScreenState extends State<CairkanDanaTotalScreen> {
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) => AboutRefund()));
+                                          builder: (context) =>
+                                              AboutRefund(widget.img)));
                                 },
                                 child: Container(
                                     width: 40,

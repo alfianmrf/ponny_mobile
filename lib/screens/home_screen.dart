@@ -19,6 +19,7 @@ import 'package:ponny/model/ProductFlashDeal.dart';
 import 'package:ponny/model/Slider.dart';
 import 'package:ponny/model/User.dart';
 import 'package:ponny/model/listCabangModel.dart';
+import 'package:ponny/screens/RincianPoint_screen.dart';
 import 'package:ponny/screens/pages.dart';
 import 'package:ponny/screens/Blog_screen.dart';
 import 'package:ponny/screens/Browse_Screen.dart';
@@ -172,7 +173,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    // showModal();
     _controller = ScrollController();
     _controller.addListener(_scrollListener);
 
@@ -184,8 +184,11 @@ class _HomeScreenState extends State<HomeScreen> {
       getyt();
       print("SUCCESS");
       print(_controllersYoutube);
-      _updateCart();
       Provider.of<ProductModel>(context).getFlashSale();
+      if (!Provider.of<AppModel>(context).loggedIn) {
+        _updateCart();
+        showModal();
+      }
     });
   }
 
@@ -351,6 +354,11 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
+  Future<void> _getNewsPopUp() async {
+    final auth = Provider.of<AppModel>(context);
+    // await Provider.of<CartModel>(context)
+  }
+
   Future<void> _getWishListCount() async {
     final auth = Provider.of<AppModel>(context);
     if (auth.loggedIn) {
@@ -392,27 +400,34 @@ class _HomeScreenState extends State<HomeScreen> {
               }),
         ),
         Center(
-            child: Image.asset(
-          'assets/images/ponny.png',
-          height: 100,
-        )),
+          child: CachedNetworkImage(
+            imageUrl:
+                img_url + Provider.of<AppModel>(context).setting.newsletterLogo,
+            placeholder: (context, url) => LoadingWidgetPulse(context),
+            errorWidget: (context, url, error) =>
+                Image.asset('assets/images/210x265.png'),
+            height: 100,
+            fit: BoxFit.cover,
+          ),
+        ),
         Padding(
           padding: EdgeInsets.symmetric(vertical: 10),
           child: Center(
               child: Text(
-            'HALO!',
+            Provider.of<AppModel>(context).setting.newsletterTitle,
             style: TextStyle(
               fontFamily: 'Brandon',
               fontWeight: FontWeight.w600,
               fontSize: 20,
             ),
+            textAlign: TextAlign.center,
           )),
         ),
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 10),
           child: Center(
               child: Text(
-            'Nikmati diskon 10% untuk pesanan pertamamu. Mau? Tulis email aktifmu di bawah ini dan Phoebe akan kirim kode promonya ke email.',
+            Provider.of<AppModel>(context).setting.newsletterDescription,
             style: TextStyle(
               fontFamily: 'Brandon',
               fontSize: 14,
@@ -519,8 +534,10 @@ class _HomeScreenState extends State<HomeScreen> {
     initChanelBrodcaster();
     getbrodcaster();
     getyt();
-    _updateCart();
     Provider.of<ProductModel>(context).getFlashSale();
+    if (!Provider.of<AppModel>(context).loggedIn) {
+      _updateCart();
+    }
   }
 
   @override
@@ -555,7 +572,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         color: Color(0xffF48262),
                         child: Center(
                           child: Text(
-                            'GRATIS ONGKIR DENGAN PEMBELANJAAN RP 250.000',
+                            Provider.of<AppModel>(context)
+                                .setting
+                                .announcementBar,
                             style: TextStyle(
                               color: Colors.white,
                               fontFamily: 'Brandon',
@@ -978,7 +997,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                                               context) =>
                                                           new LoginScreen(),
                                                     ))
-                                                : null;
+                                                : Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            RincianPoint()));
                                           },
                                           child: Row(
                                             children: [

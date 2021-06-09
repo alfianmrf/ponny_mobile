@@ -21,8 +21,7 @@ Widget product(context) {
         child: Stack(
           children: <Widget>[
             GestureDetector(
-              onTap: (){
-              },
+              onTap: () {},
               child: Image.asset(
                 "assets/images/produk.png",
                 width: MediaQuery.of(context).size.width,
@@ -153,81 +152,281 @@ Widget product(context) {
 }
 
 Widget LoadingWidget(context) => Center(
-  child: SpinKitThreeBounce(
-    color:  Color(0xffF48262),
-    size: 25.0,
-  ),
-);
+      child: SpinKitThreeBounce(
+        color: Color(0xffF48262),
+        size: 25.0,
+      ),
+    );
 
 Widget LoadingRing(context) => Center(
-  child: SpinKitDualRing(
-    color:  Color(0xffF48262),
-    size: 15.0,
-  ),
-);
+      child: SpinKitDualRing(
+        color: Color(0xffF48262),
+        size: 15.0,
+      ),
+    );
 
 Widget LoadingWidgetFadingCircle(context) => Center(
-  child: SpinKitCircle(
-    color:  Color(0xffF48262),
-    size: 45.0,
-  ),
-);
+      child: SpinKitCircle(
+        color: Color(0xffF48262),
+        size: 45.0,
+      ),
+    );
 
 Widget LoadingWidgetPulse(context) => Center(
-  child: SpinKitPulse(
-    color:  Color(0xffF48262),
-    size: 25.0,
-  ),
-);
+      child: SpinKitPulse(
+        color: Color(0xffF48262),
+        size: 25.0,
+      ),
+    );
 
-Widget getProduct(context,Product product) => Column(
+Widget getProduct(context, Product product) => Column(
+      children: <Widget>[
+        Container(
+          child: Stack(
+            children: <Widget>[
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      new MaterialPageRoute(
+                        builder: (BuildContext context) =>
+                            new ProductDetailsScreen(
+                          product: product,
+                        ),
+                      ));
+                },
+                child: AspectRatio(
+                  aspectRatio: 0.7888,
+                  child: Container(
+                    color: Colors.white,
+                    child: CachedNetworkImage(
+                      imageUrl: product.thumbnail_image != null
+                          ? img_url + product.thumbnail_image
+                          : "",
+                      placeholder: (context, url) =>
+                          LoadingWidgetPulse(context),
+                      errorWidget: (context, url, error) =>
+                          Image.asset('assets/images/basic.jpg'),
+                      width: MediaQuery.of(context).size.width,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+              ),
+              if (product.is_flash_deal != null)
+                Padding(
+                  padding: EdgeInsets.only(top: 10.0),
+                  child: Align(
+                      alignment: Alignment.topLeft,
+                      child: Container(
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 5.0),
+                          child: product.is_flash_deal.discount_type == "amount"
+                              ? Text(
+                                  "- " +
+                                      NumberFormat.simpleCurrency(
+                                              locale: "id_ID", decimalDigits: 0)
+                                          .format(
+                                              product.is_flash_deal.discount),
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontFamily: 'Brandon'),
+                                )
+                              : Text(
+                                  product.is_flash_deal.discount.toString() +
+                                      '%',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontFamily: 'Brandon'),
+                                ),
+                        ),
+                        color: Color(0xffF48262),
+                      )),
+                ),
+              LikeButton(
+                mainAxisAlignment: MainAxisAlignment.end,
+                padding: EdgeInsets.all(0),
+                likeBuilder: (bool isLiked) {
+                  return Icon(
+                    isLiked ? Icons.favorite : Icons.favorite_border,
+                    color: Color(0xffF48262),
+                    size: 20,
+                  );
+                },
+              ),
+            ],
+          ),
+        ),
+        InkWell(
+          onTap: () {
+            Navigator.push(
+                context,
+                new MaterialPageRoute(
+                  builder: (BuildContext context) => new ProductDetailsScreen(
+                    product: product,
+                  ),
+                ));
+          },
+          child: Container(
+            alignment: Alignment.bottomCenter,
+            child: Container(
+              width: MediaQuery.of(context).size.width,
+              child: const Text(
+                'TAMBAHKAN',
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.white, fontFamily: 'Brandon'),
+              ),
+              color: Color(0xffF3C1B5),
+            ),
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.only(top: 7.0),
+          child: MarqueeWidget(
+            direction: Axis.horizontal,
+            child: Text(
+              product.brand.name,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontFamily: 'Yeseva',
+                fontSize: 16,
+              ),
+            ),
+          ),
+        ),
+        Text(
+          product.name,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontFamily: 'Brandon',
+            fontSize: 14,
+          ),
+          maxLines: 2,
+          overflow: TextOverflow.ellipsis,
+        ),
+        Text(
+          product.home_discounted_price,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontFamily: 'Brandon',
+            fontSize: 14,
+          ),
+        ),
+        if (product.is_flash_deal != null)
+          Center(
+            child: RichText(
+              text: TextSpan(
+                  text: NumberFormat.simpleCurrency(
+                          locale: "id_ID", decimalDigits: 0)
+                      .format(product.base_price),
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontFamily: 'Brandon',
+                    fontSize: 12,
+                    decoration: TextDecoration.lineThrough,
+                  ),
+                  children: [
+                    if (product.is_flash_deal.discount_type == 'percent')
+                      TextSpan(
+                        text: '(' +
+                            product.is_flash_deal.discount.toString() +
+                            '%)',
+                        style: TextStyle(
+                          color: Color(0xffF48262),
+                          fontFamily: 'Brandon',
+                          fontSize: 12,
+                          decoration: TextDecoration.none,
+                        ),
+                      ),
+                  ]),
+            ),
+          ),
+        Text.rich(TextSpan(children: <InlineSpan>[
+          WidgetSpan(
+            child: RatingBar.builder(
+              initialRating: product.rating,
+              minRating: 0,
+              direction: Axis.horizontal,
+              allowHalfRating: true,
+              itemCount: 5,
+              itemSize: 14.0,
+              itemPadding: EdgeInsets.symmetric(horizontal: 1.0),
+              itemBuilder: (context, index) => Icon(
+                Icons.favorite,
+                color: Color(0xffF48262),
+              ),
+              unratedColor: Color(0xffFBD2CD),
+              ignoreGestures: true,
+            ),
+          ),
+          TextSpan(
+              text: '(' + product.review_count.toString() + ')',
+              style: TextStyle(
+                fontSize: 12,
+              ))
+        ])),
+      ],
+    );
+
+Widget getProductFlash(context, FlashSaleProduct productFlash) {
+  final product = productFlash.product;
+  return Column(
     children: <Widget>[
       Container(
         child: Stack(
           children: <Widget>[
             GestureDetector(
               onTap: () {
-                Navigator.push(context, new MaterialPageRoute(
-                  builder: (BuildContext context) => new ProductDetailsScreen(product: product,),
-                ));
+                Navigator.push(
+                    context,
+                    new MaterialPageRoute(
+                      builder: (BuildContext context) =>
+                          new ProductDetailsScreen(
+                        product: product,
+                      ),
+                    ));
               },
               child: AspectRatio(
                 aspectRatio: 0.7888,
                 child: Container(
                   color: Colors.white,
                   child: CachedNetworkImage(
-                    imageUrl:product.thumbnail_image != null?  img_url+product.thumbnail_image:"",
+                    imageUrl: img_url + product.thumbnail_image,
                     placeholder: (context, url) => LoadingWidgetPulse(context),
-                    errorWidget: (context, url, error) => Image.asset('assets/images/basic.jpg'),
+                    errorWidget: (context, url, error) =>
+                        Image.asset('assets/images/basic.jpg'),
                     width: MediaQuery.of(context).size.width,
                     fit: BoxFit.cover,
                   ),
                 ),
               ),
             ),
-            if(product.is_flash_deal != null)
-            Padding(
-              padding: EdgeInsets.only(top: 10.0),
-              child: Align(
-                  alignment: Alignment.topLeft,
-                  child: Container(
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 5.0),
-                      child:
-                      product.is_flash_deal.discount_type == "amount" ?
-                      Text(
-                         "- "+NumberFormat.simpleCurrency(locale: "id_ID",decimalDigits: 0 ).format(product.is_flash_deal.discount),
-                        style: TextStyle(
-                            color: Colors.white, fontFamily: 'Brandon'),
-                      ): Text(
-                        product.is_flash_deal.discount.toString()+'%',
-                        style: TextStyle(
-                            color: Colors.white, fontFamily: 'Brandon'),
+            if (product.is_flash_deal != null)
+              Padding(
+                padding: EdgeInsets.only(top: 10.0),
+                child: Align(
+                    alignment: Alignment.topLeft,
+                    child: Container(
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 5.0),
+                        child: product.is_flash_deal.discount_type == "amount"
+                            ? Text(
+                                "- " +
+                                    NumberFormat.simpleCurrency(
+                                            locale: "id_ID", decimalDigits: 0)
+                                        .format(product.is_flash_deal.discount),
+                                style: TextStyle(
+                                    color: Colors.white, fontFamily: 'Brandon'),
+                              )
+                            : Text(
+                                product.is_flash_deal.discount.toString() + '%',
+                                style: TextStyle(
+                                    color: Colors.white, fontFamily: 'Brandon'),
+                              ),
                       ),
-                    ),
-                    color: Color(0xffF48262),
-                  )),
-            ),
+                      color: Color(0xffF48262),
+                    )),
+              ),
             LikeButton(
               mainAxisAlignment: MainAxisAlignment.end,
               padding: EdgeInsets.all(0),
@@ -242,344 +441,181 @@ Widget getProduct(context,Product product) => Column(
           ],
         ),
       ),
-      InkWell(
-        onTap: (){
-          Navigator.push(context, new MaterialPageRoute(
-            builder: (BuildContext context) => new ProductDetailsScreen(product: product,),
-          ));
-        },
+      Container(
+        alignment: Alignment.bottomCenter,
         child: Container(
-          alignment: Alignment.bottomCenter,
-          child: Container(
-            width: MediaQuery.of(context).size.width,
-            child: const Text(
-              'TAMBAHKAN',
-              textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.white, fontFamily: 'Brandon'),
-            ),
-            color: Color(0xffF3C1B5),
-          ),
-        ),
-      ),
-      Padding(
-        padding: EdgeInsets.only(top: 7.0),
-        child: MarqueeWidget(
-          direction: Axis.horizontal,
-          child: Text(
-             product.brand.name,
+          width: MediaQuery.of(context).size.width,
+          child: const Text(
+            'TAMBAHKAN',
             textAlign: TextAlign.center,
-            style: TextStyle(
-              fontFamily: 'Yeseva',
-              fontSize: 16,
-            ),
+            style: TextStyle(color: Colors.white, fontFamily: 'Brandon'),
           ),
+          color: Color(0xffF3C1B5),
         ),
       ),
-      Text(
-        product.name,
-        textAlign: TextAlign.center,
-        style: TextStyle(
-          fontFamily: 'Brandon',
-          fontSize: 14,
-        ),
-        maxLines: 2,
-        overflow: TextOverflow.ellipsis,
-      ),
-      Text(
-        product.home_discounted_price,
-        textAlign: TextAlign.center,
-        style: TextStyle(
-          fontFamily: 'Brandon',
-          fontSize: 14,
-        ),
-      ),
-      if(product.is_flash_deal != null)
-      Center(
-        child: RichText(
-          text: TextSpan(
-              text: NumberFormat.simpleCurrency(locale: "id_ID",decimalDigits: 0 ).format(product.base_price),
-              style: TextStyle(
-                color: Colors.black,
-                fontFamily: 'Brandon',
-                fontSize: 12,
-                decoration: TextDecoration.lineThrough,
-              ),
-              children: [
-                if(product.is_flash_deal.discount_type == 'percent')
-                TextSpan(
-                  text: '('+product.is_flash_deal.discount.toString()+'%)',
-                  style: TextStyle(
-                    color: Color(0xffF48262),
-                    fontFamily: 'Brandon',
-                    fontSize: 12,
-                    decoration: TextDecoration.none,
-                  ),
-                ),
-              ]),
-        ),
-      ),
-      Text.rich(TextSpan(children: <InlineSpan>[
-        WidgetSpan(
-          child: RatingBar.builder(
-            initialRating: product.rating,
-            minRating: 0,
-            direction: Axis.horizontal,
-            allowHalfRating: true,
-            itemCount: 5,
-            itemSize: 14.0,
-            itemPadding: EdgeInsets.symmetric(horizontal: 1.0),
-            itemBuilder: (context, index) => Icon(
-              Icons.favorite,
-              color: Color(0xffF48262),
-            ),
-            unratedColor: Color(0xffFBD2CD),
-            ignoreGestures: true,
+      Container(
+        alignment: Alignment.bottomCenter,
+        child: Container(
+          width: MediaQuery.of(context).size.width,
+          child: const Text(
+            'QUICK VIEW',
+            textAlign: TextAlign.center,
+            style: TextStyle(color: Colors.white, fontFamily: 'Brandon'),
           ),
+          color: Color(0xffC0AFA0),
         ),
-        TextSpan(
-            text: '('+product.review_count.toString()+')',
-            style: TextStyle(
-              fontSize: 12,
-            ))
-      ])),
-    ],
-  );
-
-Widget getProductFlash(context,FlashSaleProduct productFlash) {
-  final product = productFlash.product;
-  return  Column(
-  children: <Widget>[
-    Container(
-      child: Stack(
-        children: <Widget>[
-          GestureDetector(
-            onTap: () {
-              Navigator.push(context, new MaterialPageRoute(
-                builder: (BuildContext context) => new ProductDetailsScreen(product: product,),
-              ));
-            },
-            child: AspectRatio(
-              aspectRatio: 0.7888,
-              child: Container(
-                color: Colors.white,
-                child: CachedNetworkImage(
-                  imageUrl: img_url+product.thumbnail_image,
-                  placeholder: (context, url) => LoadingWidgetPulse(context),
-                  errorWidget: (context, url, error) => Image.asset('assets/images/basic.jpg'),
-                  width: MediaQuery.of(context).size.width,
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
-          ),
-          if(product.is_flash_deal != null)
-            Padding(
-              padding: EdgeInsets.only(top: 10.0),
-              child: Align(
-                  alignment: Alignment.topLeft,
-                  child: Container(
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 5.0),
-                      child:
-                      product.is_flash_deal.discount_type == "amount" ?
-                      Text(
-                        "- "+NumberFormat.simpleCurrency(locale: "id_ID",decimalDigits: 0 ).format(product.is_flash_deal.discount),
-                        style: TextStyle(
-                            color: Colors.white, fontFamily: 'Brandon'),
-                      ): Text(
-                        product.is_flash_deal.discount.toString()+'%',
-                        style: TextStyle(
-                            color: Colors.white, fontFamily: 'Brandon'),
-                      ),
-                    ),
-                    color: Color(0xffF48262),
-                  )),
-            ),
-          LikeButton(
-            mainAxisAlignment: MainAxisAlignment.end,
-            padding: EdgeInsets.all(0),
-            likeBuilder: (bool isLiked) {
-              return Icon(
-                isLiked ? Icons.favorite : Icons.favorite_border,
-                color: Color(0xffF48262),
-                size: 20,
-              );
-            },
-          ),
-        ],
       ),
-    ),
-    Container(
-      alignment: Alignment.bottomCenter,
-      child: Container(
-        width: MediaQuery.of(context).size.width,
-        child: const Text(
-          'TAMBAHKAN',
-          textAlign: TextAlign.center,
-          style: TextStyle(color: Colors.white, fontFamily: 'Brandon'),
-        ),
-        color: Color(0xffF3C1B5),
-      ),
-    ),
-    Container(
-      alignment: Alignment.bottomCenter,
-      child: Container(
-        width: MediaQuery.of(context).size.width,
-        child: const Text(
-          'QUICK VIEW',
-          textAlign: TextAlign.center,
-          style: TextStyle(color: Colors.white, fontFamily: 'Brandon'),
-        ),
-        color: Color(0xffC0AFA0),
-      ),
-    ),
-    Expanded(
-      child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 5),
-        decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.only(bottomLeft: Radius.circular(3), bottomRight: Radius.circular(3)),
-            border: Border.all(width: 1, color: Color(0xffF48262))
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Column(
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(top: 7.0),
-                  child: MarqueeWidget(
-                    direction: Axis.horizontal,
-                    child: Text(
-                      product.brand.name,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontFamily: 'Yeseva',
-                        fontSize: 16,
-                      ),
-                    ),
-                  ),
-                ),
-                Text(
-                  product.name,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontFamily: 'Brandon',
-                    fontSize: 14,
-                  ),
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 2,
-                ),
-                Text(
-                  product.home_discounted_price,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontFamily: 'Brandon',
-                    fontSize: 14,
-                  ),
-                ),
-                if(product.is_flash_deal != null)
-                  Center(
-                    child: RichText(
-                      text: TextSpan(
-                          text: NumberFormat.simpleCurrency(locale: "id_ID",decimalDigits: 0 ).format(product.base_price),
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontFamily: 'Brandon',
-                            fontSize: 12,
-                            decoration: TextDecoration.lineThrough,
-                          ),
-                          children: [
-                            if(product.is_flash_deal.discount_type == 'percent')
-                              TextSpan(
-                                text: '('+product.is_flash_deal.discount.toString()+'%)',
-                                style: TextStyle(
-                                  color: Color(0xffF48262),
-                                  fontFamily: 'Brandon',
-                                  fontSize: 12,
-                                  decoration: TextDecoration.none,
-                                ),
-                              ),
-                          ]),
-                    ),
-                  ),
-                Text.rich(TextSpan(children: <InlineSpan>[
-                  WidgetSpan(
-                    child: RatingBar.builder(
-                      initialRating: product.rating,
-                      minRating: 0,
+      Expanded(
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 5),
+          decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(3),
+                  bottomRight: Radius.circular(3)),
+              border: Border.all(width: 1, color: Color(0xffF48262))),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(top: 7.0),
+                    child: MarqueeWidget(
                       direction: Axis.horizontal,
-                      allowHalfRating: true,
-                      itemCount: 5,
-                      itemSize: 14.0,
-                      itemBuilder: (context, index) => Icon(
-                        Icons.favorite,
-                        color: Color(0xffF48262),
+                      child: Text(
+                        product.brand.name,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontFamily: 'Yeseva',
+                          fontSize: 16,
+                        ),
                       ),
-                      unratedColor: Color(0xffFBD2CD),
-                      ignoreGestures: true,
                     ),
                   ),
-                  TextSpan(
-                      text: '('+product.review_count.toString()+')',
-                      style: TextStyle(
-                        fontSize: 12,
-                      ))
-                ])),
-              ],
-            ),
-            Column(
-              children: [
-                Container(
-                  padding: EdgeInsets.only(top: 10),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(1),
-                  ),
-                  child: ClipRRect(
-                    child: LinearProgressIndicator(
-                      backgroundColor: Color(0xffFBDFD2),
-                      value: productFlash.percentase/100,
-                      valueColor: AlwaysStoppedAnimation<Color>(Color(0xffF48262)),
-                      minHeight: 5,
-                    ),
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(vertical: 5),
-                  child: Text(
-                    // 'Segera Habis',
-                    'Tersisa '+productFlash.qty.toString(),
-                    // 'Masih Tersedia',
+                  Text(
+                    product.name,
+                    textAlign: TextAlign.center,
                     style: TextStyle(
                       fontFamily: 'Brandon',
-                      fontSize: 10,
+                      fontSize: 14,
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 2,
+                  ),
+                  Text(
+                    product.home_discounted_price,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontFamily: 'Brandon',
+                      fontSize: 14,
                     ),
                   ),
-                ),
-              ],
-            ),
-          ],
+                  if (product.is_flash_deal != null)
+                    Center(
+                      child: RichText(
+                        text: TextSpan(
+                            text: NumberFormat.simpleCurrency(
+                                    locale: "id_ID", decimalDigits: 0)
+                                .format(product.base_price),
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontFamily: 'Brandon',
+                              fontSize: 12,
+                              decoration: TextDecoration.lineThrough,
+                            ),
+                            children: [
+                              if (product.is_flash_deal.discount_type ==
+                                  'percent')
+                                TextSpan(
+                                  text: '(' +
+                                      product.is_flash_deal.discount
+                                          .toString() +
+                                      '%)',
+                                  style: TextStyle(
+                                    color: Color(0xffF48262),
+                                    fontFamily: 'Brandon',
+                                    fontSize: 12,
+                                    decoration: TextDecoration.none,
+                                  ),
+                                ),
+                            ]),
+                      ),
+                    ),
+                  Text.rich(TextSpan(children: <InlineSpan>[
+                    WidgetSpan(
+                      child: RatingBar.builder(
+                        initialRating: product.rating,
+                        minRating: 0,
+                        direction: Axis.horizontal,
+                        allowHalfRating: true,
+                        itemCount: 5,
+                        itemSize: 14.0,
+                        itemBuilder: (context, index) => Icon(
+                          Icons.favorite,
+                          color: Color(0xffF48262),
+                        ),
+                        unratedColor: Color(0xffFBD2CD),
+                        ignoreGestures: true,
+                      ),
+                    ),
+                    TextSpan(
+                        text: '(' + product.review_count.toString() + ')',
+                        style: TextStyle(
+                          fontSize: 12,
+                        ))
+                  ])),
+                ],
+              ),
+              Column(
+                children: [
+                  Container(
+                    padding: EdgeInsets.only(top: 10),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(1),
+                    ),
+                    child: ClipRRect(
+                      child: LinearProgressIndicator(
+                        backgroundColor: Color(0xffFBDFD2),
+                        value: productFlash.percentase / 100,
+                        valueColor:
+                            AlwaysStoppedAnimation<Color>(Color(0xffF48262)),
+                        minHeight: 5,
+                      ),
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 5),
+                    child: Text(
+                      // 'Segera Habis',
+                      'Tersisa ' + productFlash.qty.toString(),
+                      // 'Masih Tersedia',
+                      style: TextStyle(
+                        fontFamily: 'Brandon',
+                        fontSize: 10,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
-    ),
-  ],
-);
+    ],
+  );
 }
 
-
-
-
-Widget getDetailColumnProduct(context,List<Product> products) {
-  List<Widget> _tmp =[];
-  if(products.length ==1){
-
+Widget getDetailColumnProduct(context, List<Product> products) {
+  List<Widget> _tmp = [];
+  if (products.length == 1) {
     _tmp.add(
       Expanded(
         flex: 1,
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 7),
-          child: getProduct(context,products[0]),
+          child: getProduct(context, products[0]),
         ),
       ),
     );
@@ -588,26 +624,6 @@ Widget getDetailColumnProduct(context,List<Product> products) {
         flex: 1,
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 7),
-
-        ),
-      ),
-    );
-    _tmp.add(
-      Expanded(
-          flex: 1,
-          child:Container(
-            padding: EdgeInsets.symmetric(horizontal: 7),
-          ),
-      ),
-    );
-
-  }else if(products.length == 2){
-    _tmp.add(
-      Expanded(
-        flex: 1,
-        child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 7),
-          child: getProduct(context,products[0]),
         ),
       ),
     );
@@ -616,26 +632,44 @@ Widget getDetailColumnProduct(context,List<Product> products) {
         flex: 1,
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 7),
-          child: getProduct(context,products[1]),
+        ),
+      ),
+    );
+  } else if (products.length == 2) {
+    _tmp.add(
+      Expanded(
+        flex: 1,
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 7),
+          child: getProduct(context, products[0]),
         ),
       ),
     );
     _tmp.add(
       Expanded(
         flex: 1,
-        child:Container(
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 7),
+          child: getProduct(context, products[1]),
+        ),
+      ),
+    );
+    _tmp.add(
+      Expanded(
+        flex: 1,
+        child: Container(
           padding: EdgeInsets.symmetric(horizontal: 7),
         ),
       ),
     );
-  }else{
-    for( Product product in products){
+  } else {
+    for (Product product in products) {
       _tmp.add(
         Expanded(
           flex: 1,
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 7),
-            child: getProduct(context,product),
+            child: getProduct(context, product),
           ),
         ),
       );
@@ -643,50 +677,19 @@ Widget getDetailColumnProduct(context,List<Product> products) {
   }
 
   return Container(
-    child: Row(
-      children: _tmp
-    ),
+    child: Row(children: _tmp),
   );
 }
 
-Widget getDetailColumnProductFlash(context,List<FlashSaleProduct> products) {
-  List<Widget> _tmp =[];
-  if(products.length ==1){
-
+Widget getDetailColumnProductFlash(context, List<FlashSaleProduct> products) {
+  List<Widget> _tmp = [];
+  if (products.length == 1) {
     _tmp.add(
       Expanded(
         flex: 1,
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 7),
-          child: getProductFlash(context,products[0]),
-        ),
-      ),
-    );
-    _tmp.add(
-      Expanded(
-        flex: 1,
-        child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 7),
-
-        ),
-      ),
-    );
-    _tmp.add(
-      Expanded(
-        flex: 1,
-        child:Container(
-          padding: EdgeInsets.symmetric(horizontal: 7),
-        ),
-      ),
-    );
-
-  }else if(products.length == 2){
-    _tmp.add(
-      Expanded(
-        flex: 1,
-        child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 7),
-          child: getProductFlash(context,products[0]),
+          child: getProductFlash(context, products[0]),
         ),
       ),
     );
@@ -695,26 +698,52 @@ Widget getDetailColumnProductFlash(context,List<FlashSaleProduct> products) {
         flex: 1,
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 7),
-          child: getProductFlash(context,products[1]),
         ),
       ),
     );
     _tmp.add(
       Expanded(
         flex: 1,
-        child:Container(
+        child: Container(
           padding: EdgeInsets.symmetric(horizontal: 7),
         ),
       ),
     );
-  }else{
-    for( FlashSaleProduct product in products){
+  } else if (products.length == 2) {
+    _tmp.add(
+      Expanded(
+        flex: 1,
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 7),
+          child: getProductFlash(context, products[0]),
+        ),
+      ),
+    );
+    _tmp.add(
+      Expanded(
+        flex: 1,
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 7),
+          child: getProductFlash(context, products[1]),
+        ),
+      ),
+    );
+    _tmp.add(
+      Expanded(
+        flex: 1,
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 7),
+        ),
+      ),
+    );
+  } else {
+    for (FlashSaleProduct product in products) {
       _tmp.add(
         Expanded(
           flex: 1,
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 7),
-            child: getProductFlash(context,product),
+            child: getProductFlash(context, product),
           ),
         ),
       );
@@ -722,27 +751,26 @@ Widget getDetailColumnProductFlash(context,List<FlashSaleProduct> products) {
   }
 
   return Container(
-    child: Row(
-        children: _tmp
-    ),
+    child: Row(children: _tmp),
   );
 }
 
-List<Widget> getColumProduct(context,List<Product> data,int sizes) {
+List<Widget> getColumProduct(context, List<Product> data, int sizes) {
   final tmp = Lodash().chunk(array: data, size: sizes);
   List<Widget> _result = [];
 
-  for(List<Product> products in tmp){
-    _result.add(getDetailColumnProduct(context,products));
+  for (List<Product> products in tmp) {
+    _result.add(getDetailColumnProduct(context, products));
   }
   return _result;
 }
 
-List<Widget> getColumProductFlash(context,List<FlashSaleProduct> data,int sizes) {
+List<Widget> getColumProductFlash(
+    context, List<FlashSaleProduct> data, int sizes) {
   final tmp = Lodash().chunk(array: data, size: sizes);
   List<Widget> _result = [];
-  for(List<FlashSaleProduct> products in tmp){
-    _result.add(getDetailColumnProductFlash(context,products));
+  for (List<FlashSaleProduct> products in tmp) {
+    _result.add(getDetailColumnProductFlash(context, products));
   }
   return _result;
 }
@@ -753,18 +781,20 @@ class AlwaysDisabledFocusNode extends FocusNode {
 }
 
 final snackBarError = SnackBar(
-  content: Text('Terjadi kesalahan pada server, silakan coba kembali nanti.!',style: TextStyle(color: Colors.white)),
+  content: Text('Terjadi kesalahan pada server, silakan coba kembali nanti.!',
+      style: TextStyle(color: Colors.white)),
   backgroundColor: Colors.redAccent,
 );
 
 final snackBarSuccess = SnackBar(
-  content: Text('Success',style: TextStyle(color: Colors.white)),
+  content: Text('Success', style: TextStyle(color: Colors.white)),
   backgroundColor: Colors.green,
 );
 
-final nm_format= NumberFormat.simpleCurrency(locale: "id_ID",decimalDigits: 0 );
+final nm_format =
+    NumberFormat.simpleCurrency(locale: "id_ID", decimalDigits: 0);
 
-void showAlertDialog(BuildContext context,Product product) {
+void showAlertDialog(BuildContext context, Product product) {
   // set up the AlertDialog
   SimpleDialog alert = SimpleDialog(
     backgroundColor: Color(0xfffdf8f0),
@@ -780,22 +810,25 @@ void showAlertDialog(BuildContext context,Product product) {
             }),
       ),
       Container(
+        padding: EdgeInsets.only(top: 30),
         child: ImageIcon(
-          AssetImage('assets/images/home/cart.png'),color: Color(0xffF48262),size: 30,
+          AssetImage('assets/images/home/cart.png'),
+          color: Color(0xffF48262),
+          size: 30,
         ),
       ),
       Padding(
         padding: EdgeInsets.symmetric(vertical: 10),
         child: Center(
             child: Text(
-              'DITAMBAHKAN KE KERANJANG',
-              style: TextStyle(
-                fontFamily: 'Brandon',
-                fontWeight: FontWeight.w600,
-                fontSize: 16,
-                color: Color(0xffF48262),
-              ),
-            )),
+          'DITAMBAHKAN KE KERANJANG',
+          style: TextStyle(
+            fontFamily: 'Brandon',
+            fontWeight: FontWeight.w600,
+            fontSize: 16,
+            color: Color(0xffF48262),
+          ),
+        )),
       ),
       Padding(
         padding: EdgeInsets.only(top: 15, bottom: 30),
@@ -805,10 +838,13 @@ void showAlertDialog(BuildContext context,Product product) {
             Container(
               margin: EdgeInsets.symmetric(horizontal: 5),
               child: CachedNetworkImage(
-                imageUrl:  product.thumbnail_image != null ? img_url+product.thumbnail_image : "",
+                imageUrl: product.thumbnail_image != null
+                    ? img_url + product.thumbnail_image
+                    : "",
                 placeholder: (context, url) => LoadingWidgetPulse(context),
-                errorWidget: (context, url, error) => Image.asset('assets/images/210x265.png'),
-                width: MediaQuery.of(context).size.width*0.2,
+                errorWidget: (context, url, error) =>
+                    Image.asset('assets/images/210x265.png'),
+                width: MediaQuery.of(context).size.width * 0.2,
               ),
             ),
             Expanded(
@@ -820,24 +856,18 @@ void showAlertDialog(BuildContext context,Product product) {
                     Text(
                       product.brand.name,
                       style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontFamily: 'Brandon'
-                      ),
+                          fontWeight: FontWeight.w600, fontFamily: 'Brandon'),
                     ),
                     Text(
                       product.name,
-                      style: TextStyle(
-                          fontFamily: 'Brandon'
-                      ),
+                      style: TextStyle(fontFamily: 'Brandon'),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    if(product.varian.isNotEmpty)
+                    if (product.varian.isNotEmpty)
                       Text(
                         '120ml',
-                        style: TextStyle(
-                            fontFamily: 'Brandon'
-                        ),
+                        style: TextStyle(fontFamily: 'Brandon'),
                       ),
                   ],
                 ),
@@ -857,6 +887,7 @@ void showAlertDialog(BuildContext context,Product product) {
     },
   );
 }
+
 void showWishDialog(BuildContext context, Product product) {
   // set up the AlertDialog
   SimpleDialog alert = SimpleDialog(
@@ -875,14 +906,14 @@ void showWishDialog(BuildContext context, Product product) {
         padding: EdgeInsets.symmetric(vertical: 10),
         child: Center(
             child: Text(
-              'DITAMBAHKAN KE WISHLIST',
-              style: TextStyle(
-                fontFamily: 'Brandon',
-                fontWeight: FontWeight.w600,
-                fontSize: 16,
-                color: Color(0xffF48262),
-              ),
-            )),
+          'DITAMBAHKAN KE WISHLIST',
+          style: TextStyle(
+            fontFamily: 'Brandon',
+            fontWeight: FontWeight.w600,
+            fontSize: 16,
+            color: Color(0xffF48262),
+          ),
+        )),
       ),
       Padding(
         padding: EdgeInsets.only(top: 15, bottom: 30),
@@ -891,9 +922,14 @@ void showWishDialog(BuildContext context, Product product) {
           children: <Widget>[
             Container(
               margin: EdgeInsets.symmetric(horizontal: 5),
-              child: Image.network(
-                img_url+product.thumbnail_image,
-                width: MediaQuery.of(context).size.width*0.2,
+              child: CachedNetworkImage(
+                imageUrl: product.thumbnail_image != null
+                    ? img_url + product.thumbnail_image
+                    : "",
+                placeholder: (context, url) => LoadingWidgetPulse(context),
+                errorWidget: (context, url, error) =>
+                    Image.asset('assets/images/210x265.png'),
+                width: MediaQuery.of(context).size.width * 0.2,
               ),
             ),
             Container(
@@ -904,22 +940,18 @@ void showWishDialog(BuildContext context, Product product) {
                   Text(
                     product.brand.name,
                     style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontFamily: 'Brandon'
-                    ),
+                        fontWeight: FontWeight.w600, fontFamily: 'Brandon'),
                   ),
                   Text(
-                    product.name.length > 20 ? product.name.substring(0, 20)+'...' : product.name,
-                    style: TextStyle(
-                        fontFamily: 'Brandon'
-                    ),
+                    product.name.length > 20
+                        ? product.name.substring(0, 20) + '...'
+                        : product.name,
+                    style: TextStyle(fontFamily: 'Brandon'),
                   ),
-                  if(product.varian.isNotEmpty)
+                  if (product.varian.isNotEmpty)
                     Text(
                       '120ml',
-                      style: TextStyle(
-                          fontFamily: 'Brandon'
-                      ),
+                      style: TextStyle(fontFamily: 'Brandon'),
                     ),
                 ],
               ),
@@ -939,14 +971,14 @@ void showWishDialog(BuildContext context, Product product) {
   );
 }
 
-
-DateTime convertDateFromString(String strDate){
+DateTime convertDateFromString(String strDate) {
   DateTime todayDate = DateTime.parse(strDate);
   return todayDate;
 }
+
 final DateFormat formatter = DateFormat('dd MMMM yyyy');
 
-Widget getNewArival(context,List<Product> products){
+Widget getNewArival(context, List<Product> products) {
   return Container(
     child: Column(
       children: [
@@ -1055,7 +1087,9 @@ Widget getNewArival(context,List<Product> products){
                             padding: EdgeInsets.all(0),
                             likeBuilder: (bool isLiked) {
                               return Icon(
-                                isLiked ? Icons.favorite : Icons.favorite_border,
+                                isLiked
+                                    ? Icons.favorite
+                                    : Icons.favorite_border,
                                 color: Color(0xffF48262),
                                 size: 20,
                               );
@@ -1239,7 +1273,9 @@ Widget getNewArival(context,List<Product> products){
                             padding: EdgeInsets.all(0),
                             likeBuilder: (bool isLiked) {
                               return Icon(
-                                isLiked ? Icons.favorite : Icons.favorite_border,
+                                isLiked
+                                    ? Icons.favorite
+                                    : Icons.favorite_border,
                                 color: Color(0xffF48262),
                                 size: 20,
                               );
@@ -1396,7 +1432,9 @@ Widget getNewArival(context,List<Product> products){
                             padding: EdgeInsets.all(0),
                             likeBuilder: (bool isLiked) {
                               return Icon(
-                                isLiked ? Icons.favorite : Icons.favorite_border,
+                                isLiked
+                                    ? Icons.favorite
+                                    : Icons.favorite_border,
                                 color: Color(0xffF48262),
                                 size: 20,
                               );
@@ -1568,7 +1606,7 @@ class _MarqueeWidgetState extends State<MarqueeWidget> {
   }
 
   @override
-  void dispose(){
+  void dispose() {
     scrollController.dispose();
     super.dispose();
   }
@@ -1585,19 +1623,15 @@ class _MarqueeWidgetState extends State<MarqueeWidget> {
   void scroll(_) async {
     while (scrollController.hasClients) {
       await Future.delayed(widget.pauseDuration);
-      if(scrollController.hasClients)
+      if (scrollController.hasClients)
         await scrollController.animateTo(
             scrollController.position.maxScrollExtent,
             duration: widget.animationDuration,
             curve: Curves.ease);
       await Future.delayed(widget.pauseDuration);
-      if(scrollController.hasClients)
+      if (scrollController.hasClients)
         await scrollController.animateTo(0.0,
             duration: widget.backDuration, curve: Curves.easeOut);
     }
   }
-
 }
-
-
-

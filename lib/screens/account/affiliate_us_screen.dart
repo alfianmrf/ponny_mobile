@@ -35,8 +35,10 @@ class _AffiliateUsStateScreen extends State<AffiliateUsScreen> {
   int total;
   bool codeReferal, income;
   List<dynamic> detailImage;
+  RegExp regex = RegExp(r"([.]*0)(?!.*\d)");
 
-  final formatCurrency = new NumberFormat.simpleCurrency(locale: 'id_ID');
+  final formatCurrency =
+      new NumberFormat.simpleCurrency(locale: 'id_ID', decimalDigits: 0);
 
   void _sumSales() {
     total = 0;
@@ -189,7 +191,6 @@ class _AffiliateUsStateScreen extends State<AffiliateUsScreen> {
     onGoBack(dynamic value) {
       getData();
       setState(() {});
-      print("ulala");
     }
 
     void affiliateAddCodePage() {
@@ -310,8 +311,12 @@ class _AffiliateUsStateScreen extends State<AffiliateUsScreen> {
                                       children: [
                                         Container(
                                           child: Text(
-                                            (user.name + " " + user.last_name)
-                                                .toUpperCase(),
+                                            user.last_name != null
+                                                ? (user.name +
+                                                        " " +
+                                                        user.last_name)
+                                                    .toUpperCase()
+                                                : user.name.toUpperCase(),
                                             style: TextStyle(
                                               fontFamily: "Brandon",
                                               fontSize: 20,
@@ -802,7 +807,12 @@ class _AffiliateUsStateScreen extends State<AffiliateUsScreen> {
                                                 CrossAxisAlignment.start,
                                             children: [
                                               statusAffiliatesStatus(
-                                                  result.codes[index].isActive),
+                                                  result.codes[index].isActive,
+                                                  result.codes[index].coupon
+                                                      .modStartDate,
+                                                  result.codes[index].coupon
+                                                      .modEndDate,
+                                                  result.codes[index].kodeId),
                                             ],
                                           ),
                                         ),
@@ -1157,9 +1167,9 @@ class _AffiliateUsStateScreen extends State<AffiliateUsScreen> {
   Container statusAffiliatesReedem(String statusName) {
     Color colors;
     if (statusName == "paid") {
-      colors = Color(0xffF6DE6E);
-    } else {
       colors = Color(0xFF40a153);
+    } else {
+      colors = Color(0xffF6DE6E);
     }
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 5),
@@ -1178,11 +1188,17 @@ class _AffiliateUsStateScreen extends State<AffiliateUsScreen> {
     );
   }
 
-  Container statusAffiliatesStatus(int isActive) {
+  Container statusAffiliatesStatus(
+      int isActive, String mod_start, String mod_end, String nama) {
     Color colors;
     String statusName;
+    DateTime now = DateTime.now();
 
-    if (isActive == 1) {
+    DateTime dateend = DateTime.parse(mod_end);
+
+    bool valend = now.isBefore(dateend);
+
+    if (isActive == 1 && valend == true) {
       statusName = "Active";
       colors = Color(0xffF6DE6E);
     } else {

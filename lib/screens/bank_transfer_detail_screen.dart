@@ -154,8 +154,7 @@ class _BankTransferDetailScreenState extends State<BankTransferDetailScreen> {
                                     padding: EdgeInsets.symmetric(vertical: 20),
                                     child: Column(
                                       children: [
-                                        Text(
-                                          'TOTAL PESANAN',
+                                        Text('TOTAL PESANAN',
                                           style: TextStyle(
                                             fontFamily: 'Brandon',
                                             color: Colors.white,
@@ -225,7 +224,10 @@ class _BankTransferDetailScreenState extends State<BankTransferDetailScreen> {
                           ),
                           Image.network(
                             snapshot.data.path,
-                            height: 70,
+                            height:
+                                snapshot.data.paymentType == "transfer_manual"
+                                    ? 30
+                                    : 70,
                           ),
                           Text(
                             'a/n ' + snapshot.data.an,
