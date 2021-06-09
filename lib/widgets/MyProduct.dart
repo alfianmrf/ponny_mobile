@@ -71,7 +71,7 @@ class MyProduct extends StatelessWidget {
                   child: Container(
                     color: Colors.white,
                     child: CachedNetworkImage(
-                      memCacheHeight: 300,
+                      memCacheHeight: 380,
                       memCacheWidth: 300,
                       imageUrl: product.thumbnail_image != null
                           ? img_url + product.thumbnail_image
