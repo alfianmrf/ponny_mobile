@@ -1230,7 +1230,9 @@ class _OrderScreenState extends State<OrderScreen> {
                               width: 100,
                               margin: EdgeInsets.only(top: 10),
                               child: Text(
-                                "Alamat Pengiriman",
+                                order.pickUp == true
+                                    ? "Pickup In Store "
+                                    : "Alamat Pengiriman",
                                 style: TextStyle(
                                   fontSize: 12,
                                   fontWeight: FontWeight.w600,

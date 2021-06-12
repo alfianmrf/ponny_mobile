@@ -9,12 +9,10 @@ import 'package:ponny/util/globalUrl.dart';
 import 'package:ponny/model/Cart.dart';
 import 'package:provider/provider.dart';
 
-
-ListCabang listCabangFromJson(String str) => ListCabang.fromJson(json.decode(str));
+ListCabang listCabangFromJson(String str) =>
+    ListCabang.fromJson(json.decode(str));
 
 String listCabangToJson(ListCabang data) => json.encode(data.toJson());
-
-
 
 class ListCabang with ChangeNotifier {
   List<Cart> unavaliable = [];
@@ -24,8 +22,8 @@ class ListCabang with ChangeNotifier {
   bool isDelivery = false;
   bool pointValue = false;
 
-  void addDataUn(Cart cart){
-    for ( var result in cabangClick.unavailableProduct) {
+  void addDataUn(Cart cart) {
+    for (var result in cabangClick.unavailableProduct) {
       if (result == cart.product.id) {
         unavaliable.add(cart);
       }
@@ -33,12 +31,12 @@ class ListCabang with ChangeNotifier {
     notifyListeners();
   }
 
-  set setDataCabang(value){
+  set setDataCabang(value) {
     cabangClick = value;
     notifyListeners();
   }
 
-  set setUnavailable(value){
+  set setUnavailable(value) {
     unavaliable = unavaliable;
     notifyListeners();
   }
@@ -47,9 +45,9 @@ class ListCabang with ChangeNotifier {
     pointValue = value;
   }
 
-  set setDataUnavaliable(value){
-      isDelivery = value;
-      notifyListeners();
+  set setDataUnavaliable(value) {
+    isDelivery = value;
+    notifyListeners();
   }
 
   bool get setDataUnavaliable => isDelivery;
@@ -66,33 +64,32 @@ class ListCabang with ChangeNotifier {
   List<Datum> data;
 
   factory ListCabang.fromJson(Map<String, dynamic> json) => ListCabang(
-    status: json["status"],
-    data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
-  );
+        status: json["status"],
+        data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
+      );
 
   Map<String, dynamic> toJson() => {
-    "status": status,
-    "data": List<dynamic>.from(data.map((x) => x.toJson())),
-  };
+        "status": status,
+        "data": List<dynamic>.from(data.map((x) => x.toJson())),
+      };
 
-  Future<bool>getListCabang(String token) async{
-    var res = await http.get(listCabangURL,headers: {
-    HttpHeaders.contentTypeHeader: 'application/json',
-    HttpHeaders.authorizationHeader: "Bearer $token"});
+  Future<bool> getListCabang(String token) async {
+    var res = await http.get(listCabangURL, headers: {
+      HttpHeaders.contentTypeHeader: 'application/json',
+      HttpHeaders.authorizationHeader: "Bearer $token"
+    });
     final responseJson = json.decode(res.body);
-    if(res.statusCode == 200){
-      for(Map item in responseJson["data"]){
-          dataCabang = [];
-          print(item);
-          dataCabang.add(Datum.fromJson(item));
+    if (res.statusCode == 200) {
+      dataCabang = [];
+      for (Map item in responseJson["data"]) {
+        print(item);
+        dataCabang.add(Datum.fromJson(item));
       }
       notifyListeners();
       return true;
     }
     return false;
   }
-
-
 }
 
 class Datum {
@@ -123,28 +120,31 @@ class Datum {
   List<dynamic> getProduct;
 
   factory Datum.fromJson(Map<String, dynamic> json) => Datum(
-    id: json["id"],
-    namaCabang: json["nama_cabang"],
-    lokasiCabang: json["lokasi_cabang"],
-    alamatCabang: json["alamat_cabang"],
-    jamOperasional: json["jam_operasional"],
-    waktu: json["waktu"],
-    statusAvailable: json["status_available"],
-    messageAvailable: json["message_available"],
-    availableProduct: List<dynamic>.from(json["available_product"].map((x) => x)),
-    unavailableProduct: List<int>.from(json["unavailable_product"].map((x) => x)),
-  );
+        id: json["id"],
+        namaCabang: json["nama_cabang"],
+        lokasiCabang: json["lokasi_cabang"],
+        alamatCabang: json["alamat_cabang"],
+        jamOperasional: json["jam_operasional"],
+        waktu: json["waktu"],
+        statusAvailable: json["status_available"],
+        messageAvailable: json["message_available"],
+        availableProduct:
+            List<dynamic>.from(json["available_product"].map((x) => x)),
+        unavailableProduct:
+            List<int>.from(json["unavailable_product"].map((x) => x)),
+      );
 
   Map<String, dynamic> toJson() => {
-    "id": id,
-    "nama_cabang": namaCabang,
-    "lokasi_cabang": lokasiCabang,
-    "alamat_cabang": alamatCabang,
-    "jam_operasional": jamOperasional,
-    "waktu": waktu,
-    "status_available": statusAvailable,
-    "message_available": messageAvailable,
-    "available_product": List<dynamic>.from(availableProduct.map((x) => x)),
-    "unavailable_product": List<dynamic>.from(unavailableProduct.map((x) => x)),
-  };
+        "id": id,
+        "nama_cabang": namaCabang,
+        "lokasi_cabang": lokasiCabang,
+        "alamat_cabang": alamatCabang,
+        "jam_operasional": jamOperasional,
+        "waktu": waktu,
+        "status_available": statusAvailable,
+        "message_available": messageAvailable,
+        "available_product": List<dynamic>.from(availableProduct.map((x) => x)),
+        "unavailable_product":
+            List<dynamic>.from(unavailableProduct.map((x) => x)),
+      };
 }
