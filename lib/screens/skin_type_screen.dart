@@ -30,6 +30,7 @@ import 'package:uiblock/uiblock.dart';
 import 'package:url_launcher/url_launcher.dart' as Launcher;
 import 'package:ponny/util/globalUrl.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
+import 'package:flutter_youtube_view/flutter_youtube_view.dart';
 import 'package:ponny/common/constant.dart' as cost;
 
 class SkinTypeScreen extends StatefulWidget {
@@ -38,11 +39,47 @@ class SkinTypeScreen extends StatefulWidget {
   _SkinTypeStateScreen createState() => _SkinTypeStateScreen();
 }
 
-class _SkinTypeStateScreen extends State<SkinTypeScreen> {
+class _SkinTypeStateScreen extends State<SkinTypeScreen> implements YouTubePlayerListener {
+  double _currentVideoSecond = 0.0;
+  String _playerState = "";
+  FlutterYoutubeViewController _controlleryt;
+
+  @override
+  void onCurrentSecond(double second) {
+    print("onCurrentSecond second = $second");
+    _currentVideoSecond = second;
+  }
+
+  @override
+  void onError(String error) {
+    print("onError error = $error");
+  }
+
+  @override
+  void onReady() {
+    print("onReady");
+  }
+
+  @override
+  void onStateChange(String state) {
+    print("onStateChange state = $state");
+    setState(() {
+      _playerState = state;
+    });
+  }
+
+  @override
+  void onVideoDuration(double duration) {
+    print("onVideoDuration duration = $duration");
+  }
+
+  void _onYoutubeCreated(FlutterYoutubeViewController controlleryt) {
+    this._controlleryt = controlleryt;
+  }
+
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
-  static String videoId = YoutubePlayer.convertUrlToId("https://www.youtube.com/embed/5ou09YALCJw");
+  String urlYoutube;
   YoutubePlayerController _ytcontroller;
-  final VoidCallback onError = null;
   List<Widget> ListRekomedasi;
   List<JenisKulit> daftarJenisKulit = [
     JenisKulit(
@@ -82,37 +119,19 @@ class _SkinTypeStateScreen extends State<SkinTypeScreen> {
     ),
   ];
   int index = 0;
-  void _launch(String url) async {
-    if (await Launcher.canLaunch(url)) {
-      await Launcher.launch(url, forceWebView: true,);
-    } else {
-      if (onError != null) {
-        onError();
-      }
-    }
-  }
 
   @override
   void initState() {
     super.initState();
-    _ytcontroller = YoutubePlayerController(
-      initialVideoId: videoId,
-      flags: YoutubePlayerFlags(
-        autoPlay: false,
-        mute: false,
-      ),
-    );
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      getyt();
+    });
   }
 
-  Future<YoutubePlayerController> ytplayer() async {
-    videoId = YoutubePlayer.convertUrlToId(Provider.of<AppModel>(context).setting.embedVideo);
-    return YoutubePlayerController(
-      initialVideoId: videoId,
-      flags: YoutubePlayerFlags(
-        autoPlay: false,
-        mute: false,
-      ),
-    );
+  Future getyt() {
+    setState(() {
+      urlYoutube = YoutubePlayer.convertUrlToId(Provider.of<AppModel>(context).setting.embedVideo);
+    });
   }
 
   @override
@@ -511,26 +530,31 @@ class _SkinTypeStateScreen extends State<SkinTypeScreen> {
                     Container(
                       color: Color(0xffFBDFD2),
                       padding: EdgeInsets.fromLTRB(30, 0, 30, 20),
-                      child:Provider.of<AppModel>(context).loadingSetting ? Center(
-                        child: LoadingWidgetFadingCircle(context),
-                      ) : FutureBuilder(
-                          future: ytplayer(),
-                          builder: (context, snapshot){
-                            if(snapshot.hasData){
-                              YoutubePlayerController _ytcontroller = snapshot.data;
-                              return YoutubePlayer(
-                                controller: _ytcontroller,
-                                bottomActions: [
-                                  CurrentPosition(),
-                                  ProgressBar(isExpanded: true),
-                                  RemainingDuration(),
-                                ],
-                              );
-                            }
-                            else{
-                              return Container();
-                            }
-                          }
+                      child:urlYoutube == null || urlYoutube == ''
+                          ? Container(
+                        width: double.infinity,
+                        color: Color(0xffFBDFD2),
+                        child: Center(
+                          child: LoadingWidget(context),
+                        ),
+                      )
+                          : AspectRatio(
+                        aspectRatio: 16/9,
+                        child: Container(
+                          color: Color(0xffFBDFD2),
+                          padding: EdgeInsets.symmetric(horizontal: 30),
+                          child: FlutterYoutubeView(
+                            onViewCreated: _onYoutubeCreated,
+                            listener: this,
+                            params: YoutubeParam(
+                              videoId: urlYoutube,
+                              showUI: true,
+                              showYoutube: false,
+                              showFullScreen: false,
+                              autoPlay: false,
+                            ),
+                          ),
+                        ),
                       ),
                     ),
                     Container(

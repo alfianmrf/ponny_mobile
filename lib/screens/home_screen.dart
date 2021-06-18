@@ -47,6 +47,7 @@ import 'package:ponny/screens/cart_screen.dart';
 import 'package:uiblock/uiblock.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
+import 'package:flutter_youtube_view/flutter_youtube_view.dart';
 import 'package:http/http.dart' as http;
 import 'package:ponny/util/globalUrl.dart';
 
@@ -66,7 +67,44 @@ class HomeScreen extends StatefulWidget {
   _HomeScreenState createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends State<HomeScreen> implements YouTubePlayerListener {
+  double _currentVideoSecond = 0.0;
+  String _playerState = "";
+  FlutterYoutubeViewController _controlleryt;
+
+  @override
+  void onCurrentSecond(double second) {
+    print("onCurrentSecond second = $second");
+    _currentVideoSecond = second;
+  }
+
+  @override
+  void onError(String error) {
+    print("onError error = $error");
+  }
+
+  @override
+  void onReady() {
+    print("onReady");
+  }
+
+  @override
+  void onStateChange(String state) {
+    print("onStateChange state = $state");
+    setState(() {
+      _playerState = state;
+    });
+  }
+
+  @override
+  void onVideoDuration(double duration) {
+    print("onVideoDuration duration = $duration");
+  }
+
+  void _onYoutubeCreated(FlutterYoutubeViewController controlleryt) {
+    this._controlleryt = controlleryt;
+  }
+
   Timer _timer;
 
   final double targetElevation = 3;
@@ -77,7 +115,7 @@ class _HomeScreenState extends State<HomeScreen> {
   bool loading_flashdeal = false;
   bool loading_youtube = true;
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  String urlYoutube = "";
+  String urlYoutube;
   bool isbrodcasting = false;
   int _remoteUid = null;
   AgoraRtmClient _client;
@@ -179,8 +217,6 @@ class _HomeScreenState extends State<HomeScreen> {
       // initChanelBrodcaster();
       // getbrodcaster();
       getyt();
-      print("SUCCESS");
-      print(_controllersYoutube);
       Provider.of<ProductModel>(context).getFlashSale();
       if (Provider.of<AppModel>(context).loggedIn){
         _updateCart();
@@ -292,34 +328,9 @@ class _HomeScreenState extends State<HomeScreen> {
   //   }
   // }
 
-  Future ytplayer() async {
-    videoId = YoutubePlayer.convertUrlToId(
-        Provider.of<AppModel>(context).setting.embedVideo);
-    Future.delayed(Duration(seconds: 1), () {
-      setState(() {
-        _controllersYoutube = YoutubePlayerController(
-          initialVideoId: videoId,
-          flags: const YoutubePlayerFlags(
-            autoPlay: false,
-          ),
-        );
-      });
-    });
-    return _controllersYoutube;
-  }
-
   Future getyt() {
-    var textId = YoutubePlayer.convertUrlToId(
-        Provider.of<AppModel>(context).setting.embedVideo);
     setState(() {
-      _controllersYoutube = YoutubePlayerController(
-        initialVideoId: textId,
-        flags: const YoutubePlayerFlags(
-          autoPlay: false,
-        ),
-      );
-      loading_youtube = false;
-      return _controllersYoutube;
+      urlYoutube = YoutubePlayer.convertUrlToId(Provider.of<AppModel>(context).setting.embedVideo);
     });
   }
 
@@ -3045,7 +3056,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               ],
                             ),
                           ),
-                          loading_youtube
+                          urlYoutube == null || urlYoutube == ''
                               ? Container(
                                   width: double.infinity,
                                   color: Color(0xffFBDFD2),
@@ -3053,18 +3064,24 @@ class _HomeScreenState extends State<HomeScreen> {
                                     child: LoadingWidget(context),
                                   ),
                                 )
-                              : Container(
-                                  color: Color(0xffFBDFD2),
-                                  padding: EdgeInsets.symmetric(horizontal: 30),
-                                  child: YoutubePlayer(
-                                    controller: _controllersYoutube,
-                                    bottomActions: [
-                                      CurrentPosition(),
-                                      ProgressBar(isExpanded: true),
-                                      RemainingDuration(),
-                                    ],
+                              : AspectRatio(
+                                aspectRatio: 16/9,
+                                child: Container(
+                                    color: Color(0xffFBDFD2),
+                                    padding: EdgeInsets.symmetric(horizontal: 30),
+                                    child: FlutterYoutubeView(
+                                      onViewCreated: _onYoutubeCreated,
+                                      listener: this,
+                                      params: YoutubeParam(
+                                        videoId: urlYoutube,
+                                        showUI: true,
+                                        showYoutube: false,
+                                        showFullScreen: false,
+                                        autoPlay: false,
+                                      ),
+                                    ),
                                   ),
-                                ),
+                              ),
                           Container(
                             color: Color(0xffFBDFD2),
                             width: double.infinity,
