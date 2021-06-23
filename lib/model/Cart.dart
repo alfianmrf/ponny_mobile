@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:lodash_dart/lodash_dart.dart';
+import 'package:ponny/model/ClaimPointHarian.dart';
 import 'package:ponny/model/Coupon.dart';
 import 'package:ponny/model/Courier.dart';
 import 'package:ponny/model/OrderResult.dart';
@@ -28,6 +29,7 @@ class CartModel with ChangeNotifier {
   int CurentPoint = 0;
   int poinBoong = 0;
   String tokenMidtrans;
+  InfoMessage info;
 
   CartModel();
 
@@ -98,6 +100,19 @@ class CartModel with ChangeNotifier {
           CartResult(message: jsonData["message"], statusCode: res.statusCode);
     }
     return result;
+  }
+
+  Future<void> getInfo(String token) async {
+    final res = await http.get(getInfoCart, headers: {
+      HttpHeaders.contentTypeHeader: 'application/json',
+      HttpHeaders.authorizationHeader: "Bearer $token"
+    });
+    print(res.body);
+    if (res.statusCode == 200) {
+      // print(res.body);
+      info = InfoMessage.fromJson(json.decode(res.body));
+      notifyListeners();
+    }
   }
 
   Future<void> addSampleToCart(Product product, String token) async {
@@ -611,4 +626,23 @@ class CartResult {
   String message;
   int statusCode;
   CartResult({this.message, this.statusCode});
+}
+
+class InfoMessage {
+  String infoDelivery;
+  String infoPickup;
+
+  InfoMessage({this.infoDelivery, this.infoPickup});
+
+  InfoMessage.fromJson(Map<String, dynamic> json) {
+    infoDelivery = json['info_delivery'];
+    infoPickup = json['info_pickup'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['info_delivery'] = this.infoDelivery;
+    data['info_pickup'] = this.infoPickup;
+    return data;
+  }
 }

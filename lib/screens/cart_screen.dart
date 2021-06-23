@@ -84,18 +84,24 @@ class _CartScreenState extends State<CartScreen> {
       //     Provider.of<AppModel>(context, listen: false).auth.access_token;
       // await Provider.of<ListCabang>(context).getListCabang(token).then((value){
       //   if(value == true) {
-          Provider.of<CartModel>(context)
-              .DeleteProductToCart(
+      Provider.of<CartModel>(context)
+          .DeleteProductToCart(
               id, Provider.of<AppModel>(context).auth.access_token)
-              .then((value) {
-            _getUnavaliableProduct();
-            UIBlock.unblock(context);
-            Navigator.pop(context);});
+          .then((value) {
+        _getUnavaliableProduct();
+        UIBlock.unblock(context);
+        Navigator.pop(context);
+      });
       //   }
       // } );
     } catch (e) {
       print("ERror message" + e.toString());
     }
+  }
+
+  Future<void> getInfo() async {
+    Provider.of<CartModel>(context)
+        .getInfo(Provider.of<AppModel>(context).auth.access_token);
   }
 
   @override
@@ -105,6 +111,7 @@ class _CartScreenState extends State<CartScreen> {
       _getSummaryPoint();
       _updateCart();
       _getUnavaliableProduct();
+      getInfo();
       await Provider.of<CartModel>(context).RemoveCoupon();
       await Provider.of<UserModel>(context).getUser(
           Provider.of<AppModel>(context, listen: false).auth.access_token);
@@ -152,112 +159,117 @@ class _CartScreenState extends State<CartScreen> {
             borderRadius: BorderRadius.vertical(top: Radius.circular(15))),
         clipBehavior: Clip.antiAliasWithSaveLayer,
         builder: (BuildContext bc) {
-          return Container(
-            child: new Wrap(
-              children: <Widget>[
-                new Column(
-                  children: [
-                    Container(
-                      width: double.infinity,
-                      padding: EdgeInsets.only(top: 5),
-                      margin: EdgeInsets.symmetric(horizontal: 20, vertical: 9),
-                      child: Row(
-                        children: [
-                          Text(
-                            "Detail Pembayaran",
-                            style: TextStyle(
-                              fontFamily: "Brandon",
-                              fontWeight: FontWeight.w600,
-                              color: Color(0xffF48262),
-                              fontSize: 20,
-                            ),
+          return Consumer<CartModel>(
+            builder: (context, value, child) {
+              return Container(
+                child: new Wrap(
+                  children: <Widget>[
+                    new Column(
+                      children: [
+                        Container(
+                          width: double.infinity,
+                          padding: EdgeInsets.only(top: 5),
+                          margin:
+                              EdgeInsets.symmetric(horizontal: 20, vertical: 9),
+                          child: Row(
+                            children: [
+                              Text(
+                                "Detail Pembayaran",
+                                style: TextStyle(
+                                  fontFamily: "Brandon",
+                                  fontWeight: FontWeight.w600,
+                                  color: Color(0xffF48262),
+                                  fontSize: 20,
+                                ),
+                              ),
+                              Spacer(),
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.of(context).pop(false);
+                                },
+                                child: Container(
+                                    width: 30,
+                                    height: 30,
+                                    child: Icon(Icons.close,
+                                        color: Color(0xffF48262))),
+                              )
+                            ],
                           ),
-                          Spacer(),
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.of(context).pop(false);
-                            },
-                            child: Container(
-                                width: 30,
-                                height: 30,
-                                child: Icon(Icons.close,
-                                    color: Color(0xffF48262))),
-                          )
-                        ],
-                      ),
+                        ),
+                        Divider(color: Color(0xffF48262)),
+                        Padding(
+                          padding: EdgeInsets.only(bottom: 20),
+                          child: Column(
+                            children: [
+                              Image.asset(
+                                'assets/images/perjalanan@4x.png',
+                                width: 46,
+                                height: 46,
+                                fit: BoxFit.contain,
+                              ),
+                              Text(
+                                "Delivery",
+                                style: TextStyle(
+                                  fontFamily: "Brandon",
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.black,
+                                  fontSize: 15,
+                                ),
+                              ),
+                              Container(
+                                margin: EdgeInsets.symmetric(horizontal: 10),
+                                child: Text(
+                                  value.info.infoDelivery,
+                                  style: TextStyle(
+                                    fontFamily: "Brandon",
+                                    color: Colors.black,
+                                    fontSize: 14,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 15),
+                                child: Divider(
+                                  color: Color(0xffF48262),
+                                ),
+                              ),
+                              Image.asset(
+                                'assets/images/Icon-Ponny-10.png',
+                                width: 46,
+                                height: 46,
+                                fit: BoxFit.contain,
+                              ),
+                              Text(
+                                "Pick Up In Store",
+                                style: TextStyle(
+                                  fontFamily: "Brandon",
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.black,
+                                  fontSize: 15,
+                                ),
+                              ),
+                              Container(
+                                margin: EdgeInsets.symmetric(horizontal: 10),
+                                child: Text(
+                                  value.info.infoPickup,
+                                  style: TextStyle(
+                                    fontFamily: "Brandon",
+                                    color: Colors.black,
+                                    fontSize: 14,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            ],
+                          ),
+                        )
+                      ],
                     ),
-                    Divider(color: Color(0xffF48262)),
-                    Padding(
-                      padding: EdgeInsets.only(bottom: 20),
-                      child: Column(
-                        children: [
-                          Image.asset(
-                            'assets/images/perjalanan@4x.png',
-                            width: 46,
-                            height: 46,
-                            fit: BoxFit.contain,
-                          ),
-                          Text(
-                            "Delivery",
-                            style: TextStyle(
-                              fontFamily: "Brandon",
-                              fontWeight: FontWeight.w600,
-                              color: Colors.black,
-                              fontSize: 15,
-                            ),
-                          ),
-                          Container(
-                            margin: EdgeInsets.symmetric(horizontal: 10),
-                            child: Text(
-                              "Pihak kurir akan mengirimkan belanjaanmu ke alamat penerima.",
-                              style: TextStyle(
-                                fontFamily: "Brandon",
-                                color: Colors.black,
-                                fontSize: 14,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 15),
-                            child: Divider(
-                              color: Color(0xffF48262),
-                            ),
-                          ),
-                          Image.asset(
-                            'assets/images/Icon-Ponny-10.png',
-                            width: 46,
-                            height: 46,
-                            fit: BoxFit.contain,
-                          ),
-                          Text(
-                            "Pick Up In Store",
-                            style: TextStyle(
-                              fontFamily: "Brandon",
-                              fontWeight: FontWeight.w600,
-                              color: Colors.black,
-                              fontSize: 15,
-                            ),
-                          ),
-                          Container(
-                            margin: EdgeInsets.symmetric(horizontal: 10),
-                            child: Text(
-                              "Ambil sendiri belanjaanmu di toko Ponny Beaute terdekat, yuk!\nOiya, pastikan stok produk tersedia, ya.",
-                              style: TextStyle(
-                                fontFamily: "Brandon",
-                                color: Colors.black,
-                                fontSize: 14,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                        ],
-                      ),
-                    )
                   ],
                 ),
-              ],
-            ),
+              );
+            },
           );
         });
   }
@@ -270,129 +282,84 @@ class _CartScreenState extends State<CartScreen> {
             borderRadius: BorderRadius.vertical(top: Radius.circular(15))),
         clipBehavior: Clip.antiAliasWithSaveLayer,
         builder: (BuildContext bc) {
-          return Container(
-            child: new Wrap(
-              children: <Widget>[
-                new Column(
-                  children: [
-                    Container(
-                      width: double.infinity,
-                      padding: EdgeInsets.only(top: 5),
-                      margin: EdgeInsets.symmetric(horizontal: 20, vertical: 9),
-                      child: Row(
-                        children: [
-                          Text(
-                            "METODE PENGIRIMAN",
-                            style: TextStyle(
-                              fontFamily: "Brandon",
-                              fontWeight: FontWeight.w600,
-                              color: Color(0xffF48262),
-                              fontSize: 20,
-                            ),
-                          ),
-                          Spacer(),
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.of(context).pop(false);
-                            },
-                            child: Container(
-                                width: 30,
-                                height: 30,
-                                child: Icon(Icons.close,
-                                    color: Color(0xffF48262))),
-                          )
-                        ],
-                      ),
-                    ),
-                    Divider(color: Color(0xffF48262)),
-                    Padding(
-                      padding: EdgeInsets.only(bottom: 20),
-                      child: Column(
-                        children: [
-                          Container(
-                              child: GestureDetector(
-                            onTap: () {
-                              Provider.of<ListCabang>(context).setDataUnavaliable = true;
-                              Provider.of<ListCabang>(context).cabangClick = null;
-                              Navigator.pop(context);
-                            },
-                            child: Column(children: [
-                              Padding(
-                                padding: EdgeInsets.only(left: 20),
-                                child: Row(children: [
-                                  Image.asset(
-                                    'assets/images/perjalanan@4x.png',
-                                    width: 25,
-                                    height: 25,
-                                    fit: BoxFit.contain,
-                                  ),
-                                  SizedBox(width: 7),
-                                  Text(
-                                    "Delivery",
-                                    style: TextStyle(
-                                      fontFamily: "Brandon",
-                                      fontWeight: FontWeight.w600,
-                                      color: Colors.black,
-                                      fontSize: 15,
-                                    ),
-                                  )
-                                ]),
-                              ),
-                              Container(
-                                margin: EdgeInsets.symmetric(horizontal: 5),
-                                child: Text(
-                                  "Pesanan akan dikirim ke alamat penerima yang sudah kamu pilih",
-                                  style: TextStyle(
-                                    fontFamily: "Brandon",
-                                    color: Colors.black45,
-                                    fontSize: 13,
-                                  ),
+          return Consumer<CartModel>(
+            builder: (context, value, child) {
+              return Container(
+                child: new Wrap(
+                  children: <Widget>[
+                    new Column(
+                      children: [
+                        Container(
+                          width: double.infinity,
+                          padding: EdgeInsets.only(top: 5),
+                          margin:
+                              EdgeInsets.symmetric(horizontal: 20, vertical: 9),
+                          child: Row(
+                            children: [
+                              Text(
+                                "METODE PENGIRIMAN",
+                                style: TextStyle(
+                                  fontFamily: "Brandon",
+                                  fontWeight: FontWeight.w600,
+                                  color: Color(0xffF48262),
+                                  fontSize: 20,
                                 ),
                               ),
-                            ]),
-                          )),
-                          Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 15),
-                              child: Divider(
-                                color: Color(0xffF48262),
-                              )),
-                          GestureDetector(
-                            onTap: () {
-                              Provider.of<MetodePengiriman>(context);
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        ListTokoPengirimanScreen()),
-                              ).then((value) => _getUnavaliableProduct());
-                            },
-                            child: Container(
-                              child: Column(
-                                children: [
+                              Spacer(),
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.of(context).pop(false);
+                                },
+                                child: Container(
+                                    width: 30,
+                                    height: 30,
+                                    child: Icon(Icons.close,
+                                        color: Color(0xffF48262))),
+                              )
+                            ],
+                          ),
+                        ),
+                        Divider(color: Color(0xffF48262)),
+                        Padding(
+                          padding: EdgeInsets.only(bottom: 20),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                  child: GestureDetector(
+                                onTap: () {
+                                  Provider.of<ListCabang>(context)
+                                      .setDataUnavaliable = true;
+                                  Provider.of<ListCabang>(context).cabangClick =
+                                      null;
+                                  Navigator.pop(context);
+                                },
+                                child: Column(children: [
                                   Padding(
-                                      padding: EdgeInsets.only(left: 20),
-                                      child: Row(children: [
-                                        Image.asset(
-                                          'assets/images/Icon-Ponny-10.png',
-                                          width: 25,
-                                          height: 25,
-                                          fit: BoxFit.contain,
+                                    padding: EdgeInsets.only(left: 20),
+                                    child: Row(children: [
+                                      Image.asset(
+                                        'assets/images/perjalanan@4x.png',
+                                        width: 25,
+                                        height: 25,
+                                        fit: BoxFit.contain,
+                                      ),
+                                      SizedBox(width: 7),
+                                      Text(
+                                        "Delivery",
+                                        style: TextStyle(
+                                          fontFamily: "Brandon",
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.black,
+                                          fontSize: 15,
                                         ),
-                                        SizedBox(width: 7),
-                                        Text(
-                                          "Pick Up",
-                                          style: TextStyle(
-                                            fontFamily: "Brandon",
-                                            fontWeight: FontWeight.w600,
-                                            color: Colors.black,
-                                            fontSize: 15,
-                                          ),
-                                        )
-                                      ])),
+                                      )
+                                    ]),
+                                  ),
                                   Container(
                                     margin: EdgeInsets.symmetric(horizontal: 5),
                                     child: Text(
-                                      "Pesanan akan dikirim ke alamat penerima yang sudah kamu pilih",
+                                      "Pesanan akan dikirim ke alamat penerima yang sudah kamu pilih.",
                                       style: TextStyle(
                                         fontFamily: "Brandon",
                                         color: Colors.black45,
@@ -400,17 +367,74 @@ class _CartScreenState extends State<CartScreen> {
                                       ),
                                     ),
                                   ),
-                                ],
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                    )
+                                ]),
+                              )),
+                              Padding(
+                                  padding: EdgeInsets.symmetric(horizontal: 15),
+                                  child: Divider(
+                                    color: Color(0xffF48262),
+                                  )),
+                              GestureDetector(
+                                onTap: () {
+                                  Provider.of<MetodePengiriman>(context);
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            ListTokoPengirimanScreen()),
+                                  ).then((value) => _getUnavaliableProduct());
+                                },
+                                child: Container(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Padding(
+                                          padding: EdgeInsets.only(left: 12),
+                                          child: Row(children: [
+                                            Image.asset(
+                                              'assets/images/Icon-Ponny-10.png',
+                                              // width: 25,
+                                              height: 30,
+                                              fit: BoxFit.contain,
+                                            ),
+                                            SizedBox(width: 7),
+                                            Text(
+                                              "Pick Up",
+                                              style: TextStyle(
+                                                fontFamily: "Brandon",
+                                                fontWeight: FontWeight.w600,
+                                                color: Colors.black,
+                                                fontSize: 15,
+                                              ),
+                                            )
+                                          ])),
+                                      Container(
+                                        padding: EdgeInsets.only(left: 12),
+                                        margin:
+                                            EdgeInsets.symmetric(horizontal: 5),
+                                        child: Text(
+                                          "Pesanan bisa diambil di toko Ponny Beaute.",
+                                          style: TextStyle(
+                                            fontFamily: "Brandon",
+                                            color: Colors.black45,
+                                            fontSize: 13,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
                   ],
                 ),
-              ],
-            ),
+              );
+            },
           );
         });
   }
@@ -1093,10 +1117,8 @@ class _CartScreenState extends State<CartScreen> {
                                                   //     customLoaderChild:
                                                   //         LoadingWidget(
                                                   //             context));
-                                                  showDeleteDialog(
-                                                      context,
-                                                      item.product,
-                                                      item.id);
+                                                  showDeleteDialog(context,
+                                                      item.product, item.id);
                                                   // value.DeleteProductToCart(
                                                   //         item.id,
                                                   //         Provider.of<AppModel>(
@@ -1927,19 +1949,30 @@ class _CartScreenState extends State<CartScreen> {
                                                                   .start,
                                                           children: [
                                                             CachedNetworkImage(
-                                                              imageUrl: unavailable[index].product.thumbnail_image != null ? img_url + unavailable[index].product.thumbnail_image : "",
-                                                              placeholder: (context, url) =>
+                                                              imageUrl: unavailable[
+                                                                              index]
+                                                                          .product
+                                                                          .thumbnail_image !=
+                                                                      null
+                                                                  ? img_url +
+                                                                      unavailable[
+                                                                              index]
+                                                                          .product
+                                                                          .thumbnail_image
+                                                                  : "",
+                                                              placeholder: (context,
+                                                                      url) =>
                                                                   LoadingWidgetPulse(
                                                                       context),
-                                                              errorWidget: (context, url,
-                                                                  error) =>
+                                                              errorWidget: (context,
+                                                                      url,
+                                                                      error) =>
                                                                   Image.asset(
                                                                       'assets/images/210x265.png'),
                                                               width: 110,
                                                               height: 110,
                                                               fit: BoxFit.cover,
                                                             ),
-
                                                           ],
                                                         ),
                                                         Container(
@@ -2283,14 +2316,20 @@ class _CartScreenState extends State<CartScreen> {
                                             Transform.scale(
                                               scale: 0.72,
                                               child: CupertinoSwitch(
-                                                value: Provider.of<ListCabang>(context).setPointValue,
+                                                value: Provider.of<ListCabang>(
+                                                        context)
+                                                    .setPointValue,
                                                 onChanged: (newvalue) {
-                                                  value.summary.available_point_to_use == 0
-                                                  ? null
-                                                  : Provider.of<ListCabang>(context).setPointValue = newvalue;
+                                                  value.summary
+                                                              .available_point_to_use ==
+                                                          0
+                                                      ? null
+                                                      : Provider.of<ListCabang>(
+                                                                  context)
+                                                              .setPointValue =
+                                                          newvalue;
                                                   _getSummaryPoint();
                                                 },
-                                                
                                                 trackColor: Colors.grey[200],
                                                 activeColor: Color(0xffF48262),
                                               ),
