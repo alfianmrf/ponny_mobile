@@ -97,7 +97,7 @@ class _PromotionDetailScreenState extends State<PromotionDetailScreen> {
                           ),
                           Expanded(
                             child: Html(
-                              data: widget.cupon.keterangan,
+                              data: widget.cupon.keterangan??'-',
                               style: {
                                 "html": Style(
                                   fontSize: FontSize.small,
@@ -341,7 +341,7 @@ class _PromotionDetailScreenState extends State<PromotionDetailScreen> {
                           ),
                           Expanded(
                             child: Html(
-                              data: item,
+                              data: item??'-',
                               style: {
                                 "html" :Style(
                                   fontSize: FontSize.medium,
