@@ -38,7 +38,6 @@ class ProductModel with ChangeNotifier {
   }
 
   Future<void> getLocalProduct() async {
-    loadingLocalProduct = false;
     try {
       final result = await http.get(localprideUrl);
       if (result.statusCode == 200) {
@@ -52,13 +51,13 @@ class ProductModel with ChangeNotifier {
       notifyListeners();
     } catch (err) {
       loadingLocalProduct = false;
+      print("Get Local Product");
       print("error." + err.toString());
       notifyListeners();
     }
   }
 
   Future<void> getBestSell() async {
-    loadingBestSale = false;
     try {
       final result = await http.get(best_sale);
       if (result.statusCode == 200) {
@@ -72,6 +71,7 @@ class ProductModel with ChangeNotifier {
       notifyListeners();
     } catch (err) {
       loadingBestSale = false;
+      print("Get Best Sell");
       print("error." + err.toString());
       notifyListeners();
     }
@@ -90,6 +90,7 @@ class ProductModel with ChangeNotifier {
         }
       }
     } catch (err) {
+      print("FLASH SALE");
       print("error." + err.toString());
       notifyListeners();
     }
@@ -107,6 +108,7 @@ class ProductModel with ChangeNotifier {
       loadingPhobe = false;
       notifyListeners();
     } catch (err) {
+      print('Get Phoebe');
       print("error." + err.toString());
       notifyListeners();
     }
@@ -117,7 +119,7 @@ class ProductModel with ChangeNotifier {
       final result = await http.get(rekomendasiProduk);
       if (result.statusCode == 200) {
         final responseJson = json.decode(result.body);
-        for (Map item in responseJson["data"]) {
+        for (Map item in responseJson["products"]["data"]) {
           Recomendasi.add(Product.fromJson(item));
         }
       }
@@ -125,6 +127,7 @@ class ProductModel with ChangeNotifier {
       notifyListeners();
     } catch (err) {
       loadingRekomendasi = false;
+      print("Get Rekomendasi");
       print("error." + err.toString());
       notifyListeners();
     }
@@ -143,6 +146,7 @@ class ProductModel with ChangeNotifier {
       notifyListeners();
     } catch (err) {
       loadingRecom = false;
+      print("Get Recom");
       print("error." + err.toString());
       notifyListeners();
     }
@@ -161,6 +165,7 @@ class ProductModel with ChangeNotifier {
       notifyListeners();
     } catch (err) {
       loadingNews = false;
+      print("Get News");
       print("error." + err.toString());
       notifyListeners();
     }
@@ -211,6 +216,7 @@ class ProductModel with ChangeNotifier {
         return VarianResult.fromJson(responseJson);
       }
     } catch (err) {
+      print("Get Value Variant");
       print("error." + err.toString());
     }
     return result;

@@ -32,6 +32,7 @@ class AffiliateResult {
   int sessions;
   int totalUsed;
   String sales;
+  List<Payment> payment;
   String pathImg;
 
   AffiliateResult(
@@ -44,6 +45,7 @@ class AffiliateResult {
       this.sessions,
       this.totalUsed,
       this.sales,
+      this.payment,
       this.pathImg});
 
   AffiliateResult.fromJson(Map<String, dynamic> json) {
@@ -65,10 +67,15 @@ class AffiliateResult {
         codes.add(new Codes.fromJson(v));
       });
     }
-
     sessions = json['sessions'];
     totalUsed = json['total_used'];
     sales = json['sales'];
+    if (json['payment'] != null) {
+      payment = new List<Payment>();
+      json['payment'].forEach((v) {
+        payment.add(new Payment.fromJson(v));
+      });
+    }
     pathImg = json['path_img'];
   }
 
@@ -86,10 +93,12 @@ class AffiliateResult {
     if (this.codes != null) {
       data['codes'] = this.codes.map((v) => v.toJson()).toList();
     }
-
     data['sessions'] = this.sessions;
     data['total_used'] = this.totalUsed;
     data['sales'] = this.sales;
+    if (this.payment != null) {
+      data['payment'] = this.payment.map((v) => v.toJson()).toList();
+    }
     data['path_img'] = this.pathImg;
     return data;
   }
@@ -201,6 +210,67 @@ class Withdrawal {
   }
 }
 
+class Payment {
+  int id;
+  int affiliateUserId;
+  int amount;
+  String paymentMethod;
+  Null paymentDetails;
+  String createdAt;
+  String updatedAt;
+  String status;
+  String norek;
+  String atasnama;
+  String tglBayar;
+  String gambar;
+
+  Payment(
+      {this.id,
+        this.affiliateUserId,
+        this.amount,
+        this.paymentMethod,
+        this.paymentDetails,
+        this.createdAt,
+        this.updatedAt,
+        this.status,
+        this.norek,
+        this.atasnama,
+        this.tglBayar,
+        this.gambar});
+
+  Payment.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    affiliateUserId = json['affiliate_user_id'];
+    amount = json['amount'];
+    paymentMethod = json['payment_method'];
+    paymentDetails = json['payment_details'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
+    status = json['status'];
+    norek = json['norek'];
+    atasnama = json['atasnama'];
+    tglBayar = json['tgl_bayar'];
+    gambar = json['gambar'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['affiliate_user_id'] = this.affiliateUserId;
+    data['amount'] = this.amount;
+    data['payment_method'] = this.paymentMethod;
+    data['payment_details'] = this.paymentDetails;
+    data['created_at'] = this.createdAt;
+    data['updated_at'] = this.updatedAt;
+    data['status'] = this.status;
+    data['norek'] = this.norek;
+    data['atasnama'] = this.atasnama;
+    data['tgl_bayar'] = this.tglBayar;
+    data['gambar'] = this.gambar;
+    return data;
+  }
+}
+
 class Codes {
   String kodeId;
   int userId;
@@ -278,7 +348,7 @@ class Coupon {
   int aktif;
   int maxAtUser;
   int visible;
-  String decodeDetail;
+  DecodeDetail decodeDetail;
   String modStartDate;
   String modEndDate;
 
@@ -326,7 +396,9 @@ class Coupon {
     aktif = json['aktif'];
     maxAtUser = json['max_at_user'];
     visible = json['visible'];
-    decodeDetail = json['decode_detail'];
+    decodeDetail = json['decode_detail'] != null
+        ? new DecodeDetail.fromJson(json['decode_detail'])
+        : null;
     modStartDate = json['mod_start_date'];
     modEndDate = json['mod_end_date'];
   }
@@ -352,9 +424,48 @@ class Coupon {
     data['aktif'] = this.aktif;
     data['max_at_user'] = this.maxAtUser;
     data['visible'] = this.visible;
-    data['decode_detail'] = this.decodeDetail;
+    if (this.decodeDetail != null) {
+      data['decode_detail'] = this.decodeDetail.toJson();
+    }
     data['mod_start_date'] = this.modStartDate;
     data['mod_end_date'] = this.modEndDate;
+    return data;
+  }
+}
+
+class DecodeDetail {
+  int minBuy;
+  int maxDiscount;
+  Null categoryId;
+  Null subcategoryId;
+  Null subsubcategoryId;
+  Null productId;
+
+  DecodeDetail(
+      {this.minBuy,
+        this.maxDiscount,
+        this.categoryId,
+        this.subcategoryId,
+        this.subsubcategoryId,
+        this.productId});
+
+  DecodeDetail.fromJson(Map<String, dynamic> json) {
+    minBuy = json['min_buy'];
+    maxDiscount = json['max_discount'];
+    categoryId = json['category_id'];
+    subcategoryId = json['subcategory_id'];
+    subsubcategoryId = json['subsubcategory_id'];
+    productId = json['product_id'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['min_buy'] = this.minBuy;
+    data['max_discount'] = this.maxDiscount;
+    data['category_id'] = this.categoryId;
+    data['subcategory_id'] = this.subcategoryId;
+    data['subsubcategory_id'] = this.subsubcategoryId;
+    data['product_id'] = this.productId;
     return data;
   }
 }

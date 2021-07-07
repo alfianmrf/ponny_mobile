@@ -54,19 +54,33 @@ class MyProductFlash extends StatelessWidget {
             children: <Widget>[
               GestureDetector(
                 onTap: () {
-                  Navigator.push(context, new MaterialPageRoute(
-                    builder: (BuildContext context) => new ProductDetailsScreen(product: product,),
-                  ));
+                  Navigator.push(
+                      context,
+                      new MaterialPageRoute(
+                        builder: (BuildContext context) =>
+                        new ProductDetailsScreen(
+                          product: product,
+                        ),
+                      ));
                 },
-                child: Container(
-                  color: Colors.white,
-                  height: MediaQuery.of(context).size.width*0.35,
-                  child: CachedNetworkImage(
-                    imageUrl: product.thumbnail_image != null ? img_url+product.thumbnail_image : "",
-                    placeholder: (context, url) => LoadingWidgetPulse(context),
-                    errorWidget: (context, url, error) => Image.asset('assets/images/210x265.png'),
-                    width: MediaQuery.of(context).size.width,
-                    fit: BoxFit.cover,
+                child: AspectRatio(
+                  aspectRatio: 0.7888,
+                  child: Container(
+                    color: Colors.white,
+                    child: CachedNetworkImage(
+                      memCacheHeight: 380,
+                      memCacheWidth: 300,
+                      imageUrl: product.thumbnail_image != null
+                          ? img_url + product.thumbnail_image
+                          : "",
+                      placeholder: (context, url) =>
+                          LoadingWidgetPulse(context),
+                      errorWidget: (context, url, error) =>
+                          Image.asset('assets/images/210x265.png'),
+                      width: MediaQuery.of(context).size.width,
+                      useOldImageOnUrlChange: true,
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
               ),

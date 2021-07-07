@@ -23,6 +23,7 @@ class SliderModel with ChangeNotifier{
 
       notifyListeners();
     }catch(err){
+      print("Get Payment Method");
       print("error."+err.toString());
       notifyListeners();
     }

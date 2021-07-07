@@ -36,6 +36,7 @@ class _PromotionScreenState extends State<PromotionScreen> {
   Future<void> getData() async {
     try{
       final res=  await http.get(getpromo);
+      print(res.statusCode);
       if(res.statusCode == 200){
         final responeJson = json.decode(res.body);
        setState(() {
