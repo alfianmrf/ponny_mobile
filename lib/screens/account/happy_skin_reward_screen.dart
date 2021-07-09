@@ -61,7 +61,7 @@ class _HappySkinRewardStateScreen extends State<HappySkinRewardScreen>
           if(item["product"]!= null && item["product"]["stocks"] != null){
             s= item["product"]["current_stock"];
             item["product"]["stocks"].forEach((v) {
-              s+=v["qty"];
+              s+=int.parse(v["qty"].toString());
             });
           }
           if(item["product"]!= null && s>0)
@@ -73,7 +73,7 @@ class _HappySkinRewardStateScreen extends State<HappySkinRewardScreen>
           if(item["product"]!= null && item["product"]["stocks"] != null){
             s= item["product"]["current_stock"];
             item["product"]["stocks"].forEach((v) {
-              s+=v["qty"];
+              s+=int.parse(v["qty"].toString());
             });
           }
 
@@ -85,7 +85,7 @@ class _HappySkinRewardStateScreen extends State<HappySkinRewardScreen>
           if(item["product"] != null && item["product"]["stocks"] != null){
             s= item["product"]["current_stock"];
             item["product"]["stocks"].forEach((v) {
-              s+=v["qty"];
+              s+=int.parse(v["qty"].toString());
             });
           }
 
