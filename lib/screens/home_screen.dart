@@ -2744,7 +2744,9 @@ class _HomeScreenState extends State<HomeScreen> implements YouTubePlayerListene
                             width: MediaQuery.of(context).size.width * 0.9,
                             color: Color(0xffF48262),
                           ),
+                          if(Provider.of<ProductModel>(context).PhoebeChoices.isNotEmpty)
                           title("Phoebe's Choice"),
+                          if(Provider.of<ProductModel>(context).PhoebeChoices.isNotEmpty)
                           Container(
                             height: MediaQuery.of(context).size.width * .8,
                             child: Consumer<ProductModel>(
