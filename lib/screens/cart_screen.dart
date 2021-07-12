@@ -314,6 +314,8 @@ class _CartScreenState extends State<CartScreen> {
                             onTap: () {
                               Provider.of<ListCabang>(context).setDataUnavaliable = true;
                               Provider.of<ListCabang>(context).cabangClick = null;
+                              Provider.of<CartModel>(context).listSample = Provider.of<CartModel>(context).listSampleDuplicate;
+                              Provider.of<CartModel>(context).loadingSample = false;
                               Navigator.pop(context);
                             },
                             child: Column(children: [
@@ -1561,13 +1563,30 @@ class _CartScreenState extends State<CartScreen> {
                                     ),
                                     onTap: () {
                                       if (jumlahSample < 2) {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  PilihSample()),
-                                        );
+                                        if(Provider.of<ListCabang>(context).cabangClick!=null||Provider.of<ListCabang>(context).isDelivery==true){
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    PilihSample()),
+                                          );
+                                        }
+                                        else{
+                                          final snackBar = SnackBar(
+                                            content: Text(
+                                                'Pilih metode pengiriman terlebih dahulu',
+                                                style: TextStyle(
+                                                    color: Colors
+                                                        .white)),
+                                            backgroundColor:
+                                            Colors.redAccent,
+                                          );
+                                          scaffoldKey.currentState
+                                              .showSnackBar(
+                                              snackBar);
+                                        }
                                       }
+                                      // print(Provider.of<ListCabang>(context).cabangClick);
                                     },
                                   ),
                                   GestureDetector(

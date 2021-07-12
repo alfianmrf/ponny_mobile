@@ -18,6 +18,7 @@ import 'ProductPoin.dart';
 class CartModel with ChangeNotifier {
   List<Cart> listCardOfitem = [];
   List<Product> listSample = [];
+  List<Product> listSampleDuplicate = [];
   List<Product> listUseSample = [];
   List<ProductPoin> listProductPoin = [];
   bool loadingCard = true;
@@ -28,6 +29,8 @@ class CartModel with ChangeNotifier {
   int CurentPoint = 0;
   int poinBoong = 0;
   String tokenMidtrans;
+  bool loadingSample = true;
+  int cabangidbefore = null;
 
   CartModel();
 
@@ -260,7 +263,7 @@ class CartModel with ChangeNotifier {
           listCardOfitem.add(Cart.fromJson(item));
         }
         for (Map item in responseJson["sampleOfProducts"]) {
-          listSample.add(Product.fromJson(item["product"]["availability"]));
+          listSampleDuplicate.add(Product.fromJson(item["product"]["availability"]));
         }
 
         for (Map item in responseJson["sampleProduct_used"]) {
@@ -287,6 +290,42 @@ class CartModel with ChangeNotifier {
     } catch (err) {
       print("GET CART");
       print("error." + err.toString());
+      notifyListeners();
+    }
+    return false;
+  }
+
+  Future<bool> getSample(String token, int cabangid) async {
+    if(cabangidbefore == cabangid){
+      loadingSample = false;
+      notifyListeners();
+    }
+    else{
+      loadingSample = true;
+      notifyListeners();
+    }
+    cabangidbefore = cabangid;
+    try {
+      final result = await http.get(getSampleURL+cabangid.toString(), headers: {
+        HttpHeaders.contentTypeHeader: 'application/json',
+        HttpHeaders.authorizationHeader: "Bearer $token"
+      });
+      if (result.statusCode == 200) {
+        listSample = [];
+        listUseSample = [];
+
+        final responseJson = json.decode(result.body);
+
+        for (Map item in responseJson["data"]) {
+          listSample.add(Product.fromJson(item["product"]["availability"]));
+        }
+        loadingSample = false;
+        notifyListeners();
+        return true;
+      }
+    } catch (err) {
+      print("error." + err.toString());
+      loadingSample = false;
       notifyListeners();
     }
     return false;

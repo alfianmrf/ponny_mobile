@@ -3,32 +3,55 @@ import 'package:flutter/material.dart';
 import 'package:ponny/common/constant.dart';
 import 'package:ponny/model/App.dart';
 import 'package:ponny/model/Cart.dart';
+import 'package:ponny/model/listCabangModel.dart';
 import 'package:ponny/util/globalUrl.dart';
 import 'package:provider/provider.dart';
 import 'package:uiblock/uiblock.dart';
 
 class PilihSample extends StatefulWidget {
+
   @override
   PilihSampleState   createState() => PilihSampleState();
 }
 
 class PilihSampleState extends State<PilihSample>{
   GlobalKey<ScaffoldState> scafoldKey = new GlobalKey<ScaffoldState>();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      getSample();
+    });
+  }
+
+  Future<void> getSample() async {
+    try {
+      var token = Provider.of<AppModel>(context, listen: false).auth.access_token;
+      var cabangid = Provider.of<ListCabang>(context).cabangClick.id;
+      await Provider.of<CartModel>(context).getSample(token, cabangid);
+    } catch (e) {
+      print("Error message : " + e.toString());
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       key: scafoldKey,
       appBar: AppBar(
-        toolbarHeight: 70,
+        elevation: 0,
+        titleSpacing: 0,
         leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
           icon: Icon(
             Icons.arrow_back_ios,
             color: Color(0xffF48262),
             size: 26,
           ),
-          onPressed: (){
-            Navigator.pop(context);
-          },
         ),
         title:  Text(
           "PILIH SAMPLE",
@@ -39,9 +62,15 @@ class PilihSampleState extends State<PilihSample>{
             color: Color(0xffF48262),
           ),
         ),
+        bottom: PreferredSize(
+            child: Container(
+              color: Color(0xffF48262),
+              height: 1.0,
+            ),
+            preferredSize: Size.fromHeight(1.0)),
       ),
       backgroundColor: Color(0xffFDF8F0),
-      body: CustomScrollView(
+      body: Provider.of<CartModel>(context).loadingSample ? Center(child: LoadingWidget(context),) : CustomScrollView(
         primary: false,
         slivers: <Widget>[
           SliverPadding(

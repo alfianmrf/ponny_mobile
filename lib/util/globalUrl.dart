@@ -70,6 +70,7 @@ const addSample = base_url + "cart/sample";
 const removeProductSample = base_url + "cart/delete/sample";
 const rendemProduct = base_url + "cart/redeem";
 const removePoinProduct = base_url + "cart/delete/point";
+const getSampleURL = urlGlobal + "api/v2/cabang/product/sample/";
 
 //payment
 const paymentInfo = base_url + "payment/detail";
