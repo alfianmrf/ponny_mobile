@@ -8,6 +8,7 @@ import 'package:lodash_dart/lodash_dart.dart';
 import 'package:ponny/common/constant.dart';
 import 'package:ponny/model/App.dart';
 import 'package:ponny/model/Cart.dart';
+import 'package:ponny/model/listCabangModel.dart';
 import 'package:ponny/model/Product.dart';
 import 'package:ponny/model/ProductPoin.dart';
 import 'package:ponny/model/StockVariant.dart';
@@ -49,7 +50,12 @@ class _HappySkinRewardStateScreen extends State<HappySkinRewardScreen>
   }
 
   Future<void> getListOfProduct() async {
-    final respon =  await http.get(rdmProduk);
+    String url;
+    if(Provider.of<ListCabang>(context).cabangClick!=null)
+      url = getPointURL+Provider.of<ListCabang>(context).cabangClick.id.toString();
+    else
+      url = rdmProduk;
+    final respon =  await http.get(url);
     print(respon.body);
     if(respon.statusCode == 200){
       final responseJson = json.decode(respon.body);

@@ -331,6 +331,42 @@ class CartModel with ChangeNotifier {
     return false;
   }
 
+  Future<bool> getPoint(String token, int cabangid) async {
+    if(cabangidbefore == cabangid){
+      loadingSample = false;
+      notifyListeners();
+    }
+    else{
+      loadingSample = true;
+      notifyListeners();
+    }
+    cabangidbefore = cabangid;
+    try {
+      final result = await http.get(getSampleURL+cabangid.toString(), headers: {
+        HttpHeaders.contentTypeHeader: 'application/json',
+        HttpHeaders.authorizationHeader: "Bearer $token"
+      });
+      if (result.statusCode == 200) {
+        listSample = [];
+        listUseSample = [];
+
+        final responseJson = json.decode(result.body);
+
+        for (Map item in responseJson["data"]) {
+          listSample.add(Product.fromJson(item["product"]["availability"]));
+        }
+        loadingSample = false;
+        notifyListeners();
+        return true;
+      }
+    } catch (err) {
+      print("error." + err.toString());
+      loadingSample = false;
+      notifyListeners();
+    }
+    return false;
+  }
+
   Future<void> DeleteProductToCart(int id, String token) async {
     final res = await http.get(removeCardUrl + "/" + id.toString(), headers: {
       HttpHeaders.contentTypeHeader: 'application/json',
