@@ -19,6 +19,7 @@ import 'package:ponny/model/Voucher.dart';
 import 'package:ponny/model/chatEmail.dart';
 import 'package:ponny/model/PostandComment.dart';
 import 'package:ponny/model/listCabangModel.dart';
+import 'package:ponny/model/shopee/shopee.dart';
 import 'package:ponny/screens/Skinklopedia_Screen.dart';
 import 'package:ponny/screens/Detail_Brand_Screen.dart';
 import 'package:ponny/screens/bank_transfer_screen.dart';
@@ -147,6 +148,7 @@ Future<void> main() async {
         ChangeNotifierProvider(create: (context) => MetodePengiriman()),
         ChangeNotifierProvider(create: (context) => AffiliateModel()),
         ChangeNotifierProvider(create: (context) => PaymentMethodModel()),
+        ChangeNotifierProvider(create: (context) => ShopeeListFilter()),
       ],
       child: Phoenix(child: MyApp()),
     ),

@@ -127,6 +127,7 @@ flutter:
   - assets/images/keuntunganHappySkin/
   - assets/images/category/
   - assets/images/konsultasi/
+  - assets/images/shopeeIcons/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

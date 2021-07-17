@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_countdown_timer/flutter_countdown_timer.dart';
 import 'package:lodash_dart/lodash_dart.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:flutter_icons/flutter_icons.dart';
 import 'package:ponny/common/constant.dart';
 import 'package:ponny/model/App.dart';
 import 'package:ponny/model/Cart.dart';
@@ -168,6 +169,144 @@ class _HomeScreenState extends State<HomeScreen> {
       print("DATA CART");
       print(response.statusCode);
     }
+  }
+
+  void _detailModalBottomSheet(context) {
+    showModalBottomSheet(
+        isScrollControlled: true,
+        context: context,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(top: Radius.circular(15))),
+        clipBehavior: Clip.antiAliasWithSaveLayer,
+        builder: (BuildContext bc) {
+          return SingleChildScrollView(
+            child: Container(
+              child: new Wrap(
+                children: <Widget>[
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(top: 10, left: 20, right: 15),
+                        child: Column(
+                          children: [
+                            Stack(
+                              children: [
+                                Center(
+                                  child: Container(
+                                      child: Text("Aktifkan ShopeePay-mu")),
+                                ),
+                                Positioned(
+                                  top: 0,
+                                  right: 0,
+                                  child: GestureDetector(
+                                      onTap: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: Icon(FlutterIcons.close_ant,
+                                          color: Color(0xffF48262))),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                      Divider(color: Color(0xffF48262)),
+                      Center(
+                        child: Container(
+                          child: Column(
+                            children: [
+                              Container(
+                                margin: EdgeInsets.all(40),
+                                width: 160,
+                                child: Image.asset(
+                                    'assets/images/shopeeIcons/shopeePonny.png'),
+                              ),
+                              Container(
+                                child: Text(
+                                  "Aktifkan Shopeepay Sekarang",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 14),
+                                ),
+                              ),
+                              Container(
+                                margin: EdgeInsets.symmetric(horizontal: 30),
+                                padding: EdgeInsets.only(bottom: 30),
+                                width: double.infinity,
+                                child: Text(
+                                  "Aktifkan ShopeePay di akun Ponny Beaute kamu untuk memberikankemudahan dan keuntungan lebih banyak lagi ",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(fontSize: 12),
+                                ),
+                              ),
+                              Container(
+                                margin: EdgeInsets.symmetric(horizontal: 30),
+                                width: double.infinity,
+                                child: RaisedButton(
+                                  elevation: 0,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(10))),
+                                  color: Color(0xffF48262),
+                                  onPressed: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                ShopeeHomeScreen()));
+                                  },
+                                  child: Text(
+                                    "Aktifkan ShopeePay Sekarang",
+                                    style: TextStyle(color: Color(0xfffdf8f0)),
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                margin: EdgeInsets.symmetric(horizontal: 30),
+                                width: double.infinity,
+                                child: RaisedButton(
+                                  elevation: 0,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(10))),
+                                  color: Color(0xffF48262),
+                                  onPressed: () {},
+                                  child: Text(
+                                    "Pelajari Lebih Lanjut",
+                                    style: TextStyle(color: Color(0xfffdf8f0)),
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                  margin: EdgeInsets.only(bottom: 16, top: 16),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        "Syarat dan ketentuan ShopeePay",
+                                        style: TextStyle(fontSize: 12),
+                                      ),
+                                      Text(
+                                        " disini",
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          color: Color(0xffF48262),
+                                        ),
+                                      )
+                                    ],
+                                  ))
+                            ],
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
   }
 
   @override
@@ -954,36 +1093,61 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   width: 35,
                                                   child: Image.asset(
                                                       'assets/images/icon-scan.png')),
-                                              Container(
-                                                margin:
-                                                    EdgeInsets.only(left: 7),
-                                                child: RichText(
-                                                    text: TextSpan(children: [
-                                                  TextSpan(
-                                                      text: 'Scan QR Produk\n',
-                                                      style: TextStyle(
-                                                          color: Colors.black87,
-                                                          fontFamily: 'Brandon',
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          fontSize: 12)),
-                                                  TextSpan(
-                                                      text:
-                                                          'Untuk belanja di toko Ponny Beaute',
-                                                      style: TextStyle(
-                                                        fontFamily: 'Brandon',
-                                                        fontSize: 9,
-                                                        color: Colors.black45,
-                                                      ))
-                                                ])),
-                                              ),
                                             ],
                                           ),
                                         ),
                                         Padding(
                                           padding: EdgeInsets.symmetric(
                                               vertical: 10),
-                                          child: VerticalDivider(),
+                                          child: VerticalDivider(
+                                              color: Color(0xffF48262)),
+                                        ),
+                                        GestureDetector(
+                                          onTap: () {
+                                            _detailModalBottomSheet(context);
+                                            // print("kwkwkwkwkwkw");
+                                          },
+                                          child: Container(
+                                            padding: EdgeInsets.only(
+                                                top: 13, left: 6, right: 6),
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Row(
+                                                  children: [
+                                                    Container(
+                                                        margin: EdgeInsets.only(
+                                                            right: 5,
+                                                            bottom: 3),
+                                                        width: 23,
+                                                        child: Image.asset(
+                                                            'assets/images/shopeeIcons/shopeeWallet.png')),
+                                                    Text(
+                                                      "Rp 1.000.000",
+                                                      style: TextStyle(
+                                                          color: Colors.black87,
+                                                          fontFamily: 'Brandon',
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize: 12),
+                                                    )
+                                                  ],
+                                                ),
+                                                Text("Aktifkan ShopeePay",
+                                                    style: TextStyle(
+                                                        fontSize: 9,
+                                                        color: Colors.black45))
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.symmetric(
+                                              vertical: 10),
+                                          child: VerticalDivider(
+                                            color: Color(0xffF48262),
+                                          ),
                                         ),
                                         GestureDetector(
                                           onTap: () {
@@ -1029,14 +1193,20 @@ class _HomeScreenState extends State<HomeScreen> {
                                                           fontWeight:
                                                               FontWeight.bold,
                                                           fontSize: 12)),
-                                                  TextSpan(
-                                                      text:
-                                                          'Happy Skin Rewards',
-                                                      style: TextStyle(
-                                                        fontFamily: 'Brandon',
-                                                        fontSize: 9,
-                                                        color: Colors.black45,
-                                                      ))
+                                                  WidgetSpan(
+                                                    child: Container(
+                                                      margin: EdgeInsets.only(
+                                                          top: 3),
+                                                      child: Text(
+                                                        'Happy Skin Rewards',
+                                                        style: TextStyle(
+                                                          fontFamily: 'Brandon',
+                                                          fontSize: 9,
+                                                          color: Colors.black45,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  )
                                                 ])),
                                               ),
                                             ],
