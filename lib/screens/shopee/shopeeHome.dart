@@ -236,13 +236,18 @@ class _ShopeeHomeScreenState extends State<ShopeeHomeScreen> {
                           margin: EdgeInsets.only(bottom: 8),
                           width: 60,
                           child: Material(
-                            shape: RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10)),
-                            ),
                             color: Colors.transparent,
                             child: InkWell(
-                              onTap: () {},
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10)),
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => IsiSaldoScreen(),
+                                  ),
+                                );
+                              },
                               child: Image.asset(
                                   'assets/images/shopeeIcons/walletPlus.png'),
                             ),

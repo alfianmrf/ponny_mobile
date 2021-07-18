@@ -21,6 +21,8 @@ import 'package:flutter/foundation.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:intl/intl.dart';
+
 
 part 'list_toko_pengiriman_screen.dart';
 part 'rincian_pengambilan_screen.dart';
